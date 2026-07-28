@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yautja: Apex Hunt - 3D Monster Hunting (Ultimate Lore Vault Edition)</title>
+  <link rel="stylesheet" href="src/style.css">
+  
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <canvas id="game-canvas"></canvas>
+
+  <div id="vision-overlay" class="vision-normal"></div>
+  <div id="scanline-overlay"></div>
+
+  <!-- Facehugger QTE Overlay -->
+  <div id="qte-overlay" class="hidden">
+    <div class="qte-box">
+      <div class="qte-title">ALERTE PARASITE FACEHUGGER !</div>
+      <div class="qte-prompt">APPUYEZ RAPIDEMENT SUR <span class="qte-key">[ESPACE]</span> OU <span class="qte-key">[CLIC DROIT]</span> POUR TRANCHER !</div>
+    </div>
+  </div>
+
+  <!-- Yautja Bio-Mask HUD Interface -->
+  <div id="hud-container">
+    <div id="helmet-frame"></div>
+
+    <div id="hud-top">
+      <div class="hud-panel honor-panel">
+        <div class="hud-label">HONNEUR YAUTJA</div>
+        <div class="honor-rank" id="honor-rank-display">JEUNE SANG (YOUNG BLOOD)</div>
+        <div class="honor-score" id="honor-score-display">1000 PTS</div>
+      </div>
+      <div class="hud-panel title-panel">
+        <h1 class="yautja-font">YAUTJA: APEX HUNT</h1>
+        <div class="hud-subtext" id="target-scanned-name">VAISSEAU MÈRE YAUTJA - SALLE DES TROPHÉES</div>
+      </div>
+      <div class="hud-panel vision-panel">
+        <div class="hud-label">MODE VISION [V]</div>
+        <div class="vision-mode-text" id="vision-mode-display">THERMIQUE INFRA-ROUGE</div>
+      </div>
+    </div>
+
+    <!-- Tri-Laser Sight -->
+    <div id="tri-laser-container">
+      <div class="laser-dot dot-top" id="laser-1"></div>
+      <div class="laser-dot dot-left" id="laser-2"></div>
+      <div class="laser-dot dot-right" id="laser-3"></div>
+      <div class="laser-reticle" id="laser-center"></div>
+    </div>
+
+    <!-- Target Lock Bracket -->
+    <div id="lockon-bracket" class="hidden">
+      <div class="bracket-corner top-left"></div>
+      <div class="bracket-corner top-right"></div>
+      <div class="bracket-corner bottom-left"></div>
+      <div class="bracket-corner bottom-right"></div>
+      <div id="lockon-distance">24.8m - SIGNAL THERMIQUE</div>
+      <div id="weakpoint-tag" class="hidden">POINT FAIBLE THERMIQUE DÉTECTÉ!</div>
+    </div>
+
+    <!-- Left Bar: Vitals -->
+    <div id="hud-left">
+      <div class="stat-group">
+        <div class="stat-header">
+          <span>SANTÉ YAUTJA</span>
+          <span id="hp-val">100 / 100</span>
+        </div>
+        <div class="stat-bar-bg"><div id="hp-bar" class="stat-bar-fill hp-fill"></div></div>
+      </div>
+
+      <div class="stat-group">
+        <div class="stat-header">
+          <span>ÉNERGIE PLASMA</span>
+          <span id="energy-val">100 / 100</span>
+        </div>
+        <div class="stat-bar-bg"><div id="energy-bar" class="stat-bar-fill energy-fill"></div></div>
+      </div>
+
+      <div class="stat-group">
+        <div class="stat-header">
+          <span>ENDURANCE</span>
+          <span id="stamina-val">100 / 100</span>
+        </div>
+        <div class="stat-bar-bg"><div id="stamina-bar" class="stat-bar-fill stamina-fill"></div></div>
+      </div>
+
+      <div id="cloak-status-card" class="status-card uncloaked">
+        <div class="status-title">CAMOUFLAGE OPTIQUE [C]</div>
+        <div class="status-state" id="cloak-state-text">INACTIF (VISIBLE)</div>
+      </div>
+
+      <div id="canopy-badge" class="badge-card hidden">
+        <span>CANOPÉE: PERCHÉ EN HAUTEUR</span>
+        <div class="badge-sub">ATTAQUE EN PIQUÉ DISPONIBLE!</div>
+      </div>
+
+      <div id="acid-badge" class="badge-card acid-badge hidden">
+        <span>ALERTE: ACIDE XÉNOMORPHE!</span>
+        <div class="badge-sub">CAMOUFLAGE INTERDIT!</div>
+      </div>
+    </div>
+
+    <!-- Right Bar: Target Boss Status -->
+    <div id="hud-right">
+      <div class="boss-card">
+        <div class="boss-name" id="boss-display-name">GOLIATH XENO-AKUMO</div>
+        <div class="boss-hp-bg"><div id="boss-hp-bar" class="boss-hp-fill"></div></div>
+        
+        <div class="boss-parts-header">PARTIES DESTRUCTIBLES</div>
+        <div class="part-row">
+          <span id="part-1-label">CORNE GAULDOISE:</span>
+          <span id="horn-status" class="part-intact">INTACTE (TROPHÉE)</span>
+        </div>
+        <div class="part-row">
+          <span id="part-2-label">QUEUE ÉPINEYUSE:</span>
+          <span id="tail-status" class="part-intact">INTACTE (TROPHÉE)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar: Weapons -->
+    <div id="hud-bottom">
+      <div id="weapon-selector">
+        <div class="weapon-slot active" id="wep-1" data-wep="1"><div class="wep-num">[1]</div><div class="wep-name">LAMES POIGNET</div></div>
+        <div class="weapon-slot" id="wep-2" data-wep="2"><div class="wep-num">[2]</div><div class="wep-name">PLASMA</div></div>
+        <div class="weapon-slot" id="wep-3" data-wep="3"><div class="wep-num">[3]</div><div class="wep-name">COMBI-STICK</div></div>
+        <div class="weapon-slot" id="wep-4" data-wep="4"><div class="wep-num">[4]</div><div class="wep-name">DISQUE INTEL</div></div>
+        <div class="weapon-slot" id="wep-5" data-wep="5"><div class="wep-num">[5]</div><div class="wep-name">LANCE-FILET</div></div>
+        <div class="weapon-slot" id="wep-6" data-wep="6"><div class="wep-num">[6]</div><div class="wep-name">MEDICOMP</div></div>
+        <div class="weapon-slot" id="wep-7" data-wep="7"><div class="wep-num">[7]</div><div class="wep-name">MINES PLASMA</div></div>
+        <div class="weapon-slot" id="wep-8" data-wep="8"><div class="wep-num">[8]</div><div class="wep-name">FOUET ÉPINES</div></div>
+      </div>
+
+      <div id="action-prompt" class="hidden">
+        <div class="prompt-key">[E]</div>
+        <div class="prompt-text" id="action-prompt-text">RÉCOLTER LE TROPHÉE YAUTJA</div>
+      </div>
+    </div>
+
+    <div id="log-banner" class="hidden"></div>
+  </div>
+
+  <!-- Start / Controls Modal -->
+  <div id="controls-modal">
+    <div class="modal-box">
+      <h2>MÉCANIQUES ULTIMES DU CHASSEUR YAUTJA</h2>
+      <div class="controls-grid">
+        <div><strong>Z Q S D:</strong> Déplacement Yautja</div>
+        <div><strong>Souris:</strong> Caméra Bio-Masque</div>
+        <div><strong>Clic Gauche:</strong> Attaquer / Tirer</div>
+        <div><strong>Espace:</strong> Saut de Canopée</div>
+        <div><strong>[R]:</strong> Rugissement de Victoire Yautja</div>
+        <div><strong>[F]:</strong> Roue de Mimétisme Vocal</div>
+        <div><strong>[V]:</strong> Mode Vision</div>
+        <div><strong>[C]:</strong> Camouflage Optique</div>
+        <div><strong>[1] à [8]:</strong> Armes Yautja</div>
+        <div><strong>[E]:</strong> Récolter Trophée d'Honneur</div>
+      </div>
+      <button id="btn-start-game">ENTRER DANS LE VAISSEAU MÈRE YAUTJA</button>
+    </div>
+  </div>
+
+  <!-- Mothership Mission & Armory Vault Modal -->
+  <div id="mission-modal" class="hidden">
+    <div class="modal-box mission-box">
+      <h2>ARMURERIE & CONSOLE DES PLANÈTES YAUTJA</h2>
+      
+      <div class="tab-row">
+        <button id="tab-btn-missions" class="tab-btn active">CONTRATS DE CHASSE & PLANÈTES</button>
+        <button id="tab-btn-armory" class="tab-btn">ARMURERIE DES SKINS YAUTJA (20+ SKINS LORE)</button>
+      </div>
+
+      <!-- Tab 1: Missions & Planets -->
+      <div id="tab-content-missions">
+        <div class="planet-select-row">
+          <span>SECTEUR DE CHASSE: </span>
+          <select id="planet-selector">
+            <option value="jungle">JUNGLE EXTRATERRESTRE (RUINES SACRÉES)</option>
+            <option value="hive_lv426">LV-426 RUCHES SOUTERRAINES (BAVE ACIDE & NIDS)</option>
+            <option value="ryushi_desert">DÉSERT DE RYUSHI (TEMPÊTE DE SABLE)</option>
+            <option value="yautja_prime">YAUTJA PRIME (COLISÉE SACRÉ & ANCIENS)</option>
+          </select>
+        </div>
+
+        <div class="mission-cards-container">
+          <div class="mission-card">
+            <h3>1. GOLIATH XENO-AKUMO</h3>
+            <p>Mégafaune colossale blindée.</p>
+            <button class="btn-launch-hunt" data-hunt="goliath">TRAQUER LE GOLIATH</button>
+          </div>
+          <div class="mission-card">
+            <h3>2. REINE XÉNOMORPHE</h3>
+            <p>Reine Alien avec sang acide.</p>
+            <button class="btn-launch-hunt" data-hunt="xeno_queen">MASSACRER LA REINE</button>
+          </div>
+          <div class="mission-card">
+            <h3>3. YAUTJA BAD BLOOD</h3>
+            <p>Predator renégat. Duel d'invisibilité.</p>
+            <button class="btn-launch-hunt" data-hunt="bad_blood">DÉFIER LE BAD BLOOD</button>
+          </div>
+          <div class="mission-card">
+            <h3>4. PREDALIEN ULTIME</h3>
+            <p>Boss Hybride Légendaire Yautja/Alien.</p>
+            <button class="btn-launch-hunt" data-hunt="predalien">VAINCRE LE PREDALIEN</button>
+          </div>
+        </div>
+
+        <div class="forge-panel">
+          <h3>FORGE D'HONNEUR DU VAISSEAU MÈRE</h3>
+          <div class="forge-buttons">
+            <button id="btn-buy-tribeam">TIR TRI-FAISCEAU (500 PTS)</button>
+            <button id="btn-buy-antiacid">CAMOUFLAGE ANTI-ACIDE (800 PTS)</button>
+            <button id="btn-buy-scope">ZOOM SCOPE THERMIQUE 4X (400 PTS)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Yautja Skin Vault -->
+      <div id="tab-content-armory" class="hidden">
+        <h3>SÉLECTIONNER VOTRE ARMURE YAUTJA LORE</h3>
+        <div id="skin-catalog-grid" class="skin-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- End Game Screen -->
+  <div id="endgame-modal" class="hidden">
+    <div class="modal-box endgame-box">
+      <h1 id="endgame-title">CHASSE ACCOMPLIE !</h1>
+      <p id="endgame-desc">La proie colossale a succombé à votre puissance Yautja.</p>
+      <div class="final-rank-box">
+        <div>SCORE D'HONNEUR FINAL: <span id="final-honor-score">4500 PTS</span></div>
+        <div>RANG YAUTJA ATTEINT: <span id="final-yautja-rank">ANCIEN MAÎTRE (YAUTJA ELDER)</span></div>
+      </div>
+      <button id="btn-restart-game">RETOURNER AU VAISSEAU MÈRE</button>
+    </div>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
