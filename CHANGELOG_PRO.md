@@ -30,7 +30,7 @@ Les versions sont considérées comme publiées uniquement après push du code, 
 
 ### Validation et publication
 
-- 98/98 tests Node couvrant boss, proies, équipements, Genna, galerie à six trophées et migrations de sauvegarde ;
+- 99/99 tests Node couvrant boss, proies, équipements, Genna, galerie à six trophées et migrations de sauvegarde ;
 - build Vite 8.2.2, audit npm et contrôle statique validés sur le worktree final ;
 - parcours Chromium desktop/mobile, sixième contrat, Forge v4 et nouveaux assets contrôlés sans erreur de page ;
 - release poussée sur GitHub et publiée sur <https://yautja-apex-hunt.vercel.app/>.

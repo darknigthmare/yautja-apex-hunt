@@ -9,8 +9,8 @@
 
 | Gate | Résultat vérifié | Couverture |
 |---|---:|---|
-| Tests Node | **98/98 réussis** | Combat, six boss, huit familles de PNJ, événements, gadgets, équipement, Forge, sauvegarde v4 et migrations v1–v3. |
-| Build production | **Vite 8.2.2 réussi** | HTML 21,50 Ko ; CSS 22,79 Ko ; jeu 270,93 Ko ; Three.js 499,39 Ko. Aucun chunk au-dessus de 500 Ko. |
+| Tests Node | **99/99 réussis** | Combat, six boss, huit familles de PNJ, événements, gadgets, équipement, Forge, sauvegarde v4, migrations v1–v3 et verrouillage HUD mobile. |
+| Build production | **Vite 8.2.2 réussi** | HTML 21,50 Ko ; CSS 22,79 Ko ; jeu 271,13 Ko ; Three.js 499,39 Ko. Aucun chunk au-dessus de 500 Ko. |
 | Sécurité dépendances | **0 vulnérabilité** | `npm audit --audit-level=high`. |
 | Qualité Git | **propre** | `git diff --check`, fichiers temporaires exclus et changements de la release uniquement. |
 | Chromium desktop | **réussi** | Hub, contrats, Forge, Genna, Feral et états des quatre technologies de terrain. |

@@ -409,8 +409,18 @@ export class HUDManager {
   updateTriLaserPosition(screenPos, distance, isWeakpoint) {
     const hasPosition = Number.isFinite(screenPos?.x) && Number.isFinite(screenPos?.y);
     if (hasPosition) {
-      const x = Math.round(screenPos.x * 10) / 10;
-      const y = Math.round(screenPos.y * 10) / 10;
+      // Le verrouillage devient un indicateur de bord quand la cible sort du
+      // cadre. Cela garde le réticule et ses libellés dans le viewport mobile
+      // au lieu d'agrandir silencieusement la largeur du document.
+      const clampToViewport = (value, viewportSize, safeMargin = 96) => {
+        if (!Number.isFinite(viewportSize) || viewportSize <= 0) return value;
+        const edge = Math.min(safeMargin, viewportSize / 2);
+        return Math.min(Math.max(value, edge), Math.max(edge, viewportSize - edge));
+      };
+      const viewportWidth = Number(globalThis.innerWidth);
+      const viewportHeight = Number(globalThis.innerHeight);
+      const x = Math.round(clampToViewport(screenPos.x, viewportWidth) * 10) / 10;
+      const y = Math.round(clampToViewport(screenPos.y, viewportHeight) * 10) / 10;
       const targetTransform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(var(--hud-scale))`;
       const distanceText = Number.isFinite(distance)
         ? `${distance.toFixed(1)}m - SIGNAL THERMIQUE`

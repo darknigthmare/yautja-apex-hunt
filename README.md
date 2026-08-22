@@ -4,7 +4,7 @@ Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur inca
 
 ## État du projet
 
-La version 1.4.0 est la release courante sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/) et son code source est disponible sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt). Cette vague ajoute le Feral, Genna, quatre nouvelles familles de proies, trois technologies de terrain, quatre classes de chasseur et quatre axes cosmétiques supplémentaires. La release est couverte par 98 tests Node, le build Vite 8.2.2, l’audit npm et des parcours Chromium desktop/mobile.
+La version 1.4.0 est la release courante sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/) et son code source est disponible sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt). Cette vague ajoute le Feral, Genna, quatre nouvelles familles de proies, trois technologies de terrain, quatre classes de chasseur et quatre axes cosmétiques supplémentaires. La release est couverte par 99 tests Node, le build Vite 8.2.2, l’audit npm et des parcours Chromium desktop/mobile.
 
 ## Lancer localement
 

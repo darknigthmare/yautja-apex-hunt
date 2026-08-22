@@ -122,3 +122,36 @@ test('HUD meter cache clamps values and suppresses steady-state mutations', () =
   assert.equal(attributes['aria-valuenow'], '100');
   assert.deepEqual(mutations, afterFirstRender);
 });
+
+test('HUD target lock stays inside a narrow mobile viewport', () => {
+  const previousWidth = globalThis.innerWidth;
+  const previousHeight = globalThis.innerHeight;
+  globalThis.innerWidth = 390;
+  globalThis.innerHeight = 844;
+
+  try {
+    const hud = Object.create(HUDManager.prototype);
+    hud.triLaser = { style: {} };
+    hud.lockonBracket = { style: {} };
+    hud.lockonDistance = {};
+    hud.weakpointTag = {};
+    hud.setClassState = () => {};
+    hud.setStyle = (element, property, value) => {
+      element.style[property] = value;
+    };
+    hud.setText = (element, value) => {
+      element.textContent = value;
+    };
+
+    hud.updateTriLaserPosition({ x: 720, y: -200 }, 42.25, true);
+
+    assert.match(hud.triLaser.style.transform, /translate3d\(294px, 96px, 0\)/);
+    assert.equal(hud.lockonBracket.style.transform, hud.triLaser.style.transform);
+    assert.equal(hud.lockonDistance.textContent, '42.3m - SIGNAL THERMIQUE');
+  } finally {
+    if (previousWidth === undefined) delete globalThis.innerWidth;
+    else globalThis.innerWidth = previousWidth;
+    if (previousHeight === undefined) delete globalThis.innerHeight;
+    else globalThis.innerHeight = previousHeight;
+  }
+});
