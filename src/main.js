@@ -51,6 +51,9 @@ export class Game {
     this.camera = new THREE.PerspectiveCamera(DEFAULT_CAMERA_FOV, this.width / this.height, 0.1, 1000);
     
     this.renderer = new THREE.WebGLRenderer({ canvas: this.container, antialias: true });
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1.08;
     this.renderer.setSize(this.width, this.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.shadowMap.enabled = true;
@@ -192,6 +195,7 @@ export class Game {
     this.activeBoss?.projectiles?.forEach((projectile) => disposeObject3D(projectile.mesh));
     if (this.activeBoss?.projectiles) this.activeBoss.projectiles = [];
 
+    this.player.clearTransientGadgets();
     this.player.projectiles.forEach((projectile) => disposeObject3D(projectile.mesh));
     this.player.mines.forEach((mine) => disposeObject3D(mine.mesh));
     this.player.projectiles = [];
@@ -465,7 +469,7 @@ export class Game {
   }
 
   getTargetBloodColor(target) {
-    if (target?.type === 'human_fireteam') return 0xb41616;
+    if (['human_fireteam', 'thermal_trapper', 'grizzly_territorial'].includes(target?.type)) return 0xb41616;
     if (target?.type === 'combat_synthetic') return 0xf1f2df;
     return 0x00ff44;
   }
@@ -480,13 +484,17 @@ export class Game {
   }
 
   spawnEncounterNpc(signal) {
-    const type = signal.enemyType === 'xeno'
-      ? 'xeno_drone'
-      : signal.enemyType === 'hound'
-        ? 'hunting_hound'
-        : signal.ordinal >= 3
-          ? 'combat_synthetic'
-          : 'human_fireteam';
+    const encounterTypes = {
+      xeno: 'xeno_drone',
+      xeno_warrior: 'xeno_warrior',
+      hound: 'hunting_hound',
+      grizzly: 'grizzly_territorial',
+      thermal_trapper: 'thermal_trapper',
+      genna_stalker: 'genna_stalker',
+      synthetic: 'combat_synthetic',
+    };
+    const type = encounterTypes[signal.enemyType]
+      ?? (signal.ordinal >= 3 ? 'combat_synthetic' : 'human_fireteam');
     const enemy = new HuntNPC(type, { position: signal.position });
     this.scene.add(enemy.mesh);
     enemy.setVisionMode(this.player.activeVisionMode);
@@ -542,14 +550,30 @@ export class Game {
         if (signal.type === 'attack_player') {
           this.player.takeDamage(signal.damage);
           if (signal.status === 'corrosion') this.player.applyAcidCorrosion();
+          if (signal.status === 'energy_jam') {
+            this.player.energy = Math.max(0, this.player.energy - (signal.energyDrain || 18));
+            if (this.player.isCloaked) this.player.toggleCloak();
+            this.hud.showLogMessage('BROUILLAGE THERMIQUE — ÉNERGIE DRAINÉE, CAMOUFLAGE ROMPU', 1800);
+          }
+          if (signal.secondaryStatus === 'venom') {
+            this.player.stamina = Math.max(0, this.player.stamina - 24);
+            this.hud.showLogMessage('VENIN DE GENNA — ENDURANCE CONTAMINÉE', 1600);
+          }
+          if (signal.knockback > 0) {
+            const push = this.player.position.clone().sub(enemy.position);
+            push.y = 0;
+            if (push.lengthSq() > 0.0001) this.player.position.addScaledVector(push.normalize(), signal.knockback);
+          }
           if (signal.projectile) {
             this.spawnEnemyTracer(
               signal.projectile.origin,
               this.player.position,
-              enemy.type === 'combat_synthetic' ? 0x55ddff : 0xffc34d,
+              ['combat_synthetic', 'thermal_trapper'].includes(enemy.type) ? 0x55ddff : 0xffc34d,
             );
           }
           this.spawnBloodSpatterVFX(this.player.position, 0xffff00, 8);
+        } else if (signal.type === 'telegraph') {
+          this.hud.showLogMessage(signal.message?.toUpperCase() ?? 'CHARGE LOURDE DÉTECTÉE', 900);
         } else if (signal.type === 'reveal_cloak') {
           if (this.player.isCloaked) this.player.toggleCloak();
           this.hud.showLogMessage('LES MOLOSSES ONT RÉVÉLÉ LE CAMOUFLAGE !', 1700);
@@ -603,13 +627,14 @@ export class Game {
       return;
     }
 
-    const outcome = target.takeDamage(strike.damage, targetPos);
+    const scaledDamage = Math.round(strike.damage * (this.player.meleeDamageMultiplier ?? 1));
+    const outcome = target.takeDamage(scaledDamage, this.player.position);
     this.spawnBloodSpatterVFX(targetPos, this.getTargetBloodColor(target), result === 'death_from_above' ? 30 : 15);
     this.player.addHonor(strike.honor);
     if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target);
 
     if (result === 'death_from_above') {
-      this.hud.showLogMessage(`ATTAQUE EN PIQUÉ EXÉCUTÉE! +${strike.damage} DÉGÂTS!`);
+      this.hud.showLogMessage(`ATTAQUE EN PIQUÉ EXÉCUTÉE! +${scaledDamage} DÉGÂTS!`);
     }
   }
 
@@ -874,6 +899,10 @@ export class Game {
       'custom-dread-color': 'dreadColorId',
       'custom-armor-color': 'armorColorId',
       'custom-armor-accent': 'armorAccentColorId',
+      'custom-hunter-class': 'hunterClassId',
+      'custom-dread-style': 'dreadStyleId',
+      'custom-armor-finish': 'armorFinishId',
+      'custom-warpaint': 'warpaintId',
     };
     Object.entries(customizationControls).forEach(([id, field]) => {
       const select = document.getElementById(id);
@@ -939,6 +968,12 @@ export class Game {
         const wepId = parseInt(slot.getAttribute('data-wep'));
         this.player.selectedWeapon = wepId;
         audioSynth.playYautjaClick();
+      });
+    });
+
+    document.querySelectorAll('[data-gadget-key]').forEach((button) => {
+      button.addEventListener('click', () => {
+        this.onKeyDown({ code: button.dataset.gadgetKey, repeat: false });
       });
     });
 
@@ -1032,6 +1067,7 @@ export class Game {
       this.activeBoss = null;
     }
 
+    this.player.clearTransientGadgets();
     this.player.projectiles.forEach((projectile) => disposeObject3D(projectile.mesh));
     this.player.mines.forEach((mine) => disposeObject3D(mine.mesh));
     this.player.projectiles = [];
@@ -1098,10 +1134,49 @@ export class Game {
       case 'KeyD': case 'ArrowRight': this.keyboardInputDir.x = 1; break;
       case 'ShiftLeft': case 'ShiftRight': this.keyboardInputDir.isSprinting = true; break;
 
-      case 'KeyR':
-        this.player.triggerVictoryRoar();
-        this.hud.showLogMessage("RUGISSEMENT D'HONNEUR YAUTJA! ÉNERGIE RECHARGÉE!");
+      case 'KeyR': {
+        const roared = this.player.triggerVictoryRoar();
+        this.hud.showLogMessage(
+          roared
+            ? "RUGISSEMENT D'HONNEUR YAUTJA! ÉNERGIE ET ENDURANCE RECHARGÉES!"
+            : 'RUGISSEMENT DÉJÀ UTILISÉ POUR CETTE CHASSE',
+        );
         break;
+      }
+
+      case 'KeyB': {
+        const activated = this.player.activateWristShield();
+        this.hud.showLogMessage(
+          activated
+            ? 'BOUCLIER DE POIGNET DÉPLOYÉ — IMPACTS FRONTAUX ABSORBÉS'
+            : 'BOUCLIER DE POIGNET EN RECHARGE',
+        );
+        break;
+      }
+
+      case 'KeyG': {
+        if (this.player.deployScoutDrone()) {
+          const revealedCount = this.activateVehicleScan({ scanDuration: 7, scanRadius: 90 });
+          this.hud.showLogMessage(
+            `DRONE ÉCLAIREUR DÉPLOYÉ — ${revealedCount} SIGNATURE${revealedCount === 1 ? '' : 'S'} MARQUÉE${revealedCount === 1 ? '' : 'S'}`,
+          );
+        } else {
+          this.hud.showLogMessage('DRONE ÉCLAIREUR EN RECHARGE');
+        }
+        break;
+      }
+
+      case 'KeyT': {
+        const target = this.resolveCombatTarget();
+        const targetPosition = target
+          ? target.position.clone().add(new THREE.Vector3(0, 2, 0))
+          : new THREE.Vector3(0, 2, -55)
+            .applyAxisAngle(new THREE.Vector3(0, 1, 0), this.cameraYaw)
+            .add(this.player.position);
+        const fired = this.player.fireShuriken(targetPosition);
+        this.hud.showLogMessage(fired ? 'SHURIKEN YAUTJA LANCÉ' : 'SHURIKEN EN RECHARGE');
+        break;
+      }
 
       case 'KeyF': {
         const lureType = this.player.triggerVoiceMimicry();
@@ -1388,7 +1463,7 @@ export class Game {
       ));
       if (!target) continue;
       audioSynth.playMineExplosion();
-      const outcome = target.takeDamage(mine.damage, target.position);
+      const outcome = target.takeDamage(mine.damage, mine.mesh.position);
       this.spawnPlasmaShockwaveVFX(mine.mesh.position);
       this.hud.showLogMessage('EXPLOSION DE MINE À PLASMA RÉUSSIE! +120 DÉGÂTS!');
       if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target, 110);
@@ -1429,16 +1504,22 @@ export class Game {
       && playerBossDistance <= GOLIATH_CHARGE_IMPACT_RANGE;
     const isSuperPredatorCharge = this.currentHuntType === 'super_predator'
       && this.activeBoss.aiState === 'charge';
+    const isFeralSpearAttack = this.currentHuntType === 'feral_predator'
+      && ['charge', 'melee_windup', 'melee'].includes(this.activeBoss.aiState);
     const attackState = chargeImpactReady ? 'charge' : this.activeBoss.aiState;
     const attackProfile = ENEMY_ATTACK_PROFILES[attackState];
-    if ((attackProfile?.telegraphed || isSuperPredatorCharge) && this.activeBoss.attackTelegraphAnnounced === false) {
+    if ((attackProfile?.telegraphed || isSuperPredatorCharge || isFeralSpearAttack) && this.activeBoss.attackTelegraphAnnounced === false) {
       const message = isSuperPredatorCharge
         ? 'CHARGE DU SUPER PREDATOR — BRISEZ SON AXE !'
-        : ENEMY_ATTACK_TELEGRAPHS[attackState];
+        : isFeralSpearAttack
+          ? this.activeBoss.aiState === 'charge'
+            ? 'CHARGE À LA LANCE DU FERAL — ESQUIVEZ SON AXE !'
+            : 'ESTOC DU FERAL — ROMPEZ LE CONTACT !'
+          : ENEMY_ATTACK_TELEGRAPHS[attackState];
       if (message) this.hud.showLogMessage(message, 1200);
       this.activeBoss.attackTelegraphAnnounced = true;
     }
-    const requiresExplicitImpact = attackProfile?.telegraphed || isSuperPredatorCharge;
+    const requiresExplicitImpact = attackProfile?.telegraphed || isSuperPredatorCharge || isFeralSpearAttack;
     const impactReady = !requiresExplicitImpact || this.activeBoss.attackImpactReady === true;
     const freshBadBloodMelee = this.currentHuntType !== 'bad_blood'
       || attackState !== 'melee'
@@ -1554,6 +1635,8 @@ export class Game {
   triggerDefeatScreen() {
     if (this.huntResultShown) return;
     this.victoryCountdown = null;
+    this.clearVehicleScan();
+    this.player.clearTransientGadgets();
 
     this.huntResultShown = true;
     this.gameState = 'RESULT';

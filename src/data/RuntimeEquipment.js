@@ -14,7 +14,46 @@ export const DEFAULT_CUSTOMIZATION = Object.freeze({
   dreadColorId: 'dread_obsidienne',
   armorColorId: 'armor_gunmetal',
   armorAccentColorId: 'accent_honneur',
+  hunterClassId: 'class_hunter',
+  dreadStyleId: 'dread_style_classic',
+  armorFinishId: 'finish_hunter_worn',
+  warpaintId: 'warpaint_none',
 });
+
+// Les classes influencent réellement les statistiques ; elles ne sont pas de simples apparences.
+export const HUNTER_CLASSES = Object.freeze([
+  Object.freeze({ id: 'class_hunter', name: 'Hunter · équilibré', maxHealth: 100, maxEnergy: 100, maxStamina: 100, moveSpeed: 16, sprintSpeed: 26, meleeMultiplier: 1, energyRegen: 8, description: 'Profil polyvalent pour toutes les chasses.' }),
+  Object.freeze({ id: 'class_scout', name: 'Scout · reconnaissance', maxHealth: 85, maxEnergy: 115, maxStamina: 120, moveSpeed: 18, sprintSpeed: 29, meleeMultiplier: 0.9, energyRegen: 10, description: 'Plus mobile et endurant, mais moins résistant au contact.' }),
+  Object.freeze({ id: 'class_berserker', name: 'Berserker · assaut', maxHealth: 130, maxEnergy: 85, maxStamina: 105, moveSpeed: 14.5, sprintSpeed: 23, meleeMultiplier: 1.25, energyRegen: 6.5, description: 'Puissance et santé élevées au prix de la mobilité et de l’énergie.' }),
+  Object.freeze({ id: 'class_elder', name: 'Elder · maître de chasse', maxHealth: 110, maxEnergy: 125, maxStamina: 95, moveSpeed: 15.5, sprintSpeed: 25, meleeMultiplier: 1.1, energyRegen: 9, description: 'Maîtrise technologique et précision soutenue.' }),
+]);
+
+export const DREAD_STYLES = Object.freeze([
+  Object.freeze({ id: 'dread_style_classic', name: 'Predlocks classiques', lengthScale: 1, spreadScale: 1, beadStride: 1 }),
+  Object.freeze({ id: 'dread_style_long', name: 'Predlocks longs', lengthScale: 1.35, spreadScale: 0.94, beadStride: 2 }),
+  Object.freeze({ id: 'dread_style_braided', name: 'Tresses de chasse', lengthScale: 0.88, spreadScale: 0.72, beadStride: 1 }),
+  Object.freeze({ id: 'dread_style_elder', name: 'Couronne d’Ancien', lengthScale: 1.16, spreadScale: 1.28, beadStride: 1 }),
+]);
+
+export const ARMOR_FINISHES = Object.freeze([
+  Object.freeze({ id: 'finish_hunter_worn', name: 'Usée par la chasse', metalness: 0.76, roughness: 0.56 }),
+  Object.freeze({ id: 'finish_polished', name: 'Alliage poli', metalness: 0.98, roughness: 0.12 }),
+  Object.freeze({ id: 'finish_ritual', name: 'Gravure rituelle', metalness: 0.88, roughness: 0.3, emissiveIntensity: 0.12 }),
+  Object.freeze({ id: 'finish_bone', name: 'Composite osseux', metalness: 0.24, roughness: 0.72 }),
+]);
+
+export const WARPAINT_PATTERNS = Object.freeze([
+  Object.freeze({ id: 'warpaint_none', name: 'Sans marquage', color: 0x000000, pattern: 'none' }),
+  Object.freeze({ id: 'warpaint_blooded', name: 'Marque du Sang', color: 0x7d1418, pattern: 'brow' }),
+  Object.freeze({ id: 'warpaint_claw', name: 'Trois griffes', color: 0xd7c18b, pattern: 'claw' }),
+  Object.freeze({ id: 'warpaint_elder', name: 'Glyphes d’Ancien Apex', color: 0x2ff6e5, pattern: 'elder' }),
+]);
+
+export const PLAYER_GADGETS = Object.freeze([
+  Object.freeze({ id: 'wrist_shield', key: 'KeyB', keyLabel: 'B', name: 'Bouclier de poignet', energyCost: 25, cooldown: 8 }),
+  Object.freeze({ id: 'scout_drone', key: 'KeyG', keyLabel: 'G', name: 'Drone-faucon', energyCost: 20, cooldown: 14 }),
+  Object.freeze({ id: 'shuriken', key: 'KeyT', keyLabel: 'T', name: 'Shuriken AVP', energyCost: 12, cooldown: 2.4 }),
+]);
 
 export const ARMOR_PRESET_MASK_IDS = Object.freeze({
   jungle_1987: 'mask_jungle_hunter_1987', city_1990: 'mask_city_hunter_1990',
@@ -28,6 +67,11 @@ export const ARMOR_PRESET_MASK_IDS = Object.freeze({
   samurai_yautja: 'mask_samurai_hg',
   gladiator_hg: 'mask_gladiator_hg', anubis_hg: 'mask_anubis_hg', exalted_hg: 'mask_exalted_hg',
   witch_hg: 'mask_witch_hg', oni_hg: 'mask_oni_hg', jotun_hg: 'mask_jotun_hg', father_hg: 'mask_father_hg',
+  bionic_hg: 'mask_fugitive_2018', emissary_hg: 'mask_captured_hg', valkyrie_hg: 'mask_jotun_hg',
+  amazon_hg: 'mask_cleopatra_hg', pirate_hg: 'mask_exiled_hg', mr_black_hg: 'mask_berserker_2010',
+  ahab_comic: 'mask_elder_lost_tribe_1990', scarface_game: 'mask_city_hunter_1990', dark_avp2010: 'mask_celtic_avp',
+  machiko_yautja: 'mask_samurai_hg', viking_yautja: 'mask_kok_viking', cyborg_yautja: 'mask_fugitive_2018',
+  deadend_fanfilm: 'mask_jungle_hunter_1987',
 });
 
 export function getArmorPresetCustomization(armorPresetId) {
@@ -63,6 +107,10 @@ const IDS_BY_FIELD = Object.freeze({
   dreadColorId: new Set(DREAD_PALETTES.map(({ id }) => id)),
   armorColorId: new Set(ARMOR_PALETTES.map(({ id }) => id)),
   armorAccentColorId: new Set(ARMOR_ACCENTS.map(({ id }) => id)),
+  hunterClassId: new Set(HUNTER_CLASSES.map(({ id }) => id)),
+  dreadStyleId: new Set(DREAD_STYLES.map(({ id }) => id)),
+  armorFinishId: new Set(ARMOR_FINISHES.map(({ id }) => id)),
+  warpaintId: new Set(WARPAINT_PATTERNS.map(({ id }) => id)),
 });
 
 export function sanitizeCustomization(value = {}, armorPresetId = DEFAULT_CUSTOMIZATION.armorPresetId) {

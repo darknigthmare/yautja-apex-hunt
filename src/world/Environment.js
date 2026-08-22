@@ -1,11 +1,14 @@
 import * as THREE from 'three';
 import { BIOME_DEFINITIONS } from '../data/GameConfig.js';
 
+export const DEATHWORLD_FLORA_TEXTURE_PATH = '/assets/textures/deathworld-alien-flora.webp';
+
 const BIOME_STYLE = Object.freeze({
   jungle: { background: 0x050810, fog: 0.0035, ambient: 0x1a2536, key: 0x00d0ff, sun: 0x44d0ff, ground: 0x18202b },
   hive_lv426: { background: 0x020a05, fog: 0.007, ambient: 0x003311, key: 0x00ff44, sun: 0x00ff44, ground: 0x101912 },
   ryushi_desert: { background: 0x221105, fog: 0.008, ambient: 0x442200, key: 0xffaa00, sun: 0xffaa00, ground: 0x5a3518 },
   yautja_prime: { background: 0x200505, fog: 0.003, ambient: 0x441111, key: 0xff2200, sun: 0xff0000, ground: 0x341717 },
+  genna_deathworld: { background: 0x08070d, fog: 0.0052, ambient: 0x26301d, key: 0xc8ff68, sun: 0xff7a2a, ground: 0x33251c },
 });
 
 export class Environment {
@@ -21,6 +24,11 @@ export class Environment {
     this.particles = null;
     this.rainParticles = null;
     this.sandParticles = null;
+    this.deathworldFlora = [];
+    this.deathworldCreatures = [];
+    this.deathworldCreatureMesh = null;
+    this.deathworldCreatureDummy = new THREE.Object3D();
+    this.deathworldAnimationTime = 0;
     this.acidRainActive = false;
     this.sandstormActive = false;
     this.textureLoader = new THREE.TextureLoader();
@@ -54,6 +62,13 @@ export class Environment {
     const key = `${path}:${repeat}`;
     if (this.textureCache.has(key)) return this.textureCache.get(key);
 
+    // TextureLoader depends on browser image primitives. A null map keeps the
+    // procedural geometry usable in Node tests and remains a valid PBR fallback.
+    if (typeof document === 'undefined' || typeof Image === 'undefined') {
+      this.textureCache.set(key, null);
+      return null;
+    }
+
     const texture = this.textureLoader.load(
       path,
       undefined,
@@ -69,23 +84,37 @@ export class Environment {
     return texture;
   }
 
-  createTexturedMaterial({ color, path, repeat = 5, roughness = 0.85, metalness = 0.05 }) {
+  createTexturedMaterial({
+    color,
+    path,
+    repeat = 5,
+    roughness = 0.85,
+    metalness = 0.05,
+    emissive = 0x000000,
+    emissiveIntensity = 0,
+  }) {
     return new THREE.MeshStandardMaterial({
       color,
       map: this.getTexture(path, repeat),
       roughness,
       metalness,
+      emissive,
+      emissiveIntensity,
     });
   }
 
   clearBiome() {
+    const geometries = new Set();
+    const materials = new Set();
     this.biomeGroup.traverse((object) => {
-      object.geometry?.dispose();
+      if (object.geometry) geometries.add(object.geometry);
       if (object.material) {
-        const materials = Array.isArray(object.material) ? object.material : [object.material];
-        materials.forEach((material) => material.dispose());
+        const objectMaterials = Array.isArray(object.material) ? object.material : [object.material];
+        objectMaterials.forEach((material) => materials.add(material));
       }
     });
+    geometries.forEach((geometry) => geometry.dispose());
+    materials.forEach((material) => material.dispose());
     this.biomeGroup.clear();
     this.pillars = [];
     this.treePerches = [];
@@ -95,6 +124,10 @@ export class Environment {
     this.particles = null;
     this.rainParticles = null;
     this.sandParticles = null;
+    this.deathworldFlora = [];
+    this.deathworldCreatures = [];
+    this.deathworldCreatureMesh = null;
+    this.deathworldAnimationTime = 0;
     this.acidRainActive = false;
     this.sandstormActive = false;
   }
@@ -122,6 +155,9 @@ export class Environment {
     } else if (this.currentBiome === 'ryushi_desert') {
       this.createDesertDunes();
       this.createSandstorm();
+    } else if (this.currentBiome === 'genna_deathworld') {
+      this.createGennaDeathworld();
+      this.createDriftingParticles(0xbaff69, 520);
     } else {
       this.createColosseumPillars();
       this.createDriftingParticles(0xff3300, 450);
@@ -297,6 +333,174 @@ export class Environment {
     }
   }
 
+  /**
+   * Compose un secteur de Genna lisible pour la chasse : la zone centrale
+   * reste dégagée, tandis que les plantes prédatrices forment une couronne de
+   * perches et d'obstacles. Les matériaux et géométries sont partagés afin de
+   * limiter les allocations et les appels GPU sur mobile.
+   */
+  createGennaDeathworld() {
+    const stalkMaterial = this.createTexturedMaterial({
+      color: 0x455534,
+      path: DEATHWORLD_FLORA_TEXTURE_PATH,
+      repeat: 3,
+      roughness: 0.78,
+      metalness: 0.03,
+    });
+    const crownMaterial = this.createTexturedMaterial({
+      color: 0x758b43,
+      path: DEATHWORLD_FLORA_TEXTURE_PATH,
+      repeat: 2,
+      roughness: 0.58,
+      metalness: 0.02,
+      emissive: 0x17280a,
+      emissiveIntensity: 0.52,
+    });
+    const throatMaterial = new THREE.MeshStandardMaterial({
+      color: 0xa4df47,
+      emissive: 0x4c7c13,
+      emissiveIntensity: 1.25,
+      roughness: 0.42,
+      metalness: 0.04,
+    });
+    const stalkGeometry = new THREE.CylinderGeometry(1.05, 2.15, 12, 7);
+    const crownGeometry = new THREE.ConeGeometry(4.5, 8, 7);
+    const tendrilGeometry = new THREE.ConeGeometry(0.34, 6.4, 5);
+    const throatGeometry = new THREE.SphereGeometry(1.45, 10, 7);
+
+    for (let i = 0; i < 28; i += 1) {
+      const phase = i * 1.731;
+      const angle = (i / 28) * Math.PI * 2 + Math.sin(phase) * 0.18;
+      const radius = 56 + ((i * 67) % 198);
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
+      const heightScale = 0.78 + (i % 6) * 0.095;
+      const stalkHeight = 12 * heightScale;
+      const group = new THREE.Group();
+      group.name = 'genna-hostile-flora-' + (i + 1);
+      group.userData.hostileFlora = true;
+      group.position.set(x, 0, z);
+      group.rotation.y = phase * 0.37;
+
+      const stalk = new THREE.Mesh(stalkGeometry, stalkMaterial);
+      stalk.scale.set(0.82 + (i % 3) * 0.12, heightScale, 0.82 + ((i + 1) % 3) * 0.1);
+      stalk.position.y = stalkHeight * 0.5;
+      stalk.castShadow = true;
+      stalk.receiveShadow = true;
+      group.add(stalk);
+
+      const crown = new THREE.Mesh(crownGeometry, crownMaterial);
+      crown.position.y = stalkHeight + 2.7;
+      crown.rotation.z = Math.PI;
+      crown.scale.set(0.82 + (i % 4) * 0.08, 0.72 + (i % 3) * 0.08, 0.82 + (i % 4) * 0.08);
+      crown.castShadow = true;
+      group.add(crown);
+
+      const throat = new THREE.Mesh(throatGeometry, throatMaterial);
+      throat.position.y = stalkHeight + 3.9;
+      throat.scale.set(1.12, 0.42, 1.12);
+      group.add(throat);
+
+      for (let tendrilIndex = 0; tendrilIndex < 3; tendrilIndex += 1) {
+        const tendrilAngle = (tendrilIndex / 3) * Math.PI * 2;
+        const tendril = new THREE.Mesh(tendrilGeometry, crownMaterial);
+        tendril.position.set(
+          Math.cos(tendrilAngle) * 2.2,
+          3.2 + (i % 2) * 0.45,
+          Math.sin(tendrilAngle) * 2.2,
+        );
+        tendril.rotation.set(Math.sin(tendrilAngle) * 0.7, -tendrilAngle, Math.cos(tendrilAngle) * 0.7);
+        tendril.castShadow = true;
+        group.add(tendril);
+      }
+
+      this.biomeGroup.add(group);
+      this.deathworldFlora.push({
+        group,
+        crown,
+        throat,
+        phase,
+        swaySpeed: 0.48 + (i % 5) * 0.055,
+        baseCrownRotation: crown.rotation.y,
+      });
+      this.treePerches.push(new THREE.Vector3(x, stalkHeight + 6.4, z));
+      this.obstacleColliders.push({
+        x,
+        z,
+        radius: 3.4 + (i % 4) * 0.32,
+        type: 'hostile_flora',
+      });
+    }
+
+    this.createDeathworldCreatureSwarm();
+  }
+
+  /** Une seule InstancedMesh donne vie au ciel sans multiplier les draw calls. */
+  createDeathworldCreatureSwarm() {
+    const creatureCount = 14;
+    const geometry = new THREE.ConeGeometry(0.48, 1.75, 5);
+    geometry.rotateX(Math.PI / 2);
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x9dc76a,
+      emissive: 0x385c20,
+      emissiveIntensity: 0.95,
+      roughness: 0.52,
+      metalness: 0.02,
+    });
+    const swarm = new THREE.InstancedMesh(geometry, material, creatureCount);
+    swarm.name = 'genna-sky-scavenger-swarm';
+    swarm.userData.smallCreatures = true;
+    swarm.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    // Les matrices changent chaque frame ; désactiver le culling évite une
+    // bounding sphere obsolète sans coût notable pour quatorze instances.
+    swarm.frustumCulled = false;
+
+    this.deathworldCreatures = Array.from({ length: creatureCount }, (_, index) => ({
+      centerX: Math.sin(index * 2.37) * 92,
+      centerZ: Math.cos(index * 1.83) * 92,
+      orbitRadius: 10 + (index % 5) * 3.8,
+      altitude: 8 + (index % 6) * 2.4,
+      phase: index * 0.91,
+      speed: 0.18 + (index % 4) * 0.035,
+      scale: 0.72 + (index % 3) * 0.16,
+    }));
+    this.deathworldCreatureMesh = swarm;
+    this.biomeGroup.add(swarm);
+    this.updateDeathworldLife(0);
+  }
+
+  updateDeathworldLife(delta) {
+    if (!this.deathworldCreatureMesh) return;
+    this.deathworldAnimationTime += delta;
+    const time = this.deathworldAnimationTime;
+
+    for (const flora of this.deathworldFlora) {
+      flora.group.rotation.z = Math.sin(time * flora.swaySpeed + flora.phase) * 0.035;
+      flora.crown.rotation.y = flora.baseCrownRotation + Math.sin(time * 0.42 + flora.phase) * 0.08;
+      const pulse = 1 + Math.sin(time * 1.15 + flora.phase) * 0.055;
+      flora.throat.scale.set(1.12 * pulse, 0.42 / pulse, 1.12 * pulse);
+    }
+
+    const dummy = this.deathworldCreatureDummy;
+    this.deathworldCreatures.forEach((creature, index) => {
+      const angle = creature.phase + time * creature.speed;
+      dummy.position.set(
+        creature.centerX + Math.cos(angle) * creature.orbitRadius,
+        creature.altitude + Math.sin((time * 0.9) + creature.phase) * 2.1,
+        creature.centerZ + Math.sin(angle) * creature.orbitRadius,
+      );
+      dummy.rotation.set(
+        Math.sin(time * 1.3 + creature.phase) * 0.18,
+        -angle + Math.PI / 2,
+        Math.sin(time * 1.7 + creature.phase) * 0.24,
+      );
+      dummy.scale.setScalar(creature.scale);
+      dummy.updateMatrix();
+      this.deathworldCreatureMesh.setMatrixAt(index, dummy.matrix);
+    });
+    this.deathworldCreatureMesh.instanceMatrix.needsUpdate = true;
+  }
+
   addThermalFootprint(position) {
     if (this.reducedMotion) return;
     const print = new THREE.Mesh(
@@ -395,17 +599,25 @@ export class Environment {
     if (this.particles) this.particles.visible = !this.reducedMotion;
     if (this.rainParticles) this.rainParticles.visible = !this.reducedMotion;
     if (this.sandParticles) this.sandParticles.visible = !this.reducedMotion;
+    if (this.deathworldCreatureMesh) this.deathworldCreatureMesh.visible = !this.reducedMotion;
   }
 
   update(delta, visionMode) {
-    this.updateThermalFootprints(delta, visionMode);
+    const frameDelta = Number.isFinite(delta) ? Math.max(0, delta) : 0;
+    this.updateThermalFootprints(frameDelta, visionMode);
     if (this.reducedMotion) return;
-    if (this.particles) this.particles.rotation.y += delta * 0.03;
-    if (this.sandParticles) this.sandParticles.rotation.y += delta * 0.2;
+    if (this.currentBiome === 'genna_deathworld') this.updateDeathworldLife(frameDelta);
+    if (this.particles) {
+      this.particles.rotation.y += frameDelta * (this.currentBiome === 'genna_deathworld' ? 0.08 : 0.03);
+      if (this.currentBiome === 'genna_deathworld') {
+        this.particles.material.opacity = 0.58 + Math.sin(this.deathworldAnimationTime * 0.8) * 0.12;
+      }
+    }
+    if (this.sandParticles) this.sandParticles.rotation.y += frameDelta * 0.2;
     if (this.rainParticles) {
       const positions = this.rainParticles.geometry.attributes.position;
       for (let i = 1; i < positions.array.length; i += 3) {
-        positions.array[i] -= delta * 90;
+        positions.array[i] -= frameDelta * 90;
         if (positions.array[i] < 0) positions.array[i] = 120;
       }
       positions.needsUpdate = true;

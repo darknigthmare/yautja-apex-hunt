@@ -3,8 +3,12 @@ import * as THREE from 'three';
 export const HUNT_NPC_TEXTURES = Object.freeze({
   xeno_drone: '/assets/textures/xeno-carapace.webp',
   hunting_hound: '/assets/textures/hunting-hound-hide.webp',
-  human_fireteam: '/assets/textures/yautja-energy-lattice.webp',
-  combat_synthetic: '/assets/textures/yautja-energy-lattice.webp',
+  human_fireteam: '/assets/textures/stargazer-tactical-composite.webp',
+  combat_synthetic: '/assets/textures/stargazer-tactical-composite.webp',
+  grizzly_territorial: '/assets/textures/hunting-hound-hide.webp',
+  thermal_trapper: '/assets/textures/stargazer-tactical-composite.webp',
+  genna_stalker: '/assets/textures/deathworld-alien-flora.webp',
+  xeno_warrior: '/assets/textures/xeno-carapace.webp',
 });
 
 export const HUNT_NPC_ARCHETYPES = Object.freeze({
@@ -59,6 +63,77 @@ export const HUNT_NPC_ARCHETYPES = Object.freeze({
   }),
 });
 
+// Les archétypes historiques restent exportés séparément pour ne pas casser les
+// consommateurs qui traitent cette liste comme le contrat de base de la v1.3.
+// Le constructeur accepte l'ensemble fusionné ci-dessous.
+export const EXPANDED_HUNT_NPC_ARCHETYPES = Object.freeze({
+  grizzly_territorial: Object.freeze({
+    type: 'grizzly_territorial',
+    name: 'Grizzly territorial',
+    health: 300,
+    damage: 38,
+    speed: 3.1,
+    attackRange: 3.35,
+    colliderRadius: 1.2,
+    attackInterval: 2.4,
+    damageType: 'impact',
+    attackKind: 'charge',
+    chargeRange: 13.5,
+    chargeMultiplier: 2.75,
+    knockback: 10,
+  }),
+  thermal_trapper: Object.freeze({
+    type: 'thermal_trapper',
+    name: 'Traqueur thermique de confinement',
+    health: 135,
+    damage: 10,
+    speed: 2.6,
+    attackRange: 19,
+    colliderRadius: 0.58,
+    attackInterval: 1.8,
+    damageType: 'disruption',
+    attackKind: 'projectile',
+    projectileSpeed: 28,
+    energyDrain: 18,
+    status: 'energy_jam',
+    statusDuration: 4,
+  }),
+  genna_stalker: Object.freeze({
+    type: 'genna_stalker',
+    name: 'Traqueur organique de Genna',
+    health: 170,
+    damage: 22,
+    speed: 4.1,
+    attackRange: 3,
+    colliderRadius: 0.88,
+    attackInterval: 1.3,
+    damageType: 'corrosion',
+    attackKind: 'melee',
+    status: 'corrosion',
+    secondaryStatus: 'venom',
+    statusDuration: 5,
+  }),
+  xeno_warrior: Object.freeze({
+    type: 'xeno_warrior',
+    name: 'Guerrier xénomorphe',
+    health: 230,
+    damage: 27,
+    speed: 4.2,
+    attackRange: 3.15,
+    colliderRadius: 0.9,
+    attackInterval: 1.15,
+    damageType: 'corrosion',
+    attackKind: 'melee',
+    status: 'corrosion',
+    statusDuration: 4,
+  }),
+});
+
+export const ALL_HUNT_NPC_ARCHETYPES = Object.freeze({
+  ...HUNT_NPC_ARCHETYPES,
+  ...EXPANDED_HUNT_NPC_ARCHETYPES,
+});
+
 const sharedTextureCache = new Map();
 const direction = new THREE.Vector3();
 
@@ -70,6 +145,8 @@ function loadSharedTexture(path) {
     const texture = new THREE.TextureLoader().load(path);
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.anisotropy = 4;
     sharedTextureCache.set(path, texture);
     return texture;
   } catch {
@@ -149,7 +226,7 @@ function makeHuntingHound(texture) {
 
 function makeHumanFireteam(texture) {
   const group = new THREE.Group();
-  const fatigues = makeMaterial(0x4c5547, null, { roughness: 0.95 });
+  const fatigues = makeMaterial(0x4c5547, texture, { roughness: 0.95 });
   const armor = makeMaterial(0x222a29, texture, { roughness: 0.62, metalness: 0.25 });
   const weapon = makeMaterial(0x171a1c, null, { roughness: 0.4, metalness: 0.7 });
 
@@ -166,9 +243,9 @@ function makeHumanFireteam(texture) {
 
 function makeCombatSynthetic(texture) {
   const group = new THREE.Group();
-  const shell = makeMaterial(0xd4d8d2, null, { roughness: 0.38, metalness: 0.58 });
-  const chassis = makeMaterial(0x252d34, null, { roughness: 0.3, metalness: 0.78 });
-  const energy = makeMaterial(0x65e8ff, texture, {
+  const shell = makeMaterial(0xd4d8d2, texture, { roughness: 0.38, metalness: 0.58 });
+  const chassis = makeMaterial(0x252d34, texture, { roughness: 0.3, metalness: 0.78 });
+  const energy = makeMaterial(0x65e8ff, null, {
     roughness: 0.2,
     metalness: 0.25,
     emissive: 0x1b9ab8,
@@ -188,11 +265,169 @@ function makeCombatSynthetic(texture) {
   return group;
 }
 
+function makeGrizzlyTerritorial(texture) {
+  const group = new THREE.Group();
+  const hide = makeMaterial(0x4b2d1e, texture, { roughness: 0.98, metalness: 0 });
+  const muzzle = makeMaterial(0x281b16, texture, { roughness: 1, metalness: 0 });
+  const claws = makeMaterial(0x171310, null, { roughness: 0.45, metalness: 0.32 });
+
+  addPart(group, new THREE.SphereGeometry(0.9, 16, 11), hide, [0, 1.12, 0], [1.05, 0.88, 1.45]);
+  addPart(group, new THREE.SphereGeometry(0.74, 14, 10), hide, [0, 1.62, 0.35], [1.15, 1.08, 0.92]);
+  addPart(group, new THREE.SphereGeometry(0.55, 14, 9), hide, [0, 1.58, 1.05], [0.92, 0.82, 1.08]);
+  addPart(group, new THREE.SphereGeometry(0.33, 12, 8), muzzle, [0, 1.43, 1.49], [1.18, 0.72, 0.82]);
+  for (const side of [-1, 1]) {
+    addPart(group, new THREE.SphereGeometry(0.18, 9, 7), hide, [side * 0.42, 1.98, 0.94], [0.9, 1, 0.55]);
+    for (const z of [-0.55, 0.55]) {
+      const fore = z > 0;
+      addPart(
+        group,
+        new THREE.CylinderGeometry(fore ? 0.18 : 0.15, fore ? 0.24 : 0.2, fore ? 1.12 : 0.94, 8),
+        hide,
+        [side * 0.56, fore ? 0.54 : 0.48, z],
+        null,
+        [0.06, 0, side * 0.08],
+      );
+      for (let claw = -1; claw <= 1; claw += 1) {
+        addPart(
+          group,
+          new THREE.ConeGeometry(0.045, 0.32, 6),
+          claws,
+          [side * 0.56 + claw * 0.07, 0.08, z + 0.18],
+          null,
+          [Math.PI / 2, 0, 0],
+        );
+      }
+    }
+  }
+  group.scale.setScalar(1.08);
+  group.userData.silhouette = 'grizzly_territorial';
+  group.userData.combatRead = 'heavy_charge';
+  return group;
+}
+
+function makeThermalTrapper(texture) {
+  const group = new THREE.Group();
+  const tactical = makeMaterial(0x34433e, texture, { roughness: 0.82, metalness: 0.18 });
+  const plates = makeMaterial(0x151e22, texture, { roughness: 0.48, metalness: 0.54 });
+  const jammer = makeMaterial(0xf38f32, null, {
+    roughness: 0.28,
+    metalness: 0.45,
+    emissive: 0x8a2606,
+    emissiveIntensity: 1.35,
+  });
+  const lens = makeMaterial(0xffca55, null, {
+    roughness: 0.15,
+    metalness: 0.2,
+    emissive: 0xf05a0a,
+    emissiveIntensity: 1.8,
+  });
+
+  addPart(group, new THREE.BoxGeometry(0.76, 0.98, 0.44), tactical, [0, 1.38, 0]);
+  addPart(group, new THREE.BoxGeometry(0.68, 0.52, 0.22), plates, [0, 1.55, 0.28]);
+  addPart(group, new THREE.SphereGeometry(0.29, 12, 8), tactical, [0, 2.12, 0]);
+  addPart(group, new THREE.BoxGeometry(0.42, 0.11, 0.12), lens, [0, 2.13, 0.27]);
+  addPart(group, new THREE.BoxGeometry(0.58, 0.72, 0.28), plates, [0, 1.46, -0.34]);
+  addPart(group, new THREE.CylinderGeometry(0.025, 0.035, 0.82, 6), jammer, [0.23, 2.05, -0.39], null, [0, 0, -0.12]);
+  addPart(group, new THREE.SphereGeometry(0.065, 8, 6), jammer, [0.28, 2.46, -0.39]);
+  for (const side of [-1, 1]) {
+    addPart(group, new THREE.CylinderGeometry(0.1, 0.13, 1.06, 7), tactical, [side * 0.23, 0.5, 0]);
+    addPart(group, new THREE.CylinderGeometry(0.075, 0.105, 0.92, 7), tactical, [side * 0.54, 1.43, 0.02], null, [0, 0, side * 0.28]);
+    addPart(group, new THREE.SphereGeometry(0.18, 9, 7), plates, [side * 0.43, 1.78, 0]);
+  }
+  addPart(group, new THREE.BoxGeometry(0.15, 0.18, 1.36), plates, [0.43, 1.42, 0.5], null, [0.05, 0, -0.08]);
+  addPart(group, new THREE.TorusGeometry(0.22, 0.035, 7, 16), jammer, [0.43, 1.5, 1.08], null, [0, Math.PI / 2, 0]);
+  group.userData.silhouette = 'thermal_trapper';
+  group.userData.combatRead = 'energy_jammer';
+  return group;
+}
+
+function makeGennaStalker(texture) {
+  const group = new THREE.Group();
+  const bark = makeMaterial(0x27382b, texture, { roughness: 0.96, metalness: 0 });
+  const thorn = makeMaterial(0x17221a, texture, { roughness: 0.78, metalness: 0.08 });
+  const sap = makeMaterial(0x80d33f, null, {
+    roughness: 0.32,
+    metalness: 0.05,
+    emissive: 0x245d0e,
+    emissiveIntensity: 1.4,
+  });
+
+  addPart(group, new THREE.SphereGeometry(0.72, 13, 9), bark, [0, 0.92, 0], [0.92, 0.72, 1.38]);
+  addPart(group, new THREE.SphereGeometry(0.48, 12, 8), bark, [0, 1.12, 0.86], [0.9, 0.78, 1.08]);
+  addPart(group, new THREE.SphereGeometry(0.2, 10, 7), sap, [0, 1.08, 1.28], [1.18, 0.82, 0.58]);
+  for (let petal = 0; petal < 6; petal += 1) {
+    const angle = (petal / 6) * Math.PI * 2;
+    addPart(
+      group,
+      new THREE.ConeGeometry(0.15, 0.54, 6),
+      thorn,
+      [Math.sin(angle) * 0.3, 1.12 + Math.cos(angle) * 0.23, 1.34],
+      [1, 1, 0.58],
+      [Math.PI / 2 + Math.cos(angle) * 0.28, 0, -Math.sin(angle) * 0.45],
+    );
+  }
+  for (const side of [-1, 1]) {
+    for (const z of [-0.52, 0.48]) {
+      addPart(
+        group,
+        new THREE.CylinderGeometry(0.055, 0.14, 1.22, 7),
+        bark,
+        [side * 0.55, 0.43, z],
+        null,
+        [z * 0.3, 0, side * 0.55],
+      );
+      addPart(group, new THREE.ConeGeometry(0.075, 0.34, 6), thorn, [side * 0.92, 0.08, z + 0.14], null, [Math.PI / 2, 0, 0]);
+    }
+  }
+  for (let spine = 0; spine < 5; spine += 1) {
+    addPart(group, new THREE.ConeGeometry(0.095, 0.52, 6), thorn, [0, 1.42, -0.55 + spine * 0.27], null, [0, 0, Math.PI]);
+  }
+  const tendril = addPart(group, new THREE.CylinderGeometry(0.025, 0.11, 1.82, 7), bark, [0, 0.8, -1.18]);
+  tendril.rotation.x = Math.PI / 2.35;
+  group.userData.silhouette = 'genna_stalker';
+  group.userData.combatRead = 'venom_corrosion';
+  return group;
+}
+
+function makeXenoWarrior(texture) {
+  const group = new THREE.Group();
+  const carapace = makeMaterial(0x0b1112, texture, { roughness: 0.26, metalness: 0.48 });
+  const ridge = makeMaterial(0x1e2c2b, texture, { roughness: 0.42, metalness: 0.38 });
+  const teeth = makeMaterial(0xd3ceba, null, { roughness: 0.34, metalness: 0.76 });
+
+  addPart(group, new THREE.SphereGeometry(0.65, 15, 10), carapace, [0, 1.32, 0], [0.9, 1.34, 0.78]);
+  addPart(group, new THREE.SphereGeometry(0.58, 16, 9), ridge, [0, 2.02, 0.43], [0.9, 0.62, 1.58]);
+  addPart(group, new THREE.ConeGeometry(0.2, 0.66, 8), teeth, [0, 1.72, 1.05], null, [Math.PI / 2, 0, 0]);
+  for (const side of [-1, 1]) {
+    addPart(group, new THREE.CylinderGeometry(0.12, 0.16, 1.3, 8), carapace, [side * 0.42, 0.64, 0], null, [0, 0, side * 0.22]);
+    addPart(group, new THREE.CylinderGeometry(0.08, 0.13, 1.38, 8), carapace, [side * 0.7, 1.38, 0.18], null, [0.22, 0, side * 0.62]);
+    for (const z of [-0.34, 0.32]) {
+      addPart(group, new THREE.CylinderGeometry(0.045, 0.1, 1.06, 7), ridge, [side * 0.34, 1.82, z - 0.4], null, [0.62, 0, side * 0.22]);
+    }
+    for (let claw = -1; claw <= 1; claw += 1) {
+      addPart(group, new THREE.ConeGeometry(0.045, 0.34, 6), teeth, [side * 0.92 + claw * 0.04, 0.96, 0.57], null, [Math.PI / 2, 0, 0]);
+    }
+  }
+  for (let rib = 0; rib < 5; rib += 1) {
+    addPart(group, new THREE.TorusGeometry(0.36 + rib * 0.018, 0.035, 6, 12, Math.PI), ridge, [0, 1.26 + rib * 0.14, -0.36], null, [0, 0, Math.PI / 2]);
+  }
+  const tail = addPart(group, new THREE.CylinderGeometry(0.035, 0.17, 3.05, 9), carapace, [0, 1.03, -1.38]);
+  tail.rotation.x = Math.PI / 2.45;
+  group.scale.setScalar(1.06);
+  group.userData.silhouette = 'xeno_warrior';
+  group.userData.combatRead = 'armored_melee';
+  return group;
+}
+
 const meshFactories = Object.freeze({
   xeno_drone: makeXenoDrone,
   hunting_hound: makeHuntingHound,
   human_fireteam: makeHumanFireteam,
   combat_synthetic: makeCombatSynthetic,
+  grizzly_territorial: makeGrizzlyTerritorial,
+  thermal_trapper: makeThermalTrapper,
+  genna_stalker: makeGennaStalker,
+  xeno_warrior: makeXenoWarrior,
 });
 
 function setPosition(target, value) {
@@ -221,7 +456,7 @@ export class HuntNPC {
     const config = typeof typeOrOptions === 'string'
       ? { ...options, type: typeOrOptions }
       : { ...(typeOrOptions || {}) };
-    const archetype = HUNT_NPC_ARCHETYPES[config.type];
+    const archetype = ALL_HUNT_NPC_ARCHETYPES[config.type];
 
     if (!archetype) {
       throw new Error(`Unknown hunt NPC archetype: ${config.type}`);
@@ -240,6 +475,14 @@ export class HuntNPC {
     this.detectionRange = config.detectionRange ?? archetype.detectionRange ?? 0;
     this.damageType = config.damageType || archetype.damageType;
     this.attackKind = config.attackKind || archetype.attackKind;
+    this.projectileSpeed = config.projectileSpeed ?? archetype.projectileSpeed ?? null;
+    this.energyDrain = Math.max(0, config.energyDrain ?? archetype.energyDrain ?? 0);
+    this.status = config.status ?? archetype.status ?? null;
+    this.secondaryStatus = config.secondaryStatus ?? archetype.secondaryStatus ?? null;
+    this.statusDuration = Math.max(0, config.statusDuration ?? archetype.statusDuration ?? 0);
+    this.chargeRange = Math.max(this.attackRange, config.chargeRange ?? archetype.chargeRange ?? this.attackRange);
+    this.chargeMultiplier = Math.max(1, config.chargeMultiplier ?? archetype.chargeMultiplier ?? 1);
+    this.knockback = Math.max(0, config.knockback ?? archetype.knockback ?? 0);
     this.attackCooldown = Math.max(0, config.attackCooldown ?? 0);
     this.isDead = this.health <= 0;
     this.isNetted = false;
@@ -249,6 +492,8 @@ export class HuntNPC {
     this._visionMode = 'normal';
     this.lurePosition = null;
     this.lureTimer = 0;
+    this._isCharging = false;
+    this.chargeWindupTimer = 0;
 
     const texture = loadSharedTexture(HUNT_NPC_TEXTURES[this.type]);
     this.mesh = meshFactories[this.type](texture);
@@ -267,6 +512,9 @@ export class HuntNPC {
 
     const dt = Math.max(0, Number(delta) || 0);
     if (this.isNetted) {
+      this._isCharging = false;
+      this.chargeWindupTimer = 0;
+      this.mesh.userData.isCharging = false;
       this.netTimer = Math.max(0, this.netTimer - dt);
       if (this.netTimer === 0) {
         this.isNetted = false;
@@ -291,6 +539,9 @@ export class HuntNPC {
     const distance = direction.length();
 
     if (lureActive) {
+      this._isCharging = false;
+      this.chargeWindupTimer = 0;
+      this.mesh.userData.isCharging = false;
       if (distance > 1.2 && distance > 0.0001) {
         direction.normalize();
         this.position.addScaledVector(direction, Math.min(distance - 1.2, this.speed * dt));
@@ -316,8 +567,36 @@ export class HuntNPC {
       this.attackCooldown = this.attackInterval;
     }
 
+    const shouldCharge = this.attackKind === 'charge'
+      && distance > this.attackRange
+      && distance <= this.chargeRange;
+    if (this._isCharging && this.chargeWindupTimer > 0) {
+      this.chargeWindupTimer = Math.max(0, this.chargeWindupTimer - dt);
+      this.mesh.userData.isCharging = true;
+      if (distance > 0.0001) this.mesh.rotation.y = Math.atan2(direction.x, direction.z);
+      return signals;
+    }
+    if (shouldCharge && !this._isCharging) {
+      this._isCharging = true;
+      this.chargeWindupTimer = 0.45;
+      this.mesh.userData.isCharging = true;
+      if (distance > 0.0001) this.mesh.rotation.y = Math.atan2(direction.x, direction.z);
+      signals.push({
+        type: 'telegraph',
+        sourceId: this.id,
+        sourceType: this.type,
+        attackKind: 'charge',
+        duration: 0.45,
+        message: `${this.name} amorce une charge lourde.`,
+      });
+      return signals;
+    }
+    this._isCharging = shouldCharge;
+    this.mesh.userData.isCharging = shouldCharge;
+
     if (distance > this.attackRange && distance > 0.0001) {
-      const travel = Math.min(distance - this.attackRange, this.speed * dt);
+      const movementSpeed = this.speed * (shouldCharge ? this.chargeMultiplier : 1);
+      const travel = Math.min(distance - this.attackRange, movementSpeed * dt);
       direction.normalize();
       this.position.addScaledVector(direction, Math.max(0, travel));
       this.mesh.rotation.y = Math.atan2(direction.x, direction.z);
@@ -336,15 +615,27 @@ export class HuntNPC {
       attackKind: this.attackKind,
     };
 
-    if (this.damageType === 'corrosion') {
-      signal.status = 'corrosion';
-      signal.statusDuration = 3.5;
+    if (this.status || this.damageType === 'corrosion') {
+      signal.status = this.status || 'corrosion';
+      signal.statusDuration = this.statusDuration || 3.5;
+    }
+    if (this.secondaryStatus) {
+      signal.secondaryStatus = this.secondaryStatus;
+    }
+    if (this.energyDrain > 0) {
+      signal.energyDrain = this.energyDrain;
+    }
+    if (this.knockback > 0) {
+      signal.knockback = this.knockback;
+    }
+    if (this.attackKind === 'charge') {
+      signal.heavy = true;
     }
     if (this.attackKind === 'projectile') {
       signal.projectile = {
         origin: this.position.clone(),
         direction: direction.lengthSq() > 0 ? direction.normalize().clone() : new THREE.Vector3(0, 0, 1),
-        speed: this.type === 'combat_synthetic' ? 24 : 31,
+        speed: this.projectileSpeed ?? (this.type === 'combat_synthetic' ? 24 : 31),
       };
     }
 
@@ -362,6 +653,9 @@ export class HuntNPC {
     this.lurePosition.y = this.position.y;
     this.lureTimer = Math.max(this.lureTimer, seconds);
     this.mesh.userData.investigatingLure = true;
+    this._isCharging = false;
+    this.chargeWindupTimer = 0;
+    this.mesh.userData.isCharging = false;
     this.attackCooldown = Math.max(this.attackCooldown, 0.2);
     return true;
   }
@@ -379,6 +673,9 @@ export class HuntNPC {
       this.netTimer = 0;
       this.mesh.userData.isDead = true;
       this.mesh.userData.isNetted = false;
+      this._isCharging = false;
+      this.chargeWindupTimer = 0;
+      this.mesh.userData.isCharging = false;
     }
 
     return { damage, killed: this.isDead, remainingHealth: this.health };
@@ -389,6 +686,9 @@ export class HuntNPC {
     this.isNetted = true;
     this.netTimer = Math.max(this.netTimer, Math.max(0, Number(duration) || 0));
     this.mesh.userData.isNetted = true;
+    this._isCharging = false;
+    this.chargeWindupTimer = 0;
+    this.mesh.userData.isCharging = false;
     return true;
   }
 
@@ -401,8 +701,15 @@ export class HuntNPC {
       for (const material of materials) {
         if (!material?.color) continue;
         if (mode === 'thermal') {
-          material.color.setHex(this.type === 'combat_synthetic' ? 0x74baff : 0xff6a1f);
-          if (material.emissive) material.emissive.setHex(0x6b1600);
+          const thermalColor = this.type === 'combat_synthetic'
+            ? 0x74baff
+            : this.type === 'thermal_trapper'
+              ? 0xffc24d
+              : this.type === 'genna_stalker'
+                ? 0x7ee83c
+                : 0xff6a1f;
+          material.color.setHex(thermalColor);
+          if (material.emissive) material.emissive.setHex(this.type === 'genna_stalker' ? 0x245d0e : 0x6b1600);
           material.emissiveIntensity = 0.8;
         } else if (mode === 'tech') {
           material.color.setHex(0x4de8ff);
@@ -421,6 +728,9 @@ export class HuntNPC {
   dispose() {
     if (this._disposed) return false;
     this._disposed = true;
+    this._isCharging = false;
+    this.chargeWindupTimer = 0;
+    this.mesh.userData.isCharging = false;
 
     if (this.mesh.parent) this.mesh.parent.remove(this.mesh);
     const geometries = new Set();

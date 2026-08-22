@@ -2,6 +2,39 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
+## [1.4.0] — 22 août 2026
+
+### Chasses, proies et monde vivant
+
+- sixième contrat contre le Feral : triple lance-traits mobile, bouclier frontal à intégrité, estoc et charge à la lance télégraphiée avec impact unique ;
+- quatre nouvelles familles de PNJ 3D : grizzly territorial, traqueur thermique de confinement, traqueur organique de Genna et guerrier xénomorphe ;
+- quatre vagues par chasse avec compositions propres à Genna, la jungle, la ruche et les terrains humains.
+
+### Technologies et personnalisation
+
+- bouclier de poignet `[B]`, drone-faucon `[G]` et shuriken `[T]` réellement activables, avec coûts, recharges, objets 3D, impacts et états HUD ;
+- quatre classes de chasseur aux statistiques distinctes, quatre styles de predlocks, quatre finitions d’armure et quatre warpaints procéduraux ;
+- rugissement d’honneur limité à une utilisation par chasse afin de supprimer la recharge exploitable à l’infini.
+
+### Genna et visuels OpenAI
+
+- cinquième biome `genna_deathworld` : 28 plantes prédatrices, 14 petites créatures instanciées et 520 spores animées, tous figés avec mouvement réduit ;
+- quatre textures originales OpenAI 1024×1024 pour le sol et la flore de Genna, le composite osseux du Feral et les équipements tactiques humains ;
+- galerie du vaisseau-mère et sélection de mission étendues à six contrats, avec nouvelle carte texturée du Feral.
+
+### Progression, catalogue et cohérence
+
+- sauvegarde locale v4 avec migration v1/v2/v3, apparence à neuf axes et honneur cumulé séparé des crédits dépensables ;
+- rang Yautja calculé sur l’honneur de carrière : les achats de forge ne font plus perdre un rang déjà acquis ;
+- 110 fiches de contenu dont les statuts jouable/rencontre 3D reflètent désormais les mécaniques effectivement livrées.
+
+### Validation et publication
+
+- 98/98 tests Node couvrant boss, proies, équipements, Genna, galerie à six trophées et migrations de sauvegarde ;
+- build Vite 8.2.2, audit npm et contrôle statique validés sur le worktree final ;
+- parcours Chromium desktop/mobile, sixième contrat, Forge v4 et nouveaux assets contrôlés sans erreur de page ;
+- release poussée sur GitHub et publiée sur <https://yautja-apex-hunt.vercel.app/>.
+
 ## [1.3.0] — 22 août 2026
 
 ### Contenu réellement intégré

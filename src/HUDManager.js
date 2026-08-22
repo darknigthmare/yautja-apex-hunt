@@ -14,7 +14,13 @@ import {
   TECH_CATALOG,
   VEHICLE_CATALOG,
 } from './data/YautjaContentCatalog.js';
-import { PLAYABLE_WEAPONS } from './data/RuntimeEquipment.js';
+import {
+  ARMOR_FINISHES,
+  DREAD_STYLES,
+  HUNTER_CLASSES,
+  PLAYABLE_WEAPONS,
+  WARPAINT_PATTERNS,
+} from './data/RuntimeEquipment.js';
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const RUNTIME_STATUS_LABELS = Object.freeze({
@@ -56,6 +62,12 @@ export class HUDManager {
     this.cloakText = document.getElementById('cloak-state-text');
     this.canopyBadge = document.getElementById('canopy-badge');
     this.acidBadge = document.getElementById('acid-badge');
+    this.gadgetStates = {
+      shield: document.getElementById('gadget-shield-state'),
+      drone: document.getElementById('gadget-drone-state'),
+      shuriken: document.getElementById('gadget-shuriken-state'),
+      roar: document.getElementById('gadget-roar-state'),
+    };
 
     this.qteOverlay = document.getElementById('qte-overlay');
 
@@ -84,6 +96,10 @@ export class HUDManager {
       dreadColorId: document.getElementById('custom-dread-color'),
       armorColorId: document.getElementById('custom-armor-color'),
       armorAccentColorId: document.getElementById('custom-armor-accent'),
+      hunterClassId: document.getElementById('custom-hunter-class'),
+      dreadStyleId: document.getElementById('custom-dread-style'),
+      armorFinishId: document.getElementById('custom-armor-finish'),
+      warpaintId: document.getElementById('custom-warpaint'),
     };
     this.contentGrids = {
       technology: document.getElementById('technology-catalog-grid'),
@@ -225,6 +241,10 @@ export class HUDManager {
     this.fillSelect(this.appearanceControls.dreadColorId, DREAD_PALETTES);
     this.fillSelect(this.appearanceControls.armorColorId, ARMOR_PALETTES);
     this.fillSelect(this.appearanceControls.armorAccentColorId, ARMOR_ACCENTS);
+    this.fillSelect(this.appearanceControls.hunterClassId, HUNTER_CLASSES);
+    this.fillSelect(this.appearanceControls.dreadStyleId, DREAD_STYLES);
+    this.fillSelect(this.appearanceControls.armorFinishId, ARMOR_FINISHES);
+    this.fillSelect(this.appearanceControls.warpaintId, WARPAINT_PATTERNS);
   }
 
   syncCustomization(customization = {}) {
@@ -307,6 +327,20 @@ export class HUDManager {
 
     this.setText(this.honorScoreDisplay, `${player.honorScore} PTS`);
     this.setText(this.honorRankDisplay, player.ranks[player.honorRankIndex]);
+    this.setAttribute(this.honorRankDisplay, 'title', `${Math.round(player.lifetimeHonor ?? player.honorScore)} points d’honneur cumulés`);
+    const cooldownText = (value) => value > 0 ? `RECHARGE ${value.toFixed(1)}s` : 'PRÊT';
+    const shieldState = player.wristShieldIntegrity <= 0
+      ? 'BRISÉ'
+      : player.wristShieldActive
+        ? `ACTIF · ${Math.ceil(player.wristShieldIntegrity)}%`
+        : `${cooldownText(player.wristShieldCooldown ?? 0)} · ${Math.ceil(player.wristShieldIntegrity ?? 100)}%`;
+    this.setText(this.gadgetStates?.shield, shieldState);
+    this.setText(this.gadgetStates?.drone, player.scoutDrone ? `EN VOL · ${(player.scoutDroneTimer ?? 0).toFixed(1)}s` : cooldownText(player.scoutDroneCooldown ?? 0));
+    this.setText(this.gadgetStates?.shuriken, cooldownText(player.shurikenCooldown ?? 0));
+    this.setText(this.gadgetStates?.roar, player.roarUsed ? 'CONSOMMÉ POUR CETTE CHASSE' : 'DISPONIBLE');
+    this.setClassState(this.gadgetStates?.shield?.parentElement, 'active', player.wristShieldActive === true);
+    this.setClassState(this.gadgetStates?.drone?.parentElement, 'active', Boolean(player.scoutDrone));
+
 
     if (player.isCloaked) {
       this.setClassState(this.cloakCard, 'cloaked', true);

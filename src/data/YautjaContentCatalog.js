@@ -13,11 +13,12 @@ import {
 // des adaptations de Yautja: Apex Hunt quand `implementationOriginal` est vrai.
 
 const PLAYABLE_CONTENT_IDS = new Set([
-  'goliath', 'xeno_queen', 'bad_blood', 'predalien', 'boss_berserker_super_predator',
-  'tech_biomask', 'tech_cloak', 'tech_wrist_computer', 'tech_wrist_blades', 'tech_plasma_caster', 'tech_tri_laser', 'tech_self_destruct', 'tech_medicomp', 'tech_voice_mimic', 'tech_smart_disc', 'tech_combistick', 'tech_net_launcher', 'tech_speargun', 'tech_yautja_bow',
+  'goliath', 'xeno_queen', 'bad_blood', 'predalien', 'boss_berserker_super_predator', 'boss_feral_2022',
+  'tech_biomask', 'tech_cloak', 'tech_wrist_computer', 'tech_wrist_blades', 'tech_plasma_caster', 'tech_tri_laser', 'tech_self_destruct', 'tech_medicomp', 'tech_voice_mimic', 'tech_smart_disc', 'tech_combistick', 'tech_net_launcher', 'tech_speargun', 'tech_yautja_bow', 'tech_falcon_drone', 'tech_wrist_shield', 'tech_shuriken_avp',
 ]);
 const ENCOUNTER_CONTENT_IDS = new Set([
-  'enemy_elite_commando', 'enemy_hunting_hound', 'enemy_xenomorph_drone', 'event_rain_cloak_reveal', 'event_preserve_hound_release', 'tech_hunting_hounds',
+  'enemy_elite_commando', 'enemy_hunting_hound', 'enemy_xenomorph_drone', 'enemy_xenomorph_warrior', 'enemy_grizzly', 'enemy_thermal_trap_team', 'enemy_genna_hostile_fauna',
+  'event_rain_cloak_reveal', 'event_preserve_hound_release', 'event_genna_predation_cycle', 'tech_hunting_hounds', 'tech_feral_bolt_launcher', 'tech_feral_combistick',
 ]);
 const getRuntimeStatus = (entry) => {
   if (entry.runtimeStatus) return entry.runtimeStatus;
@@ -220,10 +221,10 @@ export const TECH_CATALOG = freezeCatalog([
   { id: 'tech_combistick', name: 'Combi-stick', sourceTier: 'SCREEN', description: 'Lance compacte qui se déploie pour le corps à corps ou le lancer.', sources: ['predator2', 'huntingGrounds'], gameplay: 'Allonge supérieure, lancer récupérable et fenêtre de vulnérabilité.' },
   { id: 'tech_net_launcher', name: 'Lance-filet', sourceTier: 'SCREEN', description: 'Projectile de capture qui comprime la cible prise au piège.', sources: ['predator2'], gameplay: 'Immobilise brièvement une cible et ouvre une exécution.' },
   { id: 'tech_speargun', name: 'Lance-harpons', sourceTier: 'SCREEN', description: 'Arme compacte projetant des traits métalliques.', sources: ['predator2'], gameplay: 'Tir silencieux de précision avec munitions récupérables.' },
-  { id: 'tech_falcon_drone', name: 'Drone-faucon', sourceTier: 'SCREEN', description: 'Éclaireur aérien employé par le Falconer sur la planète-réserve.', sources: ['predators2010'], gameplay: 'Balaye une zone, marque les proies et révèle les chemins verticaux.' },
+  { id: 'tech_falcon_drone', name: 'Drone-faucon', sourceTier: 'SCREEN', description: 'Éclaireur aérien employé par le Falconer sur la planète-réserve.', sources: ['predators2010'], gameplay: 'Jouable avec [G] : drone 3D orbital, impulsion de scan à 90 mètres et marquage de sept secondes.' },
   { id: 'tech_hunting_hounds', name: 'Créatures de pistage', sourceTier: 'SCREEN', description: 'Bêtes lâchées par le Tracker pour poursuivre les captifs.', sources: ['predators2010'], gameplay: 'Forcent les proies à quitter leur abri et suivent les traces fraîches.' },
   { id: 'tech_yautja_bow', name: 'Arc composite Yautja', sourceTier: 'SCREEN', description: 'Arc composite associé à Dek dans Badlands et aussi proposé dans Hunting Grounds.', sources: ['badlandsGear', 'huntingGrounds'], gameplay: 'Arme silencieuse jouable à forte vélocité et coût d’endurance.' },
-  { id: 'tech_wrist_shield', name: 'Bouclier de poignet', sourceTier: 'SCREEN', description: 'Protection déployable utilisée par le chasseur de Prey.', sources: ['prey2022'], gameplay: 'Bloque frontalement au prix de mobilité et d’énergie.' },
+  { id: 'tech_wrist_shield', name: 'Bouclier de poignet', sourceTier: 'SCREEN', description: 'Protection déployable utilisée par le chasseur de Prey.', sources: ['prey2022'], gameplay: 'Jouable avec [B] : absorbe 68 % des impacts, possède une intégrité visible et consomme 25 énergie.' },
   { id: 'tech_apex_decoy', name: 'Leurre holographique Apex', sourceTier: 'ORIGINAL', description: 'Interprétation originale Apex Hunt : projecteur de fausse signature sans équivalent précis revendiqué.', sources: [], gameplay: 'Crée un double thermique temporaire qui détourne les tirs.' },
   ...EXPANDED_TECH_CATALOG,
 ]);
@@ -248,7 +249,7 @@ export const ENEMY_CATALOG = freezeCatalog([
   { id: 'enemy_preserve_mercenary', name: 'Mercenaire de la réserve', sourceTier: 'SCREEN', description: 'Combattant d’élite arraché à son propre conflit et placé sur la planète-réserve.', sources: ['predators2010'], role: 'Proie dangereuse qui adapte ses tactiques après chaque contact.' },
   { id: 'enemy_hunting_hound', name: 'Bête de chasse du Tracker', sourceTier: 'SCREEN', description: 'Quadrupède agressif lâché contre les captifs de la réserve.', sources: ['predators2010'], role: 'Traqueur rapide en meute, capable de rabattre le joueur.' },
   { id: 'enemy_super_predator', name: 'Super Predator', sourceTier: 'SCREEN', description: 'Chasseur rival appartenant au groupe antagoniste de Predators.', sources: ['predators2010'], role: 'Duel miroir qui emploie camouflage, plasma et pression rapprochée.' },
-  { id: 'enemy_grizzly', name: 'Grand prédateur terrestre', sourceTier: 'SCREEN', description: 'Mégafaune dangereuse rappelant la confrontation animale de Prey.', sources: ['prey2022'], role: 'Charge lourde, odorat développé et résistance aux attaques légères.' },
+  { id: 'enemy_grizzly', name: 'Grand prédateur terrestre', sourceTier: 'SCREEN', description: 'Mégafaune dangereuse rappelant la confrontation animale de Prey.', sources: ['prey2022'], role: 'Rencontre 3D réelle : 300 santé, charge lourde télégraphiée et recul de dix mètres.' },
   { id: 'enemy_comanche_hunter', name: 'Chasseur comanche', sourceTier: 'SCREEN', description: 'Humain expert du territoire, inspiré des protagonistes de Prey.', sources: ['prey2022'], role: 'Observe les habitudes du joueur, pose des pièges et exploite le terrain.' },
   { id: 'enemy_viking_raider', name: 'Guerrier viking', sourceTier: 'SCREEN', description: 'Combattant de l’une des trois époques de Killer of Killers.', sources: ['killerOfKillers'], role: 'Frontliner résistant avec bouclier, hache et riposte de groupe.' },
   { id: 'enemy_feudal_assassin', name: 'Assassin du Japon féodal', sourceTier: 'SCREEN', description: 'Adversaire furtif inspiré du segment japonais de Killer of Killers.', sources: ['killerOfKillers'], role: 'Dueliste rapide qui disparaît, feinte et contre les attaques lourdes.' },
@@ -273,7 +274,7 @@ export const LEVEL_EVENT_CATALOG = freezeCatalog([
   { id: 'event_hive_outbreak', name: 'Rupture de confinement', sourceTier: 'AVP_SCREEN', description: 'Adaptation de gameplay originale d’une infestation xénomorphe hors contrôle.', sources: ['avpRequiem2007'], gameplay: 'Les points d’apparition se multiplient jusqu’à destruction des nids secondaires.', implementationOriginal: true },
   { id: 'event_self_destruct_countdown', name: 'Compte à rebours du brassard', sourceTier: 'SCREEN', description: 'Adaptation de gameplay originale du protocole d’autodestruction Yautja.', sources: ['predator1987', 'avp2004'], gameplay: 'Le joueur doit désarmer, fuir ou exploiter l’explosion avant la fin du délai.', implementationOriginal: true },
   { id: 'event_killer_eras', name: 'Échos des trois ères', sourceTier: 'SCREEN', description: 'Adaptation de gameplay originale des trois périodes montrées dans Killer of Killers.', sources: ['killerOfKillers'], gameplay: 'Le niveau alterne mêlée viking, duel furtif et menace aérienne.', implementationOriginal: true },
-  { id: 'event_genna_predation_cycle', name: 'Cycle de prédation de Genna', sourceTier: 'SCREEN', description: 'Adaptation de gameplay originale du monde mortel exploré dans Badlands.', sources: ['badlands2025'], gameplay: 'Faune, flore et météo deviennent hostiles selon un cycle annoncé par le décor.', implementationOriginal: true },
+  { id: 'event_genna_predation_cycle', name: 'Cycle de prédation de Genna', sourceTier: 'SCREEN', description: 'Adaptation de gameplay originale du monde mortel exploré dans Badlands.', sources: ['badlands2025'], gameplay: 'Rencontre réelle : flore prédatrice, petites créatures, spores et quatre vagues de proies au delta de simulation.', implementationOriginal: true },
   { id: 'event_apex_trophy_convoy', name: 'Convoi de trophées Apex', sourceTier: 'ORIGINAL', description: 'Interprétation originale Apex Hunt : événement itinérant sans équivalent écran revendiqué.', sources: [], gameplay: 'Intercepter une barge rapporte des matériaux mais déclenche un chasseur rival.' },
   ...EXPANDED_LEVEL_EVENT_CATALOG,
 ]);
@@ -284,7 +285,7 @@ export const HUNT_BOSS_CATALOG = freezeCatalog([
   { id: 'bad_blood', name: 'Rival Yautja « Bad Blood »', sourceTier: 'ORIGINAL', description: 'Interprétation originale Apex Hunt : rival précis créé pour le duel miroir du jeu.', sources: [], gameplay: 'Copie une partie de l’équipement du joueur et punit les abus de camouflage.' },
   { id: 'predalien', name: 'Predalien légendaire', sourceTier: 'ORIGINAL', description: 'Interprétation originale Apex Hunt : variante de boss distincte du Predalien écran.', sources: [], gameplay: 'Alterner vision xénomorphe et mobilité verticale pour anticiper ses charges.' },
   { id: 'boss_berserker_super_predator', name: 'Super Predator — Berserker', sourceTier: 'SCREEN', description: 'Chef brutal du trio de chasseurs antagonistes de Predators.', sources: ['predators2010'], gameplay: 'Boss miroir lourd : plasma, camouflage et exécution au corps à corps.' },
-  { id: 'boss_feral_2022', name: 'Feral Predator', sourceTier: 'SCREEN', description: 'Chasseur de Prey doté d’un arsenal et d’une approche distincts.', sources: ['prey2022'], gameplay: 'Boss mobile qui apprend les pièges et renvoie les projectiles marqués.' },
+  { id: 'boss_feral_2022', name: 'Feral Predator', sourceTier: 'SCREEN', description: 'Chasseur de Prey doté d’un arsenal et d’une approche distincts.', sources: ['prey2022'], gameplay: 'Sixième boss jouable : triple lance-traits, bouclier frontal destructible, estoc et charge à la lance.' },
   { id: 'boss_wolf_cleaner', name: 'Wolf — nettoyeur', sourceTier: 'AVP_SCREEN', description: 'Chasseur expérimenté envoyé contre l’infestation de Gunnison.', sources: ['avpRequiem2007'], gameplay: 'Duel tactique multi-outils où chaque gadget contré change sa rotation.' },
   { id: 'boss_kalisk_badlands', name: 'Kalisk de Badlands', sourceTier: 'SCREEN', description: 'Adversaire suprême au cœur de la chasse de Dek dans Badlands.', sources: ['badlands2025'], gameplay: 'Boss de mégafaune en trois phases avec faiblesses révélées par observation.' },
   ...EXPANDED_HUNT_BOSS_CATALOG,

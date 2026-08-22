@@ -70,6 +70,20 @@ export const HUNT_DEFINITIONS = Object.freeze({
     trophyColor: 0x8b1f1f,
     hud: { part1: ['MASQUE MANDIBULAIRE:', 'maskIntact', 'INTACT', 'BRISÉ'], part2: ['INTÉGRITÉ TROPHÉE:', 'trophyIntegrity', 'PRÉSERVÉE', 'ENDOMMAGÉE'] },
   },
+  feral_predator: {
+    id: 'feral_predator',
+    name: 'Feral Predator — Grande Plaine',
+    bossType: 'feralPredator',
+    colliderRadius: 4.8,
+    sourceTier: 'ORIGINAL',
+    basisTier: 'SCREEN',
+    continuity: 'Adaptation Apex Hunt fondée sur Prey (2022), avec silhouette procédurale originale',
+    objective: 'Épuiser son bouclier frontal, esquiver ses salves de traits puis briser sa garde à la lance.',
+    reward: 2100,
+    trophyColor: 0xc7ad78,
+    recommendedBiome: 'jungle',
+    hud: { part1: ['BOUCLIER FERAL:', 'shieldIntact', 'OPÉRATIONNEL', 'BRISÉ'], part2: ['ARMURE OSSEUSE:', 'boneArmorIntact', 'INTACTE', 'FRACTURÉE'] },
+  },
 });
 
 export const BIOME_DEFINITIONS = Object.freeze({
@@ -95,5 +109,12 @@ export const BIOME_DEFINITIONS = Object.freeze({
     sourceTier: 'ORIGINAL',
     basisTier: 'SCREEN',
     texture: '/assets/textures/yautja-stone.webp',
+  },
+  genna_deathworld: {
+    name: 'Monde mortel de Genna — secteur Apex',
+    sourceTier: 'ORIGINAL',
+    basisTier: 'SCREEN',
+    texture: '/assets/textures/genna-deathworld-ground.webp',
+    floraTexture: '/assets/textures/deathworld-alien-flora.webp',
   },
 });

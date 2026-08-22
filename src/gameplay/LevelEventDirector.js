@@ -10,6 +10,7 @@ export const DEFAULT_LEVEL_EVENT_SCHEDULE = Object.freeze([
   Object.freeze({ at: 28, kind: 'hazard_end' }),
   Object.freeze({ at: 36, kind: 'spawn_enemy' }),
   Object.freeze({ at: 52, kind: 'spawn_enemy' }),
+  Object.freeze({ at: 68, kind: 'spawn_enemy' }),
 ]);
 
 export const HUNT_CACHE_TYPES = Object.freeze({
@@ -254,13 +255,24 @@ export class LevelEventDirector {
     );
   }
 
-  selectEnemyType() {
+  selectEnemyType(ordinal = this.enemySpawnCount + 1) {
     const biome = String(this.biomeId ?? '').toLowerCase();
     const hunt = String(this.huntId ?? '').toLowerCase();
     if (biome.includes('hive') || biome.includes('xeno') || hunt.includes('xeno') || hunt.includes('predalien')) {
-      return 'xeno';
+      return ordinal >= 3 ? 'xeno_warrior' : 'xeno';
     }
-    if (biome.includes('jungle') || biome.includes('preserve') || biome.includes('yautja')) return 'hound';
+    if (biome.includes('genna')) {
+      if (ordinal === 1) return 'genna_stalker';
+      if (ordinal === 2) return 'grizzly';
+      return ordinal === 3 ? 'thermal_trapper' : 'synthetic';
+    }
+    if (biome.includes('jungle') || biome.includes('preserve') || biome.includes('yautja')) {
+      if (ordinal === 1) return 'hound';
+      if (ordinal === 2) return 'thermal_trapper';
+      return ordinal === 3 ? 'grizzly' : 'hound';
+    }
+    if (ordinal === 3) return 'thermal_trapper';
+    if (ordinal >= 4) return 'synthetic';
     return 'human';
   }
 
@@ -317,19 +329,25 @@ export class LevelEventDirector {
 
     if (event.kind === 'spawn_enemy') {
       if (this.enemySpawnCount >= this.maxEnemySpawns) return;
-      const enemyType = this.selectEnemyType();
+      const ordinal = this.enemySpawnCount + 1;
+      const enemyType = this.selectEnemyType(ordinal);
       const archetypeIds = {
         hound: 'enemy_hunting_hound',
         xeno: 'enemy_xenomorph_drone',
         human: 'enemy_elite_commando',
+        grizzly: 'enemy_grizzly',
+        thermal_trapper: 'enemy_thermal_trap_team',
+        genna_stalker: 'enemy_genna_hostile_fauna',
+        xeno_warrior: 'enemy_xenomorph_warrior',
+        synthetic: 'enemy_combat_synthetic_badlands',
       };
-      this.enemySpawnCount += 1;
+      this.enemySpawnCount = ordinal;
       const position = this.positionAround(context.player, 34, 58);
       this.emit({
         type: 'spawn_enemy',
         enemyType,
         archetypeId: archetypeIds[enemyType],
-        ordinal: this.enemySpawnCount,
+        ordinal,
         position: { x: position.x, y: position.y, z: position.z },
       });
       return;

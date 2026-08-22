@@ -58,8 +58,8 @@ test('la passe contenu respecte les seuils de production demandés', () => {
     events: LEVEL_EVENT_CATALOG.length,
     bosses: HUNT_BOSS_CATALOG.length,
     support: SUPPORT_CATALOG.length,
-  }, { technologies: 27, vehicles: 13, enemies: 26, events: 17, bosses: 13, support: 13 });
-  assert.equal(TECH_CATALOG.length + VEHICLE_CATALOG.length + ENEMY_CATALOG.length + LEVEL_EVENT_CATALOG.length + HUNT_BOSS_CATALOG.length + SUPPORT_CATALOG.length, 109);
+  }, { technologies: 27, vehicles: 13, enemies: 27, events: 17, bosses: 13, support: 13 });
+  assert.equal(TECH_CATALOG.length + VEHICLE_CATALOG.length + ENEMY_CATALOG.length + LEVEL_EVENT_CATALOG.length + HUNT_BOSS_CATALOG.length + SUPPORT_CATALOG.length, 110);
 });
 
 test('tous les identifiants sont uniques et chaque fiche expose son statut réel', () => {

@@ -2,6 +2,7 @@ import { MegafaunaBoss } from '../MegafaunaBoss.js';
 import { BadBloodRival } from '../entities/BadBloodRival.js';
 import { PredalienBoss } from '../entities/PredalienBoss.js';
 import { SuperPredatorBoss } from '../entities/SuperPredatorBoss.js';
+import { FeralPredatorBoss } from '../entities/FeralPredatorBoss.js';
 import { XenomorphQueen } from '../entities/XenomorphQueen.js';
 
 export const BOSS_CONSTRUCTORS = Object.freeze({
@@ -10,6 +11,7 @@ export const BOSS_CONSTRUCTORS = Object.freeze({
   badBlood: BadBloodRival,
   predalien: PredalienBoss,
   superPredator: SuperPredatorBoss,
+  feralPredator: FeralPredatorBoss,
 });
 
 const DEFAULT_COLLIDER_RADII = Object.freeze({
@@ -18,6 +20,7 @@ const DEFAULT_COLLIDER_RADII = Object.freeze({
   badBlood: 4.5,
   predalien: 6.5,
   superPredator: 5.5,
+  feralPredator: 4.8,
 });
 
 function normalizeBossInterface(boss, bossType) {

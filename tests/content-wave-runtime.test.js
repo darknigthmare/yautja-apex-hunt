@@ -365,3 +365,47 @@ test('le scan de navette révèle visuellement les cibles à portée puis se net
   game.updateVFX(1);
   assert.equal(game.vfxParticles.length, 0);
 });
+
+test('une défaite retire immédiatement les marqueurs et le pulse du scan', () => {
+  const previousDocument = globalThis.document;
+  const scene = new THREE.Scene();
+  const marker = new THREE.Group();
+  const target = { mesh: new THREE.Group() };
+  target.mesh.userData.scanRevealed = true;
+  scene.add(marker);
+
+  const fakeModal = { textContent: '', classList: { add() {}, remove() {} } };
+  globalThis.document = {
+    pointerLockElement: null,
+    getElementById: () => fakeModal,
+  };
+
+  try {
+    const game = Object.create(Game.prototype);
+    game.scene = scene;
+    game.huntResultShown = false;
+    game.victoryCountdown = 2;
+    game.scanRevealedTargets = new Map([[target, marker]]);
+    game.vehicleScanOrigin = new THREE.Vector3();
+    game.player = {
+      scanPulseTimer: 7,
+      scanPulseRadius: 85,
+      clearTransientGadgets() {},
+      defeatReason: 'blessures',
+      honorScore: 0,
+      honorRankIndex: 0,
+      ranks: ['Jeune sang'],
+    };
+    game.camera = { fov: 55, updateProjectionMatrix() {} };
+    game.saveProgress = () => {};
+
+    game.triggerDefeatScreen();
+
+    assert.equal(game.scanRevealedTargets.size, 0);
+    assert.equal(scene.children.includes(marker), false);
+    assert.equal(game.player.scanPulseTimer, 0);
+    assert.equal(target.mesh.userData.scanRevealed, false);
+  } finally {
+    globalThis.document = previousDocument;
+  }
+});

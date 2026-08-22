@@ -12,6 +12,10 @@ import {
   SKIN_PALETTES,
 } from '../data/YautjaContentCatalog.js';
 import {
+  ARMOR_FINISHES,
+  DREAD_STYLES,
+  HUNTER_CLASSES,
+  WARPAINT_PATTERNS,
   DEFAULT_CUSTOMIZATION,
   getArmorPresetCustomization,
   getPaletteEntry,
@@ -68,6 +72,9 @@ export class YautjaPlayer {
     this.maxStamina = 100;
     this.stamina = 100;
     this.honorScore = 1000;
+    this.lifetimeHonor = 1000;
+    this.energyRegen = 8;
+    this.meleeDamageMultiplier = 1;
     this.honorRankIndex = 1;
     this.completedHunts = [];
 
@@ -99,6 +106,16 @@ export class YautjaPlayer {
     this.currentPerchNode = null;
     this.isAcidCorroded = false;
     this.acidTimer = 0;
+    this.roarUsed = false;
+    this.wristShieldActive = false;
+    this.wristShieldTimer = 0;
+    this.wristShieldCooldown = 0;
+    this.wristShieldIntegrity = 100;
+    this.scoutDrone = null;
+    this.scoutDroneTimer = 0;
+    this.scoutDroneCooldown = 0;
+    this.scoutDroneAge = 0;
+    this.shurikenCooldown = 0;
 
     // QTE State
     this.inQTE = false;
@@ -218,6 +235,7 @@ export class YautjaPlayer {
     yautjaGroup.add(headGroup);
 
     const dreadMat = new THREE.MeshStandardMaterial({ color: dreadPalette?.hex ?? 0x0c0c0e, roughness: 0.8 });
+    this.dreadGroups = [];
     for (let i = -5; i <= 5; i++) {
       const dreadGroup = new THREE.Group();
       const dread = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.06, 2.8, 8), dreadMat);
@@ -236,6 +254,10 @@ export class YautjaPlayer {
       dreadGroup.rotation.z = i * 0.18;
       dreadGroup.rotation.x = -0.4;
       dreadGroup.position.set(i * 0.2, 5.4, -0.5);
+      dreadGroup.userData.basePosition = dreadGroup.position.clone();
+      dreadGroup.userData.baseRotation = dreadGroup.rotation.clone();
+      dreadGroup.userData.dreadIndex = i + 5;
+      this.dreadGroups.push(dreadGroup);
       yautjaGroup.add(dreadGroup);
     }
 
@@ -255,6 +277,23 @@ export class YautjaPlayer {
     this.wristbladeLeft = new THREE.Mesh(bladeGeo, bladeMat);
     this.wristbladeLeft.position.set(-1.65, 2.5, 1.3);
     yautjaGroup.add(this.wristbladeLeft);
+
+    this.wristShieldMesh = new THREE.Group();
+    this.wristShieldMesh.name = 'playerWristShield';
+    this.wristShieldMesh.position.set(-2.25, 3.55, 0.8);
+    [-1, 0, 1].forEach((segment) => {
+      const panel = new THREE.Mesh(new THREE.BoxGeometry(0.72, 2.9, 0.16), armorMat);
+      panel.position.x = segment * 0.62;
+      panel.rotation.z = segment * 0.12;
+      panel.userData.appearanceChannel = 'armor';
+      panel.castShadow = true;
+      this.wristShieldMesh.add(panel);
+    });
+    const shieldCore = new THREE.PointLight(0x55eeff, 2.4, 9);
+    shieldCore.position.z = 0.25;
+    this.wristShieldMesh.add(shieldCore);
+    this.wristShieldMesh.visible = false;
+    yautjaGroup.add(this.wristShieldMesh);
 
     const legR = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.42, 3.4), armorMat);
     legR.position.set(0.75, 1.7, 0);
@@ -285,6 +324,10 @@ export class YautjaPlayer {
     shoulderL.position.x = -1.42;
     shoulderL.userData.appearanceChannel = 'accent';
     yautjaGroup.add(shoulderL);
+
+    this.warpaintGroup = new THREE.Group();
+    this.warpaintGroup.name = 'playerWarpaint';
+    yautjaGroup.add(this.warpaintGroup);
 
     yautjaGroup.position.copy(this.position);
     this.rebuildMaskDetails(maskData);
@@ -410,14 +453,180 @@ export class YautjaPlayer {
     this.maskDetailGroup?.traverse((child) => {
       if (child.isMesh) child.userData.baseMaterial = child.material;
     });
+    this.applyDreadStyle(merged.dreadStyleId);
+    this.applyArmorFinish(merged.armorFinishId);
+    this.rebuildWarpaint(merged.warpaintId);
+    this.applyHunterClass(merged.hunterClassId);
     if (preserveCloak) this.applyCloakMaterials();
     return this.customization;
   }
 
+  applyHunterClass(classId, preserveRatio = true) {
+    const hunterClass = HUNTER_CLASSES.find(({ id }) => id === classId) ?? HUNTER_CLASSES[0];
+    const healthRatio = this.maxHealth > 0 ? this.health / this.maxHealth : 1;
+    const energyRatio = this.maxEnergy > 0 ? this.energy / this.maxEnergy : 1;
+    const staminaRatio = this.maxStamina > 0 ? this.stamina / this.maxStamina : 1;
+    this.maxHealth = hunterClass.maxHealth;
+    this.maxEnergy = hunterClass.maxEnergy;
+    this.maxStamina = hunterClass.maxStamina;
+    this.moveSpeed = hunterClass.moveSpeed;
+    this.sprintSpeed = hunterClass.sprintSpeed;
+    this.energyRegen = hunterClass.energyRegen;
+    this.meleeDamageMultiplier = hunterClass.meleeMultiplier;
+    this.health = preserveRatio ? Math.min(this.maxHealth, this.maxHealth * healthRatio) : this.maxHealth;
+    this.energy = preserveRatio ? Math.min(this.maxEnergy, this.maxEnergy * energyRatio) : this.maxEnergy;
+    this.stamina = preserveRatio ? Math.min(this.maxStamina, this.maxStamina * staminaRatio) : this.maxStamina;
+    return hunterClass;
+  }
+
+  applyDreadStyle(styleId) {
+    const style = DREAD_STYLES.find(({ id }) => id === styleId) ?? DREAD_STYLES[0];
+    (this.dreadGroups ?? []).forEach((group, index) => {
+      const basePosition = group.userData.basePosition;
+      const baseRotation = group.userData.baseRotation;
+      if (basePosition) {
+        group.position.copy(basePosition);
+        group.position.x *= style.spreadScale;
+      }
+      if (baseRotation) group.rotation.copy(baseRotation);
+      group.rotation.y = style.id === 'dread_style_braided' ? ((index % 2) ? -0.22 : 0.22) : 0;
+      group.scale.set(1, style.lengthScale, 1);
+      group.children.slice(1).forEach((bead) => {
+        bead.visible = index % style.beadStride === 0;
+      });
+    });
+    return style;
+  }
+
+  applyArmorFinish(finishId) {
+    const finish = ARMOR_FINISHES.find(({ id }) => id === finishId) ?? ARMOR_FINISHES[0];
+    this.mesh.traverse((child) => {
+      if (!child.isMesh || !['armor', 'mask', 'accent'].includes(child.userData.appearanceChannel)) return;
+      const material = child.material === this.cloakMaterial
+        ? child.userData.materialBeforeCloak ?? child.userData.baseMaterial
+        : child.material;
+      if (!material) return;
+      material.metalness = finish.metalness;
+      material.roughness = finish.roughness;
+      if ('emissiveIntensity' in material && finish.emissiveIntensity !== undefined) material.emissiveIntensity = finish.emissiveIntensity;
+      material.needsUpdate = true;
+      child.userData.baseMaterial = material;
+    });
+    return finish;
+  }
+
+  rebuildWarpaint(warpaintId) {
+    if (!this.warpaintGroup) return null;
+    [...this.warpaintGroup.children].forEach((child) => disposeObject3D(child));
+    this.warpaintGroup.clear();
+    const warpaint = WARPAINT_PATTERNS.find(({ id }) => id === warpaintId) ?? WARPAINT_PATTERNS[0];
+    if (warpaint.pattern === 'none') return warpaint;
+    const baseMaterial = new THREE.MeshBasicMaterial({ color: warpaint.color, transparent: true, opacity: 0.86 });
+    const addMark = (x, y, width, height, rotation = 0) => {
+      const mark = new THREE.Mesh(new THREE.BoxGeometry(width, height, 0.035), baseMaterial.clone());
+      mark.position.set(x, y, 1.07);
+      mark.rotation.z = rotation;
+      mark.userData.appearanceChannel = 'warpaint';
+      mark.userData.baseMaterial = mark.material;
+      this.warpaintGroup.add(mark);
+    };
+    if (warpaint.pattern === 'brow') addMark(0, 5.93, 1.5, 0.16, -0.08);
+    else if (warpaint.pattern === 'claw') [-0.42, 0, 0.42].forEach((x, index) => addMark(x, 5.63, 0.13, 1.25, -0.24 + index * 0.08));
+    else {
+      addMark(0, 6.12, 1.2, 0.14);
+      addMark(-0.52, 5.62, 0.12, 0.86, 0.42);
+      addMark(0.52, 5.62, 0.12, 0.86, -0.42);
+    }
+    baseMaterial.dispose();
+    return warpaint;
+  }
+
+  activateWristShield() {
+    if (this.isDead || this.wristShieldActive || this.wristShieldCooldown > 0 || this.energy < 25 || this.wristShieldIntegrity <= 0) return false;
+    if (this.isCloaked) this.toggleCloak();
+    this.energy -= 25;
+    this.wristShieldActive = true;
+    this.wristShieldTimer = 3.5;
+    this.wristShieldCooldown = 8;
+    if (this.wristShieldMesh) this.wristShieldMesh.visible = true;
+    audioSynth.playYautjaClick();
+    return true;
+  }
+
+  deactivateWristShield() {
+    const changed = this.wristShieldActive;
+    this.wristShieldActive = false;
+    this.wristShieldTimer = 0;
+    if (this.wristShieldMesh) this.wristShieldMesh.visible = false;
+    return changed;
+  }
+
+  clearTransientGadgets() {
+    const changed = this.wristShieldActive || Boolean(this.scoutDrone);
+    this.deactivateWristShield();
+    if (this.scoutDrone) disposeObject3D(this.scoutDrone);
+    this.scoutDrone = null;
+    this.scoutDroneTimer = 0;
+    this.scoutDroneAge = 0;
+    return changed;
+  }
+
+  deployScoutDrone() {
+    if (this.isDead || this.scoutDroneCooldown > 0 || this.energy < 20) return false;
+    this.energy -= 20;
+    this.scoutDroneCooldown = 14;
+    this.scoutDroneTimer = 7;
+    this.scoutDroneAge = 0;
+    if (this.scoutDrone) disposeObject3D(this.scoutDrone);
+    const drone = new THREE.Group();
+    drone.name = 'playerScoutDrone';
+    const shell = new THREE.MeshStandardMaterial({ color: 0x4a5555, metalness: 0.9, roughness: 0.24 });
+    drone.add(new THREE.Mesh(new THREE.OctahedronGeometry(0.48), shell));
+    for (const side of [-1, 1]) {
+      const wing = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.08, 0.42), shell);
+      wing.position.x = side * 0.72;
+      wing.rotation.z = side * 0.16;
+      drone.add(wing);
+    }
+    const eye = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 8), new THREE.MeshBasicMaterial({ color: 0x55eeff }));
+    eye.position.z = 0.48;
+    drone.add(eye);
+    this.scoutDrone = drone;
+    this.scene.add(drone);
+    audioSynth.playThermalSwitch();
+    return true;
+  }
+
+  fireShuriken(targetPos) {
+    if (!targetPos?.isVector3 || this.isDead || this.shurikenCooldown > 0 || this.energy < 12) return false;
+    this.energy -= 12;
+    this.shurikenCooldown = 2.4;
+    const shuriken = new THREE.Group();
+    const metal = new THREE.MeshStandardMaterial({ color: 0xd5e2df, metalness: 1, roughness: 0.12 });
+    shuriken.add(new THREE.Mesh(new THREE.TorusGeometry(0.5, 0.11, 7, 18), metal));
+    for (let index = 0; index < 4; index += 1) {
+      const blade = new THREE.Mesh(new THREE.ConeGeometry(0.2, 0.8, 4), metal);
+      const angle = index * Math.PI / 2;
+      blade.position.set(Math.cos(angle) * 0.78, Math.sin(angle) * 0.78, 0);
+      blade.rotation.z = angle - Math.PI / 2;
+      shuriken.add(blade);
+    }
+    shuriken.position.copy(this.position).add(new THREE.Vector3(0, 4, 0));
+    const dir = targetPos.clone().sub(shuriken.position).normalize();
+    shuriken.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir);
+    this.projectiles.push({ mesh: shuriken, dir, speed: 92, type: 'shuriken', damage: 62, lifetime: 3 });
+    this.scene.add(shuriken);
+    audioSynth.playSpearThrow();
+    return true;
+  }
+
   triggerVictoryRoar() {
+    if (this.roarUsed || this.isDead) return false;
+    this.roarUsed = true;
     audioSynth.playVictoryRoar();
-    this.energy = Math.min(this.maxEnergy, this.energy + 40);
-    this.stamina = this.maxStamina;
+    this.energy = Math.min(this.maxEnergy, this.energy + 22);
+    this.stamina = Math.min(this.maxStamina, this.stamina + 30);
+    return true;
   }
 
   triggerVoiceMimicry(lureType = null) {
@@ -438,6 +647,7 @@ export class YautjaPlayer {
   }
 
   toggleCloak() {
+    if (!this.isCloaked && this.wristShieldActive) return false;
     if (this.isAcidCorroded && !this.hasAntiAcidCloak) return false;
 
     this.isCloaked = !this.isCloaked;
@@ -694,21 +904,36 @@ export class YautjaPlayer {
   }
 
   takeDamage(amount) {
-    if (this.isDead || this.selfDestructComplete) return;
-    this.health = Math.max(0, this.health - amount);
+    if (this.isDead || this.selfDestructComplete) return { damage: 0, absorbed: 0 };
+    const incoming = Math.max(0, Number(amount) || 0);
+    let absorbed = 0;
+    if (this.wristShieldActive && this.wristShieldIntegrity > 0) {
+      absorbed = Math.min(this.wristShieldIntegrity, incoming * 0.68);
+      this.wristShieldIntegrity = Math.max(0, this.wristShieldIntegrity - absorbed);
+      if (this.wristShieldIntegrity === 0) this.deactivateWristShield();
+    }
+    const damage = Math.max(0, incoming - absorbed);
+    this.health = Math.max(0, this.health - damage);
     if (this.health <= 0 && !this.isSelfDestructing) {
       this.defeatReason = 'blessures';
       this.triggerSelfDestruct();
     }
+    return { damage, absorbed, remainingHealth: this.health };
+  }
+
+  syncHonorRank() {
+    if (this.lifetimeHonor >= 3000) this.honorRankIndex = 3;
+    else if (this.lifetimeHonor >= 1800) this.honorRankIndex = 2;
+    else if (this.lifetimeHonor >= 800) this.honorRankIndex = 1;
+    else this.honorRankIndex = 0;
+    return this.honorRankIndex;
   }
 
   addHonor(pts) {
     const awarded = calculateHonorAward(pts, this.isCloaked);
     this.honorScore += awarded;
-
-    if (this.honorScore >= 3000) this.honorRankIndex = 3;
-    else if (this.honorScore >= 1800) this.honorRankIndex = 2;
-    else if (this.honorScore >= 800) this.honorRankIndex = 1;
+    this.lifetimeHonor += awarded;
+    this.syncHonorRank();
     return awarded;
   }
 
@@ -717,6 +942,8 @@ export class YautjaPlayer {
     this.mines.forEach((mine) => disposeObject3D(mine.mesh));
     this.projectiles = [];
     this.mines = [];
+    this.clearTransientGadgets();
+
 
     this.isAcidCorroded = false;
     if (this.isCloaked) this.toggleCloak();
@@ -734,6 +961,14 @@ export class YautjaPlayer {
     this.inQTE = false;
     this.qteTimer = 0;
     this.acidTimer = 0;
+    this.roarUsed = false;
+    this.wristShieldTimer = 0;
+    this.wristShieldCooldown = 0;
+    this.wristShieldIntegrity = 100;
+    this.scoutDroneTimer = 0;
+    this.scoutDroneCooldown = 0;
+    this.scoutDroneAge = 0;
+    this.shurikenCooldown = 0;
     this.isSelfDestructing = false;
     this.selfDestructTimer = 0;
     this.selfDestructComplete = false;
@@ -747,8 +982,26 @@ export class YautjaPlayer {
   update(delta, inputDir, cameraYaw) {
     if (this.isDead) return;
     const hasMovementInput = inputDir.x !== 0 || inputDir.z !== 0;
-    if (this.energy < this.maxEnergy) this.energy = Math.min(this.maxEnergy, this.energy + delta * 8.0);
+    if (this.energy < this.maxEnergy) this.energy = Math.min(this.maxEnergy, this.energy + delta * this.energyRegen);
     if (this.stamina < this.maxStamina && !(inputDir.isSprinting && hasMovementInput)) this.stamina = Math.min(this.maxStamina, this.stamina + delta * 25.0);
+    this.wristShieldCooldown = Math.max(0, this.wristShieldCooldown - delta);
+    this.scoutDroneCooldown = Math.max(0, this.scoutDroneCooldown - delta);
+    this.shurikenCooldown = Math.max(0, this.shurikenCooldown - delta);
+    if (this.wristShieldActive) {
+      this.wristShieldTimer = Math.max(0, this.wristShieldTimer - delta);
+      if (this.wristShieldTimer === 0) this.deactivateWristShield();
+    }
+    if (this.scoutDrone) {
+      this.scoutDroneTimer = Math.max(0, this.scoutDroneTimer - delta);
+      this.scoutDroneAge += delta;
+      this.scoutDrone.position.copy(this.position).add(new THREE.Vector3(Math.sin(this.scoutDroneAge * 1.8) * 4.2, 8 + Math.sin(this.scoutDroneAge * 3) * 0.45, Math.cos(this.scoutDroneAge * 1.8) * 4.2));
+      this.scoutDrone.rotation.y += delta * 2.4;
+      if (this.scoutDroneTimer === 0) {
+        disposeObject3D(this.scoutDrone);
+        this.scoutDrone = null;
+      }
+    }
+
 
     if (this.attackTimer > 0) {
       this.attackTimer = Math.max(0, this.attackTimer - delta);
@@ -820,6 +1073,7 @@ export class YautjaPlayer {
 
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
       const p = this.projectiles[i];
+      if (p.type === 'shuriken') p.mesh.rotation.z += delta * 15;
       if (p.type === 'disc' && p.lifetime < 1.8) {
         const returnDir = this.position.clone().add(new THREE.Vector3(0, 3, 0)).sub(p.mesh.position).normalize();
         p.dir.lerp(returnDir, delta * 5.0);

@@ -13,7 +13,7 @@
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="Yautja: Apex Hunt">
   <meta property="og:title" content="Yautja: Apex Hunt — Chasse 3D fan-made">
-  <meta property="og:description" content="Endossez le bio-masque, choisissez votre contrat et prouvez votre valeur au cours de cinq chasses et d’événements dynamiques.">
+  <meta property="og:description" content="Endossez le bio-masque, choisissez votre contrat et prouvez votre valeur au cours de six chasses et d’événements dynamiques.">
   <meta property="og:url" content="https://yautja-apex-hunt.vercel.app/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Yautja: Apex Hunt">
@@ -47,7 +47,7 @@
 
     <div id="hud-top">
       <div class="hud-panel honor-panel">
-        <div class="hud-label">HONNEUR YAUTJA</div>
+        <div class="hud-label">RANG & CRÉDITS D’HONNEUR</div>
         <div class="honor-rank" id="honor-rank-display">JEUNE SANG (YOUNG BLOOD)</div>
         <div class="honor-score" id="honor-score-display">1000 PTS</div>
       </div>
@@ -110,6 +110,21 @@
         <div class="status-state" id="cloak-state-text">INACTIF (VISIBLE)</div>
       </div>
 
+      <div id="gadget-rack" class="gadget-rack" aria-label="Technologies Yautja actives">
+        <button type="button" class="gadget-status" data-gadget="shield" data-gadget-key="KeyB" aria-label="Déployer le bouclier de poignet">
+          <span>[B] BOUCLIER</span><strong id="gadget-shield-state">PRÊT · 100%</strong>
+        </button>
+        <button type="button" class="gadget-status" data-gadget="drone" data-gadget-key="KeyG" aria-label="Déployer le drone-faucon">
+          <span>[G] DRONE-FAUCON</span><strong id="gadget-drone-state">PRÊT</strong>
+        </button>
+        <button type="button" class="gadget-status" data-gadget="shuriken" data-gadget-key="KeyT" aria-label="Lancer le shuriken">
+          <span>[T] SHURIKEN</span><strong id="gadget-shuriken-state">PRÊT</strong>
+        </button>
+        <button type="button" class="gadget-status gadget-roar" data-gadget="roar" data-gadget-key="KeyR" aria-label="Déclencher le rugissement d’honneur">
+          <span>[R] RUGISSEMENT</span><strong id="gadget-roar-state">DISPONIBLE</strong>
+        </button>
+      </div>
+
       <div id="canopy-badge" class="badge-card hidden">
         <span>CANOPÉE: PERCHÉ EN HAUTEUR</span>
         <div class="badge-sub">ATTAQUE EN PIQUÉ DISPONIBLE!</div>
@@ -166,6 +181,9 @@
         <div><strong>Espace :</strong> Saut de canopée</div>
         <div><strong>[R] :</strong> Rugissement de victoire</div>
         <div><strong>[F] :</strong> Leurre vocal directionnel (3 appels)</div>
+        <div><strong>[B] :</strong> Bouclier de poignet Feral</div>
+        <div><strong>[G] :</strong> Déployer le drone-faucon de reconnaissance</div>
+        <div><strong>[T] :</strong> Lancer le shuriken de combat</div>
         <div><strong>[V] :</strong> Mode de vision</div>
         <div><strong>[C] :</strong> Camouflage optique</div>
         <div><strong>[1] à [0] :</strong> 10 armes Yautja jouables</div>
@@ -199,6 +217,7 @@
             <option value="hive_lv426">LV-426 RUCHES SOUTERRAINES (SANG ACIDE & NIDS)</option>
             <option value="ryushi_desert">DÉSERT DE RYUSHI (TEMPÊTE DE SABLE)</option>
             <option value="yautja_prime">DOMAINE YAUTJA — ARÈNE APEX ORIGINALE</option>
+            <option value="genna_deathworld">MONDE MORTEL DE GENNA — FLORE HOSTILE & TEMPÊTE</option>
           </select>
         </div>
 
@@ -228,6 +247,11 @@
             <p>Chef de la planète-réserve, bêtes de son groupe et plasma lourd.</p>
             <button class="btn-launch-hunt" type="button" data-hunt="super_predator">DÉFIER LE BERSERKER</button>
           </article>
+          <article class="mission-card mission-card-feral">
+            <h3>6. FERAL — CHASSEUR DE LA GRANDE PLAINE</h3>
+            <p>Salves de traits, bouclier frontal destructible et charge à la lance.</p>
+            <button class="btn-launch-hunt" type="button" data-hunt="feral_predator">AFFRONTER LE FERAL</button>
+          </article>
         </div>
 
         <div class="forge-panel">
@@ -254,8 +278,8 @@
         <section class="appearance-forge" aria-labelledby="appearance-forge-title">
           <div class="section-heading compact-heading">
             <div>
-              <p class="section-kicker">FORGE MODULAIRE · SAUVEGARDE V3</p>
-              <h3 id="appearance-forge-title">BIO-MASQUE, PEAU, PREDLOCKS & ALLIAGES</h3>
+              <p class="section-kicker">FORGE MODULAIRE · SAUVEGARDE V4</p>
+              <h3 id="appearance-forge-title">CLASSE, BIO-MASQUE, PREDLOCKS, WARPAINT & ALLIAGES</h3>
             </div>
             <p>Chaque axe modifie réellement le modèle 3D et reste enregistré sur cet appareil.</p>
           </div>
@@ -265,6 +289,10 @@
             <label for="custom-dread-color"><span>Couleur des predlocks</span><select id="custom-dread-color"></select></label>
             <label for="custom-armor-color"><span>Couleur d’armure</span><select id="custom-armor-color"></select></label>
             <label for="custom-armor-accent"><span>Accent d’armure</span><select id="custom-armor-accent"></select></label>
+            <label for="custom-hunter-class"><span>Classe de chasseur</span><select id="custom-hunter-class"></select></label>
+            <label for="custom-dread-style"><span>Style de predlocks</span><select id="custom-dread-style"></select></label>
+            <label for="custom-armor-finish"><span>Finition d’armure</span><select id="custom-armor-finish"></select></label>
+            <label for="custom-warpaint"><span>Warpaint</span><select id="custom-warpaint"></select></label>
           </div>
           <p id="customization-status" class="customization-status" role="status" aria-live="polite">Configuration du chasseur prête.</p>
         </section>
@@ -275,7 +303,7 @@
               <p class="section-kicker">ARCHIVES ÉTENDUES · PROVENANCE BADGÉE</p>
               <h3 id="content-vault-title">ARCHIVES DE FRANCHISE & CONTENU ACTIF</h3>
             </div>
-            <p>109 dossiers distinguent clairement ce qui est jouable, rencontré en 3D, exposé dans le hangar ou conservé comme archive de référence.</p>
+            <p>110 dossiers distinguent clairement ce qui est jouable, rencontré en 3D, exposé dans le hangar ou conservé comme archive de référence.</p>
           </div>
           <details open>
             <summary>Technologies et arsenal · 27</summary>
@@ -286,7 +314,7 @@
             <div id="vehicle-catalog-grid" class="content-catalog-grid"></div>
           </details>
           <details>
-            <summary>PNJ, proies et ennemis · 26</summary>
+            <summary>PNJ, proies et ennemis · 27</summary>
             <div id="enemy-catalog-grid" class="content-catalog-grid"></div>
           </details>
           <details>

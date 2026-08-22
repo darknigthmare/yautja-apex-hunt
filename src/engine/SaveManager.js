@@ -12,8 +12,9 @@ const uniqueStrings = (value = []) => [...new Set(Array.isArray(value) ? value :
 // Versioned and validated LocalStorage persistence for Yautja: Apex Hunt.
 export class SaveManager {
   constructor() {
-    this.VERSION = 3;
-    this.STORAGE_KEY = 'yautja_apex_hunt_save_v3';
+    this.VERSION = 4;
+    this.STORAGE_KEY = 'yautja_apex_hunt_save_v4';
+    this.VERSION3_KEY = 'yautja_apex_hunt_save_v3';
     this.PREVIOUS_KEY = 'yautja_apex_hunt_save_v2';
     this.V2_KEY = this.PREVIOUS_KEY;
     this.LEGACY_KEY = 'yautja_apex_hunt_save_v1';
@@ -41,6 +42,7 @@ export class SaveManager {
       savedAt: new Date().toISOString(),
       player: {
         honorScore: Math.max(0, Number(player.honorScore) || 0),
+        lifetimeHonor: Math.max(0, Number(player.lifetimeHonor ?? player.honorScore) || 0),
         honorRankIndex: Math.min(3, Math.max(0, Number(player.honorRankIndex) || 0)),
         hasTriBeam: player.hasTriBeam === true,
         hasAntiAcidCloak: player.hasAntiAcidCloak === true,
@@ -76,10 +78,13 @@ export class SaveManager {
     }
   }
 
-  parseCandidate(serialized, { format = 'v3' } = {}) {
+  parseCandidate(serialized, { format = 'v4' } = {}) {
     const parsed = JSON.parse(serialized);
-    if (format === 'v3' && parsed?.version !== this.VERSION) {
+    if (format === 'v4' && parsed?.version !== this.VERSION) {
       throw new Error(`Unsupported save version: ${parsed?.version ?? 'missing'}`);
+    }
+    if (format === 'v3' && parsed?.version !== 3) {
+      throw new Error(`Unsupported v3 save version: ${parsed?.version ?? 'missing'}`);
     }
     if (format === 'v2' && parsed?.version !== 2) {
       throw new Error(`Unsupported previous save version: ${parsed?.version ?? 'missing'}`);
@@ -95,11 +100,13 @@ export class SaveManager {
 
   readRawSave() {
     const candidates = [
-      { key: this.STORAGE_KEY, format: 'v3', temporary: false },
-      { key: this.TEMP_KEY, format: 'v3', temporary: true },
+      { key: this.STORAGE_KEY, format: 'v4', temporary: false },
+      { key: this.TEMP_KEY, format: 'v4', temporary: true },
+      { key: this.VERSION3_KEY, format: 'v3', temporary: false },
       { key: this.PREVIOUS_KEY, format: 'v2', temporary: false },
       { key: this.LEGACY_KEY, format: 'v1', temporary: false },
     ];
+    const validCandidates = [];
     let lastError;
 
     for (const candidate of candidates) {
@@ -108,13 +115,25 @@ export class SaveManager {
 
       try {
         const validated = this.parseCandidate(serialized, candidate);
-        return { ...candidate, serialized, ...validated };
+        validCandidates.push({ ...candidate, serialized, ...validated });
       } catch (error) {
         lastError = error;
         console.warn(`LocalStorage save candidate invalid (${candidate.key})`, error);
       }
     }
 
+    const currentCandidates = validCandidates.filter(({ format }) => format === 'v4');
+    if (currentCandidates.length > 0) {
+      currentCandidates.sort((left, right) => {
+        const leftTime = Date.parse(left.parsed?.savedAt ?? '') || 0;
+        const rightTime = Date.parse(right.parsed?.savedAt ?? '') || 0;
+        if (rightTime !== leftTime) return rightTime - leftTime;
+        return Number(right.temporary) - Number(left.temporary);
+      });
+      return currentCandidates[0];
+    }
+
+    if (validCandidates.length > 0) return validCandidates[0];
     if (lastError) throw lastError;
     return null;
   }
@@ -127,8 +146,14 @@ export class SaveManager {
       const { parsed, source } = raw;
       const score = Number(source.honorScore);
       const rank = Number(source.honorRankIndex);
+      const normalizedRank = Number.isFinite(rank) ? Math.min(3, Math.max(0, rank)) : 0;
+      const rankThresholds = [0, 800, 1800, 3000];
+      const legacyLifetime = Math.max(Number.isFinite(score) ? score : 0, rankThresholds[normalizedRank]);
+      const lifetime = Number(source.lifetimeHonor ?? legacyLifetime);
       if (Number.isFinite(score)) player.honorScore = Math.max(0, score);
-      if (Number.isFinite(rank)) player.honorRankIndex = Math.min(3, Math.max(0, rank));
+      if (Number.isFinite(lifetime)) player.lifetimeHonor = Math.max(0, lifetime);
+      if (typeof player.syncHonorRank === 'function') player.syncHonorRank();
+      else if (Number.isFinite(rank)) player.honorRankIndex = Math.min(3, Math.max(0, rank));
       player.hasTriBeam = source.hasTriBeam === true;
       player.hasAntiAcidCloak = source.hasAntiAcidCloak === true;
       player.hasScopeZoom = source.hasScopeZoom === true;
@@ -136,7 +161,7 @@ export class SaveManager {
       const armorPresetId = typeof source.currentSkinId === 'string'
         ? source.currentSkinId
         : DEFAULT_CUSTOMIZATION.armorPresetId;
-      const sourceCustomization = raw.format === 'v3' ? source.customization : getArmorPresetCustomization(armorPresetId);
+      const sourceCustomization = ['v4', 'v3'].includes(raw.format) ? source.customization : getArmorPresetCustomization(armorPresetId);
       player.customization = sanitizeCustomization(
         sourceCustomization,
         armorPresetId,
@@ -155,7 +180,7 @@ export class SaveManager {
         : 'vehicle_jungle_dropcraft';
 
       const settings = this.sanitizeSettings(raw.format === 'v1' ? DEFAULT_SETTINGS : parsed.settings);
-      const migrated = raw.format !== 'v3';
+      const migrated = raw.format !== 'v4';
       if (migrated) {
         const migrationSaved = this.save(player, settings);
         if (migrationSaved) localStorage.removeItem(raw.key);

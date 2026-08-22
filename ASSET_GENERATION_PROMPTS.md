@@ -97,10 +97,36 @@ Les textes ci-dessous sont les formulations de production fidèles aux prompts e
 
 **Destination runtime après conversion :** `public/assets/textures/hunting-hound-hide.webp`
 
+## `genna-deathworld-ground`
+
+> Texture carrée raccordable de sol d’un monde mortel extraterrestre : roche volcanique grise, sable pâle, filaments racinaires secs, traces d’humidité minérale et petites inclusions biologiques. Vue orthographique de matière, éclairage diffus uniforme, micro-relief lisible en jeu, palette froide avec accents terreux. Création originale fan-made, sans empreinte, créature, texte, logo, UI, watermark, collage ou décor officiel copié.
+
+**Destination runtime après conversion :** `public/assets/textures/genna-deathworld-ground.webp`
+
+## `feral-bone-composite`
+
+> Texture carrée raccordable de composite osseux et d’armure de chasse archaïque : ivoire patiné, fibres kératinisées, fines fissures, attaches minérales sombres et abrasion de terrain sec. Surface abstraite uniquement, sans masque complet, visage, crâne, emblème ou accessoire reconnaissable. Vue orthographique, lumière uniforme, création originale fan-made sans texte, logo, glyphe, UI, watermark ni key art.
+
+**Destination runtime après conversion :** `public/assets/textures/feral-bone-composite.webp`
+
+## `stargazer-tactical-composite`
+
+> Texture carrée raccordable de textile tactique et de plaques de confinement futuristes : fibres vert-gris, renforts graphite, micro-grille technique, poussière et usure de laboratoire mobile. Aucun uniforme complet, badge, alphabet, drapeau, logo ou marque. Vue orthographique de matière, éclairage uniforme, création originale fan-made sans personnage, texte, UI, watermark, collage ou équipement officiel copié.
+
+**Destination runtime après conversion :** `public/assets/textures/stargazer-tactical-composite.webp`
+
+## `deathworld-alien-flora`
+
+> Texture carrée raccordable de flore prédatrice extraterrestre : écorce vert noir, membranes épaisses, nervures bioluminescentes chartreuse, épines minérales et spores contenues. Matière abstraite sans plante complète, bouche, œil, animal ni anatomie identifiable. Vue orthographique, lumière diffuse uniforme, création originale fan-made sans texte, logo, UI, watermark, collage ou reproduction de créature de film.
+
+**Destination runtime après conversion :** `public/assets/textures/deathworld-alien-flora.webp`
+
+Les quatre PNG maîtres de cette vague sont conservés localement sous `art_sources/openai-masters/` et exclus de Git ; seuls les WebP 1024×1024 optimisés sont livrés au navigateur.
+
 ## Critères de rejet
 
 Une génération doit être écartée si elle contient un mot, une signature, une bordure visible, un motif non raccordable dominant, une créature reconnaissable, une interface, un logo, un symbole officiel, une composition en collage ou une copie manifeste d'un visuel existant.
 
 ## Traçabilité
 
-Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor initiales et les trois matières de props restent en WebP 1024×1024 ; les six matières de la vague contenu 1.3 sont encodées en WebP 1254×1254 après inspection visuelle. Le manifest consigne les quinze poids exacts, leur usage runtime et les contrôles obtenus. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.
+Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor initiales, les trois matières de props et les quatre matières de la vague 1.4 restent en WebP 1024×1024 ; les six matières de la vague contenu 1.3 sont encodées en WebP 1254×1254 après inspection visuelle. Le manifest consigne les dix-neuf poids exacts, leur usage runtime et les contrôles obtenus. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.

@@ -20,6 +20,7 @@ function makeStorage() {
 function makePlayer() {
   return {
     honorScore: 1000,
+    lifetimeHonor: 1000,
     honorRankIndex: 1,
     hasTriBeam: false,
     hasAntiAcidCloak: false,
@@ -30,11 +31,12 @@ function makePlayer() {
   };
 }
 
-test('la sauvegarde v3 restaure progression, apparence modulaire et options', () => {
+test('la sauvegarde v4 restaure progression cumulée, apparence modulaire et options', () => {
   globalThis.localStorage = makeStorage();
   const manager = new SaveManager();
   const player = makePlayer();
   player.honorScore = 2450;
+  player.lifetimeHonor = 5400;
   player.currentSkinId = 'wolf_avpr';
   player.customization = {
     ...player.customization,
@@ -53,6 +55,7 @@ test('la sauvegarde v3 restaure progression, apparence modulaire et options', ()
   assert.equal(result.loaded, true);
   assert.equal(result.migrated, false);
   assert.equal(restored.honorScore, 2450);
+  assert.equal(restored.lifetimeHonor, 5400);
   assert.equal(restored.currentSkinId, 'wolf_avpr');
   assert.equal(restored.customization.maskId, 'mask_wolf_avpr');
   assert.equal(restored.customization.dreadColorId, 'dread_ivoire');
@@ -62,7 +65,7 @@ test('la sauvegarde v3 restaure progression, apparence modulaire et options', ()
   assert.equal(result.settings.hudScale, 1.2);
 });
 
-test('une sauvegarde v2 est migrée vers v3 sans perdre la progression', () => {
+test('une sauvegarde v2 est migrée vers v4 sans perdre la progression', () => {
   globalThis.localStorage = makeStorage();
   const manager = new SaveManager();
   localStorage.setItem(manager.PREVIOUS_KEY, JSON.stringify({
@@ -93,7 +96,7 @@ test('une sauvegarde v2 est migrée vers v3 sans perdre la progression', () => {
   assert.equal(player.hasAntiAcidCloak, true);
   assert.equal(result.settings.hudScale, 1.1);
   const migratedPayload = JSON.parse(localStorage.getItem(manager.STORAGE_KEY));
-  assert.equal(migratedPayload.version, 3);
+  assert.equal(migratedPayload.version, 4);
   assert.equal(migratedPayload.player.customization.maskId, 'mask_wolf_avpr');
   assert.equal(migratedPayload.player.customization.armorColorId, 'armor_xeno');
   assert.equal(localStorage.getItem(manager.PREVIOUS_KEY), null);
@@ -135,12 +138,12 @@ test('une sauvegarde v1 est migrée sans perdre les améliorations', () => {
   assert.equal(localStorage.getItem(manager.LEGACY_KEY), null);
 });
 
-test('une principale corrompue est récupérée depuis le temporaire v3 puis réparée', () => {
+test('une principale corrompue est récupérée depuis le temporaire v4 puis réparée', () => {
   globalThis.localStorage = makeStorage();
   const manager = new SaveManager();
   localStorage.setItem(manager.STORAGE_KEY, '{json-corrompu');
   localStorage.setItem(manager.TEMP_KEY, JSON.stringify({
-    version: 3,
+    version: 4,
     savedAt: '2026-08-22T00:00:00.000Z',
     player: {
       honorScore: -25,
@@ -170,7 +173,7 @@ test('une principale corrompue est récupérée depuis le temporaire v3 puis ré
   assert.equal(localStorage.getItem(manager.TEMP_KEY), null);
 
   const repaired = JSON.parse(localStorage.getItem(manager.STORAGE_KEY));
-  assert.equal(repaired.version, 3);
+  assert.equal(repaired.version, 4);
   assert.equal(repaired.player.honorScore, 0);
   assert.equal(repaired.player.honorRankIndex, 3);
   assert.equal(repaired.settings.hudScale, 1.25);
@@ -203,7 +206,7 @@ test('un temporaire corrompu laisse la sauvegarde v2 être migrée', () => {
   assert.equal(player.honorScore, 1800);
   assert.equal(player.hasAntiAcidCloak, true);
   assert.equal(player.currentSkinId, 'city_1990');
-  assert.equal(JSON.parse(localStorage.getItem(manager.STORAGE_KEY)).version, 3);
+  assert.equal(JSON.parse(localStorage.getItem(manager.STORAGE_KEY)).version, 4);
   assert.equal(localStorage.getItem(manager.TEMP_KEY), null);
   assert.equal(localStorage.getItem(manager.PREVIOUS_KEY), null);
 });
