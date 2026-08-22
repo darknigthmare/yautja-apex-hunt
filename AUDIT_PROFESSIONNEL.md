@@ -1,14 +1,14 @@
 # Audit professionnel — Yautja: Apex Hunt
 
 **Date de l'audit :** 22 août 2026
-**Périmètre :** code source local, données de jeu, sauvegarde, interface, assets et version publique alors disponible.
-**Statut :** audit initial suivi d'un chantier corrigé ; candidat 1.2.0 validé localement le 22 août 2026, sans défaut P0/P1 connu, publication autorisée et gate production encore requis.
+**Périmètre :** code source, données de jeu, sauvegarde, interface, assets et release publique.
+**Statut :** audit initial suivi d'un chantier corrigé ; version 1.2.0 validée puis publiée le 22 août 2026, sans défaut P0/P1 connu.
 
 ## Résumé exécutif
 
 Le projet possède déjà une boucle de chasse 3D, quatre cibles, quatre biomes, un hub, une économie d'honneur et un arsenal. La version de départ restait cependant un prototype fragile : le lancement d'une chasse pouvait casser immédiatement, plusieurs attaques n'entraient jamais dans la résolution des dégâts, la sauvegarde ne couvrait pas toute la progression et les options de confort manquaient.
 
-Le chantier a traité en priorité la jouabilité et la persistance, puis les fenêtres de réaction, l'accessibilité, la cohérence du lore et l'identité visuelle. Les preuves techniques sont consignées dans `QA_REPORT.md` : 33 tests, build, audit npm, axe et parcours Chromium desktop/mobile ; les contrôles physiques longue durée restent explicitement recommandés.
+Le chantier a traité en priorité la jouabilité et la persistance, puis les fenêtres de réaction, l'accessibilité, la cohérence du lore et l'identité visuelle. Les preuves techniques sont consignées dans `QA_REPORT.md` : 33 tests, build, audit npm, axe, parcours Chromium desktop/mobile et production Vercel contrôlée en HTTP 200 avec ses headers et ses neuf textures ; les contrôles physiques longue durée restent explicitement recommandés.
 
 ## Méthode et niveaux de preuve
 
@@ -43,7 +43,7 @@ Le chantier a traité en priorité la jouabilité et la persistance, puis les fe
 4. **Documentation de production absente — vérifié baseline.** Il manquait un contrat explicite de game design, d'art, de lore, d'assets et de QA.
 5. **Poids JavaScript — corrigé dans le worktree.** Le build initial signalait un chunk d'environ 535 Ko ; le build final isole Three.js dans un chunk de 477,51 Ko et ne produit plus l'avertissement supérieur à 500 Ko.
 
-## État du chantier local
+## État de la release
 
 | Domaine | État constaté | Validation restante |
 | --- | --- | --- |
@@ -79,4 +79,4 @@ La release ne peut être qualifiée qu'après réussite des étapes suivantes :
 
 ## Publication
 
-L’utilisateur a explicitement autorisé le push GitHub et le déploiement Vercel le 22 août 2026. La publication reste conditionnée au succès de la preview, des headers, du smoke production et à la concordance du SHA déployé.
+La source fonctionnelle `ce5cd245a4b37614946e9aacbc08f61034c4726b` a été poussée sur `master`. Le Preview Vercel a été vérifié puis promu ; la production <https://yautja-apex-hunt.vercel.app/> est en état `Ready`, répond en HTTP 200 et sert le bundle, les headers de sécurité et les neuf textures attendus.

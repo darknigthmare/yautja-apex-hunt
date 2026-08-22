@@ -1,8 +1,8 @@
 # Changelog professionnel
 
-Toutes les évolutions notées ici sont **non publiées** tant qu'aucun push ou déploiement autorisé n'a été effectué.
+Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
-## [Unreleased] — 22 août 2026
+## [1.2.0] — 22 août 2026
 
 ### Ajouté
 
@@ -16,7 +16,7 @@ Toutes les évolutions notées ici sont **non publiées** tant qu'aucun push ou 
 - infrastructure d'options pour audio, mouvement réduit, fort contraste et échelle du HUD ;
 - documentation de production : audit, game design, direction artistique, lore, assets et QA.
 
-### Corrigé dans le worktree
+### Corrigé
 
 - import du gestionnaire d'environnement principal redirigé vers l'implémentation complète ;
 - autodestruction protégée contre les explosions répétées et associée à un état terminal ;
@@ -44,7 +44,7 @@ Toutes les évolutions notées ici sont **non publiées** tant qu'aucun push ou 
 - Vite porté à 8.2.2 ; audit final à 0 vulnérabilité connue.
 - Three.js séparé dans un chunk cacheable de 477,51 Ko ; build final sans warning de taille.
 
-### Validation manuelle encore recommandée
+### Validation physique post-release encore recommandée
 
 - accomplir manuellement une victoire complète, une défaite et l'autodestruction pour contrôler toute la mise en scène ;
 - provoquer en jeu les impacts Bad Blood, Reine, Predalien et le QTE facehugger ;
@@ -53,6 +53,6 @@ Toutes les évolutions notées ici sont **non publiées** tant qu'aucun push ou 
 
 ### Publication
 
-- push GitHub et déploiement Vercel explicitement autorisés par l’utilisateur le 22 août 2026 ;
-- aucun déploiement de ce candidat n’est revendiqué avant exécution du gate de production ;
-- état public exact et commit déployé à consigner dans `QA_REPORT.md` après publication.
+- source fonctionnelle poussée sur `master` au commit `ce5cd245a4b37614946e9aacbc08f61034c4726b` ;
+- Preview Vercel vérifié en HTTP 200 avec le bundle, les headers de sécurité et les neuf textures, puis promu en production ;
+- version 1.2.0 disponible sur <https://yautja-apex-hunt.vercel.app/>.

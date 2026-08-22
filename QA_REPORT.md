@@ -1,22 +1,24 @@
-# Rapport QA — validation locale
+# Rapport QA — release 1.2.0
 
 **Date :** 22 août 2026
-**Statut :** candidat 1.2.0 validé localement par tests, build, audit, revue P0/P1 et parcours Chromium desktop/mobile ; contrôle production encore requis.
-**Important :** ce document ne certifie un push ou un déploiement qu’après consignation du commit et de l’URL effectivement publiés.
+**Statut :** version 1.2.0 publiée sur la production Vercel le 22 août 2026, sans défaut P0/P1 connu.
+**Source fonctionnelle publiée :** commit `ce5cd245a4b37614946e9aacbc08f61034c4726b` sur `master`.
+**URL publique :** <https://yautja-apex-hunt.vercel.app/>
 
-## Résultats établis sur le worktree final
+## Résultats établis sur la release
 
 | Contrôle | Résultat | Portée exacte |
 | --- | --- | --- |
-| Version publique | HTTP 200 observé | Ancienne version publique, pas le worktree actuel. |
+| Version publique | Vercel `production` en état `Ready`, HTTP 200 | L’alias public sert le bundle validé de la 1.2.0. |
 | Syntaxe et tests | 33/33 tests Node réussis | Combat, télégraphies, acide/camouflage, lore, sauvegarde/migration, résilience, timers, destruction GPU et contrats statiques. |
 | Build de production | Vite 8.2.2 réussi sur le worktree final | App 117,95 Ko, CSS 18,23 Ko et chunk Three.js 477,51 Ko ; aucun avertissement supérieur à 500 Ko. |
 | Dépendances | `npm audit --audit-level=moderate` : 0 vulnérabilité | Lockfile final contrôlé. |
-| Assets | Neuf WebP 1024×1024, 2 451 694 octets | Les neuf chemins ont répondu en HTTP 200 dans Chromium ; trois nouvelles matières intégrées aux trophées, à l’armure et aux œufs. |
-| Smoke test navigateur | Réussi dans les sessions isolées précédentes et `yautja-final-local` | Hub, Codex, armurerie sourcée, options, Reine/ruche, Bad Blood/Ryushi, Goliath/jungle, défaite, retour hub et états responsive. |
-| Console navigateur | 0 erreur et aucun warning applicatif après correction | Les refus de pointer-lock sont gérés sans rejet non capturé. |
+| Assets | Neuf WebP 1024×1024, 2 451 694 octets | Les neuf chemins ont répondu en HTTP 200 sur le Preview puis sur la production ; trois nouvelles matières sont intégrées aux trophées, à l’armure et aux œufs. |
+| Smoke test navigateur | Réussi localement et sur la production publique | Production : accueil, hub, armurerie et ses 20 badges, contrats Goliath/Reine, pause, abandon, défaite et retour ; les parcours locaux couvrent aussi Codex, options et états responsive. |
+| Console navigateur | 0 erreur et aucun warning applicatif après correction | Zéro erreur sur la production ; les refus de pointer-lock sont gérés sans rejet non capturé. |
 | Accessibilité | axe-core 4.12.1 : 0 violation | Un contrôle de contraste reste « incomplete » car le HUD recouvre le canvas WebGL. |
 | Responsive | 390×844 sans débordement horizontal | Canvas 390×844, modales défilables, HUD sans chevauchement à 0,85/1,25 et cibles armes d’au moins 44×44 px. |
+| Surface de production | HTTP 200 et headers vérifiés | CSP sans script tiers, COOP, HSTS, `nosniff`, Permissions-Policy et Referrer-Policy présents. |
 
 ## Matrice de validation finale
 
@@ -79,7 +81,7 @@ Les cases cochées correspondent uniquement aux preuves réellement obtenues dan
 ### Surface web
 
 - [x] métadonnées, favicon, manifest, robots et sitemap présents dans le build.
-- [ ] headers de sécurité examinés sur la preview de déploiement.
+- [x] headers de sécurité examinés sur la Preview et la production.
 - [x] tous les chemins absolus des neuf textures chargent dans Chromium.
 - [x] aucune source map ni donnée locale sensible présente dans `dist`.
 
@@ -98,4 +100,4 @@ Les cases cochées correspondent uniquement aux preuves réellement obtenues dan
 
 Une seule erreur P0, perte de sauvegarde, attaque majeure sans dégâts, asset manquant ou exception console reproductible bloque la release. Les écarts P1/P2 doivent être corrigés ou explicitement acceptés et consignés.
 
-Push GitHub et déploiement Vercel sont autorisés ; le statut restera « contrôle production requis » jusqu’à vérification de la preview puis de l’URL publique.
+Le commit fonctionnel a été poussé sur `master`, le Preview Vercel a été vérifié puis promu, et l’URL publique a été contrôlée en HTTP 200 avec le bundle, les headers et les neuf textures attendus.
