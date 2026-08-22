@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { ShaderManager } from '../Shaders.js';
 import { audioSynth } from '../AudioSynthesizer.js';
+import { captureBaseMaterials, disposeObject3D, overrideMaterials, restoreBaseMaterials } from '../utils/materialState.js';
 
 export class BadBloodRival {
   constructor(scene) {
@@ -26,14 +27,14 @@ export class BadBloodRival {
     // Mesh
     this.mesh = this.createRivalMesh();
     this.scene.add(this.mesh);
+    captureBaseMaterials(this.mesh);
 
     this.normalMaterial = this.mesh.children[0].material;
     this.cloakMaterial = ShaderManager.createCloakMaterial();
+    this.recloakTimer = 0;
 
     // Start cloaked
-    this.mesh.traverse((child) => {
-      if (child.isMesh) child.material = this.cloakMaterial;
-    });
+    overrideMaterials(this.mesh, this.cloakMaterial);
   }
 
   createRivalMesh() {
@@ -97,26 +98,26 @@ export class BadBloodRival {
     if (this.isDead) return;
 
     this.health = Math.max(0, this.health - amount);
-    
-    // Uncloak temporarily on taking damage!
-    this.isCloaked = false;
-    this.mesh.traverse((child) => {
-      if (child.isMesh) child.material = this.normalMaterial;
-    });
 
-    setTimeout(() => {
-      if (!this.isDead) {
-        this.isCloaked = true;
-        this.mesh.traverse((child) => {
-          if (child.isMesh) child.material = this.cloakMaterial;
-        });
-      }
-    }, 3000);
+    // Uncloak temporarily on taking damage.
+    this.isCloaked = false;
+    restoreBaseMaterials(this.mesh);
+    this.recloakTimer = 3.0;
 
     if (this.health <= 0) {
       this.isDead = true;
+      this.recloakTimer = 0;
+      restoreBaseMaterials(this.mesh);
       audioSynth.playYautjaClick();
     }
+  }
+
+  dispose() {
+    this.recloakTimer = 0;
+    this.projectiles.forEach((projectile) => disposeObject3D(projectile.mesh));
+    this.projectiles = [];
+    restoreBaseMaterials(this.mesh);
+    this.cloakMaterial.dispose?.();
   }
 
   applyNet() {
@@ -126,6 +127,14 @@ export class BadBloodRival {
 
   update(delta, playerPos) {
     if (this.isDead) return;
+
+    if (this.recloakTimer > 0) {
+      this.recloakTimer = Math.max(0, this.recloakTimer - delta);
+      if (this.recloakTimer === 0) {
+        this.isCloaked = true;
+        overrideMaterials(this.mesh, this.cloakMaterial);
+      }
+    }
 
     if (this.isNetted) {
       this.netTimer -= delta;
@@ -166,7 +175,7 @@ export class BadBloodRival {
       p.mesh.position.addScaledVector(p.dir, p.speed * delta);
       p.lifetime -= delta;
       if (p.lifetime <= 0) {
-        this.scene.remove(p.mesh);
+        disposeObject3D(p.mesh);
         this.projectiles.splice(i, 1);
       }
     }

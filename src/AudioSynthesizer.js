@@ -4,6 +4,7 @@ class AudioSynthesizer {
   constructor() {
     this.ctx = null;
     this.initialized = false;
+    this.muted = false;
 
     // Adaptive Music Nodes
     this.bgmOsc = null;
@@ -17,11 +18,19 @@ class AudioSynthesizer {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       this.ctx = new AudioCtx();
       this.initialized = true;
+      if (this.muted) this.ctx.suspend();
       this.startAmbientJungle();
       this.startAdaptiveBGM();
     } catch (e) {
       console.warn("Web Audio API not supported", e);
     }
+  }
+
+  setMuted(muted) {
+    this.muted = Boolean(muted);
+    if (!this.ctx) return;
+    if (this.muted) this.ctx.suspend();
+    else this.ctx.resume();
   }
 
   // Yautja Victory Roar [R] (Chest Thumping Power Roar)

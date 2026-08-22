@@ -3,26 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yautja: Apex Hunt - 3D Monster Hunting (Ultimate Lore Vault Edition)</title>
+  <meta name="description" content="Yautja: Apex Hunt est une expérience de chasse 3D fan-made : traquez des proies légendaires, développez votre arsenal et gagnez votre rang dans le vaisseau-mère.">
+  <meta name="theme-color" content="#05080c">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="index,follow">
+  <meta name="application-name" content="Yautja: Apex Hunt">
+  <link rel="canonical" href="https://yautja-apex-hunt.vercel.app/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Yautja: Apex Hunt">
+  <meta property="og:title" content="Yautja: Apex Hunt — Chasse 3D fan-made">
+  <meta property="og:description" content="Endossez le bio-masque, choisissez votre contrat et prouvez votre valeur au cours de quatre chasses.">
+  <meta property="og:url" content="https://yautja-apex-hunt.vercel.app/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Yautja: Apex Hunt">
+  <meta name="twitter:description" content="Une expérience de chasse 3D fan-made jouable dans le navigateur.">
+  <title>Yautja: Apex Hunt — Chasse 3D fan-made</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="src/style.css">
-  
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-    }
-  }
-  </script>
-</head>
-<body>
-  <canvas id="game-canvas"></canvas>
+  <link rel="stylesheet" href="src/professional.css">
 
-  <div id="vision-overlay" class="vision-normal"></div>
-  <div id="scanline-overlay"></div>
+</head>
+<body class="app-shell">
+  <main id="game-stage" aria-label="Zone de jeu">
+  <canvas id="game-canvas" aria-label="Vue 3D de la chasse" tabindex="-1"></canvas>
+
+  <div id="vision-overlay" class="vision-normal" aria-hidden="true"></div>
+  <div id="scanline-overlay" aria-hidden="true"></div>
 
   <!-- Facehugger QTE Overlay -->
-  <div id="qte-overlay" class="hidden">
+  <div id="qte-overlay" class="hidden" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="qte-box">
       <div class="qte-title">ALERTE PARASITE FACEHUGGER !</div>
       <div class="qte-prompt">APPUYEZ RAPIDEMENT SUR <span class="qte-key">[ESPACE]</span> OU <span class="qte-key">[CLIC DROIT]</span> POUR TRANCHER !</div>
@@ -30,7 +41,7 @@
   </div>
 
   <!-- Yautja Bio-Mask HUD Interface -->
-  <div id="hud-container">
+  <div id="hud-container" role="region" aria-label="Interface du bio-masque">
     <div id="helmet-frame"></div>
 
     <div id="hud-top">
@@ -130,14 +141,14 @@
     <!-- Bottom Bar: Weapons -->
     <div id="hud-bottom">
       <div id="weapon-selector">
-        <div class="weapon-slot active" id="wep-1" data-wep="1"><div class="wep-num">[1]</div><div class="wep-name">LAMES POIGNET</div></div>
-        <div class="weapon-slot" id="wep-2" data-wep="2"><div class="wep-num">[2]</div><div class="wep-name">PLASMA</div></div>
-        <div class="weapon-slot" id="wep-3" data-wep="3"><div class="wep-num">[3]</div><div class="wep-name">COMBI-STICK</div></div>
-        <div class="weapon-slot" id="wep-4" data-wep="4"><div class="wep-num">[4]</div><div class="wep-name">DISQUE INTEL</div></div>
-        <div class="weapon-slot" id="wep-5" data-wep="5"><div class="wep-num">[5]</div><div class="wep-name">LANCE-FILET</div></div>
-        <div class="weapon-slot" id="wep-6" data-wep="6"><div class="wep-num">[6]</div><div class="wep-name">MEDICOMP</div></div>
-        <div class="weapon-slot" id="wep-7" data-wep="7"><div class="wep-num">[7]</div><div class="wep-name">MINES PLASMA</div></div>
-        <div class="weapon-slot" id="wep-8" data-wep="8"><div class="wep-num">[8]</div><div class="wep-name">FOUET ÉPINES</div></div>
+        <button type="button" class="weapon-slot active" id="wep-1" data-wep="1"><span class="wep-num">[1]</span><span class="wep-name">LAMES POIGNET</span></button>
+        <button type="button" class="weapon-slot" id="wep-2" data-wep="2"><span class="wep-num">[2]</span><span class="wep-name">PLASMA</span></button>
+        <button type="button" class="weapon-slot" id="wep-3" data-wep="3"><span class="wep-num">[3]</span><span class="wep-name">COMBI-STICK</span></button>
+        <button type="button" class="weapon-slot" id="wep-4" data-wep="4"><span class="wep-num">[4]</span><span class="wep-name">DISQUE INTEL</span></button>
+        <button type="button" class="weapon-slot" id="wep-5" data-wep="5"><span class="wep-num">[5]</span><span class="wep-name">LANCE-FILET</span></button>
+        <button type="button" class="weapon-slot" id="wep-6" data-wep="6"><span class="wep-num">[6]</span><span class="wep-name">MEDICOMP</span></button>
+        <button type="button" class="weapon-slot" id="wep-7" data-wep="7"><span class="wep-num">[7]</span><span class="wep-name">MINES PLASMA</span></button>
+        <button type="button" class="weapon-slot" id="wep-8" data-wep="8"><span class="wep-num">[8]</span><span class="wep-name">FOUET ÉPINES</span></button>
       </div>
 
       <div id="action-prompt" class="hidden">
@@ -148,41 +159,49 @@
 
     <div id="log-banner" class="hidden"></div>
   </div>
+  </main>
 
   <!-- Start / Controls Modal -->
-  <div id="controls-modal">
-    <div class="modal-box">
-      <h2>MÉCANIQUES ULTIMES DU CHASSEUR YAUTJA</h2>
+  <div id="controls-modal" role="dialog" aria-modal="true" aria-labelledby="controls-title">
+    <div class="modal-box modal-scroll" tabindex="-1">
+      <p class="modal-eyebrow">BRIEFING DE CHASSE</p>
+      <h2 id="controls-title">MÉCANIQUES DU CHASSEUR YAUTJA</h2>
+      <p class="modal-intro">Jeu fan-made indépendant. Souris et clavier recommandés.</p>
       <div class="controls-grid">
-        <div><strong>Z Q S D:</strong> Déplacement Yautja</div>
-        <div><strong>Souris:</strong> Caméra Bio-Masque</div>
-        <div><strong>Clic Gauche:</strong> Attaquer / Tirer</div>
-        <div><strong>Espace:</strong> Saut de Canopée</div>
-        <div><strong>[R]:</strong> Rugissement de Victoire Yautja</div>
-        <div><strong>[F]:</strong> Roue de Mimétisme Vocal</div>
-        <div><strong>[V]:</strong> Mode Vision</div>
-        <div><strong>[C]:</strong> Camouflage Optique</div>
-        <div><strong>[1] à [8]:</strong> Armes Yautja</div>
-        <div><strong>[E]:</strong> Récolter Trophée d'Honneur</div>
+        <div><strong>Z Q S D :</strong> Déplacement Yautja</div>
+        <div><strong>Souris :</strong> Caméra du bio-masque</div>
+        <div><strong>Clic gauche :</strong> Attaquer / tirer</div>
+        <div><strong>Espace :</strong> Saut de canopée</div>
+        <div><strong>[R] :</strong> Rugissement de victoire</div>
+        <div><strong>[F] :</strong> Roue de mimétisme vocal</div>
+        <div><strong>[V] :</strong> Mode de vision</div>
+        <div><strong>[C] :</strong> Camouflage optique</div>
+        <div><strong>[1] à [8] :</strong> Armes Yautja</div>
+        <div><strong>[E] :</strong> Récolter un trophée d'honneur</div>
+        <div><strong>[Échap] / [P] :</strong> Pause et options</div>
+        <div><strong>Clic droit :</strong> Zoom thermique si débloqué</div>
       </div>
-      <button id="btn-start-game">ENTRER DANS LE VAISSEAU MÈRE YAUTJA</button>
+      <button id="btn-start-game" type="button">ENTRER DANS LE VAISSEAU-MÈRE</button>
     </div>
   </div>
 
-  <!-- Mothership Mission & Armory Vault Modal -->
-  <div id="mission-modal" class="hidden">
-    <div class="modal-box mission-box">
-      <h2>ARMURERIE & CONSOLE DES PLANÈTES YAUTJA</h2>
-      
-      <div class="tab-row">
-        <button id="tab-btn-missions" class="tab-btn active">CONTRATS DE CHASSE & PLANÈTES</button>
-        <button id="tab-btn-armory" class="tab-btn">ARMURERIE DES SKINS YAUTJA (20+ SKINS LORE)</button>
+  <!-- Mothership Mission, Armory, Codex & Settings Modal -->
+  <div id="mission-modal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="mission-title">
+    <div class="modal-box mission-box modal-scroll" tabindex="-1">
+      <p class="modal-eyebrow">VAISSEAU-MÈRE · CONSOLE DE CHASSE</p>
+      <h2 id="mission-title">ARMURERIE & CONTRATS YAUTJA</h2>
+
+      <div class="tab-row" role="tablist" aria-label="Sections du vaisseau-mère">
+        <button id="tab-btn-missions" class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="tab-content-missions">CONTRATS</button>
+        <button id="tab-btn-armory" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-armory">ARMURERIE</button>
+        <button id="tab-btn-codex" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-codex">CODEX</button>
+        <button id="tab-btn-options" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-options">OPTIONS</button>
       </div>
 
       <!-- Tab 1: Missions & Planets -->
-      <div id="tab-content-missions">
+      <div id="tab-content-missions" role="tabpanel" aria-labelledby="tab-btn-missions">
         <div class="planet-select-row">
-          <span>SECTEUR DE CHASSE: </span>
+          <label for="planet-selector">SECTEUR DE CHASSE :</label>
           <select id="planet-selector">
             <option value="jungle">JUNGLE EXTRATERRESTRE (RUINES SACRÉES)</option>
             <option value="hive_lv426">LV-426 RUCHES SOUTERRAINES (BAVE ACIDE & NIDS)</option>
@@ -192,56 +211,117 @@
         </div>
 
         <div class="mission-cards-container">
-          <div class="mission-card">
+          <article class="mission-card">
             <h3>1. GOLIATH XENO-AKUMO</h3>
             <p>Mégafaune colossale blindée.</p>
-            <button class="btn-launch-hunt" data-hunt="goliath">TRAQUER LE GOLIATH</button>
-          </div>
-          <div class="mission-card">
+            <button class="btn-launch-hunt" type="button" data-hunt="goliath">TRAQUER LE GOLIATH</button>
+          </article>
+          <article class="mission-card">
             <h3>2. REINE XÉNOMORPHE</h3>
             <p>Reine Alien avec sang acide.</p>
-            <button class="btn-launch-hunt" data-hunt="xeno_queen">MASSACRER LA REINE</button>
-          </div>
-          <div class="mission-card">
+            <button class="btn-launch-hunt" type="button" data-hunt="xeno_queen">AFFRONTER LA REINE</button>
+          </article>
+          <article class="mission-card">
             <h3>3. YAUTJA BAD BLOOD</h3>
-            <p>Predator renégat. Duel d'invisibilité.</p>
-            <button class="btn-launch-hunt" data-hunt="bad_blood">DÉFIER LE BAD BLOOD</button>
-          </div>
-          <div class="mission-card">
-            <h3>4. PREDALIEN ULTIME</h3>
-            <p>Boss Hybride Légendaire Yautja/Alien.</p>
-            <button class="btn-launch-hunt" data-hunt="predalien">VAINCRE LE PREDALIEN</button>
-          </div>
+            <p>Chasseur renégat. Duel d'invisibilité.</p>
+            <button class="btn-launch-hunt" type="button" data-hunt="bad_blood">DÉFIER LE BAD BLOOD</button>
+          </article>
+          <article class="mission-card">
+            <h3>4. PREDALIEN</h3>
+            <p>Hybride létal issu de l'univers AVP.</p>
+            <button class="btn-launch-hunt" type="button" data-hunt="predalien">VAINCRE LE PREDALIEN</button>
+          </article>
         </div>
 
         <div class="forge-panel">
-          <h3>FORGE D'HONNEUR DU VAISSEAU MÈRE</h3>
+          <h3>FORGE D'HONNEUR DU VAISSEAU-MÈRE</h3>
           <div class="forge-buttons">
-            <button id="btn-buy-tribeam">TIR TRI-FAISCEAU (500 PTS)</button>
-            <button id="btn-buy-antiacid">CAMOUFLAGE ANTI-ACIDE (800 PTS)</button>
-            <button id="btn-buy-scope">ZOOM SCOPE THERMIQUE 4X (400 PTS)</button>
+            <button id="btn-buy-tribeam" type="button">TIR TRI-FAISCEAU (500 PTS)</button>
+            <button id="btn-buy-antiacid" type="button">CAMOUFLAGE ANTI-ACIDE (800 PTS)</button>
+            <button id="btn-buy-scope" type="button">ZOOM THERMIQUE 4× (400 PTS)</button>
           </div>
         </div>
       </div>
 
       <!-- Tab 2: Yautja Skin Vault -->
-      <div id="tab-content-armory" class="hidden">
-        <h3>SÉLECTIONNER VOTRE ARMURE YAUTJA LORE</h3>
+      <div id="tab-content-armory" class="hidden" role="tabpanel" aria-labelledby="tab-btn-armory">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">ÉQUIPEMENT DU CHASSEUR</p>
+            <h3>ARMURES YAUTJA</h3>
+          </div>
+          <p>Choisissez une silhouette inspirée de différentes chasses avant le déploiement.</p>
+        </div>
         <div id="skin-catalog-grid" class="skin-grid"></div>
+      </div>
+
+      <!-- Tab 3: Lore Codex -->
+      <div id="tab-content-codex" class="hidden" role="tabpanel" aria-labelledby="tab-btn-codex">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">ARCHIVES DE CHASSE</p>
+            <h3>CODEX YAUTJA</h3>
+          </div>
+          <p>Les niveaux de canon distinguent les films, l'univers AVP, les récits étendus et les créations originales du jeu.</p>
+        </div>
+        <div id="codex-grid" class="codex-grid" aria-live="polite"></div>
+      </div>
+
+      <!-- Tab 4: Accessibility & Experience Settings -->
+      <div id="tab-content-options" class="hidden" role="tabpanel" aria-labelledby="tab-btn-options">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">BIO-MASQUE · CONFIGURATION</p>
+            <h3>OPTIONS D'EXPÉRIENCE</h3>
+          </div>
+          <p>Les réglages sont sauvegardés sur cet appareil.</p>
+        </div>
+        <div class="settings-grid">
+          <label class="setting-card" for="setting-audio">
+            <span><strong>Audio synthétique</strong><small>Active les signaux et effets sonores.</small></span>
+            <input id="setting-audio" type="checkbox" checked>
+          </label>
+          <label class="setting-card" for="setting-reduced-motion">
+            <span><strong>Réduire les mouvements</strong><small>Limite les secousses et animations d'interface.</small></span>
+            <input id="setting-reduced-motion" type="checkbox">
+          </label>
+          <label class="setting-card" for="setting-high-contrast">
+            <span><strong>Contraste renforcé</strong><small>Accentue les textes, jauges et contours.</small></span>
+            <input id="setting-high-contrast" type="checkbox">
+          </label>
+          <label class="setting-card setting-range" for="setting-hud-scale">
+            <span><strong>Échelle du HUD</strong><small>Ajuste la taille de l'interface du bio-masque.</small></span>
+            <input id="setting-hud-scale" type="range" min="0.8" max="1.25" step="0.05" value="1" aria-label="Échelle du HUD">
+          </label>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- Pause & quick settings -->
+  <div id="pause-modal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+    <div class="modal-box pause-box" tabindex="-1">
+      <p class="modal-eyebrow">SYSTÈMES DU BIO-MASQUE SUSPENDUS</p>
+      <h2 id="pause-title">CHASSE EN PAUSE</h2>
+      <p class="modal-intro">Reprenez la traque ou abandonnez le contrat pour retourner au vaisseau-mère.</p>
+      <div class="pause-actions">
+        <button id="btn-resume" type="button">REPRENDRE LA CHASSE</button>
+        <button id="btn-abandon-hunt" class="button-secondary" type="button">ABANDONNER LE CONTRAT</button>
+      </div>
+      <p class="shortcut-hint">Échap / P pour reprendre</p>
+    </div>
+  </div>
+
   <!-- End Game Screen -->
-  <div id="endgame-modal" class="hidden">
-    <div class="modal-box endgame-box">
-      <h1 id="endgame-title">CHASSE ACCOMPLIE !</h1>
+  <div id="endgame-modal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="endgame-title">
+    <div class="modal-box endgame-box modal-scroll" tabindex="-1">
+      <h1 id="endgame-title" class="yautja-font">CHASSE ACCOMPLIE !</h1>
       <p id="endgame-desc">La proie colossale a succombé à votre puissance Yautja.</p>
       <div class="final-rank-box">
-        <div>SCORE D'HONNEUR FINAL: <span id="final-honor-score">4500 PTS</span></div>
-        <div>RANG YAUTJA ATTEINT: <span id="final-yautja-rank">ANCIEN MAÎTRE (YAUTJA ELDER)</span></div>
+        <div>SCORE D'HONNEUR FINAL : <span id="final-honor-score">4500 PTS</span></div>
+        <div>RANG YAUTJA ATTEINT : <span id="final-yautja-rank">ANCIEN MAÎTRE (YAUTJA ELDER)</span></div>
       </div>
-      <button id="btn-restart-game">RETOURNER AU VAISSEAU MÈRE</button>
+      <button id="btn-restart-game" type="button">RETOURNER AU VAISSEAU-MÈRE</button>
     </div>
   </div>
 

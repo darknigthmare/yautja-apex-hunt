@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { ShaderManager } from '../Shaders.js';
 import { audioSynth } from '../AudioSynthesizer.js';
+import { captureBaseMaterials, overrideMaterials, restoreBaseMaterials } from '../utils/materialState.js';
 
 export class PredalienBoss {
   constructor(scene) {
@@ -31,6 +32,7 @@ export class PredalienBoss {
     // 3D Mesh
     this.mesh = this.createPredalienMesh();
     this.scene.add(this.mesh);
+    captureBaseMaterials(this.mesh);
 
     this.headMesh = this.mesh.getObjectByName('predalienHead');
     this.tailMesh = this.mesh.getObjectByName('predalienTail');
@@ -147,13 +149,9 @@ export class PredalienBoss {
 
   setVisionMode(mode) {
     if (mode === 'thermal') {
-      this.mesh.traverse((child) => {
-        if (child.isMesh) child.material = this.thermalMaterial;
-      });
+      overrideMaterials(this.mesh, this.thermalMaterial);
     } else {
-      this.mesh.traverse((child) => {
-        if (child.isMesh) child.material = this.normalMaterial;
-      });
+      restoreBaseMaterials(this.mesh);
     }
   }
 
@@ -192,6 +190,11 @@ export class PredalienBoss {
       this.isDead = true;
       audioSynth.playMonsterRoar();
     }
+  }
+
+  dispose() {
+    restoreBaseMaterials(this.mesh);
+    this.thermalMaterial.dispose?.();
   }
 
   applyNet() {

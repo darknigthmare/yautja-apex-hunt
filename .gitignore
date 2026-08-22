@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.vercel/
+*.log
+.DS_Store
+Thumbs.db
+
+# OpenAI master PNGs are kept locally; optimized WebP files are versioned.
+art_sources/openai-masters/*.png
+
+# Codex patch/reject scratch files must never enter the repository.
+.codex-*.patch
+*.rej

@@ -91,7 +91,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background-color: #030
 
 #hud-bottom { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; margin-bottom: 10px; }
 #weapon-selector { display: flex; gap: 6px; pointer-events: auto; }
-.weapon-slot { background: var(--hud-bg); border: 1px solid rgba(255, 255, 255, 0.2); padding: 6px 10px; border-radius: 4px; text-align: center; min-width: 95px; cursor: pointer; }
+.weapon-slot { appearance: none; background: var(--hud-bg); border: 1px solid rgba(255, 255, 255, 0.2); padding: 6px 10px; border-radius: 4px; color: inherit; font: inherit; text-align: center; min-width: 95px; cursor: pointer; }
 .weapon-slot.active { border-color: var(--yautja-red); background: rgba(40, 10, 10, 0.85); }
 .wep-num { font-size: 10px; color: var(--yautja-gold); }
 .wep-name { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; }
@@ -113,10 +113,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; background-color: #030
 
 .tab-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
 .tab-btn { background: rgba(20, 30, 45, 0.8); border: 1px solid #00f0ff; color: #00f0ff; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: bold; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
-.tab-btn.active { background: var(--yautja-red); color: #ffffff; border-color: #ff5500; }
+.tab-btn.active { background: #a92922; color: #ffffff; border-color: #ff786e; }
 
 .skin-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-height: 400px; overflow-y: auto; padding: 10px; }
-.skin-card { background: rgba(10, 15, 25, 0.9); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 10px; text-align: left; cursor: pointer; }
+.skin-card { width: 100%; background: rgba(10, 15, 25, 0.9); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 10px; color: inherit; font: inherit; text-align: left; cursor: pointer; }
 .skin-card:hover { border-color: var(--yautja-red); transform: translateY(-2px); }
 .skin-card.selected { border-color: var(--yautja-gold); background: rgba(40, 30, 10, 0.85); }
 .skin-title { font-family: 'Orbitron', sans-serif; font-size: 12px; color: var(--yautja-gold); font-weight: bold; }
@@ -137,6 +137,7 @@ select { background: #111622; color: #00f0ff; border: 1px solid #00f0ff; padding
 .forge-panel h3 { font-family: 'Orbitron', sans-serif; color: var(--yautja-gold); font-size: 13px; margin-bottom: 8px; }
 .forge-buttons { display: flex; justify-content: center; gap: 10px; }
 .forge-buttons button { background: linear-gradient(180deg, #aa4400, #661100); border-color: #ffaa00; font-size: 11px; }
+.forge-buttons button:disabled { cursor: not-allowed; filter: grayscale(0.55); opacity: 0.68; transform: none; }
 
 button { background: linear-gradient(180deg, #ff2200, #aa0000); border: 1px solid #ff5500; color: #ffffff; font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
 button:hover { transform: scale(1.04); }

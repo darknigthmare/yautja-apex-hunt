@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { ShaderManager } from './Shaders.js';
 import { audioSynth } from './AudioSynthesizer.js';
+import { captureBaseMaterials, overrideMaterials, restoreBaseMaterials } from './utils/materialState.js';
 
 export class MegafaunaBoss {
   constructor(scene) {
@@ -27,10 +28,13 @@ export class MegafaunaBoss {
 
     this.aiState = 'roam'; // 'roam', 'chase', 'charge', 'attack_claw'
     this.attackCooldown = 0;
+    this.footstepCooldown = 0;
+    this.roamPhase = 0;
 
     // Create 3D Boss Mesh
     this.mesh = this.createBossMesh();
     this.scene.add(this.mesh);
+    captureBaseMaterials(this.mesh);
 
     // References to breakable sub-meshes
     this.hornMesh = this.mesh.getObjectByName('hornMesh');
@@ -137,17 +141,9 @@ export class MegafaunaBoss {
 
   setVisionMode(mode) {
     if (mode === 'thermal') {
-      this.mesh.traverse((child) => {
-        if (child.isMesh && child.name !== 'coreMesh') {
-          child.material = this.thermalMaterial;
-        }
-      });
+      overrideMaterials(this.mesh, this.thermalMaterial, (child) => child.name !== 'coreMesh');
     } else {
-      this.mesh.traverse((child) => {
-        if (child.isMesh) {
-          child.material = this.normalMaterial;
-        }
-      });
+      restoreBaseMaterials(this.mesh);
     }
   }
 
@@ -194,6 +190,11 @@ export class MegafaunaBoss {
     }
   }
 
+  dispose() {
+    restoreBaseMaterials(this.mesh);
+    this.thermalMaterial.dispose?.();
+  }
+
   applyNet() {
     this.isNetted = true;
     this.netTimer = 4.0;
@@ -209,6 +210,7 @@ export class MegafaunaBoss {
     }
 
     this.attackCooldown = Math.max(0, this.attackCooldown - delta);
+    this.footstepCooldown = Math.max(0, this.footstepCooldown - delta);
 
     const distToPlayer = this.position.distanceTo(playerPos);
     let effectiveDetectionRadius = isPlayerCloaked ? 25.0 : 180.0;
@@ -231,7 +233,6 @@ export class MegafaunaBoss {
           this.attackCooldown = 2.5;
         } else if (distToPlayer > 20.0 && distToPlayer < 45.0) {
           this.aiState = 'charge';
-          audioSynth.playMonsterFootstep();
           this.attackCooldown = 4.0;
         }
       }
@@ -244,15 +245,17 @@ export class MegafaunaBoss {
       }
     } else {
       this.aiState = 'roam';
-      this.position.z += Math.sin(Date.now() * 0.001) * delta * 2.0;
+      this.roamPhase += delta;
+      this.position.z += Math.sin(this.roamPhase) * delta * 2.0;
     }
 
     // CLAMP BOSS POSITION TO STAY WELL WITHIN THE 800x800 TERRAIN ARENA!
     this.position.x = Math.max(-330, Math.min(330, this.position.x));
     this.position.z = Math.max(-330, Math.min(330, this.position.z));
 
-    if (Math.floor(Date.now() * 0.003) % 20 === 0 && (this.aiState === 'chase' || this.aiState === 'charge')) {
+    if (this.footstepCooldown === 0 && (this.aiState === 'chase' || this.aiState === 'charge')) {
       audioSynth.playMonsterFootstep();
+      this.footstepCooldown = this.aiState === 'charge' ? 0.45 : 0.75;
     }
 
     this.mesh.position.copy(this.position);

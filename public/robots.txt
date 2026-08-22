@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://yautja-apex-hunt.vercel.app/sitemap.xml

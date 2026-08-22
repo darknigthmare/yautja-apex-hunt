@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { ShaderManager } from '../Shaders.js';
 import { audioSynth } from '../AudioSynthesizer.js';
+import { captureBaseMaterials, overrideMaterials, restoreBaseMaterials } from '../utils/materialState.js';
 
 export class XenomorphQueen {
   constructor(scene) {
@@ -31,6 +32,7 @@ export class XenomorphQueen {
     // 3D Mesh
     this.mesh = this.createQueenMesh();
     this.scene.add(this.mesh);
+    captureBaseMaterials(this.mesh);
 
     this.crownMesh = this.mesh.getObjectByName('queenCrown');
     this.tailMesh = this.mesh.getObjectByName('queenTail');
@@ -134,13 +136,9 @@ export class XenomorphQueen {
 
   setVisionMode(mode) {
     if (mode === 'thermal') {
-      this.mesh.traverse((child) => {
-        if (child.isMesh) child.material = this.thermalMaterial;
-      });
+      overrideMaterials(this.mesh, this.thermalMaterial);
     } else {
-      this.mesh.traverse((child) => {
-        if (child.isMesh) child.material = this.normalMaterial;
-      });
+      restoreBaseMaterials(this.mesh);
     }
   }
 
@@ -179,6 +177,11 @@ export class XenomorphQueen {
       this.isDead = true;
       audioSynth.playMonsterRoar();
     }
+  }
+
+  dispose() {
+    restoreBaseMaterials(this.mesh);
+    this.thermalMaterial.dispose?.();
   }
 
   applyNet() {

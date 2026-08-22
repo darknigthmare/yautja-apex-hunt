@@ -37,6 +37,7 @@ export class HUDManager {
     this.actionPrompt = document.getElementById('action-prompt');
     this.actionPromptText = document.getElementById('action-prompt-text');
     this.logBanner = document.getElementById('log-banner');
+    this.logTimeoutId = null;
 
     this.weaponSlots = document.querySelectorAll('.weapon-slot');
     this.skinGrid = document.getElementById('skin-catalog-grid');
@@ -49,9 +50,11 @@ export class HUDManager {
     this.skinGrid.innerHTML = '';
 
     YautjaSkinsDatabase.forEach(s => {
-      const card = document.createElement('div');
+      const card = document.createElement('button');
+      card.type = 'button';
       card.className = 'skin-card';
       card.setAttribute('data-skin-id', s.id);
+      card.setAttribute('aria-pressed', 'false');
       card.innerHTML = `
         <div class="skin-title">${s.name}</div>
         <div class="skin-origin">${s.origin}</div>
@@ -131,6 +134,12 @@ export class HUDManager {
       this.hornStatus.textContent = boss.headIntact ? "INTACTE" : "BRISÉ (TROPHÉE)";
       this.tailStatus.textContent = boss.tailIntact ? "INTACTE" : "TRANCHÉE (TROPHÉE)";
     }
+
+    this.targetScannedName.textContent = `${this.bossDisplayName.textContent} — BIOSIGNATURE VERROUILLÉE`;
+  }
+
+  showHubTarget() {
+    this.targetScannedName.textContent = 'VAISSEAU-MÈRE YAUTJA — SALLE DES TROPHÉES';
   }
 
   setVisionModeUI(mode) {
@@ -148,16 +157,18 @@ export class HUDManager {
 
   updateTriLaserPosition(screenPos, distance, isWeakpoint) {
     if (screenPos) {
+      this.triLaser.classList.remove('hidden');
       this.triLaser.style.left = `${screenPos.x}px`;
       this.triLaser.style.top = `${screenPos.y}px`;
       this.lockonBracket.classList.remove('hidden');
       this.lockonBracket.style.left = `${screenPos.x}px`;
       this.lockonBracket.style.top = `${screenPos.y}px`;
       this.lockonDistance.textContent = `${distance.toFixed(1)}m - SIGNAL THERMIQUE`;
-      if (isWeakpoint) this.weakpointTag.classList.remove('hidden');
-      else this.weakpointTag.classList.add('hidden');
+      this.weakpointTag.classList.toggle('hidden', !isWeakpoint);
     } else {
+      this.triLaser.classList.add('hidden');
       this.lockonBracket.classList.add('hidden');
+      this.weakpointTag.classList.add('hidden');
     }
   }
 
@@ -171,9 +182,11 @@ export class HUDManager {
   }
 
   showLogMessage(msg, duration = 3000) {
+    if (this.logTimeoutId !== null) clearTimeout(this.logTimeoutId);
     this.logBanner.textContent = msg;
     this.logBanner.classList.remove('hidden');
-    setTimeout(() => {
+    this.logTimeoutId = setTimeout(() => {
+      this.logTimeoutId = null;
       this.logBanner.classList.add('hidden');
     }, duration);
   }

@@ -4,118 +4,168 @@ export class MothershipHub {
   constructor(scene) {
     this.scene = scene;
     this.group = new THREE.Group();
-    this.trophies = [];
+    this.animatedProps = [];
+    this.trophyDisplays = new Map();
+    this.textureLoader = new THREE.TextureLoader();
+    this.alloyTexture = this.textureLoader.load(
+      '/assets/textures/yautja-alloy.webp',
+      undefined,
+      undefined,
+      () => console.warn('Texture du vaisseau indisponible, fallback métallique conservé.'),
+    );
+    this.alloyTexture.wrapS = THREE.RepeatWrapping;
+    this.alloyTexture.wrapT = THREE.RepeatWrapping;
+    this.alloyTexture.repeat.set(6, 6);
+    this.alloyTexture.colorSpace = THREE.SRGBColorSpace;
 
     this.createShipInterior();
     this.createTrophyVaultWall();
     this.createMissionPedestals();
     this.createArmoryForgeStation();
-
     this.scene.add(this.group);
-    this.group.visible = true;
+  }
+
+  createAlloyMaterial(color = 0x27303a) {
+    return new THREE.MeshStandardMaterial({
+      color,
+      map: this.alloyTexture,
+      roughness: 0.38,
+      metalness: 0.88,
+    });
   }
 
   createShipInterior() {
-    const roomGeo = new THREE.BoxGeometry(70, 28, 70);
-    const roomMat = new THREE.MeshStandardMaterial({
-      color: 0x0a0f16,
-      roughness: 0.4,
-      metalness: 0.9,
-      side: THREE.BackSide
-    });
-
-    const room = new THREE.Mesh(roomGeo, roomMat);
+    const room = new THREE.Mesh(
+      new THREE.BoxGeometry(70, 28, 70),
+      new THREE.MeshStandardMaterial({
+        color: 0x17202a,
+        map: this.alloyTexture,
+        roughness: 0.42,
+        metalness: 0.86,
+        side: THREE.BackSide,
+      }),
+    );
     room.position.y = 14;
     this.group.add(room);
 
-    for (let i = -3; i <= 3; i++) {
+    for (let i = -3; i <= 3; i += 1) {
       const line = new THREE.Mesh(
         new THREE.BoxGeometry(60, 0.1, 0.4),
-        new THREE.MeshBasicMaterial({ color: 0xff1100 })
+        new THREE.MeshBasicMaterial({ color: i === 0 ? 0xffaa00 : 0xff1100 }),
       );
       line.position.set(0, 0.05, i * 9);
       this.group.add(line);
     }
 
-    const shipLight = new THREE.PointLight(0xff1100, 2.5, 45);
+    const shipLight = new THREE.PointLight(0xff2400, 2.7, 46);
     shipLight.position.set(0, 22, 0);
     this.group.add(shipLight);
+    const fillLight = new THREE.PointLight(0x00c8ff, 1.2, 32);
+    fillLight.position.set(0, 10, 24);
+    this.group.add(fillLight);
   }
 
   createTrophyVaultWall() {
-    const wallMat = new THREE.MeshStandardMaterial({ color: 0x151a24, metalness: 0.8 });
-    const wall = new THREE.Mesh(new THREE.BoxGeometry(50, 18, 2), wallMat);
+    const wall = new THREE.Mesh(new THREE.BoxGeometry(50, 18, 2), this.createAlloyMaterial(0x202a35));
     wall.position.set(0, 11, -33);
     this.group.add(wall);
 
-    // 4 Trophy Plaques: Goliath, Queen, Bad Blood, Predalien
-    const trophiesConfig = [
-      { x: -18, col: 0xddccaa, label: "Goliath" },
-      { x: -6, col: 0x111622, label: "Queen" },
-      { x: 6, col: 0x441111, label: "Bad Blood" },
-      { x: 18, col: 0xff0055, label: "Predalien" }
+    const configs = [
+      { huntId: 'goliath', x: -18, color: 0xddccaa },
+      { huntId: 'xeno_queen', x: -6, color: 0x1e3428 },
+      { huntId: 'bad_blood', x: 6, color: 0x651515 },
+      { huntId: 'predalien', x: 18, color: 0xb00045 },
     ];
 
-    trophiesConfig.forEach(t => {
-      const plaque = new THREE.Mesh(new THREE.BoxGeometry(6, 6, 1), new THREE.MeshStandardMaterial({ color: 0x222a36 }));
-      plaque.position.set(t.x, 13, -31.8);
+    configs.forEach(({ huntId, x, color }) => {
+      const plaque = new THREE.Mesh(new THREE.BoxGeometry(7, 7, 1), this.createAlloyMaterial(0x313b46));
+      plaque.position.set(x, 13, -31.8);
       this.group.add(plaque);
 
-      const head = new THREE.Mesh(new THREE.SphereGeometry(1.8), new THREE.MeshStandardMaterial({ color: t.col }));
-      head.position.set(t.x, 13, -30.5);
-      this.group.add(head);
+      const material = new THREE.MeshStandardMaterial({
+        color,
+        emissive: 0x000000,
+        transparent: true,
+        opacity: 0.28,
+        wireframe: true,
+      });
+      const trophy = new THREE.Mesh(new THREE.IcosahedronGeometry(2, 1), material);
+      trophy.position.set(x, 13, -30.4);
+      this.group.add(trophy);
+      this.trophyDisplays.set(huntId, trophy);
     });
   }
 
   createMissionPedestals() {
     const missions = [
-      { name: "1. GOLIATH XENO-AKUMO", x: -21, col: 0xff3300, huntId: 'goliath' },
-      { name: "2. REINE XÉNOMORPHE", x: -7, col: 0x00ff66, huntId: 'xeno_queen' },
-      { name: "3. YAUTJA BAD BLOOD", x: 7, col: 0x00f0ff, huntId: 'bad_blood' },
-      { name: "4. PREDALIEN LÉGENDAIRE", x: 21, col: 0xff0055, huntId: 'predalien' }
+      { huntId: 'goliath', x: -21, color: 0xff3300 },
+      { huntId: 'xeno_queen', x: -7, color: 0x00ff66 },
+      { huntId: 'bad_blood', x: 7, color: 0x00f0ff },
+      { huntId: 'predalien', x: 21, color: 0xff0055 },
     ];
 
-    missions.forEach(m => {
-      const pedestal = new THREE.Mesh(new THREE.CylinderGeometry(2.5, 3.0, 4, 8), new THREE.MeshStandardMaterial({ color: 0x1c2330 }));
-      pedestal.position.set(m.x, 2, -5);
+    missions.forEach(({ huntId, x, color }) => {
+      const pedestal = new THREE.Mesh(
+        new THREE.CylinderGeometry(2.5, 3, 4, 8),
+        this.createAlloyMaterial(0x27313c),
+      );
+      pedestal.position.set(x, 2, -5);
       this.group.add(pedestal);
 
-      const beam = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 2.2, 8, 16, 1, true), new THREE.MeshBasicMaterial({ color: m.col, transparent: true, opacity: 0.35, side: THREE.DoubleSide }));
-      beam.position.set(m.x, 8, -5);
+      const beam = new THREE.Mesh(
+        new THREE.CylinderGeometry(2.2, 2.2, 8, 16, 1, true),
+        new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.28, side: THREE.DoubleSide }),
+      );
+      beam.position.set(x, 8, -5);
       this.group.add(beam);
 
-      const holo = new THREE.Mesh(new THREE.OctahedronGeometry(1.2), new THREE.MeshBasicMaterial({ color: m.col, wireframe: true }));
-      holo.position.set(m.x, 8, -5);
-      this.group.add(holo);
-
-      this.trophies.push({ mesh: holo, huntId: m.huntId });
+      const hologram = new THREE.Mesh(
+        new THREE.OctahedronGeometry(1.2),
+        new THREE.MeshBasicMaterial({ color, wireframe: true }),
+      );
+      hologram.position.set(x, 8, -5);
+      this.group.add(hologram);
+      this.animatedProps.push({ mesh: hologram, speed: 1.5, huntId });
     });
   }
 
   createArmoryForgeStation() {
-    // 3D Yautja Weapon Forge Pedestal on Front Right
-    const forgePedestal = new THREE.Mesh(new THREE.BoxGeometry(10, 4, 6), new THREE.MeshStandardMaterial({ color: 0x331111, metalness: 0.9 }));
-    forgePedestal.position.set(22, 2, 18);
-    this.group.add(forgePedestal);
+    const station = new THREE.Mesh(new THREE.BoxGeometry(10, 4, 6), this.createAlloyMaterial(0x4a1914));
+    station.position.set(22, 2, 18);
+    this.group.add(station);
 
     const forgeLight = new THREE.PointLight(0xffaa00, 3, 15);
     forgeLight.position.set(22, 6, 18);
     this.group.add(forgeLight);
 
-    const anvilShape = new THREE.Mesh(new THREE.OctahedronGeometry(1.5), new THREE.MeshBasicMaterial({ color: 0xffaa00, wireframe: true }));
-    anvilShape.position.set(22, 5.5, 18);
-    this.group.add(anvilShape);
-    this.trophies.push({ mesh: anvilShape, huntId: 'forge' });
+    const anvil = new THREE.Mesh(
+      new THREE.OctahedronGeometry(1.5),
+      new THREE.MeshBasicMaterial({ color: 0xffaa00, wireframe: true }),
+    );
+    anvil.position.set(22, 5.5, 18);
+    this.group.add(anvil);
+    this.animatedProps.push({ mesh: anvil, speed: 1.15, huntId: 'forge' });
+  }
+
+  setTrophyState(completedHunts = []) {
+    const completed = new Set(completedHunts);
+    this.trophyDisplays.forEach((mesh, huntId) => {
+      const unlocked = completed.has(huntId);
+      mesh.material.opacity = unlocked ? 1 : 0.28;
+      mesh.material.wireframe = !unlocked;
+      mesh.material.emissive.setHex(unlocked ? 0x2a1100 : 0x000000);
+      mesh.scale.setScalar(unlocked ? 1 : 0.78);
+    });
   }
 
   setVisible(visible) {
     this.group.visible = visible;
   }
 
-  update(delta) {
-    if (!this.group.visible) return;
-    this.trophies.forEach(t => {
-      t.mesh.rotation.y += delta * 1.5;
+  update(delta, reducedMotion = false) {
+    if (!this.group.visible || reducedMotion) return;
+    this.animatedProps.forEach(({ mesh, speed }) => {
+      mesh.rotation.y += delta * speed;
     });
   }
 }

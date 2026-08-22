@@ -1,0 +1,20 @@
+{
+  "name": "Yautja: Apex Hunt",
+  "short_name": "Apex Hunt",
+  "description": "Jeu de chasse 3D fan-made dans l'univers Yautja.",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#030508",
+  "theme_color": "#05080c",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

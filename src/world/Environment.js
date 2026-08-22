@@ -1,29 +1,33 @@
 import * as THREE from 'three';
+import { BIOME_DEFINITIONS } from '../data/GameConfig.js';
+
+const BIOME_STYLE = Object.freeze({
+  jungle: { background: 0x050810, fog: 0.0035, ambient: 0x1a2536, key: 0x00d0ff, sun: 0x44d0ff, ground: 0x18202b },
+  hive_lv426: { background: 0x020a05, fog: 0.007, ambient: 0x003311, key: 0x00ff44, sun: 0x00ff44, ground: 0x101912 },
+  ryushi_desert: { background: 0x221105, fog: 0.008, ambient: 0x442200, key: 0xffaa00, sun: 0xffaa00, ground: 0x5a3518 },
+  yautja_prime: { background: 0x200505, fog: 0.003, ambient: 0x441111, key: 0xff2200, sun: 0xff0000, ground: 0x341717 },
+});
 
 export class Environment {
   constructor(scene) {
     this.scene = scene;
     this.currentBiome = 'jungle';
-
+    this.reducedMotion = false;
     this.pillars = [];
     this.treePerches = [];
     this.runes = [];
-    this.particles = null;
-
-    // Obstacle Colliders Array [{ x, z, radius }]
     this.obstacleColliders = [];
-
-    // Thermal Heat Footprint System
     this.thermalFootprints = [];
-
-    this.acidRainActive = false;
-    this.sandstormActive = false;
+    this.particles = null;
     this.rainParticles = null;
     this.sandParticles = null;
+    this.acidRainActive = false;
+    this.sandstormActive = false;
+    this.textureLoader = new THREE.TextureLoader();
+    this.textureCache = new Map();
 
     this.biomeGroup = new THREE.Group();
     this.scene.add(this.biomeGroup);
-
     this.createLighting();
     this.setBiome('jungle');
   }
@@ -35,184 +39,217 @@ export class Environment {
     this.mainLight = new THREE.DirectionalLight(0x00d0ff, 0.95);
     this.mainLight.position.set(200, 300, -200);
     this.mainLight.castShadow = true;
-    this.mainLight.shadow.mapSize.width = 2048;
-    this.mainLight.shadow.mapSize.height = 2048;
+    this.mainLight.shadow.mapSize.set(2048, 2048);
     this.scene.add(this.mainLight);
 
     this.sunSphere = new THREE.Mesh(
-      new THREE.SphereGeometry(25, 32, 32),
-      new THREE.MeshBasicMaterial({ color: 0x44d0ff })
+      new THREE.SphereGeometry(25, 24, 24),
+      new THREE.MeshBasicMaterial({ color: 0x44d0ff }),
     );
-    this.sunSphere.position.set(200, 300, -200);
+    this.sunSphere.position.copy(this.mainLight.position);
     this.scene.add(this.sunSphere);
   }
 
-  setBiome(biomeType) {
-    this.currentBiome = biomeType;
-    
-    while (this.biomeGroup.children.length > 0) {
-      this.biomeGroup.remove(this.biomeGroup.children[0]);
-    }
-    this.treePerches = [];
-    this.pillars = [];
-    this.runes = [];
-    this.obstacleColliders = [];
+  getTexture(path, repeat = 8) {
+    const key = `${path}:${repeat}`;
+    if (this.textureCache.has(key)) return this.textureCache.get(key);
 
-    if (biomeType === 'jungle') {
-      this.scene.background = new THREE.Color(0x050810);
-      this.scene.fog = new THREE.FogExp2(0x050810, 0.0035);
-      this.ambientLight.color.setHex(0x1a2536);
-      this.mainLight.color.setHex(0x00d0ff);
-      this.sunSphere.material.color.setHex(0x44d0ff);
-
-      this.createTerrain(0x111622);
-      this.createAncientRuins();
-      this.createAlienFoliage();
-      this.createDriftingParticles(0x00f0ff);
-      this.toggleAcidRain(false);
-      this.toggleSandstorm(false);
-    }
-    else if (biomeType === 'hive_lv426') {
-      this.scene.background = new THREE.Color(0x020a05);
-      this.scene.fog = new THREE.FogExp2(0x020a05, 0.007);
-      this.ambientLight.color.setHex(0x003311);
-      this.mainLight.color.setHex(0x00ff44);
-      this.sunSphere.material.color.setHex(0x00ff44);
-
-      this.createTerrain(0x0a140d);
-      this.createHiveResinPillars();
-      this.createDriftingParticles(0x00ff44);
-      this.toggleAcidRain(true);
-      this.toggleSandstorm(false);
-    }
-    else if (biomeType === 'ryushi_desert') {
-      this.scene.background = new THREE.Color(0x221105);
-      this.scene.fog = new THREE.FogExp2(0x221105, 0.008);
-      this.ambientLight.color.setHex(0x442200);
-      this.mainLight.color.setHex(0xffaa00);
-      this.sunSphere.material.color.setHex(0xffaa00);
-
-      this.createTerrain(0x3a2211);
-      this.createDesertDunes();
-      this.toggleAcidRain(false);
-      this.toggleSandstorm(true);
-    }
-    else if (biomeType === 'yautja_prime') {
-      this.scene.background = new THREE.Color(0x200505);
-      this.scene.fog = new THREE.FogExp2(0x200505, 0.003);
-      this.ambientLight.color.setHex(0x441111);
-      this.mainLight.color.setHex(0xff2200);
-      this.sunSphere.material.color.setHex(0xff0000);
-
-      this.createTerrain(0x221111);
-      this.createColosseumPillars();
-      this.createDriftingParticles(0xff3300);
-      this.toggleAcidRain(false);
-      this.toggleSandstorm(false);
-    }
+    const texture = this.textureLoader.load(
+      path,
+      undefined,
+      undefined,
+      () => console.warn(`Texture indisponible, fallback procédural conservé: ${path}`),
+    );
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(repeat, repeat);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.anisotropy = 4;
+    this.textureCache.set(key, texture);
+    return texture;
   }
 
-  // Giant 800x800 Arena Terrain with Surrounding Boundary Cliff Walls!
-  createTerrain(colorHex) {
-    const groundGeo = new THREE.PlaneGeometry(800, 800, 128, 128);
-    const posAttr = groundGeo.attributes.position;
+  createTexturedMaterial({ color, path, repeat = 5, roughness = 0.85, metalness = 0.05 }) {
+    return new THREE.MeshStandardMaterial({
+      color,
+      map: this.getTexture(path, repeat),
+      roughness,
+      metalness,
+    });
+  }
 
-    for (let i = 0; i < posAttr.count; i++) {
-      const x = posAttr.getX(i);
-      const y = posAttr.getY(i);
-      const dist = Math.sqrt(x * x + y * y);
-      let height = Math.sin(x * 0.03) * Math.cos(y * 0.03) * 4;
-
-      // Surrounding High Mountain Cliff Arena Boundary
-      if (dist > 330) {
-        height += Math.pow(dist - 330, 1.4) * 0.5;
+  clearBiome() {
+    this.biomeGroup.traverse((object) => {
+      object.geometry?.dispose();
+      if (object.material) {
+        const materials = Array.isArray(object.material) ? object.material : [object.material];
+        materials.forEach((material) => material.dispose());
       }
-      posAttr.setZ(i, height);
-    }
-    groundGeo.computeVertexNormals();
+    });
+    this.biomeGroup.clear();
+    this.pillars = [];
+    this.treePerches = [];
+    this.runes = [];
+    this.obstacleColliders = [];
+    this.thermalFootprints = [];
+    this.particles = null;
+    this.rainParticles = null;
+    this.sandParticles = null;
+    this.acidRainActive = false;
+    this.sandstormActive = false;
+  }
 
-    const ground = new THREE.Mesh(
-      groundGeo,
-      new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.85 })
-    );
+  setBiome(biomeType) {
+    this.currentBiome = BIOME_DEFINITIONS[biomeType] ? biomeType : 'jungle';
+    this.clearBiome();
+
+    const style = BIOME_STYLE[this.currentBiome];
+    this.scene.background = new THREE.Color(style.background);
+    this.scene.fog = new THREE.FogExp2(style.background, style.fog);
+    this.ambientLight.color.setHex(style.ambient);
+    this.mainLight.color.setHex(style.key);
+    this.sunSphere.material.color.setHex(style.sun);
+    this.createTerrain(style.ground);
+
+    if (this.currentBiome === 'jungle') {
+      this.createAncientRuins();
+      this.createAlienFoliage();
+      this.createDriftingParticles(0x00f0ff, 650);
+    } else if (this.currentBiome === 'hive_lv426') {
+      this.createHiveResinPillars();
+      this.createDriftingParticles(0x00ff44, 500);
+      this.createAcidRain();
+    } else if (this.currentBiome === 'ryushi_desert') {
+      this.createDesertDunes();
+      this.createSandstorm();
+    } else {
+      this.createColosseumPillars();
+      this.createDriftingParticles(0xff3300, 450);
+    }
+
+    this.setReducedMotion(this.reducedMotion);
+  }
+
+  createTerrain(colorHex) {
+    const biome = BIOME_DEFINITIONS[this.currentBiome];
+    const geometry = new THREE.PlaneGeometry(800, 800, 96, 96);
+    const positions = geometry.attributes.position;
+
+    for (let i = 0; i < positions.count; i += 1) {
+      const x = positions.getX(i);
+      const y = positions.getY(i);
+      const distance = Math.hypot(x, y);
+      let height = Math.sin(x * 0.03) * Math.cos(y * 0.03) * 4;
+      if (distance > 330) height += Math.pow(distance - 330, 1.4) * 0.5;
+      positions.setZ(i, height);
+    }
+    geometry.computeVertexNormals();
+
+    const material = this.createTexturedMaterial({
+      color: colorHex,
+      path: biome.texture,
+      repeat: 18,
+      roughness: 0.92,
+    });
+    const ground = new THREE.Mesh(geometry, material);
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     this.biomeGroup.add(ground);
   }
 
   createAncientRuins() {
-    const altar = new THREE.Mesh(
-      new THREE.CylinderGeometry(14, 18, 4, 12),
-      new THREE.MeshStandardMaterial({ color: 0x1f2430 })
-    );
+    const stone = this.createTexturedMaterial({
+      color: 0x4a5360,
+      path: '/assets/textures/yautja-stone.webp',
+      repeat: 4,
+      roughness: 0.82,
+      metalness: 0.12,
+    });
+    const altar = new THREE.Mesh(new THREE.CylinderGeometry(14, 18, 4, 12), stone);
     altar.position.set(0, 2, 0);
+    altar.receiveShadow = true;
     this.biomeGroup.add(altar);
-    this.obstacleColliders.push({ x: 0, z: 0, radius: 16.0 });
+    this.obstacleColliders.push({ x: 0, z: 0, radius: 16 });
 
-    const runeMat = new THREE.MeshBasicMaterial({ color: 0xff1100, side: THREE.DoubleSide });
-    const rune = new THREE.Mesh(new THREE.RingGeometry(4, 8, 8), runeMat);
+    const rune = new THREE.Mesh(
+      new THREE.RingGeometry(4, 8, 8),
+      new THREE.MeshBasicMaterial({ color: 0xff2100, side: THREE.DoubleSide }),
+    );
     rune.rotation.x = -Math.PI / 2;
     rune.position.set(0, 4.02, 0);
     this.biomeGroup.add(rune);
     this.runes.push(rune);
 
-    const pillarPositions = [
-      [60, 0, 60], [-60, 0, 60], [60, 0, -60], [-60, 0, -60],
-      [120, 0, 0], [-120, 0, 0], [0, 0, 120], [0, 0, -120],
-      [180, 0, 180], [-180, 0, 180], [180, 0, -180], [-180, 0, -180]
+    const positions = [
+      [60, 60], [-60, 60], [60, -60], [-60, -60],
+      [120, 0], [-120, 0], [0, 120], [0, -120],
+      [180, 180], [-180, 180], [180, -180], [-180, -180],
     ];
-
-    pillarPositions.forEach(([x, y, z]) => {
-      const pillarGroup = new THREE.Group();
-      const pillar = new THREE.Mesh(new THREE.BoxGeometry(7, 45, 7), new THREE.MeshStandardMaterial({ color: 0x1f2430 }));
+    positions.forEach(([x, z]) => {
+      const group = new THREE.Group();
+      const pillar = new THREE.Mesh(new THREE.BoxGeometry(7, 45, 7), stone);
       pillar.position.y = 22.5;
-      pillarGroup.add(pillar);
-
-      const torch = new THREE.Mesh(new THREE.OctahedronGeometry(2.0), new THREE.MeshBasicMaterial({ color: 0x00ff66 }));
-      torch.position.set(0, 46, 0);
-      pillarGroup.add(torch);
-
-      pillarGroup.position.set(x, 0, z);
-      this.biomeGroup.add(pillarGroup);
-      this.pillars.push(pillarGroup);
+      pillar.castShadow = true;
+      group.add(pillar);
+      const beacon = new THREE.Mesh(
+        new THREE.OctahedronGeometry(2),
+        new THREE.MeshBasicMaterial({ color: 0x00ff66 }),
+      );
+      beacon.position.y = 46;
+      group.add(beacon);
+      group.position.set(x, 0, z);
+      this.biomeGroup.add(group);
+      this.pillars.push(group);
       this.treePerches.push(new THREE.Vector3(x, 45, z));
-      this.obstacleColliders.push({ x, z, radius: 5.0 });
+      this.obstacleColliders.push({ x, z, radius: 5 });
     });
   }
 
   createAlienFoliage() {
-    const trunkMat = new THREE.MeshStandardMaterial({ color: 0x15121e });
-    const foliageMat = new THREE.MeshStandardMaterial({ color: 0x003344 });
-
-    for (let i = 0; i < 45; i++) {
-      const angle = (i / 45) * Math.PI * 2;
-      const radius = 80 + Math.random() * 180;
+    const trunk = this.createTexturedMaterial({
+      color: 0x32283a,
+      path: '/assets/textures/jungle-bark.webp',
+      repeat: 5,
+      roughness: 0.98,
+    });
+    const foliage = new THREE.MeshStandardMaterial({ color: 0x064456, roughness: 0.5 });
+    for (let i = 0; i < 45; i += 1) {
+      const angle = (i / 45) * Math.PI * 2 + Math.sin(i * 4.17) * 0.14;
+      const radius = 82 + ((i * 47) % 175);
       const x = Math.cos(angle) * radius;
       const z = Math.sin(angle) * radius;
-
-      const treeGroup = new THREE.Group();
-      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 4.5, 36, 8), trunkMat);
-      trunk.position.y = 18;
-      treeGroup.add(trunk);
-
-      const crown = new THREE.Mesh(new THREE.DodecahedronGeometry(14), foliageMat);
+      const group = new THREE.Group();
+      const trunkMesh = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 4.5, 36, 9), trunk);
+      trunkMesh.position.y = 18;
+      trunkMesh.castShadow = true;
+      group.add(trunkMesh);
+      const crown = new THREE.Mesh(new THREE.DodecahedronGeometry(14), foliage);
       crown.position.y = 36;
-      treeGroup.add(crown);
-
-      treeGroup.position.set(x, 0, z);
-      this.biomeGroup.add(treeGroup);
+      crown.castShadow = true;
+      group.add(crown);
+      group.position.set(x, 0, z);
+      this.biomeGroup.add(group);
       this.treePerches.push(new THREE.Vector3(x, 36, z));
       this.obstacleColliders.push({ x, z, radius: 4.5 });
     }
   }
 
   createHiveResinPillars() {
-    const resinMat = new THREE.MeshStandardMaterial({ color: 0x0c1a10, roughness: 0.2, metalness: 0.8 });
-    for (let i = 0; i < 30; i++) {
-      const x = (Math.random() - 0.5) * 450;
-      const z = (Math.random() - 0.5) * 450;
-      const pillar = new THREE.Mesh(new THREE.CylinderGeometry(3.5, 7.0, 40, 8), resinMat);
+    const resin = this.createTexturedMaterial({
+      color: 0x1d3d2a,
+      path: '/assets/textures/hive-resin.webp',
+      repeat: 5,
+      roughness: 0.3,
+      metalness: 0.45,
+    });
+    for (let i = 0; i < 30; i += 1) {
+      const angle = (i / 30) * Math.PI * 2;
+      const radius = 70 + ((i * 61) % 170);
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
+      const pillar = new THREE.Mesh(new THREE.CylinderGeometry(3.5, 7, 40, 10), resin);
       pillar.position.set(x, 20, z);
+      pillar.castShadow = true;
       this.biomeGroup.add(pillar);
       this.treePerches.push(new THREE.Vector3(x, 40, z));
       this.obstacleColliders.push({ x, z, radius: 5.5 });
@@ -220,133 +257,158 @@ export class Environment {
   }
 
   createDesertDunes() {
-    const rockMat = new THREE.MeshStandardMaterial({ color: 0x553311, roughness: 0.9 });
-    for (let i = 0; i < 25; i++) {
-      const x = (Math.random() - 0.5) * 450;
-      const z = (Math.random() - 0.5) * 450;
-      const duneRock = new THREE.Mesh(new THREE.DodecahedronGeometry(12 + Math.random() * 8), rockMat);
-      duneRock.position.set(x, 8, z);
-      this.biomeGroup.add(duneRock);
-      this.obstacleColliders.push({ x, z, radius: 12.0 });
+    const rock = this.createTexturedMaterial({
+      color: 0x8a5528,
+      path: '/assets/textures/ryushi-sand.webp',
+      repeat: 4,
+      roughness: 1,
+    });
+    for (let i = 0; i < 25; i += 1) {
+      const angle = (i / 25) * Math.PI * 2 + 0.12;
+      const radius = 65 + ((i * 79) % 190);
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
+      const mesh = new THREE.Mesh(new THREE.DodecahedronGeometry(12 + (i % 4) * 2.5), rock);
+      mesh.position.set(x, 8, z);
+      mesh.castShadow = true;
+      this.biomeGroup.add(mesh);
+      this.obstacleColliders.push({ x, z, radius: 12 });
     }
   }
 
   createColosseumPillars() {
-    const colMat = new THREE.MeshStandardMaterial({ color: 0x441111, metalness: 0.7 });
-    for (let i = 0; i < 20; i++) {
+    const stone = this.createTexturedMaterial({
+      color: 0x7a3028,
+      path: '/assets/textures/yautja-stone.webp',
+      repeat: 5,
+      roughness: 0.6,
+      metalness: 0.35,
+    });
+    for (let i = 0; i < 20; i += 1) {
       const angle = (i / 20) * Math.PI * 2;
-      const radius = 160;
-      const x = Math.cos(angle) * radius;
-      const z = Math.sin(angle) * radius;
-
-      const col = new THREE.Mesh(new THREE.BoxGeometry(10, 50, 10), colMat);
-      col.position.set(x, 25, z);
-      this.biomeGroup.add(col);
+      const x = Math.cos(angle) * 160;
+      const z = Math.sin(angle) * 160;
+      const pillar = new THREE.Mesh(new THREE.BoxGeometry(10, 50, 10), stone);
+      pillar.position.set(x, 25, z);
+      pillar.castShadow = true;
+      this.biomeGroup.add(pillar);
       this.treePerches.push(new THREE.Vector3(x, 50, z));
-      this.obstacleColliders.push({ x, z, radius: 7.0 });
+      this.obstacleColliders.push({ x, z, radius: 7 });
     }
   }
 
-  // Thermal Heat Footprint System
   addThermalFootprint(position) {
-    const printGeo = new THREE.RingGeometry(1.2, 2.4, 8);
-    const printMat = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide, transparent: true, opacity: 0.85 });
-    const print = new THREE.Mesh(printGeo, printMat);
-
+    if (this.reducedMotion) return;
+    const print = new THREE.Mesh(
+      new THREE.RingGeometry(1.2, 2.4, 8),
+      new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide, transparent: true, opacity: 0.85 }),
+    );
     print.rotation.x = -Math.PI / 2;
     print.position.copy(position).add(new THREE.Vector3(0, 0.08, 0));
-
-    this.thermalFootprints.push({ mesh: print, lifetime: 8.0 });
+    this.thermalFootprints.push({ mesh: print, lifetime: 8 });
     this.biomeGroup.add(print);
-
     if (this.thermalFootprints.length > 30) {
       const oldest = this.thermalFootprints.shift();
       this.biomeGroup.remove(oldest.mesh);
+      oldest.mesh.geometry.dispose();
+      oldest.mesh.material.dispose();
     }
   }
 
   updateThermalFootprints(delta, visionMode) {
-    for (let i = this.thermalFootprints.length - 1; i >= 0; i--) {
-      const f = this.thermalFootprints[i];
-      f.lifetime -= delta;
-
-      f.mesh.visible = (visionMode === 'thermal');
-
-      const alpha = Math.max(0, f.lifetime / 8.0);
-      f.mesh.material.opacity = alpha * 0.85;
-
-      if (f.lifetime <= 0) {
-        this.biomeGroup.remove(f.mesh);
+    for (let i = this.thermalFootprints.length - 1; i >= 0; i -= 1) {
+      const footprint = this.thermalFootprints[i];
+      footprint.lifetime -= delta;
+      footprint.mesh.visible = visionMode === 'thermal';
+      footprint.mesh.material.opacity = Math.max(0, footprint.lifetime / 8) * 0.85;
+      if (footprint.lifetime <= 0) {
+        this.biomeGroup.remove(footprint.mesh);
+        footprint.mesh.geometry.dispose();
+        footprint.mesh.material.dispose();
         this.thermalFootprints.splice(i, 1);
       }
     }
   }
 
-  createDriftingParticles(colorHex) {
-    const count = 700;
-    const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array(count * 3);
-
-    for (let i = 0; i < count * 3; i += 3) {
-      pos[i] = (Math.random() - 0.5) * 600;
-      pos[i + 1] = Math.random() * 80;
-      pos[i + 2] = (Math.random() - 0.5) * 600;
+  createDriftingParticles(colorHex, count) {
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < positions.length; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 600;
+      positions[i + 1] = Math.random() * 80;
+      positions[i + 2] = (Math.random() - 0.5) * 600;
     }
-
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    this.particles = new THREE.Points(geo, new THREE.PointsMaterial({ color: colorHex, size: 0.9, transparent: true, opacity: 0.7 }));
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    this.particles = new THREE.Points(
+      geometry,
+      new THREE.PointsMaterial({ color: colorHex, size: 0.9, transparent: true, opacity: 0.7 }),
+    );
     this.biomeGroup.add(this.particles);
   }
 
-  toggleAcidRain(enable) {
-    this.acidRainActive = enable;
-    if (enable && !this.rainParticles) {
-      const count = 1000;
-      const geo = new THREE.BufferGeometry();
-      const pos = new Float32Array(count * 3);
-      for (let i = 0; i < count * 3; i += 3) {
-        pos[i] = (Math.random() - 0.5) * 500;
-        pos[i + 1] = Math.random() * 120;
-        pos[i + 2] = (Math.random() - 0.5) * 500;
-      }
-      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-      this.rainParticles = new THREE.Points(geo, new THREE.PointsMaterial({ color: 0x00ff44, size: 1.0, transparent: true }));
-      this.biomeGroup.add(this.rainParticles);
+  createWeatherParticles({ color, count, size }) {
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < positions.length; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 500;
+      positions[i + 1] = Math.random() * 120;
+      positions[i + 2] = (Math.random() - 0.5) * 500;
     }
-    if (this.rainParticles) this.rainParticles.visible = enable;
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const particles = new THREE.Points(
+      geometry,
+      new THREE.PointsMaterial({ color, size, transparent: true, opacity: 0.78 }),
+    );
+    this.biomeGroup.add(particles);
+    return particles;
   }
 
-  toggleSandstorm(enable) {
-    this.sandstormActive = enable;
-    if (enable && !this.sandParticles) {
-      const count = 1500;
-      const geo = new THREE.BufferGeometry();
-      const pos = new Float32Array(count * 3);
-      for (let i = 0; i < count * 3; i += 3) {
-        pos[i] = (Math.random() - 0.5) * 600;
-        pos[i + 1] = Math.random() * 90;
-        pos[i + 2] = (Math.random() - 0.5) * 600;
-      }
-      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-      this.sandParticles = new THREE.Points(geo, new THREE.PointsMaterial({ color: 0xffaa00, size: 1.5, transparent: true, opacity: 0.75 }));
-      this.biomeGroup.add(this.sandParticles);
+  createAcidRain() {
+    this.acidRainActive = true;
+    this.rainParticles = this.createWeatherParticles({ color: 0x00ff44, count: 1000, size: 1 });
+  }
+
+  createSandstorm() {
+    this.sandstormActive = true;
+    this.sandParticles = this.createWeatherParticles({ color: 0xffaa00, count: 1500, size: 1.5 });
+  }
+
+  setVisible(visible) {
+    const isVisible = Boolean(visible);
+    this.biomeGroup.visible = isVisible;
+    this.sunSphere.visible = isVisible;
+    this.ambientLight.visible = isVisible;
+    this.mainLight.visible = isVisible;
+
+    if (isVisible) {
+      const style = BIOME_STYLE[this.currentBiome];
+      this.scene.background = new THREE.Color(style.background);
+      this.scene.fog = new THREE.FogExp2(style.background, style.fog);
+    } else {
+      this.scene.background = new THREE.Color(0x030508);
+      this.scene.fog = new THREE.FogExp2(0x030508, 0.0015);
     }
-    if (this.sandParticles) this.sandParticles.visible = enable;
+  }
+
+  setReducedMotion(enabled) {
+    this.reducedMotion = Boolean(enabled);
+    if (this.particles) this.particles.visible = !this.reducedMotion;
+    if (this.rainParticles) this.rainParticles.visible = !this.reducedMotion;
+    if (this.sandParticles) this.sandParticles.visible = !this.reducedMotion;
   }
 
   update(delta, visionMode) {
-    if (this.particles) this.particles.rotation.y += delta * 0.03;
-    if (this.sandstormActive && this.sandParticles) {
-      this.sandParticles.rotation.y += delta * 0.2;
-    }
-    if (this.acidRainActive && this.rainParticles) {
-      const pos = this.rainParticles.geometry.attributes.position;
-      for (let i = 1; i < pos.count * 3; i += 3) {
-        pos.array[i] -= delta * 90.0;
-        if (pos.array[i] < 0) pos.array[i] = 120.0;
-      }
-      pos.needsUpdate = true;
-    }
     this.updateThermalFootprints(delta, visionMode);
+    if (this.reducedMotion) return;
+    if (this.particles) this.particles.rotation.y += delta * 0.03;
+    if (this.sandParticles) this.sandParticles.rotation.y += delta * 0.2;
+    if (this.rainParticles) {
+      const positions = this.rainParticles.geometry.attributes.position;
+      for (let i = 1; i < positions.array.length; i += 3) {
+        positions.array[i] -= delta * 90;
+        if (positions.array[i] < 0) positions.array[i] = 120;
+      }
+      positions.needsUpdate = true;
+    }
   }
 }

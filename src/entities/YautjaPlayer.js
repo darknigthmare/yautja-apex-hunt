@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { ShaderManager } from '../Shaders.js';
 import { audioSynth } from '../AudioSynthesizer.js';
 import { YautjaSkinsDatabase } from '../data/YautjaLoreDatabase.js';
+import { calculateHonorAward } from '../gameplay/combatRules.js';
+import { disposeObject3D } from '../utils/materialState.js';
 
 export class YautjaPlayer {
   constructor(scene) {
@@ -16,6 +18,7 @@ export class YautjaPlayer {
     this.stamina = 100;
     this.honorScore = 1000;
     this.honorRankIndex = 1;
+    this.completedHunts = [];
 
     this.ranks = [
       "JEUNE SANG (YOUNG BLOOD)",
@@ -37,6 +40,8 @@ export class YautjaPlayer {
     this.selectedWeapon = 1;
     this.isAttacking = false;
     this.isHealing = false;
+    this.attackTimer = 0;
+    this.healTimer = 0;
     this.isPerched = false;
     this.currentPerchNode = null;
     this.isAcidCorroded = false;
@@ -48,6 +53,9 @@ export class YautjaPlayer {
 
     this.isSelfDestructing = false;
     this.selfDestructTimer = 0;
+    this.selfDestructComplete = false;
+    this.isDead = false;
+    this.defeatReason = null;
 
     // Movement Vectors
     this.position = new THREE.Vector3(0, 0, 40);
@@ -61,6 +69,9 @@ export class YautjaPlayer {
     this.mesh = this.createYautjaMesh();
     this.scene.add(this.mesh);
 
+    this.mesh.traverse((child) => {
+      if (child.isMesh) child.userData.baseMaterial = child.material;
+    });
     this.normalMaterial = this.mesh.children[0].material;
     this.cloakMaterial = ShaderManager.createCloakMaterial();
   }
@@ -82,6 +93,7 @@ export class YautjaPlayer {
     const torso = new THREE.Mesh(torsoGeo, armorMat);
     torso.position.y = 3.6;
     torso.castShadow = true;
+    torso.userData.skinTintable = true;
     yautjaGroup.add(torso);
 
     const netGeo = new THREE.BoxGeometry(2.45, 3.45, 1.55);
@@ -97,6 +109,7 @@ export class YautjaPlayer {
     const head = new THREE.Mesh(headGeo, maskMat);
     head.position.set(0, 5.5, 0.2);
     head.castShadow = true;
+    head.userData.skinTintable = true;
     headGroup.add(head);
 
     const runePlateGeo = new THREE.BoxGeometry(0.5, 0.3, 0.1);
@@ -138,6 +151,7 @@ export class YautjaPlayer {
 
     const caster = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.45, 0.9), armorMat);
     caster.position.set(-1.5, 4.9, -0.2);
+    caster.userData.skinTintable = true;
     yautjaGroup.add(caster);
     this.plasmacasterMesh = caster;
 
@@ -154,9 +168,11 @@ export class YautjaPlayer {
 
     const legR = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.42, 3.4), armorMat);
     legR.position.set(0.75, 1.7, 0);
+    legR.userData.skinTintable = true;
     yautjaGroup.add(legR);
     const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.42, 3.4), armorMat);
     legL.position.set(-0.75, 1.7, 0);
+    legL.userData.skinTintable = true;
     yautjaGroup.add(legL);
 
     yautjaGroup.position.copy(this.position);
@@ -169,8 +185,9 @@ export class YautjaPlayer {
     if (!skinData) return;
 
     this.mesh.traverse((child) => {
-      if (child.isMesh && child.material !== this.cloakMaterial) {
+      if (child.isMesh && child.userData.skinTintable && child.material !== this.cloakMaterial) {
         child.material.color.setHex(skinData.col);
+        child.userData.baseMaterial = child.material;
       }
     });
   }
@@ -202,7 +219,14 @@ export class YautjaPlayer {
     audioSynth.playThermalSwitch();
 
     this.mesh.traverse((child) => {
-      if (child.isMesh) child.material = this.isCloaked ? this.cloakMaterial : this.normalMaterial;
+      if (!child.isMesh) return;
+      if (this.isCloaked) {
+        child.userData.materialBeforeCloak = child.material;
+        child.material = this.cloakMaterial;
+      } else {
+        child.material = child.userData.materialBeforeCloak ?? child.userData.baseMaterial ?? child.material;
+        delete child.userData.materialBeforeCloak;
+      }
     });
 
     return this.isCloaked;
@@ -224,7 +248,7 @@ export class YautjaPlayer {
   }
 
   resolveQTE(success) {
-    if (!this.inQTE) return;
+    if (!this.inQTE) return false;
     this.inQTE = false;
 
     if (success) {
@@ -233,6 +257,7 @@ export class YautjaPlayer {
     } else {
       this.takeDamage(35);
     }
+    return success;
   }
 
   jumpToCanopy(perchNodes) {
@@ -273,7 +298,7 @@ export class YautjaPlayer {
       this.position.y = 0;
       audioSynth.playWristbladeSlash();
       audioSynth.playCanopyLeap();
-      setTimeout(() => { this.isAttacking = false; }, 500);
+      this.attackTimer = 0.5;
       return 'death_from_above';
     }
 
@@ -282,11 +307,8 @@ export class YautjaPlayer {
       audioSynth.playWristbladeSlash();
       this.wristbladeRight.position.z = 1.8;
       this.wristbladeLeft.position.z = 1.8;
-      setTimeout(() => {
-        this.wristbladeRight.position.z = 1.3;
-        this.wristbladeLeft.position.z = 1.3;
-        this.isAttacking = false;
-      }, 400);
+      this.attackTimer = 0.4;
+      return 'wristblades';
     }
     else if (this.selectedWeapon === 2) {
       if (this.energy < 25) return;
@@ -294,19 +316,19 @@ export class YautjaPlayer {
       this.isAttacking = true;
       audioSynth.playPlasmacasterBlast();
       this.firePlasmaBall(targetPos);
-      setTimeout(() => { this.isAttacking = false; }, 600);
+      this.attackTimer = 0.6;
     }
     else if (this.selectedWeapon === 3) {
       this.isAttacking = true;
       audioSynth.playSpearThrow();
       this.fireCombiStick(targetPos);
-      setTimeout(() => { this.isAttacking = false; }, 500);
+      this.attackTimer = 0.5;
     }
     else if (this.selectedWeapon === 4) {
       this.isAttacking = true;
       audioSynth.playSpearThrow();
       this.fireSmartDisc(targetPos);
-      setTimeout(() => { this.isAttacking = false; }, 500);
+      this.attackTimer = 0.5;
     }
     else if (this.selectedWeapon === 5) {
       if (this.energy < 15) return;
@@ -314,17 +336,14 @@ export class YautjaPlayer {
       this.isAttacking = true;
       audioSynth.playSpearThrow();
       this.fireNetgun(targetPos);
-      setTimeout(() => { this.isAttacking = false; }, 500);
+      this.attackTimer = 0.5;
     }
     else if (this.selectedWeapon === 6) {
       if (this.energy < 50 || this.health >= this.maxHealth) return;
       this.energy -= 50;
       this.isHealing = true;
       audioSynth.playMedicompHeal();
-      setTimeout(() => {
-        this.health = Math.min(this.maxHealth, this.health + 45);
-        this.isHealing = false;
-      }, 1200);
+      this.healTimer = 1.2;
     }
     else if (this.selectedWeapon === 7) {
       if (this.energy < 20) return;
@@ -334,7 +353,7 @@ export class YautjaPlayer {
     else if (this.selectedWeapon === 8) {
       this.isAttacking = true;
       audioSynth.playWhipSlash();
-      setTimeout(() => { this.isAttacking = false; }, 400);
+      this.attackTimer = 0.4;
       return 'whip_slash';
     }
   }
@@ -400,30 +419,85 @@ export class YautjaPlayer {
   }
 
   triggerSelfDestruct() {
-    if (this.isSelfDestructing) return;
+    if (this.isSelfDestructing || this.isDead || this.selfDestructComplete) return false;
     this.isSelfDestructing = true;
     this.selfDestructTimer = 4.0;
+    return true;
   }
 
   takeDamage(amount) {
+    if (this.isDead || this.selfDestructComplete) return;
     this.health = Math.max(0, this.health - amount);
     if (this.health <= 0 && !this.isSelfDestructing) {
+      this.defeatReason = 'blessures';
       this.triggerSelfDestruct();
     }
   }
 
   addHonor(pts) {
-    let multiplier = this.isCloaked ? 1 : 3;
-    this.honorScore += pts * multiplier;
+    const awarded = calculateHonorAward(pts, this.isCloaked);
+    this.honorScore += awarded;
 
     if (this.honorScore >= 3000) this.honorRankIndex = 3;
     else if (this.honorScore >= 1800) this.honorRankIndex = 2;
     else if (this.honorScore >= 800) this.honorRankIndex = 1;
+    return awarded;
+  }
+
+  resetForHunt(position = new THREE.Vector3(0, 0, 60)) {
+    this.projectiles.forEach((projectile) => disposeObject3D(projectile.mesh));
+    this.mines.forEach((mine) => disposeObject3D(mine.mesh));
+    this.projectiles = [];
+    this.mines = [];
+
+    this.isAcidCorroded = false;
+    if (this.isCloaked) this.toggleCloak();
+    this.health = this.maxHealth;
+    this.energy = this.maxEnergy;
+    this.stamina = this.maxStamina;
+    this.isAttacking = false;
+    this.isHealing = false;
+    this.isPerched = false;
+    this.attackTimer = 0;
+    this.healTimer = 0;
+    this.wristbladeRight.position.z = 1.3;
+    this.wristbladeLeft.position.z = 1.3;
+    this.currentPerchNode = null;
+    this.inQTE = false;
+    this.qteTimer = 0;
+    this.acidTimer = 0;
+    this.isSelfDestructing = false;
+    this.selfDestructTimer = 0;
+    this.selfDestructComplete = false;
+    this.isDead = false;
+    this.defeatReason = null;
+    this.position.copy(position);
+    this.mesh.position.copy(this.position);
+    this.mesh.visible = true;
   }
 
   update(delta, inputDir, cameraYaw) {
+    if (this.isDead) return;
+    const hasMovementInput = inputDir.x !== 0 || inputDir.z !== 0;
     if (this.energy < this.maxEnergy) this.energy = Math.min(this.maxEnergy, this.energy + delta * 8.0);
-    if (this.stamina < this.maxStamina && !inputDir.isSprinting) this.stamina = Math.min(this.maxStamina, this.stamina + delta * 25.0);
+    if (this.stamina < this.maxStamina && !(inputDir.isSprinting && hasMovementInput)) this.stamina = Math.min(this.maxStamina, this.stamina + delta * 25.0);
+
+    if (this.attackTimer > 0) {
+      this.attackTimer = Math.max(0, this.attackTimer - delta);
+      if (this.attackTimer === 0) {
+        this.isAttacking = false;
+        this.wristbladeRight.position.z = 1.3;
+        this.wristbladeLeft.position.z = 1.3;
+      }
+    }
+
+    if (this.healTimer > 0) {
+      this.healTimer = Math.max(0, this.healTimer - delta);
+      if (this.healTimer === 0) {
+        this.health = Math.min(this.maxHealth, this.health + 45);
+        this.isHealing = false;
+      }
+    }
 
     if (this.inQTE) {
       this.qteTimer -= delta;
@@ -443,15 +517,21 @@ export class YautjaPlayer {
 
     if (this.isSelfDestructing) {
       this.selfDestructTimer -= delta;
-      if (Math.floor(this.selfDestructTimer * 4) % 2 === 0) audioSynth.playBeep();
-      if (this.selfDestructTimer <= 0) audioSynth.playExplosion();
+      if (this.selfDestructTimer <= 0) {
+        this.isSelfDestructing = false;
+        this.selfDestructComplete = true;
+        this.isDead = true;
+        this.health = 0;
+        audioSynth.playExplosion();
+      }
     }
 
     if (!this.isHealing && !this.isSelfDestructing && !this.isPerched && !this.inQTE) {
-      let speed = inputDir.isSprinting && this.stamina > 10 ? this.sprintSpeed : this.moveSpeed;
-      if (inputDir.isSprinting) this.stamina -= delta * 30.0;
+      const isSprinting = inputDir.isSprinting && hasMovementInput && this.stamina > 10;
+      const speed = isSprinting ? this.sprintSpeed : this.moveSpeed;
+      if (isSprinting) this.stamina = Math.max(0, this.stamina - delta * 30.0);
 
-      if (inputDir.x !== 0 || inputDir.z !== 0) {
+      if (hasMovementInput) {
         const moveVector = new THREE.Vector3(inputDir.x, 0, inputDir.z).normalize();
         moveVector.applyAxisAngle(new THREE.Vector3(0, 1, 0), cameraYaw);
 
@@ -477,7 +557,7 @@ export class YautjaPlayer {
         p.dir.lerp(returnDir, delta * 5.0);
         if (p.mesh.position.distanceTo(this.position) < 3.0) {
           this.energy = Math.min(this.maxEnergy, this.energy + 15);
-          this.scene.remove(p.mesh);
+          disposeObject3D(p.mesh);
           this.projectiles.splice(i, 1);
           continue;
         }
@@ -485,7 +565,7 @@ export class YautjaPlayer {
       p.mesh.position.addScaledVector(p.dir, p.speed * delta);
       p.lifetime -= delta;
       if (p.lifetime <= 0) {
-        this.scene.remove(p.mesh);
+        disposeObject3D(p.mesh);
         this.projectiles.splice(i, 1);
       }
     }
