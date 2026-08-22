@@ -6,17 +6,31 @@ export class MothershipHub {
     this.group = new THREE.Group();
     this.animatedProps = [];
     this.trophyDisplays = new Map();
-    this.textureLoader = new THREE.TextureLoader();
-    this.alloyTexture = this.textureLoader.load(
-      '/assets/textures/yautja-alloy.webp',
-      undefined,
-      undefined,
-      () => console.warn('Texture du vaisseau indisponible, fallback métallique conservé.'),
-    );
-    this.alloyTexture.wrapS = THREE.RepeatWrapping;
-    this.alloyTexture.wrapT = THREE.RepeatWrapping;
-    this.alloyTexture.repeat.set(6, 6);
-    this.alloyTexture.colorSpace = THREE.SRGBColorSpace;
+    this.alloyTexture = null;
+    this.trophyTexture = null;
+    if (typeof document !== 'undefined') {
+      const textureLoader = new THREE.TextureLoader();
+      this.alloyTexture = textureLoader.load(
+        '/assets/textures/yautja-alloy.webp',
+        undefined,
+        undefined,
+        () => console.warn('Texture du vaisseau indisponible, fallback métallique conservé.'),
+      );
+      this.alloyTexture.wrapS = THREE.RepeatWrapping;
+      this.alloyTexture.wrapT = THREE.RepeatWrapping;
+      this.alloyTexture.repeat.set(6, 6);
+      this.alloyTexture.colorSpace = THREE.SRGBColorSpace;
+      this.trophyTexture = textureLoader.load(
+        '/assets/textures/trophy-bone.webp',
+        undefined,
+        undefined,
+        () => console.warn('Texture des trophées indisponible, fallback coloré conservé.'),
+      );
+      this.trophyTexture.wrapS = THREE.RepeatWrapping;
+      this.trophyTexture.wrapT = THREE.RepeatWrapping;
+      this.trophyTexture.repeat.set(2, 2);
+      this.trophyTexture.colorSpace = THREE.SRGBColorSpace;
+    }
 
     this.createShipInterior();
     this.createTrophyVaultWall();
@@ -84,7 +98,10 @@ export class MothershipHub {
 
       const material = new THREE.MeshStandardMaterial({
         color,
+        map: this.trophyTexture,
         emissive: 0x000000,
+        roughness: 0.72,
+        metalness: 0.05,
         transparent: true,
         opacity: 0.28,
         wireframe: true,

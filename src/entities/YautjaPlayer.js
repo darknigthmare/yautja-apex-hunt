@@ -8,6 +8,19 @@ import { disposeObject3D } from '../utils/materialState.js';
 export class YautjaPlayer {
   constructor(scene) {
     this.scene = scene;
+    this.leatherNetTexture = null;
+    if (typeof document !== 'undefined') {
+      this.leatherNetTexture = new THREE.TextureLoader().load(
+        '/assets/textures/yautja-leather-net.webp',
+        undefined,
+        undefined,
+        () => console.warn('Texture du filet Yautja indisponible, fallback sombre conservé.'),
+      );
+      this.leatherNetTexture.wrapS = THREE.RepeatWrapping;
+      this.leatherNetTexture.wrapT = THREE.RepeatWrapping;
+      this.leatherNetTexture.repeat.set(1.5, 2.2);
+      this.leatherNetTexture.colorSpace = THREE.SRGBColorSpace;
+    }
 
     // Attributes
     this.maxHealth = 100;
@@ -97,7 +110,14 @@ export class YautjaPlayer {
     yautjaGroup.add(torso);
 
     const netGeo = new THREE.BoxGeometry(2.45, 3.45, 1.55);
-    const netMat = new THREE.MeshBasicMaterial({ color: 0x111111, wireframe: true });
+    const netMat = new THREE.MeshStandardMaterial({
+      color: 0x574839,
+      map: this.leatherNetTexture,
+      roughness: 0.82,
+      metalness: 0.08,
+      transparent: true,
+      opacity: 0.62,
+    });
     const net = new THREE.Mesh(netGeo, netMat);
     net.position.y = 3.6;
     yautjaGroup.add(net);
@@ -233,11 +253,12 @@ export class YautjaPlayer {
   }
 
   applyAcidCorrosion() {
-    if (this.hasAntiAcidCloak) return;
+    if (this.hasAntiAcidCloak) return false;
+    if (this.isCloaked) this.toggleCloak();
     this.isAcidCorroded = true;
     this.acidTimer = 5.0;
-    if (this.isCloaked) this.toggleCloak();
     audioSynth.playAcidSizzle();
+    return true;
   }
 
   triggerQTE() {
@@ -250,6 +271,7 @@ export class YautjaPlayer {
   resolveQTE(success) {
     if (!this.inQTE) return false;
     this.inQTE = false;
+    this.qteTimer = 0;
 
     if (success) {
       audioSynth.playWristbladeSlash();

@@ -2,7 +2,7 @@
 // UI rule: always display the sourceTier badge with an entry.
 
 export const LORE_SOURCE_TIERS = Object.freeze({
-  SCREEN: Object.freeze({ id: 'SCREEN', label: 'ÉCRAN PREDATOR', shortLabel: 'ÉCRAN', color: '#55e6a5', priority: 1 }),
+  SCREEN: Object.freeze({ id: 'SCREEN', label: 'ÉCRAN PRINCIPAL PREDATOR / ALIEN', shortLabel: 'ÉCRAN', color: '#55e6a5', priority: 1 }),
   AVP_SCREEN: Object.freeze({ id: 'AVP_SCREEN', label: 'ÉCRAN AVP', shortLabel: 'AVP', color: '#e9b949', priority: 2 }),
   LICENSED_EU: Object.freeze({ id: 'LICENSED_EU', label: 'UNIVERS ÉTENDU SOUS LICENCE', shortLabel: 'EU', color: '#7aa2f7', priority: 3 }),
   ORIGINAL: Object.freeze({ id: 'ORIGINAL', label: 'CRÉATION APEX HUNT', shortLabel: 'ORIGINAL', color: '#ff7a8a', priority: 4 })
@@ -10,7 +10,7 @@ export const LORE_SOURCE_TIERS = Object.freeze({
 
 export const LORE_SOURCES = Object.freeze({
   predator1987: { title: 'Predator (1987)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/predator' },
-  predatorArchives: { title: 'Predator — Walt Disney Archives', tier: 'SCREEN', url: 'https://d23.com/20th-century-fox-spooktacular-1980s-predator/' },
+  predatorArchives: { title: 'Predator — Walt Disney Archives', tier: 'SCREEN', url: 'https://thewaltdisneycompany.com/news/predator-archives/' },
   predator2: { title: 'Predator 2 (1990)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/predator-2' },
   predators2010: { title: 'Predators (2010)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/predators' },
   prey2022: { title: 'Prey (2022)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/prey' },
@@ -18,9 +18,11 @@ export const LORE_SOURCES = Object.freeze({
   badlands2025: { title: 'Predator: Badlands (2025)', tier: 'SCREEN', url: 'https://thewaltdisneycompany.com/news/predator-badlands/' },
   avp2004: { title: 'Alien vs. Predator (2004)', tier: 'AVP_SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien-vs-predator' },
   avpRequiem2007: { title: 'Aliens vs. Predator: Requiem (2007)', tier: 'AVP_SCREEN', url: 'https://www.20thcenturystudios.com/movies/aliens-vs-predator-requiem' },
+  aliens1986: { title: 'Aliens (1986)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/aliens' },
   huntingGrounds: { title: 'Predator: Hunting Grounds — équipement', tier: 'LICENSED_EU', url: 'https://predator.illfonic.com/the-predator/' },
   avpOriginalComics: { title: 'AVP — comics originaux Dark Horse', tier: 'LICENSED_EU', url: 'https://digital.darkhorse.com/books/47483ce0aec5466783599e38c9d0ac47/aliens-vs-predator-the-original-comics-series-30th-anniversary-edition' },
-  avpPreyNovel: { title: 'Aliens vs. Predator: Prey (1994)', tier: 'LICENSED_EU', url: 'https://obnb.uk/p10733831-aliens-vs-predator-prey' }
+  avpPreyOmnibus: { title: 'Aliens vs. Predator: Prey — omnibus Titan Books', tier: 'LICENSED_EU', url: 'https://titanbooks.com/8792-the-complete-aliens-vs-predator-omnibus/' },
+  predatorBadBloodComics: { title: 'Predator: Bad Blood — catalogue Dark Horse', tier: 'LICENSED_EU', url: 'https://images.darkhorse.com/common/salestools/catalogs/DH_Backlist_2009.pdf' }
 });
 
 const freezeEntries = (entries) => Object.freeze(entries.map((entry) => Object.freeze({
@@ -57,7 +59,7 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
   {
     id: 'technologie-plasma-caster', entryType: 'codex', category: 'technologie', title: 'Canon à plasma',
     summary: 'Arme d’épaule énergétique liée au système de visée du biomasque.',
-    body: 'Sa puissance et sa portée sont établies. L’époque, le clan et la valeur que le chasseur veut prouver expliquent des arsenaux différents.',
+    body: 'Sa puissance et sa portée sont établies. Les arsenaux varient selon les chasseurs et les époques montrés à l’écran, sans qu’une cause unique soit énoncée pour toutes ces différences.',
     sourceTier: 'SCREEN', isOriginal: false, sources: ['predator1987', 'predator2', 'huntingGrounds']
   },
   {
@@ -70,13 +72,13 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     id: 'culture-clans', entryType: 'codex', category: 'culture', title: 'Clans, variantes et exil',
     summary: 'Clans, nouvelles lignées et chasseurs exilés prouvent que les Yautja ne forment pas une monoculture.',
     body: 'Badlands confirme clan et exil ; Predators montre un conflit entre groupes. Young Blood, Blooded, Elite et Elder restent surtout des conventions EU et de gameplay.',
-    sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['predators2010', 'badlands2025', 'avpPreyNovel']
+    sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['predators2010', 'badlands2025', 'avpPreyOmnibus']
   },
   {
     id: 'xenomorphes-separation-avp', entryType: 'codex', category: 'xenomorphes', title: 'Xénomorphes : branche AVP',
     summary: 'La chasse rituelle de Xénomorphes existe dans AVP, sans définir automatiquement toute la culture Yautja.',
     body: 'Predator 2 montre un crâne xénomorphe et AVP une épreuve alimentée par des œufs. « Kiande amedha », Ryushi et les rites détaillés viennent surtout de l’EU.',
-    sourceTier: 'AVP_SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['predator2', 'avp2004', 'avpOriginalComics', 'avpPreyNovel']
+    sourceTier: 'AVP_SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['predator2', 'avp2004', 'avpOriginalComics', 'avpPreyOmnibus']
   }
 ]);
 
@@ -91,20 +93,20 @@ export const HUNT_LOCATIONS = freezeEntries([
   {
     id: 'hive_lv426', entryType: 'location', category: 'lieu', title: 'LV-426 — ruches souterraines',
     summary: 'Réseau de résine, œufs et pluie acide conçu comme une mission crossover.',
-    sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', isOriginal: true,
-    canonNote: 'LV-426 vient d’Alien ; cette chasse Yautja et cette carte ne sont pas confirmées à l’écran.', sources: ['avp2004']
+    sourceTier: 'ORIGINAL', basisTier: 'SCREEN', relatedTier: 'AVP_SCREEN', isOriginal: true,
+    canonNote: 'LV-426 et sa colonie viennent d’Alien/Aliens ; cette chasse Yautja, la pluie acide et cette carte ne sont pas confirmées à l’écran.', sources: ['aliens1986', 'avp2004']
   },
   {
     id: 'ryushi_desert', entryType: 'location', category: 'lieu', title: 'Désert de Ryushi',
     summary: 'Monde colonial associé à la première grande histoire AVP en comics et dans le roman Prey.',
     sourceTier: 'LICENSED_EU', isOriginal: false, gameInterpretationOriginal: true,
-    canonNote: 'Ryushi est EU ; la tempête et l’arène du jeu sont originales.', sources: ['avpOriginalComics', 'avpPreyNovel']
+    canonNote: 'Ryushi est EU ; la tempête et l’arène du jeu sont originales.', sources: ['avpOriginalComics', 'avpPreyOmnibus']
   },
   {
     id: 'yautja_prime', entryType: 'location', category: 'lieu', title: 'Yautja Prime — arène du clan',
     summary: 'Interprétation jouable d’un domaine Yautja consacré aux duels et aux trophées.',
     sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
-    canonNote: 'Le colisée sacré et son conseil d’Anciens sont des créations du jeu.', sources: ['badlands2025']
+    canonNote: 'Yautja Prime et le domaine natal de Dek sont établis à l’écran dans Badlands ; cette arène sacrée et son conseil d’Anciens restent des créations du jeu.', sources: ['badlands2025']
   }
 ]);
 
@@ -121,14 +123,14 @@ export const CURRENT_HUNTS = freezeEntries([
   {
     id: 'xeno_queen', entryType: 'hunt', category: 'cible', title: 'Reine xénomorphe',
     summary: 'Cible majeure protégée par sa ruche, ses œufs et son sang acide.',
-    sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', isOriginal: true,
-    canonNote: 'La Reine existe à l’écran ; cette mission, son arène et sa récompense sont originales.', sources: ['avp2004'], locationIds: ALL_LOCATION_IDS
+    sourceTier: 'ORIGINAL', basisTier: 'SCREEN', relatedTier: 'AVP_SCREEN', isOriginal: true,
+    canonNote: 'La Reine vient d’Aliens et apparaît aussi dans AVP ; cette mission, son arène et sa récompense sont originales.', sources: ['aliens1986', 'avp2004'], locationIds: ALL_LOCATION_IDS
   },
   {
     id: 'bad_blood', entryType: 'hunt', category: 'cible', title: 'Rival Yautja « Bad Blood »',
     summary: 'Chasseur renégat employé comme duel miroir contre les tactiques du joueur.',
     sourceTier: 'ORIGINAL', basisTier: 'LICENSED_EU', isOriginal: true,
-    canonNote: 'Le titre Bad Blood vient surtout de l’EU ; ce rival précis est une création du jeu.', sources: ['predators2010', 'avpOriginalComics'], locationIds: ALL_LOCATION_IDS
+    canonNote: 'Le titre Bad Blood vient surtout de l’EU ; ce rival précis est une création du jeu.', sources: ['predators2010', 'predatorBadBloodComics'], locationIds: ALL_LOCATION_IDS
   },
   {
     id: 'predalien', entryType: 'hunt', category: 'cible', title: 'Predalien légendaire',

@@ -28,6 +28,13 @@ export class PredalienBoss {
 
     this.aiState = 'roam'; // 'roam', 'chase', 'attack_jaw', 'attack_tail', 'acid_frenzy'
     this.attackCooldown = 0;
+    this.activeTelegraphedAttack = null;
+    this.attackWindupDuration = 0;
+    this.attackWindupTimer = 0;
+    this.attackRecoveryTimer = 0;
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
 
     // 3D Mesh
     this.mesh = this.createPredalienMesh();
@@ -167,6 +174,7 @@ export class PredalienBoss {
       if (this.headHealth <= 0) {
         this.headIntact = false;
         if (this.headMesh) this.headMesh.visible = false;
+        if (this.activeTelegraphedAttack === 'acid_frenzy') this.cancelTelegraphedAttack();
         audioSynth.playMonsterRoar();
       }
     }
@@ -177,6 +185,7 @@ export class PredalienBoss {
       if (this.tailHealth <= 0) {
         this.tailIntact = false;
         if (this.tailMesh) this.tailMesh.visible = false;
+        if (this.activeTelegraphedAttack === 'attack_tail') this.cancelTelegraphedAttack();
         audioSynth.playMonsterRoar();
       }
     }
@@ -188,6 +197,7 @@ export class PredalienBoss {
 
     if (this.health <= 0) {
       this.isDead = true;
+      this.cancelTelegraphedAttack();
       audioSynth.playMonsterRoar();
     }
   }
@@ -198,9 +208,79 @@ export class PredalienBoss {
   }
 
   applyNet() {
+    this.cancelTelegraphedAttack();
     this.isNetted = true;
     this.netTimer = 3.0;
   }
+  startTelegraphedAttack(state, windupSeconds, cooldownSeconds) {
+    this.aiState = state;
+    this.activeTelegraphedAttack = state;
+    this.attackWindupDuration = windupSeconds;
+    this.attackWindupTimer = windupSeconds;
+    this.attackRecoveryTimer = windupSeconds + 0.25;
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
+    this.attackCooldown = cooldownSeconds;
+  }
+
+  consumeAttackImpact() {
+    if (!this.attackImpactReady || this.attackImpactConsumed) return false;
+    this.attackImpactConsumed = true;
+    this.attackImpactReady = false;
+    return true;
+  }
+
+  cancelTelegraphedAttack() {
+    this.activeTelegraphedAttack = null;
+    this.attackWindupDuration = 0;
+    this.attackWindupTimer = 0;
+    this.attackRecoveryTimer = 0;
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
+    if (this.tailMesh) this.tailMesh.rotation.set(0, 0, 0);
+    if (this.headMesh) this.headMesh.rotation.set(0, 0, 0);
+    this.mesh.scale.set(1, 1, 1);
+  }
+
+  updateTelegraphedAttack(delta, targetDir) {
+    if (!this.activeTelegraphedAttack) return false;
+
+    this.aiState = this.activeTelegraphedAttack;
+    const targetAngle = Math.atan2(targetDir.x, targetDir.z);
+    let diff = targetAngle - this.mesh.rotation.y;
+    diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+    this.mesh.rotation.y += diff * Math.min(1, delta * 5);
+
+    const previousWindup = this.attackWindupTimer;
+    this.attackWindupTimer = Math.max(0, this.attackWindupTimer - delta);
+    this.attackRecoveryTimer = Math.max(0, this.attackRecoveryTimer - delta);
+    if (previousWindup > 0 && this.attackWindupTimer === 0 && !this.attackImpactConsumed) {
+      this.attackImpactReady = true;
+    }
+
+    const progress = this.attackWindupDuration > 0
+      ? 1 - (this.attackWindupTimer / this.attackWindupDuration)
+      : 1;
+    if (this.activeTelegraphedAttack === 'attack_tail' && this.tailMesh) {
+      this.tailMesh.rotation.y = THREE.MathUtils.lerp(0, -0.82, progress);
+      this.tailMesh.rotation.z = 0.15 * Math.sin(progress * Math.PI);
+    } else if (this.activeTelegraphedAttack === 'acid_frenzy') {
+      if (this.headMesh) this.headMesh.rotation.x = THREE.MathUtils.lerp(0, -0.34, progress);
+      const pulse = 1 + Math.sin(progress * Math.PI * 3) * 0.045;
+      this.mesh.scale.set(pulse, pulse, pulse);
+    }
+
+    if (this.attackRecoveryTimer === 0) {
+      this.cancelTelegraphedAttack();
+      this.aiState = 'chase';
+    }
+
+    this.mesh.position.copy(this.position);
+    return true;
+  }
+
 
   update(delta, playerPos, isPlayerCloaked) {
     if (this.isDead) return;
@@ -213,29 +293,33 @@ export class PredalienBoss {
 
     this.attackCooldown = Math.max(0, this.attackCooldown - delta);
     const distToPlayer = this.position.distanceTo(playerPos);
-    let detectRadius = isPlayerCloaked ? 25.0 : 90.0;
+    const detectRadius = isPlayerCloaked ? 25.0 : 90.0;
+    const targetDir = playerPos.clone().sub(this.position).normalize();
+    if (this.updateTelegraphedAttack(delta, targetDir)) return;
+
 
     if (distToPlayer < detectRadius) {
       this.aiState = 'chase';
 
-      const targetDir = playerPos.clone().sub(this.position).normalize();
       const targetAngle = Math.atan2(targetDir.x, targetDir.z);
       this.mesh.rotation.y = THREE.MathUtils.lerp(this.mesh.rotation.y, targetAngle, delta * 4.0);
 
       if (this.attackCooldown <= 0) {
-        if (distToPlayer < 10.0) {
+        if (this.isEnraged && this.headIntact && distToPlayer < 24.0) {
+          this.startTelegraphedAttack('acid_frenzy', 0.52, 4.2);
+          audioSynth.playAcidSizzle();
+        } else if (distToPlayer < 10.0) {
           this.aiState = 'attack_jaw';
           audioSynth.playMonsterRoar();
           this.attackCooldown = 1.8;
         } else if (distToPlayer > 14.0 && distToPlayer < 32.0 && this.tailIntact) {
-          this.aiState = 'attack_tail';
+          this.startTelegraphedAttack('attack_tail', 0.52, 3.2);
           audioSynth.playSpearThrow();
-          this.attackCooldown = 3.2;
         }
       }
 
-      let speed = this.isEnraged ? this.enragedSpeed : this.moveSpeed;
-      this.position.addScaledVector(targetDir, speed * delta);
+      const speed = this.isEnraged ? this.enragedSpeed : this.moveSpeed;
+      if (!this.activeTelegraphedAttack) this.position.addScaledVector(targetDir, speed * delta);
     } else {
       this.aiState = 'roam';
     }

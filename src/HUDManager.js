@@ -1,4 +1,18 @@
 import { YautjaSkinsDatabase } from './data/YautjaLoreDatabase.js';
+import { LORE_SOURCE_TIERS } from './data/LoreCodex.js';
+
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+function normalizeMeter(value, maxValue) {
+  const max = Number.isFinite(maxValue) && maxValue > 0 ? maxValue : 1;
+  const current = Number.isFinite(value) ? clamp(value, 0, max) : 0;
+
+  return {
+    current,
+    max,
+    percent: Math.round((current / max) * 100),
+  };
+}
 
 export class HUDManager {
   constructor() {
@@ -42,7 +56,92 @@ export class HUDManager {
     this.weaponSlots = document.querySelectorAll('.weapon-slot');
     this.skinGrid = document.getElementById('skin-catalog-grid');
 
+    // The HUD is refreshed from the render loop. Keep a per-node value cache so
+    // unchanged text, classes and ARIA states do not trigger DOM mutations at 60 FPS.
+    this.renderCache = new WeakMap();
+
+    this.hpMeter = this.configureMeter(this.hpBar, 'Santé Yautja');
+    this.energyMeter = this.configureMeter(this.energyBar, 'Énergie plasma');
+    this.staminaMeter = this.configureMeter(this.staminaBar, 'Endurance');
+    this.bossHpMeter = this.configureMeter(this.bossHpBar, 'Santé de la cible');
+
+    this.setAttribute(this.targetScannedName, 'aria-live', 'polite');
+    this.setAttribute(this.targetScannedName, 'aria-atomic', 'true');
+    this.setAttribute(this.cloakCard, 'role', 'status');
+    this.setAttribute(this.cloakCard, 'aria-live', 'polite');
+    this.setAttribute(this.cloakCard, 'aria-atomic', 'true');
+    this.setAttribute(this.actionPrompt, 'role', 'status');
+    this.setAttribute(this.actionPrompt, 'aria-live', 'polite');
+    this.setAttribute(this.actionPrompt, 'aria-atomic', 'true');
+    this.setAttribute(this.logBanner, 'role', 'status');
+    this.setAttribute(this.logBanner, 'aria-live', 'polite');
+    this.setAttribute(this.logBanner, 'aria-atomic', 'true');
+    this.setAttribute(this.triLaser, 'aria-hidden', 'true');
+    this.setAttribute(this.lockonBracket, 'aria-hidden', 'true');
+
+    this.weaponSlots.forEach((slot) => {
+      this.setAttribute(slot, 'aria-pressed', 'false');
+    });
+
     this.renderSkinCatalog();
+  }
+
+  commit(element, key, value, mutate) {
+    if (!element) return false;
+    let values = this.renderCache.get(element);
+    if (!values) {
+      values = Object.create(null);
+      this.renderCache.set(element, values);
+    }
+    if (values[key] === value) return false;
+    mutate();
+    values[key] = value;
+    return true;
+  }
+
+  setText(element, value) {
+    const text = String(value);
+    return this.commit(element, 'text', text, () => { element.textContent = text; });
+  }
+
+  setAttribute(element, name, value) {
+    const text = String(value);
+    return this.commit(element, `attr:${name}`, text, () => { element.setAttribute(name, text); });
+  }
+
+  setClassState(element, className, enabled) {
+    return this.commit(element, `class:${className}`, enabled, () => {
+      element.classList.toggle(className, enabled);
+    });
+  }
+
+  setStyle(element, property, value) {
+    return this.commit(element, `style:${property}`, value, () => {
+      element.style[property] = value;
+    });
+  }
+
+  configureMeter(fillElement, label) {
+    const meter = fillElement?.parentElement;
+    if (!meter) return null;
+    this.setAttribute(meter, 'role', 'progressbar');
+    this.setAttribute(meter, 'aria-label', label);
+    this.setAttribute(meter, 'aria-valuemin', '0');
+    this.setAttribute(fillElement, 'aria-hidden', 'true');
+    return meter;
+  }
+
+  updateMeter(fillElement, outputElement, meterElement, value, maxValue) {
+    const meter = normalizeMeter(value, maxValue);
+    const currentText = String(Math.ceil(meter.current));
+    const maxText = String(Math.ceil(meter.max));
+    const valueText = `${currentText} / ${maxText}`;
+
+    this.setStyle(fillElement, 'width', `${meter.percent}%`);
+    this.setText(outputElement, valueText);
+    this.setAttribute(meterElement, 'aria-valuemax', maxText);
+    this.setAttribute(meterElement, 'aria-valuenow', currentText);
+    this.setAttribute(meterElement, 'aria-valuetext', valueText);
   }
 
   renderSkinCatalog() {
@@ -50,14 +149,17 @@ export class HUDManager {
     this.skinGrid.innerHTML = '';
 
     YautjaSkinsDatabase.forEach(s => {
+      const tier = LORE_SOURCE_TIERS[s.sourceTier] ?? LORE_SOURCE_TIERS.ORIGINAL;
       const card = document.createElement('button');
       card.type = 'button';
       card.className = 'skin-card';
+      card.style.setProperty('--lore-tier-color', tier.color);
       card.setAttribute('data-skin-id', s.id);
       card.setAttribute('aria-pressed', 'false');
       card.innerHTML = `
         <div class="skin-title">${s.name}</div>
         <div class="skin-origin">${s.origin}</div>
+        <div class="codex-tier skin-tier" title="${tier.label}">${tier.shortLabel}</div>
         <div class="skin-desc">${s.desc}</div>
       `;
       this.skinGrid.appendChild(card);
@@ -65,129 +167,124 @@ export class HUDManager {
   }
 
   updateVitals(player) {
-    const hpPct = Math.max(0, (player.health / player.maxHealth) * 100);
-    this.hpBar.style.width = `${hpPct}%`;
-    this.hpVal.textContent = `${Math.ceil(player.health)} / ${player.maxHealth}`;
+    this.updateMeter(this.hpBar, this.hpVal, this.hpMeter, player.health, player.maxHealth);
+    this.updateMeter(this.energyBar, this.energyVal, this.energyMeter, player.energy, player.maxEnergy);
+    this.updateMeter(this.staminaBar, this.staminaVal, this.staminaMeter, player.stamina, player.maxStamina);
 
-    const energyPct = Math.max(0, (player.energy / player.maxEnergy) * 100);
-    this.energyBar.style.width = `${energyPct}%`;
-    this.energyVal.textContent = `${Math.ceil(player.energy)} / ${player.maxEnergy}`;
-
-    const staminaPct = Math.max(0, (player.stamina / player.maxStamina) * 100);
-    this.staminaBar.style.width = `${staminaPct}%`;
-    this.staminaVal.textContent = `${Math.ceil(player.stamina)} / ${player.maxStamina}`;
-
-    this.honorScoreDisplay.textContent = `${player.honorScore} PTS`;
-    this.honorRankDisplay.textContent = player.ranks[player.honorRankIndex];
+    this.setText(this.honorScoreDisplay, `${player.honorScore} PTS`);
+    this.setText(this.honorRankDisplay, player.ranks[player.honorRankIndex]);
 
     if (player.isCloaked) {
-      this.cloakCard.className = 'status-card cloaked';
-      this.cloakText.textContent = 'ACTIF (INVISIBILITÉ)';
+      this.setClassState(this.cloakCard, 'cloaked', true);
+      this.setClassState(this.cloakCard, 'uncloaked', false);
+      this.setText(this.cloakText, 'ACTIF (INVISIBILITÉ)');
     } else {
-      this.cloakCard.className = 'status-card uncloaked';
-      this.cloakText.textContent = 'INACTIF (VISIBLE)';
+      this.setClassState(this.cloakCard, 'cloaked', false);
+      this.setClassState(this.cloakCard, 'uncloaked', true);
+      this.setText(this.cloakText, 'INACTIF (VISIBLE)');
     }
 
-    if (player.isPerched) this.canopyBadge.classList.remove('hidden');
-    else this.canopyBadge.classList.add('hidden');
-
-    if (player.isAcidCorroded) this.acidBadge.classList.remove('hidden');
-    else this.acidBadge.classList.add('hidden');
-
-    if (player.inQTE) this.qteOverlay.classList.remove('hidden');
-    else this.qteOverlay.classList.add('hidden');
+    this.setClassState(this.canopyBadge, 'hidden', !player.isPerched);
+    this.setClassState(this.acidBadge, 'hidden', !player.isAcidCorroded);
+    this.setClassState(this.qteOverlay, 'hidden', !player.inQTE);
 
     this.weaponSlots.forEach(slot => {
       const wepId = parseInt(slot.getAttribute('data-wep'));
-      if (wepId === player.selectedWeapon) slot.classList.add('active');
-      else slot.classList.remove('active');
+      const selected = wepId === player.selectedWeapon;
+      this.setClassState(slot, 'active', selected);
+      this.setAttribute(slot, 'aria-pressed', String(selected));
     });
   }
 
   updateBossStatus(boss, huntType) {
     if (!boss) return;
-    const bossHpPct = Math.max(0, (boss.health / boss.maxHealth) * 100);
-    this.bossHpBar.style.width = `${bossHpPct}%`;
+    this.updateMeter(this.bossHpBar, null, this.bossHpMeter, boss.health, boss.maxHealth);
 
     if (huntType === 'goliath') {
-      this.bossDisplayName.textContent = "GOLIATH XENO-AKUMO";
-      this.part1Label.textContent = "CORNE GAULDOISE:";
-      this.part2Label.textContent = "QUEUE ÉPINEYUSE:";
-      this.hornStatus.textContent = boss.hornIntact ? "INTACTE" : "BRISÉE (TROPHÉE)";
-      this.tailStatus.textContent = boss.tailIntact ? "INTACTE" : "TRANCHÉE (TROPHÉE)";
+      this.setText(this.bossDisplayName, 'GOLIATH XENO-AKUMO');
+      this.setText(this.part1Label, 'CORNE GAULDOISE:');
+      this.setText(this.part2Label, 'QUEUE ÉPINEYUSE:');
+      this.setText(this.hornStatus, boss.hornIntact ? 'INTACTE' : 'BRISÉE (TROPHÉE)');
+      this.setText(this.tailStatus, boss.tailIntact ? 'INTACTE' : 'TRANCHÉE (TROPHÉE)');
     } else if (huntType === 'xeno_queen') {
-      this.bossDisplayName.textContent = "REINE XÉNOMORPHE";
-      this.part1Label.textContent = "CRÊTE DE TÊTE:";
-      this.part2Label.textContent = "QUEUE PERFORANTE:";
-      this.hornStatus.textContent = boss.crownIntact ? "INTACTE" : "BRISÉE (TROPHÉE)";
-      this.tailStatus.textContent = boss.tailIntact ? "INTACTE" : "TRANCHÉE (TROPHÉE)";
+      this.setText(this.bossDisplayName, 'REINE XÉNOMORPHE');
+      this.setText(this.part1Label, 'CRÊTE DE TÊTE:');
+      this.setText(this.part2Label, 'QUEUE PERFORANTE:');
+      this.setText(this.hornStatus, boss.crownIntact ? 'INTACTE' : 'BRISÉE (TROPHÉE)');
+      this.setText(this.tailStatus, boss.tailIntact ? 'INTACTE' : 'TRANCHÉE (TROPHÉE)');
     } else if (huntType === 'bad_blood') {
-      this.bossDisplayName.textContent = "YAUTJA BAD BLOOD";
-      this.part1Label.textContent = "CASQUE MASQUE:";
-      this.part2Label.textContent = "TÊTE DU RIVAL:";
-      this.hornStatus.textContent = "MASQUÉ";
-      this.tailStatus.textContent = boss.isDead ? "VAINCU" : "VIVANT";
+      this.setText(this.bossDisplayName, 'YAUTJA BAD BLOOD');
+      this.setText(this.part1Label, 'CASQUE MASQUE:');
+      this.setText(this.part2Label, 'TÊTE DU RIVAL:');
+      this.setText(this.hornStatus, 'MASQUÉ');
+      this.setText(this.tailStatus, boss.isDead ? 'VAINCU' : 'VIVANT');
     } else if (huntType === 'predalien') {
-      this.bossDisplayName.textContent = "PREDALIEN ULTIME";
-      this.part1Label.textContent = "DÔME BIOMÉCANIQUE:";
-      this.part2Label.textContent = "QUEUE D'ÉPINE:";
-      this.hornStatus.textContent = boss.headIntact ? "INTACTE" : "BRISÉ (TROPHÉE)";
-      this.tailStatus.textContent = boss.tailIntact ? "INTACTE" : "TRANCHÉE (TROPHÉE)";
+      this.setText(this.bossDisplayName, 'PREDALIEN ULTIME');
+      this.setText(this.part1Label, 'DÔME BIOMÉCANIQUE:');
+      this.setText(this.part2Label, "QUEUE D'ÉPINE:");
+      this.setText(this.hornStatus, boss.headIntact ? 'INTACTE' : 'BRISÉ (TROPHÉE)');
+      this.setText(this.tailStatus, boss.tailIntact ? 'INTACTE' : 'TRANCHÉE (TROPHÉE)');
     }
 
-    this.targetScannedName.textContent = `${this.bossDisplayName.textContent} — BIOSIGNATURE VERROUILLÉE`;
+    this.setText(this.targetScannedName, `${this.bossDisplayName.textContent} — BIOSIGNATURE VERROUILLÉE`);
   }
 
   showHubTarget() {
-    this.targetScannedName.textContent = 'VAISSEAU-MÈRE YAUTJA — SALLE DES TROPHÉES';
+    this.setText(this.targetScannedName, 'VAISSEAU-MÈRE YAUTJA — SALLE DES TROPHÉES');
   }
 
   setVisionModeUI(mode) {
     if (mode === 'thermal') {
-      this.visionOverlay.className = 'vision-thermal';
-      this.visionModeDisplay.textContent = 'THERMIQUE INFRA-ROUGE';
+      this.setAttribute(this.visionOverlay, 'class', 'vision-thermal');
+      this.setText(this.visionModeDisplay, 'THERMIQUE INFRA-ROUGE');
     } else if (mode === 'tech') {
-      this.visionOverlay.className = 'vision-tech';
-      this.visionModeDisplay.textContent = 'ÉLECTROMAGNÉTIQUE TECH';
+      this.setAttribute(this.visionOverlay, 'class', 'vision-tech');
+      this.setText(this.visionModeDisplay, 'ÉLECTROMAGNÉTIQUE TECH');
     } else {
-      this.visionOverlay.className = 'vision-normal';
-      this.visionModeDisplay.textContent = 'MASQUE NORMAL';
+      this.setAttribute(this.visionOverlay, 'class', 'vision-normal');
+      this.setText(this.visionModeDisplay, 'MASQUE NORMAL');
     }
   }
 
   updateTriLaserPosition(screenPos, distance, isWeakpoint) {
-    if (screenPos) {
-      this.triLaser.classList.remove('hidden');
-      this.triLaser.style.left = `${screenPos.x}px`;
-      this.triLaser.style.top = `${screenPos.y}px`;
-      this.lockonBracket.classList.remove('hidden');
-      this.lockonBracket.style.left = `${screenPos.x}px`;
-      this.lockonBracket.style.top = `${screenPos.y}px`;
-      this.lockonDistance.textContent = `${distance.toFixed(1)}m - SIGNAL THERMIQUE`;
-      this.weakpointTag.classList.toggle('hidden', !isWeakpoint);
+    const hasPosition = Number.isFinite(screenPos?.x) && Number.isFinite(screenPos?.y);
+    if (hasPosition) {
+      const x = Math.round(screenPos.x * 10) / 10;
+      const y = Math.round(screenPos.y * 10) / 10;
+      const targetTransform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(var(--hud-scale))`;
+      const distanceText = Number.isFinite(distance)
+        ? `${distance.toFixed(1)}m - SIGNAL THERMIQUE`
+        : 'DISTANCE INCONNUE - SIGNAL THERMIQUE';
+
+      this.setClassState(this.triLaser, 'hidden', false);
+      this.setStyle(this.triLaser, 'transform', targetTransform);
+      this.setClassState(this.lockonBracket, 'hidden', false);
+      this.setStyle(this.lockonBracket, 'transform', targetTransform);
+      this.setText(this.lockonDistance, distanceText);
+      this.setClassState(this.weakpointTag, 'hidden', !isWeakpoint);
     } else {
-      this.triLaser.classList.add('hidden');
-      this.lockonBracket.classList.add('hidden');
-      this.weakpointTag.classList.add('hidden');
+      this.setClassState(this.triLaser, 'hidden', true);
+      this.setClassState(this.lockonBracket, 'hidden', true);
+      this.setClassState(this.weakpointTag, 'hidden', true);
     }
   }
 
   showActionPrompt(text) {
-    this.actionPromptText.textContent = text;
-    this.actionPrompt.classList.remove('hidden');
+    this.setText(this.actionPromptText, text);
+    this.setClassState(this.actionPrompt, 'hidden', false);
   }
 
   hideActionPrompt() {
-    this.actionPrompt.classList.add('hidden');
+    this.setClassState(this.actionPrompt, 'hidden', true);
   }
 
   showLogMessage(msg, duration = 3000) {
     if (this.logTimeoutId !== null) clearTimeout(this.logTimeoutId);
-    this.logBanner.textContent = msg;
-    this.logBanner.classList.remove('hidden');
+    this.setText(this.logBanner, msg);
+    this.setClassState(this.logBanner, 'hidden', false);
     this.logTimeoutId = setTimeout(() => {
       this.logTimeoutId = null;
-      this.logBanner.classList.add('hidden');
+      this.setClassState(this.logBanner, 'hidden', true);
     }, duration);
   }
 }

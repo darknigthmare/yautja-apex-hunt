@@ -7,6 +7,7 @@
 body { user-select: none; }
 a, button, input, select { font: inherit; }
 button, select, input { touch-action: manipulation; }
+button, select { min-height: 44px; }
 button:focus-visible,
 select:focus-visible,
 input:focus-visible,
@@ -20,9 +21,21 @@ a:focus-visible,
 #hud-left,
 #hud-right,
 #hud-bottom,
-#log-banner,
+#log-banner { zoom: var(--hud-scale); }
+
 #lockon-bracket,
-#tri-laser-container { zoom: var(--hud-scale); }
+#tri-laser-container {
+  left: 0;
+  top: 0;
+  transform: translate3d(50vw, 50vh, 0) translate(-50%, -50%) scale(var(--hud-scale));
+  transform-origin: center;
+  will-change: transform;
+}
+
+.weapon-slot[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 1px var(--yautja-red), 0 0 12px rgba(255, 40, 20, 0.35);
+}
+.skin-card[aria-pressed='true'] { border-color: var(--yautja-gold); }
 
 #pause-modal {
   align-items: center;
@@ -111,6 +124,7 @@ a:focus-visible,
   font-size: 8px;
   padding: 3px 6px;
 }
+.skin-tier { display: inline-flex; margin: 4px 0 6px; }
 .codex-summary { color: #dce3ec; font-size: 13px; line-height: 1.4; margin-top: 10px; }
 .codex-body { color: #aeb8c5; font-size: 12px; line-height: 1.45; margin-top: 8px; }
 .codex-sources { font-size: 11px; line-height: 1.4; margin-top: 12px; user-select: text; }
@@ -120,6 +134,9 @@ a:focus-visible,
   text-underline-offset: 2px;
   user-select: text;
 }
+.codex-card,
+.modal-intro,
+.controls-grid { user-select: text; }
 
 .settings-grid {
   display: grid;
@@ -183,6 +200,10 @@ body.high-contrast {
 body.high-contrast .modal-box,
 body.high-contrast .codex-card,
 body.high-contrast .setting-card { border-width: 2px; }
+body.high-contrast .weapon-slot[aria-pressed='true'],
+body.high-contrast .skin-card[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 2px #fff, 0 0 0 4px #000;
+}
 body.high-contrast .hud-label,
 body.high-contrast .skin-desc,
 body.high-contrast .codex-body,
@@ -198,6 +219,9 @@ body.reduced-motion *::after {
 }
 body.reduced-motion #scanline-overlay { display: none; }
 
+body.reduced-motion #lockon-bracket,
+body.reduced-motion #tri-laser-container { will-change: auto; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
@@ -205,6 +229,48 @@ body.reduced-motion #scanline-overlay { display: none; }
     scroll-behavior: auto !important;
     transition-duration: 0.001ms !important;
   }
+  #scanline-overlay { display: none; }
+  #lockon-bracket,
+  #tri-laser-container { will-change: auto; }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --hud-bg: rgba(0, 0, 0, 0.96);
+    --hud-border: rgba(255, 255, 255, 0.92);
+    --yautja-red: #ff4b3e;
+    --yautja-cyan: #64f7ff;
+    --yautja-gold: #ffd84d;
+  }
+  .hud-label,
+  .skin-desc,
+  .codex-body,
+  .setting-card small { color: #fff; }
+}
+
+@media (forced-colors: active) {
+  button:focus-visible,
+  select:focus-visible,
+  input:focus-visible,
+  a:focus-visible,
+  [tabindex]:focus-visible { outline: 3px solid Highlight; }
+  .stat-bar-bg,
+  .boss-hp-bg { border: 1px solid CanvasText; }
+  .stat-bar-fill,
+  .boss-hp-fill {
+    background: Highlight;
+    forced-color-adjust: none;
+  }
+  .weapon-slot[aria-pressed='true'],
+  .skin-card[aria-pressed='true'] {
+    border-color: Highlight;
+    outline: 2px solid Highlight;
+  }
+}
+
+@media (hover: none) {
+  button:hover,
+  .skin-card:hover { transform: none; }
 }
 
 @media (max-width: 1100px) {
@@ -219,6 +285,12 @@ body.reduced-motion #scanline-overlay { display: none; }
 }
 
 @media (max-width: 760px) {
+  #hud-top,
+  #hud-left,
+  #hud-right,
+  #hud-bottom,
+  #log-banner { zoom: min(var(--hud-scale), 1); }
+
   #hud-container { padding: 8px; }
   #helmet-frame { display: none; }
   #hud-top { gap: 6px; }
@@ -233,7 +305,11 @@ body.reduced-motion #scanline-overlay { display: none; }
   .status-title { font-size: 9px; }
   #hud-bottom { margin-bottom: 2px; }
   #weapon-selector { gap: 3px; max-width: 98vw; }
-  .weapon-slot { min-width: 42px; padding: 4px; }
+  .weapon-slot {
+    min-height: 52px;
+    min-width: 52px;
+    padding: 4px;
+  }
   .wep-name { display: none; }
   .wep-num { font-size: 11px; }
   #log-banner { bottom: 72px; max-width: 92vw; text-align: center; }

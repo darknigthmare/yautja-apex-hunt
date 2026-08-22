@@ -1,26 +1,26 @@
 // Exhaustive Yautja Lore Database (Movies, Games, Comics, Novels & Fan Films)
 
 export const YautjaSkinsDatabase = [
-  { id: 'jungle_1987', name: 'Jungle Hunter (1987)', origin: 'Film: Predator 1', col: 0x3a424d, desc: 'Armure classique du Chasseur de Val Verde (1987).' },
-  { id: 'city_1990', name: 'City Hunter (1990)', origin: 'Film: Predator 2', col: 0x4a3a2d, desc: 'Chasseur urbain de Los Angeles avec filet et lance.' },
-  { id: 'scar_avp', name: 'Scar Predator', origin: 'Film: AVP (2004)', col: 0x2d3a4a, desc: 'Leader des Jeunes Sangs marqué de la rune de sang.' },
-  { id: 'celtic_avp', name: 'Celtic Predator', origin: 'Film: AVP (2004)', col: 0x3a4a3a, desc: 'Masque celtique lourd avec gravures runiques.' },
-  { id: 'chopper_avp', name: 'Chopper Predator', origin: 'Film: AVP (2004)', col: 0x4a4a2d, desc: 'Chasseur équipé de scies d\'épaule doubles.' },
-  { id: 'wolf_avpr', name: 'Wolf Predator', origin: 'Film: AVPR (2007)', col: 0x222a33, desc: 'Nettoyeur Vétéran balafré équipé de deux canons à plasma.' },
-  { id: 'berserker_2010', name: 'Berserker / Mr. Black', origin: 'Film: Predators (2010)', col: 0x441111, desc: 'Super Predator massif avec masque en mâchoire de Xénomorphe.' },
-  { id: 'falconer_2010', name: 'Falconer Predator', origin: 'Film: Predators (2010)', col: 0x113344, desc: 'Chasseur agile avec drone faucon mécanique.' },
-  { id: 'tracker_2010', name: 'Tracker / Flusher', origin: 'Film: Predators (2010)', col: 0x223322, desc: 'Maître des chiens de chasse Yautja avec défenses de masque.' },
-  { id: 'fugitive_2018', name: 'Fugitive Predator', origin: 'Film: The Predator (2018)', col: 0x00f0ff, desc: 'Armure haute technologie dorée et dorures biomécaniques.' },
-  { id: 'feral_2022', name: 'Feral Predator', origin: 'Film: Prey (2022)', col: 0x664422, desc: 'Chasseur primitif avec masque en crâne d\'ours polaire.' },
-  { id: 'alpha_yautja', name: 'Alpha Predator (Premier Yautja)', origin: 'Lore & Comics', col: 0xeeccaa, desc: 'Le tout premier Yautja libérateur portant la peau d\'Amangi.' },
-  { id: 'ahab_comic', name: 'Ahab Predator', origin: 'Comics: Fire and Stone', col: 0xaa5522, desc: 'Vétéran manchot et aveugle traqueur de Reines Xénomorphes.' },
-  { id: 'scarface_game', name: 'Scarface', origin: 'Jeu: Concrete Jungle', col: 0x333344, desc: 'Chasseur exilé de Neonopolis revenant racheter son honneur.' },
-  { id: 'dark_avp2010', name: 'Dark Predator', origin: 'Jeu: AVP (2010)', col: 0x112233, desc: 'Élite de la pyramide de BG-386 avec wristblades longues.' },
-  { id: 'machiko_yautja', name: 'Machiko Noguchi', origin: 'Comics: Alien vs Predator', col: 0xff88aa, desc: 'Armure Yautja adaptée portée par l\'humaine acceptée dans le clan.' },
-  { id: 'samurai_yautja', name: 'Samurai Yautja', origin: 'Comics & Figurines', col: 0xaa2222, desc: 'Chasseur du Japon féodal armé d\'une Katana Yautja.' },
-  { id: 'viking_yautja', name: 'Viking Yautja', origin: 'Comics & Lore', col: 0x556677, desc: 'Guerrier nordique des tempêtes avec hache mailloche.' },
-  { id: 'cyborg_yautja', name: 'Cyborg Yautja', origin: 'Jeu Arcade & Comics', col: 0x00ffcc, desc: 'Predator cybernétique aux membres bioniques.' },
-  { id: 'deadend_fanfilm', name: 'Dead End Predator', origin: 'Fan-Film: Batman vs Predator', col: 0xffaa00, desc: 'Chasseur emblématique des rues sombres de Gotham.' }
+  { id: 'jungle_1987', name: 'Jungle Hunter (1987)', origin: 'Film : Predator (1987)', sourceTier: 'SCREEN', col: 0x3a424d, desc: 'Armure du Jungle Hunter, chasseur de la jungle centraméricaine non nommée à l’écran.' },
+  { id: 'city_1990', name: 'City Hunter (1990)', origin: 'Film : Predator 2 (1990)', sourceTier: 'SCREEN', col: 0x4a3a2d, desc: 'Chasseur urbain de Los Angeles équipé notamment d’un filet et d’une lance télescopique.' },
+  { id: 'scar_avp', name: 'Scar Predator', origin: 'Film : Alien vs. Predator (2004)', sourceTier: 'AVP_SCREEN', col: 0x2d3a4a, desc: 'Jeune chasseur de l’épreuve AVP, marqué après avoir tué un Xénomorphe.' },
+  { id: 'celtic_avp', name: 'Celtic Predator', origin: 'Film : Alien vs. Predator (2004)', sourceTier: 'AVP_SCREEN', col: 0x3a4a3a, desc: 'Participant à l’épreuve AVP, reconnaissable à son bio-masque lourd aux motifs celtiques.' },
+  { id: 'chopper_avp', name: 'Chopper Predator', origin: 'Film : Alien vs. Predator (2004)', sourceTier: 'AVP_SCREEN', col: 0x4a4a2d, desc: 'Jeune chasseur reconnaissable à ses longues lames de poignet.' },
+  { id: 'wolf_avpr', name: 'Wolf Predator', origin: 'Film : Aliens vs. Predator: Requiem (2007)', sourceTier: 'AVP_SCREEN', col: 0x222a33, desc: 'Chasseur vétéran envoyé pour contenir l’incident de Gunnison, équipé de deux canons à plasma.' },
+  { id: 'berserker_2010', name: 'Berserker Predator', origin: 'Film : Predators (2010)', sourceTier: 'SCREEN', col: 0x441111, desc: 'Super Predator massif de la réserve de chasse, au masque orné d’une mandibule osseuse d’origine non précisée.' },
+  { id: 'falconer_2010', name: 'Falconer Predator', origin: 'Film : Predators (2010)', sourceTier: 'SCREEN', col: 0x113344, desc: 'Super Predator utilisant un drone de reconnaissance en forme de faucon.' },
+  { id: 'tracker_2010', name: 'Tracker Predator', origin: 'Film : Predators (2010)', sourceTier: 'SCREEN', col: 0x223322, desc: 'Super Predator qui dirige les chiens de chasse de la réserve, reconnaissable aux défenses de son masque.' },
+  { id: 'fugitive_2018', name: 'Fugitive Predator', origin: 'Film : The Predator (2018)', sourceTier: 'SCREEN', col: 0x00f0ff, desc: 'Predator fugitif portant une armure métallique, un bio-masque et un canon d’épaule.' },
+  { id: 'feral_2022', name: 'Feral Predator', origin: 'Film : Prey (2022)', sourceTier: 'SCREEN', col: 0x664422, desc: 'Chasseur de 1719 portant un bio-masque en os dont l’espèce d’origine n’est pas identifiée à l’écran.' },
+  { id: 'alpha_yautja', name: 'Alpha Predator', origin: 'Jeu licencié : Predator: Hunting Grounds · concept NECA', sourceTier: 'LICENSED_EU', col: 0xeeccaa, desc: 'Concept original de NECA intégré comme classe jouable ; son récit d’origine appartient à ce contenu licencié.' },
+  { id: 'ahab_comic', name: 'Ahab Predator', origin: 'Comics licenciés : Fire and Stone', sourceTier: 'LICENSED_EU', col: 0xaa5522, desc: 'Ancien Yautja borgne dont la quête vise un Engineer, associé à un trophée et une arme d’Engineer.' },
+  { id: 'scarface_game', name: 'Scarface', origin: 'Jeu licencié : Predator: Concrete Jungle', sourceTier: 'LICENSED_EU', col: 0x333344, desc: 'Chasseur exilé qui revient à Neonopolis pour traquer ses ennemis et restaurer son honneur.' },
+  { id: 'dark_avp2010', name: 'Dark Predator', origin: 'Jeu licencié : Aliens vs. Predator (2010)', sourceTier: 'LICENSED_EU', col: 0x112233, desc: 'Predator jouable de la campagne de 2010, déployé sur BG-386 et équipé de longues lames de poignet.' },
+  { id: 'machiko_yautja', name: 'Machiko Noguchi', origin: 'Comics et romans licenciés : Aliens vs. Predator', sourceTier: 'LICENSED_EU', col: 0xff88aa, desc: 'Humaine survivante de Ryushi, ensuite intégrée à un groupe de Predators dans l’univers étendu.' },
+  { id: 'samurai_yautja', name: 'Samurai Predator', origin: 'Jeu licencié : Predator: Hunting Grounds', sourceTier: 'LICENSED_EU', col: 0xaa2222, desc: 'Chasseur ayant affronté les guerriers du Japon féodal, puis adopté une armure inspirée de ses proies et un katana.' },
+  { id: 'viking_yautja', name: 'Viking Predator', origin: 'Jeu licencié : Predator: Hunting Grounds', sourceTier: 'LICENSED_EU', col: 0x556677, desc: 'Classe inspirée de chasses à l’époque viking et équipée d’une hache de bataille.' },
+  { id: 'cyborg_yautja', name: 'Cyborg Yautja — Apex Hunt', origin: 'Création : Yautja: Apex Hunt', sourceTier: 'ORIGINAL', col: 0x00ffcc, desc: 'Interprétation originale d’un chasseur aux prothèses bioniques ; aucune identité écran ou EU précise n’est revendiquée.' },
+  { id: 'deadend_fanfilm', name: 'Dead End Predator — hommage', origin: 'Hommage non licencié : Batman: Dead End (2003)', sourceTier: 'ORIGINAL', col: 0xffaa00, desc: 'Interprétation Apex Hunt inspirée du fan film Batman: Dead End, hors continuités officielles.' }
 ];
 
 export const YautjaWeaponsDatabase = [

@@ -24,6 +24,21 @@ const HUB_PLAYER_POSITION = new THREE.Vector3(0, 0, 20);
 const VICTORY_DELAY_SECONDS = 3;
 const GOLIATH_CHARGE_WINDOW_SECONDS = 4;
 const GOLIATH_CHARGE_IMPACT_RANGE = 10;
+const ENEMY_ATTACK_PROFILES = Object.freeze({
+  melee: { damage: 26, range: 7.5, cooldown: 1.5 },
+  attack_claw: { damage: 22, range: 9.5, cooldown: 1.1 },
+  attack_jaw: { damage: 30, range: 10.5, cooldown: 1.1 },
+  attack_tail: { damage: 36, range: 32, cooldown: 1.6, telegraphed: true, corrosion: true },
+  acid_spray: { damage: 24, range: 60, cooldown: 1.8, telegraphed: true, corrosion: true },
+  acid_frenzy: { damage: 34, range: 24, cooldown: 1.8, telegraphed: true, corrosion: true },
+  charge: { damage: 32, range: GOLIATH_CHARGE_IMPACT_RANGE, cooldown: 1.3 },
+});
+const ENEMY_ATTACK_TELEGRAPHS = Object.freeze({
+  attack_tail: 'BALAYAGE DE QUEUE DÉTECTÉ — ESQUIVEZ !',
+  acid_spray: 'PRESSION ACIDE : LA REINE ARME UNE PROJECTION !',
+  acid_frenzy: 'FRÉNÉSIE ACIDE DU PREDALIEN — ROMPEZ LE CONTACT !',
+});
+
 
 export class Game {
   constructor() {
@@ -355,10 +370,15 @@ export class Game {
 
   resolveFacehuggerQTE(success) {
     if (!this.player.inQTE) return false;
+    const honorBefore = Number(this.player.honorScore) || 0;
     const resolved = this.player.resolveQTE(success);
+    this.player.qteTimer = 0;
     this.activeFacehuggerCluster?.neutralizeFacehugger();
     this.activeFacehuggerCluster = null;
-    if (success && resolved) this.hud.showLogMessage('FACEHUGGER TRANCHÉ AVEC SUCCÈS! +150 PTS');
+    if (success && resolved) {
+      const honorGained = Math.max(0, (Number(this.player.honorScore) || 0) - honorBefore);
+      this.hud.showLogMessage(`FACEHUGGER TRANCHÉ AVEC SUCCÈS! +${honorGained} PTS`);
+    }
     return resolved;
   }
 
@@ -972,6 +992,7 @@ export class Game {
     }
 
     if (this.activeFacehuggerCluster && !this.player.inQTE) {
+      this.player.qteTimer = 0;
       this.activeFacehuggerCluster.neutralizeFacehugger();
       this.activeFacehuggerCluster = null;
     }
@@ -1053,13 +1074,6 @@ export class Game {
       }
     }
 
-    const enemyAttackProfiles = {
-      melee: { damage: 26, range: 7.5, cooldown: 1.5 },
-      attack_claw: { damage: 22, range: 9.5, cooldown: 1.1 },
-      attack_jaw: { damage: 30, range: 10.5, cooldown: 1.1 },
-      attack_tail: { damage: 36, range: 32, cooldown: 1.6 },
-      charge: { damage: 32, range: GOLIATH_CHARGE_IMPACT_RANGE, cooldown: 1.3 },
-    };
     const isGoliathChargeFrame = this.currentHuntType === 'goliath' && this.activeBoss.aiState === 'charge';
     if (isGoliathChargeFrame && !this.goliathChargeLatched) {
       this.goliathChargeWindow = GOLIATH_CHARGE_WINDOW_SECONDS;
@@ -1073,24 +1087,31 @@ export class Game {
       && this.goliathChargeWindow > 0
       && playerBossDistance <= GOLIATH_CHARGE_IMPACT_RANGE;
     const attackState = chargeImpactReady ? 'charge' : this.activeBoss.aiState;
-    const attackProfile = enemyAttackProfiles[attackState];
+    const attackProfile = ENEMY_ATTACK_PROFILES[attackState];
+    if (attackProfile?.telegraphed && this.activeBoss.attackTelegraphAnnounced === false) {
+      const message = ENEMY_ATTACK_TELEGRAPHS[attackState];
+      if (message) this.hud.showLogMessage(message, 1200);
+      this.activeBoss.attackTelegraphAnnounced = true;
+    }
+    const impactReady = !attackProfile?.telegraphed || this.activeBoss.attackImpactReady === true;
     const freshBadBloodMelee = this.currentHuntType !== 'bad_blood'
       || attackState !== 'melee'
       || this.activeBoss.attackCooldown >= 1.75;
 
-    if (!this.activeBoss.isDead && attackProfile && this.enemyDamageCooldown <= 0 && freshBadBloodMelee) {
-      if (playerBossDistance <= attackProfile.range) {
-        this.player.takeDamage(attackProfile.damage);
-        this.enemyDamageCooldown = attackProfile.cooldown;
-        if (attackState === 'charge') this.goliathChargeWindow = 0;
-        this.spawnBloodSpatterVFX(playerPos, 0xffff00, 15);
-        if (
-          attackState === 'attack_tail'
-          && (this.currentHuntType === 'xeno_queen' || this.currentHuntType === 'predalien')
-        ) {
-          this.player.applyAcidCorrosion();
-        }
-      }
+    if (
+      !this.activeBoss.isDead
+      && attackProfile
+      && impactReady
+      && this.enemyDamageCooldown <= 0
+      && freshBadBloodMelee
+      && playerBossDistance <= attackProfile.range
+    ) {
+      if (attackProfile.telegraphed && this.activeBoss.consumeAttackImpact?.() !== true) return;
+      this.player.takeDamage(attackProfile.damage);
+      this.enemyDamageCooldown = attackProfile.cooldown;
+      if (attackState === 'charge') this.goliathChargeWindow = 0;
+      this.spawnBloodSpatterVFX(playerPos, 0xffff00, 15);
+      if (attackProfile.corrosion) this.player.applyAcidCorrosion();
     }
   }
 

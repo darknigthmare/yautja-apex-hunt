@@ -9,10 +9,10 @@ Toutes les évolutions notées ici sont **non publiées** tant qu'aucun push ou 
 - format de sauvegarde versionné v2 avec migration de l'ancien format ;
 - persistance de la peau, des chasses terminées, trophées et options ;
 - règles isolées de mêlée pour lames de poignet et fouet ;
-- tests Node dédiés au combat et à la sauvegarde ;
+- tests Node dédiés au combat, au lore, à la sauvegarde, au cycle de vie et aux contrats web/HUD ;
 - configuration centralisée des chasses, biomes et préférences ;
 - Codex de lore avec niveaux `SCREEN`, `AVP_SCREEN`, `LICENSED_EU` et `ORIGINAL` ;
-- six textures de décor originales générées avec le modèle ImageGen intégré OpenAI ;
+- neuf textures originales générées avec le modèle ImageGen intégré OpenAI, dont os de trophée, cuir-filet et membrane d’œuf ;
 - infrastructure d'options pour audio, mouvement réduit, fort contraste et échelle du HUD ;
 - documentation de production : audit, game design, direction artistique, lore, assets et QA.
 
@@ -22,22 +22,22 @@ Toutes les évolutions notées ici sont **non publiées** tant qu'aucun push ou 
 - autodestruction protégée contre les explosions répétées et associée à un état terminal ;
 - état du joueur réinitialisable entre les chasses ;
 - attribution d'honneur rendue explicite et dédupliquée au niveau des règles ;
-- neutralisation du facehugger rendue appelable par la résolution du QTE ;
+- QTE facehugger rendu idempotent, timer remis à zéro et récompense affichée selon le gain réel ; corrosion acide corrigée pour forcer le décloak avant verrouillage ;
 - matériaux de peau limités aux éléments destinés à être teintés ;
 - trophées du hub pilotables par la liste des chasses terminées ;
-- états acquis/inabordables de la forge explicités, boutons désactivés de façon accessible et alertes natives remplacées par le journal HUD ;
+- états acquis/inabordables de la forge explicités, boutons désactivés de façon accessible et alertes natives remplacées par le journal HUD ; mutations par frame mises en cache, jauges ARIA et cibles tactiles réelles de 44 px ajoutées ;
 - ressources de biome nettoyables lors d'un changement d'environnement.
 
 ### Intégré et validé techniquement
 
-- intégration des dégâts de mêlée, projectiles Bad Blood et attaques des boss ;
+- intégration des dégâts de mêlée et projectiles Bad Blood ; queues et attaques acides de la Reine/du Predalien suivent désormais signal, fenêtre de réaction, impact unique et récupération ;
 - implémentation du zoom, pause, reprise, abandon et options ; persistance du zoom et de la peau après rechargement ;
 - Codex sourcé et niveaux de continuité visibles ;
 - armurerie et arsenal utilisables au clavier ;
 - responsive 390×844 sans débordement horizontal et audit axe à 0 violation ;
-- chargement réel des six textures OpenAI optimisées ;
+- chargement réel des neuf textures OpenAI optimisées, toutes observées en HTTP 200 dans Chromium ;
 - démarrage/cleanup des quatre cibles dans les quatre biomes de référence ;
-- autodestruction complète sans gain abusif, 18/18 tests, build Vite final et smoke test Chromium sans erreur de page.
+- autodestruction complète sans gain abusif, 33/33 tests, build Vite final et smoke tests Chromium 1280×720 / 390×844 sans erreur de page.
 
 ### Sécurité et dépendances
 
@@ -53,6 +53,6 @@ Toutes les évolutions notées ici sont **non publiées** tant qu'aucun push ou 
 
 ### Publication
 
-- aucun push GitHub effectué par ce lot de travail ;
-- aucun déploiement Vercel effectué ;
-- publication conditionnée à l'autorisation explicite de l'utilisateur et à la fermeture ou l'acceptation des contrôles manuels encore ouverts dans `QA_REPORT.md`.
+- push GitHub et déploiement Vercel explicitement autorisés par l’utilisateur le 22 août 2026 ;
+- aucun déploiement de ce candidat n’est revendiqué avant exécution du gate de production ;
+- état public exact et commit déployé à consigner dans `QA_REPORT.md` après publication.

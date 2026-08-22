@@ -4,7 +4,7 @@ Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur inca
 
 ## État du projet
 
-Cette branche de travail professionnalise la boucle de jeu, la sauvegarde, l’accessibilité, le Codex et les décors. Le candidat technique local passe 18 tests, le build Vite, l’audit npm et un smoke test Chromium des quatre chasses ; la QA gameplay complète reste documentée comme contrôle manuel avant release. Le site public actuel reste la version précédente tant qu’aucune autorisation explicite de push et de déploiement n’a été donnée.
+Le candidat 1.2.0 professionnalise la boucle de jeu, la sauvegarde, le combat des boss, l’accessibilité, le Codex et les décors. Il passe 33 tests Node, le build Vite 8.2.2, l’audit npm à 0 vulnérabilité et les parcours Chromium desktop/mobile ; les neuf textures répondent en HTTP 200 et axe-core ne relève aucune violation. La publication GitHub/Vercel est autorisée par l’utilisateur et reste soumise au dernier gate de production consigné dans `QA_REPORT.md`.
 
 ## Lancer localement
 
@@ -35,7 +35,7 @@ npm audit
 
 ## Direction artistique et assets
 
-Les six textures de décor sous `public/assets/textures/` sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis optimisées en WebP 1024×1024. Aucun asset officiel, logo, key art ou symbole protégé n’a été copié. Les prompts, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+Les neuf textures de décor et de props sous `public/assets/textures/` sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis optimisées en WebP 1024×1024. Les nouvelles matières habillent les trophées, le cuir-filet du joueur et les œufs de facehugger. Aucun asset officiel, logo, key art ou symbole protégé n’a été copié. Les prompts, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
 
 ## Documentation
 

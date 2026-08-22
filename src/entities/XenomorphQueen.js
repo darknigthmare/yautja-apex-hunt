@@ -28,6 +28,13 @@ export class XenomorphQueen {
 
     this.aiState = 'roam'; // 'roam', 'chase', 'attack_jaw', 'attack_tail', 'acid_spray'
     this.attackCooldown = 0;
+    this.activeTelegraphedAttack = null;
+    this.attackWindupDuration = 0;
+    this.attackWindupTimer = 0;
+    this.attackRecoveryTimer = 0;
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
 
     // 3D Mesh
     this.mesh = this.createQueenMesh();
@@ -164,6 +171,7 @@ export class XenomorphQueen {
       if (this.tailHealth <= 0) {
         this.tailIntact = false;
         if (this.tailMesh) this.tailMesh.visible = false;
+        if (this.activeTelegraphedAttack === 'attack_tail') this.cancelTelegraphedAttack();
         audioSynth.playMonsterRoar();
       }
     }
@@ -175,6 +183,7 @@ export class XenomorphQueen {
 
     if (this.health <= 0) {
       this.isDead = true;
+      this.cancelTelegraphedAttack();
       audioSynth.playMonsterRoar();
     }
   }
@@ -185,9 +194,79 @@ export class XenomorphQueen {
   }
 
   applyNet() {
+    this.cancelTelegraphedAttack();
     this.isNetted = true;
     this.netTimer = 3.5;
   }
+  startTelegraphedAttack(state, windupSeconds, cooldownSeconds) {
+    this.aiState = state;
+    this.activeTelegraphedAttack = state;
+    this.attackWindupDuration = windupSeconds;
+    this.attackWindupTimer = windupSeconds;
+    this.attackRecoveryTimer = windupSeconds + 0.25;
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
+    this.attackCooldown = cooldownSeconds;
+  }
+
+  consumeAttackImpact() {
+    if (!this.attackImpactReady || this.attackImpactConsumed) return false;
+    this.attackImpactConsumed = true;
+    this.attackImpactReady = false;
+    return true;
+  }
+
+  cancelTelegraphedAttack() {
+    this.activeTelegraphedAttack = null;
+    this.attackWindupDuration = 0;
+    this.attackWindupTimer = 0;
+    this.attackRecoveryTimer = 0;
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
+    if (this.tailMesh) this.tailMesh.rotation.set(0, 0, 0);
+    if (this.crownMesh) this.crownMesh.rotation.set(0, 0, 0);
+    this.mesh.scale.set(1, 1, 1);
+  }
+
+  updateTelegraphedAttack(delta, targetDir) {
+    if (!this.activeTelegraphedAttack) return false;
+
+    this.aiState = this.activeTelegraphedAttack;
+    const targetAngle = Math.atan2(targetDir.x, targetDir.z);
+    let diff = targetAngle - this.mesh.rotation.y;
+    diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+    this.mesh.rotation.y += diff * Math.min(1, delta * 5);
+
+    const previousWindup = this.attackWindupTimer;
+    this.attackWindupTimer = Math.max(0, this.attackWindupTimer - delta);
+    this.attackRecoveryTimer = Math.max(0, this.attackRecoveryTimer - delta);
+    if (previousWindup > 0 && this.attackWindupTimer === 0 && !this.attackImpactConsumed) {
+      this.attackImpactReady = true;
+    }
+
+    const progress = this.attackWindupDuration > 0
+      ? 1 - (this.attackWindupTimer / this.attackWindupDuration)
+      : 1;
+    if (this.activeTelegraphedAttack === 'attack_tail' && this.tailMesh) {
+      this.tailMesh.rotation.y = THREE.MathUtils.lerp(0, 0.72, progress);
+      this.tailMesh.rotation.z = -0.12 * Math.sin(progress * Math.PI);
+    } else if (this.activeTelegraphedAttack === 'acid_spray') {
+      if (this.crownMesh) this.crownMesh.rotation.x = THREE.MathUtils.lerp(0, -0.28, progress);
+      const pulse = 1 + Math.sin(progress * Math.PI) * 0.055;
+      this.mesh.scale.set(pulse, pulse, pulse);
+    }
+
+    if (this.attackRecoveryTimer === 0) {
+      this.cancelTelegraphedAttack();
+      this.aiState = 'chase';
+    }
+
+    this.mesh.position.copy(this.position);
+    return true;
+  }
+
 
   update(delta, playerPos, isPlayerCloaked) {
     if (this.isDead) return;
@@ -200,13 +279,16 @@ export class XenomorphQueen {
 
     this.attackCooldown = Math.max(0, this.attackCooldown - delta);
     const distToPlayer = this.position.distanceTo(playerPos);
-    let detectRadius = isPlayerCloaked ? 25.0 : 180.0;
+    const detectRadius = isPlayerCloaked ? 25.0 : 180.0;
+    const targetDir = playerPos.clone().sub(this.position).normalize();
+    if (this.updateTelegraphedAttack(delta, targetDir)) return;
+
 
     if (distToPlayer < detectRadius) {
       this.aiState = 'chase';
 
-      const targetDir = playerPos.clone().sub(this.position).normalize();
       const targetAngle = Math.atan2(targetDir.x, targetDir.z);
+
 
       let diff = targetAngle - this.mesh.rotation.y;
       diff = Math.atan2(Math.sin(diff), Math.cos(diff));
@@ -218,14 +300,16 @@ export class XenomorphQueen {
           audioSynth.playMonsterRoar();
           this.attackCooldown = 2.0;
         } else if (distToPlayer > 12.0 && distToPlayer < 28.0 && this.tailIntact) {
-          this.aiState = 'attack_tail';
+          this.startTelegraphedAttack('attack_tail', 0.58, 3.5);
           audioSynth.playSpearThrow();
-          this.attackCooldown = 3.5;
+        } else if (distToPlayer >= 28.0 && distToPlayer < 60.0) {
+          this.startTelegraphedAttack('acid_spray', 0.68, 4.6);
+          audioSynth.playAcidSizzle();
         }
       }
 
-      let speed = this.isEnraged ? this.enragedSpeed : this.moveSpeed;
-      if (distToPlayer > 6.0) {
+      const speed = this.isEnraged ? this.enragedSpeed : this.moveSpeed;
+      if (!this.activeTelegraphedAttack && distToPlayer > 6.0) {
         this.position.addScaledVector(targetDir, speed * delta);
       }
     } else {

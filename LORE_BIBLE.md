@@ -6,18 +6,18 @@ Cette bible empêche de mélanger films Predator, crossovers AVP, univers étend
 
 | Niveau | Contenu | Règle |
 | --- | --- | --- |
-| `SCREEN` | Films Predator officiels | Référence la plus sûre pour culture, technologie et événements Predator. |
+| `SCREEN` | Films Predator ou Alien officiels, hors crossovers AVP | Source écran principale ; une entrée précise toujours de quelle franchise vient son fondement. |
 | `AVP_SCREEN` | Films Alien vs. Predator | Branche crossover distincte ; elle ne réécrit pas automatiquement les continuités principales. |
 | `LICENSED_EU` | Romans, comics et jeux sous licence | Inspiration permise avec badge EU ; ses règles ne sont pas universalisées. |
 | `ORIGINAL` | Créations de Yautja: Apex Hunt | Nom, mission, lieu ou interprétation propre au jeu ; badge toujours visible. |
 
-Dans `src/data/LoreCodex.js`, `sourceTier` qualifie l’entrée exacte. `basisTier` peut signaler sa source d’inspiration. Une mission originale fondée sur une créature AVP reste donc `ORIGINAL`, avec `basisTier: AVP_SCREEN`.
+Dans `src/data/LoreCodex.js`, `sourceTier` qualifie l’entrée exacte. `basisTier` peut signaler sa source d’inspiration et `relatedTier` une continuité associée. Une mission inventée reste donc `ORIGINAL`, même lorsque sa créature vient de `SCREEN` ou de `AVP_SCREEN`.
 
 ## Décisions canoniques
 
 ### Yautja, code et honneur
 
-Le mot **Yautja**, popularisé par le roman sous licence *Aliens vs. Predator: Prey* de 1994, est désormais compatible avec l’écran : Disney l’emploie explicitement pour *Predator: Badlands*. Cela ne rend pas tout le contenu du roman canon écran.
+Le mot **Yautja**, établi dans la fiction sous licence autour de *Aliens vs. Predator: Prey*, est désormais aussi un terme écran : Disney l’emploie explicitement pour l’espèce dans *Predator: Badlands*. Ce passage du vocabulaire vers l’écran ne rend pas rétroactivement canons les règles, rangs ou événements des romans et comics.
 
 Les films établissent une chasse ritualisée, la recherche d’adversaires dangereux, les trophées et certains gestes de reconnaissance. Ils ne donnent pas une liste universelle de règles. Le jeu n’affirme donc pas que chaque Yautja :
 
@@ -31,7 +31,7 @@ Ces comportements peuvent appartenir à un individu ou à un clan, sans devenir 
 
 ### Première chasse, progression et clans
 
-*Badlands* confirme qu’un jeune Yautja peut ne pas avoir encore gagné camouflage ou canon d’épaule. Cette base `SCREEN` justifie la progression d’équipement du jeu. La pyramide, les Xénomorphes semés et l’épreuve de passage de *Alien vs. Predator* restent `AVP_SCREEN`.
+La présentation officielle de *Badlands* précise que Dek n’a encore jamais chassé et n’a gagné ni camouflage ni canon d’épaule. Cette base `SCREEN` justifie une progression d’équipement propre à ce jeune chasseur ; elle ne prouve pas que tous les clans distribuent leurs armes selon un arbre de rangs identique. La pyramide, les Xénomorphes semés et l’épreuve de passage de *Alien vs. Predator* restent `AVP_SCREEN`.
 
 *Predators* montre des groupes opposés ; *Badlands* confirme clan et exil. Le jeu en déduit seulement que les Yautja ne forment pas une monoculture. Les rangs **Young Blood**, **Blooded**, **Elite**, **Elder** et **Ancient** restent surtout des conventions EU et de gameplay. Ils doivent être présentés comme la nomenclature du clan joué, pas comme l’administration certaine de toute l’espèce.
 
@@ -61,9 +61,9 @@ Le terme **kiande amedha**, Ryushi et de nombreux détails de castes ou de marqu
 | ID runtime | Nom | Provenance jouable | Note |
 | --- | --- | --- | --- |
 | `jungle` | Jungle de chasse | `ORIGINAL`, base `SCREEN` | Arène du jeu inspirée des jungles et pistes thermiques des films. |
-| `hive_lv426` | LV-426 — ruches souterraines | `ORIGINAL`, base `AVP_SCREEN` | LV-426 vient d’Alien ; cette chasse Yautja et cette carte ne sont pas confirmées à l’écran. |
+| `hive_lv426` | LV-426 — ruches souterraines | `ORIGINAL`, base `SCREEN`, relation `AVP_SCREEN` | LV-426 et sa colonie viennent d’*Alien/Aliens* ; cette chasse Yautja, la pluie acide et cette carte sont inventées. |
 | `ryushi_desert` | Désert de Ryushi | `LICENSED_EU` | Ryushi vient des comics/du roman AVP ; tempête et arène sont une interprétation originale. |
-| `yautja_prime` | Yautja Prime — arène du clan | `ORIGINAL`, base `SCREEN` | Le colisée sacré et son conseil d’Anciens sont inventés pour le jeu. |
+| `yautja_prime` | Yautja Prime — arène du clan | `ORIGINAL`, base `SCREEN` | *Badlands* établit Yautja Prime et le domaine natal de Dek, mais ni ce colisée sacré ni ce conseil d’Anciens. |
 
 Le sélecteur autorise toute cible sur tout lieu. Cette liberté de gameplay ne crée pas un événement canon.
 
@@ -72,7 +72,7 @@ Le sélecteur autorise toute cible sur tout lieu. Cette liberté de gameplay ne 
 | ID runtime | Cible | Provenance de la mission | Règle |
 | --- | --- | --- | --- |
 | `goliath` | Goliath Xeno-Akumo | `ORIGINAL` | Nom, espèce, anatomie, origine et chasse créés pour le jeu. |
-| `xeno_queen` | Reine xénomorphe | `ORIGINAL`, base `AVP_SCREEN` | La créature existe à l’écran ; combat, arène et récompense actuels sont originaux. |
+| `xeno_queen` | Reine xénomorphe | `ORIGINAL`, base `SCREEN`, relation `AVP_SCREEN` | La Reine vient d’*Aliens* et apparaît aussi dans *AVP* ; combat, arène et récompense actuels sont originaux. |
 | `bad_blood` | Rival Yautja Bad Blood | `ORIGINAL`, base `LICENSED_EU` | Le personnage précis est inventé ; Bad Blood n’est pas une caste écran universelle. |
 | `predalien` | Predalien légendaire | `ORIGINAL`, base `AVP_SCREEN` | Le type existe dans *AVP: Requiem* ; variante et statut de boss sont propres au jeu. |
 
@@ -80,17 +80,52 @@ Le sélecteur autorise toute cible sur tout lieu. Cette liberté de gameplay ne 
 
 **Goliath Xeno-Akumo doit toujours porter le badge `ORIGINAL`.** Le préfixe « Xeno » signifie seulement « étranger » dans la fiction du jeu ; il ne doit pas faire croire à un lien avec le cycle biologique des Xénomorphes d’Alien. Sa planète, ses cornes, sa reproduction, son origine et son éventuel lien aux Yautja restent originaux jusqu’à décision éditoriale explicite.
 
+## Contrat du catalogue d’armures
+
+`src/data/YautjaLoreDatabase.js` conserve les vingt silhouettes historiques, mais associe désormais chacune à `SCREEN`, `AVP_SCREEN`, `LICENSED_EU` ou `ORIGINAL`. Les corrections suivantes constituent le contrat éditorial du catalogue :
+
+- `jungle_1987` reste `SCREEN` et situe la chasse dans une jungle centraméricaine non nommée à l’écran, sans transformer « Val Verde » en lieu du film.
+- `scar_avp` reste `AVP_SCREEN` : le marquage au sang acide est montré, mais aucun rôle de « leader des Jeunes Sangs » n’est affirmé.
+- `chopper_avp` nomme ses longues lames de poignet sans inventer des scies d’épaule.
+- `berserker_2010` conserve un ornement mandibulaire osseux dont l’origine n’est pas identifiée comme xénomorphe.
+- `fugitive_2018` décrit seulement l’équipement métallique visible et ne revendique plus une armure dorée.
+- `feral_2022` conserve le **bone mask** officiel sans identifier arbitrairement l’espèce dont vient l’os.
+- `alpha_yautja` est `LICENSED_EU` : concept original NECA ensuite intégré à *Predator: Hunting Grounds*, pas origine `SCREEN` de l’espèce.
+- `ahab_comic` est `LICENSED_EU` : ancien borgne dont la quête vise un Engineer, pas un aveugle spécialisé dans les Reines.
+- `dark_avp2010` est le personnage jouable licencié déployé sur BG-386, sans rang d’« élite de la pyramide » non sourcé.
+- `samurai_yautja` et `viking_yautja` sont des classes `LICENSED_EU` de *Predator: Hunting Grounds* ; elles ne sont pas assimilées aux personnages écran de *Killer of Killers*.
+- `cyborg_yautja` est une création `ORIGINAL` d’Apex Hunt tant qu’aucun personnage licencié précis n’est revendiqué.
+- `deadend_fanfilm` est un hommage `ORIGINAL` explicitement non licencié à *Batman: Dead End* (2003), hors continuités officielles.
+
+Règle de maintenance : chaque carte garde un `sourceTier`, une œuvre précise et une description limitée à ce que cette œuvre établit. Un intitulé marketing, un surnom de figurine et un rang culturel ne sont pas interchangeables.
+
+### Sources primaires de contrôle pour le catalogue
+
+- [Alpha Predator — concept original NECA](https://necaonline.com/2020/01/predator-7-scale-action-figure-ultimate-alpha-predator-100th-edition-figure/)
+- [Alpha Predator dans Predator: Hunting Grounds — NECA/IllFonic](https://necaonline.com/2020/06/the-alpha-is-coming-to-predator-hunting-grounds/)
+- [Feral Predator — masque en os, NECA](https://store.necaonline.com/products/prey-ultimate-camo-reveal-feral-predator-scale-action-figure-2024-con-exclusive)
+- [Ahab Predator — ancien de *Fire and Stone*, NECA](https://store.necaonline.com/blogs/san-diego-comic-con/sdcc-feature-friday-4-exclusive-fire-and-stone-ahab-predator-action-figure)
+- [Ahab Predator — équipement d’Engineer, NECA](https://necaonline.com/2017/05/predator-7-scale-action-figure-ultimate-ahab-predator/)
+- [Scarface — *Predator: Concrete Jungle*, NECA](https://store.necaonline.com/blogs/behind-the-scenes/closer-look-video-game-appearance-ultimate-scarface-predator)
+- [Machiko Noguchi et Ryushi — omnibus AVP, Titan Books](https://titanbooks.com/8792-the-complete-aliens-vs-predator-omnibus/)
+- [Samurai Predator — Predator: Hunting Grounds, NECA](https://store.necaonline.com/products/predator-hunting-grounds-ultimate-samurai-predator-7-inch-scale-action-figure)
+- [Viking Predator — Predator: Hunting Grounds, IllFonic](https://predator.illfonic.com/)
+
 ## Sources officielles et sources de contrôle
 
 ### Écran Predator
 
 - [Predator (1987) — 20th Century Studios](https://www.20thcenturystudios.com/movies/predator)
-- [Predator — Walt Disney Archives/D23](https://d23.com/20th-century-fox-spooktacular-1980s-predator/)
+- [Predator — Walt Disney Archives](https://thewaltdisneycompany.com/news/predator-archives/)
 - [Predator 2 (1990) — 20th Century Studios](https://www.20thcenturystudios.com/movies/predator-2)
 - [Predators (2010) — 20th Century Studios](https://www.20thcenturystudios.com/movies/predators)
 - [Prey (2022) — 20th Century Studios](https://www.20thcenturystudios.com/movies/prey)
 - [Predator: Killer of Killers (2025) — 20th Century Studios](https://www.20thcenturystudios.com/movies/predator-killer-of-killers)
 - [Predator: Badlands (2025) — The Walt Disney Company](https://thewaltdisneycompany.com/news/predator-badlands/)
+
+### Écran Alien
+
+- [Aliens (1986) — 20th Century Studios](https://www.20thcenturystudios.com/movies/aliens)
 
 ### Branche AVP
 
@@ -101,7 +136,8 @@ Le sélecteur autorise toute cible sur tout lieu. Cette liberté de gameplay ne 
 
 - [Predator: Hunting Grounds — arsenal IllFonic](https://predator.illfonic.com/the-predator/)
 - [AVP — comics originaux Dark Horse](https://digital.darkhorse.com/books/47483ce0aec5466783599e38c9d0ac47/aliens-vs-predator-the-original-comics-series-30th-anniversary-edition)
-- [Notice bibliographique de Aliens vs. Predator: Prey (1994)](https://obnb.uk/p10733831-aliens-vs-predator-prey)
+- [Aliens vs. Predator: Prey — omnibus sous licence Titan Books](https://titanbooks.com/8792-the-complete-aliens-vs-predator-omnibus/)
+- [Predator: Bad Blood #1–4 — catalogue officiel Dark Horse, Omnibus vol. 3](https://images.darkhorse.com/common/salestools/catalogs/DH_Backlist_2009.pdf)
 
 Les wikis de fans peuvent aider à retrouver une œuvre, mais ne suffisent pas à changer `sourceTier`.
 

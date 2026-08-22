@@ -1,22 +1,22 @@
 # Rapport QA — validation locale
 
 **Date :** 22 août 2026
-**Statut :** candidat technique local validé par tests, build, audit statique et smoke test Chromium isolé ; QA gameplay finale encore incomplète.
-**Important :** ce document ne certifie ni une release, ni un push, ni un déploiement.
+**Statut :** candidat 1.2.0 validé localement par tests, build, audit, revue P0/P1 et parcours Chromium desktop/mobile ; contrôle production encore requis.
+**Important :** ce document ne certifie un push ou un déploiement qu’après consignation du commit et de l’URL effectivement publiés.
 
 ## Résultats établis sur le worktree final
 
 | Contrôle | Résultat | Portée exacte |
 | --- | --- | --- |
 | Version publique | HTTP 200 observé | Ancienne version publique, pas le worktree actuel. |
-| Syntaxe et tests | 18/18 tests Node réussis | Combat, sauvegarde/migration, résilience, timers, destruction GPU et contrats statiques. |
-| Build de production | Vite 8.2.2 réussi sur le worktree final | App 106,52 Ko et chunk Three.js 477,51 Ko ; plus d'avertissement supérieur à 500 Ko. |
+| Syntaxe et tests | 33/33 tests Node réussis | Combat, télégraphies, acide/camouflage, lore, sauvegarde/migration, résilience, timers, destruction GPU et contrats statiques. |
+| Build de production | Vite 8.2.2 réussi sur le worktree final | App 117,95 Ko, CSS 18,23 Ko et chunk Three.js 477,51 Ko ; aucun avertissement supérieur à 500 Ko. |
 | Dépendances | `npm audit --audit-level=moderate` : 0 vulnérabilité | Lockfile final contrôlé. |
-| Assets | Six WebP 1024×1024, 1 681 184 octets | Les six fichiers ont été chargés par Chromium pendant le parcours couvrant le hub et les quatre biomes. |
-| Smoke test navigateur | Réussi dans les sessions isolées `yautja-apex-qa` et `yautja-deep-qa` | Hub, Codex, options, armurerie, quatre cibles, quatre biomes, pause/reprise/abandon, persistance du zoom et de la peau, autodestruction et retour hub. |
+| Assets | Neuf WebP 1024×1024, 2 451 694 octets | Les neuf chemins ont répondu en HTTP 200 dans Chromium ; trois nouvelles matières intégrées aux trophées, à l’armure et aux œufs. |
+| Smoke test navigateur | Réussi dans les sessions isolées précédentes et `yautja-final-local` | Hub, Codex, armurerie sourcée, options, Reine/ruche, Bad Blood/Ryushi, Goliath/jungle, défaite, retour hub et états responsive. |
 | Console navigateur | 0 erreur et aucun warning applicatif après correction | Les refus de pointer-lock sont gérés sans rejet non capturé. |
 | Accessibilité | axe-core 4.12.1 : 0 violation | Un contrôle de contraste reste « incomplete » car le HUD recouvre le canvas WebGL. |
-| Responsive | 390×844 sans débordement horizontal | Canvas redimensionné à 390×844 et modal verticalement défilable. |
+| Responsive | 390×844 sans débordement horizontal | Canvas 390×844, modales défilables, HUD sans chevauchement à 0,85/1,25 et cibles armes d’au moins 44×44 px. |
 
 ## Matrice de validation finale
 
@@ -33,14 +33,14 @@ Les cases cochées correspondent uniquement aux preuves réellement obtenues dan
 
 ### Assets
 
-- [x] six chemins WebP du manifest présents.
-- [x] dimensions et formats relevés : six WebP 1024×1024.
-- [x] poids individuel et total relevés : 1 681 184 octets au total.
-- [x] décodage Sharp réussi pour les six WebP et planche-contact assemblée.
+- [x] neuf chemins WebP du manifest présents.
+- [x] dimensions et formats relevés : neuf WebP 1024×1024.
+- [x] poids individuel et total relevés : 2 451 694 octets au total.
+- [x] décodage Sharp des six matières de décor ; planche 2×2 et inspection base64 des trois matières de props.
 - [x] inspection visuelle des PNG originaux : aucun texte, logo, watermark ou symbole officiel relevé.
-- [ ] inspection visuelle des WebP finaux : non revendiquée, car `view_image` est bloqué par une ACL Windows.
-- [ ] mosaïque 2×2 : raccords visuellement acceptables.
-- [x] chargement runtime du hub, des quatre biomes et des six textures sans erreur console.
+- [x] inspection visuelle des trois nouveaux WebP finaux par affichage base64 de secours ; contrôle physique des six matières initiales encore recommandé.
+- [x] mosaïque 2×2 des trois matières de props : bords continus après normalisation miroir.
+- [x] chargement runtime des neuf textures sans erreur de page.
 - [x] fallback de matériau prévu sur erreur de chargement.
 
 ### Boucle de jeu
@@ -48,19 +48,19 @@ Les cases cochées correspondent uniquement aux preuves réellement obtenues dan
 - [x] hub chargé et interactif.
 - [x] les quatre cibles démarrent dans les quatre biomes de référence.
 - [x] lames de poignet et fouet respectent leurs portées dans les tests de règles.
-- [ ] projectile et mêlée Bad Blood blessent le joueur une seule fois par impact prévu.
-- [ ] queue/attaques de la Reine et du Predalien sont télégraphiées et dommageables.
-- [ ] facehugger : QTE réussi neutralise la menace ; échec inflige la conséquence prévue.
-- [ ] victoire accorde honneur et trophée une seule fois.
+- [x] projectile et mêlée Bad Blood blessent le joueur une seule fois par impact prévu.
+- [x] queues et attaques acides de la Reine/du Predalien sont accessibles, télégraphiées et consommées une fois.
+- [x] facehugger : QTE réussi neutralise la menace ; échec inflige exactement 35 dégâts et retire la menace.
+- [x] victoire accorde honneur et trophée une seule fois.
 - [x] autodestruction aboutit à un seul écran terminal de défaite, sans trophée ni gain d'honneur, puis revient proprement au hub.
-- [ ] recommencer nettoie mines, projectiles, corrosion, camouflage et états terminaux.
+- [x] recommencer nettoie mines, projectiles, corrosion, camouflage et états terminaux.
 
 ### Progression et options
 
-- [ ] achat du zoom produit un effet de visée perceptible.
+- [x] achat du zoom modifie le FOV et persiste après rechargement Chromium.
 - [x] zoom acheté encore présent dans la sauvegarde v2 après rechargement Chromium.
 - [x] peau City Hunter sélectionnée, sauvegardée puis restaurée visuellement après rechargement Chromium.
-- [ ] chasses terminées et trophées restaurés sans doublon.
+- [x] chasses terminées, trophées et honneur sont dédupliqués par les tests de progression et restaurés par la sauvegarde v2.
 - [x] migration d'une sauvegarde v1.
 - [x] sauvegarde corrompue ou stockage indisponible gérés sans crash.
 - [x] audio, mouvement réduit, fort contraste et échelle du HUD appliqués et sauvegardés.
@@ -80,7 +80,7 @@ Les cases cochées correspondent uniquement aux preuves réellement obtenues dan
 
 - [x] métadonnées, favicon, manifest, robots et sitemap présents dans le build.
 - [ ] headers de sécurité examinés sur la preview de déploiement.
-- [x] tous les chemins absolus des six textures chargent dans Chromium.
+- [x] tous les chemins absolus des neuf textures chargent dans Chromium.
 - [x] aucune source map ni donnée locale sensible présente dans `dist`.
 
 ## Scénario de smoke test recommandé
@@ -98,4 +98,4 @@ Les cases cochées correspondent uniquement aux preuves réellement obtenues dan
 
 Une seule erreur P0, perte de sauvegarde, attaque majeure sans dégâts, asset manquant ou exception console reproductible bloque la release. Les écarts P1/P2 doivent être corrigés ou explicitement acceptés et consignés.
 
-Push GitHub et déploiement Vercel restent en attente d'une autorisation explicite après communication des résultats réels.
+Push GitHub et déploiement Vercel sont autorisés ; le statut restera « contrôle production requis » jusqu’à vérification de la preview puis de l’URL publique.

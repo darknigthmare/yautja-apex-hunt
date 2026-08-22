@@ -1,7 +1,7 @@
 # Prompts de génération des textures
 
 **Outil :** modèle ImageGen intégré OpenAI
-**Date :** 21 août 2026
+**Dates :** 21–22 août 2026
 **Mode :** génération bitmap originale, sans image officielle de référence
 **Usage :** textures de décor et de props pour le fan game Yautja: Apex Hunt
 
@@ -43,10 +43,28 @@ Les textes ci-dessous sont les formulations de production fidèles aux prompts e
 
 **Destination runtime après conversion :** `public/assets/textures/yautja-stone.webp`
 
+## `trophy-bone`
+
+> Texture carrée raccordable d'ivoire et d'os de trophée extraterrestre ancien : grain dense, fines fissures, patine minérale ocre et usure sèche. Surface de matière abstraite uniquement, sans crâne, dent, anatomie, sang ni sculpture reconnaissable. Vue orthographique, éclairage diffus uniforme, création originale fan-made, sans texte, logo, glyphe, UI, watermark ou symbole officiel.
+
+**Destination runtime après conversion :** `public/assets/textures/trophy-bone.webp`
+
+## `yautja-leather-net`
+
+> Texture carrée raccordable de cuir de chasse noir très usé et de filet technique tressé : lanières mates, cordage sombre, petites attaches métalliques abstraites, poussière et rayures cohérentes. Vue orthographique de matière, lumière uniforme, aucun vêtement complet ni silhouette. Création originale fan-made, sans texte, logo, glyphe, UI, watermark, personnage ou accessoire officiel copié.
+
+**Destination runtime après conversion :** `public/assets/textures/yautja-leather-net.webp`
+
+## `xeno-egg-hide`
+
+> Texture carrée raccordable de membrane organique extraterrestre sombre destinée à des œufs : cuir humide plissé, pores fins, nervures souples, bruns noirâtres et reflets vert olive très discrets. Matière abstraite, sans créature, visage, embryon ni anatomie identifiable. Vue orthographique, éclairage uniforme, création originale fan-made, sans texte, logo, UI, watermark, collage ou reproduction de décor de film.
+
+**Destination runtime après conversion :** `public/assets/textures/xeno-egg-hide.webp`
+
 ## Critères de rejet
 
 Une génération doit être écartée si elle contient un mot, une signature, une bordure visible, un motif non raccordable dominant, une créature reconnaissable, une interface, un logo, un symbole officiel, une composition en collage ou une copie manifeste d'un visuel existant.
 
 ## Traçabilité
 
-Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six destinations publiques sont leurs conversions WebP 1024×1024 réalisées avec Sharp, qualité 84, effort 6 et `smartSubsample`. Le manifest consigne les poids exacts et la réussite du décodage de chaque variante. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.
+Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor du 21 août ont été converties avec Sharp en WebP 1024×1024, qualité 84, effort 6 et `smartSubsample`. Les trois matières de props du 22 août ont reçu une normalisation mécanique par quadrants miroir afin de garantir la continuité exacte des bords, puis une conversion WebP 1024×1024, qualité 84. Cette correction conserve la matière ImageGen mais peut rendre la symétrie plus visible à grande échelle ; ces textures sont donc réservées aux props et surfaces modestes. Le manifest consigne les poids exacts, l'usage et les contrôles de chaque variante. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.

@@ -2,6 +2,25 @@ import * as THREE from 'three';
 import { audioSynth } from '../AudioSynthesizer.js';
 import { disposeObject3D } from '../utils/materialState.js';
 
+let sharedEggTexture = null;
+
+function getEggTexture() {
+  if (sharedEggTexture) return sharedEggTexture;
+  if (typeof document === 'undefined') return null;
+
+  sharedEggTexture = new THREE.TextureLoader().load(
+    '/assets/textures/xeno-egg-hide.webp',
+    undefined,
+    undefined,
+    () => console.warn('Texture des œufs indisponible, fallback organique conservé.'),
+  );
+  sharedEggTexture.wrapS = THREE.RepeatWrapping;
+  sharedEggTexture.wrapT = THREE.RepeatWrapping;
+  sharedEggTexture.repeat.set(1.6, 2.1);
+  sharedEggTexture.colorSpace = THREE.SRGBColorSpace;
+  return sharedEggTexture;
+}
+
 export class FacehuggerEggCluster {
   constructor(scene, position) {
     this.scene = scene;
@@ -23,8 +42,9 @@ export class FacehuggerEggCluster {
 
     const eggMat = new THREE.MeshStandardMaterial({
       color: 0x221a12,
-      roughness: 0.9,
-      metalness: 0.1
+      map: getEggTexture(),
+      roughness: 0.7,
+      metalness: 0.04,
     });
 
     const interiorMat = new THREE.MeshBasicMaterial({ color: 0x00ff33 });
