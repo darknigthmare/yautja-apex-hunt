@@ -1,0 +1,185 @@
+/* Content wave 1.3 — customization, expanded archives and 10-slot loadout. */
+.mission-cards-container {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.mission-card-featured {
+  background:
+    linear-gradient(145deg, rgba(56, 8, 10, 0.95), rgba(8, 12, 19, 0.97)),
+    url('/assets/textures/biomask-etched-alloy.webp') center / cover;
+  border-color: #e84b35;
+  box-shadow: inset 0 0 30px rgba(255, 42, 20, 0.12);
+}
+
+#weapon-selector {
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: min(1180px, 96vw);
+}
+.weapon-slot {
+  flex: 0 1 102px;
+  min-width: 84px;
+}
+.part-destroyed {
+  color: #ff685c;
+  text-decoration: line-through;
+}
+
+.appearance-forge,
+.expanded-content-vault {
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 8px;
+  margin-top: 20px;
+  overflow: hidden;
+  padding: 16px;
+  text-align: left;
+}
+.appearance-forge {
+  background:
+    linear-gradient(115deg, rgba(4, 9, 15, 0.96), rgba(12, 18, 24, 0.84)),
+    url('/assets/textures/yautja-energy-lattice.webp') center / cover;
+}
+.expanded-content-vault {
+  background: linear-gradient(160deg, rgba(7, 11, 18, 0.98), rgba(12, 20, 27, 0.95));
+}
+.compact-heading { margin-top: 0; }
+
+.customization-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.customization-grid label {
+  background: rgba(2, 7, 12, 0.86);
+  border: 1px solid rgba(255, 183, 0, 0.35);
+  border-radius: 6px;
+  display: grid;
+  gap: 7px;
+  padding: 10px;
+}
+.customization-grid label > span {
+  color: var(--yautja-gold);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+.customization-grid select {
+  margin-left: 0;
+  max-width: 100%;
+  width: 100%;
+}
+.customization-status {
+  color: #c8faff;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.expanded-content-vault details {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+.expanded-content-vault summary {
+  background: rgba(19, 29, 41, 0.9);
+  color: var(--yautja-gold);
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  min-height: 44px;
+  padding: 14px;
+}
+.expanded-content-vault summary:hover {
+  background: rgba(39, 20, 16, 0.95);
+}
+.content-catalog-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 12px;
+}
+.content-catalog-card {
+  background: rgba(4, 8, 14, 0.94);
+  border: 1px solid var(--lore-tier-color, var(--yautja-cyan));
+  border-left-width: 4px;
+  border-radius: 5px;
+  min-height: 150px;
+  padding: 12px;
+  user-select: text;
+}
+.content-card-header {
+  align-items: flex-start;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+.content-card-badges {
+  align-items: flex-end;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 5px;
+}
+.runtime-status {
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+.runtime-status-playable { color: #5dff99; }
+.runtime-status-encounter { color: #55dfff; }
+.runtime-status-customization { color: #ffca55; }
+.runtime-status-gallery { color: #c195ff; }
+.runtime-status-archive { color: #9aa7b5; }
+.content-catalog-card:has(.runtime-status-playable),
+.content-catalog-card:has(.runtime-status-encounter) {
+  box-shadow: inset 0 0 24px rgba(54, 255, 205, 0.045);
+}
+.content-card-header h4 {
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  line-height: 1.35;
+}
+.content-catalog-card p {
+  color: #c8d1dc;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-top: 9px;
+}
+.content-catalog-card small {
+  color: #82dce4;
+  display: block;
+  font-size: 11px;
+  line-height: 1.35;
+  margin-top: 9px;
+}
+
+body.high-contrast .appearance-forge,
+body.high-contrast .expanded-content-vault,
+body.high-contrast .content-catalog-card {
+  border-width: 2px;
+}
+
+@media (max-width: 1100px) {
+  .mission-cards-container { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .customization-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .content-catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .mission-cards-container,
+  .customization-grid,
+  .content-catalog-grid { grid-template-columns: 1fr; }
+  .appearance-forge,
+  .expanded-content-vault { padding: 12px; }
+  .content-catalog-grid { padding: 8px; }
+  #weapon-selector { max-width: 100vw; }
+  .weapon-slot {
+    flex: 0 0 44px;
+    min-height: 44px;
+    min-width: 44px;
+  }
+}

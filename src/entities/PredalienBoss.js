@@ -2,10 +2,12 @@ import * as THREE from 'three';
 import { ShaderManager } from '../Shaders.js';
 import { audioSynth } from '../AudioSynthesizer.js';
 import { captureBaseMaterials, overrideMaterials, restoreBaseMaterials } from '../utils/materialState.js';
+import { getRuntimeTexture } from '../utils/runtimeTextures.js';
 
 export class PredalienBoss {
   constructor(scene) {
     this.scene = scene;
+    this.colliderRadius = 6.5;
 
     // Predalien Legendary Vitals
     this.maxHealth = 2000;
@@ -55,6 +57,7 @@ export class PredalienBoss {
     // Dark Metallic Bronze/Black Skin
     const bodyMat = new THREE.MeshStandardMaterial({
       color: 0x14101a,
+      map: getRuntimeTexture('/assets/textures/xeno-carapace.webp', { repeat: [2.4, 2.4] }),
       roughness: 0.2,
       metalness: 0.85
     });

@@ -2,10 +2,12 @@ import * as THREE from 'three';
 import { ShaderManager } from './Shaders.js';
 import { audioSynth } from './AudioSynthesizer.js';
 import { captureBaseMaterials, overrideMaterials, restoreBaseMaterials } from './utils/materialState.js';
+import { getRuntimeTexture } from './utils/runtimeTextures.js';
 
 export class MegafaunaBoss {
   constructor(scene) {
     this.scene = scene;
+    this.colliderRadius = 6.5;
 
     // Boss Vitals
     this.maxHealth = 1200;
@@ -51,6 +53,7 @@ export class MegafaunaBoss {
 
     const bodyMat = new THREE.MeshStandardMaterial({
       color: 0x1a1f28,
+      map: getRuntimeTexture('/assets/textures/goliath-armored-hide.webp', { repeat: [2, 2] }),
       roughness: 0.6,
       metalness: 0.4
     });

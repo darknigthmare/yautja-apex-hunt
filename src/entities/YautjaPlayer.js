@@ -4,13 +4,32 @@ import { audioSynth } from '../AudioSynthesizer.js';
 import { YautjaSkinsDatabase } from '../data/YautjaLoreDatabase.js';
 import { calculateHonorAward } from '../gameplay/combatRules.js';
 import { disposeObject3D } from '../utils/materialState.js';
+import {
+  ARMOR_ACCENTS,
+  ARMOR_PALETTES,
+  DREAD_PALETTES,
+  MASK_VARIANTS,
+  SKIN_PALETTES,
+} from '../data/YautjaContentCatalog.js';
+import {
+  DEFAULT_CUSTOMIZATION,
+  getArmorPresetCustomization,
+  getPaletteEntry,
+  sanitizeCustomization,
+} from '../data/RuntimeEquipment.js';
+
+
+const MIMICRY_LURE_TYPES = Object.freeze(['over_here', 'radio', 'yautja_clicks']);
 
 export class YautjaPlayer {
   constructor(scene) {
     this.scene = scene;
     this.leatherNetTexture = null;
+    this.skinTexture = null;
+    this.maskTexture = null;
     if (typeof document !== 'undefined') {
-      this.leatherNetTexture = new THREE.TextureLoader().load(
+      const textureLoader = new THREE.TextureLoader();
+      this.leatherNetTexture = textureLoader.load(
         '/assets/textures/yautja-leather-net.webp',
         undefined,
         undefined,
@@ -20,6 +39,25 @@ export class YautjaPlayer {
       this.leatherNetTexture.wrapT = THREE.RepeatWrapping;
       this.leatherNetTexture.repeat.set(1.5, 2.2);
       this.leatherNetTexture.colorSpace = THREE.SRGBColorSpace;
+
+      this.skinTexture = textureLoader.load(
+        '/assets/textures/yautja-skin-mottled.webp',
+        undefined,
+        undefined,
+        () => console.warn('Texture de peau Yautja indisponible, teinte procédurale conservée.'),
+      );
+      this.maskTexture = textureLoader.load(
+        '/assets/textures/biomask-etched-alloy.webp',
+        undefined,
+        undefined,
+        () => console.warn('Texture du bio-masque indisponible, alliage procédural conservé.'),
+      );
+      [this.skinTexture, this.maskTexture].forEach((texture) => {
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(1.4, 1.4);
+        texture.colorSpace = THREE.SRGBColorSpace;
+      });
     }
 
     // Attributes
@@ -41,6 +79,8 @@ export class YautjaPlayer {
     ];
 
     this.currentSkinId = 'jungle_1987';
+    this.customization = { ...DEFAULT_CUSTOMIZATION };
+    this.mimicryLureIndex = 0;
 
     // Forge Upgrades
     this.hasTriBeam = false;
@@ -94,19 +134,33 @@ export class YautjaPlayer {
 
     const skinData = YautjaSkinsDatabase.find(s => s.id === this.currentSkinId) || YautjaSkinsDatabase[0];
 
+    const armorPalette = getPaletteEntry(ARMOR_PALETTES, this.customization.armorColorId, DEFAULT_CUSTOMIZATION.armorColorId);
+    const skinPalette = getPaletteEntry(SKIN_PALETTES, this.customization.skinColorId, DEFAULT_CUSTOMIZATION.skinColorId);
+    const dreadPalette = getPaletteEntry(DREAD_PALETTES, this.customization.dreadColorId, DEFAULT_CUSTOMIZATION.dreadColorId);
+    const accentPalette = getPaletteEntry(ARMOR_ACCENTS, this.customization.armorAccentColorId, DEFAULT_CUSTOMIZATION.armorAccentColorId);
+    const maskData = MASK_VARIANTS.find(({ id }) => id === this.customization.maskId) ?? MASK_VARIANTS[0];
+
     const armorMat = new THREE.MeshStandardMaterial({
-      color: skinData.col,
+      color: armorPalette?.hex ?? skinData.col,
       metalness: 0.9,
       roughness: 0.25
     });
-    const skinMat = new THREE.MeshStandardMaterial({ color: 0x4a4436, roughness: 0.65 });
-    const goldMat = new THREE.MeshStandardMaterial({ color: 0xffb700, metalness: 0.95, roughness: 0.1 });
+    const skinMat = new THREE.MeshStandardMaterial({
+      color: skinPalette?.hex ?? 0x4a4436,
+      map: this.skinTexture,
+      roughness: 0.68,
+    });
+    const goldMat = new THREE.MeshStandardMaterial({
+      color: accentPalette?.hex ?? 0xffb700,
+      metalness: 0.95,
+      roughness: 0.1,
+    });
 
     const torsoGeo = new THREE.BoxGeometry(2.4, 3.4, 1.5);
     const torso = new THREE.Mesh(torsoGeo, armorMat);
     torso.position.y = 3.6;
     torso.castShadow = true;
-    torso.userData.skinTintable = true;
+    torso.userData.appearanceChannel = 'armor';
     yautjaGroup.add(torso);
 
     const netGeo = new THREE.BoxGeometry(2.45, 3.45, 1.55);
@@ -123,19 +177,32 @@ export class YautjaPlayer {
     yautjaGroup.add(net);
 
     const headGroup = new THREE.Group();
-    const headGeo = new THREE.SphereGeometry(0.95, 24, 24);
-    headGeo.scale(1, 1.25, 1.15);
-    const maskMat = new THREE.MeshStandardMaterial({ color: skinData.col, metalness: 0.95, roughness: 0.2 });
-    const head = new THREE.Mesh(headGeo, maskMat);
-    head.position.set(0, 5.5, 0.2);
-    head.castShadow = true;
-    head.userData.skinTintable = true;
-    headGroup.add(head);
+    const biologicalHead = new THREE.Mesh(new THREE.SphereGeometry(0.88, 20, 20), skinMat);
+    biologicalHead.scale.set(0.95, 1.18, 1.05);
+    biologicalHead.position.set(0, 5.48, 0.02);
+    biologicalHead.castShadow = true;
+    biologicalHead.userData.appearanceChannel = 'skin';
+    headGroup.add(biologicalHead);
+
+    const maskMat = new THREE.MeshStandardMaterial({
+      color: maskData.armorColor,
+      map: this.maskTexture,
+      metalness: 0.95,
+      roughness: 0.24,
+    });
+    this.maskMesh = new THREE.Mesh(this.createMaskGeometry(maskData), maskMat);
+    this.maskMesh.position.set(0, 5.55, 0.38);
+    this.maskMesh.castShadow = true;
+    this.maskMesh.userData.appearanceChannel = 'mask';
+    headGroup.add(this.maskMesh);
+    this.maskDetailGroup = new THREE.Group();
+    headGroup.add(this.maskDetailGroup);
 
     const runePlateGeo = new THREE.BoxGeometry(0.5, 0.3, 0.1);
     const runePlate = new THREE.Mesh(runePlateGeo, goldMat);
     runePlate.position.set(0, 6.2, 1.15);
     headGroup.add(runePlate);
+    runePlate.userData.appearanceChannel = 'accent';
 
     const triLaserLight = new THREE.PointLight(0xff0000, 3, 10);
     triLaserLight.position.set(0.65, 5.7, 1.0);
@@ -146,14 +213,16 @@ export class YautjaPlayer {
     const lens = new THREE.Mesh(lensGeo, lensMat);
     lens.position.set(0.65, 5.7, 1.05);
     headGroup.add(lens);
+    this.maskLens = lens;
 
     yautjaGroup.add(headGroup);
 
-    const dreadMat = new THREE.MeshStandardMaterial({ color: 0x0c0c0e, roughness: 0.8 });
+    const dreadMat = new THREE.MeshStandardMaterial({ color: dreadPalette?.hex ?? 0x0c0c0e, roughness: 0.8 });
     for (let i = -5; i <= 5; i++) {
       const dreadGroup = new THREE.Group();
       const dread = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.06, 2.8, 8), dreadMat);
       dread.position.y = -1.4;
+      dread.userData.appearanceChannel = 'dread';
       dreadGroup.add(dread);
 
       for (let b = 0; b < 2; b++) {
@@ -161,6 +230,7 @@ export class YautjaPlayer {
         ring.rotation.x = Math.PI / 2;
         ring.position.y = -0.6 - b * 0.9;
         dreadGroup.add(ring);
+        ring.userData.appearanceChannel = 'accent';
       }
 
       dreadGroup.rotation.z = i * 0.18;
@@ -171,7 +241,7 @@ export class YautjaPlayer {
 
     const caster = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.45, 0.9), armorMat);
     caster.position.set(-1.5, 4.9, -0.2);
-    caster.userData.skinTintable = true;
+    caster.userData.appearanceChannel = 'armor';
     yautjaGroup.add(caster);
     this.plasmacasterMesh = caster;
 
@@ -188,28 +258,160 @@ export class YautjaPlayer {
 
     const legR = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.42, 3.4), armorMat);
     legR.position.set(0.75, 1.7, 0);
-    legR.userData.skinTintable = true;
+    legR.userData.appearanceChannel = 'armor';
     yautjaGroup.add(legR);
     const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.42, 3.4), armorMat);
     legL.position.set(-0.75, 1.7, 0);
-    legL.userData.skinTintable = true;
+    legL.userData.appearanceChannel = 'armor';
     yautjaGroup.add(legL);
 
+    const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.34, 2.7, 10), skinMat);
+    armR.position.set(1.62, 3.65, 0);
+    armR.rotation.z = -0.08;
+    armR.userData.appearanceChannel = 'skin';
+    yautjaGroup.add(armR);
+    const armL = armR.clone();
+    armL.position.x = -1.62;
+    armL.rotation.z = 0.08;
+    armL.userData.appearanceChannel = 'skin';
+    yautjaGroup.add(armL);
+
+    const shoulderGeo = new THREE.SphereGeometry(0.62, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2);
+    const shoulderR = new THREE.Mesh(shoulderGeo, goldMat);
+    shoulderR.position.set(1.42, 4.78, 0);
+    shoulderR.userData.appearanceChannel = 'accent';
+    yautjaGroup.add(shoulderR);
+    const shoulderL = shoulderR.clone();
+    shoulderL.position.x = -1.42;
+    shoulderL.userData.appearanceChannel = 'accent';
+    yautjaGroup.add(shoulderL);
+
     yautjaGroup.position.copy(this.position);
+    this.rebuildMaskDetails(maskData);
     return yautjaGroup;
   }
 
-  setSkin(skinId) {
-    this.currentSkinId = skinId;
-    const skinData = YautjaSkinsDatabase.find(s => s.id === skinId);
-    if (!skinData) return;
+  createMaskGeometry(maskData) {
+    const angularShapes = ['celtic', 'samurai', 'royal'];
+    const boneShapes = ['bone', 'kok_viking', 'kwei'];
+    const geometry = boneShapes.includes(maskData.shape)
+      ? new THREE.DodecahedronGeometry(0.92, 1)
+      : angularShapes.includes(maskData.shape)
+        ? new THREE.BoxGeometry(1.55, 2.05, 0.72, 2, 2, 1)
+        : maskData.shape === 'aerial'
+          ? new THREE.CylinderGeometry(0.78, 1.02, 1.95, 8)
+        : new THREE.SphereGeometry(0.94, 20, 18);
+    const profile = maskData.geometry ?? {};
+    geometry.scale(
+      (profile.browWidth ?? 1) * (maskData.scale ?? 1),
+      (1.18 + (profile.crestHeight ?? 0.2) * 0.28) * (maskData.scale ?? 1),
+      (0.62 + (profile.jawLength ?? 1) * 0.18) * (maskData.scale ?? 1),
+    );
+    return geometry;
+  }
 
-    this.mesh.traverse((child) => {
-      if (child.isMesh && child.userData.skinTintable && child.material !== this.cloakMaterial) {
-        child.material.color.setHex(skinData.col);
-        child.userData.baseMaterial = child.material;
-      }
+  rebuildMaskDetails(maskData) {
+    if (!this.maskDetailGroup) return;
+    [...this.maskDetailGroup.children].forEach((child) => disposeObject3D(child));
+    this.maskDetailGroup.clear();
+
+    const detailMat = new THREE.MeshStandardMaterial({
+      color: maskData.armorColor,
+      map: this.maskTexture,
+      metalness: 0.92,
+      roughness: 0.3,
     });
+    const addTusk = (x, rotation) => {
+      const tusk = new THREE.Mesh(new THREE.ConeGeometry(0.13, 0.75, 8), detailMat);
+      tusk.position.set(x, 5.1, 1.0);
+      tusk.rotation.z = rotation;
+      tusk.userData.appearanceChannel = 'mask';
+      this.maskDetailGroup.add(tusk);
+    };
+
+    if (['tracker', 'berserker', 'bone', 'kok_viking', 'kwei'].includes(maskData.shape)) {
+      addTusk(-0.64, -0.36);
+      addTusk(0.64, 0.36);
+    }
+    if (['ritual', 'celtic', 'ancestral', 'exile', 'samurai', 'royal', 'aerial', 'fugitive'].includes(maskData.shape)) {
+      const crest = new THREE.Mesh(
+        new THREE.BoxGeometry(maskData.shape === 'ancestral' ? 0.28 : 0.42, 0.85, 0.2),
+        detailMat,
+      );
+      crest.position.set(0, 6.42, 0.72);
+      crest.userData.appearanceChannel = 'mask';
+      this.maskDetailGroup.add(crest);
+    }
+  }
+
+  setSkin(skinId) {
+    const skinData = YautjaSkinsDatabase.find(s => s.id === skinId);
+    if (!skinData) return this.customization;
+    return this.applyCustomization(getArmorPresetCustomization(skinId));
+  }
+
+  setAppearanceChannelColor(channel, hex) {
+    this.mesh.traverse((child) => {
+      if (!child.isMesh || child.userData.appearanceChannel !== channel) return;
+      const material = child.material === this.cloakMaterial
+        ? child.userData.materialBeforeCloak ?? child.userData.baseMaterial
+        : child.material;
+      if (!material?.color) return;
+      material.color.setHex(hex);
+      child.userData.baseMaterial = material;
+      if (child.material !== this.cloakMaterial) child.material = material;
+    });
+  }
+
+  applyCloakMaterials() {
+    this.mesh.traverse((child) => {
+      if (!child.isMesh || child.material === this.cloakMaterial) return;
+      child.userData.materialBeforeCloak = child.material;
+      child.material = this.cloakMaterial;
+    });
+  }
+
+  restoreCloakMaterials() {
+    this.mesh.traverse((child) => {
+      if (!child.isMesh) return;
+      child.material = child.userData.materialBeforeCloak ?? child.userData.baseMaterial ?? child.material;
+      delete child.userData.materialBeforeCloak;
+    });
+  }
+
+  applyCustomization(next = {}) {
+    const preserveCloak = this.isCloaked;
+    if (preserveCloak) this.restoreCloakMaterials();
+    const merged = sanitizeCustomization(
+      { ...this.customization, ...next },
+      next.armorPresetId ?? this.customization.armorPresetId ?? this.currentSkinId,
+    );
+    this.customization = merged;
+    this.currentSkinId = merged.armorPresetId;
+
+    const mask = MASK_VARIANTS.find(({ id }) => id === merged.maskId) ?? MASK_VARIANTS[0];
+    const skin = getPaletteEntry(SKIN_PALETTES, merged.skinColorId, DEFAULT_CUSTOMIZATION.skinColorId);
+    const dread = getPaletteEntry(DREAD_PALETTES, merged.dreadColorId, DEFAULT_CUSTOMIZATION.dreadColorId);
+    const armor = getPaletteEntry(ARMOR_PALETTES, merged.armorColorId, DEFAULT_CUSTOMIZATION.armorColorId);
+    const accent = getPaletteEntry(ARMOR_ACCENTS, merged.armorAccentColorId, DEFAULT_CUSTOMIZATION.armorAccentColorId);
+
+    this.setAppearanceChannelColor('skin', skin.hex);
+    this.setAppearanceChannelColor('dread', dread.hex);
+    this.setAppearanceChannelColor('armor', armor.hex);
+    this.setAppearanceChannelColor('accent', accent.hex);
+    this.setAppearanceChannelColor('mask', mask.armorColor);
+
+    if (this.maskMesh) {
+      this.maskMesh.geometry.dispose();
+      this.maskMesh.geometry = this.createMaskGeometry(mask);
+    }
+    if (this.maskLens?.material?.color) this.maskLens.material.color.setHex(mask.lensColor);
+    this.rebuildMaskDetails(mask);
+    this.maskDetailGroup?.traverse((child) => {
+      if (child.isMesh) child.userData.baseMaterial = child.material;
+    });
+    if (preserveCloak) this.applyCloakMaterials();
+    return this.customization;
   }
 
   triggerVictoryRoar() {
@@ -218,8 +420,11 @@ export class YautjaPlayer {
     this.stamina = this.maxStamina;
   }
 
-  triggerVoiceMimicry(lureType = 'over_here') {
-    audioSynth.playMimicryLure(lureType);
+  triggerVoiceMimicry(lureType = null) {
+    const selectedLure = lureType ?? MIMICRY_LURE_TYPES[this.mimicryLureIndex % MIMICRY_LURE_TYPES.length];
+    this.mimicryLureIndex = (this.mimicryLureIndex + 1) % MIMICRY_LURE_TYPES.length;
+    audioSynth.playMimicryLure(selectedLure);
+    return selectedLure;
   }
 
   cycleVisionMode() {
@@ -238,16 +443,8 @@ export class YautjaPlayer {
     this.isCloaked = !this.isCloaked;
     audioSynth.playThermalSwitch();
 
-    this.mesh.traverse((child) => {
-      if (!child.isMesh) return;
-      if (this.isCloaked) {
-        child.userData.materialBeforeCloak = child.material;
-        child.material = this.cloakMaterial;
-      } else {
-        child.material = child.userData.materialBeforeCloak ?? child.userData.baseMaterial ?? child.material;
-        delete child.userData.materialBeforeCloak;
-      }
-    });
+    if (this.isCloaked) this.applyCloakMaterials();
+    else this.restoreCloakMaterials();
 
     return this.isCloaked;
   }
@@ -378,6 +575,22 @@ export class YautjaPlayer {
       this.attackTimer = 0.4;
       return 'whip_slash';
     }
+    else if (this.selectedWeapon === 9) {
+      if (this.stamina < 15) return;
+      this.stamina -= 15;
+      this.isAttacking = true;
+      audioSynth.playSpearThrow();
+      this.fireYautjaArrow(targetPos);
+      this.attackTimer = 0.45;
+    }
+    else if (this.selectedWeapon === 0) {
+      if (this.energy < 10) return;
+      this.energy -= 10;
+      this.isAttacking = true;
+      audioSynth.playSpearThrow();
+      this.fireSpeargunBolt(targetPos);
+      this.attackTimer = 0.35;
+    }
   }
 
   deployPlasmaMine() {
@@ -438,6 +651,39 @@ export class YautjaPlayer {
     const dir = targetPos.clone().sub(net.position).normalize();
     this.projectiles.push({ mesh: net, dir, speed: 45, type: 'net', damage: 15, isNet: true, lifetime: 3.0 });
     this.scene.add(net);
+  }
+
+  fireYautjaArrow(targetPos) {
+    const arrow = new THREE.Group();
+    const shaft = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.045, 0.045, 3.2, 8),
+      new THREE.MeshStandardMaterial({ color: 0x4b3621, roughness: 0.7 }),
+    );
+    shaft.rotation.x = Math.PI / 2;
+    const head = new THREE.Mesh(
+      new THREE.ConeGeometry(0.18, 0.65, 8),
+      new THREE.MeshStandardMaterial({ color: 0xb8c4ca, metalness: 0.95, roughness: 0.15 }),
+    );
+    head.rotation.x = Math.PI / 2;
+    head.position.z = 1.9;
+    arrow.add(shaft, head);
+    arrow.position.copy(this.mesh.position).add(new THREE.Vector3(0, 4, 0));
+    const dir = targetPos.clone().sub(arrow.position).normalize();
+    arrow.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir);
+    this.projectiles.push({ mesh: arrow, dir, speed: 88, type: 'arrow', damage: 72, lifetime: 3.0 });
+    this.scene.add(arrow);
+  }
+
+  fireSpeargunBolt(targetPos) {
+    const bolt = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.06, 0.02, 2.2, 8),
+      new THREE.MeshStandardMaterial({ color: 0xd8edf0, metalness: 1, roughness: 0.08 }),
+    );
+    bolt.position.copy(this.mesh.position).add(new THREE.Vector3(0, 4.25, 0));
+    const dir = targetPos.clone().sub(bolt.position).normalize();
+    bolt.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+    this.projectiles.push({ mesh: bolt, dir, speed: 118, type: 'speargun', damage: 88, lifetime: 2.4 });
+    this.scene.add(bolt);
   }
 
   triggerSelfDestruct() {

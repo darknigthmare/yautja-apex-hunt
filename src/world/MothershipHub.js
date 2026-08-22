@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { HUNT_DEFINITIONS } from '../data/GameConfig.js';
 
 export class MothershipHub {
   constructor(scene) {
@@ -6,8 +7,11 @@ export class MothershipHub {
     this.group = new THREE.Group();
     this.animatedProps = [];
     this.trophyDisplays = new Map();
+    this.animationTime = 0;
     this.alloyTexture = null;
     this.trophyTexture = null;
+    this.energyTexture = null;
+    this.vehicleDisplays = [];
     if (typeof document !== 'undefined') {
       const textureLoader = new THREE.TextureLoader();
       this.alloyTexture = textureLoader.load(
@@ -30,12 +34,23 @@ export class MothershipHub {
       this.trophyTexture.wrapT = THREE.RepeatWrapping;
       this.trophyTexture.repeat.set(2, 2);
       this.trophyTexture.colorSpace = THREE.SRGBColorSpace;
+      this.energyTexture = textureLoader.load(
+        '/assets/textures/yautja-energy-lattice.webp',
+        undefined,
+        undefined,
+        () => console.warn('Texture énergétique Yautja indisponible, émissif procédural conservé.'),
+      );
+      this.energyTexture.wrapS = THREE.RepeatWrapping;
+      this.energyTexture.wrapT = THREE.RepeatWrapping;
+      this.energyTexture.repeat.set(2, 2);
+      this.energyTexture.colorSpace = THREE.SRGBColorSpace;
     }
 
     this.createShipInterior();
     this.createTrophyVaultWall();
     this.createMissionPedestals();
     this.createArmoryForgeStation();
+    this.createVehicleHangar();
     this.scene.add(this.group);
   }
 
@@ -80,24 +95,20 @@ export class MothershipHub {
   }
 
   createTrophyVaultWall() {
-    const wall = new THREE.Mesh(new THREE.BoxGeometry(50, 18, 2), this.createAlloyMaterial(0x202a35));
+    const wall = new THREE.Mesh(new THREE.BoxGeometry(62, 18, 2), this.createAlloyMaterial(0x202a35));
     wall.position.set(0, 11, -33);
     this.group.add(wall);
 
-    const configs = [
-      { huntId: 'goliath', x: -18, color: 0xddccaa },
-      { huntId: 'xeno_queen', x: -6, color: 0x1e3428 },
-      { huntId: 'bad_blood', x: 6, color: 0x651515 },
-      { huntId: 'predalien', x: 18, color: 0xb00045 },
-    ];
-
-    configs.forEach(({ huntId, x, color }) => {
+    const definitions = Object.values(HUNT_DEFINITIONS);
+    const spacing = 12;
+    definitions.forEach((definition, index) => {
+      const x = (index - (definitions.length - 1) / 2) * spacing;
       const plaque = new THREE.Mesh(new THREE.BoxGeometry(7, 7, 1), this.createAlloyMaterial(0x313b46));
       plaque.position.set(x, 13, -31.8);
       this.group.add(plaque);
 
       const material = new THREE.MeshStandardMaterial({
-        color,
+        color: definition.trophyColor ?? 0xddccaa,
         map: this.trophyTexture,
         emissive: 0x000000,
         roughness: 0.72,
@@ -106,22 +117,26 @@ export class MothershipHub {
         opacity: 0.28,
         wireframe: true,
       });
-      const trophy = new THREE.Mesh(new THREE.IcosahedronGeometry(2, 1), material);
+      const geometry = definition.bossType === 'superPredator'
+        ? new THREE.DodecahedronGeometry(2, 0)
+        : definition.bossType === 'xenoQueen'
+          ? new THREE.ConeGeometry(2.1, 3.2, 8)
+          : new THREE.IcosahedronGeometry(2, 1);
+      const trophy = new THREE.Mesh(geometry, material);
       trophy.position.set(x, 13, -30.4);
       this.group.add(trophy);
-      this.trophyDisplays.set(huntId, trophy);
+      this.trophyDisplays.set(definition.id, trophy);
     });
   }
 
   createMissionPedestals() {
-    const missions = [
-      { huntId: 'goliath', x: -21, color: 0xff3300 },
-      { huntId: 'xeno_queen', x: -7, color: 0x00ff66 },
-      { huntId: 'bad_blood', x: 7, color: 0x00f0ff },
-      { huntId: 'predalien', x: 21, color: 0xff0055 },
-    ];
+    const colors = [0xff3300, 0x00ff66, 0x00f0ff, 0xff0055, 0xff7a2e];
+    const definitions = Object.values(HUNT_DEFINITIONS);
+    const spacing = 13;
 
-    missions.forEach(({ huntId, x, color }) => {
+    definitions.forEach((definition, index) => {
+      const x = (index - (definitions.length - 1) / 2) * spacing;
+      const color = colors[index % colors.length];
       const pedestal = new THREE.Mesh(
         new THREE.CylinderGeometry(2.5, 3, 4, 8),
         this.createAlloyMaterial(0x27313c),
@@ -136,13 +151,13 @@ export class MothershipHub {
       beam.position.set(x, 8, -5);
       this.group.add(beam);
 
-      const hologram = new THREE.Mesh(
-        new THREE.OctahedronGeometry(1.2),
-        new THREE.MeshBasicMaterial({ color, wireframe: true }),
-      );
+      const geometry = definition.bossType === 'superPredator'
+        ? new THREE.DodecahedronGeometry(1.25, 0)
+        : new THREE.OctahedronGeometry(1.2);
+      const hologram = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color, wireframe: true }));
       hologram.position.set(x, 8, -5);
       this.group.add(hologram);
-      this.animatedProps.push({ mesh: hologram, speed: 1.5, huntId });
+      this.animatedProps.push({ mesh: hologram, speed: 1.5, huntId: definition.id });
     });
   }
 
@@ -164,6 +179,60 @@ export class MothershipHub {
     this.animatedProps.push({ mesh: anvil, speed: 1.15, huntId: 'forge' });
   }
 
+  createVehicleHangar() {
+    const deck = new THREE.Mesh(new THREE.BoxGeometry(24, 1, 13), this.createAlloyMaterial(0x202a35));
+    deck.position.set(-21, 0.5, 20);
+    this.group.add(deck);
+
+    const energyMat = new THREE.MeshStandardMaterial({
+      color: 0x39464d,
+      map: this.energyTexture,
+      emissive: 0x073e4a,
+      emissiveIntensity: 0.8,
+      metalness: 0.86,
+      roughness: 0.32,
+    });
+    const hullMat = this.createAlloyMaterial(0x303840);
+
+    const buildCraft = (x, z, scale, kind) => {
+      const craft = new THREE.Group();
+      const hull = new THREE.Mesh(
+        kind === 'pod' ? new THREE.CapsuleGeometry(1.1, 2.2, 6, 12) : new THREE.ConeGeometry(2.2, 6.2, 5),
+        hullMat,
+      );
+      hull.rotation.x = kind === 'pod' ? Math.PI / 2 : -Math.PI / 2;
+      craft.add(hull);
+
+      if (kind !== 'pod') {
+        const wing = new THREE.Mesh(new THREE.BoxGeometry(7.2, 0.2, 1.5), hullMat);
+        wing.position.z = -0.3;
+        craft.add(wing);
+      }
+      for (const engineX of [-1, 1]) {
+        const engine = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.52, 1.2, 10), energyMat);
+        engine.rotation.x = Math.PI / 2;
+        engine.position.set(engineX * (kind === 'pod' ? 0.55 : 1.55), 0, -2.5);
+        craft.add(engine);
+      }
+
+      craft.position.set(x, 3.4, z);
+      craft.scale.setScalar(scale);
+      this.group.add(craft);
+      this.vehicleDisplays.push(craft);
+      this.animatedProps.push({
+        mesh: craft,
+        speed: kind === 'pod' ? 0.22 : 0.12,
+        bob: true,
+        baseY: craft.position.y,
+        phase: Math.abs(x) * 0.17,
+      });
+    };
+
+    buildCraft(-26, 20, 0.72, 'scout');
+    buildCraft(-17, 20, 0.58, 'shuttle');
+    buildCraft(-21, 26, 0.65, 'pod');
+  }
+
   setTrophyState(completedHunts = []) {
     const completed = new Set(completedHunts);
     this.trophyDisplays.forEach((mesh, huntId) => {
@@ -181,8 +250,12 @@ export class MothershipHub {
 
   update(delta, reducedMotion = false) {
     if (!this.group.visible || reducedMotion) return;
-    this.animatedProps.forEach(({ mesh, speed }) => {
+    this.animationTime += delta;
+    this.animatedProps.forEach(({ mesh, speed, bob, baseY = mesh.position.y, phase = 0 }) => {
       mesh.rotation.y += delta * speed;
+      if (bob) {
+        mesh.position.y = baseY + Math.sin((this.animationTime * 1.5) + phase) * 0.08;
+      }
     });
   }
 }

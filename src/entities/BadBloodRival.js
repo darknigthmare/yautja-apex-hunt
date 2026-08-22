@@ -2,10 +2,12 @@ import * as THREE from 'three';
 import { ShaderManager } from '../Shaders.js';
 import { audioSynth } from '../AudioSynthesizer.js';
 import { captureBaseMaterials, disposeObject3D, overrideMaterials, restoreBaseMaterials } from '../utils/materialState.js';
+import { getRuntimeTexture } from '../utils/runtimeTextures.js';
 
 export class BadBloodRival {
   constructor(scene) {
     this.scene = scene;
+    this.colliderRadius = 4.5;
 
     // Vitals
     this.maxHealth = 800;
@@ -48,7 +50,11 @@ export class BadBloodRival {
     });
 
     // Dark Skin
-    const skinMat = new THREE.MeshStandardMaterial({ color: 0x221a14, roughness: 0.8 });
+    const skinMat = new THREE.MeshStandardMaterial({
+      color: 0x665444,
+      map: getRuntimeTexture('/assets/textures/yautja-skin-mottled.webp', { repeat: [1.4, 1.4] }),
+      roughness: 0.8,
+    });
 
     // Torso
     const torso = new THREE.Mesh(new THREE.BoxGeometry(2.2, 3.2, 1.4), armorMat);
@@ -57,7 +63,12 @@ export class BadBloodRival {
     rivalGroup.add(torso);
 
     // Scarred Bio-Mask
-    const maskMat = new THREE.MeshStandardMaterial({ color: 0x1a1212, metalness: 0.9 });
+    const maskMat = new THREE.MeshStandardMaterial({
+      color: 0x4a3834,
+      map: getRuntimeTexture('/assets/textures/biomask-etched-alloy.webp', { repeat: [1.3, 1.3] }),
+      metalness: 0.9,
+      roughness: 0.28,
+    });
     const head = new THREE.Mesh(new THREE.SphereGeometry(0.9, 16, 16), maskMat);
     head.position.set(0, 5.5, 0.2);
     rivalGroup.add(head);

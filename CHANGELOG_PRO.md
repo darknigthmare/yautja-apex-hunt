@@ -2,6 +2,41 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
+## [1.3.0] — 22 août 2026
+
+### Contenu réellement intégré
+
+- cinquième chasse contre le Berserker Super Predator avec plasma lourd, charge télégraphiée, bris du masque, rage et trophée ;
+- quatre archétypes de PNJ 3D : commando humain, drone xénomorphe, molosse de chasse et synthétique de combat ;
+- événements de niveau déterministes : survol, renforts, dangers météo, conteneurs et fin de perturbation ;
+- trois navettes Yautja 3D et quatre conteneurs interactifs aux récompenses propres aux biomes ;
+- arc Yautja et lance-harpons ajoutés à l’arsenal, désormais jouable sur dix raccourcis de `1` à `0` ;
+- mimétisme vocal directionnel : trois appels sonores détournent réellement les PNJ proches vers un point de leurre ;
+- combat des renforts maintenu après la mort du boss jusqu’au prélèvement du trophée.
+
+### Personnalisation et franchise
+
+- 30 bio-masques procéduraux, 42 presets d’armure, huit couleurs de peau, huit couleurs de predlocks, douze alliages et huit accents ;
+- sept silhouettes dédiées aux classes Gladiator, Anubis, Exalted, Witch, Oni, Jotun et Father de Hunting Grounds ;
+- 109 dossiers de technologies, véhicules, ennemis, événements, boss et soutien, chacun marqué `JOUABLE`, `RENCONTRE 3D`, `GALERIE 3D` ou `ARCHIVE` ;
+- ajouts sourcés liés à The Predator, Prey, Predators, AVP, Killer of Killers, Badlands et aux contenus licenciés Hunting Grounds ;
+- Assassin Predator séparé du Fugitive, et créations Apex explicitement signalées comme interprétations originales.
+
+### Visuels OpenAI
+
+- six textures originales fan-made 1254×1254 générées avec OpenAI pour peau Yautja, bio-masque, carapace xénomorphe, Goliath, molosse et réseau énergétique ;
+- quinze WebP runtime totalisant 4 661 738 octets, sans texte, logo, watermark ni copie de key art officiel ;
+- textures branchées sur le joueur, les boss, PNJ, navettes, conteneurs, hangar et interface de Forge.
+
+### Fiabilité et publication
+
+- sauvegarde v3 des cinq canaux d’apparence, avec migrations v1/v2 et reconstruction des anciens presets ;
+- 71/71 tests Node, build Vite 8.2.2, audit npm à 0 vulnérabilité et `git diff --check` propre ;
+- QA Chromium desktop/mobile : 109 fiches, 42 armures, 30 masques, 10 armes, aucun overlay ni erreur et aucun débordement à 390×844 ;
+- revue lore finale : GO, aucun défaut P0/P1 ;
+- six nouvelles textures contrôlées en HTTP 200 localement puis sur la production publique ;
+- release poussée sur GitHub et publiée sur <https://yautja-apex-hunt.vercel.app/>.
+
 ## [1.2.0] — 22 août 2026
 
 ### Ajouté

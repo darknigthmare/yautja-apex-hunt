@@ -1,7 +1,30 @@
 import { YautjaSkinsDatabase } from './data/YautjaLoreDatabase.js';
 import { LORE_SOURCE_TIERS } from './data/LoreCodex.js';
+import { HUNT_DEFINITIONS } from './data/GameConfig.js';
+import {
+  ARMOR_ACCENTS,
+  ARMOR_PALETTES,
+  DREAD_PALETTES,
+  ENEMY_CATALOG,
+  HUNT_BOSS_CATALOG,
+  LEVEL_EVENT_CATALOG,
+  MASK_VARIANTS,
+  SKIN_PALETTES,
+  SUPPORT_CATALOG,
+  TECH_CATALOG,
+  VEHICLE_CATALOG,
+} from './data/YautjaContentCatalog.js';
+import { PLAYABLE_WEAPONS } from './data/RuntimeEquipment.js';
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+const RUNTIME_STATUS_LABELS = Object.freeze({
+  playable: 'JOUABLE',
+  encounter: 'RENCONTRE 3D',
+  customization: 'PERSONNALISATION',
+  gallery: 'GALERIE 3D',
+  archive: 'ARCHIVE',
+});
+
 
 function normalizeMeter(value, maxValue) {
   const max = Number.isFinite(maxValue) && maxValue > 0 ? maxValue : 1;
@@ -53,8 +76,23 @@ export class HUDManager {
     this.logBanner = document.getElementById('log-banner');
     this.logTimeoutId = null;
 
-    this.weaponSlots = document.querySelectorAll('.weapon-slot');
+    this.weaponSelector = document.getElementById('weapon-selector');
     this.skinGrid = document.getElementById('skin-catalog-grid');
+    this.appearanceControls = {
+      maskId: document.getElementById('custom-mask'),
+      skinColorId: document.getElementById('custom-skin-color'),
+      dreadColorId: document.getElementById('custom-dread-color'),
+      armorColorId: document.getElementById('custom-armor-color'),
+      armorAccentColorId: document.getElementById('custom-armor-accent'),
+    };
+    this.contentGrids = {
+      technology: document.getElementById('technology-catalog-grid'),
+      vehicles: document.getElementById('vehicle-catalog-grid'),
+      enemies: document.getElementById('enemy-catalog-grid'),
+      events: document.getElementById('event-catalog-grid'),
+      bosses: document.getElementById('boss-catalog-grid'),
+      support: document.getElementById('support-catalog-grid'),
+    };
 
     // The HUD is refreshed from the render loop. Keep a per-node value cache so
     // unchanged text, classes and ARIA states do not trigger DOM mutations at 60 FPS.
@@ -79,11 +117,15 @@ export class HUDManager {
     this.setAttribute(this.triLaser, 'aria-hidden', 'true');
     this.setAttribute(this.lockonBracket, 'aria-hidden', 'true');
 
+    this.renderWeaponSelector();
+    this.weaponSlots = document.querySelectorAll('.weapon-slot');
     this.weaponSlots.forEach((slot) => {
       this.setAttribute(slot, 'aria-pressed', 'false');
     });
 
     this.renderSkinCatalog();
+    this.renderAppearanceCatalog();
+    this.renderExpandedContentCatalog();
   }
 
   commit(element, key, value, mutate) {
@@ -144,6 +186,98 @@ export class HUDManager {
     this.setAttribute(meterElement, 'aria-valuetext', valueText);
   }
 
+  renderWeaponSelector() {
+    if (!this.weaponSelector) return;
+    const buttons = PLAYABLE_WEAPONS.map((weapon) => {
+      const slot = document.createElement('button');
+      slot.type = 'button';
+      slot.className = 'weapon-slot';
+      slot.id = `wep-${weapon.slot}`;
+      slot.dataset.wep = String(weapon.slot);
+      slot.title = `${weapon.name} — ${weapon.sourceTier}`;
+
+      const number = document.createElement('span');
+      number.className = 'wep-num';
+      number.textContent = `[${weapon.slot}]`;
+      const name = document.createElement('span');
+      name.className = 'wep-name';
+      name.textContent = weapon.shortName;
+      slot.append(number, name);
+      return slot;
+    });
+    this.weaponSelector.replaceChildren(...buttons);
+  }
+
+  fillSelect(select, entries) {
+    if (!select) return;
+    const options = entries.map((entry) => {
+      const option = document.createElement('option');
+      option.value = entry.id;
+      option.textContent = entry.name;
+      return option;
+    });
+    select.replaceChildren(...options);
+  }
+
+  renderAppearanceCatalog() {
+    this.fillSelect(this.appearanceControls.maskId, MASK_VARIANTS);
+    this.fillSelect(this.appearanceControls.skinColorId, SKIN_PALETTES);
+    this.fillSelect(this.appearanceControls.dreadColorId, DREAD_PALETTES);
+    this.fillSelect(this.appearanceControls.armorColorId, ARMOR_PALETTES);
+    this.fillSelect(this.appearanceControls.armorAccentColorId, ARMOR_ACCENTS);
+  }
+
+  syncCustomization(customization = {}) {
+    Object.entries(this.appearanceControls).forEach(([key, select]) => {
+      if (select && typeof customization[key] === 'string') select.value = customization[key];
+    });
+  }
+
+  renderContentGrid(container, entries) {
+    if (!container) return;
+    const cards = entries.map((entry) => {
+      const tier = LORE_SOURCE_TIERS[entry.sourceTier] ?? LORE_SOURCE_TIERS.ORIGINAL;
+      const card = document.createElement('article');
+      card.className = 'content-catalog-card';
+      card.dataset.contentId = entry.id;
+      card.style.setProperty('--lore-tier-color', tier.color);
+
+      const header = document.createElement('div');
+      header.className = 'content-card-header';
+      const title = document.createElement('h4');
+      title.textContent = entry.name;
+      const badge = document.createElement('span');
+      badge.className = 'codex-tier';
+      badge.textContent = tier.shortLabel;
+      badge.title = tier.label;
+      const runtimeBadge = document.createElement('span');
+      runtimeBadge.className = `runtime-status runtime-status-${entry.runtimeStatus ?? 'archive'}`;
+      runtimeBadge.textContent = RUNTIME_STATUS_LABELS[entry.runtimeStatus] ?? RUNTIME_STATUS_LABELS.archive;
+      runtimeBadge.title = 'Disponibilité actuelle dans Apex Hunt';
+      const badges = document.createElement('div');
+      badges.className = 'content-card-badges';
+      badges.append(badge, runtimeBadge);
+      header.append(title, badges);
+
+      const description = document.createElement('p');
+      description.textContent = entry.description;
+      const gameplay = document.createElement('small');
+      gameplay.textContent = entry.gameplay ?? entry.role ?? 'Répertorié dans les archives de chasse.';
+      card.append(header, description, gameplay);
+      return card;
+    });
+    container.replaceChildren(...cards);
+  }
+
+  renderExpandedContentCatalog() {
+    this.renderContentGrid(this.contentGrids.technology, TECH_CATALOG);
+    this.renderContentGrid(this.contentGrids.vehicles, VEHICLE_CATALOG);
+    this.renderContentGrid(this.contentGrids.enemies, ENEMY_CATALOG);
+    this.renderContentGrid(this.contentGrids.events, LEVEL_EVENT_CATALOG);
+    this.renderContentGrid(this.contentGrids.bosses, HUNT_BOSS_CATALOG);
+    this.renderContentGrid(this.contentGrids.support, SUPPORT_CATALOG);
+  }
+
   renderSkinCatalog() {
     if (!this.skinGrid) return;
     this.skinGrid.innerHTML = '';
@@ -200,33 +334,25 @@ export class HUDManager {
     if (!boss) return;
     this.updateMeter(this.bossHpBar, null, this.bossHpMeter, boss.health, boss.maxHealth);
 
-    if (huntType === 'goliath') {
-      this.setText(this.bossDisplayName, 'GOLIATH XENO-AKUMO');
-      this.setText(this.part1Label, 'CORNE GAULDOISE:');
-      this.setText(this.part2Label, 'QUEUE ÉPINEYUSE:');
-      this.setText(this.hornStatus, boss.hornIntact ? 'INTACTE' : 'BRISÉE (TROPHÉE)');
-      this.setText(this.tailStatus, boss.tailIntact ? 'INTACTE' : 'TRANCHÉE (TROPHÉE)');
-    } else if (huntType === 'xeno_queen') {
-      this.setText(this.bossDisplayName, 'REINE XÉNOMORPHE');
-      this.setText(this.part1Label, 'CRÊTE DE TÊTE:');
-      this.setText(this.part2Label, 'QUEUE PERFORANTE:');
-      this.setText(this.hornStatus, boss.crownIntact ? 'INTACTE' : 'BRISÉE (TROPHÉE)');
-      this.setText(this.tailStatus, boss.tailIntact ? 'INTACTE' : 'TRANCHÉE (TROPHÉE)');
-    } else if (huntType === 'bad_blood') {
-      this.setText(this.bossDisplayName, 'YAUTJA BAD BLOOD');
-      this.setText(this.part1Label, 'CASQUE MASQUE:');
-      this.setText(this.part2Label, 'TÊTE DU RIVAL:');
-      this.setText(this.hornStatus, 'MASQUÉ');
-      this.setText(this.tailStatus, boss.isDead ? 'VAINCU' : 'VIVANT');
-    } else if (huntType === 'predalien') {
-      this.setText(this.bossDisplayName, 'PREDALIEN ULTIME');
-      this.setText(this.part1Label, 'DÔME BIOMÉCANIQUE:');
-      this.setText(this.part2Label, "QUEUE D'ÉPINE:");
-      this.setText(this.hornStatus, boss.headIntact ? 'INTACTE' : 'BRISÉ (TROPHÉE)');
-      this.setText(this.tailStatus, boss.tailIntact ? 'INTACTE' : 'TRANCHÉE (TROPHÉE)');
-    }
+    const definition = HUNT_DEFINITIONS[huntType] ?? HUNT_DEFINITIONS.goliath;
+    this.setText(this.bossDisplayName, definition.name.toUpperCase());
 
-    this.setText(this.targetScannedName, `${this.bossDisplayName.textContent} — BIOSIGNATURE VERROUILLÉE`);
+    const renderPart = (part, labelElement, statusElement) => {
+      if (!part) return;
+      const [label, property, intactLabel, brokenLabel] = part;
+      const raw = boss[property];
+      const intact = typeof raw === 'number'
+        ? raw >= (raw > 1 ? 60 : 0.6)
+        : Boolean(raw);
+      this.setText(labelElement, label);
+      this.setText(statusElement, intact ? intactLabel : brokenLabel);
+      this.setClassState(statusElement, 'part-destroyed', !intact);
+      this.setClassState(statusElement, 'part-intact', intact);
+    };
+
+    renderPart(definition.hud?.part1, this.part1Label, this.hornStatus);
+    renderPart(definition.hud?.part2, this.part2Label, this.tailStatus);
+    this.setText(this.targetScannedName, `${definition.name.toUpperCase()} — BIOSIGNATURE VERROUILLÉE`);
   }
 
   showHubTarget() {

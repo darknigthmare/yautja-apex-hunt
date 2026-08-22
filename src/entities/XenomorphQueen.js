@@ -2,10 +2,12 @@ import * as THREE from 'three';
 import { ShaderManager } from '../Shaders.js';
 import { audioSynth } from '../AudioSynthesizer.js';
 import { captureBaseMaterials, overrideMaterials, restoreBaseMaterials } from '../utils/materialState.js';
+import { getRuntimeTexture } from '../utils/runtimeTextures.js';
 
 export class XenomorphQueen {
   constructor(scene) {
     this.scene = scene;
+    this.colliderRadius = 4.5;
 
     // Queen Vitals
     this.maxHealth = 1500;
@@ -54,6 +56,7 @@ export class XenomorphQueen {
 
     const bodyMat = new THREE.MeshStandardMaterial({
       color: 0x0a0c10,
+      map: getRuntimeTexture('/assets/textures/xeno-carapace.webp', { repeat: [2, 2] }),
       roughness: 0.15,
       metalness: 0.9
     });

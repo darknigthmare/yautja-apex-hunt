@@ -61,10 +61,46 @@ Les textes ci-dessous sont les formulations de production fidèles aux prompts e
 
 **Destination runtime après conversion :** `public/assets/textures/xeno-egg-hide.webp`
 
+## `yautja-skin-mottled`
+
+> Texture carrée raccordable de peau extraterrestre de chasseur : épiderme olive sombre, taches irrégulières brunes et ambre, pores épais et fines rides organiques. Vue orthographique de matière, lumière uniforme, aucune anatomie complète ni visage. Création originale fan-made, sans texte, logo, glyphe, UI, watermark, collage ou reproduction d’un personnage officiel.
+
+**Destination runtime après conversion :** `public/assets/textures/yautja-skin-mottled.webp`
+
+## `biomask-etched-alloy`
+
+> Texture carrée raccordable d’alliage de bio-masque ancien : métal gunmetal patiné, fines gravures abstraites, micro-rayures, impacts contrôlés et reflets froids. Aucun masque complet, emblème, alphabet ou symbole officiel. Vue orthographique de matière, éclairage uniforme, création originale fan-made sans texte, UI, watermark ou key art.
+
+**Destination runtime après conversion :** `public/assets/textures/biomask-etched-alloy.webp`
+
+## `xeno-carapace`
+
+> Texture carrée raccordable de carapace biomécanique extraterrestre : noir graphite humide, côtes arrondies, rainures serrées et reflets bleu pétrole discrets. Matière abstraite sans créature, tête, bouche ni anatomie reconnaissable. Vue orthographique, lumière diffuse uniforme, création originale fan-made sans texte, logo, UI, watermark ou décor copié.
+
+**Destination runtime après conversion :** `public/assets/textures/xeno-carapace.webp`
+
+## `goliath-armored-hide`
+
+> Texture carrée raccordable de peau blindée de mégafaune originale : grandes plaques minérales brun charbon, fissures profondes, bords kératinisés et poussière ocre. Surface abstraite sans membre, visage ni silhouette. Vue orthographique et lumière uniforme, création propre à Apex Hunt, sans texte, logo, UI, watermark, collage ou référence officielle copiée.
+
+**Destination runtime après conversion :** `public/assets/textures/goliath-armored-hide.webp`
+
+## `yautja-energy-lattice`
+
+> Texture carrée raccordable de réseau énergétique extraterrestre abstrait : canaux cyan et turquoise sous un alliage sombre, impulsions lumineuses contenues, circuits géométriques non alphabétiques et usure légère. Vue orthographique, éclairage uniforme, sans glyphe officiel, texte, logo, interface, watermark, collage ou accessoire copié.
+
+**Destination runtime après conversion :** `public/assets/textures/yautja-energy-lattice.webp`
+
+## `hunting-hound-hide`
+
+> Texture carrée raccordable de cuir épais de créature de chasse : peau brun noir, plaques osseuses irrégulières, cicatrices anciennes et relief rugueux. Matière abstraite uniquement, sans animal entier, tête, œil, sang ou anatomie identifiable. Vue orthographique, lumière uniforme, création originale fan-made sans texte, logo, UI, watermark ou copie de créature officielle.
+
+**Destination runtime après conversion :** `public/assets/textures/hunting-hound-hide.webp`
+
 ## Critères de rejet
 
 Une génération doit être écartée si elle contient un mot, une signature, une bordure visible, un motif non raccordable dominant, une créature reconnaissable, une interface, un logo, un symbole officiel, une composition en collage ou une copie manifeste d'un visuel existant.
 
 ## Traçabilité
 
-Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor du 21 août ont été converties avec Sharp en WebP 1024×1024, qualité 84, effort 6 et `smartSubsample`. Les trois matières de props du 22 août ont reçu une normalisation mécanique par quadrants miroir afin de garantir la continuité exacte des bords, puis une conversion WebP 1024×1024, qualité 84. Cette correction conserve la matière ImageGen mais peut rendre la symétrie plus visible à grande échelle ; ces textures sont donc réservées aux props et surfaces modestes. Le manifest consigne les poids exacts, l'usage et les contrôles de chaque variante. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.
+Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor initiales et les trois matières de props restent en WebP 1024×1024 ; les six matières de la vague contenu 1.3 sont encodées en WebP 1254×1254 après inspection visuelle. Le manifest consigne les quinze poids exacts, leur usage runtime et les contrôles obtenus. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.

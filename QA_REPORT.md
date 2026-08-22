@@ -1,23 +1,24 @@
-# Rapport QA — release 1.2.0
+# Rapport QA — release 1.3.0
 
 **Date :** 22 août 2026
-**Statut :** version 1.2.0 publiée sur la production Vercel le 22 août 2026, sans défaut P0/P1 connu.
-**Source fonctionnelle publiée :** commit `ce5cd245a4b37614946e9aacbc08f61034c4726b` sur `master`.
+**Statut :** version 1.3.0 publiée sur la production Vercel le 22 août 2026, sans défaut P0/P1 connu.
+**Source fonctionnelle publiée :** release 1.3.0 du dépôt GitHub.
 **URL publique :** <https://yautja-apex-hunt.vercel.app/>
 
 ## Résultats établis sur la release
 
 | Contrôle | Résultat | Portée exacte |
 | --- | --- | --- |
-| Version publique | Vercel `production` en état `Ready`, HTTP 200 | L’alias public sert le bundle validé de la 1.2.0. |
-| Syntaxe et tests | 33/33 tests Node réussis | Combat, télégraphies, acide/camouflage, lore, sauvegarde/migration, résilience, timers, destruction GPU et contrats statiques. |
-| Build de production | Vite 8.2.2 réussi sur le worktree final | App 117,95 Ko, CSS 18,23 Ko et chunk Three.js 477,51 Ko ; aucun avertissement supérieur à 500 Ko. |
+| Version publique | Vercel `production` en état `Ready`, HTTP 200 | L’alias public sert le bundle validé de la 1.3.0. |
+| Syntaxe et tests | 71/71 tests Node réussis | Boss, PNJ, événements, véhicules, scan visuel, conteneurs, armes, personnalisation, lore, sauvegarde/migrations et contrats statiques. |
+| Build de production | Vite 8.2.2 réussi sur le worktree final | App 230,77 Ko, CSS 21,79 Ko et chunk Three.js 496,94 Ko ; aucun avertissement supérieur à 500 Ko. |
 | Dépendances | `npm audit --audit-level=moderate` : 0 vulnérabilité | Lockfile final contrôlé. |
-| Assets | Neuf WebP 1024×1024, 2 451 694 octets | Les neuf chemins ont répondu en HTTP 200 sur le Preview puis sur la production ; trois nouvelles matières sont intégrées aux trophées, à l’armure et aux œufs. |
-| Smoke test navigateur | Réussi localement et sur la production publique | Production : accueil, hub, armurerie et ses 20 badges, contrats Goliath/Reine, pause, abandon, défaite et retour ; les parcours locaux couvrent aussi Codex, options et états responsive. |
-| Console navigateur | 0 erreur et aucun warning applicatif après correction | Zéro erreur sur la production ; les refus de pointer-lock sont gérés sans rejet non capturé. |
-| Accessibilité | axe-core 4.12.1 : 0 violation | Un contrôle de contraste reste « incomplete » car le HUD recouvre le canvas WebGL. |
-| Responsive | 390×844 sans débordement horizontal | Canvas 390×844, modales défilables, HUD sans chevauchement à 0,85/1,25 et cibles armes d’au moins 44×44 px. |
+| Assets | Quinze WebP, 4 661 738 octets | Six nouvelles matières OpenAI 1254×1254 intégrées au runtime ; quinze chemins chargés dans Chromium et six nouveaux chemins contrôlés individuellement en HTTP 200. |
+| Contenu | 109 fiches, 42 armures, 30 masques et 10 armes | Les statuts `JOUABLE`, `RENCONTRE 3D`, `GALERIE 3D` et `ARCHIVE` sont visibles et cohérents. |
+| Smoke test navigateur | Réussi localement et sur la production publique | Accueil, hub, Forge, Codex, contrats Goliath/Reine/Super Predator, événements, défaite et retour contrôlés. |
+| Console navigateur | 0 erreur | Aucun overlay Vite ni erreur de page pendant les parcours desktop/mobile. |
+| Revue lore | GO, aucun P0/P1 | Les sept classes Hunting Grounds récentes appliquent un masque procédural dédié ; Assassin et Fugitive restent distincts. |
+| Responsive | 390×844 sans débordement horizontal | `scrollWidth` égal à 390 px ; modale 390×844 et contenu vertical défilable. |
 | Surface de production | HTTP 200 et headers vérifiés | CSP sans script tiers, COOP, HSTS, `nosniff`, Permissions-Policy et Referrer-Policy présents. |
 
 ## Matrice de validation finale
@@ -35,35 +36,38 @@ Les cases cochées correspondent uniquement aux preuves réellement obtenues dan
 
 ### Assets
 
-- [x] neuf chemins WebP du manifest présents.
-- [x] dimensions et formats relevés : neuf WebP 1024×1024.
-- [x] poids individuel et total relevés : 2 451 694 octets au total.
-- [x] décodage Sharp des six matières de décor ; planche 2×2 et inspection base64 des trois matières de props.
+- [x] quinze chemins WebP du manifest présents et décodables.
+- [x] dimensions, formats et poids relevés : 4 661 738 octets au total.
+- [x] six nouvelles matières 1254×1254 inspectées visuellement et intégrées au runtime.
 - [x] inspection visuelle des PNG originaux : aucun texte, logo, watermark ou symbole officiel relevé.
-- [x] inspection visuelle des trois nouveaux WebP finaux par affichage base64 de secours ; contrôle physique des six matières initiales encore recommandé.
-- [x] mosaïque 2×2 des trois matières de props : bords continus après normalisation miroir.
-- [x] chargement runtime des neuf textures sans erreur de page.
+- [x] chargement runtime des quinze textures sans erreur de page.
+- [x] six nouveaux chemins contrôlés individuellement en HTTP 200 et avec leur poids exact.
 - [x] fallback de matériau prévu sur erreur de chargement.
 
 ### Boucle de jeu
 
 - [x] hub chargé et interactif.
-- [x] les quatre cibles démarrent dans les quatre biomes de référence.
+- [x] les cinq cibles démarrent dans les quatre biomes de référence.
+- [x] le Berserker Super Predator télégraphie plasma lourd, charge, mêlée, bris du masque et rage.
+- [x] quatre familles de PNJ 3D utilisent combat, dégâts, mort, détection et nettoyage communs.
+- [x] le mimétisme vocal détourne réellement les PNJ proches vers un point de leurre.
+- [x] événements déterministes : survol, renfort, danger, conteneur et fin de danger.
+- [x] trois navettes et quatre conteneurs possèdent des comportements/récompenses distincts.
+- [x] dix armes sont sélectionnables de `1` à `0`, dont arc et lance-harpons.
 - [x] lames de poignet et fouet respectent leurs portées dans les tests de règles.
 - [x] projectile et mêlée Bad Blood blessent le joueur une seule fois par impact prévu.
 - [x] queues et attaques acides de la Reine/du Predalien sont accessibles, télégraphiées et consommées une fois.
 - [x] facehugger : QTE réussi neutralise la menace ; échec inflige exactement 35 dégâts et retire la menace.
 - [x] victoire accorde honneur et trophée une seule fois.
-- [x] autodestruction aboutit à un seul écran terminal de défaite, sans trophée ni gain d'honneur, puis revient proprement au hub.
 - [x] recommencer nettoie mines, projectiles, corrosion, camouflage et états terminaux.
 
 ### Progression et options
 
 - [x] achat du zoom modifie le FOV et persiste après rechargement Chromium.
-- [x] zoom acheté encore présent dans la sauvegarde v2 après rechargement Chromium.
-- [x] peau City Hunter sélectionnée, sauvegardée puis restaurée visuellement après rechargement Chromium.
-- [x] chasses terminées, trophées et honneur sont dédupliqués par les tests de progression et restaurés par la sauvegarde v2.
-- [x] migration d'une sauvegarde v1.
+- [x] sauvegarde v3 persistante : progression, cinq canaux d’apparence, armure et options.
+- [x] migrations v1/v2 vers v3 sans perte de progression.
+- [x] reconstruction des masques et palettes historiques Wolf/Berserker testée.
+- [x] les 42 presets d’armure pointent vers des références valides.
 - [x] sauvegarde corrompue ou stockage indisponible gérés sans crash.
 - [x] audio, mouvement réduit, fort contraste et échelle du HUD appliqués et sauvegardés.
 
@@ -76,28 +80,29 @@ Les cases cochées correspondent uniquement aux preuves réellement obtenues dan
 - [x] aucun débordement horizontal critique à 390 px.
 - [x] Codex sépare `SCREEN`, `AVP_SCREEN`, `LICENSED_EU` et `ORIGINAL`.
 - [x] mouvement réduit et contraste renforcé appliqués dans le DOM.
-- [x] console navigateur sans erreur sur le smoke test final des quatre chasses.
+- [x] console navigateur sans erreur sur le smoke test final des cinq chasses.
 
 ### Surface web
 
 - [x] métadonnées, favicon, manifest, robots et sitemap présents dans le build.
 - [x] headers de sécurité examinés sur la Preview et la production.
-- [x] tous les chemins absolus des neuf textures chargent dans Chromium.
+- [x] tous les chemins absolus des quinze textures chargent dans Chromium.
 - [x] aucune source map ni donnée locale sensible présente dans `dist`.
 
 ## Scénario de smoke test recommandé
 
-1. Nouvelle sauvegarde, ouvrir le hub et le Codex.
-2. Lancer Goliath dans la jungle, tester mêlée, camouflage, pause et victoire.
-3. Acheter le zoom, changer de peau, recharger la page et vérifier la persistance.
-4. Lancer Bad Blood à Ryushi et recevoir projectile puis mêlée.
-5. Lancer la Reine dans la ruche et tester queue et facehugger.
-6. Lancer le Predalien dans l'arène et provoquer une défaite normale.
-7. Relancer une chasse, déclencher l'autodestruction et confirmer une seule issue terminale.
-8. Revenir au hub et confirmer trophées, score, options et absence d'erreur console.
+1. Ouvrir le hub, la Forge et vérifier 42 armures, 30 masques et les cinq axes modulaires.
+2. Appliquer Gladiator, Anubis, Jotun et Father ; vérifier les silhouettes distinctes.
+3. Lancer Goliath dans la jungle, déclencher le mimétisme puis attendre renfort, navette et conteneur.
+4. Lancer la Reine dans la ruche et vérifier drone, pluie, attaques acides et facehugger.
+5. Lancer Bad Blood à Ryushi et recevoir projectile puis mêlée.
+6. Lancer le Predalien dans l’arène et provoquer une défaite normale.
+7. Lancer le Super Predator et observer charge, plasma, bris du masque et rage.
+8. Changer de preset, recharger la page et vérifier la sauvegarde v3.
+9. Revenir au hub et confirmer trophées, score, options et absence d’erreur console.
 
 ## Critère de décision
 
 Une seule erreur P0, perte de sauvegarde, attaque majeure sans dégâts, asset manquant ou exception console reproductible bloque la release. Les écarts P1/P2 doivent être corrigés ou explicitement acceptés et consignés.
 
-Le commit fonctionnel a été poussé sur `master`, le Preview Vercel a été vérifié puis promu, et l’URL publique a été contrôlée en HTTP 200 avec le bundle, les headers et les neuf textures attendus.
+La release 1.3.0 a été poussée sur GitHub, déployée sur Vercel et contrôlée sur l’URL publique avec le bundle, les headers et les quinze textures attendus.

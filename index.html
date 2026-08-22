@@ -13,7 +13,7 @@
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="Yautja: Apex Hunt">
   <meta property="og:title" content="Yautja: Apex Hunt — Chasse 3D fan-made">
-  <meta property="og:description" content="Endossez le bio-masque, choisissez votre contrat et prouvez votre valeur au cours de quatre chasses.">
+  <meta property="og:description" content="Endossez le bio-masque, choisissez votre contrat et prouvez votre valeur au cours de cinq chasses et d’événements dynamiques.">
   <meta property="og:url" content="https://yautja-apex-hunt.vercel.app/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Yautja: Apex Hunt">
@@ -23,6 +23,7 @@
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="src/style.css">
   <link rel="stylesheet" href="src/professional.css">
+  <link rel="stylesheet" href="src/content-pass.css">
 
 </head>
 <body class="app-shell">
@@ -128,11 +129,11 @@
         
         <div class="boss-parts-header">PARTIES DESTRUCTIBLES</div>
         <div class="part-row">
-          <span id="part-1-label">CORNE GAULDOISE:</span>
+          <span id="part-1-label">CORNE FRONTALE:</span>
           <span id="horn-status" class="part-intact">INTACTE (TROPHÉE)</span>
         </div>
         <div class="part-row">
-          <span id="part-2-label">QUEUE ÉPINEYUSE:</span>
+          <span id="part-2-label">QUEUE ÉPINEUSE:</span>
           <span id="tail-status" class="part-intact">INTACTE (TROPHÉE)</span>
         </div>
       </div>
@@ -140,16 +141,7 @@
 
     <!-- Bottom Bar: Weapons -->
     <div id="hud-bottom">
-      <div id="weapon-selector">
-        <button type="button" class="weapon-slot active" id="wep-1" data-wep="1"><span class="wep-num">[1]</span><span class="wep-name">LAMES POIGNET</span></button>
-        <button type="button" class="weapon-slot" id="wep-2" data-wep="2"><span class="wep-num">[2]</span><span class="wep-name">PLASMA</span></button>
-        <button type="button" class="weapon-slot" id="wep-3" data-wep="3"><span class="wep-num">[3]</span><span class="wep-name">COMBI-STICK</span></button>
-        <button type="button" class="weapon-slot" id="wep-4" data-wep="4"><span class="wep-num">[4]</span><span class="wep-name">DISQUE INTEL</span></button>
-        <button type="button" class="weapon-slot" id="wep-5" data-wep="5"><span class="wep-num">[5]</span><span class="wep-name">LANCE-FILET</span></button>
-        <button type="button" class="weapon-slot" id="wep-6" data-wep="6"><span class="wep-num">[6]</span><span class="wep-name">MEDICOMP</span></button>
-        <button type="button" class="weapon-slot" id="wep-7" data-wep="7"><span class="wep-num">[7]</span><span class="wep-name">MINES PLASMA</span></button>
-        <button type="button" class="weapon-slot" id="wep-8" data-wep="8"><span class="wep-num">[8]</span><span class="wep-name">FOUET ÉPINES</span></button>
-      </div>
+      <div id="weapon-selector" role="group" aria-label="Arsenal Yautja jouable"></div>
 
       <div id="action-prompt" class="hidden">
         <div class="prompt-key">[E]</div>
@@ -173,10 +165,10 @@
         <div><strong>Clic gauche :</strong> Attaquer / tirer</div>
         <div><strong>Espace :</strong> Saut de canopée</div>
         <div><strong>[R] :</strong> Rugissement de victoire</div>
-        <div><strong>[F] :</strong> Roue de mimétisme vocal</div>
+        <div><strong>[F] :</strong> Leurre vocal directionnel (3 appels)</div>
         <div><strong>[V] :</strong> Mode de vision</div>
         <div><strong>[C] :</strong> Camouflage optique</div>
-        <div><strong>[1] à [8] :</strong> Armes Yautja</div>
+        <div><strong>[1] à [0] :</strong> 10 armes Yautja jouables</div>
         <div><strong>[E] :</strong> Récolter un trophée d'honneur</div>
         <div><strong>[Échap] / [P] :</strong> Pause et options</div>
         <div><strong>Clic droit :</strong> Zoom thermique si débloqué</div>
@@ -204,9 +196,9 @@
           <label for="planet-selector">SECTEUR DE CHASSE :</label>
           <select id="planet-selector">
             <option value="jungle">JUNGLE EXTRATERRESTRE (RUINES SACRÉES)</option>
-            <option value="hive_lv426">LV-426 RUCHES SOUTERRAINES (BAVE ACIDE & NIDS)</option>
+            <option value="hive_lv426">LV-426 RUCHES SOUTERRAINES (SANG ACIDE & NIDS)</option>
             <option value="ryushi_desert">DÉSERT DE RYUSHI (TEMPÊTE DE SABLE)</option>
-            <option value="yautja_prime">YAUTJA PRIME (COLISÉE SACRÉ & ANCIENS)</option>
+            <option value="yautja_prime">DOMAINE YAUTJA — ARÈNE APEX ORIGINALE</option>
           </select>
         </div>
 
@@ -231,14 +223,19 @@
             <p>Hybride létal issu de l'univers AVP.</p>
             <button class="btn-launch-hunt" type="button" data-hunt="predalien">VAINCRE LE PREDALIEN</button>
           </article>
+          <article class="mission-card mission-card-featured">
+            <h3>5. BERSERKER — SUPER PREDATOR</h3>
+            <p>Chef de la planète-réserve, bêtes de son groupe et plasma lourd.</p>
+            <button class="btn-launch-hunt" type="button" data-hunt="super_predator">DÉFIER LE BERSERKER</button>
+          </article>
         </div>
 
         <div class="forge-panel">
           <h3>FORGE D'HONNEUR DU VAISSEAU-MÈRE</h3>
           <div class="forge-buttons">
-            <button id="btn-buy-tribeam" type="button">TIR TRI-FAISCEAU (500 PTS)</button>
-            <button id="btn-buy-antiacid" type="button">CAMOUFLAGE ANTI-ACIDE (800 PTS)</button>
-            <button id="btn-buy-scope" type="button">ZOOM THERMIQUE 4× (400 PTS)</button>
+            <button id="btn-buy-tribeam" type="button">TIR TRI-FAISCEAU — APEX (500 PTS)</button>
+            <button id="btn-buy-antiacid" type="button">CAMOUFLAGE ANTI-ACIDE — APEX (800 PTS)</button>
+            <button id="btn-buy-scope" type="button">ZOOM THERMIQUE 4× — APEX (400 PTS)</button>
           </div>
         </div>
       </div>
@@ -253,6 +250,58 @@
           <p>Choisissez une silhouette inspirée de différentes chasses avant le déploiement.</p>
         </div>
         <div id="skin-catalog-grid" class="skin-grid"></div>
+
+        <section class="appearance-forge" aria-labelledby="appearance-forge-title">
+          <div class="section-heading compact-heading">
+            <div>
+              <p class="section-kicker">FORGE MODULAIRE · SAUVEGARDE V3</p>
+              <h3 id="appearance-forge-title">BIO-MASQUE, PEAU, PREDLOCKS & ALLIAGES</h3>
+            </div>
+            <p>Chaque axe modifie réellement le modèle 3D et reste enregistré sur cet appareil.</p>
+          </div>
+          <div class="customization-grid">
+            <label for="custom-mask"><span>Bio-masque</span><select id="custom-mask"></select></label>
+            <label for="custom-skin-color"><span>Couleur de peau</span><select id="custom-skin-color"></select></label>
+            <label for="custom-dread-color"><span>Couleur des predlocks</span><select id="custom-dread-color"></select></label>
+            <label for="custom-armor-color"><span>Couleur d’armure</span><select id="custom-armor-color"></select></label>
+            <label for="custom-armor-accent"><span>Accent d’armure</span><select id="custom-armor-accent"></select></label>
+          </div>
+          <p id="customization-status" class="customization-status" role="status" aria-live="polite">Configuration du chasseur prête.</p>
+        </section>
+
+        <section class="expanded-content-vault" aria-labelledby="content-vault-title">
+          <div class="section-heading compact-heading">
+            <div>
+              <p class="section-kicker">ARCHIVES ÉTENDUES · PROVENANCE BADGÉE</p>
+              <h3 id="content-vault-title">ARCHIVES DE FRANCHISE & CONTENU ACTIF</h3>
+            </div>
+            <p>109 dossiers distinguent clairement ce qui est jouable, rencontré en 3D, exposé dans le hangar ou conservé comme archive de référence.</p>
+          </div>
+          <details open>
+            <summary>Technologies et arsenal · 27</summary>
+            <div id="technology-catalog-grid" class="content-catalog-grid"></div>
+          </details>
+          <details>
+            <summary>Vaisseaux et véhicules · 13</summary>
+            <div id="vehicle-catalog-grid" class="content-catalog-grid"></div>
+          </details>
+          <details>
+            <summary>PNJ, proies et ennemis · 26</summary>
+            <div id="enemy-catalog-grid" class="content-catalog-grid"></div>
+          </details>
+          <details>
+            <summary>Événements de niveau · 17</summary>
+            <div id="event-catalog-grid" class="content-catalog-grid"></div>
+          </details>
+          <details>
+            <summary>Boss de chasse · 13</summary>
+            <div id="boss-catalog-grid" class="content-catalog-grid"></div>
+          </details>
+          <details>
+            <summary>Conteneurs, alliés, personnages et rôles · 13</summary>
+            <div id="support-catalog-grid" class="content-catalog-grid"></div>
+          </details>
+        </section>
       </div>
 
       <!-- Tab 3: Lore Codex -->
@@ -262,7 +311,7 @@
             <p class="section-kicker">ARCHIVES DE CHASSE</p>
             <h3>CODEX YAUTJA</h3>
           </div>
-          <p>Les niveaux de canon distinguent les films, l'univers AVP, les récits étendus et les créations originales du jeu.</p>
+          <p>Les badges de provenance distinguent les films, la branche AVP, les récits licenciés et les créations originales du jeu.</p>
         </div>
         <div id="codex-grid" class="codex-grid" aria-live="polite"></div>
       </div>

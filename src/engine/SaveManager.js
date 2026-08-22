@@ -1,10 +1,21 @@
 import { DEFAULT_SETTINGS } from '../data/GameConfig.js';
+import {
+  DEFAULT_CUSTOMIZATION,
+  PLAYABLE_WEAPONS,
+  getArmorPresetCustomization,
+  sanitizeCustomization,
+} from '../data/RuntimeEquipment.js';
+
+const uniqueStrings = (value = []) => [...new Set(Array.isArray(value) ? value : [])]
+  .filter((entry) => typeof entry === 'string');
 
 // Versioned and validated LocalStorage persistence for Yautja: Apex Hunt.
 export class SaveManager {
   constructor() {
-    this.VERSION = 2;
-    this.STORAGE_KEY = 'yautja_apex_hunt_save_v2';
+    this.VERSION = 3;
+    this.STORAGE_KEY = 'yautja_apex_hunt_save_v3';
+    this.PREVIOUS_KEY = 'yautja_apex_hunt_save_v2';
+    this.V2_KEY = this.PREVIOUS_KEY;
     this.LEGACY_KEY = 'yautja_apex_hunt_save_v1';
     this.TEMP_KEY = `${this.STORAGE_KEY}_writing`;
   }
@@ -20,6 +31,11 @@ export class SaveManager {
   }
 
   createPayload(player, settings = DEFAULT_SETTINGS) {
+    const armorPresetId = typeof player.currentSkinId === 'string'
+      ? player.currentSkinId
+      : DEFAULT_CUSTOMIZATION.armorPresetId;
+    const customization = sanitizeCustomization(player.customization, armorPresetId);
+
     return {
       version: this.VERSION,
       savedAt: new Date().toISOString(),
@@ -29,9 +45,19 @@ export class SaveManager {
         hasTriBeam: player.hasTriBeam === true,
         hasAntiAcidCloak: player.hasAntiAcidCloak === true,
         hasScopeZoom: player.hasScopeZoom === true,
-        currentSkinId: typeof player.currentSkinId === 'string' ? player.currentSkinId : 'jungle_1987',
-        completedHunts: [...new Set(Array.isArray(player.completedHunts) ? player.completedHunts : [])]
-          .filter((id) => typeof id === 'string'),
+        currentSkinId: customization.armorPresetId,
+        customization,
+        completedHunts: uniqueStrings(player.completedHunts),
+        unlockedTechIds: uniqueStrings(player.unlockedTechIds),
+        unlockedWeaponIds: uniqueStrings(
+          Array.isArray(player.unlockedWeaponIds)
+            ? player.unlockedWeaponIds
+            : PLAYABLE_WEAPONS.map(({ id }) => id),
+        ),
+        unlockedCosmeticIds: uniqueStrings(player.unlockedCosmeticIds),
+        selectedVehicleId: typeof player.selectedVehicleId === 'string'
+          ? player.selectedVehicleId
+          : 'vehicle_jungle_dropcraft',
       },
       settings: this.sanitizeSettings(settings),
     };
@@ -50,13 +76,16 @@ export class SaveManager {
     }
   }
 
-  parseCandidate(serialized, { legacy = false } = {}) {
+  parseCandidate(serialized, { format = 'v3' } = {}) {
     const parsed = JSON.parse(serialized);
-    if (!legacy && parsed?.version !== this.VERSION) {
+    if (format === 'v3' && parsed?.version !== this.VERSION) {
       throw new Error(`Unsupported save version: ${parsed?.version ?? 'missing'}`);
     }
+    if (format === 'v2' && parsed?.version !== 2) {
+      throw new Error(`Unsupported previous save version: ${parsed?.version ?? 'missing'}`);
+    }
 
-    const source = legacy ? parsed : parsed?.player;
+    const source = format === 'v1' ? parsed : parsed?.player;
     if (!source || typeof source !== 'object' || Array.isArray(source)) {
       throw new Error('Save payload missing player data');
     }
@@ -66,9 +95,10 @@ export class SaveManager {
 
   readRawSave() {
     const candidates = [
-      { key: this.STORAGE_KEY, legacy: false, temporary: false },
-      { key: this.TEMP_KEY, legacy: false, temporary: true },
-      { key: this.LEGACY_KEY, legacy: true, temporary: false },
+      { key: this.STORAGE_KEY, format: 'v3', temporary: false },
+      { key: this.TEMP_KEY, format: 'v3', temporary: true },
+      { key: this.PREVIOUS_KEY, format: 'v2', temporary: false },
+      { key: this.LEGACY_KEY, format: 'v1', temporary: false },
     ];
     let lastError;
 
@@ -102,21 +132,38 @@ export class SaveManager {
       player.hasTriBeam = source.hasTriBeam === true;
       player.hasAntiAcidCloak = source.hasAntiAcidCloak === true;
       player.hasScopeZoom = source.hasScopeZoom === true;
-      if (typeof source.currentSkinId === 'string') player.currentSkinId = source.currentSkinId;
-      player.completedHunts = [...new Set(Array.isArray(source.completedHunts) ? source.completedHunts : [])]
-        .filter((id) => typeof id === 'string');
 
-      const settings = this.sanitizeSettings(raw.legacy ? DEFAULT_SETTINGS : parsed.settings);
-      if (raw.legacy) {
-        const migrated = this.save(player, settings);
-        if (migrated) localStorage.removeItem(this.LEGACY_KEY);
+      const armorPresetId = typeof source.currentSkinId === 'string'
+        ? source.currentSkinId
+        : DEFAULT_CUSTOMIZATION.armorPresetId;
+      const sourceCustomization = raw.format === 'v3' ? source.customization : getArmorPresetCustomization(armorPresetId);
+      player.customization = sanitizeCustomization(
+        sourceCustomization,
+        armorPresetId,
+      );
+      player.currentSkinId = player.customization.armorPresetId;
+      player.completedHunts = uniqueStrings(source.completedHunts);
+      player.unlockedTechIds = uniqueStrings(source.unlockedTechIds);
+      player.unlockedWeaponIds = uniqueStrings(
+        Array.isArray(source.unlockedWeaponIds)
+          ? source.unlockedWeaponIds
+          : PLAYABLE_WEAPONS.map(({ id }) => id),
+      );
+      player.unlockedCosmeticIds = uniqueStrings(source.unlockedCosmeticIds);
+      player.selectedVehicleId = typeof source.selectedVehicleId === 'string'
+        ? source.selectedVehicleId
+        : 'vehicle_jungle_dropcraft';
+
+      const settings = this.sanitizeSettings(raw.format === 'v1' ? DEFAULT_SETTINGS : parsed.settings);
+      const migrated = raw.format !== 'v3';
+      if (migrated) {
+        const migrationSaved = this.save(player, settings);
+        if (migrationSaved) localStorage.removeItem(raw.key);
       } else if (raw.temporary) {
-        // Promote only a parsed and validated staging payload through the normal
-        // temp -> primary -> temp cleanup write sequence.
         this.save(player, settings);
       }
 
-      return { loaded: true, migrated: raw.legacy, settings };
+      return { loaded: true, migrated, settings };
     } catch (error) {
       console.warn('LocalStorage load error', error);
       return { loaded: false, migrated: false, settings: { ...DEFAULT_SETTINGS }, error };

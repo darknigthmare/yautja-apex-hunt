@@ -1,10 +1,9 @@
 import * as THREE from 'three';
 import { Environment } from './world/Environment.js';
 import { YautjaPlayer } from './entities/YautjaPlayer.js';
-import { MegafaunaBoss } from './MegafaunaBoss.js';
-import { XenomorphQueen } from './entities/XenomorphQueen.js';
-import { BadBloodRival } from './entities/BadBloodRival.js';
-import { PredalienBoss } from './entities/PredalienBoss.js';
+import { HuntNPC } from './entities/HuntNPC.js';
+import { createBoss } from './gameplay/BossFactory.js';
+import { LevelEventDirector } from './gameplay/LevelEventDirector.js';
 import { FacehuggerEggCluster } from './entities/FacehuggerEgg.js';
 import { disposeObject3D } from './utils/materialState.js';
 import { MothershipHub } from './world/MothershipHub.js';
@@ -14,6 +13,7 @@ import { saveManager } from './engine/SaveManager.js';
 import { DEFAULT_SETTINGS, HUNT_DEFINITIONS } from './data/GameConfig.js';
 import { ALL_LORE_ENTRIES, LORE_SOURCE_TIERS, LORE_SOURCES } from './data/LoreCodex.js';
 import { resolveMeleeStrike } from './gameplay/combatRules.js';
+import { getPlayableWeaponByKey } from './data/RuntimeEquipment.js';
 
 const DEFAULT_CAMERA_FOV = 65;
 const SCOPE_CAMERA_FOV = THREE.MathUtils.radToDeg(
@@ -60,6 +60,8 @@ export class Game {
 
     // VFX Systems
     this.vfxParticles = [];
+    this.scanRevealedTargets = new Map();
+    this.vehicleScanOrigin = null;
 
     // Game States
     this.gameState = 'HUB';
@@ -71,16 +73,21 @@ export class Game {
     this.environment = new Environment(this.scene);
     this.player = new YautjaPlayer(this.scene);
     this.hud = new HUDManager();
+    this.eventDirector = new LevelEventDirector(this.scene);
 
     const loadResult = saveManager.load(this.player);
     this.settings = { ...DEFAULT_SETTINGS, ...loadResult.settings };
-    this.player.setSkin(this.player.currentSkinId);
+    this.player.applyCustomization(this.player.customization);
+    this.hud.syncCustomization(this.player.customization);
     this.player.resetForHunt(HUB_PLAYER_POSITION);
     this.hub.setTrophyState(this.player.completedHunts);
     this.hub.setVisible(true);
     this.environment.setVisible(false);
 
     this.activeBoss = null;
+    this.activeEnemies = [];
+    this.activeHazard = null;
+    this.hazardPulseTimer = 0;
     this.eggClusters = [];
 
     // Inputs
@@ -172,9 +179,15 @@ export class Game {
   }
 
   neutralizeVictoryDangers() {
+    this.clearVehicleScan();
     this.activeFacehuggerCluster = null;
     this.eggClusters.forEach((egg) => egg.dispose());
     this.eggClusters = [];
+    (this.activeEnemies ?? []).forEach((enemy) => enemy.dispose());
+    this.activeEnemies = [];
+    this.eventDirector?.stop();
+    this.activeHazard = null;
+    this.hazardPulseTimer = 0;
 
     this.activeBoss?.projectiles?.forEach((projectile) => disposeObject3D(projectile.mesh));
     if (this.activeBoss?.projectiles) this.activeBoss.projectiles = [];
@@ -336,18 +349,249 @@ export class Game {
     codexGrid.replaceChildren(...cards);
   }
 
+  getCombatTargets() {
+    return [this.activeBoss, ...(this.activeEnemies ?? [])]
+      .filter((target) => target && !target.isDead && target.position?.isVector3);
+  }
+
+  createScanMarker(target) {
+    const marker = new THREE.Group();
+    const targetRadius = Math.max(1.4, (target.colliderRadius ?? 1) * 1.35);
+    const markerHeight = Math.max(3.2, targetRadius * 1.8);
+    const materialOptions = {
+      color: 0x55ffff,
+      transparent: true,
+      opacity: 0.9,
+      depthTest: false,
+      depthWrite: false,
+      toneMapped: false,
+    };
+
+    const groundRing = new THREE.Mesh(
+      new THREE.TorusGeometry(targetRadius, 0.12, 8, 32),
+      new THREE.MeshBasicMaterial(materialOptions),
+    );
+    groundRing.rotation.x = Math.PI / 2;
+    groundRing.position.y = 0.18;
+
+    const upperRing = new THREE.Mesh(
+      new THREE.TorusGeometry(targetRadius * 0.62, 0.07, 8, 24),
+      new THREE.MeshBasicMaterial({ ...materialOptions, opacity: 0.72 }),
+    );
+    upperRing.rotation.x = Math.PI / 2;
+    upperRing.position.y = markerHeight;
+
+    const beacon = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.035, 0.035, markerHeight, 6),
+      new THREE.MeshBasicMaterial({ ...materialOptions, opacity: 0.48 }),
+    );
+    beacon.position.y = markerHeight / 2;
+
+    marker.add(groundRing, upperRing, beacon);
+    marker.position.copy(target.position);
+    marker.renderOrder = 40;
+    marker.userData.scanMarker = true;
+    marker.userData.phase = this.scanRevealedTargets?.size ?? 0;
+    this.scene.add(marker);
+    return marker;
+  }
+
+  clearVehicleScan() {
+    if (!this.scanRevealedTargets) this.scanRevealedTargets = new Map();
+    this.scanRevealedTargets.forEach((marker, target) => {
+      if (target?.mesh?.userData) target.mesh.userData.scanRevealed = false;
+      disposeObject3D(marker);
+    });
+    this.scanRevealedTargets.clear();
+    this.vehicleScanOrigin = null;
+    if (this.player) {
+      this.player.scanPulseTimer = 0;
+      this.player.scanPulseRadius = 0;
+    }
+  }
+
+  updateVehicleScan(delta) {
+    if (!this.scanRevealedTargets) this.scanRevealedTargets = new Map();
+    if (!this.player || (this.player.scanPulseTimer ?? 0) <= 0 || !this.vehicleScanOrigin) {
+      if (this.scanRevealedTargets.size > 0) this.clearVehicleScan();
+      return 0;
+    }
+
+    const scanRadius = this.player.scanPulseRadius ?? 85;
+    this.getCombatTargets().forEach((target) => {
+      if (this.vehicleScanOrigin.distanceTo(target.position) > scanRadius) return;
+      if (!this.scanRevealedTargets.has(target)) {
+        this.scanRevealedTargets.set(target, this.createScanMarker(target));
+        if (target.mesh?.userData) target.mesh.userData.scanRevealed = true;
+      }
+    });
+
+    this.scanRevealedTargets.forEach((marker, target) => {
+      if (target.isDead || !target.position?.isVector3) {
+        if (target?.mesh?.userData) target.mesh.userData.scanRevealed = false;
+        disposeObject3D(marker);
+        this.scanRevealedTargets.delete(target);
+        return;
+      }
+      marker.position.copy(target.position);
+      marker.rotation.y += delta * 1.8;
+      const pulse = 1 + Math.sin((this.player.scanPulseTimer + marker.userData.phase) * 5) * 0.08;
+      marker.children[0]?.scale.setScalar(pulse);
+      marker.children[1]?.scale.setScalar(2 - pulse);
+    });
+
+    this.player.scanPulseTimer = Math.max(0, this.player.scanPulseTimer - delta);
+    const revealedCount = this.scanRevealedTargets.size;
+    if (this.player.scanPulseTimer === 0) this.clearVehicleScan();
+    return revealedCount;
+  }
+
+  activateVehicleScan({ scanDuration = 6, scanRadius = 85 } = {}) {
+    this.clearVehicleScan();
+    this.player.scanPulseTimer = Math.max(0.1, scanDuration);
+    this.player.scanPulseRadius = Math.max(1, scanRadius);
+    this.vehicleScanOrigin = this.player.position.clone();
+    this.spawnScanPulseVFX(this.vehicleScanOrigin, this.player.scanPulseRadius);
+    return this.updateVehicleScan(0);
+  }
+
+  resolveCombatTarget() {
+    const livingEnemies = (this.activeEnemies ?? [])
+      .filter((enemy) => !enemy.isDead)
+      .sort((a, b) => this.player.position.distanceTo(a.position) - this.player.position.distanceTo(b.position));
+    const nearestEnemy = livingEnemies[0];
+    if (nearestEnemy && this.player.position.distanceTo(nearestEnemy.position) <= 65) return nearestEnemy;
+    return this.activeBoss?.isDead ? nearestEnemy ?? null : this.activeBoss;
+  }
+
+  getTargetBloodColor(target) {
+    if (target?.type === 'human_fireteam') return 0xb41616;
+    if (target?.type === 'combat_synthetic') return 0xf1f2df;
+    return 0x00ff44;
+  }
+
+  handleNpcDefeat(enemy, honorBase = 90) {
+    const index = (this.activeEnemies ?? []).indexOf(enemy);
+    if (index < 0) return;
+    const honorGained = this.player.addHonor(honorBase);
+    this.hud.showLogMessage(`${enemy.name.toUpperCase()} NEUTRALISÉ · +${honorGained} PTS`, 1800);
+    enemy.dispose();
+    this.activeEnemies.splice(index, 1);
+  }
+
+  spawnEncounterNpc(signal) {
+    const type = signal.enemyType === 'xeno'
+      ? 'xeno_drone'
+      : signal.enemyType === 'hound'
+        ? 'hunting_hound'
+        : signal.ordinal >= 3
+          ? 'combat_synthetic'
+          : 'human_fireteam';
+    const enemy = new HuntNPC(type, { position: signal.position });
+    this.scene.add(enemy.mesh);
+    enemy.setVisionMode(this.player.activeVisionMode);
+    this.activeEnemies.push(enemy);
+    this.hud.showLogMessage(`ÉVÉNEMENT: ${enemy.name.toUpperCase()} ENTRE DANS LA CHASSE`, 2200);
+    return enemy;
+  }
+
+  spawnEnemyTracer(origin, target, color = 0xffb84a) {
+    if (!origin?.isVector3 || !target?.isVector3) return;
+    const geometry = new THREE.BufferGeometry().setFromPoints([
+      origin.clone().add(new THREE.Vector3(0, 1.2, 0)),
+      target.clone().add(new THREE.Vector3(0, 2.4, 0)),
+    ]);
+    const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9 });
+    const tracer = new THREE.Line(geometry, material);
+    this.scene.add(tracer);
+    this.vfxParticles.push({ mesh: tracer, isTracer: true, lifetime: 0.16 });
+  }
+
+  processEncounterSignals(signals) {
+    signals.forEach((signal) => {
+      if (signal.type === 'spawn_enemy') {
+        this.spawnEncounterNpc(signal);
+      } else if (signal.type === 'flyby') {
+        this.hud.showLogMessage('SURVOL YAUTJA: NAVETTE DE CHASSE EN APPROCHE', 2200);
+      } else if (signal.type === 'spawn_cache') {
+        this.hud.showLogMessage('CONTENEUR DE CHASSE LARGUÉ · APPROCHEZ ET APPUYEZ SUR [E]', 2600);
+      } else if (signal.type === 'hazard') {
+        this.activeHazard = signal.hazardType;
+        this.hazardPulseTimer = 0;
+        const label = signal.hazardType === 'rain' ? 'PLUIE RÉVÉLATRICE' : 'TEMPÊTE THERMIQUE';
+        this.hud.showLogMessage(`ÉVÉNEMENT DE NIVEAU: ${label}`, 2600);
+      } else if (signal.type === 'hazard_end') {
+        this.activeHazard = null;
+        this.hazardPulseTimer = 0;
+        this.hud.showLogMessage('PERTURBATION ENVIRONNEMENTALE DISSIPÉE', 1800);
+      }
+    });
+  }
+
+  updateEncounterContent(delta) {
+    const scheduledSignals = this.eventDirector?.update(delta, {
+      player: this.player,
+      boss: this.activeBoss,
+    }) ?? [];
+    this.processEncounterSignals(scheduledSignals);
+    this.eventDirector?.drainSignals();
+
+    for (const enemy of [...(this.activeEnemies ?? [])]) {
+      const signals = enemy.update(delta, { player: this.player });
+      signals.forEach((signal) => {
+        if (signal.type === 'attack_player') {
+          this.player.takeDamage(signal.damage);
+          if (signal.status === 'corrosion') this.player.applyAcidCorrosion();
+          if (signal.projectile) {
+            this.spawnEnemyTracer(
+              signal.projectile.origin,
+              this.player.position,
+              enemy.type === 'combat_synthetic' ? 0x55ddff : 0xffc34d,
+            );
+          }
+          this.spawnBloodSpatterVFX(this.player.position, 0xffff00, 8);
+        } else if (signal.type === 'reveal_cloak') {
+          if (this.player.isCloaked) this.player.toggleCloak();
+          this.hud.showLogMessage('LES MOLOSSES ONT RÉVÉLÉ LE CAMOUFLAGE !', 1700);
+        } else if (signal.type === 'log') {
+          this.hud.showLogMessage(signal.message, 1400);
+        }
+      });
+    }
+
+    if (!this.activeHazard) return;
+    this.hazardPulseTimer -= delta;
+    if (this.hazardPulseTimer > 0) return;
+    this.hazardPulseTimer = 3;
+    if (this.activeHazard === 'rain') {
+      this.player.energy = Math.max(0, this.player.energy - 12);
+      if (this.player.isCloaked) {
+        this.player.toggleCloak();
+        this.hud.showLogMessage('LA PLUIE COURT-CIRCUITE LE CAMOUFLAGE !', 1700);
+      }
+    } else {
+      this.player.energy = Math.max(0, this.player.energy - 8);
+      this.player.takeDamage(4);
+      this.hud.showLogMessage('TEMPÊTE THERMIQUE · -8 ÉNERGIE / -4 SANTÉ', 1300);
+    }
+  }
+
   performAttack() {
+    const hasLivingEncounterEnemy = (this.activeEnemies ?? []).some((enemy) => !enemy.isDead);
     if (
       !this.isGameStarted
       || this.isPaused
       || this.gameState !== 'HUNT'
       || !this.activeBoss
-      || this.activeBoss.isDead
+      || (this.activeBoss.isDead && !hasLivingEncounterEnemy)
       || this.isPlayerCombatDisabled()
     ) return;
 
-    const targetPos = this.activeBoss.position.clone().add(new THREE.Vector3(0, 3.5, 0));
-    const distance = this.player.position.distanceTo(this.activeBoss.position);
+    const target = this.resolveCombatTarget();
+    if (!target) return;
+    const targetHeight = target === this.activeBoss ? 3.5 : 1.2;
+    const targetPos = target.position.clone().add(new THREE.Vector3(0, targetHeight, 0));
+    const distance = this.player.position.distanceTo(target.position);
     const result = this.player.attack(targetPos);
     if (!['death_from_above', 'wristblades', 'whip_slash'].includes(result)) return;
 
@@ -359,9 +603,10 @@ export class Game {
       return;
     }
 
-    this.activeBoss.takeDamage(strike.damage, targetPos);
-    this.spawnBloodSpatterVFX(targetPos, 0x00ff44, result === 'death_from_above' ? 30 : 15);
+    const outcome = target.takeDamage(strike.damage, targetPos);
+    this.spawnBloodSpatterVFX(targetPos, this.getTargetBloodColor(target), result === 'death_from_above' ? 30 : 15);
     this.player.addHonor(strike.honor);
+    if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target);
 
     if (result === 'death_from_above') {
       this.hud.showLogMessage(`ATTAQUE EN PIQUÉ EXÉCUTÉE! +${strike.damage} DÉGÂTS!`);
@@ -492,14 +737,38 @@ export class Game {
     this.vfxParticles.push({ mesh: ring, isShockwave: true, lifetime: 0.5 });
   }
 
+  spawnScanPulseVFX(pos, radius = 85) {
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(0.92, 1, 48),
+      new THREE.MeshBasicMaterial({
+        color: 0x55ffff,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.82,
+        depthWrite: false,
+        toneMapped: false,
+      }),
+    );
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.copy(pos).add(new THREE.Vector3(0, 0.24, 0));
+    this.scene.add(ring);
+    this.vfxParticles.push({ mesh: ring, isScanPulse: true, lifetime: 0.9, totalLifetime: 0.9, radius });
+  }
+
   updateVFX(delta) {
     for (let i = this.vfxParticles.length - 1; i >= 0; i--) {
       const v = this.vfxParticles[i];
       v.lifetime -= delta;
 
-      if (v.isShockwave) {
+      if (v.isScanPulse) {
+        const progress = 1 - Math.max(0, v.lifetime) / v.totalLifetime;
+        v.mesh.scale.setScalar(Math.max(0.01, progress * v.radius));
+        v.mesh.material.opacity = Math.max(0, v.lifetime / v.totalLifetime) * 0.82;
+      } else if (v.isShockwave) {
         v.mesh.scale.addScalar(delta * 25.0);
         v.mesh.material.opacity = Math.max(0, v.lifetime / 0.5);
+      } else if (v.isTracer) {
+        v.mesh.material.opacity = Math.max(0, v.lifetime / 0.16);
       } else if (v.velocities) {
         const pos = v.mesh.geometry.attributes.position;
         for (let p = 0; p < v.velocities.length; p++) {
@@ -583,6 +852,7 @@ export class Game {
       card.addEventListener('click', () => {
         const skinId = card.getAttribute('data-skin-id');
         this.player.setSkin(skinId);
+        this.hud.syncCustomization(this.player.customization);
         document.querySelectorAll('.skin-card').forEach(c => {
           c.classList.remove('selected');
           c.setAttribute('aria-pressed', 'false');
@@ -597,6 +867,26 @@ export class Game {
     const selectedSkinCard = document.querySelector(`.skin-card[data-skin-id="${this.player.currentSkinId}"]`);
     selectedSkinCard?.classList.add('selected');
     selectedSkinCard?.setAttribute('aria-pressed', 'true');
+
+    const customizationControls = {
+      'custom-mask': 'maskId',
+      'custom-skin-color': 'skinColorId',
+      'custom-dread-color': 'dreadColorId',
+      'custom-armor-color': 'armorColorId',
+      'custom-armor-accent': 'armorAccentColorId',
+    };
+    Object.entries(customizationControls).forEach(([id, field]) => {
+      const select = document.getElementById(id);
+      select?.addEventListener('change', () => {
+        this.player.applyCustomization({ [field]: select.value });
+        this.hud.syncCustomization(this.player.customization);
+        this.saveProgress();
+        audioSynth.playYautjaClick();
+        const status = document.getElementById('customization-status');
+        if (status) status.textContent = `FORGE APPLIQUÉE: ${select.options[select.selectedIndex]?.text ?? select.value}`;
+      });
+    });
+    this.hud.syncCustomization(this.player.customization);
 
     document.querySelectorAll('.btn-launch-hunt').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -707,15 +997,10 @@ export class Game {
     document.getElementById('pause-modal')?.classList.add('hidden');
     document.getElementById('endgame-modal')?.classList.add('hidden');
 
-    if (this.currentHuntType === 'goliath') {
-      this.activeBoss = new MegafaunaBoss(this.scene);
-    } else if (this.currentHuntType === 'xeno_queen') {
-      this.activeBoss = new XenomorphQueen(this.scene);
-    } else if (this.currentHuntType === 'bad_blood') {
-      this.activeBoss = new BadBloodRival(this.scene);
-    } else if (this.currentHuntType === 'predalien') {
-      this.activeBoss = new PredalienBoss(this.scene);
-    }
+    this.activeBoss = createBoss(this.scene, huntDefinition);
+    this.eventDirector.start({ huntId: this.currentHuntType, biomeId: planetType });
+    this.activeHazard = null;
+    this.hazardPulseTimer = 0;
     this.activeBoss?.setVisionMode?.(this.player.activeVisionMode);
     this.hud.showLogMessage(`CHASSE: ${huntDefinition.name.toUpperCase()} — ${huntDefinition.objective}`, 5000);
 
@@ -728,10 +1013,16 @@ export class Game {
   }
 
   cleanupHunt() {
+    this.clearVehicleScan();
     this.victoryCountdown = null;
     this.activeFacehuggerCluster = null;
     this.eggClusters.forEach((egg) => egg.dispose());
     this.eggClusters = [];
+    (this.activeEnemies ?? []).forEach((enemy) => enemy.dispose());
+    this.activeEnemies = [];
+    this.eventDirector?.stop();
+    this.activeHazard = null;
+    this.hazardPulseTimer = 0;
 
     if (this.activeBoss) {
       this.activeBoss.dispose?.();
@@ -793,6 +1084,13 @@ export class Game {
       return;
     }
 
+    const weapon = getPlayableWeaponByKey(e.code);
+    if (weapon) {
+      this.player.selectedWeapon = weapon.slot;
+      audioSynth.playYautjaClick();
+      return;
+    }
+
     switch (e.code) {
       case 'KeyW': case 'ArrowUp': this.keyboardInputDir.z = -1; break;
       case 'KeyS': case 'ArrowDown': this.keyboardInputDir.z = 1; break;
@@ -805,10 +1103,21 @@ export class Game {
         this.hud.showLogMessage("RUGISSEMENT D'HONNEUR YAUTJA! ÉNERGIE RECHARGÉE!");
         break;
 
-      case 'KeyF':
-        this.player.triggerVoiceMimicry();
-        this.hud.showLogMessage("LEURRE DE MIMÉTISME VOCAL DIFFUSÉ!");
+      case 'KeyF': {
+        const lureType = this.player.triggerVoiceMimicry();
+        const lurePoint = new THREE.Vector3(0, 0, -24)
+          .applyAxisAngle(new THREE.Vector3(0, 1, 0), this.cameraYaw)
+          .add(this.player.position);
+        const affected = (this.activeEnemies ?? []).reduce((count, enemy) => {
+          if (enemy.isDead || enemy.position.distanceTo(this.player.position) > 90) return count;
+          return count + (enemy.hearMimicry?.(lurePoint, 6) ? 1 : 0);
+        }, 0);
+        const lureLabels = { over_here: 'PAR ICI', radio: 'RADIO HUMAINE', yautja_clicks: 'CLICS YAUTJA' };
+        this.hud.showLogMessage(
+          `LEURRE « ${lureLabels[lureType] ?? lureType} » : ${affected} SIGNATURE${affected > 1 ? 'S' : ''} DÉTOURNÉE${affected > 1 ? 'S' : ''}`,
+        );
         break;
+      }
 
       case 'Space':
         if (this.gameState === 'HUNT') {
@@ -821,6 +1130,7 @@ export class Game {
         const mode = this.player.cycleVisionMode();
         this.hud.setVisionModeUI(mode);
         this.activeBoss?.setVisionMode?.(mode);
+        (this.activeEnemies ?? []).forEach((enemy) => enemy.setVisionMode(mode));
         break;
 
       case 'KeyC':
@@ -829,7 +1139,7 @@ export class Game {
         break;
 
       case 'KeyE':
-        this.attemptTrophyHarvest();
+        this.attemptContextInteraction();
         break;
 
       case 'KeyX':
@@ -838,14 +1148,6 @@ export class Game {
         }
         break;
 
-      case 'Digit1': this.player.selectedWeapon = 1; audioSynth.playYautjaClick(); break;
-      case 'Digit2': this.player.selectedWeapon = 2; audioSynth.playYautjaClick(); break;
-      case 'Digit3': this.player.selectedWeapon = 3; audioSynth.playYautjaClick(); break;
-      case 'Digit4': this.player.selectedWeapon = 4; audioSynth.playYautjaClick(); break;
-      case 'Digit5': this.player.selectedWeapon = 5; audioSynth.playYautjaClick(); break;
-      case 'Digit6': this.player.selectedWeapon = 6; audioSynth.playYautjaClick(); break;
-      case 'Digit7': this.player.selectedWeapon = 7; audioSynth.playYautjaClick(); break;
-      case 'Digit8': this.player.selectedWeapon = 8; audioSynth.playYautjaClick(); break;
     }
   }
 
@@ -888,6 +1190,33 @@ export class Game {
     this.gamepadAttackPressed = attackPressed;
   }
 
+  attemptContextInteraction() {
+    const trophyWasHarvested = this.trophyHarvested;
+    this.attemptTrophyHarvest();
+    if (!trophyWasHarvested && this.trophyHarvested) return true;
+
+    const result = this.eventDirector?.tryInteract(this.player);
+    if (result) {
+      this.eventDirector.drainSignals();
+      if (result.type === 'cache_opened') {
+        this.hud.showLogMessage(
+          `CONTENEUR OUVERT · +${result.healthRestored} SANTÉ · +${result.energyRestored} ÉNERGIE · +${result.honorAwarded} HONNEUR`,
+          2600,
+        );
+      } else if (result.type === 'vehicle_scan') {
+        const revealedCount = this.activateVehicleScan(result);
+        const signatureLabel = revealedCount === 1 ? 'SIGNATURE MARQUÉE' : 'SIGNATURES MARQUÉES';
+        this.hud.showLogMessage(
+          `NAVETTE SYNCHRONISÉE · ${revealedCount} ${signatureLabel} · RECHARGE EFFECTUÉE`,
+          2600,
+        );
+      }
+      this.saveProgress();
+      return true;
+    }
+    return false;
+  }
+
   attemptTrophyHarvest() {
     if (
       !this.activeBoss
@@ -925,28 +1254,22 @@ export class Game {
   handlePhysicalCollisions() {
     const playerPos = this.player.position;
 
-    // 1. Player <-> Boss Radial Pushback Collision
-    if (this.activeBoss) {
-      const bossPos = this.activeBoss.position;
+    // 1. Player <-> Boss / PNJ radial pushback collision
+    this.getCombatTargets().forEach((target) => {
+      const targetPos = target.position;
       const playerRadius = 1.8;
-      const bossRadius = (this.currentHuntType === 'goliath' || this.currentHuntType === 'predalien') ? 6.5 : 4.5;
-      const minDist = playerRadius + bossRadius;
-
-      const dx = playerPos.x - bossPos.x;
-      const dz = playerPos.z - bossPos.z;
+      const targetRadius = target.colliderRadius ?? (target === this.activeBoss ? 5 : 0.8);
+      const minDist = playerRadius + targetRadius;
+      const dx = playerPos.x - targetPos.x;
+      const dz = playerPos.z - targetPos.z;
       const dist = Math.sqrt(dx * dx + dz * dz);
 
-      if (dist < minDist && dist > 0.01) {
+      if (dist < minDist && dist > 0.01 && !this.player.isPerched) {
         const overlap = minDist - dist;
-        const pushX = (dx / dist) * overlap;
-        const pushZ = (dz / dist) * overlap;
-
-        if (!this.player.isPerched) {
-          playerPos.x += pushX;
-          playerPos.z += pushZ;
-        }
+        playerPos.x += (dx / dist) * overlap;
+        playerPos.z += (dz / dist) * overlap;
       }
-    }
+    });
 
     // 2. Player <-> Environment Obstacles (Pillars, Trees, Rocks)
     this.environment.obstacleColliders.forEach(obs => {
@@ -976,6 +1299,22 @@ export class Game {
           this.activeBoss.position.z += (bdz / bdist) * boverlap;
         }
       }
+
+      // Les renforts dynamiques utilisent les mêmes volumes solides que le boss.
+      (this.activeEnemies ?? []).forEach((enemy) => {
+        const edx = enemy.position.x - obs.x;
+        const edz = enemy.position.z - obs.z;
+        const edist = Math.sqrt(edx * edx + edz * edz);
+        const eMinDist = (enemy.colliderRadius ?? 0.8) + obs.radius;
+
+        if (edist < eMinDist) {
+          const overlap = eMinDist - edist;
+          const normalX = edist > 0.01 ? edx / edist : 1;
+          const normalZ = edist > 0.01 ? edz / edist : 0;
+          enemy.position.x += normalX * overlap;
+          enemy.position.z += normalZ * overlap;
+        }
+      });
     });
   }
 
@@ -1013,46 +1352,48 @@ export class Game {
     });
 
     for (let i = this.player.projectiles.length - 1; i >= 0; i--) {
-      const p = this.player.projectiles[i];
-      const dist = p.mesh.position.distanceTo(bossPos);
+      const projectile = this.player.projectiles[i];
+      const target = this.getCombatTargets().find((candidate) => (
+        projectile.mesh.position.distanceTo(candidate.position) < (candidate.colliderRadius ?? 6.5) + 1
+      ));
+      if (!target) continue;
 
-      if (dist < 7.5) {
-        if (p.isNet) {
-          this.activeBoss.applyNet();
-          this.hud.showLogMessage("CIBLE IMMOBILISÉE DANS LE FILET!");
-        } else {
-          this.activeBoss.takeDamage(p.damage, p.mesh.position);
-          this.spawnBloodSpatterVFX(p.mesh.position, 0x00ff44, 20);
-          this.player.addHonor(100);
-        }
-
-        if (p.type === 'plasma') {
-          this.spawnPlasmaShockwaveVFX(p.mesh.position);
-        }
-
-        if (
-          (this.currentHuntType === 'xeno_queen' || this.currentHuntType === 'predalien')
-          && playerBossDistance < 12
-        ) {
-          this.player.applyAcidCorrosion();
-        }
-
-        disposeObject3D(p.mesh);
-        this.player.projectiles.splice(i, 1);
+      if (projectile.isNet) {
+        target.applyNet?.();
+        this.hud.showLogMessage('CIBLE IMMOBILISÉE DANS LE FILET!');
+      } else {
+        const outcome = target.takeDamage(projectile.damage, projectile.mesh.position);
+        this.spawnBloodSpatterVFX(projectile.mesh.position, this.getTargetBloodColor(target), 20);
+        this.player.addHonor(target === this.activeBoss ? 100 : 35);
+        if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target);
       }
+
+      if (projectile.type === 'plasma') this.spawnPlasmaShockwaveVFX(projectile.mesh.position);
+      if (
+        target === this.activeBoss
+        && (this.currentHuntType === 'xeno_queen' || this.currentHuntType === 'predalien')
+        && playerBossDistance < 12
+      ) {
+        this.player.applyAcidCorrosion();
+      }
+
+      disposeObject3D(projectile.mesh);
+      this.player.projectiles.splice(i, 1);
     }
 
     for (let i = this.player.mines.length - 1; i >= 0; i--) {
-      const m = this.player.mines[i];
-      const dist = m.mesh.position.distanceTo(bossPos);
-      if (dist < 8.5) {
-        audioSynth.playMineExplosion();
-        this.activeBoss.takeDamage(m.damage, bossPos);
-        this.spawnPlasmaShockwaveVFX(m.mesh.position);
-        this.hud.showLogMessage("EXPLOSION DE MINE À PLASMA RÉUSSIE! +120 DÉGÂTS!");
-        disposeObject3D(m.mesh);
-        this.player.mines.splice(i, 1);
-      }
+      const mine = this.player.mines[i];
+      const target = this.getCombatTargets().find((candidate) => (
+        mine.mesh.position.distanceTo(candidate.position) < (candidate.colliderRadius ?? 6.5) + 2
+      ));
+      if (!target) continue;
+      audioSynth.playMineExplosion();
+      const outcome = target.takeDamage(mine.damage, target.position);
+      this.spawnPlasmaShockwaveVFX(mine.mesh.position);
+      this.hud.showLogMessage('EXPLOSION DE MINE À PLASMA RÉUSSIE! +120 DÉGÂTS!');
+      if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target, 110);
+      disposeObject3D(mine.mesh);
+      this.player.mines.splice(i, 1);
     }
 
     if (Array.isArray(this.activeBoss.projectiles)) {
@@ -1086,14 +1427,19 @@ export class Game {
     const chargeImpactReady = this.currentHuntType === 'goliath'
       && this.goliathChargeWindow > 0
       && playerBossDistance <= GOLIATH_CHARGE_IMPACT_RANGE;
+    const isSuperPredatorCharge = this.currentHuntType === 'super_predator'
+      && this.activeBoss.aiState === 'charge';
     const attackState = chargeImpactReady ? 'charge' : this.activeBoss.aiState;
     const attackProfile = ENEMY_ATTACK_PROFILES[attackState];
-    if (attackProfile?.telegraphed && this.activeBoss.attackTelegraphAnnounced === false) {
-      const message = ENEMY_ATTACK_TELEGRAPHS[attackState];
+    if ((attackProfile?.telegraphed || isSuperPredatorCharge) && this.activeBoss.attackTelegraphAnnounced === false) {
+      const message = isSuperPredatorCharge
+        ? 'CHARGE DU SUPER PREDATOR — BRISEZ SON AXE !'
+        : ENEMY_ATTACK_TELEGRAPHS[attackState];
       if (message) this.hud.showLogMessage(message, 1200);
       this.activeBoss.attackTelegraphAnnounced = true;
     }
-    const impactReady = !attackProfile?.telegraphed || this.activeBoss.attackImpactReady === true;
+    const requiresExplicitImpact = attackProfile?.telegraphed || isSuperPredatorCharge;
+    const impactReady = !requiresExplicitImpact || this.activeBoss.attackImpactReady === true;
     const freshBadBloodMelee = this.currentHuntType !== 'bad_blood'
       || attackState !== 'melee'
       || this.activeBoss.attackCooldown >= 1.75;
@@ -1106,7 +1452,7 @@ export class Game {
       && freshBadBloodMelee
       && playerBossDistance <= attackProfile.range
     ) {
-      if (attackProfile.telegraphed && this.activeBoss.consumeAttackImpact?.() !== true) return;
+      if (requiresExplicitImpact && this.activeBoss.consumeAttackImpact?.() !== true) return;
       this.player.takeDamage(attackProfile.damage);
       this.enemyDamageCooldown = attackProfile.cooldown;
       if (attackState === 'charge') this.goliathChargeWindow = 0;
@@ -1156,8 +1502,20 @@ export class Game {
         this.hud.updateTriLaserPosition(null);
       }
 
+      const nearbyCache = this.eventDirector?.containers?.find((cache) => (
+        !cache.used && cache.mesh.position.distanceTo(this.player.position) <= cache.interactionDistance
+      ));
+      const nearbyVehicle = this.eventDirector?.vehicles?.find((vehicle) => (
+        !vehicle.interacted
+        && vehicle.mesh.userData.interactable
+        && vehicle.mesh.position.distanceTo(this.player.position) <= vehicle.interactionDistance
+      ));
       if (this.activeBoss.isDead && distToBoss < 14.0 && !this.trophyHarvested) {
-        this.hud.showActionPrompt("RÉCOLTER LE TROPHÉE YAUTJA (ARRACHER CRÂNE ET COLONNE VERTÉBRALE)");
+        this.hud.showActionPrompt('RÉCOLTER LE TROPHÉE YAUTJA [E]');
+      } else if (nearbyCache) {
+        this.hud.showActionPrompt('OUVRIR LE CONTENEUR DE CHASSE [E]');
+      } else if (nearbyVehicle) {
+        this.hud.showActionPrompt('SYNCHRONISER LA NAVETTE DE RECONNAISSANCE [E]');
       } else {
         this.hud.hideActionPrompt();
       }
@@ -1247,6 +1605,8 @@ export class Game {
           this.triggerDefeatScreen();
         } else {
           if (this.activeBoss) this.activeBoss.update(delta, this.player.position, this.player.isCloaked);
+          this.updateEncounterContent(delta);
+          this.updateVehicleScan(delta);
           this.environment.update(delta, this.player.activeVisionMode);
 
           this.handlePhysicalCollisions();

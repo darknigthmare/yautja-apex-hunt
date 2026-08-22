@@ -14,13 +14,18 @@ export const LORE_SOURCES = Object.freeze({
   predator2: { title: 'Predator 2 (1990)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/predator-2' },
   predators2010: { title: 'Predators (2010)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/predators' },
   prey2022: { title: 'Prey (2022)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/prey' },
+  thePredator2018: { title: 'The Predator (2018)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/the-predator' },
+  assassin2018Gear: { title: 'The Predator — Armored Assassin', tier: 'SCREEN', url: 'https://store.necaonline.com/products/predator-2018-deluxe-armored-assassin-predator-12-inch-action-figure' },
   killerOfKillers: { title: 'Predator: Killer of Killers (2025)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/predator-killer-of-killers' },
   badlands2025: { title: 'Predator: Badlands (2025)', tier: 'SCREEN', url: 'https://thewaltdisneycompany.com/news/predator-badlands/' },
+  badlandsGear: { title: 'Predator: Badlands — équipement de Dek', tier: 'SCREEN', url: 'https://store.necaonline.com/products/predator-badlands-ultimate-dek-training-armor-7-inch-scale-action-figure' },
+  badlandsCompanions: { title: 'Predator: Badlands — Thia et Bud', tier: 'SCREEN', url: 'https://store.necaonline.com/products/predator-badlands-ultimate-thia-bud-7-inch-scale-action-figures' },
   avp2004: { title: 'Alien vs. Predator (2004)', tier: 'AVP_SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien-vs-predator' },
   avpRequiem2007: { title: 'Aliens vs. Predator: Requiem (2007)', tier: 'AVP_SCREEN', url: 'https://www.20thcenturystudios.com/movies/aliens-vs-predator-requiem' },
   aliens1986: { title: 'Aliens (1986)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/aliens' },
   huntingGrounds: { title: 'Predator: Hunting Grounds — équipement', tier: 'LICENSED_EU', url: 'https://predator.illfonic.com/the-predator/' },
   avpOriginalComics: { title: 'AVP — comics originaux Dark Horse', tier: 'LICENSED_EU', url: 'https://digital.darkhorse.com/books/47483ce0aec5466783599e38c9d0ac47/aliens-vs-predator-the-original-comics-series-30th-anniversary-edition' },
+  huntingGroundsUpdates: { title: 'Predator: Hunting Grounds — classes et patch notes', tier: 'LICENSED_EU', url: 'https://forum.predator.illfonic.com/c/News/patch-notes' },
   avpPreyOmnibus: { title: 'Aliens vs. Predator: Prey — omnibus Titan Books', tier: 'LICENSED_EU', url: 'https://titanbooks.com/8792-the-complete-aliens-vs-predator-omnibus/' },
   predatorBadBloodComics: { title: 'Predator: Bad Blood — catalogue Dark Horse', tier: 'LICENSED_EU', url: 'https://images.darkhorse.com/common/salestools/catalogs/DH_Backlist_2009.pdf' }
 });
@@ -137,6 +142,12 @@ export const CURRENT_HUNTS = freezeEntries([
     summary: 'Hybride de la branche AVP transformé ici en cible de chasse exceptionnelle.',
     sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', isOriginal: true,
     canonNote: 'Le Predalien existe dans AVP: Requiem ; cette variante et cette mission sont originales.', sources: ['avpRequiem2007'], locationIds: ALL_LOCATION_IDS
+  },
+  {
+    id: 'super_predator', entryType: 'hunt', category: 'cible', title: 'Berserker — Super Predator',
+    summary: 'Chef brutal du groupe antagoniste qui exploite la planète-réserve de Predators.',
+    sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
+    canonNote: 'Le personnage et la planète-réserve sont établis à l’écran ; ses valeurs, phases et récompenses sont une adaptation de gameplay Apex Hunt.', sources: ['predators2010'], locationIds: ALL_LOCATION_IDS
   }
 ]);
 
