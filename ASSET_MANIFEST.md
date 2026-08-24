@@ -1,8 +1,8 @@
 # Manifest des assets — Yautja: Apex Hunt
 
-**Date d'inventaire :** 22 août 2026
-**Périmètre :** textures OpenAI du chantier de professionnalisation, de la passe props et des vagues contenu 1.3–1.4.
-**Provenance commune :** modèle ImageGen intégré OpenAI, créations originales fan-made produites les 21 et 22 août 2026, sans copie d'assets officiels. Les PNG maîtres sont conservés localement comme sources de travail, mais ne sont ni versionnés ni déployés ; les WebP sont les seuls fichiers publics du livrable.
+**Date d'inventaire :** 24 août 2026
+**Périmètre :** textures OpenAI du chantier de professionnalisation, de la passe props et des vagues contenu 1.3–1.5.
+**Provenance commune :** modèle ImageGen intégré OpenAI, créations originales fan-made produites du 21 au 24 août 2026, sans image officielle fournie comme référence ni copie d'assets officiels. Les PNG maîtres sont conservés localement comme sources de travail, mais ne sont ni versionnés ni déployés ; les WebP sont les seuls fichiers publics du livrable.
 
 ## Registre
 
@@ -27,10 +27,13 @@
 | `feral-bone-composite` | `public/assets/textures/feral-bone-composite.webp` | 1024×1024 | 343 420 octets | masque, armure et carte de mission du Feral | présent, décodé et intégré au runtime |
 | `stargazer-tactical-composite` | `public/assets/textures/stargazer-tactical-composite.webp` | 1024×1024 | 233 692 octets | humains, synthétiques et traqueur thermique | présent, décodé et intégré au runtime |
 | `deathworld-alien-flora` | `public/assets/textures/deathworld-alien-flora.webp` | 1024×1024 | 344 858 octets | flore prédatrice et traqueur organique de Genna | présent, décodé et intégré au runtime |
+| `wolf-cleaner-alloy` | `public/assets/textures/wolf-cleaner-alloy.webp` | 1024×1024 | 210 778 octets | armure, masque et mallette Cleaner de Wolf | présent et branché au runtime v1.5 |
+| `lost-tribe-ritual-bone` | `public/assets/textures/lost-tribe-ritual-bone.webp` | 1024×1024 | 374 532 octets | presets, bio-masques et ornements du Lost Tribe | présent et branché au runtime v1.5 |
+| `kalisk-adaptive-hide` | `public/assets/textures/kalisk-adaptive-hide.webp` | 1024×1024 | 280 524 octets | carapace adaptative et noyau du Kalisk | présent et branché au runtime v1.5 |
 
-**Poids public total vérifié : 5 958 520 octets.** Les six matières de décor initiales ont été converties avec Sharp en WebP 1024×1024. Les trois matières de props 1024×1024 ont été normalisées par quadrants miroir. La vague 1.3 ajoute six sorties WebP 1254×1254 ; la vague 1.4 ajoute quatre sorties WebP 1024×1024. Les dix-neuf fichiers ont été décodés et leurs dimensions/poids relevés avant release.
+**Poids public total inventorié : 6 824 354 octets.** Les six matières de décor initiales ont été converties avec Sharp en WebP 1024×1024. Les trois matières de props 1024×1024 ont été normalisées par quadrants miroir. La vague 1.3 ajoute six sorties WebP 1254×1254 ; la vague 1.4 ajoute quatre sorties WebP 1024×1024 ; la vague 1.5 ajoute trois sorties WebP 1024×1024. Les dimensions et poids des vingt-deux fichiers sont consignés ici ; la validation navigateur de la release reste à reporter dans `QA_REPORT.md` après exécution.
 
-Les quinze textures de la 1.3 ont été chargées sans erreur dans Chromium et contrôlées sur la production correspondante. Les quatre matières 1.4 sont intégrées au biome Genna, au Feral, aux unités humaines et à la faune ; leur contrôle navigateur et HTTP est consigné dans le rapport QA de la release. La répétition et le contraste doivent encore être jugés sur plusieurs écrans physiques, notamment avec GPU modeste.
+Les quinze textures disponibles à l’issue de la 1.3 ont été chargées sans erreur dans Chromium et contrôlées sur la production correspondante. Les quatre matières 1.4 sont intégrées au biome Genna, au Feral, aux unités humaines et à la faune. Les trois matières 1.5 sont reliées à Wolf, au Lost Tribe et au Kalisk dans le code ; leur chargement navigateur et leur réponse HTTP ne doivent être marqués validés qu’après le gate final. La répétition et le contraste doivent encore être jugés sur plusieurs écrans physiques, notamment avec GPU modeste.
 
 ## Restrictions communes
 
@@ -52,11 +55,11 @@ Pour chaque fichier :
 1. **Validé :** inspection visuelle des PNG maîtres à leur définition native ;
 2. **Partiel :** mosaïque 2×2 validée pour les trois matières de props ; contrôle physique multi-écran encore ouvert ;
 3. **Validé sur les PNG maîtres :** absence de texte et de marques protégées ;
-4. **Validé :** dimensions, format, poids individuel et poids total des dix-neuf WebP ;
-5. **Validé :** inspection visuelle des six nouvelles matières OpenAI et contrôle des neuf matières précédentes ;
+4. **Validé pour l’inventaire :** dimensions déclarées, format, poids individuel et poids total des vingt-deux WebP ;
+5. **Validé pour les vagues précédentes :** inspection visuelle des matières OpenAI ; les trois sorties 1.5 sont à inclure dans le contrôle visuel final de release ;
 6. **Validé pour la 1.3 :** chargement Chromium et HTTP 200 des six nouveaux chemins publics ;
 7. **Validé dans le code :** le chargeur applique un matériau de fallback si un asset échoue ;
-8. consigner les résultats runtime dans `QA_REPORT.md`.
+8. **Ouvert pour la 1.5 :** contrôler les trois nouveaux chemins en Chromium et en HTTP, puis consigner les résultats runtime dans `QA_REPORT.md`.
 
 ## Publication et droits
 

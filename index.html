@@ -252,6 +252,16 @@
             <p>Salves de traits, bouclier frontal destructible et charge à la lance.</p>
             <button class="btn-launch-hunt" type="button" data-hunt="feral_predator">AFFRONTER LE FERAL</button>
           </article>
+          <article class="mission-card mission-card-wolf">
+            <h3>7. WOLF — OPÉRATION CLEANER</h3>
+            <p>Plasma double, fouet segmenté, mallette destructible et agents de dissolution.</p>
+            <button class="btn-launch-hunt" type="button" data-hunt="wolf_cleaner">AFFRONTER WOLF</button>
+          </article>
+          <article class="mission-card mission-card-kalisk">
+            <h3>8. KALISK — APEX DE GENNA</h3>
+            <p>Carapace adaptative, régénération interruptible, charge et noyau exposé.</p>
+            <button class="btn-launch-hunt" type="button" data-hunt="kalisk">TRAQUER LE KALISK</button>
+          </article>
         </div>
 
         <div class="forge-panel">
@@ -303,31 +313,35 @@
               <p class="section-kicker">ARCHIVES ÉTENDUES · PROVENANCE BADGÉE</p>
               <h3 id="content-vault-title">ARCHIVES DE FRANCHISE & CONTENU ACTIF</h3>
             </div>
-            <p>110 dossiers distinguent clairement ce qui est jouable, rencontré en 3D, exposé dans le hangar ou conservé comme archive de référence.</p>
+            <p><span data-content-total>0</span> dossiers distinguent clairement ce qui est jouable, rencontré en 3D, exposé dans le hangar ou conservé comme archive de référence.</p>
           </div>
           <details open>
-            <summary>Technologies et arsenal · 27</summary>
+            <summary>Technologies et arsenal · <span data-count-for="technology-catalog-grid">0</span></summary>
             <div id="technology-catalog-grid" class="content-catalog-grid"></div>
           </details>
           <details>
-            <summary>Vaisseaux et véhicules · 13</summary>
+            <summary>Vaisseaux et véhicules · <span data-count-for="vehicle-catalog-grid">0</span></summary>
             <div id="vehicle-catalog-grid" class="content-catalog-grid"></div>
           </details>
           <details>
-            <summary>PNJ, proies et ennemis · 27</summary>
+            <summary>PNJ, proies et ennemis · <span data-count-for="enemy-catalog-grid">0</span></summary>
             <div id="enemy-catalog-grid" class="content-catalog-grid"></div>
           </details>
           <details>
-            <summary>Événements de niveau · 17</summary>
+            <summary>Événements de niveau · <span data-count-for="event-catalog-grid">0</span></summary>
             <div id="event-catalog-grid" class="content-catalog-grid"></div>
           </details>
           <details>
-            <summary>Boss de chasse · 13</summary>
+            <summary>Boss de chasse · <span data-count-for="boss-catalog-grid">0</span></summary>
             <div id="boss-catalog-grid" class="content-catalog-grid"></div>
           </details>
           <details>
-            <summary>Conteneurs, alliés, personnages et rôles · 13</summary>
+            <summary>Conteneurs, alliés, personnages et rôles · <span data-count-for="support-catalog-grid">0</span></summary>
             <div id="support-catalog-grid" class="content-catalog-grid"></div>
+          </details>
+          <details>
+            <summary>Œuvres et médias couverts · <span data-count-for="media-coverage-grid">0</span></summary>
+            <div id="media-coverage-grid" class="content-catalog-grid media-coverage-grid" aria-live="polite"></div>
           </details>
         </section>
       </div>

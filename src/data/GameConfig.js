@@ -84,6 +84,34 @@ export const HUNT_DEFINITIONS = Object.freeze({
     recommendedBiome: 'jungle',
     hud: { part1: ['BOUCLIER FERAL:', 'shieldIntact', 'OPÉRATIONNEL', 'BRISÉ'], part2: ['ARMURE OSSEUSE:', 'boneArmorIntact', 'INTACTE', 'FRACTURÉE'] },
   },
+  wolf_cleaner: {
+    id: 'wolf_cleaner',
+    name: 'Wolf — opération Cleaner',
+    bossType: 'wolfCleaner',
+    colliderRadius: 5.15,
+    sourceTier: 'ORIGINAL',
+    basisTier: 'AVP_SCREEN',
+    continuity: 'Adaptation Apex Hunt fondée sur AVP: Requiem, avec silhouette procédurale originale',
+    objective: 'Briser le bio-masque et la mallette Cleaner, puis survivre au plasma double, au fouet et aux zones dissolvantes.',
+    reward: 2250,
+    trophyColor: 0x59686b,
+    recommendedBiome: 'hive_lv426',
+    hud: { part1: ['BIO-MASQUE WOLF:', 'maskIntact', 'INTACT', 'BRISÉ'], part2: ['KIT CLEANER:', 'cleanerKitIntact', 'OPÉRATIONNEL', 'DÉTRUIT'] },
+  },
+  kalisk: {
+    id: 'kalisk',
+    name: 'Kalisk — apex de Genna',
+    bossType: 'kalisk',
+    colliderRadius: 6.8,
+    sourceTier: 'ORIGINAL',
+    basisTier: 'SCREEN',
+    continuity: 'Adaptation Apex Hunt fondée sur Predator: Badlands, avec créature procédurale originale',
+    objective: 'Rompre la carapace adaptative, interrompre sa régénération puis frapper le noyau exposé.',
+    reward: 2400,
+    trophyColor: 0x315f61,
+    recommendedBiome: 'genna_deathworld',
+    hud: { part1: ['CARAPACE ADAPTATIVE:', 'carapaceIntact', 'INTACTE', 'ROMPUE'], part2: ['NOYAU DU KALISK:', 'coreExposed', 'EXPOSÉ', 'PROTÉGÉ'] },
+  },
 });
 
 export const BIOME_DEFINITIONS = Object.freeze({
@@ -118,3 +146,14 @@ export const BIOME_DEFINITIONS = Object.freeze({
     floraTexture: '/assets/textures/deathworld-alien-flora.webp',
   },
 });
+
+/**
+ * Sélectionne le secteur prévu par une chasse lorsqu'il existe. Les missions
+ * sans secteur imposé conservent le choix du joueur, avec un repli sûr sur la
+ * jungle pour les sauvegardes ou valeurs DOM obsolètes.
+ */
+export function resolveHuntBiome(huntType, selectedBiome) {
+  const recommendedBiome = HUNT_DEFINITIONS[huntType]?.recommendedBiome;
+  if (recommendedBiome && BIOME_DEFINITIONS[recommendedBiome]) return recommendedBiome;
+  return BIOME_DEFINITIONS[selectedBiome] ? selectedBiome : 'jungle';
+}

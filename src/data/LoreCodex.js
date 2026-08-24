@@ -4,8 +4,10 @@
 export const LORE_SOURCE_TIERS = Object.freeze({
   SCREEN: Object.freeze({ id: 'SCREEN', label: 'ÉCRAN PRINCIPAL PREDATOR / ALIEN', shortLabel: 'ÉCRAN', color: '#55e6a5', priority: 1 }),
   AVP_SCREEN: Object.freeze({ id: 'AVP_SCREEN', label: 'ÉCRAN AVP', shortLabel: 'AVP', color: '#e9b949', priority: 2 }),
-  LICENSED_EU: Object.freeze({ id: 'LICENSED_EU', label: 'UNIVERS ÉTENDU SOUS LICENCE', shortLabel: 'EU', color: '#7aa2f7', priority: 3 }),
-  ORIGINAL: Object.freeze({ id: 'ORIGINAL', label: 'CRÉATION APEX HUNT', shortLabel: 'ORIGINAL', color: '#ff7a8a', priority: 4 })
+  LICENSED_SCREEN_DESIGN: Object.freeze({ id: 'LICENSED_SCREEN_DESIGN', label: 'DESIGN ÉCRAN DOCUMENTÉ SOUS LICENCE', shortLabel: 'DESIGN', color: '#8dd7c6', priority: 3 }),
+  LICENSED_EU: Object.freeze({ id: 'LICENSED_EU', label: 'UNIVERS ÉTENDU SOUS LICENCE', shortLabel: 'EU', color: '#7aa2f7', priority: 4 }),
+  MERCH_CONCEPT: Object.freeze({ id: 'MERCH_CONCEPT', label: 'CONCEPT DE COLLECTION SOUS LICENCE', shortLabel: 'MERCH', color: '#d6a75c', priority: 5 }),
+  ORIGINAL: Object.freeze({ id: 'ORIGINAL', label: 'CRÉATION APEX HUNT', shortLabel: 'ORIGINAL', color: '#ff7a8a', priority: 6 })
 });
 
 export const LORE_SOURCES = Object.freeze({
@@ -27,7 +29,9 @@ export const LORE_SOURCES = Object.freeze({
   avpOriginalComics: { title: 'AVP — comics originaux Dark Horse', tier: 'LICENSED_EU', url: 'https://digital.darkhorse.com/books/47483ce0aec5466783599e38c9d0ac47/aliens-vs-predator-the-original-comics-series-30th-anniversary-edition' },
   huntingGroundsUpdates: { title: 'Predator: Hunting Grounds — classes et patch notes', tier: 'LICENSED_EU', url: 'https://forum.predator.illfonic.com/c/News/patch-notes' },
   avpPreyOmnibus: { title: 'Aliens vs. Predator: Prey — omnibus Titan Books', tier: 'LICENSED_EU', url: 'https://titanbooks.com/8792-the-complete-aliens-vs-predator-omnibus/' },
-  predatorBadBloodComics: { title: 'Predator: Bad Blood — catalogue Dark Horse', tier: 'LICENSED_EU', url: 'https://images.darkhorse.com/common/salestools/catalogs/DH_Backlist_2009.pdf' }
+  predatorBadBloodComics: { title: 'Predator: Bad Blood — catalogue Dark Horse', tier: 'LICENSED_EU', url: 'https://images.darkhorse.com/common/salestools/catalogs/DH_Backlist_2009.pdf' },
+  lostTribeDesigns: { title: 'Predator 2 — Lost Tribe, designs documentés par NECA', tier: 'LICENSED_SCREEN_DESIGN', url: 'https://store.necaonline.com/blogs/news/predators-introducing-the-lost-tribe-from-our-series-6-action-figures' },
+  wolfArsenalDesigns: { title: 'AVP:R — arsenal du Wolf documenté par NECA', tier: 'LICENSED_SCREEN_DESIGN', url: 'https://necaonline.com/2011/03/the-predators-deadly-arsenal/' }
 });
 
 const freezeEntries = (entries) => Object.freeze(entries.map((entry) => Object.freeze({
@@ -90,6 +94,12 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
 // IDs match the values already used by the planet selector.
 export const HUNT_LOCATIONS = freezeEntries([
   {
+    id: 'genna_deathworld', entryType: 'location', category: 'lieu', title: 'Genna — monde mortel',
+    summary: 'Écosystème extrême de Badlands, dominé par une flore prédatrice et le Kalisk régénérant.',
+    sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
+    canonNote: 'Genna et le Kalisk sont établis à l’écran ; ce secteur, sa disposition et ses événements sont une adaptation originale Apex Hunt.', sources: ['badlands2025']
+  },
+  {
     id: 'jungle', entryType: 'location', category: 'lieu', title: 'Jungle de chasse',
     summary: 'Arène humide de ruines, canopée et pistes thermiques inspirée des chasses terrestres classiques.',
     sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
@@ -115,10 +125,28 @@ export const HUNT_LOCATIONS = freezeEntries([
   }
 ]);
 
-const ALL_LOCATION_IDS = ['jungle', 'hive_lv426', 'ryushi_desert', 'yautja_prime'];
+const ALL_LOCATION_IDS = ['jungle', 'hive_lv426', 'ryushi_desert', 'yautja_prime', 'genna_deathworld'];
 
 // IDs match data-hunt and currentHuntType values in the game.
 export const CURRENT_HUNTS = freezeEntries([
+  {
+    id: 'feral_predator', entryType: 'hunt', category: 'cible', title: 'Feral Predator — Grande Plaine',
+    summary: 'Chasseur de 1719 affronté comme duel de bouclier, de traits et de lance.',
+    sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
+    canonNote: 'Le Feral et son arsenal viennent de Prey ; statistiques, arène et contrat sont une adaptation originale.', sources: ['prey2022'], locationIds: ALL_LOCATION_IDS
+  },
+  {
+    id: 'wolf_cleaner', entryType: 'hunt', category: 'cible', title: 'Wolf — opération Cleaner',
+    summary: 'Affronter le vétéran de Gunnison, ses deux canons à plasma, son fouet et ses agents de dissolution.',
+    sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', isOriginal: true,
+    canonNote: 'Wolf et son arsenal sont établis dans AVP:R ; ce duel et ses règles de destruction de kit sont une adaptation originale.', sources: ['avpRequiem2007', 'wolfArsenalDesigns'], locationIds: ALL_LOCATION_IDS
+  },
+  {
+    id: 'kalisk', entryType: 'hunt', category: 'cible', title: 'Kalisk de Genna',
+    summary: 'Prédateur suprême régénérant dont la carapace doit être rompue avant l’exposition du noyau.',
+    sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
+    canonNote: 'Le Kalisk et sa régénération viennent de Badlands ; phases, noyau et conditions d’interruption sont une adaptation originale.', sources: ['badlands2025'], locationIds: ['genna_deathworld']
+  },
   {
     id: 'goliath', entryType: 'hunt', category: 'cible', title: 'Goliath Xeno-Akumo',
     summary: 'Mégafaune blindée élevée au rang de proie suprême par les chroniqueurs du vaisseau.',

@@ -10,7 +10,7 @@ import { MothershipHub } from './world/MothershipHub.js';
 import { HUDManager } from './HUDManager.js';
 import { audioSynth } from './AudioSynthesizer.js';
 import { saveManager } from './engine/SaveManager.js';
-import { DEFAULT_SETTINGS, HUNT_DEFINITIONS } from './data/GameConfig.js';
+import { DEFAULT_SETTINGS, HUNT_DEFINITIONS, resolveHuntBiome } from './data/GameConfig.js';
 import { ALL_LORE_ENTRIES, LORE_SOURCE_TIERS, LORE_SOURCES } from './data/LoreCodex.js';
 import { resolveMeleeStrike } from './gameplay/combatRules.js';
 import { getPlayableWeaponByKey } from './data/RuntimeEquipment.js';
@@ -32,11 +32,17 @@ const ENEMY_ATTACK_PROFILES = Object.freeze({
   acid_spray: { damage: 24, range: 60, cooldown: 1.8, telegraphed: true, corrosion: true },
   acid_frenzy: { damage: 34, range: 24, cooldown: 1.8, telegraphed: true, corrosion: true },
   charge: { damage: 32, range: GOLIATH_CHARGE_IMPACT_RANGE, cooldown: 1.3 },
+  wolf_whip: { damage: 42, range: 18, cooldown: 1.7, telegraphed: true },
+  kalisk_charge: { damage: 48, range: 11, cooldown: 1.8, telegraphed: true },
+  kalisk_impale: { damage: 44, range: 9.5, cooldown: 1.55, telegraphed: true },
 });
 const ENEMY_ATTACK_TELEGRAPHS = Object.freeze({
   attack_tail: 'BALAYAGE DE QUEUE DÉTECTÉ — ESQUIVEZ !',
   acid_spray: 'PRESSION ACIDE : LA REINE ARME UNE PROJECTION !',
   acid_frenzy: 'FRÉNÉSIE ACIDE DU PREDALIEN — ROMPEZ LE CONTACT !',
+  wolf_whip: 'FOUET SEGMENTÉ DE WOLF — SORTEZ DU BALAYAGE !',
+  kalisk_charge: 'CHARGE DU KALISK — QUITTEZ SON AXE !',
+  kalisk_impale: 'EMPALAGE DU KALISK — ROMPEZ LE CONTACT !',
 });
 
 
@@ -614,7 +620,8 @@ export class Game {
     const target = this.resolveCombatTarget();
     if (!target) return;
     const targetHeight = target === this.activeBoss ? 3.5 : 1.2;
-    const targetPos = target.position.clone().add(new THREE.Vector3(0, targetHeight, 0));
+    const targetPos = target.getAimPoint?.()
+      ?? target.position.clone().add(new THREE.Vector3(0, targetHeight, 0));
     const distance = this.player.position.distanceTo(target.position);
     const result = this.player.attack(targetPos);
     if (!['death_from_above', 'wristblades', 'whip_slash'].includes(result)) return;
@@ -920,7 +927,9 @@ export class Game {
     document.querySelectorAll('.btn-launch-hunt').forEach(btn => {
       btn.addEventListener('click', () => {
         const huntType = btn.getAttribute('data-hunt');
-        const planetType = document.getElementById('planet-selector').value;
+        const planetSelector = document.getElementById('planet-selector');
+        const planetType = resolveHuntBiome(huntType, planetSelector?.value);
+        if (planetSelector) planetSelector.value = planetType;
         document.getElementById('mission-modal').classList.add('hidden');
         this.startHunt(huntType, planetType);
         this.requestPointerLockSafely();
@@ -1169,7 +1178,7 @@ export class Game {
       case 'KeyT': {
         const target = this.resolveCombatTarget();
         const targetPosition = target
-          ? target.position.clone().add(new THREE.Vector3(0, 2, 0))
+          ? target.getAimPoint?.() ?? target.position.clone().add(new THREE.Vector3(0, 2, 0))
           : new THREE.Vector3(0, 2, -55)
             .applyAxisAngle(new THREE.Vector3(0, 1, 0), this.cameraYaw)
             .add(this.player.position);
@@ -1393,6 +1402,42 @@ export class Game {
     });
   }
 
+  applyBossHazards(playerPos) {
+    const zones = this.activeBoss?.cleanerZones;
+    if (!Array.isArray(zones) || !playerPos?.isVector3) return 0;
+
+    let hitCount = 0;
+    for (let index = zones.length - 1; index >= 0; index -= 1) {
+      const zone = zones[index];
+      if (!zone?.mesh?.position || zone.mesh.position.distanceTo(playerPos) > (zone.radius ?? 0)) continue;
+
+      if (zone.type === 'dissolving_fluid' && (zone.tickCooldown ?? 0) <= 0) {
+        this.player.takeDamage(zone.damage ?? 17);
+        this.player.applyAcidCorrosion();
+        zone.tickCooldown = zone.damageInterval ?? 0.7;
+        hitCount += 1;
+        this.spawnBloodSpatterVFX(playerPos, 0xffff00, 10);
+        if (!zone.playerWarned) {
+          zone.playerWarned = true;
+          this.hud.showLogMessage('AGENT CLEANER — CORROSION DE ZONE !', 1400);
+        }
+      } else if (zone.type === 'proximity_mine' && zone.armed) {
+        this.player.takeDamage(zone.damage ?? 52);
+        audioSynth.playMineExplosion();
+        this.spawnPlasmaShockwaveVFX(zone.mesh.position);
+        this.spawnBloodSpatterVFX(playerPos, 0xffff00, 14);
+        this.hud.showLogMessage('MINE CLEANER DÉCLENCHÉE — ÉLOIGNEZ-VOUS !', 1400);
+        hitCount += 1;
+        if (this.activeBoss.removeCleanerZone?.(zone) !== true) {
+          disposeObject3D(zone.mesh);
+          zones.splice(index, 1);
+        }
+      }
+    }
+
+    return hitCount;
+  }
+
   checkCollisions(delta) {
     if (!this.activeBoss) return;
 
@@ -1428,17 +1473,25 @@ export class Game {
 
     for (let i = this.player.projectiles.length - 1; i >= 0; i--) {
       const projectile = this.player.projectiles[i];
-      const target = this.getCombatTargets().find((candidate) => (
-        projectile.mesh.position.distanceTo(candidate.position) < (candidate.colliderRadius ?? 6.5) + 1
-      ));
-      if (!target) continue;
+      const previousPosition = projectile.mesh.position.clone()
+        .addScaledVector(projectile.dir, -(projectile.speed ?? 0) * delta);
+      const targetImpact = this.getCombatTargets().map((candidate) => {
+        const impact = typeof candidate.resolveProjectileImpact === 'function'
+          ? candidate.resolveProjectileImpact(projectile.mesh.position, 1, previousPosition)
+          : projectile.mesh.position.distanceTo(candidate.position) < (candidate.colliderRadius ?? 6.5) + 1
+            ? projectile.mesh.position.clone()
+            : null;
+        return impact ? { target: candidate, impact } : null;
+      }).find(Boolean);
+      if (!targetImpact) continue;
+      const { target, impact } = targetImpact;
 
       if (projectile.isNet) {
         target.applyNet?.();
         this.hud.showLogMessage('CIBLE IMMOBILISÉE DANS LE FILET!');
       } else {
-        const outcome = target.takeDamage(projectile.damage, projectile.mesh.position);
-        this.spawnBloodSpatterVFX(projectile.mesh.position, this.getTargetBloodColor(target), 20);
+        const outcome = target.takeDamage(projectile.damage, impact);
+        this.spawnBloodSpatterVFX(impact, this.getTargetBloodColor(target), 20);
         this.player.addHonor(target === this.activeBoss ? 100 : 35);
         if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target);
       }
@@ -1490,6 +1543,7 @@ export class Game {
       }
     }
 
+    this.applyBossHazards(playerPos);
     const isGoliathChargeFrame = this.currentHuntType === 'goliath' && this.activeBoss.aiState === 'charge';
     if (isGoliathChargeFrame && !this.goliathChargeLatched) {
       this.goliathChargeWindow = GOLIATH_CHARGE_WINDOW_SECONDS;
@@ -1506,7 +1560,13 @@ export class Game {
       && this.activeBoss.aiState === 'charge';
     const isFeralSpearAttack = this.currentHuntType === 'feral_predator'
       && ['charge', 'melee_windup', 'melee'].includes(this.activeBoss.aiState);
-    const attackState = chargeImpactReady ? 'charge' : this.activeBoss.aiState;
+    const isWolfWhip = this.currentHuntType === 'wolf_cleaner'
+      && this.activeBoss.activeAttackType === 'whip_sweep';
+    const isKaliskAttack = this.currentHuntType === 'kalisk'
+      && ['kalisk_charge', 'kalisk_impale'].includes(this.activeBoss.activeAttackType);
+    const attackState = isWolfWhip ? 'wolf_whip'
+      : isKaliskAttack ? this.activeBoss.activeAttackType
+        : chargeImpactReady ? 'charge' : this.activeBoss.aiState;
     const attackProfile = ENEMY_ATTACK_PROFILES[attackState];
     if ((attackProfile?.telegraphed || isSuperPredatorCharge || isFeralSpearAttack) && this.activeBoss.attackTelegraphAnnounced === false) {
       const message = isSuperPredatorCharge
@@ -1570,7 +1630,8 @@ export class Game {
       if (this.activeBoss.isEnraged) audioSynth.updateAdaptiveBGM('boss_enraged');
       else audioSynth.updateAdaptiveBGM('combat');
 
-      const targetPos = this.activeBoss.position.clone().add(new THREE.Vector3(0, 4.0, 0));
+      const targetPos = this.activeBoss.getAimPoint?.()
+        ?? this.activeBoss.position.clone().add(new THREE.Vector3(0, 4.0, 0));
       const distToBoss = this.player.position.distanceTo(this.activeBoss.position);
 
       targetPos.project(this.camera);

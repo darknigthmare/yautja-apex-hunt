@@ -1,55 +1,60 @@
-# Rapport QA — release 1.4.0
+# Rapport QA — release 1.5.0
 
-**Date :** 22 août 2026
-**Statut :** release 1.4.0 validée, poussée sur GitHub et publiée sur la production Vercel, sans défaut P0/P1 connu.
+**Date :** 24 août 2026
+**Statut :** release 1.5.0 validée, publiée sur la production Vercel et sans défaut P0/P1 connu.
 **Production :** <https://yautja-apex-hunt.vercel.app/>
+**Déploiement :** `dpl_6PrjSve8RsKqoDh7TWp2NmD6BPRA` — `READY`, cible `production`
 **Source :** <https://github.com/darknigthmare/yautja-apex-hunt>
 
 ## Gates de release
 
 | Gate | Résultat vérifié | Couverture |
 |---|---:|---|
-| Tests Node | **99/99 réussis** | Combat, six boss, huit familles de PNJ, événements, gadgets, équipement, Forge, sauvegarde v4, migrations v1–v3 et verrouillage HUD mobile. |
-| Build production | **Vite 8.2.2 réussi** | HTML 21,50 Ko ; CSS 22,79 Ko ; jeu 271,13 Ko ; Three.js 499,39 Ko. Aucun chunk au-dessus de 500 Ko. |
+| Tests Node | **125/125 réussis** | Huit boss, points faibles balayés, dangers Cleaner, régénération Kalisk, équipement, personnalisation, contenu média, sauvegarde et responsive HUD. |
+| Build production local | **Vite 8.2.2 réussi** | 39 modules ; HTML 22,78 Ko ; CSS 23,79 Ko ; jeu 331,75 Ko ; Three.js 503,06 Ko. L’avertissement de taille du chunk Three.js est non bloquant. |
+| Build Vercel | **réussi** | Déploiement production `READY` et alias officiel appliqué. |
 | Sécurité dépendances | **0 vulnérabilité** | `npm audit --audit-level=high`. |
-| Qualité Git | **propre** | `git diff --check`, fichiers temporaires exclus et changements de la release uniquement. |
-| Chromium desktop | **réussi** | Hub, contrats, Forge, Genna, Feral et états des quatre technologies de terrain. |
-| Chromium mobile | **réussi** | Viewport 390×844, largeur document 390 px, aucun débordement horizontal. |
-| Console navigateur | **0 erreur** | Aucun défaut de page ; uniquement les messages de connexion Vite en développement. |
-| Assets 1.4 | **HTTP 200** | Sol de Genna, flore extraterrestre et composite osseux du Feral chargés pendant la chasse ; composite tactique résolu par le contrat d’assets. |
+| Qualité Git | **propre** | `git diff --check`, aucun patch ou fichier QA temporaire conservé. |
+| Chromium desktop local et production | **réussi** | 8 contrats, 29 fiches média, 38 bio-masques, lancement Wolf/Kalisk et chargement des textures runtime. |
+| Chromium mobile production | **réussi** | Viewport 390×844, largeur document 390 px, huit contrats accessibles et aucun débordement horizontal. |
+| Console navigateur | **0 erreur** | Aucun défaut de page relevé sur les parcours local et production. |
+| Assets 1.5 | **HTTP 200** | Les trois WebP OpenAI répondent en production avec le bon type MIME et sont chargés par leur contenu jouable. |
 
 ## Contenu réellement jouable contrôlé
 
-- [x] six contrats : Goliath, Reine Xénomorphe, Bad Blood, Predalien, Berserker et Feral ;
-- [x] cinq biomes : jungle, ruche LV-426, Ryushi, domaine de clan et monde mortel de Genna ;
-- [x] Feral équipé d’un bio-masque osseux, d’une lance, d’un lance-traits triple et d’un bouclier frontal destructible ;
-- [x] charge et estoc télégraphiés, impacts uniques et possibilité de contourner le bouclier par l’arrière ;
-- [x] Genna vivant : 28 plantes prédatrices, 14 créatures instanciées, 520 spores, météo et mouvements réduits ;
-- [x] huit familles de PNJ : humains, synthétiques, traqueurs thermiques, chiens de chasse, xénomorphes drones et guerriers, grizzlis territoriaux et traqueurs de Genna ;
-- [x] quatre technologies accessibles au clavier et au tactile : bouclier de poignet, drone-faucon, shuriken et rugissement d’honneur ;
-- [x] événements de niveau à quatre paliers, conteneurs de chasse, navette de reconnaissance et scan visuel nettoyé en victoire comme en défaite ;
-- [x] dix armes jouables, quatre classes de chasseur et neuf axes de personnalisation indépendants ;
-- [x] galerie de six trophées et progression d’honneur cumulée ;
-- [x] sauvegarde v4 transactionnelle, récupération du temporaire le plus récent et migrations v1, v2 et v3.
+- [x] huit contrats : Goliath, Reine xénomorphe, Bad Blood, Predalien, Berserker, Feral, Wolf Cleaner et Kalisk ;
+- [x] Wolf : double plasma, fouet télégraphié, mine, agent dissolvant, bio-masque et mallette destructibles ;
+- [x] Kalisk : carapace adaptative, charge, empalement, régénération interruptible et noyau exposé ;
+- [x] points faibles visés en coordonnées monde et collision de projectile balayée pour éviter le tunneling ;
+- [x] secteurs narratifs imposés au lancement : Wolf sur LV-426 et Kalisk sur Genna ;
+- [x] huit presets Lost Tribe, 38 bio-masques et texture rituelle réellement appliquée puis restaurée lors d’un changement de preset ;
+- [x] registre de 29 œuvres et médias, avec statuts séparés pour sorties, bonus, coupés, non publiés, promotionnels et crossovers ;
+- [x] galerie de huit trophées et parité entre les contrats, les biomes et le Codex ;
+- [x] trois textures originales OpenAI en WebP 1024×1024 : alliage Cleaner, os rituel Lost Tribe et peau adaptative Kalisk.
 
-## Validation visuelle et responsive
+## Validation du classeur de franchise
 
-Le parcours Chromium a ouvert le vaisseau-mère, affiché les six contrats, sélectionné Genna puis lancé le Feral. Les quatre contrôles tactiles ont produit les états attendus : `ACTIF`, `EN VOL`, `RECHARGE` et `CONSOMMÉ POUR CETTE CHASSE`. Les écrans Contrats et Armurerie restent utilisables en desktop et à 390×844, sans erreur de console ni overlay Vite.
+Le classeur `Encyclopedie_exhaustive_franchise_Predator.xlsx` fourni dans la conversation recense 915 éléments uniques. Il a servi de backlog de contrôle par film et média, pas de source canonique autonome ni d’import automatique. Chaque ajout retenu dans cette passe possède un niveau de provenance, une source et un statut runtime explicites.
 
-Les dix-neuf textures publiques pèsent **5 958 520 octets**. Les quatre nouvelles matières OpenAI sont des créations originales du projet, exportées en WebP 1024×1024 ; aucun key art officiel n’a été copié.
+Les prochains lots déjà identifiés sont une carte de Gunnison réellement multi-niveaux, des campagnes complètes *Killer of Killers* et *Alien vs. Predator*, puis une faune et une flore de Genna plus variées.
 
 ## Reproduction rapide
 
 ```powershell
-npm.cmd ci
 npm.cmd test
 npm.cmd run build
 npm.cmd audit --audit-level=high
 git diff --check
 ```
 
-Puis ouvrir la production, entrer dans le vaisseau-mère, sélectionner `MONDE MORTEL DE GENNA` et lancer `AFFRONTER LE FERAL`. Vérifier les touches ou boutons tactiles `B`, `G`, `T`, `R`, puis contrôler la Forge et ses neuf sélecteurs.
+Puis ouvrir la production, entrer dans le vaisseau-mère et vérifier :
+
+1. les huit cartes de contrat et les 29 fiches média ;
+2. le lancement de Wolf depuis un secteur différent, avec bascule automatique vers LV-426 ;
+3. le lancement du Kalisk, avec bascule automatique vers Genna et HUD carapace/noyau ;
+4. l’Armurerie, ses 38 masques et les huit variantes Lost Tribe ;
+5. le viewport mobile 390×844 sans débordement horizontal.
 
 ## Verdict
 
-La 1.4.0 transforme la passe de contenu en systèmes visibles et jouables : nouvelle chasse, nouveau biome vivant, nouvelles proies, nouveaux gadgets, progression étendue, personnalisation plus profonde et assets originaux intégrés. Les gates automatisés, navigateur, responsive, Git et production sont tous requis avant clôture de la release.
+La 1.5.0 ne se limite pas à ajouter des noms au Codex : Wolf et le Kalisk possèdent leurs propres boucles de combat, états, dangers, points faibles, textures et contrats. La couverture du Lost Tribe et des médias reste clairement séparée par provenance, et la production déployée a franchi les gates automatisés, navigateur, responsive, sécurité, assets et Vercel.

@@ -1,7 +1,7 @@
 # Prompts de génération des textures
 
 **Outil :** modèle ImageGen intégré OpenAI
-**Dates :** 21–22 août 2026
+**Dates :** 21–24 août 2026
 **Mode :** génération bitmap originale, sans image officielle de référence
 **Usage :** textures de décor et de props pour le fan game Yautja: Apex Hunt
 
@@ -121,7 +121,31 @@ Les textes ci-dessous sont les formulations de production fidèles aux prompts e
 
 **Destination runtime après conversion :** `public/assets/textures/deathworld-alien-flora.webp`
 
-Les quatre PNG maîtres de cette vague sont conservés localement sous `art_sources/openai-masters/` et exclus de Git ; seuls les WebP 1024×1024 optimisés sont livrés au navigateur.
+## `wolf-cleaner-alloy`
+
+**Mode :** nouvelle génération bitmap originale, sans image officielle de référence.
+
+> Résumé du prompt employé : matière raccordable d’alliage Cleaner carbonisé et attaqué par des agents corrosifs, plaques gunmetal, micro-rayures, résidus sombres et fines coutures énergétiques cyan. Surface abstraite en vue orthographique, sans armure complète, personnage, texte, logo, glyphe, UI, watermark, key art ou accessoire officiel copié.
+
+**Destination runtime après conversion :** `public/assets/textures/wolf-cleaner-alloy.webp`
+
+## `lost-tribe-ritual-bone`
+
+**Mode :** nouvelle génération bitmap originale, sans image officielle de référence.
+
+> Résumé du prompt employé : matière raccordable mêlant os rituel patiné, cuir de chasse sombre et inserts de bronze ancien, avec abrasion et attaches abstraites. Aucune reproduction d’un bio-masque ou d’une figurine identifiable ; vue orthographique uniforme, sans texte, logo, symbole officiel, UI, watermark, collage ou key art.
+
+**Destination runtime après conversion :** `public/assets/textures/lost-tribe-ritual-bone.webp`
+
+## `kalisk-adaptive-hide`
+
+**Mode :** nouvelle génération bitmap originale, sans image officielle de référence.
+
+> Résumé du prompt employé : peau blindée adaptative de mégafaune extraterrestre, plaques bleu pétrole très sombre, tissu régénératif et fines coutures bioluminescentes violettes. Matière abstraite sans créature entière ni anatomie reconnaissable, éclairage uniforme, sans texte, logo, UI, watermark, collage ou visuel officiel copié.
+
+**Destination runtime après conversion :** `public/assets/textures/kalisk-adaptive-hide.webp`
+
+Les PNG maîtres des vagues précédentes et les trois sorties sources de la 1.5 sont conservés localement hors Git ; seuls les WebP optimisés sont livrés au navigateur.
 
 ## Critères de rejet
 
@@ -129,4 +153,4 @@ Une génération doit être écartée si elle contient un mot, une signature, un
 
 ## Traçabilité
 
-Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor initiales, les trois matières de props et les quatre matières de la vague 1.4 restent en WebP 1024×1024 ; les six matières de la vague contenu 1.3 sont encodées en WebP 1254×1254 après inspection visuelle. Le manifest consigne les dix-neuf poids exacts, leur usage runtime et les contrôles obtenus. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.
+Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor initiales, les trois matières de props, les quatre matières de la vague 1.4 et les trois matières de la 1.5 restent en WebP 1024×1024 ; les six matières de la vague contenu 1.3 sont encodées en WebP 1254×1254 après inspection visuelle. Le manifest consigne les vingt-deux poids exacts, leur usage runtime et le niveau de contrôle effectivement obtenu. Ces créations originales n’accordent ni ne revendiquent de droit sur Predator, Alien, leurs personnages ou leurs designs officiels. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.

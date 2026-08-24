@@ -8,7 +8,9 @@ Cette bible empêche de mélanger films Predator, crossovers AVP, univers étend
 | --- | --- | --- |
 | `SCREEN` | Films Predator ou Alien officiels, hors crossovers AVP | Source écran principale ; une entrée précise toujours de quelle franchise vient son fondement. |
 | `AVP_SCREEN` | Films Alien vs. Predator | Branche crossover distincte ; elle ne réécrit pas automatiquement les continuités principales. |
+| `LICENSED_SCREEN_DESIGN` | Nom ou détail de design sous licence rattaché à une silhouette ou un accessoire écran | Documente un design commercial ou éditorial ; ne transforme pas les détails invisibles au montage en faits `SCREEN`. |
 | `LICENSED_EU` | Romans, comics et jeux sous licence | Inspiration permise avec badge EU ; ses règles ne sont pas universalisées. |
+| `MERCH_CONCEPT` | Concept ou accessoire de collection sous licence | Référence de design uniquement ; aucune utilisation à l’écran n’est affirmée sans source distincte. |
 | `ORIGINAL` | Créations de Yautja: Apex Hunt | Nom, mission, lieu ou interprétation propre au jeu ; badge toujours visible. |
 
 Dans `src/data/LoreCodex.js`, `sourceTier` qualifie l’entrée exacte. `basisTier` peut signaler sa source d’inspiration et `relatedTier` une continuité associée. Une mission inventée reste donc `ORIGINAL`, même lorsque sa créature vient de `SCREEN` ou de `AVP_SCREEN`.
@@ -64,6 +66,7 @@ Le terme **kiande amedha**, Ryushi et de nombreux détails de castes ou de marqu
 | `hive_lv426` | LV-426 — ruches souterraines | `ORIGINAL`, base `SCREEN`, relation `AVP_SCREEN` | LV-426 et sa colonie viennent d’*Alien/Aliens* ; cette chasse Yautja, la pluie acide et cette carte sont inventées. |
 | `ryushi_desert` | Désert de Ryushi | `LICENSED_EU` | Ryushi vient des comics/du roman AVP ; tempête et arène sont une interprétation originale. |
 | `yautja_prime` | Yautja Prime — arène du clan | `ORIGINAL`, base `SCREEN` | *Badlands* établit Yautja Prime et le domaine natal de Dek, mais ni ce colisée sacré ni ce conseil d’Anciens. |
+| `genna_deathworld` | Genna — monde mortel | `ORIGINAL`, base `SCREEN` | Genna vient de *Badlands* ; la topologie, les vagues et l’écosystème jouables sont une adaptation originale et encore partielle. |
 
 Le sélecteur autorise toute cible sur tout lieu. Cette liberté de gameplay ne crée pas un événement canon.
 
@@ -75,6 +78,10 @@ Le sélecteur autorise toute cible sur tout lieu. Cette liberté de gameplay ne 
 | `xeno_queen` | Reine xénomorphe | `ORIGINAL`, base `SCREEN`, relation `AVP_SCREEN` | La Reine vient d’*Aliens* et apparaît aussi dans *AVP* ; combat, arène et récompense actuels sont originaux. |
 | `bad_blood` | Rival Yautja Bad Blood | `ORIGINAL`, base `LICENSED_EU` | Le personnage précis est inventé ; Bad Blood n’est pas une caste écran universelle. |
 | `predalien` | Predalien légendaire | `ORIGINAL`, base `AVP_SCREEN` | Le type existe dans *AVP: Requiem* ; variante et statut de boss sont propres au jeu. |
+| `super_predator` | Berserker Super Predator | `ORIGINAL`, base `SCREEN` | Le Berserker et le conflit de groupes viennent de *Predators* ; ce contrat et ses phases sont une adaptation de gameplay. |
+| `feral_predator` | Feral Predator | `ORIGINAL`, base `SCREEN` | Le chasseur vient de *Prey* ; la mission, l’arène et la progression du combat sont propres au jeu. |
+| `wolf_cleaner` | Wolf — opération Cleaner | `ORIGINAL`, base `AVP_SCREEN` | Wolf et son arsenal viennent d’*AVP: Requiem* ; ce duel et ses systèmes destructibles sont une adaptation jouable originale. |
+| `kalisk` | Kalisk de Genna | `ORIGINAL`, base `SCREEN` | L’espèce et sa régénération viennent de *Badlands* ; les phases, le noyau exposé et l’équilibrage appartiennent au jeu. |
 
 ### Goliath Xeno-Akumo
 
@@ -98,6 +105,28 @@ Le sélecteur autorise toute cible sur tout lieu. Cette liberté de gameplay ne 
 - `deadend_fanfilm` est un hommage `ORIGINAL` explicitement non licencié à *Batman: Dead End* (2003), hors continuités officielles.
 
 Règle de maintenance : chaque carte garde un `sourceTier`, une œuvre précise et une description limitée à ce que cette œuvre établit. Un intitulé marketing, un surnom de figurine et un rang culturel ne sont pas interchangeables.
+
+### Contrat Lost Tribe 1.5
+
+Boar, Shaman, Snake, Guardian, Stalker, Warrior, Armored Lost et Scout sont disponibles comme presets et bio-masques. Leur niveau `LICENSED_SCREEN_DESIGN` signifie précisément que les silhouettes appartiennent à la scène du vaisseau de *Predator 2*, tandis que leurs noms, détails d’armure et accessoires sont documentés par des designs sous licence. Le jeu ne présente donc pas chaque détail de figurine comme un fait lisible dans le montage. L’Ancien du Lost Tribe reste `SCREEN` ; un accessoire de collection non attesté à l’écran reste `MERCH_CONCEPT`.
+
+## Registre par œuvre et média
+
+`src/data/MediaCoverageCatalog.js` suit 29 œuvres ou objets médiatiques sans les fusionner en une continuité unique. Chaque fiche sépare provenance, continuité, cible de contenu et avancement dans le jeu. Les statuts de sortie ont une fonction éditoriale stricte :
+
+- `RELEASED` : œuvre publiée, sans implication qu’elle soit entièrement adaptée ;
+- `CUT` : élément coupé du montage, jamais utilisé comme preuve écran ;
+- `UNRELEASED` : projet non publié, conservé seulement comme archive de production ;
+- `PROMO` : contenu promotionnel isolé du lore jouable ;
+- `ALT_CROSSOVER` : crossover référencé sans fusion avec la continuité principale.
+
+Le tableur `Encyclopedie_exhaustive_franchise_Predator.xlsx` fourni dans la conversation recense 915 éléments uniques. Il sert de backlog quasi exhaustif pour détecter les oublis, pas de source canonique autonome : une ligne peut relever d’un film, d’un produit licencié, d’une adaptation, d’un wiki ou d’un point à vérifier. Aucun lot n’est importé automatiquement ; chaque élément retenu reçoit une source, une provenance et un statut runtime.
+
+## Limites de couverture assumées
+
+- Gunnison doit encore devenir un niveau vertical et multi-zones complet, au-delà du contrat de boss actuel ;
+- *Killer of Killers* et *Alien vs. Predator* disposent de jalons dans le catalogue, mais pas encore de campagnes complètes ;
+- Genna possède un biome et le Kalisk jouable, mais sa faune et sa flore demandent davantage d’espèces et de comportements distincts.
 
 ### Sources primaires de contrôle pour le catalogue
 

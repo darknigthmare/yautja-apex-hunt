@@ -2,6 +2,43 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
+## [1.5.0] — 24 août 2026
+
+### Contrats réellement jouables
+
+- passage de six à huit contrats : Wolf Cleaner et le Kalisk de Genna rejoignent Goliath, la Reine xénomorphe, Bad Blood, le Predalien, le Berserker et le Feral ;
+- Wolf dispose d’un combat dédié avec plasma double, fouet, mines de proximité, agent dissolvant et sous-systèmes de masque/mallette Cleaner ;
+- le Kalisk possède une carapace adaptative, des phases de charge et d’empalement, ainsi qu’une régénération interruptible avant exposition du noyau.
+
+### Lost Tribe, équipement et provenance
+
+- huit presets et huit bio-masques Lost Tribe ajoutés : Boar, Shaman, Snake, Guardian, Stalker, Warrior, Armored Lost et Scout ;
+- nouveau niveau `LICENSED_SCREEN_DESIGN`, distinct de `SCREEN`, pour les identités et détails documentés par des produits ou archives sous licence autour de silhouettes visibles dans *Predator 2* ;
+- accessoires de collection non attestés dans le montage, tel le fusil du Scout, isolés sous `MERCH_CONCEPT` au lieu d’être présentés comme canon écran ;
+- arsenal de Wolf, rituel de nettoyage de Gunnison et cycle de régénération du Kalisk ajoutés au catalogue avec leur statut runtime réel.
+
+### Registre par œuvre et backlog Excel
+
+- registre de 29 œuvres et médias avec provenance, continuité, cible de couverture et statut de sortie ;
+- séparation explicite des contenus publiés, coupés du montage, non publiés, promotionnels et crossovers alternatifs ;
+- tableur `Encyclopedie_exhaustive_franchise_Predator.xlsx` de 915 éléments uniques utilisé comme backlog de détection des manques, sans import automatique ni promotion d’une entrée non vérifiée au rang de canon.
+
+### Visuels OpenAI originaux
+
+- trois textures WebP 1024×1024 ajoutées et branchées au contenu correspondant : alliage Cleaner de Wolf, os rituel du Lost Tribe et peau adaptative du Kalisk ;
+- génération bitmap nouvelle avec OpenAI, sans image officielle de référence, logo, texte, key art ou revendication de droits sur la franchise ;
+- prompts résumés, usages et poids consignés dans les documents d’assets.
+
+### Limites connues après la passe
+
+- Gunnison reste à développer en environnement réellement multi-niveaux ;
+- les campagnes complètes *Killer of Killers* et *Alien vs. Predator* restent à produire ;
+- Genna demande encore davantage de familles de faune et de flore aux comportements distincts.
+
+### Validation et publication
+
+- cette entrée décrit le code et les assets intégrés ; les résultats des tests, du build, du contrôle navigateur et du déploiement ne doivent être annoncés que dans le rapport QA et le bilan de release après leur exécution effective.
+
 ## [1.4.0] — 22 août 2026
 
 ### Chasses, proies et monde vivant

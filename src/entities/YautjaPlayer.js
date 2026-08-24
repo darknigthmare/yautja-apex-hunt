@@ -24,6 +24,15 @@ import {
 
 
 const MIMICRY_LURE_TYPES = Object.freeze(['over_here', 'radio', 'yautja_clicks']);
+export const PLAYER_APPEARANCE_TEXTURES = Object.freeze({
+  lostTribe: '/assets/textures/lost-tribe-ritual-bone.webp',
+  wolfCleaner: '/assets/textures/wolf-cleaner-alloy.webp',
+});
+const LOST_TRIBE_PRESET_IDS = new Set([
+  'elder_lost_tribe', 'boar_lost_tribe', 'shaman_lost_tribe', 'snake_lost_tribe',
+  'guardian_lost_tribe', 'stalker_lost_tribe', 'warrior_lost_tribe',
+  'armored_lost_tribe', 'scout_lost_tribe',
+]);
 
 export class YautjaPlayer {
   constructor(scene) {
@@ -31,6 +40,8 @@ export class YautjaPlayer {
     this.leatherNetTexture = null;
     this.skinTexture = null;
     this.maskTexture = null;
+    this.lostTribeTexture = null;
+    this.wolfCleanerTexture = null;
     if (typeof document !== 'undefined') {
       const textureLoader = new THREE.TextureLoader();
       this.leatherNetTexture = textureLoader.load(
@@ -56,7 +67,17 @@ export class YautjaPlayer {
         undefined,
         () => console.warn('Texture du bio-masque indisponible, alliage procédural conservé.'),
       );
-      [this.skinTexture, this.maskTexture].forEach((texture) => {
+      this.lostTribeTexture = textureLoader.load(
+        PLAYER_APPEARANCE_TEXTURES.lostTribe,
+        undefined, undefined,
+        () => console.warn('Texture rituelle Lost Tribe indisponible, alliage standard conservé.'),
+      );
+      this.wolfCleanerTexture = textureLoader.load(
+        PLAYER_APPEARANCE_TEXTURES.wolfCleaner,
+        undefined, undefined,
+        () => console.warn('Texture Cleaner indisponible, alliage standard conservé.'),
+      );
+      [this.skinTexture, this.maskTexture, this.lostTribeTexture, this.wolfCleanerTexture].forEach((texture) => {
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(1.4, 1.4);
@@ -335,13 +356,13 @@ export class YautjaPlayer {
   }
 
   createMaskGeometry(maskData) {
-    const angularShapes = ['celtic', 'samurai', 'royal'];
-    const boneShapes = ['bone', 'kok_viking', 'kwei'];
+    const angularShapes = ['celtic', 'samurai', 'royal', 'guardian', 'warrior', 'armored'];
+    const boneShapes = ['bone', 'kok_viking', 'kwei', 'boar'];
     const geometry = boneShapes.includes(maskData.shape)
       ? new THREE.DodecahedronGeometry(0.92, 1)
       : angularShapes.includes(maskData.shape)
         ? new THREE.BoxGeometry(1.55, 2.05, 0.72, 2, 2, 1)
-        : maskData.shape === 'aerial'
+        : ['aerial', 'scout'].includes(maskData.shape)
           ? new THREE.CylinderGeometry(0.78, 1.02, 1.95, 8)
         : new THREE.SphereGeometry(0.94, 20, 18);
     const profile = maskData.geometry ?? {};
@@ -372,11 +393,11 @@ export class YautjaPlayer {
       this.maskDetailGroup.add(tusk);
     };
 
-    if (['tracker', 'berserker', 'bone', 'kok_viking', 'kwei'].includes(maskData.shape)) {
+    if (['tracker', 'berserker', 'bone', 'kok_viking', 'kwei', 'boar'].includes(maskData.shape)) {
       addTusk(-0.64, -0.36);
       addTusk(0.64, 0.36);
     }
-    if (['ritual', 'celtic', 'ancestral', 'exile', 'samurai', 'royal', 'aerial', 'fugitive'].includes(maskData.shape)) {
+    if (['ritual', 'celtic', 'ancestral', 'exile', 'samurai', 'royal', 'aerial', 'fugitive', 'guardian', 'warrior', 'armored', 'stalker', 'scout'].includes(maskData.shape)) {
       const crest = new THREE.Mesh(
         new THREE.BoxGeometry(maskData.shape === 'ancestral' ? 0.28 : 0.42, 0.85, 0.2),
         detailMat,
@@ -422,6 +443,39 @@ export class YautjaPlayer {
     });
   }
 
+  applyPresetMaterialTexture(armorPresetId) {
+    const presetTexture = LOST_TRIBE_PRESET_IDS.has(armorPresetId)
+      ? this.lostTribeTexture
+      : armorPresetId === 'wolf_avpr'
+        ? this.wolfCleanerTexture
+        : null;
+
+    const materialBindings = [];
+    this.mesh.traverse((child) => {
+      if (!child.isMesh || !['armor', 'mask', 'accent'].includes(child.userData.appearanceChannel)) return;
+      const material = child.material === this.cloakMaterial
+        ? child.userData.materialBeforeCloak ?? child.userData.baseMaterial
+        : child.material;
+      if (material) materialBindings.push({ child, material });
+    });
+
+    const materials = new Set(materialBindings.map(({ material }) => material));
+    materials.forEach((material) => {
+      material.userData ??= {};
+      if (!Object.prototype.hasOwnProperty.call(material.userData, 'appearanceBaseMap')) {
+        material.userData.appearanceBaseMap = material.map ?? null;
+      }
+      material.map = presetTexture ?? material.userData.appearanceBaseMap;
+      material.needsUpdate = true;
+    });
+
+    materialBindings.forEach(({ child, material }) => {
+      child.userData.baseMaterial = material;
+      if (child.material !== this.cloakMaterial) child.material = material;
+    });
+    return presetTexture;
+  }
+
   applyCustomization(next = {}) {
     const preserveCloak = this.isCloaked;
     if (preserveCloak) this.restoreCloakMaterials();
@@ -453,6 +507,7 @@ export class YautjaPlayer {
     this.maskDetailGroup?.traverse((child) => {
       if (child.isMesh) child.userData.baseMaterial = child.material;
     });
+    this.applyPresetMaterialTexture(merged.armorPresetId);
     this.applyDreadStyle(merged.dreadStyleId);
     this.applyArmorFinish(merged.armorFinishId);
     this.rebuildWarpaint(merged.warpaintId);

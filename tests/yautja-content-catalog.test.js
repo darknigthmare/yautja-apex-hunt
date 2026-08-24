@@ -18,7 +18,14 @@ import {
   getYautjaContentById
 } from '../src/data/YautjaContentCatalog.js';
 
-const VALID_TIERS = new Set(['SCREEN', 'AVP_SCREEN', 'LICENSED_EU', 'ORIGINAL']);
+const VALID_TIERS = new Set([
+  'SCREEN',
+  'AVP_SCREEN',
+  'LICENSED_SCREEN_DESIGN',
+  'LICENSED_EU',
+  'MERCH_CONCEPT',
+  'ORIGINAL',
+]);
 const VALID_RUNTIME_STATUSES = new Set(['playable', 'encounter', 'customization', 'gallery', 'archive']);
 const ALLOWED_SOURCES = new Set([
   'predator1987',
@@ -37,10 +44,12 @@ const ALLOWED_SOURCES = new Set([
   'huntingGrounds',
   'avpOriginalComics',
   'avpPreyOmnibus',
+  'lostTribeDesigns',
+  'wolfArsenalDesigns',
 ]);
 
 test('la passe contenu respecte les seuils de production demandés', () => {
-  assert.equal(MASK_VARIANTS.length, 30);
+  assert.equal(MASK_VARIANTS.length, 38);
   assert.equal(DREAD_PALETTES.length, 8);
   assert.equal(SKIN_PALETTES.length, 8);
   assert.ok(ARMOR_PALETTES.length >= 10);
@@ -58,8 +67,9 @@ test('la passe contenu respecte les seuils de production demandés', () => {
     events: LEVEL_EVENT_CATALOG.length,
     bosses: HUNT_BOSS_CATALOG.length,
     support: SUPPORT_CATALOG.length,
-  }, { technologies: 27, vehicles: 13, enemies: 27, events: 17, bosses: 13, support: 13 });
-  assert.equal(TECH_CATALOG.length + VEHICLE_CATALOG.length + ENEMY_CATALOG.length + LEVEL_EVENT_CATALOG.length + HUNT_BOSS_CATALOG.length + SUPPORT_CATALOG.length, 110);
+  }, { technologies: 37, vehicles: 13, enemies: 27, events: 19, bosses: 13, support: 13 });
+  assert.equal(TECH_CATALOG.length + VEHICLE_CATALOG.length + ENEMY_CATALOG.length + LEVEL_EVENT_CATALOG.length + HUNT_BOSS_CATALOG.length + SUPPORT_CATALOG.length, 122);
+  assert.equal(ALL_YAUTJA_CONTENT.length, 196);
 });
 
 test('tous les identifiants sont uniques et chaque fiche expose son statut réel', () => {
@@ -121,16 +131,46 @@ test('le catalogue couvre largement les concepts établis à l’écran', () => 
   assert.ok(MASK_VARIANTS.some(({ id }) => id === 'mask_fugitive_2018'));
   assert.ok(MASK_VARIANTS.some(({ id }) => id === 'mask_kok_viking'));
   assert.ok(MASK_VARIANTS.some(({ id }) => id === 'mask_dek_badlands'));
+  for (const lostTribeMaskId of [
+    'mask_boar_lost_tribe',
+    'mask_shaman_lost_tribe',
+    'mask_snake_lost_tribe',
+    'mask_guardian_lost_tribe',
+    'mask_stalker_lost_tribe',
+    'mask_warrior_lost_tribe',
+    'mask_armored_lost_tribe',
+    'mask_scout_lost_tribe',
+  ]) {
+    assert.ok(MASK_VARIANTS.some(({ id }) => id === lostTribeMaskId), lostTribeMaskId);
+  }
   assert.ok(MASK_VARIANTS.some(({ id }) => id === 'mask_cleopatra_hg'));
   assert.ok(TECH_CATALOG.some(({ id }) => id === 'tech_cloak'));
   assert.ok(TECH_CATALOG.some(({ id }) => id === 'tech_voice_mimic'));
   assert.ok(TECH_CATALOG.some(({ id }) => id === 'tech_predator_killer_armor'));
   assert.ok(TECH_CATALOG.some(({ id }) => id === 'tech_father_yautja_sword_hg'));
+  for (const equipmentId of [
+    'tech_wolf_dual_plasma',
+    'tech_wolf_segmented_whip',
+    'tech_wolf_cleaner_case',
+    'tech_wolf_dissolving_fluid',
+    'tech_lost_shaman_staff_dagger',
+    'tech_lost_snake_scythes',
+    'tech_lost_warrior_axe_flail',
+    'tech_lost_armored_sword_shuriken',
+    'tech_lost_scout_sniper_merch',
+    'tech_badlands_spray_snake',
+  ]) {
+    assert.ok(TECH_CATALOG.some(({ id }) => id === equipmentId), equipmentId);
+  }
   assert.ok(VEHICLE_CATALOG.some(({ id }) => id === 'vehicle_city_clan_ship'));
   assert.ok(VEHICLE_CATALOG.some(({ id }) => id === 'vehicle_preserve_parachute_drop'));
   assert.ok(ENEMY_CATALOG.some(({ id }) => id === 'enemy_upgrade_predator_2018'));
   assert.ok(HUNT_BOSS_CATALOG.some(({ id }) => id === 'boss_berserker_super_predator'));
   assert.ok(HUNT_BOSS_CATALOG.some(({ id }) => id === 'boss_kok_warlord_predator'));
+  assert.equal(getYautjaContentById('event_gunnison_cleaner_duel')?.runtimeStatus, 'playable');
+  assert.equal(getYautjaContentById('event_kalisk_regeneration')?.runtimeStatus, 'playable');
+  assert.equal(getYautjaContentById('boss_wolf_cleaner')?.runtimeStatus, 'playable');
+  assert.equal(getYautjaContentById('boss_kalisk_badlands')?.runtimeStatus, 'playable');
   for (const existingBossId of ['goliath', 'xeno_queen', 'bad_blood', 'predalien']) {
     assert.ok(HUNT_BOSS_CATALOG.some(({ id }) => id === existingBossId), existingBossId);
   }

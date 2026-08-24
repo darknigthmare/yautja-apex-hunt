@@ -21,6 +21,11 @@ import {
   PLAYABLE_WEAPONS,
   WARPAINT_PATTERNS,
 } from './data/RuntimeEquipment.js';
+import {
+  MEDIA_COVERAGE_CATALOG,
+  MEDIA_PROVENANCE_TIERS,
+  MEDIA_RELEASE_STATUSES,
+} from './data/MediaCoverageCatalog.js';
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const RUNTIME_STATUS_LABELS = Object.freeze({
@@ -29,6 +34,7 @@ const RUNTIME_STATUS_LABELS = Object.freeze({
   customization: 'PERSONNALISATION',
   gallery: 'GALERIE 3D',
   archive: 'ARCHIVE',
+  partial: 'COUVERT EN PARTIE',
 });
 
 
@@ -108,6 +114,7 @@ export class HUDManager {
       events: document.getElementById('event-catalog-grid'),
       bosses: document.getElementById('boss-catalog-grid'),
       support: document.getElementById('support-catalog-grid'),
+      media: document.getElementById('media-coverage-grid'),
     };
 
     // The HUD is refreshed from the render loop. Keep a per-node value cache so
@@ -142,6 +149,8 @@ export class HUDManager {
     this.renderSkinCatalog();
     this.renderAppearanceCatalog();
     this.renderExpandedContentCatalog();
+    this.renderMediaCoverageCatalog();
+    this.updateContentCatalogCounts();
   }
 
   commit(element, key, value, mutate) {
@@ -296,6 +305,100 @@ export class HUDManager {
     this.renderContentGrid(this.contentGrids.events, LEVEL_EVENT_CATALOG);
     this.renderContentGrid(this.contentGrids.bosses, HUNT_BOSS_CATALOG);
     this.renderContentGrid(this.contentGrids.support, SUPPORT_CATALOG);
+  }
+
+  getSafeSourceUrl(sourceUrl) {
+    try {
+      const parsed = new URL(sourceUrl, globalThis.location?.href);
+      return parsed.protocol === 'https:' ? parsed.href : null;
+    } catch {
+      return null;
+    }
+  }
+
+  renderMediaCoverageCatalog() {
+    const container = this.contentGrids.media;
+    if (!container) return;
+
+    const cards = MEDIA_COVERAGE_CATALOG.map((entry) => {
+      const tier = MEDIA_PROVENANCE_TIERS[entry.provenanceTier]
+        ?? MEDIA_PROVENANCE_TIERS.PRODUCTION_ARCHIVE;
+      const card = document.createElement('article');
+      card.className = 'content-catalog-card media-coverage-card';
+      card.dataset.contentId = entry.id;
+      card.dataset.mediaStatus = entry.status;
+      card.style.setProperty('--lore-tier-color', tier.color);
+
+      const header = document.createElement('div');
+      header.className = 'content-card-header';
+      const heading = document.createElement('div');
+      const title = document.createElement('h4');
+      title.textContent = entry.title;
+      const meta = document.createElement('span');
+      meta.className = 'media-coverage-meta';
+      meta.textContent = `${entry.year} · ${entry.medium}`;
+      heading.append(title, meta);
+
+      const badges = document.createElement('div');
+      badges.className = 'content-card-badges';
+      const provenanceBadge = document.createElement('span');
+      provenanceBadge.className = 'codex-tier';
+      provenanceBadge.textContent = tier.shortLabel;
+      provenanceBadge.title = tier.label;
+      const releaseBadge = document.createElement('span');
+      releaseBadge.className = `media-release-status media-release-status-${entry.status.toLowerCase()}`;
+      releaseBadge.textContent = MEDIA_RELEASE_STATUSES[entry.status] ?? entry.status;
+      releaseBadge.title = 'Statut de publication de l’œuvre';
+      const runtimeBadge = document.createElement('span');
+      runtimeBadge.className = `runtime-status runtime-status-${entry.gameCoverage.runtimeStatus}`;
+      runtimeBadge.textContent = RUNTIME_STATUS_LABELS[entry.gameCoverage.runtimeStatus]
+        ?? RUNTIME_STATUS_LABELS.archive;
+      runtimeBadge.title = 'Couverture actuelle dans Apex Hunt';
+      badges.append(provenanceBadge, releaseBadge, runtimeBadge);
+      header.append(heading, badges);
+
+      const continuity = document.createElement('p');
+      continuity.className = 'media-coverage-continuity';
+      continuity.textContent = `Continuité : ${entry.continuity}`;
+      const summary = document.createElement('p');
+      summary.textContent = entry.gameCoverage.summary;
+      const targets = document.createElement('ul');
+      targets.className = 'media-coverage-targets';
+      entry.coverageTargets.forEach((target) => {
+        const item = document.createElement('li');
+        item.textContent = `${target.type.toUpperCase()} · ${target.label}`;
+        targets.appendChild(item);
+      });
+
+      const safeSourceUrl = this.getSafeSourceUrl(entry.sourceUrl);
+      const source = safeSourceUrl ? document.createElement('a') : document.createElement('span');
+      source.className = 'media-coverage-source';
+      source.textContent = safeSourceUrl ? 'Consulter la source' : 'Source externe indisponible';
+      if (safeSourceUrl) {
+        source.href = safeSourceUrl;
+        source.target = '_blank';
+        source.rel = 'noopener noreferrer';
+      }
+      card.append(header, continuity, summary, targets, source);
+      return card;
+    });
+
+    container.replaceChildren(...cards);
+  }
+
+  updateContentCatalogCounts() {
+    Object.values(this.contentGrids).forEach((grid) => {
+      if (!grid?.id) return;
+      const output = document.querySelector(`[data-count-for="${grid.id}"]`);
+      if (output) output.textContent = String(grid.childElementCount);
+    });
+
+    const totalOutput = document.querySelector('[data-content-total]');
+    if (totalOutput) {
+      const total = Object.values(this.contentGrids)
+        .reduce((count, grid) => count + (grid?.childElementCount ?? 0), 0);
+      totalOutput.textContent = String(total);
+    }
   }
 
   renderSkinCatalog() {

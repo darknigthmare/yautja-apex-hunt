@@ -100,7 +100,7 @@ export class MothershipHub {
     this.group.add(wall);
 
     const definitions = Object.values(HUNT_DEFINITIONS);
-    const spacing = definitions.length > 5 ? 10.5 : 12;
+    const spacing = 56 / Math.max(1, definitions.length - 1);
     definitions.forEach((definition, index) => {
       const x = (index - (definitions.length - 1) / 2) * spacing;
       const plaque = new THREE.Mesh(new THREE.BoxGeometry(7, 7, 1), this.createAlloyMaterial(0x313b46));
@@ -130,9 +130,9 @@ export class MothershipHub {
   }
 
   createMissionPedestals() {
-    const colors = [0xff3300, 0x00ff66, 0x00f0ff, 0xff0055, 0xff7a2e, 0xffc65a];
+    const colors = [0xff3300, 0x00ff66, 0x00f0ff, 0xff0055, 0xff7a2e, 0xffc65a, 0x67e8f9, 0x9d5cff];
     const definitions = Object.values(HUNT_DEFINITIONS);
-    const spacing = definitions.length > 5 ? 11.5 : 13;
+    const spacing = 54 / Math.max(1, definitions.length - 1);
 
     definitions.forEach((definition, index) => {
       const x = (index - (definitions.length - 1) / 2) * spacing;

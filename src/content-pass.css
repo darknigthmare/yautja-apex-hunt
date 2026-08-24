@@ -180,6 +180,21 @@
 .runtime-status-customization { color: #ffca55; }
 .runtime-status-gallery { color: #c195ff; }
 .runtime-status-archive { color: #9aa7b5; }
+.runtime-status-partial { color: #ffca55; }
+.media-release-status {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  color: #dbe6ef;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  line-height: 1;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+.media-release-status-cut,
+.media-release-status-unreleased { color: #ff8b7f; }
+.media-release-status-promo,
+.media-release-status-alt_crossover { color: #e4a1ff; }
 .content-catalog-card:has(.runtime-status-playable),
 .content-catalog-card:has(.runtime-status-encounter) {
   box-shadow: inset 0 0 24px rgba(54, 255, 205, 0.045);
@@ -203,6 +218,39 @@
   line-height: 1.35;
   margin-top: 9px;
 }
+.media-coverage-card {
+  min-height: 255px;
+}
+.media-coverage-meta {
+  color: #9eafbf;
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  margin-top: 4px;
+}
+.media-coverage-card .media-coverage-continuity {
+  color: var(--lore-tier-color, var(--yautja-cyan));
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.025em;
+}
+.media-coverage-targets {
+  color: #b7c7d5;
+  font-size: 10px;
+  line-height: 1.45;
+  margin: 9px 0 0;
+  padding-left: 18px;
+}
+.media-coverage-source {
+  color: #79ecff;
+  display: inline-block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  margin-top: 10px;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.media-coverage-source:hover { color: #fff0a4; }
 
 body.high-contrast .appearance-forge,
 body.high-contrast .expanded-content-vault,

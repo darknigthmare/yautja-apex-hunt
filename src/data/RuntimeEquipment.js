@@ -58,6 +58,8 @@ export const PLAYER_GADGETS = Object.freeze([
 export const ARMOR_PRESET_MASK_IDS = Object.freeze({
   jungle_1987: 'mask_jungle_hunter_1987', city_1990: 'mask_city_hunter_1990',
   elder_lost_tribe: 'mask_elder_lost_tribe_1990', scar_avp: 'mask_scar_avp',
+  boar_lost_tribe: 'mask_boar_lost_tribe', shaman_lost_tribe: 'mask_shaman_lost_tribe', snake_lost_tribe: 'mask_snake_lost_tribe', guardian_lost_tribe: 'mask_guardian_lost_tribe',
+  stalker_lost_tribe: 'mask_stalker_lost_tribe', warrior_lost_tribe: 'mask_warrior_lost_tribe', armored_lost_tribe: 'mask_armored_lost_tribe', scout_lost_tribe: 'mask_scout_lost_tribe',
   celtic_avp: 'mask_celtic_avp', chopper_avp: 'mask_chopper_avp', wolf_avpr: 'mask_wolf_avpr',
   berserker_2010: 'mask_berserker_2010', falconer_2010: 'mask_falconer_2010', tracker_2010: 'mask_tracker_2010',
   feral_2022: 'mask_feral_2022', fugitive_2018: 'mask_fugitive_2018',

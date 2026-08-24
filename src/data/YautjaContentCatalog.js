@@ -13,7 +13,7 @@ import {
 // des adaptations de Yautja: Apex Hunt quand `implementationOriginal` est vrai.
 
 const PLAYABLE_CONTENT_IDS = new Set([
-  'goliath', 'xeno_queen', 'bad_blood', 'predalien', 'boss_berserker_super_predator', 'boss_feral_2022',
+  'goliath', 'xeno_queen', 'bad_blood', 'predalien', 'boss_berserker_super_predator', 'boss_feral_2022', 'boss_wolf_cleaner', 'boss_kalisk_badlands',
   'tech_biomask', 'tech_cloak', 'tech_wrist_computer', 'tech_wrist_blades', 'tech_plasma_caster', 'tech_tri_laser', 'tech_self_destruct', 'tech_medicomp', 'tech_voice_mimic', 'tech_smart_disc', 'tech_combistick', 'tech_net_launcher', 'tech_speargun', 'tech_yautja_bow', 'tech_falcon_drone', 'tech_wrist_shield', 'tech_shuriken_avp',
 ]);
 const ENCOUNTER_CONTENT_IDS = new Set([
