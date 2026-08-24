@@ -70,6 +70,24 @@ Le terme **kiande amedha**, Ryushi et de nombreux détails de castes ou de marqu
 
 Le sélecteur autorise toute cible sur tout lieu. Cette liberté de gameplay ne crée pas un événement canon.
 
+### Contrat spatial et environnemental v1.6
+
+Les architectures, itinéraires, archives interactives et dangers de la passe level design sont des compositions de gameplay. Un prop inspiré d’un vocabulaire visuel écran ne prouve ni qu’un événement précis a eu lieu, ni que tous les clans bâtissent et chassent de la même manière.
+
+- **Jungle :** porte rituelle, camp humain abandonné, arbre à trophées et traces de plasma organisent une chasse `ORIGINAL` sur une base de jungle `SCREEN` ; les trois itinéraires et les prises anciennes appartiennent au récit de cette carte.
+- **LV-426 :** sas colonial, nursery, estrade royale, cocons et résidus Cleaner réunissent des éléments `SCREEN`/`AVP_SCREEN` dans une carte `ORIGINAL` ; les journaux, la position de la ruche et le passage antérieur d’un Cleaner ne sont pas des événements de film revendiqués.
+- **Ryushi :** homestead, château d’eau, enclos et galeries condamnées prolongent le cadre `LICENSED_EU` ; la topologie, la balise sismique, le crawler et la trace de blooding sont propres au jeu.
+- **Yautja Prime :** porte des Anciens, dais de blooding, sanctuaire d’armes et galerie de lignée sont `ORIGINAL` sur une base `SCREEN` ; leurs inscriptions décrivent le clan joué, pas une loi universelle de l’espèce.
+- **Genna :** épave d’expédition, aire du Kalisk, réseau synthétique et organismes régénératifs adaptent un monde `SCREEN` dans une composition `ORIGINAL` ; les relevés, l’échec du confinement et l’emplacement du nid restent propres au contrat jouable.
+
+Le vaisseau-mère suit la même règle : sa forge, son armurerie, sa galerie de trophées, ses balises et son organisation intérieure servent la navigation et la progression d’*Apex Hunt*. Ils ne constituent pas un plan canonique d’un appareil vu dans un film. Les quatre matières OpenAI de cette passe sont elles aussi des créations originales : elles évoquent des fonctions de décor sans reproduire un panneau, une membrane, un symbole ou un accessoire officiel précis.
+
+### Provenance des POI et props v1.6
+
+Les cinq installations, six sanctuaires et huit signatures de POI sont des outils de différenciation et de narration environnementale d’*Apex Hunt*. Leur présence persistante dans la sauvegarde v4, leur récompense anti-farm et leurs quatre effets — récupération de santé/énergie, scans tactiques ou endurance/bonus d’honneur — relèvent entièrement du gameplay. Ces quantités et effets ne décrivent ni une technologie médicale canonique, ni une organisation certaine des clans, ni l’architecture d’un monde ou vaisseau officiel.
+
+Chaque décor conserve le tier de sa fiche ou de son biome : `SCREEN`, `AVP_SCREEN`, `LICENSED_SCREEN_DESIGN`, `LICENSED_EU`, `MERCH_CONCEPT` ou `ORIGINAL`. Un matériau inspiré d’un média écran ne change pas une disposition de niveau `ORIGINAL` en événement canonique. Les quatre textures OpenAI de la v1.6 sont des créations fan-made originales, sans revendication de droits sur les designs de Predator ou Alien.
+
 ## Cibles actuelles
 
 | ID runtime | Cible | Provenance de la mission | Règle |
@@ -120,7 +138,7 @@ Boar, Shaman, Snake, Guardian, Stalker, Warrior, Armored Lost et Scout sont disp
 - `PROMO` : contenu promotionnel isolé du lore jouable ;
 - `ALT_CROSSOVER` : crossover référencé sans fusion avec la continuité principale.
 
-Le tableur `Encyclopedie_exhaustive_franchise_Predator.xlsx` fourni dans la conversation recense 915 éléments uniques. Il sert de backlog quasi exhaustif pour détecter les oublis, pas de source canonique autonome : une ligne peut relever d’un film, d’un produit licencié, d’une adaptation, d’un wiki ou d’un point à vérifier. Aucun lot n’est importé automatiquement ; chaque élément retenu reçoit une source, une provenance et un statut runtime.
+Le tableur évoqué par l’utilisateur n’était pas accessible dans le workspace ni parmi les pièces jointes disponibles pendant cette passe. Il n’a donc pas servi de source, de compteur ou de backlog effectivement vérifié. Lorsqu’il sera disponible, chaque ligne retenue devra être rapprochée d’une source indépendante, d’une provenance et d’un statut runtime avant toute intégration.
 
 ## Limites de couverture assumées
 

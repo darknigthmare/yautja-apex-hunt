@@ -59,12 +59,14 @@ export class HuntSupplyCache {
     position = new THREE.Vector3(),
     interactionDistance = 9,
     cacheType = 'balanced',
+    reducedMotion = false,
   } = {}) {
     this.scene = scene ?? null;
     this.id = id ?? `hunt_cache_${++cacheSequence}`;
     this.used = false;
     this.disposed = false;
     this.age = 0;
+    this.reducedMotion = Boolean(reducedMotion);
     this.cacheType = HUNT_CACHE_TYPES[cacheType] ? cacheType : 'balanced';
     this.cacheConfig = HUNT_CACHE_TYPES[this.cacheType];
     this.interactionDistance = Math.max(1, Number(interactionDistance) || 9);
@@ -76,6 +78,7 @@ export class HuntSupplyCache {
     this.mesh.userData.cacheId = this.id;
     this.mesh.userData.cacheType = this.cacheType;
     this.scene?.add?.(this.mesh);
+    if (this.reducedMotion) this.applyVisualState();
   }
 
   createMesh() {
@@ -132,14 +135,28 @@ export class HuntSupplyCache {
     return group;
   }
 
-  update(delta) {
-    if (this.disposed || !Number.isFinite(delta) || delta <= 0) return;
+  applyVisualState() {
+    const intensity = this.used
+      ? 0.25
+      : (this.reducedMotion ? 1.85 : 1.85 + Math.sin(this.age * 3.2) * 0.4);
+    this.energyMaterial.emissiveIntensity = intensity;
+    this.glow.intensity = intensity;
+  }
+
+  setReducedMotion(enabled) {
+    const reducedMotion = Boolean(enabled);
+    const changed = reducedMotion !== this.reducedMotion;
+    this.reducedMotion = reducedMotion;
+    if (changed && !this.disposed) this.applyVisualState();
+    return changed;
+  }
+
+  update(delta, { reducedMotion = this.reducedMotion } = {}) {
+    if (this.disposed) return;
+    this.setReducedMotion(reducedMotion);
+    if (!Number.isFinite(delta) || delta <= 0) return;
     this.age += delta;
-    if (!this.used) {
-      const pulse = 1.85 + Math.sin(this.age * 3.2) * 0.4;
-      this.energyMaterial.emissiveIntensity = pulse;
-      this.glow.intensity = pulse;
-    }
+    this.applyVisualState();
   }
 
   tryInteract(player) {
@@ -154,8 +171,7 @@ export class HuntSupplyCache {
     this.lidPivot.rotation.x = -Math.PI * 0.42;
     this.mesh.userData.used = true;
     this.mesh.userData.interactable = false;
-    this.energyMaterial.emissiveIntensity = 0.25;
-    this.glow.intensity = 0.25;
+    this.applyVisualState();
 
     return {
       type: 'cache_opened',
@@ -186,6 +202,7 @@ export class LevelEventDirector {
     maxVehicles = 1,
     maxCaches = 1,
     schedule = DEFAULT_LEVEL_EVENT_SCHEDULE,
+    reducedMotion = false,
   } = {}) {
     this.scene = scene ?? null;
     this.rng = typeof rng === 'function' ? rng : Math.random;
@@ -212,10 +229,20 @@ export class LevelEventDirector {
     this.activeHazard = null;
     this.huntId = null;
     this.biomeId = null;
+    this.reducedMotion = Boolean(reducedMotion);
   }
 
   get containers() {
     return this.caches;
+  }
+
+  setReducedMotion(enabled) {
+    const reducedMotion = Boolean(enabled);
+    const changed = reducedMotion !== this.reducedMotion;
+    this.reducedMotion = reducedMotion;
+    this.vehicles.forEach((vehicle) => vehicle.setReducedMotion(reducedMotion));
+    this.caches.forEach((cache) => cache.setReducedMotion(reducedMotion));
+    return changed;
   }
 
   start({ huntId = 'goliath', biomeId = 'jungle' } = {}) {
@@ -253,6 +280,96 @@ export class LevelEventDirector {
       0,
       origin.z + Math.sin(angle) * radius,
     );
+  }
+
+  getEncounterSocket(environment, kind, ordinal = 0, count = 4) {
+    if (typeof environment?.getEncounterSockets !== 'function') return null;
+    const requestedCount = Math.max(1, Math.floor(Number(count) || 4));
+    const sockets = environment.getEncounterSockets(kind, requestedCount);
+    if (!Array.isArray(sockets) || sockets.length === 0) return null;
+    const validSockets = sockets
+      .map((socket) => readPosition({ position: socket }, null))
+      .filter(Boolean);
+    if (validSockets.length === 0) return null;
+
+    // Le décalage respecte le RNG injecté, puis l'ordinal fait tourner la liste
+    // stable des sockets afin d'éviter d'empiler toutes les vagues au même point.
+    const offset = Math.floor(this.randomUnit() * validSockets.length);
+    const index = (offset + Math.max(0, Math.floor(ordinal))) % validSockets.length;
+    return validSockets[index].clone?.() ?? new THREE.Vector3(
+      validSockets[index].x,
+      validSockets[index].y,
+      validSockets[index].z,
+    );
+  }
+
+  getSafeGroundPosition(environment, preferred, { clearance = 4 } = {}) {
+    const requested = readPosition({ position: preferred }, new THREE.Vector3());
+    let resolved = requested.clone?.() ?? new THREE.Vector3(requested.x, requested.y, requested.z);
+
+    if (typeof environment?.getSafeSpawnPosition === 'function') {
+      const safePosition = environment.getSafeSpawnPosition(resolved.clone(), { clearance });
+      const safeVector = readPosition({ position: safePosition }, null);
+      if (safeVector) {
+        resolved = safeVector.clone?.() ?? new THREE.Vector3(safeVector.x, safeVector.y, safeVector.z);
+      }
+    }
+
+    if (typeof environment?.sampleHeight === 'function') {
+      const terrainY = Number(environment.sampleHeight(resolved));
+      if (Number.isFinite(terrainY)) resolved.y = terrainY;
+    }
+    return resolved;
+  }
+
+  getNearbyColliderTop(environment, groundPoint, horizontalMargin = 14) {
+    let highest = groundPoint.y;
+    for (const collider of environment?.obstacleColliders ?? []) {
+      if (!Number.isFinite(collider?.x) || !Number.isFinite(collider?.z)) continue;
+      const radius = Math.max(0, Number(collider.radius) || 0);
+      const distance = Math.hypot(groundPoint.x - collider.x, groundPoint.z - collider.z);
+      if (distance > radius + horizontalMargin) continue;
+
+      let baseY = Number(collider.baseY);
+      if (!Number.isFinite(baseY) && typeof environment?.sampleHeight === 'function') {
+        baseY = Number(environment.sampleHeight(collider.x, collider.z));
+      }
+      if (!Number.isFinite(baseY)) baseY = groundPoint.y;
+      const height = Math.max(0, Number(collider.height) || radius * 2);
+      highest = Math.max(highest, baseY + height);
+    }
+    return highest;
+  }
+
+  createFlightPath(context) {
+    const { player, environment } = context;
+    const socket = this.getEncounterSocket(environment, 'flyby', this.vehicleSpawnCount, 4);
+    const preferred = socket ?? this.positionAround(player, 14, 24);
+    const groundPoint = this.getSafeGroundPosition(environment, preferred, { clearance: 13 });
+    const nearbyColliderTop = this.getNearbyColliderTop(environment, groundPoint);
+    const hoverY = Math.max(18, groundPoint.y + 18, nearbyColliderTop + 10);
+    const hoverPoint = groundPoint.clone();
+    hoverPoint.y = hoverY;
+
+    const side = this.randomUnit() < 0.5 ? -1 : 1;
+    return {
+      entryPoint: new THREE.Vector3(
+        hoverPoint.x + side * 150,
+        hoverY + 38,
+        hoverPoint.z - 125,
+      ),
+      flybyStart: new THREE.Vector3(
+        hoverPoint.x + side * 72,
+        hoverY + 18,
+        hoverPoint.z - 54,
+      ),
+      hoverPoint,
+      exitPoint: new THREE.Vector3(
+        hoverPoint.x - side * 165,
+        hoverY + 42,
+        hoverPoint.z + 145,
+      ),
+    };
   }
 
   selectEnemyType(ordinal = this.enemySpawnCount + 1) {
@@ -311,19 +428,24 @@ export class LevelEventDirector {
   triggerEvent(event, context) {
     if (event.kind === 'flyby') {
       if (this.vehicleSpawnCount >= this.maxVehicles) return;
-      const hoverPoint = this.positionAround(context.player, 14, 24);
-      hoverPoint.y = 10;
-      const side = this.randomUnit() < 0.5 ? -1 : 1;
+      const flightPath = this.createFlightPath(context);
       const vehicle = new HuntVehicle(this.root, {
         type: this.selectVehicleType(),
-        entryPoint: new THREE.Vector3(side * 170, 65, hoverPoint.z - 115),
-        flybyStart: new THREE.Vector3(side * 75, 34, hoverPoint.z - 48),
-        hoverPoint,
-        exitPoint: new THREE.Vector3(-side * 190, 82, hoverPoint.z + 145),
+        ...flightPath,
+        interactionDistance: 34,
+        reducedMotion: this.reducedMotion,
       });
       this.vehicleSpawnCount += 1;
       this.vehicles.push(vehicle);
-      this.emit({ type: 'flyby', vehicleType: vehicle.type, sourceId: vehicle.id, vehicle });
+      this.emit({
+        type: 'flyby',
+        vehicleType: vehicle.type,
+        sourceId: vehicle.id,
+        vehicle,
+        hoverPoint: { x: flightPath.hoverPoint.x, y: flightPath.hoverPoint.y, z: flightPath.hoverPoint.z },
+        entryPoint: { x: flightPath.entryPoint.x, y: flightPath.entryPoint.y, z: flightPath.entryPoint.z },
+        exitPoint: { x: flightPath.exitPoint.x, y: flightPath.exitPoint.y, z: flightPath.exitPoint.z },
+      });
       return;
     }
 
@@ -342,7 +464,14 @@ export class LevelEventDirector {
         synthetic: 'enemy_combat_synthetic_badlands',
       };
       this.enemySpawnCount = ordinal;
-      const position = this.positionAround(context.player, 34, 58);
+      const socket = this.getEncounterSocket(
+        context.environment,
+        'reinforcement',
+        ordinal - 1,
+        Math.max(4, this.maxEnemySpawns),
+      );
+      const preferred = socket ?? this.positionAround(context.player, 34, 58);
+      const position = this.getSafeGroundPosition(context.environment, preferred, { clearance: 5 });
       this.emit({
         type: 'spawn_enemy',
         enemyType,
@@ -369,9 +498,18 @@ export class LevelEventDirector {
 
     if (event.kind === 'spawn_cache') {
       if (this.cacheSpawnCount >= this.maxCaches) return;
-      const position = this.positionAround(context.player, 6, 10);
+      const socket = this.getEncounterSocket(
+        context.environment,
+        'cache',
+        this.cacheSpawnCount,
+        Math.max(4, this.maxCaches),
+      );
+      // Sans socket de décor dédié, le coffre reste dans une bande lisible et
+      // jouable de 10 à 16 m, puis passe par la même validation que les PNJ.
+      const preferred = socket ?? this.positionAround(context.player, 10, 16);
+      const position = this.getSafeGroundPosition(context.environment, preferred, { clearance: 6 });
       const cacheType = this.selectCacheType();
-      const cache = new HuntSupplyCache(this.root, { position, cacheType });
+      const cache = new HuntSupplyCache(this.root, { position, cacheType, reducedMotion: this.reducedMotion });
       this.cacheSpawnCount += 1;
       this.caches.push(cache);
       this.emit({
@@ -384,30 +522,32 @@ export class LevelEventDirector {
     }
   }
 
-  advanceEntities(delta) {
+  advanceEntities(delta, reducedMotion = this.reducedMotion) {
     if (delta <= 0) return;
-    this.vehicles.forEach((vehicle) => vehicle.update(delta));
-    this.caches.forEach((cache) => cache.update(delta));
+    this.vehicles.forEach((vehicle) => vehicle.update(delta, { reducedMotion }));
+    this.caches.forEach((cache) => cache.update(delta, { reducedMotion }));
     this.vehicles = this.vehicles.filter((vehicle) => vehicle.state !== 'disposed');
     this.caches = this.caches.filter((cache) => !cache.disposed);
   }
 
-  update(delta, { player = null, boss = null } = {}) {
-    if (!this.active || this.disposed || !Number.isFinite(delta) || delta <= 0) return [];
+  update(delta, { player = null, boss = null, environment = null, reducedMotion = this.reducedMotion } = {}) {
+    if (this.disposed) return [];
+    this.setReducedMotion(reducedMotion);
+    if (!this.active || !Number.isFinite(delta) || delta <= 0) return [];
     const endTime = this.elapsed + delta;
-    const context = { player, boss };
+    const context = { player, boss, environment, reducedMotion: this.reducedMotion };
     this.currentSignals = [];
 
     while (this.scheduleIndex < this.scheduleTemplate.length) {
       const event = this.scheduleTemplate[this.scheduleIndex];
       if (event.at > endTime) break;
-      this.advanceEntities(Math.max(0, event.at - this.elapsed));
+      this.advanceEntities(Math.max(0, event.at - this.elapsed), this.reducedMotion);
       this.elapsed = event.at;
       this.triggerEvent(event, context);
       this.scheduleIndex += 1;
     }
 
-    this.advanceEntities(Math.max(0, endTime - this.elapsed));
+    this.advanceEntities(Math.max(0, endTime - this.elapsed), this.reducedMotion);
     this.elapsed = endTime;
     const emitted = this.currentSignals;
     this.currentSignals = null;

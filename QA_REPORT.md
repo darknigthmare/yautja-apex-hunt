@@ -1,7 +1,7 @@
-# Rapport QA — release 1.5.0
+# Rapport QA — release 1.5.0 publiée / worktree 1.6.0 validé localement
 
 **Date :** 24 août 2026
-**Statut :** release 1.5.0 validée, publiée sur la production Vercel et sans défaut P0/P1 connu.
+**Statut :** release 1.5.0 validée et publiée ; worktree 1.6.0 validé localement, push et production Vercel encore ouverts.
 **Production :** <https://yautja-apex-hunt.vercel.app/>
 **Déploiement :** `dpl_6PrjSve8RsKqoDh7TWp2NmD6BPRA` — `READY`, cible `production`
 **Source :** <https://github.com/darknigthmare/yautja-apex-hunt>
@@ -32,29 +32,65 @@
 - [x] galerie de huit trophées et parité entre les contrats, les biomes et le Codex ;
 - [x] trois textures originales OpenAI en WebP 1024×1024 : alliage Cleaner, os rituel Lost Tribe et peau adaptative Kalisk.
 
-## Validation du classeur de franchise
+## État du classeur de franchise
 
-Le classeur `Encyclopedie_exhaustive_franchise_Predator.xlsx` fourni dans la conversation recense 915 éléments uniques. Il a servi de backlog de contrôle par film et média, pas de source canonique autonome ni d’import automatique. Chaque ajout retenu dans cette passe possède un niveau de provenance, une source et un statut runtime explicites.
+Le classeur évoqué par l’utilisateur n’était pas accessible dans le workspace ni parmi les pièces jointes disponibles pendant cette passe. Il n’a donc pas été lu, importé ni utilisé pour produire un nombre d’entrées. La couverture par film et média repose ici sur le registre versionné et ses niveaux de provenance ; une confrontation au tableur reste un gate documentaire futur.
 
 Les prochains lots déjà identifiés sont une carte de Gunnison réellement multi-niveaux, des campagnes complètes *Killer of Killers* et *Alien vs. Predator*, puis une faune et une flore de Genna plus variées.
+
+## Passe v1.6 — état de validation props et level design
+
+### Gates exécutés
+
+- [x] suite automatisée finale : 193/193 tests ;
+- [x] build Vite de production : 42 modules transformés, terminé sans erreur ;
+- [x] contrôle syntaxique `node --check` : 11 modules validés ;
+- [x] `npm audit --omit=dev` : 0 vulnérabilité ;
+- [x] `git diff --check` : aucune erreur ;
+- [x] contrats statiques des cinq plans de biome, du hub, des POI persistants, des apparitions sûres et de l’instancing ;
+- [x] Chromium desktop local : titre et missions, hub jouable, ouverture de la console avec `P`, commandes tactiles masquées sur desktop et cinq biomes inspectés en masque normal ;
+- [x] navigateur local : aucun overlay d’erreur et 0 erreur console ;
+- [x] quatre WebP v1.6 chargés par Chromium et vérifiés en HTTP 200 local ;
+- [ ] contrôle sur appareil tactile/mobile réel ;
+- [ ] push et déploiement Vercel de la v1.6.
+
+La validation locale desktop est terminée. Elle ne vaut pas publication : aucun push de la v1.6, aucun déploiement Vercel v1.6 et aucun HTTP de production v1.6 ne sont revendiqués dans ce rapport.
+
+### Budgets et contrats contrôlés dans le code
+
+| Surface | Contrat v1.6 |
+| --- | --- |
+| Cinq biomes | 8 groupes de props, 3 POI et 1–2 dangers par biome |
+| Variété transverse | 5 installations, 6 sanctuaires et 8 signatures de POI distinctes |
+| Hub explorable | WASD/flèches, manette et tactile, 4 stations, 27 colliders, 273 draw calls, 17 239 triangles |
+| POI jouables | `decode_record` : +30 santé/+25 énergie ; `tune_beacon` : scan 10 s/150 m ; `scan_archive` : +18 énergie et scan 4 s/75 m ; `scan_trophies` : +40 endurance et honneur ×1,2, avec gains bornés |
+| Persistance | POI analysés enregistrés dans la sauvegarde v4 additive ; effet, honneur et sauvegarde non répétables |
+| Sécurité spatiale | apparitions sûres, caches/survols éloignés, couverture projectile et limites circulaires |
+| Éclairage lisible | palette propre à chaque biome, remplissage ambiant et hémisphérique, key light placée côté joueur ; visibilité et retrait au `dispose` couverts par `biome-lighting-readability.test.js` |
+| Instancing | 136 draw calls statiques théoriquement évités |
+| Genna | 252 → 89 draw calls (-64,7 %), 5 lots, 168 instances, 31 889 triangles, 28 plantes |
+| Accessibilité | `reducedMotion` propagé à l’environnement, la météo, le hub, les navettes et les conteneurs ; transitions, états et interactions préservés |
+| Textures v1.6 | 4 WebP originaux OpenAI 1254×1254, chargés dans Chromium et répondant en HTTP 200 local ; production ouverte |
 
 ## Reproduction rapide
 
 ```powershell
 npm.cmd test
 npm.cmd run build
-npm.cmd audit --audit-level=high
+npm.cmd audit --omit=dev
 git diff --check
 ```
 
-Puis ouvrir la production, entrer dans le vaisseau-mère et vérifier :
+Puis lancer le serveur local et vérifier sur Chromium desktop :
 
-1. les huit cartes de contrat et les 29 fiches média ;
-2. le lancement de Wolf depuis un secteur différent, avec bascule automatique vers LV-426 ;
-3. le lancement du Kalisk, avec bascule automatique vers Genna et HUD carapace/noyau ;
-4. l’Armurerie, ses 38 masques et les huit variantes Lost Tribe ;
-5. le viewport mobile 390×844 sans débordement horizontal.
+1. l’écran titre, le sélecteur de missions et l’entrée dans le hub ;
+2. le déplacement dans le hub et l’ouverture de la console avec `P` ;
+3. l’absence des commandes tactiles sur desktop ;
+4. les cinq biomes en masque normal, sans overlay ni erreur console ;
+5. les quatre chemins WebP v1.6 en HTTP 200 local.
 
 ## Verdict
 
 La 1.5.0 ne se limite pas à ajouter des noms au Codex : Wolf et le Kalisk possèdent leurs propres boucles de combat, états, dangers, points faibles, textures et contrats. La couverture du Lost Tribe et des médias reste clairement séparée par provenance, et la production déployée a franchi les gates automatisés, navigateur, responsive, sécurité, assets et Vercel.
+
+La 1.6.0 franchit ses gates locaux avec 193/193 tests, 42 modules Vite, 0 vulnérabilité de production, 11 modules contrôlés syntaxiquement, un diff-check propre et le parcours Chromium desktop décrit ci-dessus. Le push et la production Vercel restent volontairement ouverts.

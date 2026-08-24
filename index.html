@@ -28,7 +28,7 @@
 </head>
 <body class="app-shell">
   <main id="game-stage" aria-label="Zone de jeu">
-  <canvas id="game-canvas" aria-label="Vue 3D de la chasse" tabindex="-1"></canvas>
+  <canvas id="game-canvas" aria-label="Vue 3D du vaisseau-mère et des chasses" tabindex="-1"></canvas>
 
   <div id="vision-overlay" class="vision-normal" aria-hidden="true"></div>
   <div id="scanline-overlay" aria-hidden="true"></div>
@@ -159,12 +159,25 @@
       <div id="weapon-selector" role="group" aria-label="Arsenal Yautja jouable"></div>
 
       <div id="action-prompt" class="hidden">
-        <div class="prompt-key">[E]</div>
+        <div class="prompt-key">[E / A]</div>
         <div class="prompt-text" id="action-prompt-text">RÉCOLTER LE TROPHÉE YAUTJA</div>
       </div>
     </div>
 
     <div id="log-banner" class="hidden"></div>
+    <div id="touch-hub-controls" class="touch-hub-controls hidden" aria-label="Commandes tactiles du vaisseau-mère">
+      <div class="touch-hub-dpad" role="group" aria-label="Déplacement dans le vaisseau-mère">
+        <button class="touch-hub-up" type="button" data-hub-move="up" aria-label="Avancer">▲</button>
+        <button class="touch-hub-left" type="button" data-hub-move="left" aria-label="Aller à gauche">◀</button>
+        <button class="touch-hub-down" type="button" data-hub-move="down" aria-label="Reculer">▼</button>
+        <button class="touch-hub-right" type="button" data-hub-move="right" aria-label="Aller à droite">▶</button>
+      </div>
+      <div class="touch-hub-actions" role="group" aria-label="Actions dans le vaisseau-mère">
+        <button id="btn-touch-hub-interact" type="button">UTILISER</button>
+        <button id="btn-touch-hub-console" type="button">CONSOLE</button>
+      </div>
+    </div>
+
   </div>
   </main>
 
@@ -187,8 +200,9 @@
         <div><strong>[V] :</strong> Mode de vision</div>
         <div><strong>[C] :</strong> Camouflage optique</div>
         <div><strong>[1] à [0] :</strong> 10 armes Yautja jouables</div>
-        <div><strong>[E] :</strong> Récolter un trophée d'honneur</div>
-        <div><strong>[Échap] / [P] :</strong> Pause et options</div>
+        <div><strong>[E] / [A] / tactile :</strong> Interagir avec une station ou récolter un trophée</div>
+        <div><strong>[Échap] / [P] :</strong> Console du hub ou pause en chasse</div>
+        <div><strong>[Start] / [Select] :</strong> Rouvrir la console pendant l’exploration du hub</div>
         <div><strong>Clic droit :</strong> Zoom thermique si débloqué</div>
       </div>
       <button id="btn-start-game" type="button">ENTRER DANS LE VAISSEAU-MÈRE</button>
@@ -196,10 +210,20 @@
   </div>
 
   <!-- Mothership Mission, Armory, Codex & Settings Modal -->
-  <div id="mission-modal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="mission-title">
+  <div id="mission-modal" class="hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="mission-title">
     <div class="modal-box mission-box modal-scroll" tabindex="-1">
       <p class="modal-eyebrow">VAISSEAU-MÈRE · CONSOLE DE CHASSE</p>
       <h2 id="mission-title">ARMURERIE & CONTRATS YAUTJA</h2>
+
+      <div class="mission-modal-actions" role="group" aria-label="Exploration libre du vaisseau-mère">
+        <button
+          id="btn-explore-hub"
+          class="hub-explore-button"
+          type="button"
+          aria-describedby="hub-explore-help"
+        >EXPLORER LE VAISSEAU-MÈRE</button>
+        <p id="hub-explore-help">Clavier : WASD / flèches, Maj, E, Échap ou P. Manette : sticks, A et Start. Sur écran tactile, utilisez le pavé, UTILISER et CONSOLE.</p>
+      </div>
 
       <div class="tab-row" role="tablist" aria-label="Sections du vaisseau-mère">
         <button id="tab-btn-missions" class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="tab-content-missions">CONTRATS</button>

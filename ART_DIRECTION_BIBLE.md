@@ -74,6 +74,16 @@ Une même texture ne doit pas être appliquée à tous les objets d'une zone san
 
 Les props racontent une fonction : trophée, forge, piédestal, perchoir, couverture, obstruction ou repère. Un prop purement décoratif ne doit ni promettre une interaction inexistante ni bloquer invisiblement le joueur. Les trophées restent assombris ou verrouillés avant validation de la chasse associée.
 
+## Passe visuelle v1.6 — identité des espaces
+
+Les cinq terrains utilisent la même grammaire de production — huit groupes de props, trois POI et un à deux dangers — mais pas les mêmes silhouettes. Les cinq installations doivent lire comme fonctionnelles, les six sanctuaires comme rituels ; les huit signatures visuelles globales sont combinées en trois repères distincts sur chaque carte. Couleur, hauteur, vide autour du volume et éclairage priment sur l’accumulation de petits objets.
+
+Le hub reste navigable avant d’être décoratif. Ses quatre stations doivent être reconnaissables depuis les routes principales ; ses 27 colliders ne doivent jamais créer de mur invisible ambigu. Le budget de 273 draw calls et 17 239 triangles constitue la référence de composition v1.6.
+
+Les répétitions statiques utilisent l’instancing : 136 appels théoriques sont évités sur l’ensemble de la passe. Genna concentre cinq lots et 168 instances, avec 28 plantes intégrées dans un budget de 89 draw calls et 31 889 triangles. Le mode `reducedMotion` fige ou atténue les spores, la météo et les oscillations décoratives ; il neutralise aussi le flottement, le roulis et les émissions animées des navettes et conteneurs, sans masquer leurs états, interactions ni les frontières de danger.
+
+Quatre matières OpenAI originales 1254×1254 complètent le vocabulaire : panneaux frontaliers de Ryushi, membrane biomécanique de ruche, bronze cérémoniel Yautja et peau de gousse de Genna. Elles évoquent des fonctions et ambiances de la franchise sans copier de texture, prop, symbole ou plan officiel.
+
 ## Contrôle qualité artistique
 
 L'inspection visuelle des neuf PNG maîtres est validée, ainsi que les dimensions et le poids des WebP. La mosaïque 2×2 des trois nouvelles matières de props est validée ; le contrôle runtime final doit encore rechercher : répétition trop évidente, artefact de compression, scintillement, contraste insuffisant et échec de chargement sous l'éclairage réel du jeu.

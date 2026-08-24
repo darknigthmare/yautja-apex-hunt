@@ -43,6 +43,23 @@ Le chantier a traité la jouabilité et la persistance, puis les fenêtres de r�
 4. **Documentation de production absente — vérifié baseline.** Il manquait un contrat explicite de game design, d'art, de lore, d'assets et de QA.
 5. **Poids JavaScript — corrigé dans le worktree.** Le build initial signalait un chunk d'environ 535 Ko ; le build final isole Three.js dans un chunk de 496,94 Ko et ne produit plus l'avertissement supérieur à 500 Ko.
 
+## Audit de clôture v1.6 — props et level design
+
+| Axe | État réellement constaté | Limite ou contrôle restant |
+| --- | --- | --- |
+| Plans de biome | 5/5 plans possèdent 8 groupes de props, 3 POI et 1–2 dangers ; leurs routes et silhouettes ont été inspectées dans Chromium en masque normal. | Rejouer de longues sessions sous chaque météo sur GPU modeste. |
+| Variété | 5 installations, 6 sanctuaires et 8 signatures de POI distinctes. | Contrôler que les volumes ne paraissent pas répétitifs à distance de jeu. |
+| Sécurité de jeu | Apparitions sûres, caches et flybys éloignés, couverture projectile et limites circulaires sont intégrés. | Jouer les cas limites près des colliders et du bord de carte. |
+| POI et persistance | Quatre profils jouables sont branchés : soin/énergie, scan longue portée, scan local/énergie et endurance/bonus d’honneur. La sauvegarde v4 additive interdit de répéter effet, honneur et sauvegarde d’un POI connu. | Tester manuellement fermeture, reprise et anciennes sauvegardes réelles. |
+| Hub | Navigation WASD/flèches, manette et tactile, 4 stations, 27 colliders, budget de 273 draw calls et 17 239 triangles ; parcours desktop et touche `P` validés dans Chromium. | Confirmer manette et tactile sur appareils physiques. |
+| Instancing | 136 draw calls statiques théoriquement évités. | Le gain est un calcul de construction, pas encore une mesure GPU navigateur. |
+| Genna | 252 → 89 appels (-64,7 %), 5 lots, 168 instances, 31 889 triangles et 28 plantes. | Mesurer frametime et mémoire sur GPU modeste. |
+| Accessibilité | `reducedMotion` fige ou atténue l’environnement, la météo, le hub, les navettes et les conteneurs tout en préservant transitions, états et interactions ; bascule à chaud couverte. | Vérifier les télégraphes sur un appareil configuré en réduction des animations. |
+| Assets | 4 WebP OpenAI originaux 1254×1254 référencés par les plans, décodés et chargés en HTTP 200 dans Chromium local. | Réponse HTTP de production encore à confirmer. |
+| Gates automatisés | 193/193 tests, 42 modules Vite, 0 vulnérabilité de production, 11 node-checks et diff-check propre. | Push et déploiement Vercel restent ouverts. |
+
+Les valeurs de draw calls et triangles sont des métriques de scène/budget produites par le code de construction. Elles ne doivent pas être présentées comme des mesures de performance matérielle tant qu’un profilage navigateur n’a pas été exécuté.
+
 ## État de la release
 
 | Domaine | État constaté | Validation restante |

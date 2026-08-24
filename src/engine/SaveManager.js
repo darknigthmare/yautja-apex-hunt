@@ -50,6 +50,7 @@ export class SaveManager {
         currentSkinId: customization.armorPresetId,
         customization,
         completedHunts: uniqueStrings(player.completedHunts),
+        discoveredPoiIds: uniqueStrings(player.discoveredPoiIds),
         unlockedTechIds: uniqueStrings(player.unlockedTechIds),
         unlockedWeaponIds: uniqueStrings(
           Array.isArray(player.unlockedWeaponIds)
@@ -168,6 +169,7 @@ export class SaveManager {
       );
       player.currentSkinId = player.customization.armorPresetId;
       player.completedHunts = uniqueStrings(source.completedHunts);
+      player.discoveredPoiIds = uniqueStrings(source.discoveredPoiIds);
       player.unlockedTechIds = uniqueStrings(source.unlockedTechIds);
       player.unlockedWeaponIds = uniqueStrings(
         Array.isArray(source.unlockedWeaponIds)

@@ -145,7 +145,50 @@ Les textes ci-dessous sont les formulations de production fidèles aux prompts e
 
 **Destination runtime après conversion :** `public/assets/textures/kalisk-adaptive-hide.webp`
 
-Les PNG maîtres des vagues précédentes et les trois sorties sources de la 1.5 sont conservés localement hors Git ; seuls les WebP optimisés sont livrés au navigateur.
+## `ryushi-frontier-panels`
+
+**Mode :** nouvelle génération bitmap originale, sans image officielle de référence.
+
+> Résumé du prompt de production : texture carrée raccordable de panneaux frontaliers extraterrestres industriels, métal sable et cuivre très usé, rivets, joints, abrasion, poussière ferrique et peinture technique effacée sans caractères. Vue orthographique, éclairage uniforme, matière seule, sans bâtiment complet, texte, logo, UI, watermark, collage, key art ou décor officiel copié.
+
+**Destination runtime après conversion :** `public/assets/textures/ryushi-frontier-panels.webp`
+
+## `hive-biomechanical-membrane`
+
+**Mode :** nouvelle génération bitmap originale, sans image officielle de référence.
+
+> Résumé du prompt de production : texture carrée raccordable de membrane biomécanique de ruche, résine noire humide, côtes organiques serrées, fibres profondes et reflets pétrole contrôlés. Matière abstraite sans créature, visage, œuf entier ni anatomie identifiable ; vue orthographique uniforme, sans texte, logo, UI, watermark, collage, key art ou décor officiel copié.
+
+**Destination runtime après conversion :** `public/assets/textures/hive-biomechanical-membrane.webp`
+
+## `yautja-ceremonial-bronze`
+
+**Mode :** nouvelle génération bitmap originale, sans image officielle de référence.
+
+> Résumé du prompt de production : texture carrée raccordable de bronze cérémoniel extraterrestre, plaques martelées, patine sombre, arêtes polies, micro-rayures et canaux géométriques abstraits. Aucun glyphe, alphabet, emblème ou accessoire complet ; vue orthographique uniforme, sans texte, logo, UI, watermark, collage, key art ou design officiel copié.
+
+**Destination runtime après conversion :** `public/assets/textures/yautja-ceremonial-bronze.webp`
+
+## `genna-spore-pod-hide`
+
+**Mode :** nouvelle génération bitmap originale, sans image officielle de référence.
+
+> Résumé du prompt de production : texture carrée raccordable de peau de gousse sporale extraterrestre, épiderme fibreux vert-noir et violet, pores profonds, nodules régénératifs et lueurs chartreuse discrètes. Matière abstraite sans plante complète, bouche, œil ni animal ; vue orthographique uniforme, sans texte, logo, UI, watermark, collage, key art ou créature officielle copiée.
+
+**Destination runtime après conversion :** `public/assets/textures/genna-spore-pod-hide.webp`
+
+Les PNG maîtres des vagues précédentes, les trois sorties sources de la 1.5 et les quatre sorties sources de la 1.6 sont conservés localement hors Git ; seuls les WebP optimisés sont livrés au navigateur.
+
+## Passe v1.6 — intention de génération
+
+Les quatre matières de level design ont été créées en mode nouvelle génération bitmap originale, sans image officielle fournie comme référence :
+
+- panneaux frontaliers de Ryushi : métal peint, poussière, rivets et usure de colonie ;
+- membrane biomécanique de ruche : couches organiques abstraites, nervures et humidité contrôlée ;
+- bronze cérémoniel Yautja : patine, abrasion rituelle et géométrie non alphabétique ;
+- peau de gousse de Genna : épiderme sombre, pores, spores et lueurs contenues.
+
+Les sorties runtime sont respectivement `ryushi-frontier-panels.webp`, `hive-biomechanical-membrane.webp`, `yautja-ceremonial-bronze.webp` et `genna-spore-pod-hide.webp`, toutes en 1254×1254. Les prompts interdisent texte, logo, glyphe officiel, watermark, collage, key art, personnage ou reproduction d’un décor existant. Ces textures restent des créations fan-made originales ; elles ne constituent pas des assets officiels et ne transfèrent aucun droit.
 
 ## Critères de rejet
 
@@ -153,4 +196,4 @@ Une génération doit être écartée si elle contient un mot, une signature, un
 
 ## Traçabilité
 
-Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor initiales, les trois matières de props, les quatre matières de la vague 1.4 et les trois matières de la 1.5 restent en WebP 1024×1024 ; les six matières de la vague contenu 1.3 sont encodées en WebP 1254×1254 après inspection visuelle. Le manifest consigne les vingt-deux poids exacts, leur usage runtime et le niveau de contrôle effectivement obtenu. Ces créations originales n’accordent ni ne revendiquent de droit sur Predator, Alien, leurs personnages ou leurs designs officiels. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.
+Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor initiales, les trois matières de props, les quatre matières de la vague 1.4 et les trois matières de la 1.5 restent en WebP 1024×1024 ; les six matières de la vague contenu 1.3 et les quatre matières de level design 1.6 sont encodées en WebP 1254×1254 après inspection visuelle. Le manifest consigne les vingt-six poids exacts, leur usage runtime et le niveau de contrôle effectivement obtenu. Ces créations originales n’accordent ni ne revendiquent de droit sur Predator, Alien, leurs personnages ou leurs designs officiels. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.

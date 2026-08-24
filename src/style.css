@@ -111,6 +111,91 @@ html, body { width: 100%; height: 100%; overflow: hidden; background-color: #030
 .modal-box { background: rgba(15, 20, 30, 0.95); border: 2px solid var(--yautja-red); border-radius: 8px; padding: 25px; max-width: 950px; width: 95%; text-align: center; }
 .modal-box h2 { font-family: 'Orbitron', sans-serif; color: var(--yautja-red); margin-bottom: 12px; }
 
+.mission-modal-actions {
+  align-items: center;
+  background: linear-gradient(90deg, rgba(9, 36, 42, 0.94), rgba(28, 12, 18, 0.94));
+  border: 1px solid rgba(105, 247, 208, 0.72);
+  border-radius: 7px;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin: 0 auto 16px;
+  max-width: 860px;
+  padding: 10px 14px;
+}
+.hub-explore-button {
+  background: linear-gradient(180deg, #147e78, #08504d);
+  border-color: #69f7d0;
+  box-shadow: 0 0 18px rgba(105, 247, 208, 0.2);
+  flex: 0 0 auto;
+  min-height: 42px;
+}
+.hub-explore-button:hover,
+.hub-explore-button:focus-visible {
+  border-color: #ffffff;
+  box-shadow: 0 0 24px rgba(105, 247, 208, 0.42);
+}
+#hub-explore-help {
+  color: #d5fff4;
+  font-size: 12px;
+  line-height: 1.35;
+  margin: 0;
+  max-width: 460px;
+  text-align: left;
+}
+
+.touch-hub-controls {
+  align-items: flex-end;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  display: none;
+  justify-content: space-between;
+  left: max(18px, env(safe-area-inset-left));
+  pointer-events: none;
+  position: absolute;
+  right: max(18px, env(safe-area-inset-right));
+  z-index: 50;
+}
+.touch-hub-dpad {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(3, 52px);
+  grid-template-rows: repeat(2, 52px);
+}
+.touch-hub-controls button {
+  background: rgba(5, 30, 34, 0.9);
+  border: 1px solid #69f7d0;
+  box-shadow: 0 0 14px rgba(105, 247, 208, 0.2);
+  min-height: 52px;
+  min-width: 52px;
+  padding: 6px;
+  pointer-events: auto;
+  touch-action: none;
+}
+.touch-hub-controls button:active {
+  background: rgba(105, 247, 208, 0.38);
+  transform: scale(0.96);
+}
+.touch-hub-up { grid-column: 2; grid-row: 1; }
+.touch-hub-left { grid-column: 1; grid-row: 2; }
+.touch-hub-down { grid-column: 2; grid-row: 2; }
+.touch-hub-right { grid-column: 3; grid-row: 2; }
+.touch-hub-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.touch-hub-actions button {
+  min-width: 112px;
+}
+#btn-touch-hub-console {
+  background: rgba(45, 12, 18, 0.92);
+  border-color: #ff786e;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .touch-hub-controls:not(.hidden) { display: flex; }
+}
+
 .tab-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
 .tab-btn { background: rgba(20, 30, 45, 0.8); border: 1px solid #00f0ff; color: #00f0ff; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: bold; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
 .tab-btn.active { background: #a92922; color: #ffffff; border-color: #ff786e; }

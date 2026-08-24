@@ -86,6 +86,20 @@ Le choix libre d'une cible sur un lieu est une convention de gameplay et ne tran
 
 La caméra doit conserver la cible et les menaces proches dans le cadre tout en évitant les obstacles. Le zoom acheté doit produire une différence mesurable de FOV ou de distance de visée, fournir un retour HUD et revenir proprement à l'état normal lors d'un changement de mode, d'une pause ou d'une défaite.
 
+## Contrat v1.6 — espace, POI et performance
+
+Chaque biome doit conserver un squelette de production comparable sans devenir interchangeable : huit groupes de props, trois POI analysables et un à deux dangers. Le portefeuille global impose au moins cinq installations, six sanctuaires et huit signatures de POI distinctes. Les POI donnent une récompense et un fragment de narration environnementale lors de la première analyse ; leur identifiant rejoint la sauvegarde v4 additive afin qu’un rechargement ne permette de répéter ni l’effet, ni l’honneur, ni la sauvegarde associée.
+
+Les quatre profils d’analyse ont un impact mesurable et borné par les maximums du joueur : `decode_record` demande jusqu’à +30 santé et +25 énergie ; `tune_beacon` active le scan existant pendant 10 s à 150 m ; `scan_archive` demande jusqu’à +18 énergie et un scan de 4 s à 75 m ; `scan_trophies` demande jusqu’à +40 endurance et porte la récompense d’honneur du POI à ×1,2. Le HUD affiche les gains réellement obtenus, le nombre de signatures révélé et les paramètres du scan.
+
+Le directeur de niveau doit choisir des apparitions sûres hors de la proximité immédiate du joueur. Les caches et flybys utilisent également une distance minimale. Les couvertures majeures bloquent les projectiles selon leur volume déclaré, et les déplacements de chasse restent dans des limites circulaires explicites. Ces garde-fous participent au combat : ils ne sont pas de simples annotations de catalogue.
+
+Le hub est une petite scène jouable, pas un menu figé : déplacement WASD/flèches, manette ou commandes tactiles, quatre stations identifiables, 27 colliders, 273 draw calls budgétés et 17 239 triangles. La touche `E`, le bouton principal de la manette et l’action tactile utilisent la station proche ; `P`/`Échap`, Start/Select ou le bouton tactile ouvrent la console. Sa circulation doit rester lisible avant d’ajouter de nouveaux ornements.
+
+Les éléments statiques répétés doivent utiliser l’instancing lorsqu’ils partagent géométrie et matériau. Le gain v1.6 représente 136 draw calls théoriques ; Genna sert de référence avec cinq lots et 168 instances, passant de 252 à 89 appels (-64,7 %) pour 31 889 triangles et 28 plantes. Ces nombres sont des budgets de construction, pas un profilage GPU sur toutes les machines.
+
+L’option `reducedMotion` réduit ou fige spores, météo, oscillations du hub, flottement/roulis des navettes et pulsations des conteneurs. Elle ne bloque pas les transitions d’état ni les interactions ; les frontières de danger, impacts et signaux nécessaires au combat restent lisibles.
+
 ## États de partie
 
 Le contrôleur respecte une machine d'états simple :

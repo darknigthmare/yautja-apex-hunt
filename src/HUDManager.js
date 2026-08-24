@@ -79,6 +79,8 @@ export class HUDManager {
 
     this.bossDisplayName = document.getElementById('boss-display-name');
     this.bossHpBar = document.getElementById('boss-hp-bar');
+    this.bossCard = this.bossDisplayName?.closest?.('.boss-card')
+      ?? this.bossDisplayName?.parentElement ?? null;
     this.part1Label = document.getElementById('part-1-label');
     this.part2Label = document.getElementById('part-2-label');
     this.hornStatus = document.getElementById('horn-status');
@@ -469,6 +471,7 @@ export class HUDManager {
 
   updateBossStatus(boss, huntType) {
     if (!boss) return;
+    this.setClassState(this.bossCard, 'hidden', false);
     this.updateMeter(this.bossHpBar, null, this.bossHpMeter, boss.health, boss.maxHealth);
 
     const definition = HUNT_DEFINITIONS[huntType] ?? HUNT_DEFINITIONS.goliath;
@@ -493,6 +496,7 @@ export class HUDManager {
   }
 
   showHubTarget() {
+    this.setClassState(this.bossCard, 'hidden', true);
     this.setText(this.targetScannedName, 'VAISSEAU-MÈRE YAUTJA — SALLE DES TROPHÉES');
   }
 

@@ -83,6 +83,7 @@ export class HuntVehicle {
     exitPoint = new THREE.Vector3(180, 75, 120),
     durations = {},
     interactionDistance = 18,
+    reducedMotion = false,
   } = {}) {
     this.scene = scene ?? null;
     this.id = id ?? `hunt_vehicle_${++vehicleSequence}`;
@@ -92,6 +93,7 @@ export class HuntVehicle {
     this.age = 0;
     this.lastTransition = null;
     this.interacted = false;
+    this.reducedMotion = Boolean(reducedMotion);
     this.interactionDistance = Math.max(1, Number(interactionDistance) || 18);
     this.entryPoint = copyVector(entryPoint, new THREE.Vector3(-150, 58, -120));
     this.flybyStart = copyVector(flybyStart, new THREE.Vector3(-70, 34, -55));
@@ -203,7 +205,16 @@ export class HuntVehicle {
     if (this.state === 'entering') this.mesh.position.copy(this.entryPoint);
     else if (this.state === 'flyby') this.mesh.position.copy(this.flybyStart);
     else this.mesh.position.copy(this.hoverPoint);
-    this.mesh.rotation.set(-0.08, Math.PI * 0.08, 0.04);
+    this.mesh.rotation.set(-0.08, Math.PI * 0.08, this.reducedMotion ? 0 : 0.04);
+    if (this.reducedMotion && this.energyMaterial) this.energyMaterial.emissiveIntensity = 2.15;
+  }
+
+  setReducedMotion(enabled) {
+    const reducedMotion = Boolean(enabled);
+    const changed = reducedMotion !== this.reducedMotion;
+    this.reducedMotion = reducedMotion;
+    if (changed && this.state !== 'disposed') this.applyStatePose();
+    return changed;
   }
 
   transitionTo(nextState) {
@@ -224,25 +235,35 @@ export class HuntVehicle {
 
     if (this.state === 'entering') {
       this.mesh.position.lerpVectors(this.entryPoint, this.flybyStart, progress);
-      this.mesh.rotation.z = 0.16 * (1 - progress);
+      this.mesh.rotation.z = this.reducedMotion ? 0 : 0.16 * (1 - progress);
     } else if (this.state === 'flyby') {
       this.mesh.position.lerpVectors(this.flybyStart, this.hoverPoint, progress);
-      this.mesh.rotation.z = -Math.sin(progress * Math.PI) * 0.13;
+      this.mesh.rotation.z = this.reducedMotion ? 0 : -Math.sin(progress * Math.PI) * 0.13;
     } else if (this.state === 'hover') {
       this.mesh.position.copy(this.hoverPoint);
-      this.mesh.position.y += Math.sin(this.age * 1.45) * 0.65;
-      this.mesh.rotation.y = Math.PI * 0.08 + Math.sin(this.age * 0.22) * 0.08;
-      this.mesh.rotation.z = Math.sin(this.age * 0.7) * 0.025;
+      if (this.reducedMotion) {
+        this.mesh.rotation.y = Math.PI * 0.08;
+        this.mesh.rotation.z = 0;
+      } else {
+        this.mesh.position.y += Math.sin(this.age * 1.45) * 0.65;
+        this.mesh.rotation.y = Math.PI * 0.08 + Math.sin(this.age * 0.22) * 0.08;
+        this.mesh.rotation.z = Math.sin(this.age * 0.7) * 0.025;
+      }
     } else if (this.state === 'leaving') {
       this.mesh.position.lerpVectors(this.leaveStart, this.exitPoint, progress);
-      this.mesh.rotation.z = -0.18 * progress;
+      this.mesh.rotation.z = this.reducedMotion ? 0 : -0.18 * progress;
     }
 
-    if (this.energyMaterial) this.energyMaterial.emissiveIntensity = 2.15 + Math.sin(this.age * 4) * 0.45;
+    if (this.energyMaterial) {
+      this.energyMaterial.emissiveIntensity = this.reducedMotion
+        ? (this.interacted ? 3.5 : 2.15)
+        : 2.15 + Math.sin(this.age * 4) * 0.45;
+    }
   }
 
-  update(delta) {
+  update(delta, { reducedMotion = this.reducedMotion } = {}) {
     if (this.state === 'disposed') return this.state;
+    this.setReducedMotion(reducedMotion);
     let remaining = Number.isFinite(delta) ? Math.max(0, delta) : 0;
 
     while (remaining > 0 && this.state !== 'disposed') {

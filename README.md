@@ -4,7 +4,7 @@ Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur inca
 
 ## État du projet
 
-Le code source porte la version 1.5.0 et reste disponible sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt). Cette vague transforme Wolf en contrat Cleaner complet, ajoute la chasse au Kalisk régénérant sur Genna, étend le Lost Tribe et introduit un registre de couverture par œuvre. Une version n’est considérée comme publiée sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/) qu’après exécution et consignation des contrôles de release ; ce document ne présume pas du résultat d’un déploiement.
+Le code source porte la version 1.6.0 et reste disponible sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt). Cette vague transforme les cinq cartes et le vaisseau-mère en espaces de chasse plus lisibles : points de repère, couvertures physiques, routes, verticalité, zones dangereuses et archives environnementales interactives. Une version n’est considérée comme publiée sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/) qu’après exécution et consignation des contrôles de release ; ce document ne présume pas du résultat d’un déploiement.
 
 ## Lancer localement
 
@@ -28,6 +28,7 @@ npm audit
 - hub du vaisseau-mère, arsenal, forge et trophées persistants ;
 - huit chasses : Goliath Xeno-Akumo, Reine xénomorphe, rival Bad Blood, Predalien, Berserker Super Predator, Feral, Wolf Cleaner et Kalisk ;
 - cinq biomes : jungle, ruche, Ryushi, arène de clan et monde mortel de Genna ;
+- cinq plans de niveau déterministes avec huit groupes de props par biome, trois points d’intérêt analysables, des couloirs de combat, des couverts qui participent aux collisions et un à deux dangers localisés ;
 - huit familles de PNJ 3D, quatre vagues par chasse, incidents déterministes, dangers météo et combat maintenu jusqu’au prélèvement ;
 - trois navettes 3D et quatre conteneurs interactifs aux récompenses propres à chaque biome ;
 - dix armes jouables sur `1` à `0`, bouclier `[B]`, drone-faucon `[G]`, shuriken `[T]`, camouflage, vision et mimétisme ;
@@ -39,11 +40,22 @@ npm audit
 
 ## Direction artistique et assets
 
-Les vingt-deux textures de décor, props et créatures sous `public/assets/textures/` sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La vague 1.5 ajoute `wolf-cleaner-alloy.webp`, `lost-tribe-ritual-bone.webp` et `kalisk-adaptive-hide.webp`. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+Les vingt-six textures de décor, props et créatures sous `public/assets/textures/` sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La vague 1.6 ajoute `ryushi-frontier-panels.webp`, `hive-biomechanical-membrane.webp`, `yautja-ceremonial-bronze.webp` et `genna-spore-pod-hide.webp` pour différencier les constructions humaines, la croissance de ruche, l’architecture cérémonielle et les organismes de Genna. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+
+## Passe v1.6 — props et level design
+
+- les cinq biomes disposent chacun de huit groupes de props, trois points d’intérêt persistants et un à deux dangers localisés ; l’inventaire transverse comprend cinq installations, six sanctuaires et huit signatures de POI distinctes ;
+- les règles spatiales réservent des apparitions sûres, éloignent caches et survols du joueur, font participer les couvertures aux projectiles et maintiennent les déplacements dans des limites circulaires ;
+- les POI proposent quatre effets bornés : soin/énergie (`decode_record`), scan longue portée (`tune_beacon`), scan local/énergie (`scan_archive`) et endurance/bonus d’honneur (`scan_trophies`) ; leur identifiant est mémorisé dans la sauvegarde v4 additive afin d’empêcher de répéter effet, honneur et sauvegarde après rechargement, sans casser les sauvegardes antérieures ;
+- l’instancing des décors statiques retire théoriquement 136 draw calls ; sur Genna, le budget passe de 252 à 89 appels (-64,7 %) grâce à cinq lots et 168 instances, pour 31 889 triangles et 28 plantes ;
+- le vaisseau-mère est explorable en WASD/flèches, à la manette et avec des commandes tactiles, dessert quatre stations fonctionnelles et porte un budget de scène de 27 colliders, 273 draw calls et 17 239 triangles ;
+- `reducedMotion` fige ou réduit les mouvements décoratifs de l’environnement, du hub, des navettes et des conteneurs sans bloquer leurs états, leurs interactions ni les signaux de danger et de combat.
+
+Les gates locaux v1.6 sont à 193/193 tests, 42 modules Vite, 0 vulnérabilité de production et 11 modules contrôlés syntaxiquement. Chromium desktop a validé le titre, les missions, le hub jouable, les cinq biomes en masque normal et les quatre WebP v1.6 en HTTP 200 local. Le push et la production Vercel restent ouverts à ce stade de la documentation.
 
 ## Couverture franchise et backlog
 
-Le registre runtime suit 29 œuvres et médias séparément afin de ne pas confondre film sorti, bonus vidéo, scène coupée, projet non publié, promotion, jeu, roman, comic ou crossover. Le fichier `Encyclopedie_exhaustive_franchise_Predator.xlsx` fourni dans la conversation contient 915 éléments uniques et sert de backlog de contrôle. Il n’est pas importé aveuglément : chaque ajout doit conserver une source vérifiable, un niveau de provenance et un statut runtime honnête.
+Le registre runtime suit 29 œuvres et médias séparément afin de ne pas confondre film sorti, bonus vidéo, scène coupée, projet non publié, promotion, jeu, roman, comic ou crossover. Le tableur évoqué par l’utilisateur n’était pas accessible dans le workspace ni dans les pièces jointes disponibles pendant cette passe : aucun nombre de lignes et aucun ajout ne lui sont donc attribués. Une future confrontation au classeur devra conserver une source vérifiable, un niveau de provenance et un statut runtime honnête pour chaque élément retenu.
 
 Les principaux manques de contenu identifiés après cette passe restent une carte de Gunnison réellement multi-niveaux, des campagnes complètes dédiées à *Killer of Killers* et à *Alien vs. Predator*, ainsi qu’une faune et une flore de Genna plus variées.
 

@@ -13,6 +13,7 @@ import { saveManager } from './engine/SaveManager.js';
 import { DEFAULT_SETTINGS, HUNT_DEFINITIONS, resolveHuntBiome } from './data/GameConfig.js';
 import { ALL_LORE_ENTRIES, LORE_SOURCE_TIERS, LORE_SOURCES } from './data/LoreCodex.js';
 import { resolveMeleeStrike } from './gameplay/combatRules.js';
+import { applyPointOfInterestEffect } from './gameplay/PointOfInterestEffects.js';
 import { getPlayableWeaponByKey } from './data/RuntimeEquipment.js';
 
 const DEFAULT_CAMERA_FOV = 65;
@@ -24,6 +25,13 @@ const HUB_PLAYER_POSITION = new THREE.Vector3(0, 0, 20);
 const VICTORY_DELAY_SECONDS = 3;
 const GOLIATH_CHARGE_WINDOW_SECONDS = 4;
 const GOLIATH_CHARGE_IMPACT_RANGE = 10;
+const PLAYER_COLLIDER_RADIUS = 1.8;
+const HIVE_EGG_OFFSETS = Object.freeze([
+  Object.freeze([-19, 0, -7]),
+  Object.freeze([-18, 0, 9]),
+  Object.freeze([18, 0, -8]),
+  Object.freeze([19, 0, 8]),
+]);
 const ENEMY_ATTACK_PROFILES = Object.freeze({
   melee: { damage: 26, range: 7.5, cooldown: 1.5 },
   attack_claw: { damage: 22, range: 9.5, cooldown: 1.1 },
@@ -85,6 +93,7 @@ export class Game {
     this.eventDirector = new LevelEventDirector(this.scene);
 
     const loadResult = saveManager.load(this.player);
+    this.environment.setDiscoveredPoiIds(this.player.discoveredPoiIds);
     this.settings = { ...DEFAULT_SETTINGS, ...loadResult.settings };
     this.player.applyCustomization(this.player.customization);
     this.hud.syncCustomization(this.player.customization);
@@ -92,6 +101,7 @@ export class Game {
     this.hub.setTrophyState(this.player.completedHunts);
     this.hub.setVisible(true);
     this.environment.setVisible(false);
+    this.hud.showHubTarget();
 
     this.activeBoss = null;
     this.activeEnemies = [];
@@ -103,9 +113,12 @@ export class Game {
     this.inputDir = { x: 0, z: 0, isSprinting: false };
     this.keyboardInputDir = { x: 0, z: 0, isSprinting: false };
     this.cameraPitch = 0.2;
-    this.cameraYaw = 0;
+    // Le chasseur apparaît au sud des zones et regarde naturellement vers leur centre.
+    this.cameraYaw = Math.PI;
     this.isPointerLocked = false;
     this.isGameStarted = false;
+    this.isHubExploring = false;
+    this.activateMissionTab = null;
     this.trophyHarvested = false;
     this.isPaused = false;
     this.isScopeZooming = false;
@@ -113,6 +126,10 @@ export class Game {
     this.enemyDamageCooldown = 0;
     this.victoryCountdown = null;
     this.gamepadAttackPressed = false;
+    this.gamepadInteractPressed = false;
+    this.gamepadMenuPressed = false;
+    this.touchInputDir = { x: 0, z: 0 };
+    this.activeHubTouchDirections = new Set();
     this.gamepadAxes = { x: 0, z: 0 };
     this.activeFacehuggerCluster = null;
     this.goliathChargeWindow = 0;
@@ -162,8 +179,12 @@ export class Game {
   }
 
   syncInputDirection() {
-    this.inputDir.x = this.gamepadAxes.x !== 0 ? this.gamepadAxes.x : this.keyboardInputDir.x;
-    this.inputDir.z = this.gamepadAxes.z !== 0 ? this.gamepadAxes.z : this.keyboardInputDir.z;
+    const touchX = this.touchInputDir?.x ?? 0;
+    const touchZ = this.touchInputDir?.z ?? 0;
+    this.inputDir.x = this.gamepadAxes.x !== 0 ? this.gamepadAxes.x
+      : touchX !== 0 ? touchX : this.keyboardInputDir.x;
+    this.inputDir.z = this.gamepadAxes.z !== 0 ? this.gamepadAxes.z
+      : touchZ !== 0 ? touchZ : this.keyboardInputDir.z;
     this.inputDir.isSprinting = this.keyboardInputDir.isSprinting;
   }
 
@@ -197,6 +218,7 @@ export class Game {
     this.eventDirector?.stop();
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
+    this.environment?.clearWeatherEvent?.();
 
     this.activeBoss?.projectiles?.forEach((projectile) => disposeObject3D(projectile.mesh));
     if (this.activeBoss?.projectiles) this.activeBoss.projectiles = [];
@@ -248,6 +270,7 @@ export class Game {
     document.body.classList.toggle('high-contrast', this.settings.highContrast);
     document.documentElement.style.setProperty('--hud-scale', String(this.settings.hudScale));
     this.environment.setReducedMotion(this.settings.reducedMotion);
+    this.eventDirector?.setReducedMotion?.(this.settings.reducedMotion);
     audioSynth.setMuted(!this.settings.audioEnabled);
     this.syncSettingsControls();
 
@@ -364,6 +387,92 @@ export class Game {
       .filter((target) => target && !target.isDead && target.position?.isVector3);
   }
 
+  spawnHiveEggClusters(count = HIVE_EGG_OFFSETS.length) {
+    const safeCount = Math.max(0, Math.min(HIVE_EGG_OFFSETS.length, Math.floor(Number(count) || 0)));
+    const encounterSockets = this.environment?.getEncounterSockets?.('egg', safeCount) ?? [];
+    const nursery = (this.environment?.environmentProps ?? [])
+      .find((prop) => prop.type === 'egg_nursery' || prop.id === 'hive-west-nursery');
+    const nurseryPosition = nursery?.mesh?.position?.isVector3
+      ? nursery.mesh.position.clone()
+      : Array.isArray(nursery?.position)
+        ? new THREE.Vector3(...nursery.position)
+        : this.currentPlanet === 'hive_lv426'
+          ? new THREE.Vector3(-82, 0, 2)
+          : new THREE.Vector3(-36, 0, -54);
+    const rotationY = (nursery?.mesh?.rotation?.y ?? Number(nursery?.rotation)) || 0;
+    const fallbackPositions = HIVE_EGG_OFFSETS.slice(0, safeCount).map((offset) => (
+      new THREE.Vector3(...offset)
+        .applyAxisAngle(new THREE.Vector3(0, 1, 0), rotationY)
+        .add(nurseryPosition)
+    ));
+    const eggPositions = (encounterSockets.length > 0 ? encounterSockets : fallbackPositions)
+      .slice(0, safeCount)
+      .map((socket) => socket.clone());
+    eggPositions.forEach((position) => {
+      this.eggClusters.push(new FacehuggerEggCluster(this.scene, position));
+    });
+    return eggPositions;
+  }
+
+  getProjectileCollisionRadius(projectile) {
+    if (projectile?.isNet) return 1.25;
+    if (['plasma', 'heavy_plasma', 'wolf_twin_plasma'].includes(projectile?.type)) return 0.85;
+    if (['disc', 'shuriken'].includes(projectile?.type)) return 0.65;
+    return 0.42;
+  }
+
+  resolveSegmentSphereImpact(start, end, center, radius) {
+    if (!start?.isVector3 || !end?.isVector3 || !center?.isVector3) return null;
+    const segment = end.clone().sub(start);
+    const fromCenter = start.clone().sub(center);
+    const radiusSquared = radius * radius;
+    if (segment.lengthSq() <= 1e-9) {
+      return fromCenter.lengthSq() <= radiusSquared ? start.clone() : null;
+    }
+    if (fromCenter.lengthSq() <= radiusSquared) return start.clone();
+
+    const a = segment.lengthSq();
+    const b = 2 * fromCenter.dot(segment);
+    const c = fromCenter.lengthSq() - radiusSquared;
+    const discriminant = (b * b) - (4 * a * c);
+    if (discriminant < 0) return null;
+    const root = Math.sqrt(discriminant);
+    const first = (-b - root) / (2 * a);
+    const second = (-b + root) / (2 * a);
+    const time = first >= 0 && first <= 1 ? first : second >= 0 && second <= 1 ? second : null;
+    return time === null ? null : start.clone().addScaledVector(segment, time);
+  }
+
+  applyEnvironmentHazardSignal(contact) {
+    if (!contact || contact.type !== 'environment_hazard') return false;
+
+    const damage = Math.max(0, Number(contact.damage) || 0);
+    if (damage > 0) this.player.takeDamage(damage);
+    const statuses = Array.isArray(contact.status) ? contact.status : [contact.status];
+    statuses.filter(Boolean).forEach((status) => {
+      if (status === 'corrosion') {
+        this.player.applyAcidCorrosion?.();
+      } else if (status === 'venom') {
+        this.player.stamina = Math.max(0, (Number(this.player.stamina) || 0) - 18);
+      } else if (status === 'energy_jam') {
+        this.player.energy = Math.max(0, (Number(this.player.energy) || 0) - 14);
+        if (this.player.isCloaked) this.player.toggleCloak?.();
+      } else if (status === 'cloak_disruption' && this.player.isCloaked) {
+        this.player.toggleCloak?.();
+      }
+    });
+    if (contact.message) this.hud.showLogMessage(contact.message, 1600);
+    return true;
+  }
+
+  processEnvironmentHazardSignals(signals = []) {
+    let applied = 0;
+    signals.forEach((signal) => {
+      if (this.applyEnvironmentHazardSignal(signal)) applied += 1;
+    });
+    return applied;
+  }
+
   createScanMarker(target) {
     const marker = new THREE.Group();
     const targetRadius = Math.max(1.4, (target.colliderRadius ?? 1) * 1.35);
@@ -465,6 +574,13 @@ export class Game {
     return this.updateVehicleScan(0);
   }
 
+  dispatchPointOfInterestEffect(pointOfInterest) {
+    return applyPointOfInterestEffect(pointOfInterest, {
+      player: this.player,
+      activateScan: (options) => this.activateVehicleScan(options),
+    });
+  }
+
   resolveCombatTarget() {
     const livingEnemies = (this.activeEnemies ?? [])
       .filter((enemy) => !enemy.isDead)
@@ -501,7 +617,22 @@ export class Game {
     };
     const type = encounterTypes[signal.enemyType]
       ?? (signal.ordinal >= 3 ? 'combat_synthetic' : 'human_fireteam');
-    const enemy = new HuntNPC(type, { position: signal.position });
+    const preferredPosition = signal.position?.isVector3
+      ? signal.position
+      : Array.isArray(signal.position)
+        ? new THREE.Vector3(...signal.position)
+        : Number.isFinite(signal.position?.x) && Number.isFinite(signal.position?.z)
+          ? new THREE.Vector3(
+            Number(signal.position.x),
+            Number(signal.position.y) || 0,
+            Number(signal.position.z),
+          )
+          : this.player.position.clone().add(new THREE.Vector3(18, 0, -18));
+    const spawnPosition = this.environment?.getSafeSpawnPosition?.(
+      preferredPosition,
+      { clearance: 3 },
+    ) ?? preferredPosition;
+    const enemy = new HuntNPC(type, { position: spawnPosition });
     this.scene.add(enemy.mesh);
     enemy.setVisionMode(this.player.activeVisionMode);
     this.activeEnemies.push(enemy);
@@ -512,8 +643,8 @@ export class Game {
   spawnEnemyTracer(origin, target, color = 0xffb84a) {
     if (!origin?.isVector3 || !target?.isVector3) return;
     const geometry = new THREE.BufferGeometry().setFromPoints([
-      origin.clone().add(new THREE.Vector3(0, 1.2, 0)),
-      target.clone().add(new THREE.Vector3(0, 2.4, 0)),
+      origin.clone(),
+      target.clone(),
     ]);
     const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9 });
     const tracer = new THREE.Line(geometry, material);
@@ -532,11 +663,13 @@ export class Game {
       } else if (signal.type === 'hazard') {
         this.activeHazard = signal.hazardType;
         this.hazardPulseTimer = 0;
+        this.environment?.setWeatherEvent?.(signal.hazardType);
         const label = signal.hazardType === 'rain' ? 'PLUIE RÉVÉLATRICE' : 'TEMPÊTE THERMIQUE';
         this.hud.showLogMessage(`ÉVÉNEMENT DE NIVEAU: ${label}`, 2600);
       } else if (signal.type === 'hazard_end') {
         this.activeHazard = null;
         this.hazardPulseTimer = 0;
+        this.environment?.clearWeatherEvent?.();
         this.hud.showLogMessage('PERTURBATION ENVIRONNEMENTALE DISSIPÉE', 1800);
       }
     });
@@ -546,6 +679,8 @@ export class Game {
     const scheduledSignals = this.eventDirector?.update(delta, {
       player: this.player,
       boss: this.activeBoss,
+      environment: this.environment,
+      reducedMotion: this.settings?.reducedMotion === true,
     }) ?? [];
     this.processEncounterSignals(scheduledSignals);
     this.eventDirector?.drainSignals();
@@ -554,6 +689,28 @@ export class Game {
       const signals = enemy.update(delta, { player: this.player });
       signals.forEach((signal) => {
         if (signal.type === 'attack_player') {
+          if (signal.projectile) {
+            const projectileOrigin = signal.projectile.origin?.isVector3
+              ? signal.projectile.origin
+              : enemy.position?.clone?.();
+            const projectileTarget = this.player.position.clone().add(new THREE.Vector3(0, 2.4, 0));
+            const coverImpact = projectileOrigin
+              ? this.environment?.resolveProjectileCoverImpact?.(
+                projectileOrigin,
+                projectileTarget,
+                signal.projectile.radius ?? 0.25,
+              )
+              : null;
+            if (projectileOrigin) {
+              this.spawnEnemyTracer(
+                projectileOrigin,
+                coverImpact?.point?.isVector3 ? coverImpact.point : projectileTarget,
+                ['combat_synthetic', 'thermal_trapper'].includes(enemy.type) ? 0x55ddff : 0xffc34d,
+              );
+            }
+            if (coverImpact?.point?.isVector3) return;
+          }
+
           this.player.takeDamage(signal.damage);
           if (signal.status === 'corrosion') this.player.applyAcidCorrosion();
           if (signal.status === 'energy_jam') {
@@ -569,13 +726,6 @@ export class Game {
             const push = this.player.position.clone().sub(enemy.position);
             push.y = 0;
             if (push.lengthSq() > 0.0001) this.player.position.addScaledVector(push.normalize(), signal.knockback);
-          }
-          if (signal.projectile) {
-            this.spawnEnemyTracer(
-              signal.projectile.origin,
-              this.player.position,
-              ['combat_synthetic', 'thermal_trapper'].includes(enemy.type) ? 0x55ddff : 0xffc34d,
-            );
           }
           this.spawnBloodSpatterVFX(this.player.position, 0xffff00, 8);
         } else if (signal.type === 'telegraph') {
@@ -622,26 +772,63 @@ export class Game {
     const targetHeight = target === this.activeBoss ? 3.5 : 1.2;
     const targetPos = target.getAimPoint?.()
       ?? target.position.clone().add(new THREE.Vector3(0, targetHeight, 0));
-    const distance = this.player.position.distanceTo(target.position);
+    const launchPosition = this.player.position.clone();
+    const perchAnchor = this.player.currentPerchNode?.clone?.() ?? launchPosition.clone();
     const result = this.player.attack(targetPos);
     if (!['death_from_above', 'wristblades', 'whip_slash'].includes(result)) return;
 
+    const isDeathFromAbove = result === 'death_from_above';
+    const distance = isDeathFromAbove
+      ? Math.hypot(
+        launchPosition.x - target.position.x,
+        launchPosition.z - target.position.z,
+      )
+      : this.player.position.distanceTo(target.position);
     const strike = resolveMeleeStrike(this.player.selectedWeapon, distance, {
-      fromCanopy: result === 'death_from_above',
+      fromCanopy: isDeathFromAbove,
     });
+
+    const placePlayerSafely = (preferred) => {
+      const fallback = preferred.clone();
+      fallback.y = 0;
+      const landing = this.environment?.getSafeSpawnPosition?.(
+        preferred,
+        { clearance: PLAYER_COLLIDER_RADIUS + 0.5 },
+      ) ?? fallback;
+      this.player.position.copy(landing?.isVector3 ? landing : fallback);
+      this.player.currentPerchNode = null;
+    };
+
     if (!strike.hit) {
+      if (isDeathFromAbove) placePlayerSafely(perchAnchor);
       this.hud.showLogMessage('ATTAQUE DE MÊLÉE HORS DE PORTÉE', 1200);
       return;
     }
 
+    if (isDeathFromAbove) {
+      const targetRadius = target.colliderRadius ?? (target === this.activeBoss ? 5 : 0.8);
+      const dx = launchPosition.x - target.position.x;
+      const dz = launchPosition.z - target.position.z;
+      const launchDistance = Math.hypot(dx, dz);
+      const normalX = launchDistance > 0.01 ? dx / launchDistance : 1;
+      const normalZ = launchDistance > 0.01 ? dz / launchDistance : 0;
+      const landingDistance = targetRadius + PLAYER_COLLIDER_RADIUS + 1;
+      const preferredLanding = new THREE.Vector3(
+        target.position.x + (normalX * landingDistance),
+        0,
+        target.position.z + (normalZ * landingDistance),
+      );
+      placePlayerSafely(preferredLanding);
+    }
+
     const scaledDamage = Math.round(strike.damage * (this.player.meleeDamageMultiplier ?? 1));
     const outcome = target.takeDamage(scaledDamage, this.player.position);
-    this.spawnBloodSpatterVFX(targetPos, this.getTargetBloodColor(target), result === 'death_from_above' ? 30 : 15);
+    this.spawnBloodSpatterVFX(targetPos, this.getTargetBloodColor(target), isDeathFromAbove ? 30 : 15);
     this.player.addHonor(strike.honor);
     if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target);
 
-    if (result === 'death_from_above') {
-      this.hud.showLogMessage(`ATTAQUE EN PIQUÉ EXÉCUTÉE! +${scaledDamage} DÉGÂTS!`);
+    if (isDeathFromAbove) {
+      this.hud.showLogMessage('ATTAQUE EN PIQUÉ EXÉCUTÉE! +' + scaledDamage + ' DÉGÂTS!');
     }
   }
 
@@ -686,7 +873,9 @@ export class Game {
     });
 
     this.container.addEventListener('click', () => {
-      if (this.isGameStarted && this.gameState === 'HUNT' && !this.isPaused && !this.isPointerLocked) {
+      const canCaptureCamera = this.gameState === 'HUNT'
+        || (this.gameState === 'HUB' && this.isHubExploring);
+      if (this.isGameStarted && canCaptureCamera && !this.isPaused && !this.isPointerLocked) {
         this.requestPointerLockSafely();
       }
     });
@@ -728,7 +917,7 @@ export class Game {
       this.isScopeZooming = false;
       this.keyboardInputDir = { x: 0, z: 0, isSprinting: false };
       this.gamepadAxes = { x: 0, z: 0 };
-      this.inputDir = { x: 0, z: 0, isSprinting: false };
+      this.resetHubTouchInput();
     });
   }
 
@@ -843,6 +1032,8 @@ export class Game {
       if (moveFocus) tabs.find(({ key }) => key === activeKey)?.button.focus();
     };
 
+    this.activateMissionTab = activateTab;
+
     tabs.forEach(({ key, button }, index) => {
       button.addEventListener('click', () => activateTab(key));
       button.addEventListener('keydown', (event) => {
@@ -879,6 +1070,10 @@ export class Game {
     });
 
     this.setupMissionTabs();
+    document.getElementById('btn-explore-hub')?.addEventListener('click', () => {
+      this.enterHubExploration();
+    });
+    this.setupHubTouchControls();
 
     document.querySelectorAll('.skin-card').forEach(card => {
       card.addEventListener('click', () => {
@@ -996,6 +1191,78 @@ export class Game {
     this.setupSettingsHooks();
   }
 
+  setupHubTouchControls() {
+    const controls = document.getElementById('touch-hub-controls');
+    if (!controls) return false;
+
+    const releaseDirection = (event) => {
+      event.preventDefault?.();
+      this.setHubTouchDirection(event.currentTarget?.dataset?.hubMove, false);
+    };
+
+    controls.querySelectorAll('[data-hub-move]').forEach((button) => {
+      button.addEventListener('pointerdown', (event) => {
+        if (this.gameState !== 'HUB' || !this.isHubExploring) return;
+        event.preventDefault?.();
+        try {
+          button.setPointerCapture?.(event.pointerId);
+        } catch {
+          // La capture peut être refusée si le système vient d'annuler le pointeur.
+        }
+        this.setHubTouchDirection(button.dataset.hubMove, true);
+      });
+      ['pointerup', 'pointercancel', 'lostpointercapture'].forEach((eventName) => {
+        button.addEventListener(eventName, releaseDirection);
+      });
+    });
+
+    document.getElementById('btn-touch-hub-interact')?.addEventListener('click', (event) => {
+      event.preventDefault?.();
+      if (this.gameState === 'HUB' && this.isHubExploring) this.attemptHubInteraction();
+    });
+    document.getElementById('btn-touch-hub-console')?.addEventListener('click', (event) => {
+      event.preventDefault?.();
+      if (this.gameState === 'HUB' && this.isHubExploring) {
+        this.showMissionSelectionModal('missions');
+      }
+    });
+    return true;
+  }
+
+  resetHubTouchInput() {
+    this.activeHubTouchDirections?.clear();
+    this.touchInputDir ??= { x: 0, z: 0 };
+    this.touchInputDir.x = 0;
+    this.touchInputDir.z = 0;
+    if (this.inputDir && this.keyboardInputDir && this.gamepadAxes) this.syncInputDirection();
+  }
+
+  setHubTouchDirection(direction, pressed) {
+    if (!['up', 'down', 'left', 'right'].includes(direction)) return false;
+    this.activeHubTouchDirections ??= new Set();
+    this.touchInputDir ??= { x: 0, z: 0 };
+    if (pressed) {
+      if (this.gameState !== 'HUB' || !this.isHubExploring) return false;
+      this.activeHubTouchDirections.add(direction);
+    } else {
+      this.activeHubTouchDirections.delete(direction);
+    }
+    this.touchInputDir.x = (this.activeHubTouchDirections.has('right') ? 1 : 0)
+      - (this.activeHubTouchDirections.has('left') ? 1 : 0);
+    this.touchInputDir.z = (this.activeHubTouchDirections.has('down') ? 1 : 0)
+      - (this.activeHubTouchDirections.has('up') ? 1 : 0);
+    this.syncInputDirection();
+    return true;
+  }
+
+  setHubTouchControlsVisible(visible) {
+    const controls = document.getElementById('touch-hub-controls');
+    controls?.classList.toggle('hidden', !visible);
+    if (!visible) this.resetHubTouchInput();
+    return Boolean(controls);
+  }
+
+
   setPaused(paused) {
     if (!this.isGameStarted || !this.isHuntFlowActive() || this.huntResultShown) return;
     this.isPaused = Boolean(paused);
@@ -1015,11 +1282,100 @@ export class Game {
     this.setPaused(!this.isPaused);
   }
 
-  showMissionSelectionModal() {
-    document.getElementById('mission-modal')?.classList.remove('hidden');
+  showMissionSelectionModal(tabKey = 'missions', moveFocus = true) {
+    const modal = document.getElementById('mission-modal');
+    modal?.classList.remove('hidden');
+    modal?.setAttribute('aria-hidden', 'false');
+    this.isHubExploring = false;
+    this.keyboardInputDir = { x: 0, z: 0, isSprinting: false };
+    this.gamepadAxes = { x: 0, z: 0 };
+    this.setHubTouchControlsVisible(false);
+    this.syncInputDirection();
+    this.activateMissionTab?.(tabKey, false);
     this.refreshForgeButtons();
     this.isScopeZooming = false;
+    this.hud.hideActionPrompt();
     if (document.pointerLockElement) document.exitPointerLock();
+    if (moveFocus) {
+      const focusTarget = document.getElementById('tab-btn-' + tabKey)
+        ?? modal?.querySelector?.('[tabindex], button, select');
+      focusTarget?.focus?.();
+    }
+    return Boolean(modal);
+  }
+
+  enterHubExploration() {
+    if (!this.isGameStarted || this.gameState !== 'HUB') return false;
+    const modal = document.getElementById('mission-modal');
+    modal?.classList.add('hidden');
+    modal?.setAttribute('aria-hidden', 'true');
+    this.isHubExploring = true;
+    this.keyboardInputDir = { x: 0, z: 0, isSprinting: false };
+    this.gamepadAxes = { x: 0, z: 0 };
+    this.resetHubTouchInput();
+    this.syncInputDirection();
+    this.hud.hideActionPrompt();
+    this.setHubTouchControlsVisible(true);
+    this.hud.showLogMessage('EXPLORATION DU VAISSEAU-MÈRE — INTERACTION [E], [A] OU ACTION TACTILE', 3200);
+    this.container?.focus?.();
+    this.requestPointerLockSafely();
+    return true;
+  }
+
+  updateHubHUD() {
+    this.hud.updateVitals(this.player);
+    if (!this.isHubExploring) {
+      this.hud.hideActionPrompt();
+      return null;
+    }
+    const station = this.hub.getNearbyStation(this.player.position);
+    if (station) this.hud.showActionPrompt(station.prompt);
+    else this.hud.hideActionPrompt();
+    return station;
+  }
+
+  attemptHubInteraction() {
+    if (this.gameState !== 'HUB' || !this.isHubExploring) return false;
+    const station = this.hub.getNearbyStation(this.player.position);
+    if (!station) return false;
+
+    if (station.interactionType === 'contracts') {
+      this.showMissionSelectionModal('missions');
+    } else if (station.interactionType === 'forge') {
+      this.showMissionSelectionModal('armory');
+    } else if (station.interactionType === 'trophies') {
+      this.hub.setTrophyState(this.player.completedHunts);
+      const unlocked = [...this.hub.trophyDisplays.values()]
+        .filter((trophy) => trophy.userData.unlocked).length;
+      const total = this.hub.trophyDisplays.size;
+      this.hud.showLogMessage(
+        'GALERIE DU CLAN — ' + unlocked + '/' + total + ' TROPHÉES D’HONNEUR EXPOSÉS',
+        3200,
+      );
+    } else if (station.interactionType === 'hangar') {
+      const vehicleLabels = {
+        scout: 'ÉCLAIREUR',
+        shuttle: 'NAVETTE',
+        pod: 'POD DE TRAQUE',
+      };
+      const vehicles = this.hub.vehicleDisplays
+        .map((vehicle) => vehicleLabels[vehicle.userData.vehicleKind] ?? vehicle.userData.vehicleKind)
+        .join(' · ');
+      this.hud.showLogMessage(
+        'HANGAR DE CHASSE — ' + vehicles + ' · NEXUS CENTRAL POUR LE DÉPLOIEMENT',
+        3600,
+      );
+    }
+    return station;
+  }
+
+  updateHubExploration(delta) {
+    if (this.gameState !== 'HUB' || !this.isHubExploring) return false;
+    this.player.update(delta, this.inputDir, this.cameraYaw);
+    this.hub.constrainPlayer(this.player.position, PLAYER_COLLIDER_RADIUS);
+    this.updateCamera(delta);
+    this.updateHubHUD();
+    return true;
   }
 
   startHunt(huntType, planetType) {
@@ -1027,12 +1383,20 @@ export class Game {
     this.cleanupHunt();
 
     this.gameState = 'HUNT';
+    this.isHubExploring = false;
+    document.getElementById('mission-modal')?.classList.add('hidden');
+    document.getElementById('mission-modal')?.setAttribute('aria-hidden', 'true');
     this.currentHuntType = huntDefinition.id;
     this.currentPlanet = planetType;
     this.hub.setVisible(false);
+    this.environment.setDiscoveredPoiIds(this.player.discoveredPoiIds);
     this.environment.setBiome(planetType);
+    this.environment.setDiscoveredPoiIds(this.player.discoveredPoiIds);
     this.environment.setVisible(true);
     this.environment.setReducedMotion(this.settings.reducedMotion);
+    this.environment.clearWeatherEvent?.();
+    this.cameraYaw = Math.PI;
+    this.cameraPitch = 0.2;
     this.player.resetForHunt(HUNT_START_POSITION);
     this.trophyHarvested = false;
     this.huntResultShown = false;
@@ -1049,10 +1413,7 @@ export class Game {
     this.hud.showLogMessage(`CHASSE: ${huntDefinition.name.toUpperCase()} — ${huntDefinition.objective}`, 5000);
 
     if (planetType === 'hive_lv426' || this.currentHuntType === 'xeno_queen') {
-      for (let i = 0; i < 4; i++) {
-        const eggPos = new THREE.Vector3((Math.random() - 0.5) * 120, 0, (Math.random() - 0.5) * 120);
-        this.eggClusters.push(new FacehuggerEggCluster(this.scene, eggPos));
-      }
+      this.spawnHiveEggClusters();
     }
   }
 
@@ -1067,6 +1428,7 @@ export class Game {
     this.eventDirector?.stop();
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
+    this.environment?.clearWeatherEvent?.();
 
     if (this.activeBoss) {
       this.activeBoss.dispose?.();
@@ -1102,6 +1464,8 @@ export class Game {
     this.cleanupHunt();
     this.gameState = 'HUB';
     this.isPaused = false;
+    this.cameraYaw = Math.PI;
+    this.cameraPitch = 0.2;
     this.player.resetForHunt(HUB_PLAYER_POSITION);
     this.hub.setVisible(true);
     this.hub.setTrophyState(this.player.completedHunts);
@@ -1115,6 +1479,31 @@ export class Game {
 
   onKeyDown(e) {
     if (!this.isGameStarted) return;
+
+    if (this.gameState === 'HUB') {
+      if ((e.code === 'Escape' || e.code === 'KeyP') && !e.repeat) {
+        e.preventDefault?.();
+        this.showMissionSelectionModal('missions');
+        return;
+      }
+      if (!this.isHubExploring) return;
+
+      switch (e.code) {
+        case 'KeyW': case 'ArrowUp': this.keyboardInputDir.z = -1; break;
+        case 'KeyS': case 'ArrowDown': this.keyboardInputDir.z = 1; break;
+        case 'KeyA': case 'ArrowLeft': this.keyboardInputDir.x = -1; break;
+        case 'KeyD': case 'ArrowRight': this.keyboardInputDir.x = 1; break;
+        case 'ShiftLeft': case 'ShiftRight': this.keyboardInputDir.isSprinting = true; break;
+        case 'KeyE':
+          if (!e.repeat) this.attemptHubInteraction();
+          break;
+        default:
+          break;
+      }
+      if (e.code.startsWith('Arrow')) e.preventDefault?.();
+      this.syncInputDirection();
+      return;
+    }
 
     if ((e.code === 'Escape' || e.code === 'KeyP') && !e.repeat && this.isHuntFlowActive()) {
       e.preventDefault();
@@ -1205,7 +1594,21 @@ export class Game {
 
       case 'Space':
         if (this.gameState === 'HUNT') {
+          const wasPerched = this.player.isPerched;
+          const perchAnchor = wasPerched
+            ? this.player.currentPerchNode?.clone?.() ?? this.player.position.clone()
+            : null;
           const perched = this.player.jumpToCanopy(this.environment.treePerches);
+          if (wasPerched && perchAnchor) {
+            const fallback = perchAnchor.clone();
+            fallback.y = 0;
+            const landing = this.environment?.getSafeSpawnPosition?.(
+              perchAnchor,
+              { clearance: PLAYER_COLLIDER_RADIUS + 0.5 },
+            ) ?? fallback;
+            this.player.position.copy(landing?.isVector3 ? landing : fallback);
+            this.player.currentPerchNode = null;
+          }
           this.hud.showLogMessage(perched ? "PERCHÉ DANS LA CANOPÉE! ATTAQUE EN PIQUÉ DISPONIBLE!" : "SAUT DE CANOPÉE");
         }
         break;
@@ -1247,30 +1650,53 @@ export class Game {
   }
 
   updateGamepad() {
-    const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+    const gamepads = typeof navigator !== 'undefined' && navigator.getGamepads
+      ? navigator.getGamepads()
+      : [];
     const gp = gamepads[0];
     if (!gp) {
       this.gamepadAxes.x = 0;
       this.gamepadAxes.z = 0;
       this.syncInputDirection();
       this.gamepadAttackPressed = false;
+      this.gamepadInteractPressed = false;
+      this.gamepadMenuPressed = false;
       return;
     }
 
-    const axisX = Number(gp.axes[0]) || 0;
-    const axisZ = Number(gp.axes[1]) || 0;
+    const axes = gp.axes ?? [];
+    const buttons = gp.buttons ?? [];
+    const axisX = Number(axes[0]) || 0;
+    const axisZ = Number(axes[1]) || 0;
     this.gamepadAxes.x = Math.abs(axisX) > 0.15 ? axisX : 0;
     this.gamepadAxes.z = Math.abs(axisZ) > 0.15 ? axisZ : 0;
     this.syncInputDirection();
 
-    if (Math.abs(gp.axes[2]) > 0.15) this.cameraYaw -= gp.axes[2] * 0.03;
-    if (Math.abs(gp.axes[3]) > 0.15) {
-      this.cameraPitch -= gp.axes[3] * 0.03;
+    const cameraAxisX = Number(axes[2]) || 0;
+    const cameraAxisY = Number(axes[3]) || 0;
+    if (Math.abs(cameraAxisX) > 0.15) this.cameraYaw -= cameraAxisX * 0.03;
+    if (Math.abs(cameraAxisY) > 0.15) {
+      this.cameraPitch -= cameraAxisY * 0.03;
       this.cameraPitch = Math.max(-0.6, Math.min(0.8, this.cameraPitch));
     }
 
-    const attackPressed = gp.buttons[7]?.pressed === true;
-    if (attackPressed && !this.gamepadAttackPressed) this.performAttack();
+    const menuPressed = buttons[9]?.pressed === true || buttons[8]?.pressed === true;
+    if (menuPressed && !this.gamepadMenuPressed
+      && this.gameState === 'HUB' && this.isHubExploring) {
+      this.showMissionSelectionModal('missions');
+    }
+    this.gamepadMenuPressed = menuPressed;
+
+    const interactPressed = buttons[0]?.pressed === true;
+    if (interactPressed && !this.gamepadInteractPressed) {
+      if (this.gameState === 'HUB' && this.isHubExploring) this.attemptHubInteraction();
+      else if (this.gameState === 'HUNT' && !this.isPaused) this.attemptContextInteraction();
+    }
+    this.gamepadInteractPressed = interactPressed;
+
+    const attackPressed = buttons[7]?.pressed === true;
+    if (attackPressed && !this.gamepadAttackPressed
+      && this.gameState === 'HUNT' && !this.isPaused) this.performAttack();
     this.gamepadAttackPressed = attackPressed;
   }
 
@@ -1295,6 +1721,30 @@ export class Game {
           2600,
         );
       }
+      this.saveProgress();
+      return true;
+    }
+
+    const environmentResult = this.environment?.interactWithPointOfInterest?.(this.player.position);
+    if (environmentResult) {
+      const poiId = typeof environmentResult.poiId === 'string' ? environmentResult.poiId : null;
+      const knownPoiIds = Array.isArray(this.player.discoveredPoiIds)
+        ? this.player.discoveredPoiIds
+        : [];
+      if (poiId && knownPoiIds.includes(poiId)) return false;
+      if (poiId) {
+        this.player.discoveredPoiIds = [...new Set([...knownPoiIds, poiId])];
+        this.environment.setDiscoveredPoiIds?.(this.player.discoveredPoiIds);
+      }
+      const effect = this.dispatchPointOfInterestEffect(environmentResult);
+      const honorGained = this.player.addHonor(effect.honorRequested);
+      const message = environmentResult.message
+        ?? `${environmentResult.label ?? 'ARCHIVE ENVIRONNEMENTALE'} ANALYSÉE`;
+      this.hud.showLogMessage(
+        `${message} · ${effect.detail}${honorGained > 0 ? ` · +${honorGained} HONNEUR` : ''}`,
+        2800,
+      );
+      this.hud.updateVitals?.(this.player);
       this.saveProgress();
       return true;
     }
@@ -1338,67 +1788,88 @@ export class Game {
   handlePhysicalCollisions() {
     const playerPos = this.player.position;
 
-    // 1. Player <-> Boss / PNJ radial pushback collision
     this.getCombatTargets().forEach((target) => {
       const targetPos = target.position;
-      const playerRadius = 1.8;
       const targetRadius = target.colliderRadius ?? (target === this.activeBoss ? 5 : 0.8);
-      const minDist = playerRadius + targetRadius;
+      const minDist = PLAYER_COLLIDER_RADIUS + targetRadius;
       const dx = playerPos.x - targetPos.x;
       const dz = playerPos.z - targetPos.z;
-      const dist = Math.sqrt(dx * dx + dz * dz);
+      const dist = Math.hypot(dx, dz);
 
-      if (dist < minDist && dist > 0.01 && !this.player.isPerched) {
+      if (dist < minDist && !this.player.isPerched) {
         const overlap = minDist - dist;
-        playerPos.x += (dx / dist) * overlap;
-        playerPos.z += (dz / dist) * overlap;
+        const normalX = dist > 0.01 ? dx / dist : 1;
+        const normalZ = dist > 0.01 ? dz / dist : 0;
+        playerPos.x += normalX * overlap;
+        playerPos.z += normalZ * overlap;
       }
     });
 
-    // 2. Player <-> Environment Obstacles (Pillars, Trees, Rocks)
-    this.environment.obstacleColliders.forEach(obs => {
-      const dx = playerPos.x - obs.x;
-      const dz = playerPos.z - obs.z;
-      const dist = Math.sqrt(dx * dx + dz * dz);
-      const minDist = 1.8 + obs.radius;
+    (this.environment?.obstacleColliders ?? []).forEach((obstacle) => {
+      if (obstacle.blocksActors === false) return;
+      const dx = playerPos.x - obstacle.x;
+      const dz = playerPos.z - obstacle.z;
+      const dist = Math.hypot(dx, dz);
+      const minDist = PLAYER_COLLIDER_RADIUS + obstacle.radius;
 
-      if (dist < minDist && dist > 0.01) {
+      if (dist < minDist && !this.player.isPerched) {
         const overlap = minDist - dist;
-        if (!this.player.isPerched) {
-          playerPos.x += (dx / dist) * overlap;
-          playerPos.z += (dz / dist) * overlap;
-        }
+        const normalX = dist > 0.01 ? dx / dist : 1;
+        const normalZ = dist > 0.01 ? dz / dist : 0;
+        playerPos.x += normalX * overlap;
+        playerPos.z += normalZ * overlap;
       }
 
-      // Boss <-> Environment Obstacles
       if (this.activeBoss) {
-        const bdx = this.activeBoss.position.x - obs.x;
-        const bdz = this.activeBoss.position.z - obs.z;
-        const bdist = Math.sqrt(bdx * bdx + bdz * bdz);
-        const bMinDist = 5.0 + obs.radius;
-
-        if (bdist < bMinDist && bdist > 0.01) {
-          const boverlap = bMinDist - bdist;
-          this.activeBoss.position.x += (bdx / bdist) * boverlap;
-          this.activeBoss.position.z += (bdz / bdist) * boverlap;
+        const bdx = this.activeBoss.position.x - obstacle.x;
+        const bdz = this.activeBoss.position.z - obstacle.z;
+        const bdist = Math.hypot(bdx, bdz);
+        const bossRadius = this.activeBoss.colliderRadius ?? 5;
+        const minBossDistance = bossRadius + obstacle.radius;
+        if (bdist < minBossDistance) {
+          const overlap = minBossDistance - bdist;
+          const normalX = bdist > 0.01 ? bdx / bdist : 1;
+          const normalZ = bdist > 0.01 ? bdz / bdist : 0;
+          this.activeBoss.position.x += normalX * overlap;
+          this.activeBoss.position.z += normalZ * overlap;
         }
       }
 
-      // Les renforts dynamiques utilisent les mêmes volumes solides que le boss.
       (this.activeEnemies ?? []).forEach((enemy) => {
-        const edx = enemy.position.x - obs.x;
-        const edz = enemy.position.z - obs.z;
-        const edist = Math.sqrt(edx * edx + edz * edz);
-        const eMinDist = (enemy.colliderRadius ?? 0.8) + obs.radius;
-
-        if (edist < eMinDist) {
-          const overlap = eMinDist - edist;
+        const edx = enemy.position.x - obstacle.x;
+        const edz = enemy.position.z - obstacle.z;
+        const edist = Math.hypot(edx, edz);
+        const minEnemyDistance = (enemy.colliderRadius ?? 0.8) + obstacle.radius;
+        if (edist < minEnemyDistance) {
+          const overlap = minEnemyDistance - edist;
           const normalX = edist > 0.01 ? edx / edist : 1;
           const normalZ = edist > 0.01 ? edz / edist : 0;
           enemy.position.x += normalX * overlap;
           enemy.position.z += normalZ * overlap;
         }
       });
+    });
+
+    if (!this.player.isPerched) {
+      this.environment?.constrainToPlayableArea?.(
+        playerPos,
+        PLAYER_COLLIDER_RADIUS,
+        { snapToGround: true },
+      );
+    }
+    if (this.activeBoss?.position) {
+      this.environment?.constrainToPlayableArea?.(
+        this.activeBoss.position,
+        this.activeBoss.colliderRadius ?? 5,
+        { snapToGround: true },
+      );
+    }
+    (this.activeEnemies ?? []).forEach((enemy) => {
+      this.environment?.constrainToPlayableArea?.(
+        enemy.position,
+        enemy.colliderRadius ?? 0.8,
+        { snapToGround: true },
+      );
     });
   }
 
@@ -1473,16 +1944,49 @@ export class Game {
 
     for (let i = this.player.projectiles.length - 1; i >= 0; i--) {
       const projectile = this.player.projectiles[i];
-      const previousPosition = projectile.mesh.position.clone()
+      const currentPosition = projectile.mesh.position;
+      const previousPosition = currentPosition.clone()
         .addScaledVector(projectile.dir, -(projectile.speed ?? 0) * delta);
-      const targetImpact = this.getCombatTargets().map((candidate) => {
-        const impact = typeof candidate.resolveProjectileImpact === 'function'
-          ? candidate.resolveProjectileImpact(projectile.mesh.position, 1, previousPosition)
-          : projectile.mesh.position.distanceTo(candidate.position) < (candidate.colliderRadius ?? 6.5) + 1
-            ? projectile.mesh.position.clone()
-            : null;
-        return impact ? { target: candidate, impact } : null;
-      }).find(Boolean);
+      const projectileRadius = this.getProjectileCollisionRadius(projectile);
+      const targetImpacts = this.getCombatTargets().map((candidate) => {
+        let impact;
+        if (typeof candidate.resolveProjectileImpact === 'function') {
+          impact = candidate.resolveProjectileImpact(currentPosition, projectileRadius, previousPosition);
+        } else {
+          const targetHeight = candidate === this.activeBoss ? 3.5 : 1.2;
+          const targetCenter = candidate.getAimPoint?.()
+            ?? candidate.position.clone().add(new THREE.Vector3(0, targetHeight, 0));
+          impact = this.resolveSegmentSphereImpact(
+            previousPosition,
+            currentPosition,
+            targetCenter,
+            (candidate.colliderRadius ?? 0.8) + projectileRadius,
+          );
+        }
+        return impact
+          ? {
+            target: candidate,
+            impact,
+            distanceSquared: previousPosition.distanceToSquared(impact),
+          }
+          : null;
+      }).filter(Boolean).sort((a, b) => a.distanceSquared - b.distanceSquared);
+      const targetImpact = targetImpacts[0] ?? null;
+      const coverImpact = this.environment?.resolveProjectileCoverImpact?.(
+        previousPosition,
+        currentPosition,
+        projectileRadius,
+      ) ?? null;
+      const coverDistanceSquared = coverImpact
+        ? coverImpact.distanceSquared ?? previousPosition.distanceToSquared(coverImpact.point)
+        : Infinity;
+
+      if (coverImpact && (!targetImpact || coverDistanceSquared <= targetImpact.distanceSquared)) {
+        if (projectile.type === 'plasma') this.spawnPlasmaShockwaveVFX(coverImpact.point);
+        disposeObject3D(projectile.mesh);
+        this.player.projectiles.splice(i, 1);
+        continue;
+      }
       if (!targetImpact) continue;
       const { target, impact } = targetImpact;
 
@@ -1533,13 +2037,44 @@ export class Game {
           continue;
         }
 
-        if (projectile.mesh.position.distanceTo(playerPos) < 3.25) {
-          this.player.takeDamage(projectile.damage ?? 35);
-          this.spawnPlasmaShockwaveVFX(projectile.mesh.position);
-          this.spawnBloodSpatterVFX(playerPos, 0xffff00, 12);
+        const currentPosition = projectile.mesh.position;
+        const previousPosition = projectile.dir?.isVector3
+          ? currentPosition.clone().addScaledVector(projectile.dir, -(projectile.speed ?? 0) * delta)
+          : currentPosition.clone();
+        const projectileRadius = this.getProjectileCollisionRadius(projectile);
+        const playerImpact = this.resolveSegmentSphereImpact(
+          previousPosition,
+          currentPosition,
+          playerPos.clone().add(new THREE.Vector3(0, 2.4, 0)),
+          3.25,
+        );
+        const playerDistanceSquared = playerImpact
+          ? previousPosition.distanceToSquared(playerImpact)
+          : Infinity;
+        const coverImpact = this.environment?.resolveProjectileCoverImpact?.(
+          previousPosition,
+          currentPosition,
+          projectileRadius,
+        ) ?? null;
+        const coverDistanceSquared = coverImpact
+          ? coverImpact.distanceSquared ?? previousPosition.distanceToSquared(coverImpact.point)
+          : Infinity;
+
+        if (coverImpact && coverDistanceSquared <= playerDistanceSquared) {
+          if (String(projectile.type ?? '').includes('plasma')) {
+            this.spawnPlasmaShockwaveVFX(coverImpact.point);
+          }
           disposeObject3D(projectile.mesh);
           this.activeBoss.projectiles.splice(i, 1);
+          continue;
         }
+        if (!playerImpact) continue;
+
+        this.player.takeDamage(projectile.damage ?? 35);
+        this.spawnPlasmaShockwaveVFX(playerImpact);
+        this.spawnBloodSpatterVFX(playerPos, 0xffff00, 12);
+        disposeObject3D(projectile.mesh);
+        this.activeBoss.projectiles.splice(i, 1);
       }
     }
 
@@ -1652,12 +2187,16 @@ export class Game {
         && vehicle.mesh.userData.interactable
         && vehicle.mesh.position.distanceTo(this.player.position) <= vehicle.interactionDistance
       ));
+      const nearbyPointOfInterest = this.environment?.getNearbyPointOfInterest?.(this.player.position);
+      const availablePointOfInterest = nearbyPointOfInterest?.scanned ? null : nearbyPointOfInterest;
       if (this.activeBoss.isDead && distToBoss < 14.0 && !this.trophyHarvested) {
         this.hud.showActionPrompt('RÉCOLTER LE TROPHÉE YAUTJA [E]');
       } else if (nearbyCache) {
         this.hud.showActionPrompt('OUVRIR LE CONTENEUR DE CHASSE [E]');
       } else if (nearbyVehicle) {
         this.hud.showActionPrompt('SYNCHRONISER LA NAVETTE DE RECONNAISSANCE [E]');
+      } else if (availablePointOfInterest) {
+        this.hud.showActionPrompt(`ANALYSER ${availablePointOfInterest.label.toUpperCase()} [E]`);
       } else {
         this.hud.hideActionPrompt();
       }
@@ -1697,6 +2236,9 @@ export class Game {
     if (this.huntResultShown) return;
     this.victoryCountdown = null;
     this.clearVehicleScan();
+    this.environment?.clearWeatherEvent?.();
+    this.activeHazard = null;
+    this.hazardPulseTimer = 0;
     this.player.clearTransientGadgets();
 
     this.huntResultShown = true;
@@ -1742,7 +2284,10 @@ export class Game {
 
       if (this.gameState === 'HUB') {
         this.hub.update(delta, this.settings.reducedMotion);
-        this.updateCamera(delta);
+        if (!this.updateHubExploration(delta)) {
+          this.updateCamera(delta);
+          this.hud.hideActionPrompt();
+        }
       } else if (this.gameState === 'HUNT') {
         this.player.update(delta, this.inputDir, this.cameraYaw);
         if (this.player.selfDestructComplete) {
@@ -1751,7 +2296,11 @@ export class Game {
           if (this.activeBoss) this.activeBoss.update(delta, this.player.position, this.player.isCloaked);
           this.updateEncounterContent(delta);
           this.updateVehicleScan(delta);
-          this.environment.update(delta, this.player.activeVisionMode);
+          this.environment.update(delta, this.player.activeVisionMode, {
+            player: this.player,
+            weatherEvent: this.activeHazard,
+          });
+          this.processEnvironmentHazardSignals(this.environment.drainHazardSignals?.() ?? []);
 
           this.handlePhysicalCollisions();
           this.checkCollisions(delta);
@@ -1761,7 +2310,8 @@ export class Game {
       } else if (this.gameState === 'VICTORY_PENDING') {
         this.updateVictoryPending(frameDelta);
         if (this.gameState === 'VICTORY_PENDING') {
-          this.environment.update(delta, this.player.activeVisionMode);
+          this.environment.update(delta, this.player.activeVisionMode, { weatherEvent: null });
+          this.environment.drainHazardSignals?.();
           this.updateCamera(delta);
           this.hud.updateVitals(this.player);
           this.hud.hideActionPrompt();

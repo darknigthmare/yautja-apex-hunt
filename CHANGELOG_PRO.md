@@ -2,6 +2,58 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
+## [1.6.0] — 24 août 2026
+
+### Props et composition des cinq terrains de chasse
+
+- catalogue de level design déterministe ajouté aux cinq biomes, avec huit groupes de props nommés, trois points d’intérêt et un à deux dangers localisés par carte ;
+- jungle structurée autour d’une porte rituelle, d’un camp de traque, d’un arbre à trophées, d’une épave et de deux lignes de progression ;
+- ruche organisée entre sas colonial, nursery, estrade royale, couloirs de côtes, cocons et traces d’une intervention Cleaner ;
+- Ryushi enrichi d’un homestead frontalier, d’un château d’eau, d’un enclos, d’un crawler enseveli, de coupe-vents et de balises ;
+- Yautja Prime composé comme une arène de clan : porte des Anciens, dais de blooding, sanctuaire d’armes, galerie de trophées, cercle de braseros et gradins de totems ;
+- Genna articulé autour d’une épave d’expédition, de l’aire du Kalisk, d’un réseau synthétique, de bosquets de spores, de nœuds régénératifs et d’arches osseuses.
+
+### Lecture, interaction et combat dans l’espace
+
+- couvertures et structures majeures déclarées avec des volumes de collision afin de créer de vraies lignes de tir et des routes protégées ;
+- perchoirs et silhouettes hautes répartis sur les cartes pour renforcer la lecture verticale sans rendre les limites jouables ambiguës ;
+- trois archives environnementales par biome, chacune avec rayon d’interaction, message contextuel, récompense d’honneur et l’un des quatre profils d’effet réellement branchés ;
+- effets de première analyse différenciés : `decode_record` restaure jusqu’à 30 points de santé et 25 d’énergie, `tune_beacon` révèle les signatures pendant 10 s dans un rayon de 150 m, `scan_archive` rend jusqu’à 18 points d’énergie et scanne 4 s à 75 m, tandis que `scan_trophies` rend jusqu’à 40 points d’endurance et applique un multiplicateur d’honneur de ×1,2 ;
+- zones dangereuses lisibles et localisées : lianes prédatrices, bassins acides, évent thermique, brasero plasma et évents de spores ;
+- éclairage de chasse biome-aware composé d’un remplissage ambiant, d’un hémisphérique et d’une key light côté joueur ; les lumières suivent la visibilité de l’environnement et sont retirées au `dispose`, avec test dédié ;
+- budgets explicites de props, POI, dangers, colliders, draw calls et triangles pour conserver un coût stable lors des changements de biome.
+
+### Vaisseau-mère et narration environnementale
+
+- pont segmenté, routes au sol, nervures, plafonniers et conduites structurent les circulations du hub ;
+- galerie de huit trophées aux silhouettes propres, nexus de huit contrats holographiques et quatre balises directionnelles renforcent l’orientation ;
+- forge et armurerie densifiées avec foyer, confinement, noyau moléculaire, bras manipulateurs, extraction, râtelier d’armes, console et caisses ;
+- hangar enrichi de pads lumineux, appareils Scout/navette/pod détaillés, portique, console et stockage ;
+- continuité éditoriale maintenue : la disposition précise du vaisseau, ses archives et ses rituels spatiaux restent des créations `ORIGINAL`, même lorsqu’ils s’appuient sur un vocabulaire visuel vu à l’écran.
+
+### Matériaux OpenAI originaux
+
+- quatre textures WebP 1254×1254 ajoutées pour les panneaux frontaliers de Ryushi, la membrane biomécanique de la ruche, le bronze cérémoniel Yautja et la peau de gousse de Genna ;
+- génération bitmap originale avec OpenAI, sans image officielle de référence, texte, logo, watermark, key art ou revendication de droits sur la franchise ;
+- chemins, dimensions, poids, usages et prompts résumés consignés dans les documents d’assets.
+
+### Validation et publication
+
+- suite locale : 193/193 tests, build Vite de 42 modules, `node --check` sur 11 modules, `npm audit --omit=dev` à 0 vulnérabilité et `git diff --check` sans erreur ;
+- Chromium desktop local : titre/missions, hub jouable, touche `P`, commandes tactiles masquées sur desktop et cinq biomes inspectés en masque normal, sans overlay ni erreur console ;
+- quatre WebP v1.6 chargés par Chromium et vérifiés en HTTP 200 local ;
+- push et déploiement Vercel v1.6 encore ouverts : cette version n’est pas déclarée publiée.
+
+### Mesures finales et garde-fous v1.6
+
+- cinq biomes livrés avec huit groupes de props, trois POI et un à deux dangers chacun ; cinq installations, six sanctuaires et huit signatures de POI distinctes assurent la différenciation entre cartes ;
+- POI persistants et anti-farm intégrés de manière additive au format de sauvegarde v4 ;
+- apparitions sûres, placement éloigné des caches et survols, couvertures prises en compte par les projectiles et limites circulaires appliqués au runtime ;
+- vaisseau-mère explorable en WASD/flèches, à la manette et via commandes tactiles avec quatre stations, 27 colliders, 273 draw calls budgétés et 17 239 triangles ;
+- instancing statique représentant 136 draw calls théoriques évités ; Genna passe de 252 à 89 appels (-64,7 %) avec cinq lots, 168 instances, 31 889 triangles et 28 plantes ;
+- `reducedMotion` propagé à l’environnement, au hub, aux navettes et aux conteneurs : flottement, roulis, pulsations et émissions décoratives sont figés ou atténués, tandis que transitions, états et interactions restent actifs ;
+- gates locaux et QA Chromium desktop réussis ; appareil tactile réel, push et production Vercel restent ouverts.
+
 ## [1.5.0] — 24 août 2026
 
 ### Contrats réellement jouables
@@ -17,11 +69,11 @@ Les versions sont considérées comme publiées uniquement après push du code, 
 - accessoires de collection non attestés dans le montage, tel le fusil du Scout, isolés sous `MERCH_CONCEPT` au lieu d’être présentés comme canon écran ;
 - arsenal de Wolf, rituel de nettoyage de Gunnison et cycle de régénération du Kalisk ajoutés au catalogue avec leur statut runtime réel.
 
-### Registre par œuvre et backlog Excel
+### Registre par œuvre et backlog documentaire
 
 - registre de 29 œuvres et médias avec provenance, continuité, cible de couverture et statut de sortie ;
 - séparation explicite des contenus publiés, coupés du montage, non publiés, promotionnels et crossovers alternatifs ;
-- tableur `Encyclopedie_exhaustive_franchise_Predator.xlsx` de 915 éléments uniques utilisé comme backlog de détection des manques, sans import automatique ni promotion d’une entrée non vérifiée au rang de canon.
+- le tableur évoqué par l’utilisateur n’était pas accessible dans le workspace ni les pièces jointes de cette passe ; aucune donnée ne lui est attribuée et sa confrontation au registre reste un contrôle documentaire futur.
 
 ### Visuels OpenAI originaux
 

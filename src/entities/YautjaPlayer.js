@@ -98,6 +98,7 @@ export class YautjaPlayer {
     this.meleeDamageMultiplier = 1;
     this.honorRankIndex = 1;
     this.completedHunts = [];
+    this.discoveredPoiIds = [];
 
     this.ranks = [
       "JEUNE SANG (YOUNG BLOOD)",
