@@ -1,24 +1,24 @@
-# Rapport QA — release 1.5.0 publiée / worktree 1.6.0 validé localement
+# Rapport QA — release 1.6.0 publiée
 
-**Date :** 24 août 2026
-**Statut :** release 1.5.0 validée et publiée ; worktree 1.6.0 validé localement, push et production Vercel encore ouverts.
+**Date :** 25 août 2026
+**Statut :** release 1.6.0 validée, poussée sur GitHub et publiée sur Vercel ; aucun défaut P0/P1 connu.
 **Production :** <https://yautja-apex-hunt.vercel.app/>
-**Déploiement :** `dpl_6PrjSve8RsKqoDh7TWp2NmD6BPRA` — `READY`, cible `production`
+**Déploiement :** `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` — `READY`, cible `production`, alias officiel appliqué
 **Source :** <https://github.com/darknigthmare/yautja-apex-hunt>
 
 ## Gates de release
 
 | Gate | Résultat vérifié | Couverture |
 |---|---:|---|
-| Tests Node | **125/125 réussis** | Huit boss, points faibles balayés, dangers Cleaner, régénération Kalisk, équipement, personnalisation, contenu média, sauvegarde et responsive HUD. |
-| Build production local | **Vite 8.2.2 réussi** | 39 modules ; HTML 22,78 Ko ; CSS 23,79 Ko ; jeu 331,75 Ko ; Three.js 503,06 Ko. L’avertissement de taille du chunk Three.js est non bloquant. |
-| Build Vercel | **réussi** | Déploiement production `READY` et alias officiel appliqué. |
-| Sécurité dépendances | **0 vulnérabilité** | `npm audit --audit-level=high`. |
+| Tests Node | **193/193 réussis** | Huit boss, level design des cinq biomes, hub explorable, POI persistants, apparitions sûres, mouvement réduit, sauvegarde et responsive HUD. |
+| Build production local | **Vite 8.2.2 réussi** | 42 modules ; HTML 24,44 Ko ; CSS 25,39 Ko ; jeu 429,73 Ko ; Three.js 503,59 Ko. L’avertissement de taille du chunk Three.js est non bloquant. |
+| Build Vercel | **réussi** | Déploiement `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` en production `READY` et alias officiel appliqué. |
+| Sécurité dépendances | **0 vulnérabilité** | `npm audit --omit=dev`. |
 | Qualité Git | **propre** | `git diff --check`, aucun patch ou fichier QA temporaire conservé. |
-| Chromium desktop local et production | **réussi** | 8 contrats, 29 fiches média, 38 bio-masques, lancement Wolf/Kalisk et chargement des textures runtime. |
-| Chromium mobile production | **réussi** | Viewport 390×844, largeur document 390 px, huit contrats accessibles et aucun débordement horizontal. |
-| Console navigateur | **0 erreur** | Aucun défaut de page relevé sur les parcours local et production. |
-| Assets 1.5 | **HTTP 200** | Les trois WebP OpenAI répondent en production avec le bon type MIME et sont chargés par leur contenu jouable. |
+| Chromium desktop v1.6 | **réussi** | En local : titre, missions, hub jouable et cinq biomes en masque normal ; en production : titre, huit contrats, entrée dans le hub, console, HUD desktop et absence d’overlay. |
+| Chromium mobile production 1.5 | **réussi** | Baseline 390×844 conservée : largeur document 390 px, huit contrats accessibles et aucun débordement horizontal ; un appareil tactile physique reste à contrôler pour la 1.6. |
+| Console navigateur | **0 erreur applicative** | Aucun défaut de page relevé sur les parcours locaux ou la navigation de production v1.6. |
+| Assets 1.6 | **HTTP 200 / `image/webp`** | Les quatre WebP OpenAI répondent sur l’alias public avec leurs poids attendus. |
 
 ## Contenu réellement jouable contrôlé
 
@@ -51,10 +51,11 @@ Les prochains lots déjà identifiés sont une carte de Gunnison réellement mul
 - [x] Chromium desktop local : titre et missions, hub jouable, ouverture de la console avec `P`, commandes tactiles masquées sur desktop et cinq biomes inspectés en masque normal ;
 - [x] navigateur local : aucun overlay d’erreur et 0 erreur console ;
 - [x] quatre WebP v1.6 chargés par Chromium et vérifiés en HTTP 200 local ;
-- [ ] contrôle sur appareil tactile/mobile réel ;
-- [ ] push et déploiement Vercel de la v1.6.
+- [x] commit `8df30a7` poussé sur `origin/codex/professional-hunt-pass` ;
+- [x] production Vercel `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` en état `READY`, alias public et quatre WebP vérifiés en HTTP 200 ;
+- [ ] contrôle sur appareil tactile/mobile réel.
 
-La validation locale desktop est terminée. Elle ne vaut pas publication : aucun push de la v1.6, aucun déploiement Vercel v1.6 et aucun HTTP de production v1.6 ne sont revendiqués dans ce rapport.
+La validation locale et la publication desktop sont terminées. La page publique répond en HTTP 200, les quatre nouvelles matières répondent en HTTP 200 avec le type `image/webp`, et le parcours titre → contrats → hub explorable fonctionne sans overlay. Le contrôle sur appareil tactile physique et le profilage GPU modeste restent des validations non bloquantes.
 
 ### Budgets et contrats contrôlés dans le code
 
@@ -70,7 +71,7 @@ La validation locale desktop est terminée. Elle ne vaut pas publication : aucun
 | Instancing | 136 draw calls statiques théoriquement évités |
 | Genna | 252 → 89 draw calls (-64,7 %), 5 lots, 168 instances, 31 889 triangles, 28 plantes |
 | Accessibilité | `reducedMotion` propagé à l’environnement, la météo, le hub, les navettes et les conteneurs ; transitions, états et interactions préservés |
-| Textures v1.6 | 4 WebP originaux OpenAI 1254×1254, chargés dans Chromium et répondant en HTTP 200 local ; production ouverte |
+| Textures v1.6 | 4 WebP originaux OpenAI 1254×1254, chargés dans Chromium et répondant en HTTP 200 local et public avec le type `image/webp` |
 
 ## Reproduction rapide
 
@@ -87,10 +88,10 @@ Puis lancer le serveur local et vérifier sur Chromium desktop :
 2. le déplacement dans le hub et l’ouverture de la console avec `P` ;
 3. l’absence des commandes tactiles sur desktop ;
 4. les cinq biomes en masque normal, sans overlay ni erreur console ;
-5. les quatre chemins WebP v1.6 en HTTP 200 local.
+5. les quatre chemins WebP v1.6 en HTTP 200 local puis sur l’alias de production.
 
 ## Verdict
 
 La 1.5.0 ne se limite pas à ajouter des noms au Codex : Wolf et le Kalisk possèdent leurs propres boucles de combat, états, dangers, points faibles, textures et contrats. La couverture du Lost Tribe et des médias reste clairement séparée par provenance, et la production déployée a franchi les gates automatisés, navigateur, responsive, sécurité, assets et Vercel.
 
-La 1.6.0 franchit ses gates locaux avec 193/193 tests, 42 modules Vite, 0 vulnérabilité de production, 11 modules contrôlés syntaxiquement, un diff-check propre et le parcours Chromium desktop décrit ci-dessus. Le push et la production Vercel restent volontairement ouverts.
+La 1.6.0 franchit ses gates avec 193/193 tests, 42 modules Vite, 0 vulnérabilité de production, 11 modules contrôlés syntaxiquement, un diff-check propre, le parcours Chromium desktop décrit ci-dessus, le push GitHub et une production Vercel `READY`. Les validations physiques tactiles/manette et le profilage GPU modeste restent recommandés sans bloquer cette publication.

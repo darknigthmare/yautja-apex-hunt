@@ -1,14 +1,14 @@
 # Audit professionnel — Yautja: Apex Hunt
 
-**Date de l'audit :** 22 août 2026
+**Date de mise à jour :** 25 août 2026
 **Périmètre :** code source, données de jeu, sauvegarde, interface, assets et release publique.
-**Statut :** audit initial suivi de deux vagues de professionnalisation ; version 1.3.0 validée puis publiée le 22 août 2026, sans défaut P0/P1 connu.
+**Statut :** audit initial suivi des vagues de professionnalisation jusqu’à la version 1.6.0, validée puis publiée le 25 août 2026 sans défaut P0/P1 connu.
 
 ## Résumé exécutif
 
-Le projet possède désormais une boucle de chasse 3D, cinq cibles, quatre biomes, un hub, une économie d'honneur, dix armes, des PNJ et des événements de niveau. La version de départ restait cependant un prototype fragile : le lancement d'une chasse pouvait casser immédiatement, plusieurs attaques n'entraient jamais dans la résolution des dégâts, la sauvegarde ne couvrait pas toute la progression et les options de confort manquaient.
+Le projet possède désormais une boucle de chasse 3D, huit contrats, cinq biomes différenciés, un vaisseau-mère explorable, une économie d'honneur, dix armes, des PNJ, des événements de niveau et des POI persistants. La version de départ restait cependant un prototype fragile : le lancement d'une chasse pouvait casser immédiatement, plusieurs attaques n'entraient jamais dans la résolution des dégâts, la sauvegarde ne couvrait pas toute la progression et les options de confort manquaient.
 
-Le chantier a traité la jouabilité et la persistance, puis les fenêtres de réaction, l’accessibilité, la cohérence du lore, l’identité visuelle et l’étendue réelle du contenu. Les preuves techniques sont consignées dans `QA_REPORT.md` : 71 tests, build, audit npm, parcours Chromium desktop/mobile et production Vercel contrôlée en HTTP 200 avec ses quinze textures ; les contrôles physiques longue durée restent explicitement recommandés.
+Le chantier a traité la jouabilité, la persistance, les fenêtres de réaction, l’accessibilité, la cohérence du lore, l’identité visuelle, les props et le level design. Les preuves techniques sont consignées dans `QA_REPORT.md` : 193 tests, build Vite de 42 modules, audit npm sans vulnérabilité de production, parcours Chromium desktop et production Vercel contrôlée en HTTP 200 ; l’inventaire public compte 26 textures, dont les quatre matières v1.6 vérifiées sur l’alias public. Les contrôles physiques longue durée restent explicitement recommandés.
 
 ## Méthode et niveaux de preuve
 
@@ -55,8 +55,8 @@ Le chantier a traité la jouabilité et la persistance, puis les fenêtres de r�
 | Instancing | 136 draw calls statiques théoriquement évités. | Le gain est un calcul de construction, pas encore une mesure GPU navigateur. |
 | Genna | 252 → 89 appels (-64,7 %), 5 lots, 168 instances, 31 889 triangles et 28 plantes. | Mesurer frametime et mémoire sur GPU modeste. |
 | Accessibilité | `reducedMotion` fige ou atténue l’environnement, la météo, le hub, les navettes et les conteneurs tout en préservant transitions, états et interactions ; bascule à chaud couverte. | Vérifier les télégraphes sur un appareil configuré en réduction des animations. |
-| Assets | 4 WebP OpenAI originaux 1254×1254 référencés par les plans, décodés et chargés en HTTP 200 dans Chromium local. | Réponse HTTP de production encore à confirmer. |
-| Gates automatisés | 193/193 tests, 42 modules Vite, 0 vulnérabilité de production, 11 node-checks et diff-check propre. | Push et déploiement Vercel restent ouverts. |
+| Assets | 4 WebP OpenAI originaux 1254×1254 référencés par les plans, décodés et chargés en HTTP 200 local et public avec le type `image/webp`. | Juger répétition et contraste sur plusieurs écrans physiques. |
+| Gates automatisés | 193/193 tests, 42 modules Vite, 0 vulnérabilité de production, 11 node-checks, diff-check propre, push GitHub et production Vercel `READY`. | Aucun gate logiciel de publication ouvert. |
 
 Les valeurs de draw calls et triangles sont des métriques de scène/budget produites par le code de construction. Elles ne doivent pas être présentées comme des mesures de performance matérielle tant qu’un profilage navigateur n’a pas été exécuté.
 
@@ -64,15 +64,15 @@ Les valeurs de draw calls et triangles sont des métriques de scène/budget prod
 
 | Domaine | État constaté | Validation restante |
 | --- | --- | --- |
-| Environnement | Import principal redirigé vers `src/world/Environment.js`; le parcours hub plus biomes charge les quinze textures en HTTP 200 dans Chromium, avec nettoyage GPU centralisé. | Inspection longue durée de la mémoire sur GPU modeste. |
+| Environnement | Import principal redirigé vers `src/world/Environment.js`; cinq biomes et un hub explorable utilisent le catalogue de props, avec nettoyage GPU centralisé et quatre nouvelles textures contrôlées en HTTP 200 public. | Inspection longue durée de la mémoire sur GPU modeste. |
 | Autodestruction | Garde terminale, état `isDead`, explosion unique et timers gelés par la pause. | Jouer manuellement tout le compte à rebours, la défaite et le redémarrage. |
 | Mêlée | Règles dédiées pour lames et fouet couvertes par les tests de portée et de dégâts. | Confirmer le ressenti, la cadence et les collisions dans une chasse complète. |
 | Attaques ennemies | Projectiles Bad Blood et attaques de boss intégrés au contrôleur et au cycle de nettoyage. | Provoquer manuellement chaque impact, la queue de Reine, le Predalien et le QTE facehugger. |
-| Sauvegarde | Format v3, migrations v1/v2, corruption et stockage indisponible couverts par les tests. | Parcours manuel complet apparence, trophée, victoire puis rechargement. |
+| Sauvegarde | Format v4 additif, migrations antérieures, corruption, stockage indisponible et POI découverts couverts par les tests. | Parcours manuel complet apparence, trophée, victoire, POI puis rechargement sur une sauvegarde réelle. |
 | Zoom | Achat, sauvegarde et variation de FOV intégrés. | Comparer manuellement le ressenti avant/après achat et après rechargement. |
 | Options | Audio, mouvement réduit, contraste et échelle HUD appliqués dans Chromium et sérialisés. | Contrôle supplémentaire après fermeture complète du navigateur. |
 | Lore | Niveaux `SCREEN`, `AVP_SCREEN`, `LICENSED_EU`, `ORIGINAL` affichés dans le Codex. | Maintenir ces badges pour toute future entrée. |
-| Art | Quinze WebP OpenAI, 4 661 738 octets, intégrés aux biomes, trophées, armures, créatures, véhicules et conteneurs. | Inspection de la répétition à longue distance sur plusieurs écrans physiques. |
+| Art | Vingt-six WebP OpenAI, 8 493 482 octets, intégrés aux biomes, trophées, armures, créatures, véhicules et conteneurs. | Inspection de la répétition à longue distance sur plusieurs écrans physiques. |
 
 ## Risques restant à fermer
 
@@ -90,10 +90,10 @@ La release ne peut être qualifiée qu'après réussite des étapes suivantes :
 2. tests unitaires de combat et de sauvegarde ;
 3. build de production sans erreur et audit des dépendances ;
 4. vérification de tous les chemins d'assets et de leur poids ;
-5. parcours navigateur : hub, quatre lieux, cinq cibles, PNJ, événements, victoire, défaite, pause, options, sauvegarde et reprise ;
+5. parcours navigateur : hub, cinq lieux, huit cibles, PNJ, événements, victoire, défaite, pause, options, sauvegarde et reprise ;
 6. contrôle console, responsive clavier/souris et préférences d'accessibilité ;
 7. revue du diff et commit sélectif des seuls fichiers validés.
 
 ## Publication
 
-La release fonctionnelle 1.3.0 a été poussée sur GitHub et publiée sur Vercel ; la production <https://yautja-apex-hunt.vercel.app/> est en état `Ready`, répond en HTTP 200 et sert le bundle, les headers de sécurité et les quinze textures attendus.
+La release 1.6.0 a été poussée sur GitHub au commit `8df30a7` puis publiée via le déploiement `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3`. La production <https://yautja-apex-hunt.vercel.app/> est en état `READY`, répond en HTTP 200 et sert les quatre nouvelles matières v1.6 en `image/webp` avec leurs poids attendus.

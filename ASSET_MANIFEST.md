@@ -35,9 +35,9 @@
 | `yautja-ceremonial-bronze` | `public/assets/textures/yautja-ceremonial-bronze.webp` | 1254×1254 | 367 858 octets | portes, sanctuaires, braseros, balises et architecture cérémonielle Yautja | présent et référencé par le catalogue de props v1.6 |
 | `genna-spore-pod-hide` | `public/assets/textures/genna-spore-pod-hide.webp` | 1254×1254 | 561 416 octets | aire du Kalisk, bosquets de spores et nœuds régénératifs de Genna | présent et référencé par le catalogue de props v1.6 |
 
-**Poids public total inventorié : 8 493 482 octets.** Les six matières de décor initiales ont été converties avec Sharp en WebP 1024×1024. Les trois matières de props 1024×1024 ont été normalisées par quadrants miroir. La vague 1.3 ajoute six sorties WebP 1254×1254 ; la vague 1.4 ajoute quatre sorties WebP 1024×1024 ; la vague 1.5 ajoute trois sorties WebP 1024×1024 ; la vague 1.6 ajoute quatre sorties WebP 1254×1254. Les dimensions et poids des vingt-six fichiers sont consignés ici ; la validation Chromium locale de la v1.6 est reportée dans `QA_REPORT.md`.
+**Poids public total inventorié : 8 493 482 octets.** Les six matières de décor initiales ont été converties avec Sharp en WebP 1024×1024. Les trois matières de props 1024×1024 ont été normalisées par quadrants miroir. La vague 1.3 ajoute six sorties WebP 1254×1254 ; la vague 1.4 ajoute quatre sorties WebP 1024×1024 ; la vague 1.5 ajoute trois sorties WebP 1024×1024 ; la vague 1.6 ajoute quatre sorties WebP 1254×1254. Les dimensions et poids des vingt-six fichiers sont consignés ici ; la validation Chromium locale et la vérification HTTP de production v1.6 sont reportées dans `QA_REPORT.md`.
 
-Les quinze textures disponibles à l’issue de la 1.3 ont été chargées sans erreur dans Chromium et contrôlées sur la production correspondante. Les quatre matières 1.4 sont intégrées au biome Genna, au Feral, aux unités humaines et à la faune. Les trois matières 1.5 sont reliées à Wolf, au Lost Tribe et au Kalisk dans le code. Les quatre matières 1.6 sont référencées par les plans de props des biomes, décodées et chargées en HTTP 200 dans Chromium local. Leur réponse de production reste à vérifier ; la répétition et le contraste doivent encore être jugés sur plusieurs écrans physiques, notamment avec GPU modeste.
+Les quinze textures disponibles à l’issue de la 1.3 ont été chargées sans erreur dans Chromium et contrôlées sur la production correspondante. Les quatre matières 1.4 sont intégrées au biome Genna, au Feral, aux unités humaines et à la faune. Les trois matières 1.5 sont reliées à Wolf, au Lost Tribe et au Kalisk dans le code. Les quatre matières 1.6 sont référencées par les plans de props des biomes, décodées et chargées en HTTP 200 dans Chromium local puis sur l’alias de production avec le type `image/webp`. La répétition et le contraste doivent encore être jugés sur plusieurs écrans physiques, notamment avec GPU modeste.
 
 ## Lot v1.6 — synthèse props et level design
 
@@ -48,7 +48,7 @@ Les quatre WebP 1254×1254 de cette passe totalisent 1 669 128 octets :
 - `yautja-ceremonial-bronze.webp` — 367 858 octets ;
 - `genna-spore-pod-hide.webp` — 561 416 octets.
 
-Ils sont référencés par les plans de props correspondant aux cinq biomes et portent le total public inventorié à 26 WebP et 8 493 482 octets. Présence, dimensions, références de code, décodage, rendu et HTTP 200 local sont établis ; leurs réponses HTTP de production restent le gate ouvert.
+Ils sont référencés par les plans de props correspondant aux cinq biomes et portent le total public inventorié à 26 WebP et 8 493 482 octets. Présence, dimensions, références de code, décodage, rendu et HTTP 200 local et public avec le type `image/webp` sont établis.
 
 Ces images sont des générations OpenAI originales fan-made, produites sans image officielle de référence. Elles n’accordent ni ne revendiquent de droit sur les franchises, personnages, accessoires, symboles ou décors officiels.
 
@@ -76,8 +76,8 @@ Pour chaque fichier :
 5. **Validé :** inspection visuelle des matières OpenAI précédentes et des quatre sorties WebP 1.6 à leur définition native ;
 6. **Validé pour la 1.3 :** chargement Chromium et HTTP 200 des six nouveaux chemins publics ;
 7. **Validé dans le code :** le chargeur applique un matériau de fallback si un asset échoue ;
-8. **Validé localement pour la 1.6 :** quatre nouveaux chemins décodés, rendus et chargés en HTTP 200 dans Chromium ; contrôle HTTP de production encore ouvert.
+8. **Validé localement et en production pour la 1.6 :** quatre nouveaux chemins décodés, rendus et chargés en HTTP 200 dans Chromium, puis servis en HTTP 200 avec le type `image/webp` sur l’alias public.
 
 ## Publication et droits
 
-Ces assets sont destinés au fan game et ne transfèrent aucun droit sur les franchises Predator ou Alien. Aucun asset officiel n'a été demandé comme source à copier. La release 1.5 a déjà été publiée après validation de ses gates ; le push et le déploiement de la 1.6 restent ouverts au moment de ce manifeste.
+Ces assets sont destinés au fan game et ne transfèrent aucun droit sur les franchises Predator ou Alien. Aucun asset officiel n'a été demandé comme source à copier. La release 1.6 a été poussée sur GitHub et publiée sur Vercel après validation de ses gates locaux et publics.

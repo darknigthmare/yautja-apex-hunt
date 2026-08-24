@@ -2,7 +2,7 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
-## [1.6.0] — 24 août 2026
+## [1.6.0] — 25 août 2026
 
 ### Props et composition des cinq terrains de chasse
 
@@ -41,8 +41,8 @@ Les versions sont considérées comme publiées uniquement après push du code, 
 
 - suite locale : 193/193 tests, build Vite de 42 modules, `node --check` sur 11 modules, `npm audit --omit=dev` à 0 vulnérabilité et `git diff --check` sans erreur ;
 - Chromium desktop local : titre/missions, hub jouable, touche `P`, commandes tactiles masquées sur desktop et cinq biomes inspectés en masque normal, sans overlay ni erreur console ;
-- quatre WebP v1.6 chargés par Chromium et vérifiés en HTTP 200 local ;
-- push et déploiement Vercel v1.6 encore ouverts : cette version n’est pas déclarée publiée.
+- quatre WebP v1.6 chargés par Chromium et vérifiés en HTTP 200 local puis sur la production avec le type `image/webp` ;
+- commit `8df30a7` poussé sur `codex/professional-hunt-pass`, déploiement `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` en production `READY` et alias <https://yautja-apex-hunt.vercel.app/> contrôlé en HTTP 200.
 
 ### Mesures finales et garde-fous v1.6
 
@@ -52,7 +52,7 @@ Les versions sont considérées comme publiées uniquement après push du code, 
 - vaisseau-mère explorable en WASD/flèches, à la manette et via commandes tactiles avec quatre stations, 27 colliders, 273 draw calls budgétés et 17 239 triangles ;
 - instancing statique représentant 136 draw calls théoriques évités ; Genna passe de 252 à 89 appels (-64,7 %) avec cinq lots, 168 instances, 31 889 triangles et 28 plantes ;
 - `reducedMotion` propagé à l’environnement, au hub, aux navettes et aux conteneurs : flottement, roulis, pulsations et émissions décoratives sont figés ou atténués, tandis que transitions, états et interactions restent actifs ;
-- gates locaux et QA Chromium desktop réussis ; appareil tactile réel, push et production Vercel restent ouverts.
+- gates locaux, push GitHub et QA de production réussis ; appareil tactile/manette physique et profilage GPU modeste restent recommandés.
 
 ## [1.5.0] — 24 août 2026
 

@@ -4,7 +4,7 @@ Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur inca
 
 ## État du projet
 
-Le code source porte la version 1.6.0 et reste disponible sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt). Cette vague transforme les cinq cartes et le vaisseau-mère en espaces de chasse plus lisibles : points de repère, couvertures physiques, routes, verticalité, zones dangereuses et archives environnementales interactives. Une version n’est considérée comme publiée sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/) qu’après exécution et consignation des contrôles de release ; ce document ne présume pas du résultat d’un déploiement.
+Le code source porte la version 1.6.0 et reste disponible sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt). Cette vague transforme les cinq cartes et le vaisseau-mère en espaces de chasse plus lisibles : points de repère, couvertures physiques, routes, verticalité, zones dangereuses et archives environnementales interactives. La release 1.6.0 est publiée sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/) après validation des gates locaux, push GitHub et contrôle du déploiement Vercel public.
 
 ## Lancer localement
 
@@ -51,7 +51,7 @@ Les vingt-six textures de décor, props et créatures sous `public/assets/textur
 - le vaisseau-mère est explorable en WASD/flèches, à la manette et avec des commandes tactiles, dessert quatre stations fonctionnelles et porte un budget de scène de 27 colliders, 273 draw calls et 17 239 triangles ;
 - `reducedMotion` fige ou réduit les mouvements décoratifs de l’environnement, du hub, des navettes et des conteneurs sans bloquer leurs états, leurs interactions ni les signaux de danger et de combat.
 
-Les gates locaux v1.6 sont à 193/193 tests, 42 modules Vite, 0 vulnérabilité de production et 11 modules contrôlés syntaxiquement. Chromium desktop a validé le titre, les missions, le hub jouable, les cinq biomes en masque normal et les quatre WebP v1.6 en HTTP 200 local. Le push et la production Vercel restent ouverts à ce stade de la documentation.
+Les gates v1.6 sont à 193/193 tests, 42 modules Vite, 0 vulnérabilité de production et 11 modules contrôlés syntaxiquement. Chromium desktop a validé le titre, les missions, le hub jouable, les cinq biomes en masque normal et les quatre WebP v1.6 en HTTP 200 local. Le commit `8df30a7` est poussé sur GitHub et la production Vercel `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` est `READY` ; la page et les quatre WebP répondent en HTTP 200 sur l’alias public.
 
 ## Couverture franchise et backlog
 
