@@ -3,7 +3,7 @@
 **Date :** 25 août 2026
 **Statut :** release 1.6.0 validée, poussée sur GitHub et publiée sur Vercel ; aucun défaut P0/P1 connu.
 **Production :** <https://yautja-apex-hunt.vercel.app/>
-**Déploiement :** `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` — `READY`, cible `production`, alias officiel appliqué
+**Premier déploiement de validation v1.6 :** `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` — `READY`, cible `production`, alias officiel appliqué
 **Source :** <https://github.com/darknigthmare/yautja-apex-hunt>
 
 ## Gates de release
@@ -12,7 +12,7 @@
 |---|---:|---|
 | Tests Node | **193/193 réussis** | Huit boss, level design des cinq biomes, hub explorable, POI persistants, apparitions sûres, mouvement réduit, sauvegarde et responsive HUD. |
 | Build production local | **Vite 8.2.2 réussi** | 42 modules ; HTML 24,44 Ko ; CSS 25,39 Ko ; jeu 429,73 Ko ; Three.js 503,59 Ko. L’avertissement de taille du chunk Three.js est non bloquant. |
-| Build Vercel | **réussi** | Déploiement `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` en production `READY` et alias officiel appliqué. |
+| Build Vercel | **réussi** | Premier déploiement de validation `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` en production `READY`, puis Preview du HEAD documentaire final `dpl_DW87VVaWxGvJbXerRCfpynf6shBZ` également `READY`. |
 | Sécurité dépendances | **0 vulnérabilité** | `npm audit --omit=dev`. |
 | Qualité Git | **propre** | `git diff --check`, aucun patch ou fichier QA temporaire conservé. |
 | Chromium desktop v1.6 | **réussi** | En local : titre, missions, hub jouable et cinq biomes en masque normal ; en production : titre, huit contrats, entrée dans le hub, console, HUD desktop et absence d’overlay. |
@@ -52,7 +52,7 @@ Les prochains lots déjà identifiés sont une carte de Gunnison réellement mul
 - [x] navigateur local : aucun overlay d’erreur et 0 erreur console ;
 - [x] quatre WebP v1.6 chargés par Chromium et vérifiés en HTTP 200 local ;
 - [x] commit `8df30a7` poussé sur `origin/codex/professional-hunt-pass` ;
-- [x] production Vercel `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` en état `READY`, alias public et quatre WebP vérifiés en HTTP 200 ;
+- [x] premier déploiement de validation Vercel `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` en état `READY`, alias public et quatre WebP vérifiés en HTTP 200 ;
 - [ ] contrôle sur appareil tactile/mobile réel.
 
 La validation locale et la publication desktop sont terminées. La page publique répond en HTTP 200, les quatre nouvelles matières répondent en HTTP 200 avec le type `image/webp`, et le parcours titre → contrats → hub explorable fonctionne sans overlay. Le contrôle sur appareil tactile physique et le profilage GPU modeste restent des validations non bloquantes.
