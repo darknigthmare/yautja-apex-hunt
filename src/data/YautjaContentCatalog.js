@@ -13,12 +13,12 @@ import {
 // des adaptations de Yautja: Apex Hunt quand `implementationOriginal` est vrai.
 
 const PLAYABLE_CONTENT_IDS = new Set([
-  'goliath', 'xeno_queen', 'bad_blood', 'predalien', 'boss_berserker_super_predator', 'boss_feral_2022', 'boss_wolf_cleaner', 'boss_kalisk_badlands',
-  'tech_biomask', 'tech_cloak', 'tech_wrist_computer', 'tech_wrist_blades', 'tech_plasma_caster', 'tech_tri_laser', 'tech_self_destruct', 'tech_medicomp', 'tech_voice_mimic', 'tech_smart_disc', 'tech_combistick', 'tech_net_launcher', 'tech_speargun', 'tech_yautja_bow', 'tech_falcon_drone', 'tech_wrist_shield', 'tech_shuriken_avp', 'tech_apex_decoy', 'tech_feral_bolt_launcher', 'tech_wolf_dual_plasma', 'tech_eye_of_ra_hg', 'tech_father_yautja_sword_hg',
+  'goliath', 'xeno_queen', 'bad_blood', 'predalien', 'boss_berserker_super_predator', 'boss_feral_2022', 'boss_wolf_cleaner', 'boss_kalisk_badlands', 'boss_city_hunter_1990',
+  'tech_biomask', 'tech_cloak', 'tech_wrist_computer', 'tech_wrist_blades', 'tech_plasma_caster', 'tech_tri_laser', 'tech_self_destruct', 'tech_medicomp', 'tech_voice_mimic', 'tech_smart_disc', 'tech_combistick', 'tech_net_launcher', 'tech_speargun', 'tech_wrist_rocket', 'tech_yautja_bow', 'tech_falcon_drone', 'tech_wrist_shield', 'tech_shuriken_avp', 'tech_apex_decoy', 'tech_feral_bolt_launcher', 'tech_wolf_dual_plasma', 'tech_eye_of_ra_hg', 'tech_father_yautja_sword_hg',
 ]);
 const ENCOUNTER_CONTENT_IDS = new Set([
-  'enemy_elite_commando', 'enemy_hunting_hound', 'enemy_xenomorph_drone', 'enemy_xenomorph_warrior', 'enemy_grizzly', 'enemy_thermal_trap_team', 'enemy_genna_hostile_fauna',
-  'event_rain_cloak_reveal', 'event_preserve_hound_release', 'event_genna_predation_cycle', 'tech_hunting_hounds', 'tech_feral_combistick',
+  'enemy_elite_commando', 'enemy_city_enforcer', 'enemy_hunting_hound', 'enemy_xenomorph_drone', 'enemy_xenomorph_warrior', 'enemy_grizzly', 'enemy_thermal_trap_team', 'enemy_genna_hostile_fauna',
+  'event_rain_cloak_reveal', 'event_city_lightning', 'event_preserve_hound_release', 'event_genna_predation_cycle', 'tech_hunting_hounds', 'tech_feral_combistick',
 ]);
 const getRuntimeStatus = (entry) => {
   if (entry.runtimeStatus) return entry.runtimeStatus;
@@ -221,6 +221,7 @@ export const TECH_CATALOG = freezeCatalog([
   { id: 'tech_combistick', name: 'Combi-stick', sourceTier: 'SCREEN', description: 'Lance compacte qui se déploie pour le corps à corps ou le lancer.', sources: ['predator2', 'huntingGrounds'], gameplay: 'Allonge supérieure, lancer récupérable et fenêtre de vulnérabilité.' },
   { id: 'tech_net_launcher', name: 'Lance-filet', sourceTier: 'SCREEN', description: 'Projectile de capture qui comprime la cible prise au piège.', sources: ['predator2'], gameplay: 'Immobilise brièvement une cible et ouvre une exécution.' },
   { id: 'tech_speargun', name: 'Lance-harpons', sourceTier: 'SCREEN', description: 'Arme compacte projetant des traits métalliques.', sources: ['predator2'], gameplay: 'Tir silencieux de précision avec munitions récupérables.' },
+  { id: 'tech_wrist_rocket', name: 'Fusée de poignet', sourceTier: 'SCREEN', description: 'Projectile explosif compact intégré à l’arsenal du chasseur urbain.', sources: ['predator2'], gameplay: 'Arme [\\] réellement jouable : projectile rapide de 96 dégâts et souffle dégressif de 7,5 mètres.', implementationOriginal: true },
   { id: 'tech_falcon_drone', name: 'Drone-faucon', sourceTier: 'SCREEN', description: 'Éclaireur aérien employé par le Falconer sur la planète-réserve.', sources: ['predators2010'], gameplay: 'Jouable avec [G] : drone 3D orbital, impulsion de scan à 90 mètres et marquage de sept secondes.' },
   { id: 'tech_hunting_hounds', name: 'Créatures de pistage', sourceTier: 'SCREEN', description: 'Bêtes lâchées par le Tracker pour poursuivre les captifs.', sources: ['predators2010'], gameplay: 'Forcent les proies à quitter leur abri et suivent les traces fraîches.' },
   { id: 'tech_yautja_bow', name: 'Arc composite Yautja', sourceTier: 'SCREEN', description: 'Arc composite associé à Dek dans Badlands et aussi proposé dans Hunting Grounds.', sources: ['badlandsGear', 'huntingGrounds'], gameplay: 'Arme silencieuse jouable à forte vélocité et coût d’endurance.' },
@@ -231,7 +232,7 @@ export const TECH_CATALOG = freezeCatalog([
 
 export const VEHICLE_CATALOG = freezeCatalog([
   { id: 'vehicle_jungle_dropcraft', name: 'Appareil d’insertion de la jungle', sourceTier: 'SCREEN', description: 'Vaisseau observé à l’approche de la Terre avant la chasse de 1987.', sources: ['predator1987'], role: 'Dépose discrètement un chasseur puis quitte l’orbite basse.' },
-  { id: 'vehicle_city_clan_ship', name: 'Vaisseau du clan de Los Angeles', sourceTier: 'SCREEN', description: 'Grand appareil dissimulé sous la ville à l’issue de la chasse de 1990.', sources: ['predator2'], role: 'Hub mobile, salle de trophées et extraction du clan.' },
+  { id: 'vehicle_city_clan_ship', name: 'Vaisseau du clan de Los Angeles', sourceTier: 'SCREEN', description: 'Grand appareil dissimulé sous la ville à l’issue de la chasse de 1990.', sources: ['predator2'], role: 'Landmark 3D réel : sas du vaisseau enfoui, point d’intérêt scannable et fin de route de migration.', runtimeStatus: 'encounter' },
   { id: 'vehicle_game_preserve_ship', name: 'Transport de la planète-réserve', sourceTier: 'SCREEN', description: 'Transport lié au dispositif de chasse de la planète-réserve.', sources: ['predators2010'], role: 'Déplacement orbital et extraction potentielle hors de la réserve.' },
   { id: 'vehicle_preserve_parachute_drop', name: 'Système de largage parachuté', sourceTier: 'SCREEN', description: 'Déploiement aérien des captifs équipés de parachutes sur la planète-réserve.', sources: ['predators2010'], role: 'Archive de niveau : introduit des escouades de proies à des points variables.' },
   { id: 'vehicle_feral_scout', name: 'Éclaireur du Feral', sourceTier: 'SCREEN', description: 'Petit appareil associé à l’arrivée du chasseur de Prey.', sources: ['prey2022'], role: 'Insertion solitaire sur un territoire de chasse éloigné.' },
@@ -244,7 +245,7 @@ export const VEHICLE_CATALOG = freezeCatalog([
 
 export const ENEMY_CATALOG = freezeCatalog([
   { id: 'enemy_elite_commando', name: 'Commando d’élite', sourceTier: 'SCREEN', description: 'Soldat entraîné comparable aux membres de l’équipe traquée dans Predator.', sources: ['predator1987'], role: 'Escouade coordonnée utilisant couverture, explosifs et tir de suppression.', runtimeStatus: 'encounter' },
-  { id: 'enemy_city_enforcer', name: 'Force urbaine armée', sourceTier: 'SCREEN', description: 'Adversaire humain mobile inspiré du champ de chasse de Los Angeles.', sources: ['predator2'], role: 'Patrouille dense qui appelle des renforts et rend le camouflage risqué.' },
+  { id: 'enemy_city_enforcer', name: 'Force urbaine armée', sourceTier: 'SCREEN', description: 'Adversaire humain mobile inspiré du champ de chasse de Los Angeles.', sources: ['predator2'], role: 'Rencontres 3D réelles : lieutenant de cartel en couverture et chasseur du métro en rafales de suppression.', implementationOriginal: true },
   { id: 'enemy_thermal_trap_team', name: 'Équipe de capture thermique', sourceTier: 'SCREEN', description: 'Unité équipée pour détecter et piéger un chasseur invisible.', sources: ['predator2'], role: 'Déploie froid artificiel, projecteurs et zones de confinement.' },
   { id: 'enemy_preserve_mercenary', name: 'Mercenaire de la réserve', sourceTier: 'SCREEN', description: 'Combattant d’élite arraché à son propre conflit et placé sur la planète-réserve.', sources: ['predators2010'], role: 'Proie dangereuse qui adapte ses tactiques après chaque contact.' },
   { id: 'enemy_hunting_hound', name: 'Bête de chasse du Tracker', sourceTier: 'SCREEN', description: 'Quadrupède agressif lâché contre les captifs de la réserve.', sources: ['predators2010'], role: 'Traqueur rapide en meute, capable de rabattre le joueur.' },

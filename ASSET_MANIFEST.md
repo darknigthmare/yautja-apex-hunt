@@ -1,8 +1,8 @@
 # Manifest des assets — Yautja: Apex Hunt
 
 **Date d'inventaire :** 25 août 2026
-**Périmètre :** textures OpenAI du chantier de professionnalisation, de la passe props et des vagues contenu 1.3–1.8.
-**Provenance commune :** modèle ImageGen intégré OpenAI, créations originales fan-made produites du 21 au 25 août 2026, sans image officielle fournie comme référence ni copie d'assets officiels. Les PNG maîtres, dont celui de `genna-sporeback-carapace`, sont conservés localement comme sources de travail hors Git et ne sont ni versionnés ni déployés ; les WebP sont les fichiers runtime publics du livrable.
+**Périmètre :** textures OpenAI du chantier de professionnalisation, de la passe props et des vagues contenu 1.3–1.10.
+**Provenance commune :** modèle ImageGen intégré OpenAI, créations originales fan-made produites du 21 au 25 août 2026, sans image officielle fournie comme référence ni copie d'assets officiels. Les PNG maîtres, dont ceux de `genna-sporeback-carapace` et de la matière urbaine 1.10, sont conservés localement comme sources de travail hors Git et ne sont ni versionnés ni déployés ; les WebP sont les fichiers runtime publics du livrable.
 
 ## Registre
 
@@ -18,7 +18,7 @@
 | `yautja-leather-net` | `public/assets/textures/yautja-leather-net.webp` | 1024×1024 | 268 638 octets | filet et cuir de l'armure joueur | présent, bords normalisés et inspection 2×2 validée |
 | `xeno-egg-hide` | `public/assets/textures/xeno-egg-hide.webp` | 1024×1024 | 174 686 octets | membrane des œufs facehugger | présent, bords normalisés et inspection 2×2 validée |
 | `yautja-skin-mottled` | `public/assets/textures/yautja-skin-mottled.webp` | 1254×1254 | 373 452 octets | peau du joueur, du rival et du Berserker | présent, décodé et intégré au runtime |
-| `biomask-etched-alloy` | `public/assets/textures/biomask-etched-alloy.webp` | 1254×1254 | 392 890 octets | 30 variantes de bio-masque, boss et fond de forge | présent, décodé et intégré au runtime |
+| `biomask-etched-alloy` | `public/assets/textures/biomask-etched-alloy.webp` | 1254×1254 | 392 890 octets | 38 bio-masques, boss et fond de forge | présent, décodé et intégré au runtime |
 | `xeno-carapace` | `public/assets/textures/xeno-carapace.webp` | 1254×1254 | 294 436 octets | Reine, Predalien et drones xénomorphes | présent, décodé et intégré au runtime |
 | `goliath-armored-hide` | `public/assets/textures/goliath-armored-hide.webp` | 1254×1254 | 479 192 octets | plaques du Goliath Xeno-Akumo | présent, décodé et intégré au runtime |
 | `yautja-energy-lattice` | `public/assets/textures/yautja-energy-lattice.webp` | 1254×1254 | 280 154 octets | navettes, conteneurs, hangar et archives UI | présent, décodé et intégré au runtime |
@@ -35,8 +35,9 @@
 | `yautja-ceremonial-bronze` | `public/assets/textures/yautja-ceremonial-bronze.webp` | 1254×1254 | 367 858 octets | portes, sanctuaires, braseros, balises et architecture cérémonielle Yautja | présent et référencé par le catalogue de props v1.6 |
 | `genna-spore-pod-hide` | `public/assets/textures/genna-spore-pod-hide.webp` | 1254×1254 | 561 416 octets | aire du Kalisk, bosquets de spores et nœuds régénératifs de Genna | présent et référencé par le catalogue de props v1.6 |
 | `genna-sporeback-carapace` | `public/assets/textures/genna-sporeback-carapace.webp` | 1024×1024 | 343 106 octets | mesh du Sporeback de Genna | WebP runtime présent ; PNG maître conservé localement hors Git |
+| `los-angeles-heatwave-urban` | `public/assets/textures/los-angeles-heatwave-urban.webp` | 1536×1536 | 846 546 octets | sols, façades et props du biome Los Angeles 1997 | WebP runtime présent et référencé ; gates navigateur et publication non encore consignés |
 
-**Poids public total inventorié : 8 836 588 octets.** Les six matières de décor initiales ont été converties avec Sharp en WebP 1024×1024. Les trois matières de props 1024×1024 ont été normalisées par quadrants miroir. La vague 1.3 ajoute six sorties WebP 1254×1254 ; la vague 1.4 ajoute quatre sorties WebP 1024×1024 ; la vague 1.5 ajoute trois sorties WebP 1024×1024 ; la vague 1.6 ajoute quatre sorties WebP 1254×1254 ; la vague 1.8 ajoute une sortie WebP 1024×1024. Les dimensions et poids des vingt-sept fichiers sont consignés ici ; la validation Chromium locale et la vérification HTTP de production v1.6 restent reportées dans `QA_REPORT.md`.
+**Poids public total inventorié : 9 683 134 octets.** Les six matières de décor initiales ont été converties avec Sharp en WebP 1024×1024. Les trois matières de props 1024×1024 ont été normalisées par quadrants miroir. La vague 1.3 ajoute six sorties WebP 1254×1254 ; la vague 1.4 ajoute quatre sorties WebP 1024×1024 ; la vague 1.5 ajoute trois sorties WebP 1024×1024 ; la vague 1.6 ajoute quatre sorties WebP 1254×1254 ; la vague 1.8 ajoute une sortie WebP 1024×1024 ; la candidate 1.10 ajoute une sortie WebP 1536×1536. Les dimensions et poids des vingt-huit fichiers sont consignés ici ; les validations Chromium et publication historiques restent reportées dans `QA_REPORT.md`, sans préjuger de celles de la 1.10.
 
 Les quinze textures disponibles à l’issue de la 1.3 ont été chargées sans erreur dans Chromium et contrôlées sur la production correspondante. Les quatre matières 1.4 sont intégrées au biome Genna, au Feral, aux unités humaines et à la faune. Les trois matières 1.5 sont reliées à Wolf, au Lost Tribe et au Kalisk dans le code. Les quatre matières 1.6 sont référencées par les plans de props des biomes, décodées et chargées en HTTP 200 dans Chromium local puis sur l’alias de production avec le type `image/webp`. La répétition et le contraste doivent encore être jugés sur plusieurs écrans physiques, notamment avec GPU modeste.
 
@@ -49,6 +50,16 @@ Le lot v1.8 ajoute une matière OpenAI originale destinée au mesh du Sporeback 
 - WebP utilisé comme version runtime sous `public/assets/textures/`.
 
 Cette sortie porte l’inventaire à 27 textures WebP et 8 836 588 octets. Cette section consigne uniquement l’état de l’asset et n’attribue aucun résultat de gate ou de publication à la v1.8.
+
+## Lot v1.10 — matière urbaine Los Angeles 1997
+
+Le lot v1.10 ajoute une matière OpenAI originale raccordable pour le septième biome :
+
+- `los-angeles-heatwave-urban.webp` — 1536×1536, 846 546 octets ;
+- génération bitmap sans image de référence, combinant asphalte, béton, métal, lumière sodium, salissures et micro-détails de canicule de la fin des années 1990 ;
+- aucune image officielle, texte, logo, UI, personnage ou reproduction d’un lieu de film n’a servi de contenu visuel.
+
+Cette sortie porte l’inventaire à 28 textures WebP et 9 683 134 octets. Cette section décrit uniquement l’asset présent ; elle n’attribue aucun résultat final de test navigateur, push ou publication à la candidate 1.10.
 
 ## Lot v1.6 — synthèse props et level design
 
@@ -83,7 +94,7 @@ Pour chaque fichier :
 1. **Validé :** inspection visuelle des PNG maîtres à leur définition native ;
 2. **Partiel :** mosaïque 2×2 validée pour les trois matières de props ; contrôle physique multi-écran encore ouvert ;
 3. **Validé sur les PNG maîtres :** absence de texte et de marques protégées ;
-4. **Validé pour l’inventaire :** dimensions déclarées, format, poids individuel et poids total des vingt-sept WebP ;
+4. **Validé pour l’inventaire :** dimensions déclarées, format, poids individuel et poids total des vingt-huit WebP ;
 5. **Validé :** inspection visuelle des matières OpenAI précédentes et des quatre sorties WebP 1.6 à leur définition native ;
 6. **Validé pour la 1.3 :** chargement Chromium et HTTP 200 des six nouveaux chemins publics ;
 7. **Validé dans le code :** le chargeur applique un matériau de fallback si un asset échoue ;

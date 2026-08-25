@@ -158,12 +158,12 @@ test('les armes 9 et 0 créent leurs projectiles avec coûts et seuils exacts', 
   assert.ok(scene.children.includes(bolt.mesh));
 });
 
-test('le registre jouable expose tous ses raccourcis uniques, dont Digit0 et les armes v1.9', () => {
-  assert.equal(PLAYABLE_WEAPONS.length, 14);
+test('le registre jouable expose tous ses raccourcis uniques, dont Digit0 et la fusée v1.10', () => {
+  assert.equal(PLAYABLE_WEAPONS.length, 15);
   assert.equal(new Set(PLAYABLE_WEAPONS.map(({ slot }) => slot)).size, PLAYABLE_WEAPONS.length);
   assert.equal(new Set(PLAYABLE_WEAPONS.map(({ key }) => key)).size, PLAYABLE_WEAPONS.length);
   assert.equal(PLAYABLE_WEAPONS.find(({ key }) => key === 'Digit0')?.slot, 0);
-  for (const key of ['Minus', 'Equal', 'BracketLeft', 'BracketRight']) {
+  for (const key of ['Minus', 'Equal', 'BracketLeft', 'BracketRight', 'Backslash']) {
     assert.ok(PLAYABLE_WEAPONS.some((weapon) => weapon.key === key), `raccourci v1.9 absent: ${key}`);
   }
 });

@@ -24,10 +24,19 @@ export const DEFAULT_LEVEL_EVENT_SCHEDULE = Object.freeze([
 
 const EVENT_NODE_KIND_ALIASES = Object.freeze({
   localized_event: Object.freeze(['localized_hazard', 'localized_event']),
+  spawn_cache: Object.freeze(['cache_drop']),
   prey_migration: Object.freeze(['prey_migration']),
   territory_clash: Object.freeze(['territory_clash']),
   boss_migration: Object.freeze(['boss_trail', 'boss_migration']),
   directive_wave: Object.freeze(['directive_wave', 'encounter', 'reinforcement']),
+});
+
+const BIOME_LEVEL_EVENT_SCHEDULE_EXTENSIONS = Object.freeze({
+  // Los Angeles expose trois incidents localisés distincts. Cette impulsion
+  // supplémentaire consomme le troisième nœud sans modifier les autres cartes.
+  los_angeles_1997: Object.freeze([
+    Object.freeze({ at: 116, kind: 'localized_event' }),
+  ]),
 });
 
 function cloneScheduleEntry(entry) {
@@ -64,6 +73,7 @@ export const HUNT_CACHE_TYPES = Object.freeze({
   energy_cell: Object.freeze({ health: 15, energy: 75, honor: 90, shell: 0x2f3948, edge: 0x6e8ba3, energyColor: 0x58bfff, emissive: 0x155fa3 }),
   trophy_reliquary: Object.freeze({ health: 0, energy: 20, honor: 240, shell: 0x4a3a2d, edge: 0xd1a54a, energyColor: 0xffc84b, emissive: 0xa35d0b }),
   stargazer_salvage: Object.freeze({ health: 28, energy: 65, honor: 180, shell: 0x343e44, edge: 0x8aa6ad, energyColor: 0xff8c58, emissive: 0x9b3014 }),
+  owlf_cold_cache: Object.freeze({ health: 42, energy: 58, honor: 190, shell: 0x667278, edge: 0xb6d8df, energyColor: 0x75e8ff, emissive: 0x147c9b }),
 });
 
 let cacheSequence = 0;
@@ -303,8 +313,9 @@ export class LevelEventDirector {
     this.directiveId = typeof directiveId === 'string' && directiveId.trim()
       ? directiveId.trim()
       : 'standard_hunt';
+    const biomeSchedule = BIOME_LEVEL_EVENT_SCHEDULE_EXTENSIONS[this.biomeId] ?? [];
     this.scheduleTemplate = composeSchedule(
-      this.baseScheduleTemplate,
+      composeSchedule(this.baseScheduleTemplate, biomeSchedule),
       getDirectiveSchedule(this.directiveId),
     );
     this.elapsed = 0;
@@ -419,6 +430,7 @@ export class LevelEventDirector {
 
   selectMigratingPreyType() {
     const biome = String(this.biomeId ?? '').toLowerCase();
+    if (biome.includes('los_angeles')) return 'subway_armed_hunter';
     if (biome.includes('hive')) return 'xeno_runner';
     if (biome.includes('genna') || biome.includes('yautja') || biome.includes('ryushi')) {
       return 'genna_grazer';
@@ -428,6 +440,7 @@ export class LevelEventDirector {
 
   selectTerritoryFactions() {
     const biome = String(this.biomeId ?? '').toLowerCase();
+    if (biome.includes('los_angeles')) return ['urban_cartel_enforcer', 'subway_armed_hunter'];
     if (biome.includes('hive')) return ['xeno_drone', 'xeno_warrior'];
     if (biome.includes('genna')) return ['genna_grazer', 'genna_stalker'];
     if (biome.includes('yautja')) return ['hunting_hound', 'clan_sentry_drone'];
@@ -543,6 +556,11 @@ export class LevelEventDirector {
   selectEnemyType(ordinal = this.enemySpawnCount + 1) {
     const biome = String(this.biomeId ?? '').toLowerCase();
     const hunt = String(this.huntId ?? '').toLowerCase();
+    if (biome.includes('los_angeles') || hunt.includes('city_hunter')) {
+      if (ordinal === 1) return 'urban_cartel_enforcer';
+      if (ordinal === 2) return 'subway_armed_hunter';
+      return 'owlf_cryo_commando';
+    }
     if (biome.includes('hive') || biome.includes('xeno') || hunt.includes('xeno') || hunt.includes('predalien')) {
       return ordinal >= 3 ? 'xeno_warrior' : 'xeno';
     }
@@ -568,6 +586,7 @@ export class LevelEventDirector {
 
   selectVehicleType() {
     const biome = String(this.biomeId ?? '').toLowerCase();
+    if (biome.includes('los_angeles')) return 'clan_interceptor';
     if (biome.includes('stargazer')) return 'fugitive_escape_craft';
     if (biome.includes('hive')) return 'cleaner_shuttle';
     if (String(this.huntId).includes('bad_blood')) return 'clan_interceptor';
@@ -576,6 +595,7 @@ export class LevelEventDirector {
 
   selectCacheType() {
     const biome = String(this.biomeId ?? '').toLowerCase();
+    if (biome.includes('los_angeles')) return 'owlf_cold_cache';
     if (biome.includes('stargazer')) return 'stargazer_salvage';
     if (biome.includes('hive')) return 'medicomp';
     if (biome.includes('yautja')) return 'trophy_reliquary';
@@ -767,6 +787,9 @@ export class LevelEventDirector {
         genna_stalker: 'enemy_genna_hostile_fauna',
         xeno_warrior: 'enemy_xenomorph_warrior',
         synthetic: 'enemy_combat_synthetic_badlands',
+        urban_cartel_enforcer: 'enemy_urban_cartel_enforcer',
+        subway_armed_hunter: 'enemy_subway_armed_hunter',
+        owlf_cryo_commando: 'enemy_owlf_cryo_commando',
       };
       this.enemySpawnCount = ordinal;
       const socket = this.getEncounterSocket(
@@ -803,23 +826,34 @@ export class LevelEventDirector {
 
     if (event.kind === 'spawn_cache') {
       if (this.cacheSpawnCount >= this.maxCaches) return;
-      const socket = this.getEncounterSocket(
-        context.environment,
-        'cache',
-        this.cacheSpawnCount,
-        Math.max(4, this.maxCaches),
-      );
+      const node = this.getEventNode(context.environment, event.kind, this.cacheSpawnCount);
+      const rawNodePosition = node?.position ?? node?.center ?? node;
+      const nodePosition = readPosition({ position: rawNodePosition }, null);
+      const socket = nodePosition
+        ? null
+        : this.getEncounterSocket(
+          context.environment,
+          'cache',
+          this.cacheSpawnCount,
+          Math.max(4, this.maxCaches),
+        );
       // Sans socket de décor dédié, le coffre reste dans une bande lisible et
       // jouable de 10 à 16 m, puis passe par la même validation que les PNJ.
-      const preferred = socket ?? this.positionAround(context.player, 10, 16);
+      const preferred = nodePosition ?? socket ?? this.positionAround(context.player, 10, 16);
       const position = this.getSafeGroundPosition(context.environment, preferred, { clearance: 6 });
       const cacheType = this.selectCacheType();
-      const cache = new HuntSupplyCache(this.root, { position, cacheType, reducedMotion: this.reducedMotion });
+      const cache = new HuntSupplyCache(this.root, {
+        id: node?.id,
+        position,
+        cacheType,
+        reducedMotion: this.reducedMotion,
+      });
       this.cacheSpawnCount += 1;
       this.caches.push(cache);
       this.emit({
         type: 'spawn_cache',
         sourceId: cache.id,
+        label: node?.label ?? 'Conteneur de chasse largué',
         cacheType,
         cache,
         position: { x: position.x, y: position.y, z: position.z },

@@ -2,6 +2,46 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
+## [1.10.0] — 25 août 2026 (candidate)
+
+### Dixième chasse et Los Angeles 1997
+
+- contrat `city_hunter` ajouté comme dixième chasse, avec biome recommandé `los_angeles_1997` et directive `urban_heatwave_hunt` (« Chasse sous la canicule ») ;
+- septième plan de chasse ouvert : rayon 760, dix secteurs, 18 routes bouclées, sept territoires, 20 résidents, sept événements et six étapes de migration de la cible ;
+- composition non linéaire répartie entre rues, toits, métro, abattoir, skyline, zones OWLF, caches et appareil de clan, avec props, collisions et perchoirs adaptés à la mobilité verticale ;
+- cette mission est une adaptation originale inspirée de *Predator 2* : elle ne reproduit ni le déroulé, ni une scène, ni un asset officiel du film.
+
+### City Hunter, armes et technologie
+
+- boss City Hunter procédural détaillé : masque angulaire, respirateur, 18 predlocks, smart disc, netgun, Medicomp, combistick et trophées ;
+- smart disc relié au combat avec trajet sortant, ricochet, retour et récupération ; filet avec dégâts, entrave, drain d’énergie et rupture du camouflage ; Medicomp, vision multispectrale et mêlée propres au boss ;
+- roquette de poignet jouable ajoutée comme quinzième arme avec explosion de zone, atténuation des dégâts, coût d’énergie et recharge ;
+- classe `class_city_stalker`, huitième style de predlocks, neuvième finition et neuvième warpaint ajoutés sans supprimer les personnalisations existantes ; les totaux atteignent neuf classes, 38 masques, 50 presets, huit styles de predlocks, neuf finitions et neuf warpaints.
+
+### Monde vivant, ennemis et catalogue
+
+- trois PNJ urbains distincts : homme de main de cartel en couverture/rafales, chasseur armé du métro en suppression et commando OWLF cryogénique en filet/repositionnement avec perturbation énergétique ;
+- la directive Canicule orchestre ces trois vagues à 9 s, 35 s et 61 s, tandis que le directeur ajoute migrations de proies, factions urbaines, cycle d’ennemis, cache froide OWLF, caches Lost Tribe et véhicule de clan ;
+- Codex, couverture média et catalogues distinguent les éléments inspirés de l’écran de leur implémentation originale ; le catalogue consolidé atteint 214 entrées ;
+- les totaux runtime passent à dix chasses, neuf directives, quinze armes et neuf classes.
+
+### Classeur ChatGPT réellement exploité
+
+- source lue : `C:\Users\chuck\Downloads\Encyclopedie_exhaustive_franchise_Predator.xlsx` ;
+- SHA-256 : `47C659F4F79CA0E71D8B8B7B8DB2CD7B7363827224BC081D59E9DD9D9576983C` ;
+- 20 feuilles et 915 entrées uniques issues de la [conversation ChatGPT](https://chatgpt.com/c/6a8adeed-b6f8-83ed-9d07-5088fa50b8a9) ;
+- la vague cohérente retenue croise City Hunter, Lost Tribe, wrist rocket, smart disc, netgun, Medicomp, respirateur, trophées, OWLF, lieux, habitants, événements, caches et appareil de clan.
+
+### Texture originale OpenAI
+
+- `public/assets/textures/los-angeles-heatwave-urban.webp` : WebP 1536×1536 de 846 546 octets, généré en bitmap original sans image de référence ;
+- la matière raccordable combine asphalte, béton et métal sous lampes sodium, salissures de canicule et micro-détails, sans texte, logo, UI, personnage ou asset officiel ;
+- l’inventaire public atteint 28 textures et 9 683 134 octets.
+
+### État de la candidate
+
+- cette entrée consigne les changements et inventaires présents ; elle ne déclare encore aucun résultat final de tests, build, navigateur, push GitHub ou déploiement Vercel pour la 1.10.
+
 ## [1.9.0] — 25 août 2026
 
 ### Neuvième chasse et site noir Stargazer
@@ -47,7 +87,7 @@ Les versions sont considérées comme publiées uniquement après push du code, 
 
 ### État du tableur et validation
 
-- le tableur Excel évoqué par l’utilisateur n’était présent ni dans le dépôt ni dans les pièces jointes accessibles ; aucun chiffre et aucun ajout ne lui sont attribués ;
+- le tableur n’avait pas été exploité pour cette release 1.9 ; il a depuis été retrouvé et lu pour la candidate 1.10, ce qui corrige l’ancienne conclusion selon laquelle il était absent ;
 - la candidate finale réussit 278/278 tests, le build Vite 8.2.2 de 47 modules, l’audit de production à 0 vulnérabilité et `git diff --check` ;
 - Chromium local et celui de production valident neuf chasses, huit directives, le lancement Assassin/Stargazer et le responsive 390×844 sans overlay ni erreur applicative ; le commit `3314fe4` est poussé et le déploiement `dpl_FofpWaJDdkSjrnQeNTtQRdwNmZ6L` est `READY` sur l’alias public HTTP 200.
 

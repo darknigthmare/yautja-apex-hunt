@@ -19,7 +19,7 @@ function completeDirective(id) {
   );
 }
 
-test('les huit directives et leurs collections imbriquées sont immuables', () => {
+test('les neuf directives et leurs collections imbriquées sont immuables', () => {
   assert.deepEqual(Object.keys(HUNT_DIRECTIVES), [
     'standard_hunt',
     'jungle_fireteam',
@@ -27,6 +27,7 @@ test('les huit directives et leurs collections imbriquées sont immuables', () =
     'killer_eras',
     'deathworld_protocol',
     'stargazer_breach',
+    'urban_heatwave_hunt',
     'game_preserve_escape',
     'hive_containment_failure',
   ]);
@@ -67,6 +68,7 @@ test('le biome recommandé prime, tandis que la chasse standard conserve la dema
   assert.equal(resolveDirectiveBiome('blooding_rite', 'jungle'), 'hive_lv426');
   assert.equal(resolveDirectiveBiome('killer_eras', 'jungle'), 'yautja_prime');
   assert.equal(resolveDirectiveBiome('deathworld_protocol', 'jungle'), 'genna_deathworld');
+  assert.equal(resolveDirectiveBiome('urban_heatwave_hunt', 'jungle'), 'los_angeles_1997');
   assert.equal(resolveDirectiveBiome('game_preserve_escape', 'hive_lv426'), 'jungle');
   assert.equal(resolveDirectiveBiome('hive_containment_failure', 'jungle'), 'hive_lv426');
   assert.equal(resolveDirectiveBiome('standard_hunt', 'hive_lv426'), 'hive_lv426');

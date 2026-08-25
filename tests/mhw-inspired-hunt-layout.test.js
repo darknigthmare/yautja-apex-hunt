@@ -15,6 +15,7 @@ const EXPECTED_BIOMES = [
   'yautja_prime',
   'genna_deathworld',
   'stargazer_blacksite',
+  'los_angeles_1997',
 ];
 
 function horizontalDistance(point) {
@@ -64,7 +65,7 @@ function disposeRoot(root) {
   root.clear();
 }
 
-test('les six terrains respectent le contrat de chasse ouverte inspiré de MHW', () => {
+test('les sept terrains respectent le contrat de chasse ouverte inspiré de MHW', () => {
   assert.deepEqual(Object.keys(BIOME_HUNT_LAYOUTS), EXPECTED_BIOMES);
 
   for (const biomeId of EXPECTED_BIOMES) {
@@ -74,9 +75,9 @@ test('les six terrains respectent le contrat de chasse ouverte inspiré de MHW',
     assert.ok(layout.playableRadius >= 630, `${biomeId}: rayon trop court`);
     assert.ok(getBiomeHuntMetrics(biomeId, 29).directDiameterSprintSeconds >= 43, `${biomeId}: trop court pour le Scout`);
     assert.ok(layout.terrainSize > layout.playableRadius * 2, `${biomeId}: terrain sans marge extérieure`);
-    assert.equal(layout.sectors.length, 9, `${biomeId}: secteurs`);
+    assert.ok(layout.sectors.length >= 9, `${biomeId}: secteurs`);
     assert.ok(layout.routes.length >= 12, `${biomeId}: routes insuffisantes`);
-    assert.equal(new Set(layout.sectors.map(({ id }) => id)).size, 9, `${biomeId}: secteurs dupliqués`);
+    assert.equal(new Set(layout.sectors.map(({ id }) => id)).size, layout.sectors.length, `${biomeId}: secteurs dupliqués`);
     assert.equal(new Set(layout.routes.map(({ id }) => id)).size, layout.routes.length, `${biomeId}: routes dupliquées`);
 
     const graph = inspectGraph(layout);
@@ -85,19 +86,19 @@ test('les six terrains respectent le contrat de chasse ouverte inspiré de MHW',
     assert.ok(layout.routes.length >= layout.sectors.length, `${biomeId}: budget cyclique insuffisant`);
 
     const ecologyTotal = layout.ecology.reduce((total, territory) => total + territory.count, 0);
-    assert.ok(ecologyTotal >= 12 && ecologyTotal <= 15, `${biomeId}: écologie ${ecologyTotal}`);
-    assert.equal(layout.eventNodes.length, 6, `${biomeId}: nœuds événementiels`);
-    assert.equal(layout.bossRoute.length, 5, `${biomeId}: migration du boss`);
+    assert.ok(ecologyTotal >= 12 && ecologyTotal <= 24, `${biomeId}: écologie ${ecologyTotal}`);
+    assert.ok(layout.eventNodes.length >= 6, `${biomeId}: nœuds événementiels`);
+    assert.ok(layout.bossRoute.length >= 5, `${biomeId}: migration du boss`);
     assert.ok(metrics.directDiameterSprintSeconds >= 43, `${biomeId}: traversée trop courte`);
     assert.equal(metrics.ecologyCount, ecologyTotal);
-    assert.equal(metrics.eventNodeCount, 6);
-    assert.equal(metrics.bossRouteNodeCount, 5);
+    assert.equal(metrics.eventNodeCount, layout.eventNodes.length);
+    assert.equal(metrics.bossRouteNodeCount, layout.bossRoute.length);
 
     const eventXs = layout.eventNodes.map(({ position }) => position[0]);
     const eventZs = layout.eventNodes.map(({ position }) => position[2]);
     assert.ok(Math.max(...eventXs) - Math.min(...eventXs) >= layout.playableRadius * 0.75, `${biomeId}: événements tassés en X`);
     assert.ok(Math.max(...eventZs) - Math.min(...eventZs) >= layout.playableRadius * 0.75, `${biomeId}: événements tassés en Z`);
-    assert.equal(new Set(layout.eventNodes.map(({ position }) => position.join(':'))).size, 6, `${biomeId}: événements superposés`);
+    assert.equal(new Set(layout.eventNodes.map(({ position }) => position.join(':'))).size, layout.eventNodes.length, `${biomeId}: événements superposés`);
 
     assertPointInside(layout.startCamp, layout.playableRadius, `${biomeId}: camp`);
     layout.sectors.forEach(({ id, center }) => assertPointInside(center, layout.playableRadius, `${biomeId}: secteur ${id}`));
@@ -129,9 +130,9 @@ test('le route builder matérialise rubans, marqueurs et couvert extérieur sur 
     const eventMarkers = root.getObjectByName('hunt-event-node-markers');
     const outerCover = root.getObjectByName('hunt-outer-sector-cover');
     const outerAccents = root.getObjectByName('hunt-outer-sector-accents');
-    assert.ok(sectorPads?.isInstancedMesh && sectorPads.count === 9, `${biomeId}: pads secteurs`);
-    assert.ok(sectorBeacons?.isInstancedMesh && sectorBeacons.count === 9, `${biomeId}: balises secteurs`);
-    assert.ok(eventMarkers?.isInstancedMesh && eventMarkers.count === 6, `${biomeId}: marqueurs événements`);
+    assert.ok(sectorPads?.isInstancedMesh && sectorPads.count === layout.sectors.length, `${biomeId}: pads secteurs`);
+    assert.ok(sectorBeacons?.isInstancedMesh && sectorBeacons.count === layout.sectors.length, `${biomeId}: balises secteurs`);
+    assert.ok(eventMarkers?.isInstancedMesh && eventMarkers.count === layout.eventNodes.length, `${biomeId}: marqueurs événements`);
     assert.ok(outerCover?.isInstancedMesh && outerCover.count > 20, `${biomeId}: couvert extérieur`);
     assert.equal(outerAccents?.count, outerCover.count, `${biomeId}: accents de couvert`);
 
@@ -148,18 +149,18 @@ test('le route builder matérialise rubans, marqueurs et couvert extérieur sur 
       && blocksProjectiles === true
     )), `${biomeId}: contrat collider extérieur`);
     assert.deepEqual(root.userData.huntLayoutMetrics, {
-      sectorCount: 9,
+      sectorCount: layout.sectors.length,
       elevatedSectorCount: layout.sectors.filter(({ center }) => Math.abs(Number(center?.[1]) || 0) > 0.001).length,
       maxSectorElevation: Math.max(0, ...layout.sectors.map(({ center }) => Math.abs(Number(center?.[1]) || 0))),
       routeCount: layout.routes.length,
-      eventNodeCount: 6,
+      eventNodeCount: layout.eventNodes.length,
       routeTriangles: routeMeshes.reduce((total, mesh) => total + mesh.geometry.userData.routeTriangleCount, 0),
       coverInstanceCount: outerCover.count,
       physicalCoverColliderCount: root.userData.huntCoverColliders.length,
       physicalCoverSectorCount: new Set(root.userData.huntCoverColliders.map(({ sectorId }) => sectorId)).size,
       ecologyInstanceEstimate: layout.ecology.reduce((total, territory) => total + territory.count, 0),
-      sceneElementEstimate: layout.routes.length + 9 * 2 + 6 + outerCover.count * 2 + layout.ecology.reduce((total, territory) => total + territory.count, 0),
-      instancedMarkerCount: 9 * 2 + 6 + outerCover.count * 2,
+      sceneElementEstimate: layout.routes.length + layout.sectors.length * 2 + layout.eventNodes.length + outerCover.count * 2 + layout.ecology.reduce((total, territory) => total + territory.count, 0),
+      instancedMarkerCount: layout.sectors.length * 2 + layout.eventNodes.length + outerCover.count * 2,
       drawCallEstimate: layout.routes.length + 5,
     });
     disposeRoot(root);

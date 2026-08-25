@@ -8,13 +8,14 @@ import { resolveMeleeStrike } from '../src/gameplay/combatRules.js';
 const STILL = Object.freeze({ x: 0, z: 0, isSprinting: false });
 const TARGET = new THREE.Vector3(0, 4, -40);
 
-test('les quatre variantes v1.9 possèdent des touches et comportements de combat réels', () => {
+test('les variantes v1.9 et la fusée v1.10 possèdent des touches et comportements réels', () => {
   assert.deepEqual(
     PLAYABLE_WEAPONS.slice(10).map(({ slot, key }) => [slot, key]),
-    [[10, 'Minus'], [11, 'Equal'], [12, 'BracketLeft'], [13, 'BracketRight']],
+    [[10, 'Minus'], [11, 'Equal'], [12, 'BracketLeft'], [13, 'BracketRight'], [14, 'Backslash']],
   );
   assert.equal(getPlayableWeaponByKey('Minus')?.id, 'feral_bolt_launcher');
   assert.equal(getPlayableWeaponByKey('BracketRight')?.id, 'father_sword');
+  assert.equal(getPlayableWeaponByKey('Backslash')?.id, 'wrist_rocket');
 
   const feral = new YautjaPlayer(new THREE.Scene());
   feral.selectedWeapon = 10;
@@ -49,6 +50,16 @@ test('les quatre variantes v1.9 possèdent des touches et comportements de comba
   assert.deepEqual(strike, { hit: true, damage: 92, honor: 34, kind: 'father_sword' });
   father.update(0.7, STILL, 0);
   assert.equal(father.fatherSwordMesh.visible, false);
+
+  const city = new YautjaPlayer(new THREE.Scene());
+  city.selectedWeapon = 14;
+  city.attack(TARGET);
+  assert.equal(city.energy, 72);
+  assert.equal(city.attackTimer, 0.86);
+  assert.deepEqual(
+    { type: city.projectiles.at(-1).type, damage: city.projectiles.at(-1).damage, blastRadius: city.projectiles.at(-1).blastRadius },
+    { type: 'wrist_rocket', damage: 96, blastRadius: 7.5 },
+  );
 });
 
 test('le leurre Apex est un objet 3D persistant, attractif et borné par le delta', () => {

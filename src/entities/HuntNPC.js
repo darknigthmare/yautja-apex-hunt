@@ -27,6 +27,9 @@ export const HUNT_NPC_TEXTURES = Object.freeze({
   stargazer_rifleman: '/assets/textures/stargazer-tactical-composite.webp',
   stargazer_net_trapper: '/assets/textures/stargazer-tactical-composite.webp',
   modified_predator_hound: '/assets/textures/hunting-hound-hide.webp',
+  urban_cartel_enforcer: '/assets/textures/los-angeles-heatwave-urban.webp',
+  subway_armed_hunter: '/assets/textures/los-angeles-heatwave-urban.webp',
+  owlf_cryo_commando: '/assets/textures/los-angeles-heatwave-urban.webp',
 });
 
 export const HUNT_NPC_ARCHETYPES = Object.freeze({
@@ -298,6 +301,34 @@ export const V19_HUNT_NPC_ARCHETYPES = Object.freeze({
   }),
 });
 
+// Vague v1.10 : proies urbaines originales inspirées des factions de Predator 2.
+// Ces rôles servent une directive de clan autonome et réemploient les contrats
+// tactiques réellement simulés par le moteur PNJ.
+export const V110_HUNT_NPC_ARCHETYPES = Object.freeze({
+  urban_cartel_enforcer: Object.freeze({
+    type: 'urban_cartel_enforcer', name: 'Lieutenant armé du cartel', health: 136, damage: 14,
+    speed: 3.05, attackRange: 20, colliderRadius: 0.57, attackInterval: 1.42,
+    damageType: 'ballistic', attackKind: 'projectile', projectileSpeed: 38,
+    behaviorKind: 'cover_burst', coverSearchRange: 15, preferredRange: 15,
+    burstCount: 3, behaviorInterval: 2.8,
+  }),
+  subway_armed_hunter: Object.freeze({
+    type: 'subway_armed_hunter', name: 'Chasseur armé du métro', health: 162, damage: 17,
+    speed: 2.75, attackRange: 23, colliderRadius: 0.61, attackInterval: 1.65,
+    damageType: 'ballistic', attackKind: 'projectile', projectileSpeed: 41,
+    behaviorKind: 'suppressor', minimumRange: 8, burstCount: 4,
+    suppressionDuration: 2.4, behaviorInterval: 1.5, knockback: 1.5,
+  }),
+  owlf_cryo_commando: Object.freeze({
+    type: 'owlf_cryo_commando', name: 'Spécialiste cryogénique OWLF', health: 196, damage: 11,
+    speed: 2.65, attackRange: 21, colliderRadius: 0.65, attackInterval: 3.1,
+    detectionRange: 24, damageType: 'disruption', attackKind: 'projectile', projectileSpeed: 27,
+    status: 'energy_jam', statusDuration: 4.8, energyDrain: 20,
+    behaviorKind: 'net_reposition', minimumRange: 9, netRepositionDuration: 1.5,
+    behaviorInterval: 2.1,
+  }),
+});
+
 export const ALL_HUNT_NPC_ARCHETYPES = Object.freeze({
   ...HUNT_NPC_ARCHETYPES,
   ...EXPANDED_HUNT_NPC_ARCHETYPES,
@@ -308,6 +339,7 @@ export const AVAILABLE_HUNT_NPC_ARCHETYPES = Object.freeze({
   ...AMBIENT_HUNT_NPC_ARCHETYPES,
   ...V18_HUNT_NPC_ARCHETYPES,
   ...V19_HUNT_NPC_ARCHETYPES,
+  ...V110_HUNT_NPC_ARCHETYPES,
 });
 
 // Les noms courts émis par les événements sont résolus ici, en un seul point.
@@ -346,6 +378,11 @@ export const HUNT_NPC_TYPE_ALIASES = Object.freeze({
   sg_net_trapper: 'stargazer_net_trapper',
   modified_hound: 'modified_predator_hound',
   stargazer_hound: 'modified_predator_hound',
+  city_enforcer: 'urban_cartel_enforcer',
+  cartel_enforcer: 'urban_cartel_enforcer',
+  subway_hunter: 'subway_armed_hunter',
+  owlf_commando: 'owlf_cryo_commando',
+  cryo_commando: 'owlf_cryo_commando',
 });
 
 export function resolveHuntNpcType(type) {
@@ -1094,6 +1131,65 @@ function makeStargazerOperative(texture, role) {
 function makeStargazerRifleman(texture) { return makeStargazerOperative(texture, 'rifleman'); }
 function makeStargazerNetTrapper(texture) { return makeStargazerOperative(texture, 'net_trapper'); }
 
+function makeUrbanCombatant(texture, role) {
+  const group = new THREE.Group();
+  const profiles = {
+    cartel: { fabric: 0x682b25, plate: 0x3d3024, accent: 0xd9a24b, read: 'cartel_cover_burst' },
+    subway: { fabric: 0x27292d, plate: 0x4b4d50, accent: 0xffcf61, read: 'subway_suppression' },
+    owlf: { fabric: 0xc5cbc9, plate: 0x69777c, accent: 0x73dcff, read: 'owlf_cryo_capture' },
+  };
+  const profile = profiles[role];
+  const fabric = makeMaterial(profile.fabric, texture, { roughness: 0.9, metalness: 0.04 });
+  const plate = makeMaterial(profile.plate, texture, { roughness: 0.45, metalness: role === 'owlf' ? 0.72 : 0.28 });
+  const weapon = makeMaterial(0x17191b, null, { roughness: 0.3, metalness: 0.84 });
+  const accent = makeMaterial(profile.accent, null, {
+    roughness: 0.18, metalness: 0.38,
+    emissive: role === 'owlf' ? 0x0b7291 : 0x301700,
+    emissiveIntensity: role === 'owlf' ? 1.55 : 0.28,
+  });
+
+  addPart(group, new THREE.CapsuleGeometry(0.37, 0.8, 5, 8), fabric, [0, 1.25, 0]);
+  addPart(group, new THREE.BoxGeometry(0.75, 0.72, 0.34), plate, [0, 1.43, -0.02]);
+  addPart(group, new THREE.SphereGeometry(0.27, 12, 8), fabric, [0, 2.08, 0]);
+  for (const side of [-1, 1]) {
+    addPart(group, new THREE.CapsuleGeometry(0.1, 0.72, 4, 7), fabric, [side * 0.2, 0.47, 0]);
+    addPart(group, new THREE.CapsuleGeometry(0.09, 0.66, 4, 7), fabric, [side * 0.5, 1.34, 0.04], null, [0, 0, side * 0.2]);
+    addPart(group, new THREE.BoxGeometry(0.25, 0.2, 0.32), plate, [side * 0.43, 1.72, 0]);
+  }
+
+  if (role === 'cartel') {
+    addPart(group, new THREE.BoxGeometry(0.62, 0.13, 0.1), accent, [0, 2.18, 0.23]);
+    addPart(group, new THREE.TorusGeometry(0.22, 0.025, 7, 18, Math.PI), accent, [0, 1.73, 0.31], null, [Math.PI / 2, 0, 0]);
+    addPart(group, new THREE.BoxGeometry(0.16, 0.18, 1.28), weapon, [0.42, 1.38, 0.56], null, [0.08, 0, -0.08]);
+    addPart(group, new THREE.CylinderGeometry(0.03, 0.04, 0.64, 7), weapon, [0.42, 1.38, 1.48], null, [Math.PI / 2, 0, 0]);
+  } else if (role === 'subway') {
+    addPart(group, new THREE.CylinderGeometry(0.3, 0.31, 0.28, 12), plate, [0, 2.2, 0]);
+    addPart(group, new THREE.BoxGeometry(0.18, 0.19, 1.48), weapon, [0.43, 1.37, 0.55], null, [0.06, 0, -0.06]);
+    addPart(group, new THREE.CylinderGeometry(0.045, 0.055, 0.82, 8), weapon, [0.43, 1.38, 1.65], null, [Math.PI / 2, 0, 0]);
+    addPart(group, new THREE.CylinderGeometry(0.07, 0.07, 0.18, 8), accent, [0.43, 1.51, 1.25], null, [Math.PI / 2, 0, 0]);
+  } else {
+    addPart(group, new THREE.BoxGeometry(0.64, 0.34, 0.32), plate, [0, 2.18, 0]);
+    addPart(group, new THREE.BoxGeometry(0.42, 0.09, 0.07), accent, [0, 2.17, 0.22]);
+    addPart(group, new THREE.CylinderGeometry(0.14, 0.18, 1.12, 10), weapon, [0.43, 1.36, 0.57], null, [Math.PI / 2, 0, 0]);
+    addPart(group, new THREE.TorusGeometry(0.18, 0.032, 8, 18), accent, [0.43, 1.36, 1.15], null, [0, Math.PI / 2, 0]);
+    for (const side of [-1, 1]) {
+      addPart(group, new THREE.CylinderGeometry(0.12, 0.12, 0.55, 9), plate, [side * 0.2, 1.39, -0.47]);
+      addPart(group, new THREE.TorusGeometry(0.1, 0.025, 7, 14), accent, [side * 0.2, 1.39, -0.76]);
+    }
+  }
+
+  group.userData.silhouette = role === 'cartel'
+    ? 'urban_cartel_enforcer'
+    : role === 'subway' ? 'subway_armed_hunter' : 'owlf_cryo_commando';
+  group.userData.combatRead = profile.read;
+  group.userData.urbanRole = role;
+  return group;
+}
+
+function makeUrbanCartelEnforcer(texture) { return makeUrbanCombatant(texture, 'cartel'); }
+function makeSubwayArmedHunter(texture) { return makeUrbanCombatant(texture, 'subway'); }
+function makeOwlfCryoCommando(texture) { return makeUrbanCombatant(texture, 'owlf'); }
+
 function makeModifiedPredatorHound(texture) {
   const group = new THREE.Group();
   const hide = makeMaterial(0x443126, texture, { roughness: 0.84, metalness: 0.04 });
@@ -1158,6 +1254,9 @@ const meshFactories = Object.freeze({
   stargazer_rifleman: makeStargazerRifleman,
   stargazer_net_trapper: makeStargazerNetTrapper,
   modified_predator_hound: makeModifiedPredatorHound,
+  urban_cartel_enforcer: makeUrbanCartelEnforcer,
+  subway_armed_hunter: makeSubwayArmedHunter,
+  owlf_cryo_commando: makeOwlfCryoCommando,
 });
 
 function setPosition(target, value) {
@@ -1925,6 +2024,7 @@ export class HuntNPC {
         if (!material?.color) continue;
         if (mode === 'thermal') {
           const thermalColor = this.type === 'combat_synthetic' || this.type === 'weyland_field_synthetic'
+            || this.type === 'owlf_cryo_commando'
             ? 0x74baff
             : this.type === 'thermal_trapper' || this.type === 'jungle_trapper'
               ? 0xffc24d

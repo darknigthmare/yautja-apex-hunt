@@ -1,13 +1,39 @@
-# Rapport QA — release 1.9.0
+# Rapport QA — candidate release 1.10.0
 
 **Date :** 25 août 2026
-**Statut :** release 1.9.0 validée, poussée et publiée.
+**Statut :** release 1.10.0 validée localement ; publication finale GitHub/Vercel en attente.
 **Production actuellement vérifiée :** release 1.9.0 sur <https://yautja-apex-hunt.vercel.app/>
 **Déploiement production v1.9 :** `dpl_FofpWaJDdkSjrnQeNTtQRdwNmZ6L` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `3314fe4`
 **Déploiement production v1.8 :** `dpl_5zqD2XQgZ4vo8RKRAft8cM7yKfHL` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `54fad3c`
 **Déploiement production v1.7 :** `dpl_En8EmhSsfxE7SZFPYEApyYwo134h` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `94bb326`
 **Premier déploiement de validation v1.6 :** `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` — `READY`, cible `production`, alias officiel appliqué
 **Source :** <https://github.com/darknigthmare/yautja-apex-hunt>
+
+## Passe v1.10 — Los Angeles 1997, City Hunter et fermeture des écarts Excel
+
+| Gate déjà exécuté | Résultat vérifié | Périmètre exact |
+|---|---:|---|
+| Suite automatisée finale | **299/299 réussis** | City Hunter, masque destructible, Medicomp, filet, roquette de poignet, directive urbaine, file d'attente des vagues, déclenchement et résolution des trois dangers de Los Angeles et du cache OWLF, biome Los Angeles, texture et régressions historiques. |
+| Build production local | **Vite 8.2.2 réussi** | 48 modules ; HTML 27,33 Ko (gzip 7,43 Ko) ; CSS 27,28 Ko (gzip 6,47 Ko) ; jeu 640,57 Ko (gzip 171,19 Ko) ; Three.js 505,00 Ko (gzip 126,95 Ko). Build terminé en 525 ms ; avertissement de taille non bloquant. |
+| Sécurité dépendances | **0 vulnérabilité** | `npm audit --omit=dev`. |
+| Chromium desktop local | **réussi** | 1280×720 : dix chasses, neuf directives, sélection Los Angeles 1997, lancement City Hunter, HUD `0 / 3 OBJECTIFS`, texture urbaine demandée et document sans débordement horizontal. |
+| Chromium mobile local | **réussi** | Émulation réelle 390×844 : largeur interne et document à 390 px, dix chasses, neuf directives, City Hunter jouable, canvas 390×844 et aucun débordement horizontal. |
+| Console et réseau navigateur | **0 erreur / 0 requête échouée** | Aucun overlay Vite, aucune erreur d'exécution et aucune requête échouée sur les parcours desktop et mobile. |
+| Texture urbaine OpenAI | **WebP valide** | `los-angeles-heatwave-urban.webp`, 1536×1536, 846 546 octets ; en-tête RIFF/WEBP et dimensions exactes couverts par le contrat automatisé. |
+
+**Publication 1.10 en attente.** Les gates locaux sont franchis, mais aucun commit, push ou déploiement Vercel 1.10 n'est annoncé dans ce rapport avant sa vérification effective. La production officiellement confirmée reste donc la 1.9.0 indiquée ci-dessus.
+
+Le classeur de la conversation ChatGPT a été retrouvé et authentifié pour cette passe : `C:\Users\chuck\Downloads\Encyclopedie_exhaustive_franchise_Predator.xlsx`, SHA-256 `47C659F4F79CA0E71D8B8B7B8DB2CD7B7363827224BC081D59E9DD9D9576983C`. Son flux `Zone.Identifier` renvoie à la conversation <https://chatgpt.com/c/6a8adeed-b6f8-83ed-9d07-5088fa50b8a9>. Les 20 feuilles et 915 entrées uniques du catalogue ont servi à sélectionner une vague cohérente *Predator 2* / Los Angeles 1997, puis chaque ajout retenu a été raccordé à une surface jouable plutôt que seulement cité dans le Codex.
+
+Contenu raccordé et contrôlé dans cette release :
+
+- dixième chasse `city_hunter`, biome Los Angeles 1997 et directive `urban_heatwave_hunt` en trois vagues ;
+- carte urbaine ouverte de rayon 760, dix secteurs, 18 routes bouclées sans cul-de-sac, sept territoires, 20 résidents écologiques, sept événements, six nœuds de boss, quatre POI, trois dangers et huit familles de props ;
+- City Hunter à 10 562 triangles HD et 91 meshes utiles, avec bio-masque destructible, Smart Disc aller/retour, Netgun, roquette de poignet, Combistick, Medicomp, trophées et suivi multispectral ;
+- trois adversaires urbains aux comportements propres : cartel armé, tireur du métro et équipe de capture OWLF avec brouillage énergétique et rupture de camouflage ;
+- classe City Stalker, predlocks urbains denses, finition bronze City, peinture de guerre suie et quinzième arme jouable `wrist_rocket` ;
+- filet environnemental réellement appliqué au déplacement, Medicomp affiché `DISPONIBLE` puis `ÉPUISÉ`, masque réellement ciblable avec impact balayé et vagues de directive conservées dans une file FIFO bornée lorsque le plafond de 24 PNJ est atteint ;
+- contenu de décor et de lore issu du classeur : abattoir, métro, toits, navire du Lost Tribe, piège OWLF, salle/collier de trophées, kit City Medicomp, composé de soin bleu, rebreather, faune urbaine, véhicules et rituel de canicule ; les trois dangers de Los Angeles et le cache OWLF sont désormais réellement déclenchés puis résolus par la boucle de jeu.
 
 ## Passe v1.9 — brèche Stargazer, Assassin Predator et contenu transversal
 
@@ -38,7 +64,7 @@ Contenu raccordé dans cette release :
 - appareil d’évasion Fugitive, récupération `stargazer_salvage` et hub porté à neuf stations en double rangée avec anneaux holographiques instanciés ;
 - Assassin Predator (2018), génétiquement amélioré, à 29 468 triangles au total, avec armure biologique, glandes adaptatives destructibles et bond écrasant télégraphié.
 
-Le tableur Excel évoqué par l’utilisateur n’était accessible ni dans le workspace ni dans les pièces jointes disponibles. Aucun ajout, total ou résultat QA ne lui est attribué ; les écarts ont été reconstruits à partir du catalogue versionné, des surfaces runtime et des contrats automatisés.
+Pendant la passe v1.9, le tableur Excel évoqué par l'utilisateur n'était accessible ni dans le workspace ni dans les pièces jointes alors disponibles. Cette mention décrit uniquement l'état historique de la v1.9 : le classeur a depuis été retrouvé, authentifié et utilisé pour la passe v1.10 documentée en tête de ce rapport.
 
 ## Passe v1.8 — directives de longue chasse et nouvelles proies
 
@@ -106,7 +132,7 @@ Le benchmark MHW s’appuie sur les principes officiels publiés par Capcom — 
 
 ## État du classeur de franchise
 
-Le classeur évoqué par l’utilisateur n’était pas accessible dans le workspace ni parmi les pièces jointes disponibles pendant cette passe. Il n’a donc pas été lu, importé ni utilisé pour produire un nombre d’entrées. La couverture par film et média repose ici sur le registre versionné et ses niveaux de provenance ; une confrontation au tableur reste un gate documentaire futur.
+L'absence signalée dans les rapports v1.9 et antérieurs correspondait à l'état des fichiers alors disponibles. Pour la v1.10, le classeur de la conversation ChatGPT a été retrouvé dans les téléchargements, son origine ChatGPT authentifiée par `Zone.Identifier`, puis ses 20 feuilles et 915 entrées uniques ont été confrontées aux catalogues et surfaces runtime. La vague Los Angeles 1997 ci-dessus ferme un lot d'écarts identifié dans ce document ; elle ne signifie pas que les 915 lignes sont toutes devenues des entités jouables distinctes.
 
 Les prochains lots déjà identifiés sont une carte de Gunnison réellement multi-niveaux, des campagnes complètes *Killer of Killers* et *Alien vs. Predator*, puis une faune et une flore de Genna plus variées.
 
@@ -163,6 +189,8 @@ Puis lancer le serveur local et vérifier sur Chromium desktop :
 5. les quatre chemins WebP v1.6 en HTTP 200 local puis sur l’alias de production.
 
 ## Verdict
+
+La candidate 1.10.0 franchit ses gates locaux avec 299/299 tests, 48 modules Vite, 0 vulnérabilité de production et deux parcours Chromium sans erreur, requête échouée ni débordement horizontal. Les trois dangers de Los Angeles et le cache OWLF sont couverts comme événements réellement déclenchés puis résolus. Le classeur ChatGPT est désormais une source effectivement authentifiée et exploitée ; la vague Los Angeles 1997 ajoute une chasse, un biome ouvert, des adversaires, des systèmes de combat et une texture originale réellement câblés. Le commit, le push et le déploiement Vercel restent volontairement marqués en attente jusqu'à leur contrôle effectif.
 
 La 1.5.0 ne se limite pas à ajouter des noms au Codex : Wolf et le Kalisk possèdent leurs propres boucles de combat, états, dangers, points faibles, textures et contrats. La couverture du Lost Tribe et des médias reste clairement séparée par provenance, et la production déployée a franchi les gates automatisés, navigateur, responsive, sécurité, assets et Vercel.
 

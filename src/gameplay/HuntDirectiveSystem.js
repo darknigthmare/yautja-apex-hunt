@@ -144,6 +144,25 @@ const directiveDefinitions = [
     ],
   },
   {
+    id: 'urban_heatwave_hunt',
+    title: 'Chasse de chaleur — Los Angeles 1997',
+    shortLabel: 'CITY HUNT',
+    description: 'Traverser la guerre urbaine, le métro et le piège cryogénique de l’OWLF sans rompre le code de la chasse.',
+    provenance: 'SCREEN_ADAPTATION',
+    recommendedBiomeId: 'los_angeles_1997',
+    rewardMultiplier: 1.5,
+    objectives: [
+      objective('urban_cartel_enforcer', 'Neutraliser le lieutenant armé du cartel'),
+      objective('subway_armed_hunter', 'Vaincre le chasseur armé du métro'),
+      objective('owlf_cryo_commando', 'Briser le spécialiste cryogénique de l’OWLF'),
+    ],
+    schedule: [
+      wave(9, 'urban_cartel_enforcer'),
+      wave(35, 'subway_armed_hunter'),
+      wave(61, 'owlf_cryo_commando'),
+    ],
+  },
+  {
     id: 'game_preserve_escape',
     title: 'Évasion de la planète-réserve',
     shortLabel: 'RÉSERVE',

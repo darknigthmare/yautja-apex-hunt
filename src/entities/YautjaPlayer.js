@@ -994,6 +994,14 @@ export class YautjaPlayer {
       this.attackTimer = 0.62;
       return 'father_sword';
     }
+    else if (this.selectedWeapon === 14) {
+      if (this.energy < 28) return;
+      this.energy -= 28;
+      this.isAttacking = true;
+      audioSynth.playMineExplosion();
+      this.fireWristRocket(targetPos);
+      this.attackTimer = 0.86;
+    }
   }
 
   deployPlasmaMine() {
@@ -1127,6 +1135,29 @@ export class YautjaPlayer {
     this.projectiles.push({ mesh: orb, dir, speed: 90, type: 'eye_of_ra_plasma', damage: 68, lifetime: 2.8 });
     this.scene.add(orb);
     return orb;
+  }
+
+  fireWristRocket(targetPos) {
+    const rocket = new THREE.Group();
+    rocket.name = 'playerWristRocket';
+    const shell = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.12, 0.18, 1.25, 9),
+      new THREE.MeshStandardMaterial({ color: 0x707b7b, metalness: 0.9, roughness: 0.2 }),
+    );
+    shell.rotation.x = Math.PI / 2;
+    const exhaust = new THREE.Mesh(
+      new THREE.ConeGeometry(0.16, 0.48, 8),
+      new THREE.MeshBasicMaterial({ color: 0xff6b2e }),
+    );
+    exhaust.position.z = -0.78;
+    exhaust.rotation.x = -Math.PI / 2;
+    rocket.add(shell, exhaust);
+    rocket.position.copy(this.mesh.position).add(new THREE.Vector3(-1.35, 4.2, 0.4));
+    const dir = targetPos.clone().sub(rocket.position).normalize();
+    rocket.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir);
+    this.projectiles.push({ mesh: rocket, dir, speed: 104, type: 'wrist_rocket', damage: 96, blastRadius: 7.5, lifetime: 2.8 });
+    this.scene.add(rocket);
+    return rocket;
   }
 
   triggerSelfDestruct() {

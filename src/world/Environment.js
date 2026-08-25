@@ -95,6 +95,19 @@ const BIOME_STYLE = Object.freeze({
     sun: 0x6bd9ff,
     ground: 0x45505a,
   },
+  los_angeles_1997: {
+    background: 0x09050b,
+    fog: 0.0031,
+    ambient: 0x9b5c55,
+    ambientIntensity: 1.62,
+    hemisphereSky: 0x6c5878,
+    hemisphereGround: 0x24120e,
+    hemisphereIntensity: 1.42,
+    key: 0xffb072,
+    keyIntensity: 2.7,
+    sun: 0xff7048,
+    ground: 0x665044,
+  },
 });
 
 const PROP_HEIGHTS = Object.freeze({
@@ -120,10 +133,15 @@ const PROP_HEIGHTS = Object.freeze({
   stargazer_containment_lab: 15,
   stargazer_kennel: 8,
   stargazer_watchtower: 32,
+  urban_tenement: 34,
+  subway_entrance: 12,
+  slaughterhouse: 18,
+  owlf_command_van: 14,
+  lost_tribe_ship_hatch: 20,
 });
 
 const ARCH_PROP_TYPES = new Set(['ritual_gate', 'clan_gate', 'hive_bulkhead', 'bone_arch']);
-const FACILITY_PROP_TYPES = new Set(['field_camp', 'frontier_homestead', 'signal_array', 'stargazer_checkpoint', 'stargazer_containment_lab']);
+const FACILITY_PROP_TYPES = new Set(['field_camp', 'frontier_homestead', 'signal_array', 'stargazer_checkpoint', 'stargazer_containment_lab', 'urban_tenement', 'subway_entrance', 'slaughterhouse', 'owlf_command_van', 'lost_tribe_ship_hatch']);
 const WRECK_PROP_TYPES = new Set(['wreckage', 'expedition_wreck']);
 const PEN_PROP_TYPES = new Set(['egg_nursery', 'stock_pen', 'stargazer_kennel']);
 const SHRINE_PROP_TYPES = new Set(['trophy_tree', 'royal_dais', 'blooding_dais', 'weapon_shrine', 'trophy_gallery', 'kalisk_nest']);
@@ -139,6 +157,10 @@ const STATIC_INSTANCE_BATCH_NAMES = Object.freeze({
   stargazerPanels: 'stargazer-perimeter-panels',
   stargazerMasts: 'stargazer-floodlight-masts',
   stargazerFloodlights: 'stargazer-floodlights',
+  losAngelesBlocks: 'los-angeles-urban-blocks',
+  losAngelesRoofRims: 'los-angeles-rooftop-heat-rims',
+  losAngelesStreetlights: 'los-angeles-streetlight-masts',
+  losAngelesLamps: 'los-angeles-sodium-lamps',
 });
 
 const DEATHWORLD_FLORA_BATCH_NAMES = Object.freeze({
@@ -494,7 +516,7 @@ export class Environment {
 
   setBiome(biomeType) {
     if (this._disposed) return false;
-    this.currentBiome = BIOME_DEFINITIONS[biomeType] ? biomeType : 'jungle';
+    this.currentBiome = BIOME_STYLE[biomeType] ? biomeType : 'jungle';
     this.clearBiome();
     this.huntLayout = getBiomeHuntLayout(this.currentBiome);
     this.playableRadius = this.huntLayout.playableRadius;
@@ -545,6 +567,9 @@ export class Environment {
     } else if (this.currentBiome === 'stargazer_blacksite') {
       this.createStargazerBlacksite();
       this.createDriftingParticles(0x58cfff, 180);
+    } else if (this.currentBiome === 'los_angeles_1997') {
+      this.createLosAngelesCity();
+      this.createDriftingParticles(0xff9a52, 180);
     } else if (this.currentBiome === 'genna_deathworld') {
       this.createGennaDeathworld();
       this.createDriftingParticles(0xbaff69, 520);
@@ -556,7 +581,7 @@ export class Environment {
     this.reserveHuntRouteColliderBudget();
     this.buildBiomeProps();
     this.completeHuntRouteColliderBudget();
-    this.sunSphere.visible = this.biomeGroup.visible && this.currentBiome !== 'hive_lv426';
+    this.sunSphere.visible = this.biomeGroup.visible && !['hive_lv426', 'los_angeles_1997'].includes(this.currentBiome);
     this.setReducedMotion(this.reducedMotion);
     return true;
   }
@@ -655,6 +680,62 @@ export class Environment {
         { part: 'west_pods', x: -10, z: 0, radius: 3.8, height: 6.6 },
         { part: 'central_pods', x: 0, z: 0, radius: 3.8, height: 6.6 },
         { part: 'east_pods', x: 10, z: 0, radius: 3.8, height: 6.6 },
+      ];
+    }
+    if (prop.type === 'urban_tenement') {
+      return [
+        { part: 'tenement_core', x: 0, z: 0, radius: 12.8, height: 24 },
+        { part: 'west_wing', x: -17, z: 0.8, radius: 6.8, height: 18 },
+        { part: 'roofline', x: 0, z: 0, radius: 14.5, height: 4, baseYOffset: 23, blocksActors: false, blocksProjectiles: true },
+      ];
+    }
+    if (prop.type === 'subway_entrance') {
+      return [
+        { part: 'left_pier', x: -7, z: -3.8, radius: 2.1, height: 10 },
+        { part: 'right_pier', x: 7, z: -3.8, radius: 2.1, height: 10 },
+        { part: 'station_lintel', x: 0, z: -3.8, radius: 8.2, height: 2.4, baseYOffset: 7.4, blocksActors: false, blocksProjectiles: true },
+      ];
+    }
+    if (prop.type === 'slaughterhouse') {
+      return [
+        { part: 'cold_core', x: 0, z: 0, radius: 14.8, height: 14 },
+        { part: 'loading_wing', x: -20, z: 2, radius: 8.2, height: 10 },
+        { part: 'freezer_wing', x: 20, z: -1, radius: 7.4, height: 12 },
+      ];
+    }
+    if (prop.type === 'owlf_command_van') {
+      return [
+        { part: 'operations_body', x: -1, z: 0, radius: 7.8, height: 7 },
+        { part: 'cab', x: 9.5, z: 0, radius: 3.8, height: 5.4 },
+        { part: 'tracking_dish', x: -4, z: 0, radius: 2.4, height: 6, baseYOffset: 6, blocksActors: false, blocksProjectiles: true },
+      ];
+    }
+    if (prop.type === 'lost_tribe_ship_hatch') {
+      return [
+        { part: 'ship_plinth', x: 0, z: 0, radius: 14.5, height: 2.5 },
+        { part: 'left_hatch', x: -4.8, z: -1.6, radius: 5.2, height: 14, baseYOffset: 2 },
+        { part: 'right_hatch', x: 4.8, z: -1.6, radius: 5.2, height: 14, baseYOffset: 2 },
+      ];
+    }
+    if (prop.type === 'police_vehicle_line') {
+      return [
+        { part: 'west_vehicles', x: -17, z: 0, radius: 8.2, height: 4.6 },
+        { part: 'central_vehicles', x: 0, z: 0, radius: 8.2, height: 4.6 },
+        { part: 'east_vehicles', x: 17, z: 0, radius: 8.2, height: 4.6 },
+      ];
+    }
+    if (prop.type === 'rooftop_equipment') {
+      return [
+        { part: 'west_hvac', x: -13, z: 0, radius: 7.2, height: 5.4 },
+        { part: 'central_hvac', x: 0, z: 0, radius: 7.2, height: 5.4 },
+        { part: 'east_hvac', x: 13, z: 0, radius: 7.2, height: 5.4 },
+      ];
+    }
+    if (prop.type === 'palm_line') {
+      return [
+        { part: 'west_palms', x: -18, z: 0, radius: 7.5, height: 23 },
+        { part: 'central_palms', x: 0, z: 0, radius: 7.5, height: 23 },
+        { part: 'east_palms', x: 18, z: 0, radius: 7.5, height: 23 },
       ];
     }
     if (FACILITY_PROP_TYPES.has(prop.type)) {
@@ -932,7 +1013,7 @@ export class Environment {
     const x = vector ? vector.x : Number(xOrPosition) || 0;
     const z = vector ? vector.z : Number(zValue) || 0;
     const distance = Math.hypot(x, z);
-    const biomePhase = ['jungle', 'hive_lv426', 'ryushi_desert', 'yautja_prime', 'genna_deathworld', 'stargazer_blacksite']
+    const biomePhase = ['jungle', 'hive_lv426', 'ryushi_desert', 'yautja_prime', 'genna_deathworld', 'stargazer_blacksite', 'los_angeles_1997']
       .indexOf(this.currentBiome) * 37;
     let height = Math.sin(x * 0.03) * Math.cos(z * 0.03) * 3.4;
     height += Math.sin((x + biomePhase) * 0.009) * Math.cos((z - biomePhase) * 0.011) * 6.2;
@@ -1279,7 +1360,7 @@ export class Environment {
   }
 
   createTerrain(colorHex) {
-    const biome = BIOME_DEFINITIONS[this.currentBiome];
+    const biome = BIOME_DEFINITIONS[this.currentBiome] ?? BIOME_DEFINITIONS.jungle;
     const terrainSize = this.huntLayout?.terrainSize ?? 800;
     const geometry = new THREE.PlaneGeometry(terrainSize, terrainSize, 128, 128);
     const positions = geometry.attributes.position;
@@ -1562,6 +1643,107 @@ export class Environment {
       batch.instanceMatrix.needsUpdate = true;
       batch.userData.staticEnvironmentBatch = true;
       batch.userData.texturePath = batch === masts ? '/assets/textures/ryushi-frontier-panels.webp' : null;
+      batch.computeBoundingBox();
+      batch.computeBoundingSphere();
+      this.biomeGroup.add(batch);
+      this.staticInstanceBatches.push(batch);
+    }
+  }
+
+  /**
+   * Densifie la carte urbaine sans multiplier les objets Three.js : quatre
+   * lots instanciés composent la ligne d'immeubles et les avenues éclairées.
+   * Les toits restent des perches de chasse, tandis que les collisions des
+   * façades peuvent céder leur budget aux couvertures de routes si nécessaire.
+   */
+  createLosAngelesCity() {
+    const urbanSurface = this.createTexturedMaterial({
+      color: 0x625044,
+      path: '/assets/textures/los-angeles-heatwave-urban.webp',
+      repeat: 4,
+      roughness: 0.86,
+      metalness: 0.12,
+    });
+    const roofSurface = new THREE.MeshStandardMaterial({
+      color: 0x9a5036,
+      emissive: 0x5c1d0d,
+      emissiveIntensity: 0.72,
+      roughness: 0.52,
+      metalness: 0.24,
+    });
+    const sodiumLight = new THREE.MeshStandardMaterial({
+      color: 0xffa24f,
+      emissive: 0xff641f,
+      emissiveIntensity: 1.8,
+      roughness: 0.22,
+      metalness: 0.08,
+    });
+    const blockCount = 24;
+    const blocks = new THREE.InstancedMesh(new THREE.BoxGeometry(18, 40, 18), urbanSurface, blockCount);
+    const roofRims = new THREE.InstancedMesh(new THREE.BoxGeometry(18.4, 0.55, 18.4), roofSurface, blockCount);
+    blocks.name = STATIC_INSTANCE_BATCH_NAMES.losAngelesBlocks;
+    roofRims.name = STATIC_INSTANCE_BATCH_NAMES.losAngelesRoofRims;
+    const transform = new THREE.Object3D();
+    for (let index = 0; index < blockCount; index += 1) {
+      const angle = (index / blockCount) * Math.PI * 2 + 0.11;
+      const radius = 270 + (index % 4) * 88;
+      const placement = this.resolveLegacyPlacement(Math.cos(angle) * radius, Math.sin(angle) * radius, 12, `los-angeles-block-${index + 1}`);
+      const ground = this.sampleHeight(placement.x, placement.z);
+      const widthScale = 0.72 + (index % 3) * 0.16;
+      const heightScale = 0.72 + (index % 5) * 0.12;
+      const depthScale = 0.78 + ((index + 1) % 3) * 0.13;
+      transform.position.set(placement.x, ground + 20 * heightScale, placement.z);
+      transform.rotation.set(0, -angle + (index % 2) * 0.16, 0);
+      transform.scale.set(widthScale, heightScale, depthScale);
+      transform.updateMatrix();
+      blocks.setMatrixAt(index, transform.matrix);
+      transform.position.y = ground + 40 * heightScale + 0.3;
+      transform.scale.set(widthScale, 1, depthScale);
+      transform.updateMatrix();
+      roofRims.setMatrixAt(index, transform.matrix);
+      this.treePerches.push(new THREE.Vector3(placement.x, ground + 40 * heightScale + 1.2, placement.z));
+      this.obstacleColliders.push({
+        x: placement.x,
+        z: placement.z,
+        radius: 10.5 * Math.max(widthScale, depthScale),
+        height: 40 * heightScale,
+        baseY: ground,
+        blocksProjectiles: true,
+        routeBudgetDemotable: true,
+        sourceId: `los-angeles-city-block-${index + 1}`,
+      });
+    }
+
+    const lightCount = 20;
+    const streetlights = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.18, 0.28, 13, 7), urbanSurface, lightCount);
+    const lamps = new THREE.InstancedMesh(new THREE.BoxGeometry(1.8, 0.55, 0.8), sodiumLight, lightCount);
+    streetlights.name = STATIC_INSTANCE_BATCH_NAMES.losAngelesStreetlights;
+    lamps.name = STATIC_INSTANCE_BATCH_NAMES.losAngelesLamps;
+    for (let index = 0; index < lightCount; index += 1) {
+      const x = -500 + index * (1000 / (lightCount - 1));
+      const z = index % 2 === 0 ? 205 : -135;
+      const placement = this.resolveLegacyPlacement(x, z, 1, `los-angeles-streetlight-${index + 1}`);
+      const ground = this.sampleHeight(placement.x, placement.z);
+      transform.position.set(placement.x, ground + 6.5, placement.z);
+      transform.rotation.set(0, 0, 0);
+      transform.scale.setScalar(1);
+      transform.updateMatrix();
+      streetlights.setMatrixAt(index, transform.matrix);
+      transform.position.y = ground + 13;
+      transform.rotation.set(-0.2, 0, index % 2 === 0 ? -0.18 : 0.18);
+      transform.updateMatrix();
+      lamps.setMatrixAt(index, transform.matrix);
+    }
+
+    for (const batch of [blocks, roofRims, streetlights, lamps]) {
+      batch.castShadow = batch === blocks || batch === streetlights;
+      batch.receiveShadow = true;
+      batch.instanceMatrix.setUsage(THREE.StaticDrawUsage);
+      batch.instanceMatrix.needsUpdate = true;
+      batch.userData.staticEnvironmentBatch = true;
+      batch.userData.texturePath = batch === blocks || batch === streetlights
+        ? '/assets/textures/los-angeles-heatwave-urban.webp'
+        : null;
       batch.computeBoundingBox();
       batch.computeBoundingSphere();
       this.biomeGroup.add(batch);
@@ -2023,7 +2205,7 @@ export class Environment {
   setVisible(visible) {
     const isVisible = Boolean(visible);
     this.biomeGroup.visible = isVisible;
-    this.sunSphere.visible = isVisible && this.currentBiome !== 'hive_lv426';
+    this.sunSphere.visible = isVisible && !['hive_lv426', 'los_angeles_1997'].includes(this.currentBiome);
     this.ambientLight.visible = isVisible;
     this.hemisphereLight.visible = isVisible;
     this.mainLight.visible = isVisible;

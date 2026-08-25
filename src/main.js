@@ -35,6 +35,7 @@ const GOLIATH_CHARGE_WINDOW_SECONDS = 4;
 const GOLIATH_CHARGE_IMPACT_RANGE = 10;
 const PLAYER_COLLIDER_RADIUS = 1.8;
 const MAX_ACTIVE_HUNT_NPCS = 24;
+const MAX_PENDING_DIRECTIVE_WAVES = 8;
 const DIRECTIVE_BIOME_LABELS = Object.freeze({
   jungle: 'JUNGLE EXTRATERRESTRE',
   hive_lv426: 'RUCHES DE LV-426',
@@ -42,6 +43,7 @@ const DIRECTIVE_BIOME_LABELS = Object.freeze({
   yautja_prime: 'DOMAINE YAUTJA',
   genna_deathworld: 'MONDE MORTEL DE GENNA',
   stargazer_blacksite: 'COMPLEXE DE CONFINEMENT STARGAZER',
+  los_angeles_1997: 'LOS ANGELES 1997',
 });
 const HIVE_EGG_OFFSETS = Object.freeze([
   Object.freeze([-19, 0, -7]),
@@ -61,6 +63,7 @@ const ENEMY_ATTACK_PROFILES = Object.freeze({
   kalisk_charge: { damage: 48, range: 11, cooldown: 1.8, telegraphed: true },
   kalisk_impale: { damage: 44, range: 9.5, cooldown: 1.55, telegraphed: true },
   upgrade_leap: { damage: 76, range: 13, cooldown: 2.1, telegraphed: true },
+  city_combistick: { damage: 46, range: 10.2, cooldown: 1.35, telegraphed: true },
 });
 const ENEMY_ATTACK_TELEGRAPHS = Object.freeze({
   attack_tail: 'BALAYAGE DE QUEUE DÉTECTÉ — ESQUIVEZ !',
@@ -70,6 +73,7 @@ const ENEMY_ATTACK_TELEGRAPHS = Object.freeze({
   kalisk_charge: 'CHARGE DU KALISK — QUITTEZ SON AXE !',
   kalisk_impale: 'EMPALAGE DU KALISK — ROMPEZ LE CONTACT !',
   upgrade_leap: 'BOND D’ÉCRASEMENT DE L’ASSASSIN — QUITTEZ LA ZONE D’IMPACT !',
+  city_combistick: 'BALAYAGE DU COMBISTICK URBAIN — PASSEZ SOUS SA GARDE !',
 });
 
 
@@ -127,6 +131,7 @@ export class Game {
 
     this.activeBoss = null;
     this.activeEnemies = [];
+    this.pendingDirectiveWaves = [];
     this.activeTerritoryClashes = [];
     this.bossMigrationRoute = [];
     this.bossMigrationIndex = 0;
@@ -247,6 +252,7 @@ export class Game {
     this.eggClusters = [];
     (this.activeEnemies ?? []).forEach((enemy) => enemy.dispose());
     this.activeEnemies = [];
+    this.pendingDirectiveWaves = [];
     this.eventDirector?.stop();
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
@@ -506,6 +512,49 @@ export class Game {
       .filter((target) => target && !target.isDead && target.position?.isVector3);
   }
 
+  removeActiveBossProjectile(index) {
+    if (this.activeBoss?.removeProjectile?.(index) === true) return true;
+    const projectile = this.activeBoss?.projectiles?.[index];
+    if (!projectile) return false;
+    disposeObject3D(projectile.mesh);
+    this.activeBoss.projectiles.splice(index, 1);
+    return true;
+  }
+
+  applyPlayerBlastDamage(projectile, impactPoint) {
+    if (!impactPoint?.isVector3) return [];
+    const blastRadius = Math.max(0, Number(projectile?.blastRadius) || 0);
+    const baseDamage = Math.max(0, Number(projectile?.damage) || 0);
+    if (blastRadius === 0 || baseDamage === 0) return [];
+
+    const outcomes = [];
+    for (const target of [...this.getCombatTargets()]) {
+      const dx = target.position.x - impactPoint.x;
+      const dz = target.position.z - impactPoint.z;
+      const distance = Math.hypot(dx, dz);
+      const reach = blastRadius + Math.max(0, Number(target.colliderRadius) || 0);
+      if (distance > reach) continue;
+
+      const falloff = THREE.MathUtils.clamp(1 - (distance / Math.max(0.001, reach)) * 0.62, 0.38, 1);
+      const damage = Math.max(1, Math.round(baseDamage * falloff));
+      const outcome = target.takeDamage(damage, impactPoint);
+      this.spawnBloodSpatterVFX(target.position, this.getTargetBloodColor(target), 14);
+      this.player.addHonor(target === this.activeBoss ? 100 : 35);
+      outcomes.push({ target, damage, outcome });
+      if (target !== this.activeBoss && (outcome?.killed || target.isDead)) {
+        this.handleNpcDefeat(target, 105);
+      }
+    }
+
+    audioSynth.playMineExplosion();
+    this.spawnPlasmaShockwaveVFX(impactPoint);
+    this.hud.showLogMessage(
+      `FUSÉE DE POIGNET — ${outcomes.length} SIGNATURE${outcomes.length > 1 ? 'S' : ''} DANS LE SOUFFLE`,
+      1500,
+    );
+    return outcomes;
+  }
+
   spawnHiveEggClusters(count = HIVE_EGG_OFFSETS.length) {
     const safeCount = Math.max(0, Math.min(HIVE_EGG_OFFSETS.length, Math.floor(Number(count) || 0)));
     const encounterSockets = this.environment?.getEncounterSockets?.('egg', safeCount) ?? [];
@@ -535,6 +584,7 @@ export class Game {
 
   getProjectileCollisionRadius(projectile) {
     if (projectile?.isNet) return 1.25;
+    if (projectile?.type === 'wrist_rocket') return 0.62;
     if (['plasma', 'heavy_plasma', 'wolf_twin_plasma'].includes(projectile?.type)) return 0.85;
     if (['disc', 'shuriken'].includes(projectile?.type)) return 0.65;
     return 0.42;
@@ -567,6 +617,10 @@ export class Game {
 
     const damage = Math.max(0, Number(contact.damage) || 0);
     if (damage > 0) this.player.takeDamage(damage);
+    const statusDuration = Math.max(
+      0.25,
+      Number(contact.statusDuration ?? contact.duration) || 2.5,
+    );
     const statuses = Array.isArray(contact.status) ? contact.status : [contact.status];
     statuses.filter(Boolean).forEach((status) => {
       if (status === 'corrosion') {
@@ -576,6 +630,8 @@ export class Game {
       } else if (status === 'energy_jam') {
         this.player.energy = Math.max(0, (Number(this.player.energy) || 0) - 14);
         if (this.player.isCloaked) this.player.toggleCloak?.();
+      } else if (status === 'snare') {
+        this.player.applyCombatStatus?.('snare', statusDuration);
       } else if (status === 'cloak_disruption' && this.player.isCloaked) {
         this.player.toggleCloak?.();
       }
@@ -744,6 +800,7 @@ export class Game {
     );
     enemy.dispose();
     this.activeEnemies.splice(index, 1);
+    this.retryPendingDirectiveWaves();
   }
 
   spawnBiomeEcology() {
@@ -870,6 +927,7 @@ export class Game {
       }
     }
     this.activeTerritoryClashes = this.activeTerritoryClashes.filter((clash) => clash.remaining > 0);
+    this.retryPendingDirectiveWaves();
     return this.activeTerritoryClashes.length;
   }
 
@@ -1051,9 +1109,113 @@ export class Game {
       .map((enemyType, groupIndex) => this.spawnEncounterNpc({
         ...signal,
         enemyType,
-        groupIndex,
+        groupIndex: (Math.max(0, Number(signal.groupIndexOffset) || 0) + groupIndex),
       }))
       .filter(Boolean);
+  }
+
+  getDirectiveWaveKey(signal = {}) {
+    const explicitId = [signal.sourceId, signal.id]
+      .find((value) => typeof value === 'string' && value.trim().length > 0);
+    if (explicitId) return explicitId.trim();
+    const enemyTypes = Array.isArray(signal.enemyTypes)
+      ? signal.enemyTypes.filter((type) => typeof type === 'string').join(',')
+      : '';
+    return [
+      signal.directiveId ?? this.currentDirectiveId ?? 'standard_hunt',
+      signal.objectiveId ?? 'wave',
+      Number(signal.ordinal) || 0,
+      enemyTypes,
+    ].join(':');
+  }
+
+  enqueueDirectiveWave(signal, enemyTypes, spawnedCount = 0) {
+    if (!Array.isArray(this.pendingDirectiveWaves)) this.pendingDirectiveWaves = [];
+    const remainingTypes = Array.isArray(enemyTypes) ? enemyTypes.filter(Boolean) : [];
+    if (remainingTypes.length === 0) return null;
+    const key = this.getDirectiveWaveKey(signal);
+    const existing = this.pendingDirectiveWaves.find((entry) => entry.key === key);
+    if (existing) return existing;
+    if (this.pendingDirectiveWaves.length >= MAX_PENDING_DIRECTIVE_WAVES) {
+      this.hud?.showLogMessage?.('FILE DE RENFORTS SATURÉE — VAGUE REJETÉE', 1800);
+      return null;
+    }
+
+    const rawPosition = signal.position;
+    const position = rawPosition?.isVector3
+      ? rawPosition.clone()
+      : Array.isArray(rawPosition)
+        ? [...rawPosition]
+        : rawPosition && typeof rawPosition === 'object'
+          ? { ...rawPosition }
+          : rawPosition;
+    const entry = {
+      key,
+      signal: { ...signal, position },
+      enemyTypes: [...remainingTypes],
+      spawnedCount: Math.max(0, Number(spawnedCount) || 0),
+    };
+    this.pendingDirectiveWaves.push(entry);
+    return entry;
+  }
+
+  processDirectiveWave(signal) {
+    if (!Array.isArray(this.pendingDirectiveWaves)) this.pendingDirectiveWaves = [];
+    const key = this.getDirectiveWaveKey(signal);
+    const pending = this.pendingDirectiveWaves.find((entry) => entry.key === key);
+    if (pending) {
+      return { spawned: [], deferred: pending.enemyTypes.length, queued: true, duplicate: true };
+    }
+
+    const enemyTypes = Array.isArray(signal.enemyTypes)
+      ? signal.enemyTypes.filter((type) => typeof type === 'string' && resolveHuntNpcType(type))
+      : [];
+    const capacity = Math.max(
+      0,
+      MAX_ACTIVE_HUNT_NPCS - (this.activeEnemies ?? []).filter((enemy) => !enemy.isDead).length,
+    );
+    const spawnCount = Math.min(capacity, enemyTypes.length);
+    const spawned = this.spawnEncounterGroup({
+      ...signal,
+      enemyTypes: enemyTypes.slice(0, spawnCount),
+      groupIndexOffset: 0,
+    });
+    const remainingTypes = enemyTypes.slice(spawnCount);
+    const queued = remainingTypes.length > 0
+      ? Boolean(this.enqueueDirectiveWave(signal, remainingTypes, spawnCount))
+      : false;
+    return { spawned, deferred: queued ? remainingTypes.length : 0, queued, duplicate: false };
+  }
+
+  retryPendingDirectiveWaves() {
+    if (!Array.isArray(this.pendingDirectiveWaves)) this.pendingDirectiveWaves = [];
+    const spawned = [];
+    while (this.pendingDirectiveWaves.length > 0) {
+      const livingCount = (this.activeEnemies ?? []).filter((enemy) => !enemy.isDead).length;
+      const capacity = Math.max(0, MAX_ACTIVE_HUNT_NPCS - livingCount);
+      if (capacity === 0) break;
+
+      const pending = this.pendingDirectiveWaves[0];
+      const spawnCount = Math.min(capacity, pending.enemyTypes.length);
+      const batchTypes = pending.enemyTypes.slice(0, spawnCount);
+      const batch = this.spawnEncounterGroup({
+        ...pending.signal,
+        enemyTypes: batchTypes,
+        groupIndexOffset: pending.spawnedCount,
+      });
+      spawned.push(...batch);
+      pending.enemyTypes.splice(0, spawnCount);
+      pending.spawnedCount += spawnCount;
+      if (pending.enemyTypes.length === 0) this.pendingDirectiveWaves.shift();
+      if (spawnCount === 0) break;
+    }
+    if (spawned.length > 0) {
+      this.hud?.showLogMessage?.(
+        `RENFORTS DIFFÉRÉS — ${spawned.length} SIGNATURE${spawned.length > 1 ? 'S' : ''} DÉPLOYÉE${spawned.length > 1 ? 'S' : ''}`,
+        1800,
+      );
+    }
+    return spawned;
   }
 
   spawnEnemyTracer(origin, target, color = 0xffb84a) {
@@ -1086,10 +1248,14 @@ export class Game {
         this.requestBossMigration(signal.position, { forced: true });
         this.hud?.showLogMessage?.('PISTE APEX: LA CIBLE CHANGE DE TERRITOIRE', 2400);
       } else if (signal.type === 'spawn_enemy_group') {
-        const spawned = this.spawnEncounterGroup(signal);
+        const { spawned, deferred, duplicate } = this.processDirectiveWave(signal);
         const directive = getHuntDirective(signal.directiveId ?? this.currentDirectiveId);
+        const deferredSuffix = deferred > 0 ? ` · ${deferred} EN ATTENTE` : '';
+        const message = duplicate
+          ? `${directive.shortLabel}: VAGUE DÉJÀ EN ATTENTE`
+          : `${directive.shortLabel}: ${spawned.length} NOUVELLE${spawned.length > 1 ? 'S' : ''} SIGNATURE${spawned.length > 1 ? 'S' : ''}${deferredSuffix}`;
         this.hud?.showLogMessage?.(
-          `${directive.shortLabel}: ${spawned.length} NOUVELLE${spawned.length > 1 ? 'S' : ''} SIGNATURE${spawned.length > 1 ? 'S' : ''}`,
+          message,
           2400,
         );
       } else if (signal.type === 'spawn_enemy') {
@@ -1114,6 +1280,7 @@ export class Game {
   }
 
   updateEncounterContent(delta) {
+    this.retryPendingDirectiveWaves();
     const scheduledSignals = this.eventDirector?.update(delta, {
       player: this.player,
       boss: this.activeBoss,
@@ -1897,6 +2064,7 @@ export class Game {
     this.configureBossTerritory();
     const ecologyCount = this.spawnBiomeEcology();
     this.eventDirector.start({ huntId: this.currentHuntType, biomeId: resolvedPlanet, directiveId: directive.id });
+    this.pendingDirectiveWaves = [];
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
     this.activeBoss?.setVisionMode?.(this.player.activeVisionMode);
@@ -1920,6 +2088,7 @@ export class Game {
     this.eggClusters = [];
     (this.activeEnemies ?? []).forEach((enemy) => enemy.dispose());
     this.activeEnemies = [];
+    this.pendingDirectiveWaves = [];
     this.activeTerritoryClashes = [];
     this.eventDirector?.stop();
     this.activeHazard = null;
@@ -2541,7 +2710,9 @@ export class Game {
         : Infinity;
 
       if (coverImpact && (!targetImpact || coverDistanceSquared <= targetImpact.distanceSquared)) {
-        if (projectile.type === 'plasma') this.spawnPlasmaShockwaveVFX(coverImpact.point);
+        if (Number(projectile.blastRadius) > 0) {
+          this.applyPlayerBlastDamage(projectile, coverImpact.point);
+        } else if (projectile.type === 'plasma') this.spawnPlasmaShockwaveVFX(coverImpact.point);
         disposeObject3D(projectile.mesh);
         this.player.projectiles.splice(i, 1);
         continue;
@@ -2552,6 +2723,8 @@ export class Game {
       if (projectile.isNet) {
         target.applyNet?.();
         this.hud.showLogMessage('CIBLE IMMOBILISÉE DANS LE FILET!');
+      } else if (Number(projectile.blastRadius) > 0) {
+        this.applyPlayerBlastDamage(projectile, impact);
       } else {
         const outcome = target.takeDamage(projectile.damage, impact);
         this.spawnBloodSpatterVFX(impact, this.getTargetBloodColor(target), 20);
@@ -2559,7 +2732,9 @@ export class Game {
         if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target);
       }
 
-      if (projectile.type === 'plasma') this.spawnPlasmaShockwaveVFX(projectile.mesh.position);
+      if (projectile.type === 'plasma') {
+        this.spawnPlasmaShockwaveVFX(projectile.mesh.position);
+      }
       if (
         target === this.activeBoss
         && (this.currentHuntType === 'xeno_queen' || this.currentHuntType === 'predalien')
@@ -2591,8 +2766,7 @@ export class Game {
       for (let i = this.activeBoss.projectiles.length - 1; i >= 0; i--) {
         const projectile = this.activeBoss.projectiles[i];
         if (this.activeBoss.isDead) {
-          disposeObject3D(projectile.mesh);
-          this.activeBoss.projectiles.splice(i, 1);
+          this.removeActiveBossProjectile(i);
           continue;
         }
 
@@ -2620,20 +2794,41 @@ export class Game {
           : Infinity;
 
         if (coverImpact && coverDistanceSquared <= playerDistanceSquared) {
+          if (projectile.type === 'smart_disc') {
+            projectile.phase = 'returning';
+            projectile.outboundTimer = 0;
+            projectile.dir.multiplyScalar(-1);
+            continue;
+          }
           if (String(projectile.type ?? '').includes('plasma')) {
             this.spawnPlasmaShockwaveVFX(coverImpact.point);
           }
-          disposeObject3D(projectile.mesh);
-          this.activeBoss.projectiles.splice(i, 1);
+          this.removeActiveBossProjectile(i);
           continue;
         }
         if (!playerImpact) continue;
 
         this.player.takeDamage(projectile.damage ?? 35);
-        this.spawnPlasmaShockwaveVFX(playerImpact);
         this.spawnBloodSpatterVFX(playerPos, 0xffff00, 12);
-        disposeObject3D(projectile.mesh);
-        this.activeBoss.projectiles.splice(i, 1);
+        if (projectile.signal === 'city_hunter_net' || projectile.statusEffect === 'netted') {
+          this.player.applyCombatStatus?.('snare', projectile.statusDuration ?? 3);
+          this.player.energy = Math.max(0, this.player.energy - 16);
+          if (this.player.isCloaked) this.player.toggleCloak();
+          this.hud.showLogMessage('FILET YAUTJA — MOBILITÉ ET CAMOUFLAGE ROMPUS', 1800);
+          this.removeActiveBossProjectile(i);
+          continue;
+        }
+        if (projectile.type === 'smart_disc' && projectile.phase === 'outbound') {
+          projectile.phase = 'returning';
+          projectile.outboundTimer = 0;
+          projectile.mesh.position.addScaledVector(projectile.dir, 4);
+          this.hud.showLogMessage('DISQUE INTELLIGENT — TRAJECTOIRE RETOUR ACTIVE', 1300);
+          continue;
+        }
+        if (String(projectile.type ?? '').includes('plasma')) {
+          this.spawnPlasmaShockwaveVFX(playerImpact);
+        }
+        this.removeActiveBossProjectile(i);
       }
     }
 
@@ -2658,6 +2853,8 @@ export class Game {
       && this.activeBoss.activeAttackType === 'whip_sweep';
     const isKaliskAttack = this.currentHuntType === 'kalisk'
       && ['kalisk_charge', 'kalisk_impale'].includes(this.activeBoss.activeAttackType);
+    const isCityCombistick = this.currentHuntType === 'city_hunter'
+      && this.activeBoss.activeAttackType === 'combistick_sweep';
     const isUpgradeLeap = this.currentHuntType === 'upgrade_predator'
       && ['leap_crush', 'leap_impact'].includes(this.activeBoss.aiState);
     const isUpgradePredatorCharge = this.currentHuntType === 'upgrade_predator'
@@ -2665,6 +2862,7 @@ export class Game {
     const attackState = isUpgradeLeap ? 'upgrade_leap'
       : isWolfWhip ? 'wolf_whip'
       : isKaliskAttack ? this.activeBoss.activeAttackType
+        : isCityCombistick ? 'city_combistick'
         : chargeImpactReady ? 'charge' : this.activeBoss.aiState;
     const attackProfile = ENEMY_ATTACK_PROFILES[attackState];
     if ((attackProfile?.telegraphed || isSuperPredatorCharge || isFeralSpearAttack || isUpgradePredatorCharge) && this.activeBoss.attackTelegraphAnnounced === false) {

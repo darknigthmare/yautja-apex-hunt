@@ -21,10 +21,10 @@ import { YautjaPlayer } from '../src/entities/YautjaPlayer.js';
 const idsAreUnique = (entries) => new Set(entries.map(({ id }) => id)).size === entries.length;
 
 test('les nouvelles classes et apparences restent data-driven et conservent les défauts historiques', () => {
-  assert.equal(HUNTER_CLASSES.length, 8);
-  assert.equal(DREAD_STYLES.length, 7);
-  assert.equal(ARMOR_FINISHES.length, 8);
-  assert.equal(WARPAINT_PATTERNS.length, 8);
+  assert.equal(HUNTER_CLASSES.length, 9);
+  assert.equal(DREAD_STYLES.length, 8);
+  assert.equal(ARMOR_FINISHES.length, 9);
+  assert.equal(WARPAINT_PATTERNS.length, 9);
   [HUNTER_CLASSES, DREAD_STYLES, ARMOR_FINISHES, WARPAINT_PATTERNS].forEach((entries) => {
     assert.equal(idsAreUnique(entries), true);
     assert.equal(Object.isFrozen(entries), true);
@@ -149,7 +149,7 @@ test('le registre de gadgets couvre sept technologies jouables avec effets et ra
   assert.equal(getPlayerGadgetById('gadget_inconnu'), null);
 });
 
-test('quatre variantes technologiques deviennent jouables sans casser les dix slots historiques', () => {
+test('cinq variantes technologiques deviennent jouables sans casser les dix slots historiques', () => {
   const legacyWeaponIds = [
     'wristblades', 'plasmacaster_single', 'combi_stick', 'smart_disc', 'netgun',
     'medicomp', 'plasma_mines', 'whip_thorns', 'yautja_bow', 'speargun',
@@ -159,11 +159,11 @@ test('quatre variantes technologiques deviennent jouables sans casser les dix sl
     PLAYABLE_WEAPONS.slice(10).map(({ variantId }) => variantId),
     WEAPON_TECH_VARIANTS.map(({ id }) => id),
   );
-  assert.equal(PLAYABLE_WEAPONS.length, 14);
-  assert.equal(new Set(PLAYABLE_WEAPONS.map(({ slot }) => slot)).size, 14);
-  assert.equal(new Set(PLAYABLE_WEAPONS.map(({ key }) => key)).size, 14);
+  assert.equal(PLAYABLE_WEAPONS.length, 15);
+  assert.equal(new Set(PLAYABLE_WEAPONS.map(({ slot }) => slot)).size, 15);
+  assert.equal(new Set(PLAYABLE_WEAPONS.map(({ key }) => key)).size, 15);
 
-  assert.equal(WEAPON_TECH_VARIANTS.length, 4);
+  assert.equal(WEAPON_TECH_VARIANTS.length, 5);
   assert.equal(idsAreUnique(WEAPON_TECH_VARIANTS), true);
   WEAPON_TECH_VARIANTS.forEach((variant) => {
     const baseWeapon = PLAYABLE_WEAPONS.find(({ id }) => id === variant.baseWeaponId);
@@ -196,6 +196,10 @@ test('quatre variantes technologiques deviennent jouables sans casser les dix sl
   const father = getWeaponTechVariantById('variant_father_sword');
   assert.equal(father.name, 'Épée Yautja — Father');
   assert.equal(father.behavior, 'melee_heavy');
+  const rocket = getWeaponTechVariantById('variant_wrist_rocket');
+  assert.equal(rocket.baseWeaponId, 'plasma_mines');
+  assert.equal(rocket.behavior, 'explosive_projectile');
+  assert.equal(rocket.modifiers.blastRadius, 7.5);
 });
 
 test('les ajouts de classe et de finition déclarent leur provenance originale', () => {

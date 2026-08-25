@@ -12,6 +12,7 @@ const BOSS_TYPE_TO_ARCHETYPE = Object.freeze({
   feralPredator: 'feral',
   wolfCleaner: 'wolf',
   kalisk: 'kalisk',
+  cityHunter: 'city_hunter',
 });
 
 function freezeProfile(profile) {
@@ -130,6 +131,25 @@ export const BOSS_VISUAL_PROFILES = Object.freeze({
         { position: [-2.65, 5.05, 0.08], scale: [0.62, 1.92, 0.64] },
         { position: [1.05, 1.9, 0], scale: [0.76, 1.98, 0.8] },
         { position: [-1.05, 1.9, 0], scale: [0.76, 1.98, 0.8] },
+      ],
+    },
+  }),
+  city_hunter: freezeProfile({
+    features: ['angular_biomask', 'multispectral_rebreather', 'returning_disc_netgun', 'urban_medicomp_trophies'],
+    texturePaths: [
+      '/assets/textures/los-angeles-heatwave-urban.webp',
+      '/assets/textures/biomask-etched-alloy.webp',
+      '/assets/textures/yautja-skin-mottled.webp',
+    ],
+    colors: [0x796f54, 0x4e5148, 0xa9c1be, 0x65ffd1],
+    foundation: {
+      torso: { position: [0, 5.35, 0], scale: [2.15, 3.25, 1.48] },
+      head: { position: [0, 9.18, 0.18], scale: [1.12, 1.25, 0.95] },
+      limbs: [
+        { position: [2.25, 5, 0], scale: [0.62, 2.05, 0.65] },
+        { position: [-2.25, 5, 0], scale: [0.62, 2.05, 0.65] },
+        { position: [0.9, 1.95, 0], scale: [0.72, 2.1, 0.76] },
+        { position: [-0.9, 1.95, 0], scale: [0.72, 2.1, 0.76] },
       ],
     },
   }),
@@ -492,6 +512,7 @@ const BUILDERS = Object.freeze({
   feral: buildFeral,
   wolf: buildWolf,
   kalisk: buildKalisk,
+  city_hunter: () => {},
 });
 
 export function countBossVisualTriangles(root) {
@@ -565,6 +586,8 @@ export function syncBossVisualDetail(boss, bossType) {
   } else if (archetype === 'wolf') {
     setFeatureVisibility(root, 'scarred_wolf_biomask', boss.maskIntact !== false);
     setFeatureVisibility(root, 'cleaner_canisters', boss.cleanerKitIntact !== false);
+  } else if (archetype === 'city_hunter') {
+    setFeatureVisibility(root, 'angular_biomask', boss.maskIntact !== false);
   } else if (archetype === 'kalisk') {
     setFeatureVisibility(root, 'adaptive_carapace', boss.carapaceIntact !== false);
     setFeatureVisibility(root, 'regenerative_core', boss.coreExposed === true && boss.isDead !== true);

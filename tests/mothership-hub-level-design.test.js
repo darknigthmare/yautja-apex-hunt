@@ -115,7 +115,7 @@ test('les répétitions statiques sont instanciées et restent sous le budget de
 
   const snapshot = hub.getPerformanceSnapshot();
   assert.ok(snapshot.meshCount > 0);
-  assert.ok(snapshot.drawCallEstimate <= 290, 'budget dépassé: ' + snapshot.drawCallEstimate + ' draw calls');
+  assert.ok(snapshot.drawCallEstimate <= 300, 'budget dépassé après ajout du dixième trophée: ' + snapshot.drawCallEstimate + ' draw calls');
   assert.ok(snapshot.triangleEstimate > 0);
   assert.ok(snapshot.uniqueGeometryCount > 0);
   assert.ok(snapshot.uniqueMaterialCount > 0);

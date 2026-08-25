@@ -7,6 +7,7 @@ const BIOME_ACCENTS = Object.freeze({
   yautja_prime: 0xff4a24,
   genna_deathworld: 0xb8ff5c,
   stargazer_blacksite: 0x58cfff,
+  los_angeles_1997: 0xff9a52,
 });
 
 const SURFACE_COLORS = Object.freeze({
@@ -17,11 +18,13 @@ const SURFACE_COLORS = Object.freeze({
   bone: 0xb8a67b,
   stone: 0x59616b,
   stargazer: 0x35444f,
+  urban: 0x625044,
 });
 
 function textureColor(path = '') {
   if (path.includes('frontier')) return SURFACE_COLORS.frontier;
   if (path.includes('stargazer')) return SURFACE_COLORS.stargazer;
+  if (path.includes('los-angeles') || path.includes('heatwave')) return SURFACE_COLORS.urban;
   if (path.includes('membrane') || path.includes('hive') || path.includes('egg')) return SURFACE_COLORS.hive;
   if (path.includes('bronze') || path.includes('alloy')) return SURFACE_COLORS.bronze;
   if (path.includes('genna') || path.includes('flora')) return SURFACE_COLORS.genna;
@@ -269,6 +272,87 @@ export class BiomePropBuilder {
         addMesh(group, this.geometry('array-receiver', () => new THREE.OctahedronGeometry(0.65, 0)), materials.signal, { position: [x, 8.4, z], castShadow: false, name: `${spec.id}-receiver-${index + 1}` });
       }
       return tagVisual(group, 'signal_array', 'tri-dish-synthetic-array');
+    }
+
+    if (spec.type === 'urban_tenement') {
+      addMesh(group, box('urban-tenement-core', [25, 23, 18]), surface, { position: [0, 11.5, 0], name: `${spec.id}-brick-core` });
+      addMesh(group, box('urban-tenement-wing', [10, 17, 16]), surface, { position: [-17, 8.5, 0.8], name: `${spec.id}-west-wing` });
+      addMesh(group, box('urban-tenement-roof', [28, 0.8, 20]), materials.dark, { position: [0, 23.4, 0], name: `${spec.id}-flat-roof` });
+      const windowTransforms = [];
+      for (let floor = 0; floor < 4; floor += 1) {
+        for (let column = 0; column < 4; column += 1) windowTransforms.push({ position: [-9 + column * 6, 5 + floor * 4.6, 9.08] });
+      }
+      addInstancedMesh(group, box('urban-tenement-window', [2.8, 2.2, 0.2]), materials.signal, windowTransforms, { name: `${spec.id}-lit-windows`, castShadow: false });
+      addInstancedMesh(group, box('urban-tenement-fire-escape', [10.5, 0.45, 2.6]), materials.dark,
+        Array.from({ length: 4 }, (_, index) => ({ position: [4.5, 5.1 + index * 4.6, 10.1] })),
+        { name: `${spec.id}-fire-escapes` });
+      addInstancedMesh(group, cylinder('urban-tenement-water-tank', 2.2, 2.5, 4.2, 12), materials.dark, [
+        { position: [-6.5, 25.8, -2.5] }, { position: [4.5, 25.8, 3.5], scale: [0.8, 0.82, 0.8] },
+      ], { name: `${spec.id}-roof-tanks` });
+      addMesh(group, cylinder('urban-tenement-antenna', 0.12, 0.22, 9, 7), materials.dark, { position: [9.5, 28, -4.8], name: `${spec.id}-television-antenna` });
+      return tagVisual(group, 'urban_tenement', 'multi-storey-tenement-fire-escape-rooftop-tanks');
+    }
+
+    if (spec.type === 'subway_entrance') {
+      addMesh(group, box('subway-entrance-deck', [19, 1.1, 16]), surface, { position: [0, 0.55, 0], name: `${spec.id}-sidewalk-plinth` });
+      addMesh(group, box('subway-entrance-left', [2.3, 9, 4]), surface, { position: [-7, 4.5, -3.8], name: `${spec.id}-left-pier` });
+      addMesh(group, box('subway-entrance-right', [2.3, 9, 4]), surface, { position: [7, 4.5, -3.8], name: `${spec.id}-right-pier` });
+      addMesh(group, box('subway-entrance-lintel', [16.3, 2, 4.2]), materials.dark, { position: [0, 8.2, -3.8], name: `${spec.id}-station-lintel` });
+      addInstancedMesh(group, box('subway-entrance-step', [11.5, 0.45, 1.5]), surface,
+        Array.from({ length: 8 }, (_, index) => ({ position: [0, 0.25 + index * 0.36, 4.7 - index * 1.18] })),
+        { name: `${spec.id}-descending-steps` });
+      addInstancedMesh(group, cylinder('subway-entrance-rail', 0.12, 0.16, 11.5, 7), materials.dark, [
+        { position: [-5.7, 3.6, 0.4], rotation: [Math.PI / 2, 0, 0] },
+        { position: [5.7, 3.6, 0.4], rotation: [Math.PI / 2, 0, 0] },
+      ], { name: `${spec.id}-handrails` });
+      addMesh(group, box('subway-entrance-sign', [10.5, 1.5, 0.35]), materials.signal, { position: [0, 10.1, -1.7], castShadow: false, name: `${spec.id}-station-sign` });
+      return tagVisual(group, 'subway_entrance', 'descending-stairwell-stone-piers-transit-sign');
+    }
+
+    if (spec.type === 'slaughterhouse') {
+      addMesh(group, box('slaughterhouse-core', [29, 13, 23]), surface, { position: [0, 6.5, 0], name: `${spec.id}-cold-core` });
+      addMesh(group, box('slaughterhouse-loading-wing', [14, 9, 17]), surface, { position: [-20, 4.5, 2], name: `${spec.id}-loading-wing` });
+      addMesh(group, box('slaughterhouse-freezer-wing', [12, 11, 15]), surface, { position: [20, 5.5, -1], name: `${spec.id}-freezer-wing` });
+      addInstancedMesh(group, box('slaughterhouse-loading-door', [6.5, 6, 0.45]), materials.dark, [
+        { position: [-7, 3, 11.7] }, { position: [3, 3, 11.7] }, { position: [13, 3, 11.7] },
+      ], { name: `${spec.id}-loading-doors` });
+      addInstancedMesh(group, cylinder('slaughterhouse-roof-vent', 1.1, 1.35, 4.4, 9), materials.dark, [
+        { position: [-9, 15, -4] }, { position: [0, 15, 3] }, { position: [9, 15, -3] },
+      ], { name: `${spec.id}-cold-vents` });
+      addMesh(group, box('slaughterhouse-cold-sign', [11, 1.6, 0.3]), materials.signal, { position: [0, 10.2, 11.75], castShadow: false, name: `${spec.id}-owlf-cold-status` });
+      addMesh(group, cylinder('slaughterhouse-coolant-tank', 2.4, 2.6, 8.5, 12), materials.dark, { position: [23, 4.5, -11], name: `${spec.id}-coolant-tank` });
+      return tagVisual(group, 'slaughterhouse', 'cold-storage-loading-bays-owlf-coolant-array');
+    }
+
+    if (spec.type === 'owlf_command_van') {
+      addMesh(group, box('owlf-van-body', [15, 5.8, 6.8]), surface, { position: [0, 3.6, 0], name: `${spec.id}-operations-body` });
+      addMesh(group, box('owlf-van-cab', [5, 4.9, 6.5]), surface, { position: [9.5, 3, 0], name: `${spec.id}-cab` });
+      addMesh(group, box('owlf-van-windshield', [0.3, 2.1, 5.2]), materials.signal, { position: [12.05, 4, 0], rotation: [0, 0, -0.13], castShadow: false, name: `${spec.id}-windshield` });
+      addInstancedMesh(group, cylinder('owlf-van-wheel', 1.3, 1.3, 0.9, 12), materials.dark, [
+        { position: [-5.5, 1.4, -3.5], rotation: [Math.PI / 2, 0, 0] }, { position: [-5.5, 1.4, 3.5], rotation: [Math.PI / 2, 0, 0] },
+        { position: [8, 1.4, -3.5], rotation: [Math.PI / 2, 0, 0] }, { position: [8, 1.4, 3.5], rotation: [Math.PI / 2, 0, 0] },
+      ], { name: `${spec.id}-wheels` });
+      addMesh(group, cylinder('owlf-van-mast', 0.12, 0.2, 7, 7), materials.dark, { position: [-4, 9.4, 0], name: `${spec.id}-sensor-mast` });
+      addMesh(group, this.geometry('owlf-van-dish', () => new THREE.TorusGeometry(2.1, 0.18, 7, 20, Math.PI)), materials.signal, { position: [-4, 12.5, 0], rotation: [Math.PI / 2, 0.3, 0], castShadow: false, name: `${spec.id}-tracking-dish` });
+      addInstancedMesh(group, box('owlf-van-console', [3.1, 2.1, 0.28]), materials.signal, [
+        { position: [-4, 3.8, -3.55] }, { position: [0, 3.8, -3.55] }, { position: [4, 3.8, -3.55] },
+      ], { name: `${spec.id}-thermal-screens`, castShadow: false });
+      return tagVisual(group, 'owlf_command_van', 'mobile-thermal-command-post-roof-dish');
+    }
+
+    if (spec.type === 'lost_tribe_ship_hatch') {
+      addMesh(group, cylinder('lost-tribe-hatch-plinth', 13, 15, 2.2, 12), surface, { position: [0, 1.1, 0], name: `${spec.id}-ship-plinth` });
+      addMesh(group, this.geometry('lost-tribe-hull-ring', () => new THREE.TorusGeometry(10.5, 1.9, 9, 28, Math.PI)), surface, { position: [0, 9.8, -2], name: `${spec.id}-hull-ring` });
+      addMesh(group, box('lost-tribe-hatch-door', [9, 13.5, 1.2]), materials.dark, { position: [-4.8, 7.5, -1.6], rotation: [0, 0.13, -0.07], name: `${spec.id}-left-door` });
+      addMesh(group, box('lost-tribe-hatch-door', [9, 13.5, 1.2]), materials.dark, { position: [4.8, 7.5, -1.6], rotation: [0, -0.13, 0.07], name: `${spec.id}-right-door` });
+      addInstancedMesh(group, this.geometry('lost-tribe-hatch-rune', () => new THREE.BoxGeometry(2.4, 0.32, 0.25)), materials.signal,
+        Array.from({ length: 7 }, (_, index) => ({ position: [0, 3.6 + index * 1.55, -0.9], rotation: [0, 0, (index - 3) * 0.09] })),
+        { name: `${spec.id}-honor-runes`, castShadow: false });
+      addInstancedMesh(group, this.geometry('lost-tribe-hatch-tusk', () => new THREE.ConeGeometry(0.75, 7.5, 6)), materials.bone, [
+        { position: [-10.2, 8.2, -1], rotation: [0, 0, -0.42] }, { position: [10.2, 8.2, -1], rotation: [0, 0, 0.42] },
+      ], { name: `${spec.id}-trophy-tusks` });
+      addMesh(group, this.geometry('lost-tribe-hatch-beacon', () => new THREE.OctahedronGeometry(1.4, 0)), materials.signal, { position: [0, 18, -1], castShadow: false, name: `${spec.id}-clan-beacon` });
+      return tagVisual(group, 'lost_tribe_ship_hatch', 'crescent-hull-split-hatch-honor-runes');
     }
 
     if (spec.type === 'stargazer_checkpoint') {
@@ -538,6 +622,63 @@ export class BiomePropBuilder {
       object.scale.setScalar(variation);
     };
 
+    if (spec.type === 'police_vehicle_line') {
+      addInstances('vehicle-bodies', this.geometry('urban-police-body', () => new THREE.BoxGeometry(6.8, 2.1, 3.2)), surface, (object, index, total) => {
+        linePosition(object, index, total, 1.55, 8.4);
+        object.rotation.y = (index % 2 ? 1 : -1) * 0.2;
+        object.scale.set(1, 1, 1);
+      });
+      addInstances('vehicle-cabins', this.geometry('urban-police-cabin', () => new THREE.BoxGeometry(3.5, 1.7, 2.8)), materials.dark, (object, index, total) => {
+        linePosition(object, index, total, 3.2, 8.4);
+        object.rotation.y = (index % 2 ? 1 : -1) * 0.2;
+        object.scale.set(1, 1, 1);
+      });
+      addInstances('emergency-lights', this.geometry('urban-police-lightbar', () => new THREE.BoxGeometry(2.6, 0.35, 0.5)), materials.signal, (object, index, total) => {
+        linePosition(object, index, total, 4.2, 8.4);
+        object.rotation.y = (index % 2 ? 1 : -1) * 0.2;
+        object.scale.set(1, 1, 1);
+      });
+      addMesh(group, this.geometry('urban-police-barricade', () => new THREE.BoxGeometry(40, 1.1, 0.6)), materials.dark, { position: [0, 0.55, -5], name: `${spec.id}-street-barricade` });
+      return tagVisual(group, 'police_vehicle_line', 'angled-police-cruiser-barricade-lightbar-line');
+    }
+
+    if (spec.type === 'rooftop_equipment') {
+      addInstances('hvac-boxes', this.geometry('urban-rooftop-hvac', () => new THREE.BoxGeometry(5.2, 3.2, 4.4)), surface, (object, index, total) => {
+        linePosition(object, index, total, 1.8, 6.4);
+        object.rotation.y = (index % 3) * 0.22;
+        object.scale.set(0.86 + (index % 2) * 0.18, 0.8 + (index % 3) * 0.12, 1);
+      });
+      addInstances('extractor-fans', this.geometry('urban-rooftop-fan', () => new THREE.CylinderGeometry(1.25, 1.45, 1.2, 10)), materials.dark, (object, index, total) => {
+        linePosition(object, index, total, 4.15, 6.4);
+        object.scale.setScalar(1);
+      });
+      addInstances('fan-grilles', this.geometry('urban-rooftop-grille', () => new THREE.TorusGeometry(1.2, 0.12, 6, 16)), materials.signal, (object, index, total) => {
+        linePosition(object, index, total, 4.82, 6.4);
+        object.rotation.x = Math.PI / 2;
+        object.scale.setScalar(1);
+      });
+      addMesh(group, this.geometry('urban-rooftop-duct', () => new THREE.BoxGeometry(35, 1.4, 1.8)), materials.dark, { position: [0, 2.4, -4.2], name: `${spec.id}-shared-duct` });
+      return tagVisual(group, 'rooftop_equipment', 'hvac-fan-duct-rooftop-cover-line');
+    }
+
+    if (spec.type === 'palm_line') {
+      addInstances('palm-trunks', this.geometry('urban-palm-trunk', () => new THREE.CylinderGeometry(0.42, 0.85, 19, 8)), surface, (object, index, total) => {
+        linePosition(object, index, total, 9.5, 7.2);
+        object.rotation.z = (index % 2 ? 1 : -1) * 0.08;
+        object.scale.set(1, 0.86 + (index % 3) * 0.1, 1);
+      });
+      addInstances('palm-crowns', this.geometry('urban-palm-crown', () => new THREE.SphereGeometry(3.4, 9, 6)), materials.dark, (object, index, total) => {
+        linePosition(object, index, total, 19.5, 7.2);
+        object.scale.set(1.7, 0.34, 1.7);
+      });
+      addInstances('palm-fronds', this.geometry('urban-palm-frond', () => new THREE.ConeGeometry(0.6, 8, 4)), materials.dark, (object, index, total) => {
+        linePosition(object, index, total, 19.3, 7.2);
+        object.rotation.set(Math.PI / 2, index * 1.73, 0);
+        object.scale.set(1, 1, 0.35);
+      });
+      return tagVisual(group, 'palm_line', 'heatwave-palm-trunk-frond-silhouette-line');
+    }
+
     if (spec.type === 'stargazer_barrier_line') {
       addInstances('blast-barriers', this.geometry('stargazer-barrier-body', () => new THREE.BoxGeometry(3.8, 2.5, 1.8)), surface, (object, index, total) => {
         linePosition(object, index, total, 1.25, 4.5);
@@ -664,7 +805,7 @@ export class BiomePropBuilder {
 
   createProp(spec, materials) {
     const archTypes = ['ritual_gate', 'clan_gate', 'hive_bulkhead', 'bone_arch'];
-    const facilityTypes = ['field_camp', 'frontier_homestead', 'wreckage', 'expedition_wreck', 'signal_array', 'stargazer_checkpoint', 'stargazer_containment_lab'];
+    const facilityTypes = ['field_camp', 'frontier_homestead', 'wreckage', 'expedition_wreck', 'signal_array', 'stargazer_checkpoint', 'stargazer_containment_lab', 'urban_tenement', 'subway_entrance', 'slaughterhouse', 'owlf_command_van', 'lost_tribe_ship_hatch'];
     const shrineTypes = ['trophy_tree', 'royal_dais', 'blooding_dais', 'weapon_shrine', 'trophy_gallery', 'kalisk_nest'];
     const penTypes = ['egg_nursery', 'stock_pen', 'stargazer_kennel'];
     let group;

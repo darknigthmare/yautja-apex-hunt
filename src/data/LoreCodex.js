@@ -72,6 +72,18 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     sourceTier: 'SCREEN', isOriginal: false, sources: ['predator1987', 'predator2', 'huntingGrounds']
   },
   {
+    id: 'technologie-fusee-poignet', entryType: 'codex', category: 'technologie', title: 'Fusée de poignet',
+    summary: 'Projectile explosif compact associé à l’arsenal du chasseur urbain.',
+    body: 'Le jeu en fait une arme à souffle dégressif afin de distinguer sa fonction du canon à plasma. Dégâts, rayon et coût énergétique sont des valeurs originales de gameplay.',
+    sourceTier: 'SCREEN', isOriginal: false, gameInterpretationOriginal: true, sources: ['predator2']
+  },
+  {
+    id: 'technologie-medicomp-urbain', entryType: 'codex', category: 'technologie', title: 'Medicomp et respirateur urbains',
+    summary: 'Le chasseur de Los Angeles transporte un nécessaire de soin et un appareil respiratoire spécialisé.',
+    body: 'La dixième chasse matérialise ces deux pièces sur le boss. Le soin progressif interruptible et le verrou multispectral destructible sont des adaptations originales, pas une reconstitution scène par scène.',
+    sourceTier: 'SCREEN', isOriginal: false, gameInterpretationOriginal: true, sources: ['predator2']
+  },
+  {
     id: 'culture-trophees', entryType: 'codex', category: 'culture', title: 'Trophées et mémoire de chasse',
     summary: 'Crânes, colonnes vertébrales et armes prises à des adversaires remarquables matérialisent les chasses accomplies.',
     body: 'Un corps écorché ou suspendu n’est pas automatiquement un trophée honorifique : le Codex distingue mise en scène, dépouille et pièce sélectionnée.',
@@ -93,6 +105,14 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
 
 // IDs match the values already used by the planet selector.
 export const HUNT_LOCATIONS = freezeEntries([
+  {
+    id: 'los_angeles_1997', entryType: 'location', category: 'lieu', title: 'Los Angeles 1997 — chasse de chaleur',
+    summary: 'Grande carte urbaine nocturne non linéaire reliant toits, ruelles, métro, abattoir frigorifique et vaisseau enfoui.',
+    sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
+    canonNote: 'Los Angeles et les motifs de la chasse urbaine viennent de Predator 2, situé en 1997 ; cette géographie, ses dix secteurs, ses événements et son duel de clan sont une adaptation originale Apex Hunt.',
+    assetPolicy: 'Texture OpenAI et géométries procédurales originales ; aucun asset officiel du film.',
+    sources: ['predator2']
+  },
   {
     id: 'genna_deathworld', entryType: 'location', category: 'lieu', title: 'Genna — monde mortel',
     summary: 'Écosystème extrême de Badlands, dominé par une flore prédatrice et le Kalisk régénérant.',
@@ -133,10 +153,18 @@ export const HUNT_LOCATIONS = freezeEntries([
   }
 ]);
 
-const ALL_LOCATION_IDS = ['jungle', 'hive_lv426', 'ryushi_desert', 'stargazer_blacksite', 'yautja_prime', 'genna_deathworld'];
+const ALL_LOCATION_IDS = ['jungle', 'hive_lv426', 'ryushi_desert', 'stargazer_blacksite', 'yautja_prime', 'genna_deathworld', 'los_angeles_1997'];
 
 // IDs match data-hunt and currentHuntType values in the game.
 export const CURRENT_HUNTS = freezeEntries([
+  {
+    id: 'city_hunter', entryType: 'hunt', category: 'cible', title: 'City Hunter — épreuve urbaine 1997',
+    summary: 'Duel de clan contre un rival au disque intelligent, au lance-filet et au Medicomp dans une ville vivante.',
+    sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
+    canonNote: 'Le chasseur et son arsenal viennent de Predator 2 ; cette épreuve, ses statistiques, son adversaire, ses événements et sa progression ne rejouent pas le récit du film.',
+    assetPolicy: 'Boss, props, texture et mise en scène sont des créations procédurales ou OpenAI originales du projet.',
+    sources: ['predator2'], locationIds: ['los_angeles_1997']
+  },
   {
     id: 'feral_predator', entryType: 'hunt', category: 'cible', title: 'Feral Predator — Grande Plaine',
     summary: 'Chasseur de 1719 affronté comme duel de bouclier, de traits et de lance.',

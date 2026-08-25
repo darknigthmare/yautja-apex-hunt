@@ -4,6 +4,7 @@ export const ENVIRONMENT_PROP_TEXTURES = Object.freeze({
   ceremonialBronze: '/assets/textures/yautja-ceremonial-bronze.webp',
   gennaSporeHide: '/assets/textures/genna-spore-pod-hide.webp',
   stargazerComposite: '/assets/textures/stargazer-tactical-composite.webp',
+  urbanHeatwave: '/assets/textures/los-angeles-heatwave-urban.webp',
 });
 
 export const ENVIRONMENT_PERFORMANCE_BUDGETS = Object.freeze({
@@ -183,6 +184,36 @@ const PLAN_DATA = {
     hazardZones: [
       { id: 'stargazer-hazard-arc-field', type: 'containment_arc', position: [405, 0, -108], radius: 9, damage: 9, interval: 2.3, status: 'energy_jam', message: 'ARC DE CONFINEMENT — SYSTÈMES YAUTJA PERTURBÉS' },
       { id: 'stargazer-hazard-sterilization', type: 'sterilization_vent', position: [245, 0, -205], radius: 8, damage: 8, interval: 2.6, status: 'corrosion', message: 'PURGE DE STÉRILISATION — ARMURE CORRODÉE' },
+    ],
+  },
+  los_angeles_1997: {
+    sourceTier: 'ORIGINAL',
+    basisTier: 'PREDATOR_2_SCREEN',
+    textureReferences: [
+      ENVIRONMENT_PROP_TEXTURES.urbanHeatwave,
+      '/assets/textures/yautja-alloy.webp',
+      ENVIRONMENT_PROP_TEXTURES.stargazerComposite,
+    ],
+    props: [
+      { id: 'la-colombian-penthouse', type: 'urban_tenement', position: [-470, 0, 105], rotation: 0.18, scale: 1.28, texture: ENVIRONMENT_PROP_TEXTURES.urbanHeatwave, colliderRadius: 21, perchHeight: 31 },
+      { id: 'la-subway-west-entrance', type: 'subway_entrance', position: [-430, 0, -285], rotation: 0.52, scale: 1.12, texture: ENVIRONMENT_PROP_TEXTURES.urbanHeatwave, colliderRadius: 13, perchHeight: 11 },
+      { id: 'la-owlf-slaughterhouse', type: 'slaughterhouse', position: [390, 0, -290], rotation: -0.28, scale: 1.22, texture: ENVIRONMENT_PROP_TEXTURES.urbanHeatwave, colliderRadius: 22, perchHeight: 18 },
+      { id: 'la-owlf-command-van', type: 'owlf_command_van', position: [20, 0, -345], rotation: -0.12, scale: 1.08, texture: ENVIRONMENT_PROP_TEXTURES.stargazerComposite, colliderRadius: 9, perchHeight: 6.5 },
+      { id: 'la-lost-tribe-ship-hatch', type: 'lost_tribe_ship_hatch', position: [-80, 0, -650], rotation: 0.06, scale: 1.24, texture: '/assets/textures/yautja-alloy.webp', colliderRadius: 18, perchHeight: 17 },
+      { id: 'la-warzone-police-line', type: 'police_vehicle_line', position: [-390, 0, 430], rotation: 0.34, scale: 1, texture: ENVIRONMENT_PROP_TEXTURES.urbanHeatwave, instances: 6, colliderRadius: 19 },
+      { id: 'la-rooftop-equipment-line', type: 'rooftop_equipment', position: [30, 0, 135], rotation: -0.18, scale: 1, texture: ENVIRONMENT_PROP_TEXTURES.urbanHeatwave, instances: 7, colliderRadius: 18, perchHeight: 8 },
+      { id: 'la-freeway-palm-line', type: 'palm_line', position: [405, 0, 435], rotation: -0.42, scale: 1.08, texture: ENVIRONMENT_PROP_TEXTURES.urbanHeatwave, instances: 8, colliderRadius: 20, perchHeight: 21 },
+    ],
+    pointsOfInterest: [
+      { id: 'la-poi-rooftop-plasma', type: 'hunt_trace', label: 'Impacts de plasma sur le toit', position: [-75, 0, 180], interactionRadius: 14, interactionType: 'scan_archive', honor: 105, message: 'Analyse : tirs de City Hunter, trajectoire ascendante vers le penthouse et le métro.' },
+      { id: 'la-poi-subway-record', type: 'field_record', label: 'Radio de l’agent Leona', position: [-405, 0, -260], interactionRadius: 13, interactionType: 'decode_record', honor: 90, message: 'Archive : une silhouette invisible a épargné une cible non combattante dans le tunnel.' },
+      { id: 'la-poi-owlf-cold-plan', type: 'weapon_archive', label: 'Plan du piège cryogénique OWLF', position: [365, 0, -265], interactionRadius: 14, interactionType: 'tune_beacon', honor: 100, message: 'Plan recalibré : azote, poussière isolante et couloirs de tir de l’abattoir identifiés.' },
+      { id: 'la-poi-lost-tribe-law', type: 'honor_archive', label: 'Marque d’honneur du Lost Tribe', position: [-72, 0, -625], interactionRadius: 15, interactionType: 'scan_archive', honor: 120, message: 'Archive d’honneur : le duel achevé est reconnu, puis le survivant reçoit une prise ancienne.' },
+    ],
+    hazardZones: [
+      { id: 'la-hazard-subway-steam', type: 'subway_steam', position: [-455, 0, -315], radius: 9, damage: 7, interval: 2.4, status: 'energy_jam', message: 'VAPEUR DU MÉTRO — VISIONS THERMIQUES SATURÉES' },
+      { id: 'la-hazard-owlf-cryo', type: 'cryo_fog', position: [410, 0, -315], radius: 11, damage: 8, interval: 2.2, status: 'snare', message: 'BROUILLARD CRYOGÉNIQUE — MOBILITÉ RÉDUITE' },
+      { id: 'la-hazard-transformer-arc', type: 'transformer_arc', position: [470, 0, 105], radius: 8, damage: 9, interval: 2.5, status: 'energy_jam', message: 'ARC ÉLECTRIQUE — TECHNOLOGIE YAUTJA PERTURBÉE' },
     ],
   },
 };

@@ -1,10 +1,10 @@
 # Yautja: Apex Hunt
 
-Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur incarne un chasseur Yautja, forge une apparence modulaire dans le vaisseau-mère, puis affronte neuf cibles et des incidents dynamiques dans six biomes.
+Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur incarne un chasseur Yautja, forge une apparence modulaire dans le vaisseau-mère, puis affronte dix cibles et des incidents dynamiques dans sept biomes.
 
 ## État du projet
 
-La version 1.9.0 est publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Cette vague ajoute la neuvième chasse contre l’Assassin Predator (2018), génétiquement amélioré, dans le site noir Stargazer, un sixième territoire ouvert, trois directives portant le total à huit, huit rôles de PNJ à comportements distincts, quatre armes jouables, un leurre holographique, quatre classes et de nouvelles variantes de personnalisation. Les gates automatisés, build, navigateur desktop/mobile et production sont consignés dans `QA_REPORT.md`.
+La version 1.9.0 reste la version publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). La candidate 1.10.0 étend réellement le contenu à dix chasses, sept biomes, neuf directives, quinze armes, neuf classes et 214 entrées de catalogue. Ses gates finaux et sa publication ne sont pas déclarés dans ce document tant qu’ils ne sont pas achevés.
 
 ## Lancer localement
 
@@ -26,13 +26,13 @@ npm audit
 ## Boucle de jeu
 
 - hub du vaisseau-mère, arsenal, forge et trophées persistants ;
-- neuf chasses : Goliath Xeno-Akumo, Reine xénomorphe, rival Bad Blood, Predalien, Berserker Super Predator, Feral, Wolf Cleaner, Kalisk et Assassin Predator (2018), génétiquement amélioré, dans le complexe Stargazer ;
-- six biomes : jungle, ruche, Ryushi, arène de clan, monde mortel de Genna et site noir Stargazer ;
-- six plans déterministes de 630 à 680 unités de rayon, chacun avec neuf secteurs et 12 à 16 routes bouclées ; Stargazer déploie précisément 16 routes, 15 résidents écologiques, six événements, quatre POI et deux dangers sur un rayon jouable de 680 unités ;
-- vingt-six familles de PNJ 3D, dont huit rôles 1.9 à comportements distincts, 12 à 15 créatures résidentes par biome, patrouilles territoriales, migrations de proies, conflits d’écosystème, renforts bornés et combat maintenu jusqu’au prélèvement ;
-- quatre véhicules/navettes 3D, dont l’appareil d’évasion Fugitive endommagé, et cinq profils de conteneurs interactifs, dont la récupération Stargazer ;
-- quatorze armes jouables : dix sur `1` à `0`, puis lance-traits Feral `[-]`, double plasma Wolf `[=]`, Eye of Ra `[` — puissant et précis, mais lent — et Épée Yautja — Father `]` ; bouclier `[B]`, drone-faucon `[G]`, shuriken `[T]`, leurre Apex `[Y]`, camouflage, vision et mimétisme complètent l’équipement ;
-- huit classes jouables, 38 bio-masques, 50 presets d’armure et neuf axes modulaires : classe, masque, peau, couleur/style de predlocks, couleur/accent/finition d’armure et warpaint ; Tracker, Falconer, Cleaner et Fugitive rejoignent la sélection, portée à sept styles de predlocks, huit finitions et huit warpaints ; les huit variantes Lost Tribe sont balisées `LICENSED_SCREEN_DESIGN` ;
+- dix chasses : Goliath Xeno-Akumo, Reine xénomorphe, rival Bad Blood, Predalien, Berserker Super Predator, Feral, Wolf Cleaner, Kalisk, Assassin Predator (2018), génétiquement amélioré, et City Hunter dans l’adaptation originale Los Angeles 1997 ;
+- sept biomes : jungle, ruche, Ryushi, arène de clan, monde mortel de Genna, site noir Stargazer et Los Angeles 1997 sous canicule ;
+- sept plans déterministes de 630 à 760 unités de rayon, avec neuf à dix secteurs et 12 à 18 routes bouclées ; Los Angeles déploie précisément dix secteurs, 18 routes non linéaires, sept territoires, 20 résidents, sept événements et six étapes de migration de la cible sur un rayon jouable de 760 unités ;
+- vingt-neuf familles de PNJ 3D, dont trois nouveaux adversaires urbains — homme de main de cartel, chasseur armé du métro et commando OWLF cryogénique —, avec comportements distincts, patrouilles territoriales, migrations de proies, conflits d’écosystème, renforts bornés et combat maintenu jusqu’au prélèvement ;
+- quatre véhicules/navettes 3D, dont l’appareil d’évasion Fugitive endommagé et l’intercepteur de clan déployé à Los Angeles, et six profils de conteneurs interactifs, dont la récupération Stargazer et le cache froid OWLF ;
+- quinze armes jouables : l’arsenal historique est complété par la roquette de poignet du profil City Stalker, avec explosion de zone, coût d’énergie et recharge propres ; bouclier `[B]`, drone-faucon `[G]`, shuriken `[T]`, leurre Apex `[Y]`, camouflage, vision et mimétisme complètent l’équipement ;
+- neuf classes jouables, 38 bio-masques, 50 presets d’armure et neuf axes modulaires : classe, masque, peau, couleur/style de predlocks, couleur/accent/finition d’armure et warpaint ; la sélection atteint huit styles de predlocks, neuf finitions et neuf warpaints ; les huit variantes Lost Tribe restent balisées `LICENSED_SCREEN_DESIGN` ;
 - progression d’honneur cumulée, crédits de forge et sauvegarde locale v4 avec migration v1/v2/v3 ;
 - catalogue franchise/support au statut explicite : jouable, rencontre 3D, galerie 3D ou archive, complété par un registre de 29 œuvres et médias distinguant publié, coupé, non publié, promotion et crossover séparé ;
 - pause, audio, mouvement réduit, fort contraste et échelle du HUD ;
@@ -40,7 +40,18 @@ npm audit
 
 ## Direction artistique et assets
 
-Les vingt-sept textures de décor, props et créatures sous `public/assets/textures/` sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La vague 1.6 ajoute `ryushi-frontier-panels.webp`, `hive-biomechanical-membrane.webp`, `yautja-ceremonial-bronze.webp` et `genna-spore-pod-hide.webp` ; la vague 1.8 complète Genna avec `genna-sporeback-carapace.webp`, raccordée au mesh du Sporeback. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+Les vingt-huit textures de décor, props et créatures sous `public/assets/textures/`, totalisant 9 683 134 octets, sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La candidate 1.10 ajoute `los-angeles-heatwave-urban.webp`, matière urbaine raccordable 1536×1536 pour les sols et props de la canicule. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+
+## Passe v1.10 — Los Angeles 1997 et City Hunter
+
+- dixième contrat `city_hunter` et septième biome `los_angeles_1997`, conçus comme une adaptation originale inspirée de *Predator 2* et non comme une reproduction scène par scène du film ;
+- grande carte ouverte de 760 unités de rayon : dix secteurs, 18 routes bouclées, sept territoires, 20 résidents, sept événements répartis et six points de migration de la cible, avec toits, métro, abattoir, rues, caches et présence du clan pour éviter un parcours linéaire ;
+- directive `urban_heatwave_hunt` (« Chasse sous la canicule ») en trois vagues, avec cartel urbain, chasseur armé du métro et commando OWLF cryogénique capable de perturber l’énergie, le camouflage et le positionnement du joueur ;
+- City Hunter procédural haute définition avec masque angulaire, respirateur, predlocks, trophées, smart disc à trajet aller/ricochet/retour, netgun, Medicomp, combistick, attaque rapprochée et vision multispectrale ;
+- classe City Stalker, roquette de poignet explosive, huitième style de predlocks, neuvième finition d’armure et neuvième warpaint ; présence Lost Tribe, caches urbaines et appareil de clan raccordés au directeur d’événements ;
+- catalogue porté à 214 entrées avec statuts runtime explicites pour les armes, technologies, ennemis, boss, événements, lieux et véhicule de cette vague.
+
+La passe s’appuie sur le classeur ChatGPT réellement lu `C:\Users\chuck\Downloads\Encyclopedie_exhaustive_franchise_Predator.xlsx` (SHA-256 `47C659F4F79CA0E71D8B8B7B8DB2CD7B7363827224BC081D59E9DD9D9576983C`) : 20 feuilles, 915 entrées uniques, issu de la [conversation ChatGPT source](https://chatgpt.com/c/6a8adeed-b6f8-83ed-9d07-5088fa50b8a9). La sélection Los Angeles 1997 rassemble de façon cohérente les éléments City Hunter, Lost Tribe, OWLF, armement, soins, trophées, lieux, habitants, événements et véhicule relevés dans ce corpus, tout en conservant une orchestration de fan game originale.
 
 ## Passe v1.9 — brèche Stargazer et arsenal étendu
 
@@ -53,7 +64,7 @@ Les vingt-sept textures de décor, props et créatures sous `public/assets/textu
 - l’Assassin Predator (2018), génétiquement amélioré, possède son propre combat, une armure biologique et des glandes adaptatives destructibles, une attaque de bond télégraphiée et une silhouette procédurale haute définition de 29 468 triangles au total ;
 - le nexus du vaisseau-mère aligne désormais neuf stations en double rangée tout en conservant l’allée centrale ; les trois anneaux holographiques répétés de chaque station sont instanciés afin de contenir le nombre d’appels de rendu.
 
-Le tableur Excel évoqué pendant la passe n’était accessible ni dans le dépôt ni dans les pièces jointes disponibles. La 1.9 comble donc les manques identifiés par confrontation du catalogue versionné, des contrats runtime et des tests ; elle n’attribue aucun ajout ni aucun décompte au classeur absent.
+Le tableur évoqué pendant cette ancienne passe n’avait pas encore été exploité en 1.9. Il a depuis été retrouvé, authentifié par sa provenance ChatGPT et lu pour préparer la vague 1.10 décrite ci-dessus ; l’affirmation antérieure selon laquelle il était absent est donc corrigée.
 
 ## Passe v1.8 — directives de chasse
 
@@ -95,7 +106,7 @@ Les gates v1.6 sont à 193/193 tests, 42 modules Vite, 0 vulnérabilité de prod
 
 ## Couverture franchise et backlog
 
-Le registre runtime suit 29 œuvres et médias séparément afin de ne pas confondre film sorti, bonus vidéo, scène coupée, projet non publié, promotion, jeu, roman, comic ou crossover. Le tableur évoqué par l’utilisateur n’était pas accessible dans le workspace ni dans les pièces jointes disponibles pendant cette passe : aucun nombre de lignes et aucun ajout ne lui sont donc attribués. Une future confrontation au classeur devra conserver une source vérifiable, un niveau de provenance et un statut runtime honnête pour chaque élément retenu.
+Le registre runtime suit 29 œuvres et médias séparément afin de ne pas confondre film sorti, bonus vidéo, scène coupée, projet non publié, promotion, jeu, roman, comic ou crossover. Pendant la passe 1.9, le tableur évoqué par l’utilisateur n’était pas encore accessible et aucun ajout ne lui avait donc été attribué. Pour la 1.10, le classeur a été retrouvé, authentifié par sa provenance ChatGPT et confronté au runtime avec une source vérifiable, un niveau de provenance et un statut d’implémentation honnête pour chaque élément retenu.
 
 Les principaux lots de contenu encore distincts de cette passe restent une carte urbaine de Gunnison réellement multi-niveaux, des campagnes complètes dédiées à *Killer of Killers* et à *Alien vs. Predator*, ainsi qu’un profilage GPU sur machines modestes avant d’augmenter encore la densité géométrique.
 

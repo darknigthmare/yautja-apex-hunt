@@ -30,6 +30,7 @@ export const HUNTER_CLASSES = Object.freeze([
   Object.freeze({ id: 'class_falconer', name: 'Falconer · éclaireur aérien', maxHealth: 90, maxEnergy: 130, maxStamina: 110, moveSpeed: 17.5, sprintSpeed: 28, meleeMultiplier: 0.92, energyRegen: 11, description: 'Réserve énergétique et mobilité élevées pour les technologies de reconnaissance.', sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predators2010']), implementationOriginal: true }),
   Object.freeze({ id: 'class_cleaner', name: 'Cleaner · confinement', maxHealth: 120, maxEnergy: 115, maxStamina: 90, moveSpeed: 15, sprintSpeed: 24, meleeMultiplier: 1.15, energyRegen: 8.5, description: 'Profil robuste destiné aux contaminations et aux combats d’attrition.', sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), implementationOriginal: true }),
   Object.freeze({ id: 'class_fugitive', name: 'Fugitive · récupération', maxHealth: 105, maxEnergy: 120, maxStamina: 110, moveSpeed: 17, sprintSpeed: 27.5, meleeMultiplier: 1.05, energyRegen: 10, description: 'Profil adaptable taillé pour reprendre une technologie confisquée en territoire hostile.', sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['thePredator2018']), implementationOriginal: true }),
+  Object.freeze({ id: 'class_city_stalker', name: 'City Stalker · chasse de chaleur', maxHealth: 100, maxEnergy: 118, maxStamina: 112, moveSpeed: 17.2, sprintSpeed: 27.8, meleeMultiplier: 1.02, energyRegen: 10.2, description: 'Profil mobile optimisé pour les toits, la fumée et les signatures thermiques saturées.', sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predator2']), implementationOriginal: true }),
 ]);
 
 export const DREAD_STYLES = Object.freeze([
@@ -40,6 +41,7 @@ export const DREAD_STYLES = Object.freeze([
   Object.freeze({ id: 'dread_style_cropped', name: 'Predlocks de pisteur courtes', lengthScale: 0.7, spreadScale: 1.12, beadStride: 2 }),
   Object.freeze({ id: 'dread_style_swept', name: 'Predlocks rejetées', lengthScale: 1.08, spreadScale: 0.82, beadStride: 3 }),
   Object.freeze({ id: 'dread_style_ceremonial', name: 'Parure cérémonielle', lengthScale: 1.28, spreadScale: 1.16, beadStride: 1 }),
+  Object.freeze({ id: 'dread_style_city_dense', name: 'Tresses urbaines denses', lengthScale: 1.04, spreadScale: 0.68, beadStride: 2, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predator2']), implementationOriginal: true }),
 ]);
 
 export const ARMOR_FINISHES = Object.freeze([
@@ -51,6 +53,7 @@ export const ARMOR_FINISHES = Object.freeze([
   Object.freeze({ id: 'finish_obsidian', name: 'Céramique d’obsidienne', metalness: 0.58, roughness: 0.18, emissiveIntensity: 0.04 }),
   Object.freeze({ id: 'finish_sandblasted', name: 'Métal sablé', metalness: 0.69, roughness: 0.81 }),
   Object.freeze({ id: 'finish_stargazer_salvaged', name: 'Composite Stargazer récupéré', metalness: 0.72, roughness: 0.48, emissiveIntensity: 0.08, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['thePredator2018']), implementationOriginal: true }),
+  Object.freeze({ id: 'finish_city_burnished', name: 'Alliage urbain bruni', metalness: 0.86, roughness: 0.5, emissiveIntensity: 0.03, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predator2']), implementationOriginal: true }),
 ]);
 
 export const WARPAINT_PATTERNS = Object.freeze([
@@ -62,6 +65,7 @@ export const WARPAINT_PATTERNS = Object.freeze([
   Object.freeze({ id: 'warpaint_black_claw', name: 'Griffes nocturnes', color: 0x181b1c, pattern: 'claw' }),
   Object.freeze({ id: 'warpaint_blood_oath', name: 'Serment écarlate', color: 0xa32125, pattern: 'ritual' }),
   Object.freeze({ id: 'warpaint_fugitive_scar', name: 'Balafre d’évadé Apex', color: 0x86d8bf, pattern: 'claw', sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['thePredator2018']), implementationOriginal: true }),
+  Object.freeze({ id: 'warpaint_city_soot', name: 'Suie de la chasse urbaine', color: 0x292723, pattern: 'brow', sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predator2']), implementationOriginal: true }),
 ]);
 
 export const PLAYER_GADGETS = Object.freeze([
@@ -124,6 +128,7 @@ export const PLAYABLE_WEAPONS = Object.freeze([
   { slot: 11, key: 'Equal', keyLabel: '=', id: 'wolf_dual_plasma', name: 'Double plasma de Wolf', shortName: 'DOUBLE PLASMA', sourceTier: 'AVP_SCREEN', sources: ['avpRequiem2007'], behavior: 'dual_plasma', variantId: 'variant_wolf_dual_plasma' },
   { slot: 12, key: 'BracketLeft', keyLabel: '[', id: 'eye_of_ra', name: 'Eye of Ra', shortName: 'EYE OF RA', sourceTier: 'LICENSED_EU', sources: ['huntingGroundsUpdates'], behavior: 'precision_plasma', variantId: 'variant_eye_of_ra' },
   { slot: 13, key: 'BracketRight', keyLabel: ']', id: 'father_sword', name: 'Épée Yautja — Father', shortName: 'ÉPÉE FATHER', sourceTier: 'LICENSED_EU', sources: ['huntingGroundsUpdates'], behavior: 'melee_heavy', variantId: 'variant_father_sword' },
+  { slot: 14, key: 'Backslash', keyLabel: '\\', id: 'wrist_rocket', name: 'Fusée de poignet', shortName: 'FUSÉE POIGNET', sourceTier: 'SCREEN', sources: ['predator2'], behavior: 'explosive_projectile', variantId: 'variant_wrist_rocket' },
 ]);
 
 // Ces profils étendent les dix emplacements existants sans renuméroter les slots
@@ -149,6 +154,11 @@ export const WEAPON_TECH_VARIANTS = Object.freeze([
     id: 'variant_father_sword', baseWeaponId: 'wristblades', name: 'Épée Yautja — Father',
     sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGroundsUpdates']), behavior: 'melee_heavy',
     modifiers: Object.freeze({ damageMultiplier: 1.28, cooldownMultiplier: 1.22, energyCostMultiplier: 1, rangeMultiplier: 1.18 }),
+  }),
+  Object.freeze({
+    id: 'variant_wrist_rocket', baseWeaponId: 'plasma_mines', name: 'Fusée de poignet',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predator2']), behavior: 'explosive_projectile',
+    modifiers: Object.freeze({ damageMultiplier: 1.15, cooldownMultiplier: 1.45, energyCostMultiplier: 1.2, projectileSpeedMultiplier: 1.34, blastRadius: 7.5 }),
   }),
 ]);
 

@@ -19,6 +19,7 @@ const EXPECTED_BIOMES = [
   'genna_deathworld',
   'hive_lv426',
   'jungle',
+  'los_angeles_1997',
   'ryushi_desert',
   'stargazer_blacksite',
   'yautja_prime',

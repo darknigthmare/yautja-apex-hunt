@@ -126,6 +126,20 @@ export const HUNT_DEFINITIONS = Object.freeze({
     recommendedBiome: 'stargazer_blacksite',
     hud: { part1: ['BIO-ARMURE:', 'bioArmorIntact', 'INTACTE', 'ROMPUE'], part2: ['GLANDES ADAPTATIVES:', 'adaptiveGlandsIntact', 'ACTIVES', 'DÉTRUITES'] },
   },
+  city_hunter: {
+    id: 'city_hunter',
+    name: 'City Hunter — épreuve urbaine 1997',
+    bossType: 'cityHunter',
+    colliderRadius: 5,
+    sourceTier: 'ORIGINAL',
+    basisTier: 'SCREEN',
+    continuity: 'Duel de clan original fondé sur Predator 2, séparé des événements canoniques du film',
+    objective: 'Forcer le retrait du bio-masque, survivre au disque et au filet, puis interrompre le Medicomp urbain.',
+    reward: 2450,
+    trophyColor: 0x8b7b59,
+    recommendedBiome: 'los_angeles_1997',
+    hud: { part1: ['BIO-MASQUE URBAIN:', 'maskIntact', 'INTACT', 'BRISÉ'], part2: ['MEDICOMP URBAIN:', 'medicompAvailable', 'DISPONIBLE', 'ÉPUISÉ'] },
+  },
 });
 
 export const BIOME_DEFINITIONS = Object.freeze({
@@ -165,6 +179,14 @@ export const BIOME_DEFINITIONS = Object.freeze({
     basisTier: 'SCREEN',
     texture: '/assets/textures/ryushi-frontier-panels.webp',
     structureTexture: '/assets/textures/stargazer-tactical-composite.webp',
+  },
+  los_angeles_1997: {
+    name: 'Los Angeles 1997 — chasse de chaleur',
+    sourceTier: 'ORIGINAL',
+    basisTier: 'SCREEN',
+    texture: '/assets/textures/los-angeles-heatwave-urban.webp',
+    structureTexture: '/assets/textures/los-angeles-heatwave-urban.webp',
+    assetPolicy: 'Texture OpenAI et géométries procédurales originales ; aucun asset officiel.',
   },
 });
 
