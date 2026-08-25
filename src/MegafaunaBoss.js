@@ -252,9 +252,9 @@ export class MegafaunaBoss {
       this.position.z += Math.sin(this.roamPhase) * delta * 2.0;
     }
 
-    // CLAMP BOSS POSITION TO STAY WELL WITHIN THE 800x800 TERRAIN ARENA!
-    this.position.x = Math.max(-330, Math.min(330, this.position.x));
-    this.position.z = Math.max(-330, Math.min(330, this.position.z));
+    const arenaBoundary = Math.max(40, Number(this.arenaBoundary) || 330);
+    this.position.x = Math.max(-arenaBoundary, Math.min(arenaBoundary, this.position.x));
+    this.position.z = Math.max(-arenaBoundary, Math.min(arenaBoundary, this.position.z));
 
     if (this.footstepCooldown === 0 && (this.aiState === 'chase' || this.aiState === 'charge')) {
       audioSynth.playMonsterFootstep();

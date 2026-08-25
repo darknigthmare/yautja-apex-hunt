@@ -382,11 +382,18 @@ export class SuperPredatorBoss {
     }
   }
 
+  tickTransientState(delta) {
+    if (this.isDead) return false;
+    const frameDelta = Math.max(0, Math.min(Number(delta) || 0, 0.2));
+    this.updateProjectiles(frameDelta);
+    return true;
+  }
+
   update(delta, playerPosition, isPlayerCloaked = false) {
     if (this.isDead) return;
 
     const frameDelta = Math.max(0, Math.min(Number(delta) || 0, 0.2));
-    this.updateProjectiles(frameDelta);
+    this.tickTransientState(frameDelta);
     this.attackCooldown = Math.max(0, this.attackCooldown - frameDelta);
 
     if (this.isNetted) {
@@ -464,8 +471,9 @@ export class SuperPredatorBoss {
   }
 
   clampToArena() {
-    this.position.x = THREE.MathUtils.clamp(this.position.x, -330, 330);
-    this.position.z = THREE.MathUtils.clamp(this.position.z, -330, 330);
+    const arenaBoundary = Math.max(40, Number(this.arenaBoundary) || 330);
+    this.position.x = THREE.MathUtils.clamp(this.position.x, -arenaBoundary, arenaBoundary);
+    this.position.z = THREE.MathUtils.clamp(this.position.z, -arenaBoundary, arenaBoundary);
   }
 
   dispose() {

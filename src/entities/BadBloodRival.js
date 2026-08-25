@@ -136,8 +136,29 @@ export class BadBloodRival {
     this.netTimer = 3.0;
   }
 
+  updateProjectiles(delta) {
+    const frameDelta = Math.max(0, Number(delta) || 0);
+    for (let index = this.projectiles.length - 1; index >= 0; index -= 1) {
+      const projectile = this.projectiles[index];
+      projectile.mesh.position.addScaledVector(projectile.dir, projectile.speed * frameDelta);
+      projectile.lifetime = Math.max(0, projectile.lifetime - frameDelta);
+      if (projectile.lifetime === 0) {
+        disposeObject3D(projectile.mesh);
+        this.projectiles.splice(index, 1);
+      }
+    }
+  }
+
+  tickTransientState(delta) {
+    if (this.isDead) return false;
+    const frameDelta = Math.max(0, Math.min(Number(delta) || 0, 0.2));
+    this.updateProjectiles(frameDelta);
+    return true;
+  }
+
   update(delta, playerPos) {
     if (this.isDead) return;
+    this.tickTransientState(delta);
 
     if (this.recloakTimer > 0) {
       this.recloakTimer = Math.max(0, this.recloakTimer - delta);
@@ -179,17 +200,6 @@ export class BadBloodRival {
     // Movement
     this.position.addScaledVector(targetDir, this.moveSpeed * delta);
     this.mesh.position.copy(this.position);
-
-    // Update projectiles
-    for (let i = this.projectiles.length - 1; i >= 0; i--) {
-      const p = this.projectiles[i];
-      p.mesh.position.addScaledVector(p.dir, p.speed * delta);
-      p.lifetime -= delta;
-      if (p.lifetime <= 0) {
-        disposeObject3D(p.mesh);
-        this.projectiles.splice(i, 1);
-      }
-    }
   }
 
   firePlasma(targetPos) {

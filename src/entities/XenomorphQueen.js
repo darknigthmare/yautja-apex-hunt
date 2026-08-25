@@ -320,8 +320,9 @@ export class XenomorphQueen {
     }
 
     // CLAMP POSITION WITHIN ARENA TERRAIN (800x800)
-    this.position.x = Math.max(-330, Math.min(330, this.position.x));
-    this.position.z = Math.max(-330, Math.min(330, this.position.z));
+    const arenaBoundary = Math.max(40, Number(this.arenaBoundary) || 330);
+    this.position.x = Math.max(-arenaBoundary, Math.min(arenaBoundary, this.position.x));
+    this.position.z = Math.max(-arenaBoundary, Math.min(arenaBoundary, this.position.z));
 
     this.mesh.position.copy(this.position);
   }

@@ -84,7 +84,7 @@ test('Genna matérialise un monde mortel texturé, vivant et praticable', () => 
   assert.ok(snapshot.totalInstancedInstanceCount >= 168);
   assert.ok(snapshot.totalMeshInstanceCount >= 168);
   assert.ok(
-    snapshot.totalDrawCallEstimate <= snapshot.propDrawCallEstimate + 10,
+    snapshot.totalDrawCallEstimate <= snapshot.propDrawCallEstimate + snapshot.navigationDrawCallEstimate + 10,
     'les 168 éléments de flore doivent rester contenus dans cinq appels instanciés',
   );
 });

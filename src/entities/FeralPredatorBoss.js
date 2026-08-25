@@ -472,13 +472,20 @@ export class FeralPredatorBoss {
     return this.shieldDeployed;
   }
 
+  tickTransientState(delta) {
+    if (this.isDead || this._disposed) return false;
+    const frameDelta = Math.max(0, Math.min(Number(delta) || 0, 0.2));
+    this.updateProjectiles(frameDelta);
+    this.updateShield(frameDelta);
+    return true;
+  }
+
   update(delta, playerPosition, isPlayerCloaked = false) {
     if (this.isDead || this._disposed) return;
 
     const frameDelta = Math.max(0, Math.min(Number(delta) || 0, 0.2));
-    this.updateProjectiles(frameDelta);
+    this.tickTransientState(frameDelta);
     this.attackCooldown = Math.max(0, this.attackCooldown - frameDelta);
-    this.updateShield(frameDelta);
 
     if (this.isNetted) {
       this.netTimer = Math.max(0, this.netTimer - frameDelta);
@@ -591,8 +598,9 @@ export class FeralPredatorBoss {
   }
 
   clampToArena() {
-    this.position.x = THREE.MathUtils.clamp(this.position.x, -330, 330);
-    this.position.z = THREE.MathUtils.clamp(this.position.z, -330, 330);
+    const arenaBoundary = Math.max(40, Number(this.arenaBoundary) || 330);
+    this.position.x = THREE.MathUtils.clamp(this.position.x, -arenaBoundary, arenaBoundary);
+    this.position.z = THREE.MathUtils.clamp(this.position.z, -arenaBoundary, arenaBoundary);
   }
 
   dispose() {

@@ -1115,8 +1115,9 @@ export class YautjaPlayer {
         this.position.addScaledVector(moveVector, speed * delta);
 
         // CLAMP PLAYER POSITION TO STAY WITHIN THE 800x800 TERRAIN ARENA!
-        this.position.x = Math.max(-330, Math.min(330, this.position.x));
-        this.position.z = Math.max(-330, Math.min(330, this.position.z));
+        const movementBounds = Math.max(40, Number(this.movementBounds) || 330);
+        this.position.x = Math.max(-movementBounds, Math.min(movementBounds, this.position.x));
+        this.position.z = Math.max(-movementBounds, Math.min(movementBounds, this.position.z));
 
         const targetAngle = Math.atan2(moveVector.x, moveVector.z);
         let diff = targetAngle - this.mesh.rotation.y;

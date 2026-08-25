@@ -2,6 +2,48 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
+## [1.7.0] — 25 août 2026
+
+### Grande chasse ouverte
+
+- cinq layouts déterministes de 630 à 660 unités de rayon et terrains de 1 420 à 1 500 unités, contre 300 et 800 auparavant ;
+- neuf secteurs, 12–13 routes en boucles, un camp, six nœuds d’événements et cinq étapes de migration Apex par biome ;
+- rubans de sol, balises sectorielles, marqueurs d’événement et environ 43 couverts extérieurs instanciés par carte ;
+- relief macro des secteurs appliqué aux routes, au terrain et aux ancrages gameplay ;
+- quota de neuf couverts physiques répartis sur les neuf secteurs, y compris dans la Jungle saturée, avec déclassement de piliers redondants en couverture projectile-only ;
+- limites de déplacement du joueur et des boss rendues dynamiques afin que toute la nouvelle surface soit réellement jouable ;
+- sockets des renforts redistribués dans les secteurs extérieurs au lieu de rester concentrés dans le noyau historique.
+
+### Monde vivant
+
+- 12 à 15 créatures résidentes par biome, placées au lancement selon six territoires maximum ;
+- IA ambiante avec patrouille déterministe, portée d’agression, poursuite, laisse et retour au territoire ;
+- coureur xénomorphe, drone sentinelle de clan et brouteur de Genna ajoutés avec silhouettes et textures runtime distinctes ;
+- planning étendu à 190 s avec perturbations localisées, migrations, conflits de territoire et migration Apex ;
+- conflits de territoire matérialisés par convergence et dégâts strictement entre les deux factions annoncées, sans attribuer au joueur l’honneur d’une élimination écologique ;
+- PNJ recalés à chaque frame sur le relief et meshes resynchronisés après résolution physique ;
+- cible principale sur une route de cinq territoires sûrs, avec steering autour des colliders, migrations forcées de phase et absence d’agression globale à travers la carte ;
+- projectiles, mines, zones Cleaner et bouclier Feral continuent d’évoluer au delta pendant les migrations passives.
+
+### Fidélité géométrique des boss
+
+- greffe HD propre aux huit boss : Goliath 17 100 triangles, Reine 22 465, Bad Blood 18 592, Predalien 20 029, Super Predator 24 178, Feral 22 551, Wolf 25 379 et Kalisk 26 256 ;
+- signatures de silhouette distinctes, matériaux runtime existants, visions thermique/camouflage et détails destructibles synchronisés ;
+- aucune extraction d’asset officiel : géométrie procédurale originale et textures originales du projet, guidées par les caractéristiques de référence sans reproduire de modèle propriétaire.
+
+### Benchmark de conception
+
+- principes officiels de *Monster Hunter: World* retenus : environnement continu, densité écologique, interactions faune/flore, sous-biomes et aides de lecture ;
+- aucune superficie MHW inventée : la comparaison de production repose sur la durée de traversée, les boucles, les secteurs, la distribution des menaces et le nombre d’événements ;
+- cartes Yautja originales et non linéaires, sans clonage d’un niveau Capcom.
+
+### Validation locale
+
+- 218/218 tests Node réussis, dont nouveaux contrats layout, écologie, événements, migration Apex, terrain transformé, steering et budgets HD ;
+- build Vite 8.2.2 réussi avec 45 modules ; jeu à 491,40 Ko et chunk Three.js à 505 Ko, avec avertissement de taille non bloquant ;
+- `npm audit --omit=dev` à 0 vulnérabilité et `git diff --check` sans erreur ;
+- Chromium 1280×720 : huit contrats présents, Kalisk/Genna lancé, vision normale, cible à plus de 800 m, événement écologique visible et 0 erreur applicative ; commit, push et déploiement consignés dans `QA_REPORT.md` après publication.
+
 ## [1.6.0] — 25 août 2026
 
 ### Props et composition des cinq terrains de chasse

@@ -1,12 +1,29 @@
-# Rapport QA — release 1.6.0 publiée
+# Rapport QA — release 1.7.0
 
 **Date :** 25 août 2026
-**Statut :** release 1.6.0 validée, poussée sur GitHub et publiée sur Vercel ; aucun défaut P0/P1 connu.
+**Statut :** release 1.7.0 validée localement et dans Chromium ; publication GitHub/Vercel à finaliser.
 **Production :** <https://yautja-apex-hunt.vercel.app/>
 **Premier déploiement de validation v1.6 :** `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` — `READY`, cible `production`, alias officiel appliqué
 **Source :** <https://github.com/darknigthmare/yautja-apex-hunt>
 
-## Gates de release
+## Passe v1.7 — territoires ouverts, écologie et boss HD
+
+| Gate | Résultat vérifié | Couverture |
+|---|---:|---|
+| Tests Node | **218/218 réussis** | Cartes ouvertes, relief transformé, routes, colliders distribués, écologie, événements, migrations Apex, huit boss HD, combat, sauvegarde et hub. |
+| Build production local | **Vite 8.2.2 réussi** | 45 modules ; HTML 24,44 Ko ; CSS 25,39 Ko ; jeu 491,40 Ko ; Three.js 505,00 Ko. Avertissement de taille non bloquant. |
+| Sécurité dépendances | **0 vulnérabilité** | `npm audit --omit=dev`. |
+| Qualité Git | **propre** | `git diff --check`, aucun patch temporaire conservé. |
+| Chromium desktop local | **réussi** | 1280×720 : titre, huit contrats, lancement Kalisk/Genna, vision normale, signal Apex à 826–1 009 m, événement `CONFLIT PRÉDATEUR-PROIE` et HUD complet. |
+| Console navigateur | **0 erreur applicative** | Seulement les messages de connexion Vite attendus. |
+
+Contrats mesurés : cinq rayons de 630–660 unités, neuf secteurs et 12–13 routes bouclées par carte, 12–15 formes de vie résidentes, six nœuds d’événements et cinq étapes de migration Apex. Les 43 couverts extérieurs estimés par biome conservent au moins neuf colliders physiques distribués sur les neuf secteurs, sans dépasser le plafond global. Le terrain transformé, les routes, les props, les PNJ et les meshes après collision partagent la même hauteur runtime.
+
+Budgets géométriques totaux des cibles : Goliath 17 100 triangles, Reine 22 465, Bad Blood 18 592, Predalien 20 029, Super Predator 24 178, Feral 22 551, Wolf 25 379 et Kalisk 26 256. Les variantes HD conservent visions thermique/camouflage et détails destructibles.
+
+Le benchmark MHW s’appuie sur les principes officiels publiés par Capcom — continuité, densité, écosystème, interactions et lecture — sans inventer de superficie officielle ni copier une carte ou un asset Capcom.
+
+## Baseline de release v1.6
 
 | Gate | Résultat vérifié | Couverture |
 |---|---:|---|

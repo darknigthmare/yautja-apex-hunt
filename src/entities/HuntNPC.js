@@ -9,6 +9,9 @@ export const HUNT_NPC_TEXTURES = Object.freeze({
   thermal_trapper: '/assets/textures/stargazer-tactical-composite.webp',
   genna_stalker: '/assets/textures/deathworld-alien-flora.webp',
   xeno_warrior: '/assets/textures/xeno-carapace.webp',
+  xeno_runner: '/assets/textures/xeno-carapace.webp',
+  clan_sentry_drone: '/assets/textures/yautja-energy-lattice.webp',
+  genna_grazer: '/assets/textures/deathworld-alien-flora.webp',
 });
 
 export const HUNT_NPC_ARCHETYPES = Object.freeze({
@@ -129,9 +132,56 @@ export const EXPANDED_HUNT_NPC_ARCHETYPES = Object.freeze({
   }),
 });
 
+export const AMBIENT_HUNT_NPC_ARCHETYPES = Object.freeze({
+  xeno_runner: Object.freeze({
+    type: 'xeno_runner',
+    name: 'Coureur xénomorphe',
+    health: 82,
+    damage: 14,
+    speed: 7.2,
+    attackRange: 2.55,
+    colliderRadius: 0.58,
+    attackInterval: 0.78,
+    damageType: 'corrosion',
+    attackKind: 'melee',
+    status: 'corrosion',
+    statusDuration: 3,
+  }),
+  clan_sentry_drone: Object.freeze({
+    type: 'clan_sentry_drone',
+    name: 'Drone sentinelle de clan',
+    health: 115,
+    damage: 12,
+    speed: 3.4,
+    attackRange: 18,
+    colliderRadius: 0.72,
+    attackInterval: 1.25,
+    damageType: 'energy',
+    attackKind: 'projectile',
+    projectileSpeed: 30,
+  }),
+  genna_grazer: Object.freeze({
+    type: 'genna_grazer',
+    name: 'Brouteur de Genna',
+    health: 155,
+    damage: 17,
+    speed: 3.5,
+    attackRange: 3.15,
+    colliderRadius: 1.04,
+    attackInterval: 1.65,
+    damageType: 'impact',
+    attackKind: 'melee',
+  }),
+});
+
 export const ALL_HUNT_NPC_ARCHETYPES = Object.freeze({
   ...HUNT_NPC_ARCHETYPES,
   ...EXPANDED_HUNT_NPC_ARCHETYPES,
+});
+
+export const AVAILABLE_HUNT_NPC_ARCHETYPES = Object.freeze({
+  ...ALL_HUNT_NPC_ARCHETYPES,
+  ...AMBIENT_HUNT_NPC_ARCHETYPES,
 });
 
 const sharedTextureCache = new Map();
@@ -419,6 +469,83 @@ function makeXenoWarrior(texture) {
   return group;
 }
 
+function makeXenoRunner(texture) {
+  const group = new THREE.Group();
+  const carapace = makeMaterial(0x101918, texture, { roughness: 0.3, metalness: 0.42 });
+  const teeth = makeMaterial(0xc9c2aa, null, { roughness: 0.4, metalness: 0.68 });
+
+  addPart(group, new THREE.SphereGeometry(0.5, 13, 8), carapace, [0, 0.78, 0], [0.68, 0.54, 1.48]);
+  addPart(group, new THREE.SphereGeometry(0.38, 13, 8), carapace, [0, 1.02, 0.9], [0.72, 0.46, 1.2]);
+  addPart(group, new THREE.ConeGeometry(0.14, 0.48, 7), teeth, [0, 0.86, 1.36], null, [Math.PI / 2, 0, 0]);
+
+  for (const side of [-1, 1]) {
+    addPart(group, new THREE.CylinderGeometry(0.055, 0.11, 1.08, 7), carapace, [side * 0.38, 0.32, -0.5], null, [0.36, 0, side * 0.48]);
+    addPart(group, new THREE.CylinderGeometry(0.045, 0.09, 1.2, 7), carapace, [side * 0.48, 0.4, 0.58], null, [-0.44, 0, side * 0.62]);
+  }
+
+  const tail = addPart(group, new THREE.CylinderGeometry(0.022, 0.1, 2.65, 8), carapace, [0, 0.7, -1.45]);
+  tail.rotation.x = Math.PI / 2.25;
+  group.scale.setScalar(0.92);
+  group.userData.silhouette = 'xeno_runner';
+  group.userData.combatRead = 'fast_flanker';
+  return group;
+}
+
+function makeClanSentryDrone(texture) {
+  const group = new THREE.Group();
+  const hull = makeMaterial(0x303a3f, texture, { roughness: 0.32, metalness: 0.86 });
+  const energy = makeMaterial(0x75edff, texture, { roughness: 0.16, metalness: 0.3, emissive: 0x087d94, emissiveIntensity: 1.8 });
+
+  addPart(group, new THREE.SphereGeometry(0.62, 16, 10), hull, [0, 1.45, 0], [1, 0.68, 1]);
+  addPart(group, new THREE.SphereGeometry(0.2, 12, 8), energy, [0, 1.43, 0.58], [1.35, 0.65, 0.55]);
+  const ring = addPart(group, new THREE.TorusGeometry(0.82, 0.07, 8, 22), energy, [0, 1.45, 0]);
+  ring.rotation.x = Math.PI / 2;
+
+  for (const side of [-1, 1]) {
+    addPart(group, new THREE.BoxGeometry(0.72, 0.09, 0.42), hull, [side * 0.75, 1.42, 0], null, [0, 0, side * 0.18]);
+    addPart(group, new THREE.SphereGeometry(0.1, 9, 7), energy, [side * 1.08, 1.4, 0]);
+  }
+  for (let arm = 0; arm < 3; arm += 1) {
+    const angle = (arm / 3) * Math.PI * 2;
+    addPart(group, new THREE.CylinderGeometry(0.07, 0.13, 0.38, 8), energy, [Math.sin(angle) * 0.48, 1.05, Math.cos(angle) * 0.48]);
+  }
+
+  group.userData.hoverHeight = 1.45;
+  group.userData.silhouette = 'clan_sentry_drone';
+  group.userData.combatRead = 'hovering_sentry';
+  return group;
+}
+
+function makeGennaGrazer(texture) {
+  const group = new THREE.Group();
+  const hide = makeMaterial(0x44583a, texture, { roughness: 0.94, metalness: 0.02 });
+  const frond = makeMaterial(0x8ac653, texture, { roughness: 0.74, metalness: 0.04, emissive: 0x173f12, emissiveIntensity: 0.32 });
+  const horn = makeMaterial(0x262b1d, null, { roughness: 0.56, metalness: 0.18 });
+
+  addPart(group, new THREE.SphereGeometry(0.82, 14, 10), hide, [0, 1.03, 0], [1.12, 0.72, 1.58]);
+  addPart(group, new THREE.SphereGeometry(0.5, 12, 8), hide, [0, 1.28, 0.98], [0.8, 0.72, 1.1]);
+  addPart(group, new THREE.SphereGeometry(0.36, 11, 8), hide, [0, 1.12, 1.52], [0.92, 0.65, 0.82]);
+
+  for (const side of [-1, 1]) {
+    for (const z of [-0.72, 0, 0.72]) {
+      addPart(group, new THREE.CylinderGeometry(0.07, 0.14, 0.92, 7), hide, [side * 0.52, 0.42, z], null, [0, 0, side * 0.15]);
+    }
+  }
+
+  for (let frondIndex = 0; frondIndex < 5; frondIndex += 1) {
+    const angle = ((frondIndex - 2) / 5) * 1.45;
+    addPart(group, new THREE.ConeGeometry(0.16, 0.82, 7), frond, [Math.sin(angle) * 0.5, 1.72, -0.25 + Math.cos(angle) * 0.2], [0.72, 1, 0.36], [0, 0, angle]);
+  }
+  for (const side of [-1, 1]) {
+    const browHorn = addPart(group, new THREE.ConeGeometry(0.08, 0.58, 7), horn, [side * 0.24, 1.36, 1.72]);
+    browHorn.rotation.x = Math.PI / 2.8;
+  }
+  group.scale.setScalar(1.04);
+  group.userData.silhouette = 'genna_grazer';
+  group.userData.combatRead = 'herd_defender';
+  return group;
+}
+
 const meshFactories = Object.freeze({
   xeno_drone: makeXenoDrone,
   hunting_hound: makeHuntingHound,
@@ -428,6 +555,9 @@ const meshFactories = Object.freeze({
   thermal_trapper: makeThermalTrapper,
   genna_stalker: makeGennaStalker,
   xeno_warrior: makeXenoWarrior,
+  xeno_runner: makeXenoRunner,
+  clan_sentry_drone: makeClanSentryDrone,
+  genna_grazer: makeGennaGrazer,
 });
 
 function setPosition(target, value) {
@@ -456,7 +586,7 @@ export class HuntNPC {
     const config = typeof typeOrOptions === 'string'
       ? { ...options, type: typeOrOptions }
       : { ...(typeOrOptions || {}) };
-    const archetype = ALL_HUNT_NPC_ARCHETYPES[config.type];
+    const archetype = AVAILABLE_HUNT_NPC_ARCHETYPES[config.type];
 
     if (!archetype) {
       throw new Error(`Unknown hunt NPC archetype: ${config.type}`);
@@ -504,6 +634,104 @@ export class HuntNPC {
     this.mesh.userData.colliderRadius = this.colliderRadius;
     setPosition(this.mesh.position, config.position);
     this.position = this.mesh.position;
+
+    this.ambient = Boolean(config.ambient);
+    this.territoryCenter = new THREE.Vector3();
+    setPosition(this.territoryCenter, config.territoryCenter ?? this.position);
+    this.territoryCenter.y = this.position.y;
+
+    const configuredPatrolRadius = Number(config.patrolRadius);
+    this.patrolRadius = Number.isFinite(configuredPatrolRadius) ? Math.max(0, configuredPatrolRadius) : 14;
+    const configuredAggressionRange = Number(config.aggressionRange);
+    const defaultAggressionRange = archetype.aggressionRange ?? Math.max(12, this.attackRange + 6);
+    this.aggressionRange = Number.isFinite(configuredAggressionRange) ? Math.max(this.attackRange, configuredAggressionRange) : defaultAggressionRange;
+    const configuredLeashRadius = Number(config.leashRadius);
+    const defaultLeashRadius = Math.max(this.patrolRadius + 8, this.aggressionRange * 1.5);
+    this.leashRadius = Number.isFinite(configuredLeashRadius) ? Math.max(this.patrolRadius, configuredLeashRadius) : defaultLeashRadius;
+
+    this.patrolTarget = this.territoryCenter.clone();
+    this.patrolTimer = 0;
+    this._patrolCycle = 0;
+    this.ambientState = this.ambient ? 'patrol' : 'hostile';
+    this.mesh.userData.ambient = this.ambient;
+    this.mesh.userData.ambientState = this.ambientState;
+    this.mesh.userData.territoryCenter = this.territoryCenter.clone();
+    this.mesh.userData.patrolRadius = this.patrolRadius;
+    this.mesh.userData.leashRadius = this.leashRadius;
+  }
+
+  _setAmbientState(state, signals) {
+    const previousState = this.ambientState;
+    this.ambientState = state;
+    this.mesh.userData.ambientState = state;
+    this.mesh.userData.ambientAlerted = state === 'chase';
+    if (previousState !== state && state === 'chase') {
+      signals.push({
+        type: 'log',
+        sourceId: this.id,
+        sourceType: this.type,
+        message: `${this.name} détecte une intrusion dans son territoire.`,
+      });
+    }
+  }
+
+  _choosePatrolTarget() {
+    const seed = [...this.id].reduce((total, character) => total + character.charCodeAt(0), 0);
+    this._patrolCycle += 1;
+    const angle = (seed * 0.071) + (this._patrolCycle * 2.3999632297);
+    const radiusScale = 0.55 + (((seed + this._patrolCycle) % 4) * 0.1);
+    const radius = this.patrolRadius * radiusScale;
+    this.patrolTarget.set(
+      this.territoryCenter.x + (Math.sin(angle) * radius),
+      this.territoryCenter.y,
+      this.territoryCenter.z + (Math.cos(angle) * radius),
+    );
+    this.patrolTimer = 3.5 + ((seed + this._patrolCycle) % 4);
+  }
+
+  _moveAmbient(target, dt, stopDistance = 0.45, movementSpeed = this.speed) {
+    direction.subVectors(target, this.position);
+    direction.y = 0;
+    const distance = direction.length();
+    if (distance <= stopDistance || distance <= 0.0001) return false;
+    direction.normalize();
+    const travel = Math.min(distance - stopDistance, movementSpeed * dt);
+    this.position.addScaledVector(direction, Math.max(0, travel));
+    this.mesh.rotation.y = Math.atan2(direction.x, direction.z);
+    return true;
+  }
+
+  _updateAmbient(dt, playerPosition, signals) {
+    const territoryDistance = Math.hypot(
+      this.position.x - this.territoryCenter.x,
+      this.position.z - this.territoryCenter.z,
+    );
+    let playerDistance = Infinity;
+    let playerTerritoryDistance = Infinity;
+    if (playerPosition) {
+      playerDistance = Math.hypot(playerPosition.x - this.position.x, playerPosition.z - this.position.z);
+      playerTerritoryDistance = Math.hypot(playerPosition.x - this.territoryCenter.x, playerPosition.z - this.territoryCenter.z);
+    }
+    const playerInsideTerritory = playerDistance <= this.aggressionRange && playerTerritoryDistance <= this.leashRadius;
+
+    if (territoryDistance > this.leashRadius || (!playerInsideTerritory && territoryDistance > this.patrolRadius)) {
+      this._setAmbientState('return', signals);
+      const stillReturning = this._moveAmbient(this.territoryCenter, dt, 0.65, this.speed * 1.1);
+      if (!stillReturning) this._setAmbientState('patrol', signals);
+      return false;
+    }
+
+    if (playerInsideTerritory) {
+      this._setAmbientState('chase', signals);
+      return true;
+    }
+
+    this._setAmbientState('patrol', signals);
+    this.patrolTimer = Math.max(0, this.patrolTimer - dt);
+    const patrolDistance = Math.hypot(this.position.x - this.patrolTarget.x, this.position.z - this.patrolTarget.z);
+    if (this.patrolTimer === 0 || patrolDistance < 0.65) this._choosePatrolTarget();
+    this._moveAmbient(this.patrolTarget, dt, 0.55, this.speed * 0.62);
+    return false;
   }
 
   update(delta, { player } = {}) {
@@ -531,7 +759,13 @@ export class HuntNPC {
       this.mesh.userData.investigatingLure = false;
     }
     const lureActive = this.lureTimer > 0 && this.lurePosition?.isVector3;
-    const targetPosition = lureActive ? this.lurePosition : getPlayerPosition(player);
+    const playerPosition = getPlayerPosition(player);
+    let targetPosition = lureActive ? this.lurePosition : playerPosition;
+    if (!lureActive && this.ambient) {
+      const shouldEngagePlayer = this._updateAmbient(dt, playerPosition, signals);
+      if (!shouldEngagePlayer) return signals;
+      targetPosition = playerPosition;
+    }
     if (!targetPosition) return signals;
 
     direction.subVectors(targetPosition, this.position);
@@ -653,6 +887,10 @@ export class HuntNPC {
     this.lurePosition.y = this.position.y;
     this.lureTimer = Math.max(this.lureTimer, seconds);
     this.mesh.userData.investigatingLure = true;
+    if (this.ambient) {
+      this.ambientState = 'investigate';
+      this.mesh.userData.ambientState = 'investigate';
+    }
     this._isCharging = false;
     this.chargeWindupTimer = 0;
     this.mesh.userData.isCharging = false;

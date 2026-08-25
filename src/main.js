@@ -20,7 +20,6 @@ const DEFAULT_CAMERA_FOV = 65;
 const SCOPE_CAMERA_FOV = THREE.MathUtils.radToDeg(
   2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(DEFAULT_CAMERA_FOV) / 2) / 4),
 );
-const HUNT_START_POSITION = new THREE.Vector3(0, 0, 60);
 const HUB_PLAYER_POSITION = new THREE.Vector3(0, 0, 20);
 const VICTORY_DELAY_SECONDS = 3;
 const GOLIATH_CHARGE_WINDOW_SECONDS = 4;
@@ -62,7 +61,7 @@ export class Game {
 
     // Three.js Core
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(DEFAULT_CAMERA_FOV, this.width / this.height, 0.1, 1000);
+    this.camera = new THREE.PerspectiveCamera(DEFAULT_CAMERA_FOV, this.width / this.height, 0.1, 2000);
     
     this.renderer = new THREE.WebGLRenderer({ canvas: this.container, antialias: true });
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -105,6 +104,15 @@ export class Game {
 
     this.activeBoss = null;
     this.activeEnemies = [];
+    this.activeTerritoryClashes = [];
+    this.bossMigrationRoute = [];
+    this.bossMigrationIndex = 0;
+    this.bossMigrationHold = 0;
+    this.bossMigrationGrace = 0;
+    this.bossMigrationHealthPhase = 0;
+    this.bossRelocating = false;
+    this.bossEngaged = false;
+    this.bossMigrationForced = false;
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
     this.eggClusters = [];
@@ -605,6 +613,262 @@ export class Game {
     this.activeEnemies.splice(index, 1);
   }
 
+  spawnBiomeEcology() {
+    const spawnPlan = this.environment?.getAmbientSpawnPlan?.() ?? [];
+    for (const entry of spawnPlan) {
+      const enemy = new HuntNPC(entry.type, {
+        position: entry.position,
+        ambient: true,
+        territoryCenter: entry.territoryCenter,
+        patrolRadius: entry.patrolRadius,
+        aggressionRange: entry.aggressionRange,
+        leashRadius: entry.leashRadius,
+      });
+      enemy.mesh.userData.ecologyTerritoryId = entry.id;
+      enemy.mesh.userData.ecologyTerritoryLabel = entry.label;
+      this.scene.add(enemy.mesh);
+      enemy.setVisionMode(this.player.activeVisionMode);
+      this.activeEnemies.push(enemy);
+    }
+    return spawnPlan.length;
+  }
+
+  spawnPreyMigration(signal) {
+    const requestedCount = Math.max(1, Math.min(6, Math.floor(Number(signal.creatureCount) || 3)));
+    const capacity = Math.max(0, 24 - (this.activeEnemies?.filter((enemy) => !enemy.isDead).length ?? 0));
+    const count = Math.min(requestedCount, capacity);
+    if (count === 0) return [];
+    const raw = signal.position;
+    const center = raw?.isVector3
+      ? raw.clone()
+      : Array.isArray(raw)
+        ? new THREE.Vector3(...raw)
+        : new THREE.Vector3(Number(raw?.x) || 0, Number(raw?.y) || 0, Number(raw?.z) || 0);
+    const type = signal.creatureType ?? 'xeno_runner';
+    const spawned = [];
+    for (let index = 0; index < count; index += 1) {
+      const angle = index * 2.399963229728653 + (Number(signal.ordinal) || 0) * 0.63;
+      const preferred = center.clone().add(new THREE.Vector3(
+        Math.cos(angle) * (6 + index * 2.5),
+        0,
+        Math.sin(angle) * (6 + index * 2.5),
+      ));
+      const position = this.environment?.getSafeSpawnPosition?.(preferred, { clearance: 3 }) ?? preferred;
+      const enemy = new HuntNPC(type, {
+        position,
+        ambient: true,
+        territoryCenter: center,
+        patrolRadius: Math.max(22, Number(signal.radius) || 42),
+        aggressionRange: 20,
+        leashRadius: Math.max(65, Number(signal.radius) * 1.8 || 76),
+      });
+      enemy.mesh.userData.migratingPrey = true;
+      this.scene.add(enemy.mesh);
+      enemy.setVisionMode(this.player.activeVisionMode);
+      this.activeEnemies.push(enemy);
+      spawned.push(enemy);
+    }
+    return spawned;
+  }
+
+  beginTerritoryClash(signal) {
+    const raw = signal.position;
+    const position = raw?.isVector3
+      ? raw.clone()
+      : Array.isArray(raw)
+        ? new THREE.Vector3(...raw)
+        : new THREE.Vector3(Number(raw?.x) || 0, Number(raw?.y) || 0, Number(raw?.z) || 0);
+    const livingEnemies = (this.activeEnemies ?? [])
+      .filter((enemy) => !enemy.isDead)
+      .sort((left, right) => left.position.distanceToSquared(position) - right.position.distanceToSquared(position));
+    const requestedFactions = Array.isArray(signal.factions)
+      ? [...new Set(signal.factions.filter((type) => typeof type === 'string' && type.length > 0))].slice(0, 2)
+      : [];
+    const factionGroups = requestedFactions.map((type) => livingEnemies
+      .filter((enemy) => enemy.type === type)
+      .slice(0, 3));
+    const hasOpposingFactions = factionGroups.length === 2 && factionGroups.every((group) => group.length > 0);
+    const participants = hasOpposingFactions ? factionGroups.flat() : livingEnemies.slice(0, 6);
+    const factions = hasOpposingFactions
+      ? requestedFactions
+      : [...new Set(participants.map((enemy) => enemy.type))].slice(0, 2);
+    participants.forEach((enemy) => enemy.hearMimicry?.(position, Number(signal.duration) || 18));
+    const clash = {
+      id: signal.sourceId ?? `clash-${this.activeTerritoryClashes.length + 1}`,
+      position,
+      factions,
+      participants,
+      remaining: Math.max(8, Number(signal.duration) || 18),
+      pulseTimer: 1.4,
+      pulseIndex: 0,
+    };
+    this.activeTerritoryClashes.push(clash);
+    return clash;
+  }
+
+  updateTerritoryClashes(delta) {
+    if (!Array.isArray(this.activeTerritoryClashes)) this.activeTerritoryClashes = [];
+    for (const clash of this.activeTerritoryClashes) {
+      clash.remaining -= delta;
+      clash.pulseTimer -= delta;
+      clash.participants = clash.participants.filter((enemy) => !enemy.isDead);
+      if (clash.pulseTimer > 0 || clash.participants.length < 2) continue;
+      clash.pulseTimer = 2;
+      const factionPools = (clash.factions ?? [])
+        .map((type) => clash.participants.filter((enemy) => enemy.type === type))
+        .filter((group) => group.length > 0);
+      const attackingPool = factionPools.length >= 2
+        ? factionPools[clash.pulseIndex % 2]
+        : clash.participants;
+      const defendingPool = factionPools.length >= 2
+        ? factionPools[(clash.pulseIndex + 1) % 2]
+        : clash.participants.filter((enemy) => enemy.type !== attackingPool[clash.pulseIndex % attackingPool.length]?.type);
+      const attacker = attackingPool[clash.pulseIndex % attackingPool.length];
+      const victim = defendingPool[clash.pulseIndex % Math.max(1, defendingPool.length)];
+      clash.pulseIndex += 1;
+      if (!attacker || !victim || attacker.type === victim.type) continue;
+      const outcome = victim.takeDamage?.(6);
+      this.spawnBloodSpatterVFX?.(victim.position, this.getTargetBloodColor(victim), 4);
+      if (outcome?.killed || victim.isDead) {
+        const index = this.activeEnemies.indexOf(victim);
+        if (index >= 0) this.activeEnemies.splice(index, 1);
+        victim.dispose?.();
+        this.hud?.showLogMessage?.(`${victim.name.toUpperCase()} ABATTU DANS UN CONFLIT DE TERRITOIRE`, 1500);
+      }
+    }
+    this.activeTerritoryClashes = this.activeTerritoryClashes.filter((clash) => clash.remaining > 0);
+    return this.activeTerritoryClashes.length;
+  }
+
+  configureBossTerritory() {
+    this.bossMigrationRoute = this.environment?.getBossMigrationRoute?.() ?? [];
+    this.bossMigrationIndex = 0;
+    this.bossMigrationHold = 22;
+    this.bossMigrationGrace = 0;
+    this.bossMigrationHealthPhase = 0;
+    this.bossRelocating = false;
+    this.bossEngaged = false;
+    this.bossMigrationForced = false;
+    const firstNode = this.bossMigrationRoute[0];
+    if (this.activeBoss?.position && firstNode) {
+      this.activeBoss.arenaBoundary = Math.max(
+        120,
+        (Number(this.environment?.playableRadius) || 330) - (Number(this.activeBoss.colliderRadius) || 5) - 4,
+      );
+      this.activeBoss.position.copy(firstNode);
+      this.activeBoss.mesh?.position?.copy(firstNode);
+    }
+    return this.bossMigrationRoute.length;
+  }
+
+  requestBossMigration(preferredPosition = null, { forced = false } = {}) {
+    if (!this.activeBoss || this.bossMigrationRoute.length === 0) return false;
+    const preferred = preferredPosition?.isVector3
+      ? preferredPosition
+      : Array.isArray(preferredPosition)
+        ? new THREE.Vector3(...preferredPosition)
+        : Number.isFinite(preferredPosition?.x) && Number.isFinite(preferredPosition?.z)
+          ? new THREE.Vector3(preferredPosition.x, preferredPosition.y || 0, preferredPosition.z)
+          : null;
+    if (preferred) {
+      let nearestIndex = 0;
+      let nearestDistance = Infinity;
+      this.bossMigrationRoute.forEach((node, index) => {
+        const distance = node.distanceToSquared(preferred);
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestIndex = index;
+        }
+      });
+      this.bossMigrationIndex = nearestIndex === this.bossMigrationIndex
+        ? (nearestIndex + 1) % this.bossMigrationRoute.length
+        : nearestIndex;
+    } else {
+      this.bossMigrationIndex = (this.bossMigrationIndex + 1) % this.bossMigrationRoute.length;
+    }
+    this.bossRelocating = true;
+    this.bossEngaged = false;
+    this.bossMigrationForced = forced === true;
+    this.bossMigrationGrace = 7;
+    return true;
+  }
+
+  updateBossTerritory(delta) {
+    const boss = this.activeBoss;
+    if (!boss) return false;
+    if (boss.isDead) {
+      boss.update(delta, this.player.position, this.player.isCloaked);
+      return true;
+    }
+    this.bossMigrationGrace = Math.max(0, this.bossMigrationGrace - delta);
+    const maxHealth = Math.max(1, Number(boss.maxHealth) || Number(boss.health) || 1);
+    const healthRatio = Math.max(0, Number(boss.health) || 0) / maxHealth;
+    const nextHealthPhase = healthRatio <= 0.38 ? 2 : healthRatio <= 0.7 ? 1 : 0;
+    if (nextHealthPhase > this.bossMigrationHealthPhase && !this.bossRelocating) {
+      this.bossMigrationHealthPhase = nextHealthPhase;
+      this.requestBossMigration(null, { forced: true });
+      this.hud?.showLogMessage?.('LA CIBLE APEX ROMPT LE COMBAT ET MIGRE VERS UN AUTRE TERRITOIRE', 2600);
+    }
+
+    const distanceToPlayer = boss.position.distanceTo(this.player.position);
+    const detectionRange = this.player.isCloaked ? 72 : 135;
+    if (this.bossRelocating && !this.bossMigrationForced && distanceToPlayer <= 46) {
+      this.bossRelocating = false;
+      this.bossEngaged = true;
+      this.bossMigrationForced = false;
+    } else if (!this.bossRelocating && (
+      this.bossEngaged
+      || distanceToPlayer <= detectionRange
+      || (healthRatio < 1 && this.bossMigrationGrace <= 0 && distanceToPlayer <= 210)
+    )) {
+      if (!this.bossEngaged) this.hud?.showLogMessage?.('LA CIBLE APEX A DÉTECTÉ LE CHASSEUR', 1500);
+      this.bossEngaged = true;
+    }
+    if (this.bossEngaged && !this.bossRelocating) {
+      boss.update(delta, this.player.position, this.player.isCloaked);
+      return true;
+    }
+    boss.tickTransientState?.(delta);
+
+    if (!this.bossRelocating) {
+      this.bossMigrationHold -= delta;
+      if (this.bossMigrationHold > 0) return true;
+      this.requestBossMigration();
+    }
+    const target = this.bossMigrationRoute[this.bossMigrationIndex];
+    if (!target) return true;
+    const direction = target.clone().sub(boss.position);
+    direction.y = 0;
+    const remaining = direction.length();
+    if (remaining <= 7) {
+      boss.position.copy(target);
+      boss.mesh?.position?.copy(target);
+      this.bossRelocating = false;
+      this.bossMigrationForced = false;
+      this.bossMigrationHold = 18;
+      this.bossMigrationGrace = 8;
+      return true;
+    }
+    const navigationDirection = this.environment?.getNavigationDirection?.(
+      boss.position,
+      target,
+      (boss.colliderRadius ?? 5) + 1,
+    );
+    if (navigationDirection?.isVector3 && navigationDirection.lengthSq() > 0.0001) {
+      direction.copy(navigationDirection).normalize();
+    } else {
+      direction.normalize();
+    }
+    const step = Math.min(remaining, delta * 9.5);
+    boss.position.addScaledVector(direction, step);
+    boss.position.y = this.environment?.sampleHeight?.(boss.position) ?? boss.position.y;
+    boss.mesh?.position?.copy(boss.position);
+    if (boss.mesh?.rotation) boss.mesh.rotation.y = Math.atan2(direction.x, direction.z);
+    boss.aiState = 'migration';
+    boss.isAttacking = false;
+    return true;
+  }
+
   spawnEncounterNpc(signal) {
     const encounterTypes = {
       xeno: 'xeno_drone',
@@ -614,6 +878,9 @@ export class Game {
       thermal_trapper: 'thermal_trapper',
       genna_stalker: 'genna_stalker',
       synthetic: 'combat_synthetic',
+      xeno_runner: 'xeno_runner',
+      clan_sentry_drone: 'clan_sentry_drone',
+      genna_grazer: 'genna_grazer',
     };
     const type = encounterTypes[signal.enemyType]
       ?? (signal.ordinal >= 3 ? 'combat_synthetic' : 'human_fireteam');
@@ -654,7 +921,22 @@ export class Game {
 
   processEncounterSignals(signals) {
     signals.forEach((signal) => {
-      if (signal.type === 'spawn_enemy') {
+      if (signal.type === 'localized_event') {
+        this.environment?.startLocalizedEvent?.({
+          ...signal,
+          id: signal.sourceId,
+        });
+        this.hud?.showLogMessage?.(`ÉVÉNEMENT LOCAL: ${signal.label?.toUpperCase() ?? 'ANOMALIE DÉTECTÉE'}`, 2400);
+      } else if (signal.type === 'prey_migration') {
+        const spawned = this.spawnPreyMigration(signal);
+        this.hud?.showLogMessage?.(`MIGRATION: ${spawned.length} FORMES DE VIE TRAVERSENT LE SECTEUR`, 2200);
+      } else if (signal.type === 'territory_clash') {
+        this.beginTerritoryClash(signal);
+        this.hud?.showLogMessage?.(`ÉCOSYSTÈME: ${signal.label?.toUpperCase() ?? 'CONFLIT DE TERRITOIRES'}`, 2400);
+      } else if (signal.type === 'boss_migration') {
+        this.requestBossMigration(signal.position, { forced: true });
+        this.hud?.showLogMessage?.('PISTE APEX: LA CIBLE CHANGE DE TERRITOIRE', 2400);
+      } else if (signal.type === 'spawn_enemy') {
         this.spawnEncounterNpc(signal);
       } else if (signal.type === 'flyby') {
         this.hud.showLogMessage('SURVOL YAUTJA: NAVETTE DE CHASSE EN APPROCHE', 2200);
@@ -684,9 +966,13 @@ export class Game {
     }) ?? [];
     this.processEncounterSignals(scheduledSignals);
     this.eventDirector?.drainSignals();
+    this.updateTerritoryClashes(delta);
 
     for (const enemy of [...(this.activeEnemies ?? [])]) {
       const signals = enemy.update(delta, { player: this.player });
+      const terrainHeight = this.environment?.sampleHeight?.(enemy.position);
+      if (Number.isFinite(terrainHeight)) enemy.position.y = terrainHeight;
+      enemy.mesh?.position?.copy(enemy.position);
       signals.forEach((signal) => {
         if (signal.type === 'attack_player') {
           if (signal.projectile) {
@@ -1397,7 +1683,9 @@ export class Game {
     this.environment.clearWeatherEvent?.();
     this.cameraYaw = Math.PI;
     this.cameraPitch = 0.2;
-    this.player.resetForHunt(HUNT_START_POSITION);
+    const huntStartPosition = this.environment.getHuntStartPosition?.() ?? new THREE.Vector3(0, 0, 60);
+    this.player.movementBounds = this.environment.playableRadius;
+    this.player.resetForHunt(huntStartPosition);
     this.trophyHarvested = false;
     this.huntResultShown = false;
     this.isPaused = false;
@@ -1406,11 +1694,17 @@ export class Game {
     document.getElementById('endgame-modal')?.classList.add('hidden');
 
     this.activeBoss = createBoss(this.scene, huntDefinition);
+    this.configureBossTerritory();
+    const ecologyCount = this.spawnBiomeEcology();
     this.eventDirector.start({ huntId: this.currentHuntType, biomeId: planetType });
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
     this.activeBoss?.setVisionMode?.(this.player.activeVisionMode);
-    this.hud.showLogMessage(`CHASSE: ${huntDefinition.name.toUpperCase()} — ${huntDefinition.objective}`, 5000);
+    const huntMetrics = this.environment.getHuntMetrics?.() ?? {};
+    this.hud.showLogMessage(
+      `CHASSE: ${huntDefinition.name.toUpperCase()} — ${huntDefinition.objective} · ${huntMetrics.sectorCount ?? 9} SECTEURS · ${ecologyCount} FORMES DE VIE`,
+      5500,
+    );
 
     if (planetType === 'hive_lv426' || this.currentHuntType === 'xeno_queen') {
       this.spawnHiveEggClusters();
@@ -1425,6 +1719,7 @@ export class Game {
     this.eggClusters = [];
     (this.activeEnemies ?? []).forEach((enemy) => enemy.dispose());
     this.activeEnemies = [];
+    this.activeTerritoryClashes = [];
     this.eventDirector?.stop();
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
@@ -1447,6 +1742,14 @@ export class Game {
     this.vfxParticles = [];
 
     this.enemyDamageCooldown = 0;
+    this.bossMigrationRoute = [];
+    this.bossMigrationIndex = 0;
+    this.bossMigrationHold = 0;
+    this.bossMigrationGrace = 0;
+    this.bossMigrationHealthPhase = 0;
+    this.bossRelocating = false;
+    this.bossEngaged = false;
+    this.bossMigrationForced = false;
     this.goliathChargeWindow = 0;
     this.goliathChargeLatched = false;
     this.trophyHarvested = false;
@@ -1466,6 +1769,7 @@ export class Game {
     this.isPaused = false;
     this.cameraYaw = Math.PI;
     this.cameraPitch = 0.2;
+    this.player.movementBounds = 330;
     this.player.resetForHunt(HUB_PLAYER_POSITION);
     this.hub.setVisible(true);
     this.hub.setTrophyState(this.player.completedHunts);
@@ -1598,7 +1902,9 @@ export class Game {
           const perchAnchor = wasPerched
             ? this.player.currentPerchNode?.clone?.() ?? this.player.position.clone()
             : null;
-          const perched = this.player.jumpToCanopy(this.environment.treePerches);
+          const traversalPerches = this.environment.getTraversalPerches?.()
+            ?? this.environment.treePerches;
+          const perched = this.player.jumpToCanopy(traversalPerches);
           if (wasPerched && perchAnchor) {
             const fallback = perchAnchor.clone();
             fallback.y = 0;
@@ -1871,6 +2177,9 @@ export class Game {
         { snapToGround: true },
       );
     });
+    this.player.mesh?.position?.copy(playerPos);
+    this.activeBoss?.mesh?.position?.copy(this.activeBoss.position);
+    (this.activeEnemies ?? []).forEach((enemy) => enemy.mesh?.position?.copy(enemy.position));
   }
 
   applyBossHazards(playerPos) {
@@ -2293,7 +2602,7 @@ export class Game {
         if (this.player.selfDestructComplete) {
           this.triggerDefeatScreen();
         } else {
-          if (this.activeBoss) this.activeBoss.update(delta, this.player.position, this.player.isCloaked);
+          this.updateBossTerritory(delta);
           this.updateEncounterContent(delta);
           this.updateVehicleScan(delta);
           this.environment.update(delta, this.player.activeVisionMode, {

@@ -644,8 +644,9 @@ export class KaliskBoss {
   }
 
   clampToArena() {
-    this.position.x = THREE.MathUtils.clamp(this.position.x, -325, 325);
-    this.position.z = THREE.MathUtils.clamp(this.position.z, -325, 325);
+    const arenaBoundary = Math.max(40, Number(this.arenaBoundary) || 325);
+    this.position.x = THREE.MathUtils.clamp(this.position.x, -arenaBoundary, arenaBoundary);
+    this.position.z = THREE.MathUtils.clamp(this.position.z, -arenaBoundary, arenaBoundary);
   }
 
   getHUDState() {

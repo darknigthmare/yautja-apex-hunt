@@ -346,7 +346,9 @@ test('les décors statiques historiques sont instanciés sans perdre perches, co
     assert.ok(snapshot.totalMeshInstanceCount >= snapshot.staticInstanceCount);
     assert.ok(snapshot.shadowCasterCount >= snapshot.staticInstanceCount);
     assert.ok(
-      snapshot.totalDrawCallEstimate < snapshot.propDrawCallEstimate + snapshot.staticInstanceCount,
+      snapshot.totalDrawCallEstimate
+        < snapshot.propDrawCallEstimate + snapshot.staticInstanceCount
+          + snapshot.navigationDrawCallEstimate,
       `${contract.biomeId}: les instances statiques ne doivent pas redevenir un draw call chacune`,
     );
   }
@@ -444,15 +446,16 @@ test('les sockets de rencontre et spawns sûrs sont déterministes, au sol et da
     assert.equal(first.length, 4);
     assert.deepEqual(first.map((position) => position.toArray()), second.map((position) => position.toArray()));
     first.forEach((position) => {
-      assert.ok(Math.hypot(position.x, position.z) <= 300, `${biomeId}: socket hors limite`);
+      assert.ok(Math.hypot(position.x, position.z) <= environment.playableRadius, `${biomeId}: socket hors limite`);
       assert.ok(environment.isSpawnPositionClear(position, 0), `${biomeId}: socket dans un obstacle`);
       assert.ok(Math.abs(position.y - environment.sampleHeight(position)) < 0.000001, `${biomeId}: socket hors sol`);
     });
+    assert.ok(first.some((position) => Math.hypot(position.x, position.z) > 300), `${biomeId}: aucun socket extérieur`);
   }
 
   const perched = new THREE.Vector3(900, 44, 900);
   environment.constrainToPlayableArea(perched);
-  assert.ok(Math.hypot(perched.x, perched.z) <= 300);
+  assert.ok(Math.hypot(perched.x, perched.z) <= environment.playableRadius);
   assert.equal(perched.y, 44, 'la limite circulaire ne doit pas casser une perche');
   environment.constrainToPlayableArea(perched, 0, { snapToGround: true });
   assert.equal(perched.y, environment.sampleHeight(perched));

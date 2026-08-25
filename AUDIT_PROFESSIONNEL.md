@@ -2,13 +2,13 @@
 
 **Date de mise à jour :** 25 août 2026
 **Périmètre :** code source, données de jeu, sauvegarde, interface, assets et release publique.
-**Statut :** audit initial suivi des vagues de professionnalisation jusqu’à la version 1.6.0, validée puis publiée le 25 août 2026 sans défaut P0/P1 connu.
+**Statut :** audit initial suivi des vagues de professionnalisation jusqu’à la version 1.7.0, validée localement et dans Chromium sans défaut P0/P1 connu ; publication en cours.
 
 ## Résumé exécutif
 
 Le projet possède désormais une boucle de chasse 3D, huit contrats, cinq biomes différenciés, un vaisseau-mère explorable, une économie d'honneur, dix armes, des PNJ, des événements de niveau et des POI persistants. La version de départ restait cependant un prototype fragile : le lancement d'une chasse pouvait casser immédiatement, plusieurs attaques n'entraient jamais dans la résolution des dégâts, la sauvegarde ne couvrait pas toute la progression et les options de confort manquaient.
 
-Le chantier a traité la jouabilité, la persistance, les fenêtres de réaction, l’accessibilité, la cohérence du lore, l’identité visuelle, les props et le level design. Les preuves techniques sont consignées dans `QA_REPORT.md` : 193 tests, build Vite de 42 modules, audit npm sans vulnérabilité de production, parcours Chromium desktop et production Vercel contrôlée en HTTP 200 ; l’inventaire public compte 26 textures, dont les quatre matières v1.6 vérifiées sur l’alias public. Les contrôles physiques longue durée restent explicitement recommandés.
+Le chantier a traité la jouabilité, la persistance, les fenêtres de réaction, l’accessibilité, la cohérence du lore, l’identité visuelle, les props et le level design. La v1.7 ajoute cinq cartes ouvertes de 630–660 unités de rayon, une écologie résidente, des événements localisés, une cible Apex territoriale et huit silhouettes de boss HD. Les preuves techniques sont consignées dans `QA_REPORT.md` : 218 tests, build Vite de 45 modules, audit npm sans vulnérabilité et parcours Chromium desktop sans erreur applicative. Les contrôles physiques longue durée restent explicitement recommandés.
 
 ## Méthode et niveaux de preuve
 
@@ -41,7 +41,21 @@ Le chantier a traité la jouabilité, la persistance, les fenêtres de réaction
 2. **Responsive et accessibilité incomplets — vérifié baseline.** Aucun breakpoint CSS clair n'était présent et les options de mouvement réduit, fort contraste et taille de HUD manquaient.
 3. **Surface web incomplète — vérifié baseline.** Manifest, favicon, robots et sitemap renvoyaient 404 ; la page ne disposait pas d'un jeu complet de métadonnées sociales.
 4. **Documentation de production absente — vérifié baseline.** Il manquait un contrat explicite de game design, d'art, de lore, d'assets et de QA.
-5. **Poids JavaScript — corrigé dans le worktree.** Le build initial signalait un chunk d'environ 535 Ko ; le build final isole Three.js dans un chunk de 496,94 Ko et ne produit plus l'avertissement supérieur à 500 Ko.
+5. **Poids JavaScript — amélioré, à surveiller.** Le build initial signalait un chunk d’environ 535 Ko ; la v1.7 isole Three.js à 505,00 Ko et le jeu à 491,40 Ko. L’avertissement de seuil reste non bloquant mais impose un profilage avant toute nouvelle hausse géométrique.
+
+## Audit de clôture v1.7 — grande chasse ouverte
+
+| Axe | État réellement constaté | Limite ou contrôle restant |
+| --- | --- | --- |
+| Échelle et non-linéarité | 5/5 cartes à 630–660 unités de rayon, neuf secteurs, 12–13 routes et plusieurs boucles ; traversée Scout directe ≥43 s. | Profilage de longues traversées sur GPU modeste. |
+| Monde vivant | 12–15 PNJ résidents, migrations, conflits strictement inter-factions et six positions événementielles par biome. | Étendre encore les animations sociales et réactions croisées. |
+| Verticalité et navigation | Relief sectoriel partagé, waypoints Apex sécurisés, steering autour des colliders et neuf couverts physiques distribués par carte. | Ajouter une navmesh complète si la géométrie future devient plus fermée. |
+| Boss HD | 8/8 signatures distinctes, 17 100–26 256 triangles, états destructibles et visions conservées. | Un profilage GPU doit précéder toute nouvelle hausse de densité. |
+| Cohérence runtime | PNJ recalés au terrain, mesh/position resynchronisés, limites dynamiques, transitoires de boss maintenus au delta. | Sessions manuelles longues avec chaque boss et chaque météo. |
+| Gates automatisés | 218/218 tests, 45 modules Vite, 0 vulnérabilité et diff-check propre. | Aucun gate logiciel local ouvert. |
+| Chromium | Huit contrats, Genna/Kalisk, vision normale, cible >800 m, événement écologique et console propre à 1280×720. | Contrôle tactile et manette sur appareils physiques. |
+
+Ces métriques sont des contrats de construction et non des mesures de performance matérielle. La comparaison à *Monster Hunter: World* porte sur l’organisation continue, les boucles, la densité et l’écosystème décrits par Capcom, pas sur une superficie officielle non publiée.
 
 ## Audit de clôture v1.6 — props et level design
 

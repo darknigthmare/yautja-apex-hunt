@@ -11,7 +11,22 @@ export const DEFAULT_LEVEL_EVENT_SCHEDULE = Object.freeze([
   Object.freeze({ at: 36, kind: 'spawn_enemy' }),
   Object.freeze({ at: 52, kind: 'spawn_enemy' }),
   Object.freeze({ at: 68, kind: 'spawn_enemy' }),
+  // L'écologie de départ peuple déjà les cartes : la seconde moitié de la
+  // chasse privilégie donc des incidents spatialisés aux renforts artificiels.
+  Object.freeze({ at: 82, kind: 'localized_event' }),
+  Object.freeze({ at: 102, kind: 'prey_migration' }),
+  Object.freeze({ at: 126, kind: 'territory_clash' }),
+  Object.freeze({ at: 151, kind: 'localized_event' }),
+  Object.freeze({ at: 174, kind: 'boss_migration' }),
+  Object.freeze({ at: 190, kind: 'prey_migration' }),
 ]);
+
+const EVENT_NODE_KIND_ALIASES = Object.freeze({
+  localized_event: Object.freeze(['localized_hazard', 'localized_event']),
+  prey_migration: Object.freeze(['prey_migration']),
+  territory_clash: Object.freeze(['territory_clash']),
+  boss_migration: Object.freeze(['boss_trail', 'boss_migration']),
+});
 
 export const HUNT_CACHE_TYPES = Object.freeze({
   balanced: Object.freeze({ health: 35, energy: 50, honor: 120, shell: 0x484a42, edge: 0x8a7854, energyColor: 0x49fff0, emissive: 0x0ba397 }),
@@ -25,6 +40,10 @@ let cacheSequence = 0;
 function readPosition(entity, fallback = new THREE.Vector3()) {
   const value = entity?.position ?? entity?.mesh?.position;
   if (value?.isVector3) return value;
+  if (Array.isArray(value) && value.length >= 3) {
+    const [x, y, z] = value.map(Number);
+    if ([x, y, z].every(Number.isFinite)) return new THREE.Vector3(x, y, z);
+  }
   if (value && Number.isFinite(value.x) && Number.isFinite(value.y) && Number.isFinite(value.z)) {
     return value;
   }
@@ -271,6 +290,109 @@ export class LevelEventDirector {
     return min + (max - min) * this.randomUnit();
   }
 
+  getEventOrdinal(event) {
+    if (Number.isFinite(event?.ordinal)) return Math.max(0, Math.floor(event.ordinal));
+    let ordinal = 0;
+    for (let index = 0; index < this.scheduleIndex; index += 1) {
+      if (this.scheduleTemplate[index]?.kind === event?.kind) ordinal += 1;
+    }
+    return ordinal;
+  }
+
+  hasEcosystemNodes(environment) {
+    return typeof environment?.getEventNode === 'function'
+      || typeof environment?.getEventNodes === 'function';
+  }
+
+  getEnemySpawnLimit(environment) {
+    // Les anciens environnements gardent leur plafond historique. Les cartes
+    // dotées d'une écologie initiale n'ajoutent que trois renforts dynamiques.
+    return this.hasEcosystemNodes(environment)
+      ? Math.min(this.maxEnemySpawns, 3)
+      : this.maxEnemySpawns;
+  }
+
+  getEventNode(environment, kind, ordinal = 0) {
+    const aliases = EVENT_NODE_KIND_ALIASES[kind] ?? [kind];
+    const safeOrdinal = Math.max(0, Math.floor(Number(ordinal) || 0));
+
+    if (typeof environment?.getEventNode === 'function') {
+      for (const alias of aliases) {
+        try {
+          const node = environment.getEventNode(alias, safeOrdinal);
+          if (node) return node;
+        } catch {
+          // Un faux environnement incomplet ne doit jamais interrompre la chasse.
+        }
+      }
+    }
+
+    if (typeof environment?.getEventNodes !== 'function') return null;
+    let collection = null;
+    try {
+      collection = environment.getEventNodes(aliases[0]);
+    } catch {
+      return null;
+    }
+
+    let candidates = [];
+    if (Array.isArray(collection)) {
+      candidates = collection;
+    } else if (collection && typeof collection === 'object') {
+      candidates = aliases.flatMap((alias) => (
+        Array.isArray(collection[alias]) ? collection[alias] : []
+      ));
+      if (candidates.length === 0 && Array.isArray(collection.eventNodes)) {
+        candidates = collection.eventNodes;
+      }
+      if (candidates.length === 0 && Array.isArray(collection.nodes)) {
+        candidates = collection.nodes;
+      }
+    }
+
+    const validCandidates = candidates.filter(Boolean);
+    const typedCandidates = validCandidates.filter((node) => (
+      aliases.includes(node.eventType ?? node.kind ?? node.type)
+    ));
+    const pool = typedCandidates.length > 0 ? typedCandidates : validCandidates;
+    return pool.length > 0 ? pool[safeOrdinal % pool.length] : null;
+  }
+
+  resolveEcosystemEvent(context, kind, ordinal, {
+    minRadius = 42,
+    maxRadius = 92,
+    clearance = 5,
+  } = {}) {
+    const node = this.getEventNode(context.environment, kind, ordinal);
+    const rawPosition = node?.position ?? node?.center ?? node;
+    const nodePosition = readPosition({ position: rawPosition }, null);
+    const preferred = nodePosition ?? this.positionAround(context.player, minRadius, maxRadius);
+    const position = this.getSafeGroundPosition(context.environment, preferred, { clearance });
+    return { node, position };
+  }
+
+  selectMigratingPreyType() {
+    const biome = String(this.biomeId ?? '').toLowerCase();
+    if (biome.includes('hive')) return 'xeno_runner';
+    if (biome.includes('genna') || biome.includes('yautja') || biome.includes('ryushi')) {
+      return 'genna_grazer';
+    }
+    return 'hunting_hound';
+  }
+
+  selectTerritoryFactions() {
+    const biome = String(this.biomeId ?? '').toLowerCase();
+    if (biome.includes('hive')) return ['xeno_drone', 'xeno_warrior'];
+    if (biome.includes('genna')) return ['genna_grazer', 'genna_stalker'];
+    if (biome.includes('yautja')) return ['hunting_hound', 'clan_sentry_drone'];
+    if (biome.includes('ryushi')) return ['human_fireteam', 'xeno_runner'];
+    return ['hunting_hound', 'human_fireteam'];
+  }
+
+  toSignalPosition(position) {
+    return { x: position.x, y: position.y, z: position.z };
+  }
+
   positionAround(entity, minRadius, maxRadius) {
     const origin = readPosition(entity);
     const angle = this.randomRange(0, Math.PI * 2);
@@ -426,6 +548,97 @@ export class LevelEventDirector {
   }
 
   triggerEvent(event, context) {
+    if (event.kind === 'localized_event') {
+      const ordinal = this.getEventOrdinal(event);
+      const { node, position } = this.resolveEcosystemEvent(context, event.kind, ordinal, {
+        minRadius: 46,
+        maxRadius: 88,
+        clearance: 7,
+      });
+      this.emit({
+        type: 'localized_event',
+        eventType: node?.eventType ?? 'localized_hazard',
+        sourceId: node?.id ?? `localized-event-${ordinal + 1}`,
+        label: node?.label ?? 'Perturbation localisée',
+        description: node?.label
+          ? `${node.label} détectée dans le secteur`
+          : 'Une perturbation environnementale localisée modifie temporairement la route de chasse.',
+        ordinal: ordinal + 1,
+        position: this.toSignalPosition(position),
+        radius: Math.max(1, Number(node?.radius) || 18),
+        duration: Math.max(1, Number(node?.duration) || 18),
+        damage: Math.max(0, Number(node?.damage) || 0),
+        status: node?.status ?? null,
+      });
+      return;
+    }
+
+    if (event.kind === 'prey_migration') {
+      const ordinal = this.getEventOrdinal(event);
+      const { node, position } = this.resolveEcosystemEvent(context, event.kind, ordinal, {
+        minRadius: 58,
+        maxRadius: 112,
+        clearance: 5,
+      });
+      const creatureType = node?.creatureType ?? this.selectMigratingPreyType();
+      const creatureCount = Math.max(1, Math.min(6, Math.floor(Number(node?.creatureCount) || 3)));
+      this.emit({
+        type: 'prey_migration',
+        sourceId: node?.id ?? `prey-migration-${ordinal + 1}`,
+        label: node?.label ?? 'Migration de proies',
+        description: `${creatureCount} ${creatureType} traversent un corridor de chasse.`,
+        ordinal: ordinal + 1,
+        position: this.toSignalPosition(position),
+        creatureType,
+        creatureCount,
+        radius: Math.max(12, Number(node?.radius) || 42),
+      });
+      return;
+    }
+
+    if (event.kind === 'territory_clash') {
+      const ordinal = this.getEventOrdinal(event);
+      const { node, position } = this.resolveEcosystemEvent(context, event.kind, ordinal, {
+        minRadius: 72,
+        maxRadius: 128,
+        clearance: 8,
+      });
+      const factions = this.selectTerritoryFactions();
+      this.emit({
+        type: 'territory_clash',
+        sourceId: node?.id ?? `territory-clash-${ordinal + 1}`,
+        label: node?.label ?? 'Conflit de territoires',
+        description: `${factions.join(' et ')} se disputent le secteur sans renfort artificiel.`,
+        ordinal: ordinal + 1,
+        position: this.toSignalPosition(position),
+        factions,
+        radius: Math.max(20, Number(node?.radius) || 70),
+        duration: Math.max(8, Number(node?.duration) || 18),
+      });
+      return;
+    }
+
+    if (event.kind === 'boss_migration') {
+      const ordinal = this.getEventOrdinal(event);
+      const { node, position } = this.resolveEcosystemEvent(context, event.kind, ordinal, {
+        minRadius: 96,
+        maxRadius: 152,
+        clearance: 10,
+      });
+      this.emit({
+        type: 'boss_migration',
+        sourceId: node?.id ?? `boss-migration-${ordinal + 1}`,
+        label: node?.label ?? 'Migration de la cible Apex',
+        description: `La cible ${this.huntId ?? 'apex'} change de territoire et laisse une piste exploitable.`,
+        ordinal: ordinal + 1,
+        position: this.toSignalPosition(position),
+        bossId: this.huntId,
+        trailType: node?.eventType ?? 'boss_trail',
+        telegraphDuration: Math.max(4, Number(node?.duration) || 12),
+      });
+      return;
+    }
+
     if (event.kind === 'flyby') {
       if (this.vehicleSpawnCount >= this.maxVehicles) return;
       const flightPath = this.createFlightPath(context);
@@ -450,7 +663,7 @@ export class LevelEventDirector {
     }
 
     if (event.kind === 'spawn_enemy') {
-      if (this.enemySpawnCount >= this.maxEnemySpawns) return;
+      if (this.enemySpawnCount >= this.getEnemySpawnLimit(context.environment)) return;
       const ordinal = this.enemySpawnCount + 1;
       const enemyType = this.selectEnemyType(ordinal);
       const archetypeIds = {

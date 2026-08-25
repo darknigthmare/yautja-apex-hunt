@@ -1,0 +1,320 @@
+const ROUTE_SPEED_REFERENCE = 26;
+
+function sector(id, label, x, z, role, elevation = 0) {
+  return Object.freeze({ id, label, center: Object.freeze([x, elevation, z]), role });
+}
+
+function route(id, from, to, bend = 0, width = 8) {
+  return Object.freeze({ id, from, to, bend, width });
+}
+
+function territory(id, label, type, x, z, count, patrolRadius, aggressionRange = 28) {
+  return Object.freeze({
+    id,
+    label,
+    type,
+    center: Object.freeze([x, 0, z]),
+    count,
+    patrolRadius,
+    aggressionRange,
+  });
+}
+
+function eventNode(id, label, x, z, eventType, options = {}) {
+  return Object.freeze({
+    id,
+    label,
+    position: Object.freeze([x, 0, z]),
+    eventType,
+    radius: options.radius ?? 16,
+    duration: options.duration ?? 18,
+    damage: options.damage ?? 0,
+    status: options.status ?? null,
+    creatureType: options.creatureType ?? null,
+    creatureCount: options.creatureCount ?? 0,
+  });
+}
+
+const LAYOUT_DATA = {
+  jungle: {
+    name: 'Réserve des anciens arbres',
+    playableRadius: 640,
+    terrainSize: 1440,
+    startCamp: [0, 0, 520],
+    sectors: [
+      sector('jungle-camp', 'Camp de largage méridional', 0, 520, 'camp'),
+      sector('jungle-river', 'Bassin des racines noyées', -270, 330, 'resource'),
+      sector('jungle-wreck', 'Plateau de l’épave', 300, 340, 'landmark'),
+      sector('jungle-root-maze', 'Labyrinthe des racines', -385, 55, 'ambush'),
+      sector('jungle-ruin-court', 'Cour des ruines', 0, 120, 'crossroads'),
+      sector('jungle-hunt-ridge', 'Crête des traqueurs', 370, 45, 'overlook', 12),
+      sector('jungle-low-caves', 'Grottes basses', -275, -245, 'nest'),
+      sector('jungle-trophy-grove', 'Bosquet des trophées', 150, -295, 'ritual'),
+      sector('jungle-apex-crown', 'Couronne de l’Apex', 0, -515, 'boss_lair', 20),
+    ],
+    routes: [
+      route('j-r1', 'jungle-camp', 'jungle-river', -0.22),
+      route('j-r2', 'jungle-camp', 'jungle-wreck', 0.26),
+      route('j-r3', 'jungle-river', 'jungle-ruin-court', 0.3),
+      route('j-r4', 'jungle-wreck', 'jungle-ruin-court', -0.28),
+      route('j-r5', 'jungle-river', 'jungle-root-maze', -0.2, 7),
+      route('j-r6', 'jungle-root-maze', 'jungle-low-caves', 0.24, 7),
+      route('j-r7', 'jungle-root-maze', 'jungle-ruin-court', -0.18, 6),
+      route('j-r8', 'jungle-ruin-court', 'jungle-hunt-ridge', 0.2),
+      route('j-r9', 'jungle-ruin-court', 'jungle-trophy-grove', -0.16),
+      route('j-r10', 'jungle-hunt-ridge', 'jungle-trophy-grove', 0.31, 7),
+      route('j-r11', 'jungle-low-caves', 'jungle-trophy-grove', -0.25, 7),
+      route('j-r12', 'jungle-low-caves', 'jungle-apex-crown', 0.2),
+      route('j-r13', 'jungle-trophy-grove', 'jungle-apex-crown', -0.18),
+    ],
+    bossRoute: [[0, 0, -515], [-275, 0, -245], [150, 0, -295], [370, 0, 45], [0, 0, 120]],
+    ecology: [
+      territory('j-e1', 'Meute des racines noyées', 'hunting_hound', -270, 330, 3, 58, 30),
+      territory('j-e2', 'Patrouille du plateau', 'human_fireteam', 300, 340, 2, 52, 34),
+      territory('j-e3', 'Prédateur des grottes', 'grizzly_territorial', -275, -245, 1, 44, 26),
+      territory('j-e4', 'Drones de la crête', 'clan_sentry_drone', 370, 45, 2, 64, 38),
+      territory('j-e5', 'Coureurs du bosquet', 'xeno_runner', 150, -295, 2, 55, 30),
+      territory('j-e6', 'Molosse de l’Apex', 'hunting_hound', 0, -475, 2, 48, 28),
+    ],
+    eventNodes: [
+      eventNode('j-vines', 'Rupture de lianes prédatrices', -335, 90, 'localized_hazard', { radius: 18, duration: 20, damage: 7, status: 'venom' }),
+      eventNode('j-migration', 'Migration de coureurs', -60, 285, 'prey_migration', { creatureType: 'xeno_runner', creatureCount: 2 }),
+      eventNode('j-clash', 'Conflit de territoires', 245, -65, 'territory_clash', { radius: 70 }),
+      eventNode('j-cache', 'Signal de ravitaillement perdu', -190, -370, 'cache_drop'),
+      eventNode('j-canopy', 'Effondrement de canopée', 225, 205, 'localized_hazard', { radius: 20, duration: 15, damage: 9, status: 'impact' }),
+      eventNode('j-trail', 'Trace thermique de l’Apex', 45, -405, 'boss_trail'),
+    ],
+  },
+  hive_lv426: {
+    name: 'Réseau de ruche LV-426',
+    playableRadius: 640,
+    terrainSize: 1440,
+    startCamp: [0, 0, 485],
+    sectors: [
+      sector('hive-airlock', 'Sas colonial sud', 0, 485, 'camp'),
+      sector('hive-machinery', 'Galerie des machines', 280, 320, 'landmark'),
+      sector('hive-hosts', 'Chambre des hôtes', -300, 300, 'ambush'),
+      sector('hive-vents', 'Puits de ventilation', 385, 45, 'overlook', 16),
+      sector('hive-crossing', 'Croisée des côtes', 0, 115, 'crossroads'),
+      sector('hive-nursery', 'Nursery occidentale', -375, 5, 'nest'),
+      sector('hive-acid', 'Canaux acides', 245, -245, 'hazard'),
+      sector('hive-cocoons', 'Crypte des cocons', -230, -295, 'resource'),
+      sector('hive-royal', 'Estrade royale', 0, -485, 'boss_lair'),
+    ],
+    routes: [
+      route('h-r1', 'hive-airlock', 'hive-machinery', 0.22, 7),
+      route('h-r2', 'hive-airlock', 'hive-hosts', -0.24, 7),
+      route('h-r3', 'hive-machinery', 'hive-crossing', -0.2, 6),
+      route('h-r4', 'hive-hosts', 'hive-crossing', 0.22, 6),
+      route('h-r5', 'hive-machinery', 'hive-vents', 0.18, 6),
+      route('h-r6', 'hive-hosts', 'hive-nursery', -0.2, 6),
+      route('h-r7', 'hive-vents', 'hive-acid', -0.25, 6),
+      route('h-r8', 'hive-nursery', 'hive-cocoons', 0.22, 6),
+      route('h-r9', 'hive-crossing', 'hive-acid', 0.18, 7),
+      route('h-r10', 'hive-crossing', 'hive-cocoons', -0.18, 7),
+      route('h-r11', 'hive-acid', 'hive-royal', 0.24, 7),
+      route('h-r12', 'hive-cocoons', 'hive-royal', -0.24, 7),
+    ],
+    bossRoute: [[0, 0, -485], [-230, 0, -295], [-375, 0, 5], [0, 0, 115], [245, 0, -245]],
+    ecology: [
+      territory('h-e1', 'Drones de la chambre des hôtes', 'xeno_drone', -300, 300, 3, 50, 25),
+      territory('h-e2', 'Coureurs des conduits', 'xeno_runner', 280, 320, 3, 62, 28),
+      territory('h-e3', 'Garde de la nursery', 'xeno_warrior', -375, 5, 2, 48, 28),
+      territory('h-e4', 'Drones des canaux', 'xeno_drone', 245, -245, 3, 55, 25),
+      territory('h-e5', 'Garde royale', 'xeno_warrior', 0, -445, 2, 45, 30),
+      territory('h-e6', 'Synthétiques perdus', 'combat_synthetic', 385, 45, 2, 46, 36),
+    ],
+    eventNodes: [
+      eventNode('h-acid', 'Rupture d’une veine acide', 185, -180, 'localized_hazard', { radius: 17, duration: 22, damage: 10, status: 'corrosion' }),
+      eventNode('h-hatch', 'Éclosion secondaire', -310, -80, 'prey_migration', { creatureType: 'xeno_runner', creatureCount: 3 }),
+      eventNode('h-clash', 'Assaut de caste', 40, -250, 'territory_clash', { radius: 65 }),
+      eventNode('h-cache', 'Caisse Cleaner abandonnée', 320, 170, 'cache_drop'),
+      eventNode('h-resin', 'Contraction de résine', -85, 230, 'localized_hazard', { radius: 18, duration: 16, damage: 8, status: 'snare' }),
+      eventNode('h-trail', 'Phéromones royales', 0, -365, 'boss_trail'),
+    ],
+  },
+  ryushi_desert: {
+    name: 'Frontière ouverte de Ryushi',
+    playableRadius: 660,
+    terrainSize: 1500,
+    startCamp: [0, 0, 545],
+    sectors: [
+      sector('ryushi-camp', 'Piste d’atterrissage sud', 0, 545, 'camp'),
+      sector('ryushi-crawler', 'Épave du crawler', -315, 360, 'landmark'),
+      sector('ryushi-pens', 'Enclos de rhynths', 335, 350, 'resource'),
+      sector('ryushi-canyon', 'Canyon des os', -445, 45, 'ambush'),
+      sector('ryushi-crossing', 'Plaine des éoliennes', 0, 125, 'crossroads'),
+      sector('ryushi-seismic', 'Dorsale sismique', 445, 60, 'hazard', 10),
+      sector('ryushi-tunnels', 'Galeries condamnées', -285, -300, 'nest'),
+      sector('ryushi-homestead', 'Complexe d’élevage', 275, -315, 'landmark'),
+      sector('ryushi-apex', 'Dunes du blooding', 0, -535, 'boss_lair'),
+    ],
+    routes: [
+      route('r-r1', 'ryushi-camp', 'ryushi-crawler', -0.18, 10),
+      route('r-r2', 'ryushi-camp', 'ryushi-pens', 0.18, 10),
+      route('r-r3', 'ryushi-crawler', 'ryushi-crossing', 0.24, 9),
+      route('r-r4', 'ryushi-pens', 'ryushi-crossing', -0.24, 9),
+      route('r-r5', 'ryushi-crawler', 'ryushi-canyon', -0.2, 8),
+      route('r-r6', 'ryushi-pens', 'ryushi-seismic', 0.2, 8),
+      route('r-r7', 'ryushi-canyon', 'ryushi-tunnels', 0.26, 8),
+      route('r-r8', 'ryushi-seismic', 'ryushi-homestead', -0.26, 8),
+      route('r-r9', 'ryushi-crossing', 'ryushi-tunnels', -0.18, 9),
+      route('r-r10', 'ryushi-crossing', 'ryushi-homestead', 0.18, 9),
+      route('r-r11', 'ryushi-tunnels', 'ryushi-apex', -0.2, 9),
+      route('r-r12', 'ryushi-homestead', 'ryushi-apex', 0.2, 9),
+    ],
+    bossRoute: [[0, 0, -535], [-285, 0, -300], [275, 0, -315], [445, 0, 60], [0, 0, 125]],
+    ecology: [
+      territory('r-e1', 'Coureurs du crawler', 'xeno_runner', -315, 360, 3, 70, 32),
+      territory('r-e2', 'Colons armés des enclos', 'human_fireteam', 335, 350, 3, 58, 38),
+      territory('r-e3', 'Drones des galeries', 'xeno_drone', -285, -300, 3, 56, 28),
+      territory('r-e4', 'Guerriers du complexe', 'xeno_warrior', 275, -315, 2, 52, 30),
+      territory('r-e5', 'Équipe de confinement', 'thermal_trapper', 445, 60, 2, 64, 40),
+      territory('r-e6', 'Synthétique de piste', 'combat_synthetic', 0, 430, 1, 48, 34),
+    ],
+    eventNodes: [
+      eventNode('r-sinkhole', 'Effondrement d’une galerie', -205, -170, 'localized_hazard', { radius: 22, duration: 18, damage: 11, status: 'impact' }),
+      eventNode('r-herd', 'Ruée de faune frontalière', 120, 275, 'prey_migration', { creatureType: 'genna_grazer', creatureCount: 3 }),
+      eventNode('r-clash', 'Combat pour l’enclos', 310, 155, 'territory_clash', { radius: 75 }),
+      eventNode('r-cache', 'Ravitaillement colonial', -390, 170, 'cache_drop'),
+      eventNode('r-thermal', 'Front thermique mobile', 255, -95, 'localized_hazard', { radius: 24, duration: 20, damage: 7, status: 'energy_jam' }),
+      eventNode('r-trail', 'Empreintes de chasse rituelle', 35, -410, 'boss_trail'),
+    ],
+  },
+  yautja_prime: {
+    name: 'Domaine de chasse du clan',
+    playableRadius: 630,
+    terrainSize: 1420,
+    startCamp: [0, 0, 455],
+    sectors: [
+      sector('prime-camp', 'Parvis des jeunes sangs', 0, 455, 'camp'),
+      sector('prime-forge', 'Forge extérieure', -285, 285, 'resource'),
+      sector('prime-beasts', 'Enclos des prises', 300, 280, 'nest'),
+      sector('prime-pillars', 'Allée des anciens', -365, 15, 'ritual'),
+      sector('prime-dais', 'Dais du blooding', 0, 100, 'crossroads'),
+      sector('prime-gallery', 'Galerie des trophées', 365, 20, 'landmark'),
+      sector('prime-trials', 'Terrasses d’épreuve', -245, -270, 'ambush'),
+      sector('prime-armory', 'Sanctuaire des armes', 255, -275, 'resource'),
+      sector('prime-apex', 'Porte de l’Apex', 0, -455, 'boss_lair'),
+    ],
+    routes: [
+      route('p-r1', 'prime-camp', 'prime-forge', -0.18, 8),
+      route('p-r2', 'prime-camp', 'prime-beasts', 0.18, 8),
+      route('p-r3', 'prime-forge', 'prime-dais', 0.2, 8),
+      route('p-r4', 'prime-beasts', 'prime-dais', -0.2, 8),
+      route('p-r5', 'prime-forge', 'prime-pillars', -0.16, 7),
+      route('p-r6', 'prime-beasts', 'prime-gallery', 0.16, 7),
+      route('p-r7', 'prime-pillars', 'prime-trials', 0.2, 7),
+      route('p-r8', 'prime-gallery', 'prime-armory', -0.2, 7),
+      route('p-r9', 'prime-dais', 'prime-trials', -0.18, 8),
+      route('p-r10', 'prime-dais', 'prime-armory', 0.18, 8),
+      route('p-r11', 'prime-trials', 'prime-apex', -0.2, 8),
+      route('p-r12', 'prime-armory', 'prime-apex', 0.2, 8),
+    ],
+    bossRoute: [[0, 0, -455], [-245, 0, -270], [255, 0, -275], [365, 0, 20], [0, 0, 100]],
+    ecology: [
+      territory('p-e1', 'Drones de la forge', 'clan_sentry_drone', -285, 285, 3, 54, 40),
+      territory('p-e2', 'Meute de l’enclos', 'hunting_hound', 300, 280, 3, 58, 30),
+      territory('p-e3', 'Prises des terrasses', 'genna_grazer', -245, -270, 3, 50, 22),
+      territory('p-e4', 'Gardiens du sanctuaire', 'thermal_trapper', 255, -275, 2, 48, 38),
+      territory('p-e5', 'Drone de la porte', 'clan_sentry_drone', 0, -410, 1, 38, 42),
+    ],
+    eventNodes: [
+      eventNode('p-plasma', 'Épreuve de plasma ritualisée', 110, -95, 'localized_hazard', { radius: 18, duration: 18, damage: 10, status: 'energy_jam' }),
+      eventNode('p-beasts', 'Libération d’une prise', 250, 205, 'prey_migration', { creatureType: 'genna_grazer', creatureCount: 2 }),
+      eventNode('p-clash', 'Duel de territoire', -120, -195, 'territory_clash', { radius: 70 }),
+      eventNode('p-cache', 'Reliquaire d’honneur', -315, 130, 'cache_drop'),
+      eventNode('p-trial', 'Fermeture des terrasses', 300, -115, 'localized_hazard', { radius: 17, duration: 14, damage: 8, status: 'impact' }),
+      eventNode('p-trail', 'Balise de l’Apex', 0, -350, 'boss_trail'),
+    ],
+  },
+  genna_deathworld: {
+    name: 'Biosphère hostile de Genna',
+    playableRadius: 630,
+    terrainSize: 1420,
+    startCamp: [0, 0, 515],
+    sectors: [
+      sector('genna-camp', 'Balise d’expédition sud', 0, 515, 'camp'),
+      sector('genna-wreck', 'Épave synthétique', -310, 340, 'landmark'),
+      sector('genna-grazers', 'Prairie des brouteurs', 330, 335, 'resource'),
+      sector('genna-thorns', 'Canyon des épines', -410, 45, 'ambush'),
+      sector('genna-crossing', 'Nœud mycélien', 0, 120, 'crossroads'),
+      sector('genna-array', 'Réseau de confinement', 410, 40, 'landmark'),
+      sector('genna-spores', 'Marais de spores', -285, -285, 'hazard'),
+      sector('genna-regen', 'Bosquet régénératif', 285, -290, 'resource'),
+      sector('genna-kalisk', 'Aire du Kalisk', 0, -505, 'boss_lair'),
+    ],
+    routes: [
+      route('g-r1', 'genna-camp', 'genna-wreck', -0.2, 8),
+      route('g-r2', 'genna-camp', 'genna-grazers', 0.2, 8),
+      route('g-r3', 'genna-wreck', 'genna-crossing', 0.23, 7),
+      route('g-r4', 'genna-grazers', 'genna-crossing', -0.23, 7),
+      route('g-r5', 'genna-wreck', 'genna-thorns', -0.18, 7),
+      route('g-r6', 'genna-grazers', 'genna-array', 0.18, 7),
+      route('g-r7', 'genna-thorns', 'genna-spores', 0.24, 7),
+      route('g-r8', 'genna-array', 'genna-regen', -0.24, 7),
+      route('g-r9', 'genna-crossing', 'genna-spores', -0.18, 8),
+      route('g-r10', 'genna-crossing', 'genna-regen', 0.18, 8),
+      route('g-r11', 'genna-spores', 'genna-kalisk', -0.2, 8),
+      route('g-r12', 'genna-regen', 'genna-kalisk', 0.2, 8),
+    ],
+    bossRoute: [[0, 0, -505], [-285, 0, -285], [285, 0, -290], [410, 0, 40], [0, 0, 120]],
+    ecology: [
+      territory('g-e1', 'Troupeau des plaines', 'genna_grazer', 330, 335, 4, 78, 20),
+      territory('g-e2', 'Traqueurs des épines', 'genna_stalker', -410, 45, 3, 64, 32),
+      territory('g-e3', 'Brouteurs du marais', 'genna_grazer', -285, -285, 3, 58, 20),
+      territory('g-e4', 'Traqueurs régénératifs', 'genna_stalker', 285, -290, 2, 52, 30),
+      territory('g-e5', 'Prédateur territorial', 'grizzly_territorial', 0, 120, 1, 48, 26),
+      territory('g-e6', 'Synthétiques de confinement', 'combat_synthetic', 410, 40, 2, 55, 38),
+    ],
+    eventNodes: [
+      eventNode('g-spores', 'Floraison de spores', -225, -205, 'localized_hazard', { radius: 22, duration: 24, damage: 7, status: 'venom' }),
+      eventNode('g-herd', 'Migration des brouteurs', 75, 285, 'prey_migration', { creatureType: 'genna_grazer', creatureCount: 3 }),
+      eventNode('g-clash', 'Conflit prédateur-proie', 210, -90, 'territory_clash', { radius: 75 }),
+      eventNode('g-cache', 'Module synthétique largué', -350, 175, 'cache_drop'),
+      eventNode('g-thorns', 'Poussée d’épines', -315, 5, 'localized_hazard', { radius: 19, duration: 17, damage: 9, status: 'corrosion' }),
+      eventNode('g-trail', 'Mue adaptative du Kalisk', 0, -395, 'boss_trail'),
+    ],
+  },
+};
+
+export const BIOME_HUNT_LAYOUTS = Object.freeze(
+  Object.fromEntries(Object.entries(LAYOUT_DATA).map(([id, layout]) => [
+    id,
+    Object.freeze({ biomeId: id, ...layout }),
+  ])),
+);
+
+function cloneVector(value) {
+  return [...value];
+}
+
+export function getBiomeHuntLayout(biomeId) {
+  const source = BIOME_HUNT_LAYOUTS[biomeId] ?? BIOME_HUNT_LAYOUTS.jungle;
+  return {
+    ...source,
+    startCamp: cloneVector(source.startCamp),
+    sectors: source.sectors.map((entry) => ({ ...entry, center: cloneVector(entry.center) })),
+    routes: source.routes.map((entry) => ({ ...entry })),
+    bossRoute: source.bossRoute.map(cloneVector),
+    ecology: source.ecology.map((entry) => ({ ...entry, center: cloneVector(entry.center) })),
+    eventNodes: source.eventNodes.map((entry) => ({ ...entry, position: cloneVector(entry.position) })),
+  };
+}
+
+export function getBiomeHuntMetrics(biomeId, sprintSpeed = ROUTE_SPEED_REFERENCE) {
+  const layout = getBiomeHuntLayout(biomeId);
+  const speed = Math.max(1, Number(sprintSpeed) || ROUTE_SPEED_REFERENCE);
+  const ecologyCount = layout.ecology.reduce((total, entry) => total + entry.count, 0);
+  return {
+    biomeId: layout.biomeId,
+    playableRadius: layout.playableRadius,
+    playableArea: Math.round(Math.PI * layout.playableRadius ** 2),
+    sectorCount: layout.sectors.length,
+    routeCount: layout.routes.length,
+    ecologyCount,
+    eventNodeCount: layout.eventNodes.length,
+    bossRouteNodeCount: layout.bossRoute.length,
+    directDiameterSprintSeconds: Number(((layout.playableRadius * 2) / speed).toFixed(1)),
+  };
+}

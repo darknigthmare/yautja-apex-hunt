@@ -1,7 +1,7 @@
 # Game Design Bible — Yautja: Apex Hunt
 
-**Version :** 1.1 — cible de professionnalisation
-**Date :** 21 août 2026
+**Version :** 1.2 — territoires de chasse ouverts
+**Date :** 25 août 2026
 **Règle de lecture :** « actuel » décrit un système présent ou en intégration dans le worktree ; « cible » décrit le comportement de production attendu.
 
 ## Vision
@@ -85,6 +85,22 @@ Le choix libre d'une cible sur un lieu est une convention de gameplay et ne tran
 ## Caméra, visée et zoom
 
 La caméra doit conserver la cible et les menaces proches dans le cadre tout en évitant les obstacles. Le zoom acheté doit produire une différence mesurable de FOV ou de distance de visée, fournir un retour HUD et revenir proprement à l'état normal lors d'un changement de mode, d'une pause ou d'une défaite.
+
+## Contrat v1.7 — surface, écologie et cible Apex
+
+Un terrain de chasse ne peut plus être qualifié de grand uniquement parce que son mesh est large. Le contrat v1.7 exige simultanément : rayon jouable de 630 à 660 unités, neuf secteurs nommés, au moins douze connexions, plusieurs cycles dans le graphe, un camp distinct de la tanière, six nœuds d’événements, cinq étapes de migration du boss et une traversée directe d’au moins 43 secondes même avec le Scout à 29 unités/s.
+
+Les routes sont des aides de lecture et non des murs : le joueur peut couper à travers les sous-biomes, contourner les couverts et choisir plusieurs accès. Les balises, silhouettes hautes, points d’intérêt et événements compensent la densité sans imposer un corridor. Chaque secteur conserve au moins un couvert physique distribué ; les élévations macro affectent terrain, pistes et acteurs. Les limites de déplacement sont dérivées du biome et réappliquées circulairement par l’environnement.
+
+Chaque carte démarre avec 12 à 15 formes de vie non-boss réparties dans des territoires. Une entité ambiante patrouille tant que le joueur est hors de sa portée, s’alerte en fonction de la furtivité, poursuit dans sa zone puis retourne à son centre lorsque la laisse est dépassée. Les renforts scénarisés restent bornés ; ils ne remplacent pas la population initiale.
+
+Le calendrier d’événements dure 190 secondes et alterne météo, caches, perturbations localisées, migrations de proies, affrontements territoriaux et mouvement de la cible Apex. Un événement est livré seulement s’il possède une position monde, un effet runtime et un nettoyage au delta ; un message HUD seul ne suffit pas.
+
+La cible Apex possède cinq territoires. Elle reste passive et migre lorsque le joueur est hors détection, engage à portée, rompt le combat à deux seuils de santé et peut être déplacée par un événement. Elle ne doit jamais poursuivre le joueur globalement depuis le chargement de la carte.
+
+Les boss utilisent une greffe HD distincte avec un plancher de 10 000 triangles ajoutés et un plafond de production contrôlé. Les détails doivent respecter silhouette, équipements majeurs et parties destructibles, tout en conservant les modes de vision et le nettoyage GPU. La fidélité n’autorise ni extraction ni copie d’un modèle officiel.
+
+Le benchmark *Monster Hunter: World* porte sur des principes documentés — continuité, écosystème, densité et navigation — et non sur une valeur de superficie non publiée. Les cinq layouts restent des créations originales adaptées à la boucle Yautja.
 
 ## Contrat v1.6 — espace, POI et performance
 
