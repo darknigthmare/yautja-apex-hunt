@@ -4,7 +4,7 @@ Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur inca
 
 ## État du projet
 
-La version 1.10.0 reste la production publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). La candidate 1.11.0 Bouvetøya/Grid porte le contenu local à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées de catalogue. Ses gates locaux sont franchis avec 318/318 tests, un build Vite de 49 modules, un audit à 0 vulnérabilité et des parcours Chromium desktop/390×844 sans erreur ni débordement. **Commit/push v1.11 : à compléter — non effectué. Déploiement Vercel v1.11 : à compléter — non créé. URL/alias public v1.11 : à compléter après publication.**
+La version 1.10.0 reste la production servie sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). La candidate 1.11.0 Bouvetøya/Grid, poussée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) au commit `57f5a5c`, porte le contenu à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées de catalogue. Ses gates locaux sont franchis avec 318/318 tests, un build Vite de 49 modules, un audit à 0 vulnérabilité et des parcours Chromium desktop/390×844 sans erreur ni débordement. **Déploiement Vercel v1.11 : en attente d’une autorisation explicite de publication production ; aucun ID ni statut public v1.11 n’est revendiqué.**
 
 ## Lancer localement
 
@@ -51,7 +51,7 @@ Les trente textures de décor, props et créatures sous `public/assets/textures/
 - deux textures OpenAI originales réellement référencées par le biome : roche/glace de surface et pierre de pyramide ; l’inventaire public du projet atteint 30 WebP et 10 577 574 octets ;
 - catalogues et interfaces portés à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées sans effacer les vagues précédentes.
 
-Gates locaux v1.11 : 318/318 tests, build Vite réussi avec 49 modules, audit de production à 0 vulnérabilité, Chromium desktop et 390×844 sans erreur applicative ni débordement, et deux textures Bouvetøya servies en HTTP 200 local. La publication n’a pas encore été exécutée : **commit/push v1.11 à compléter ; ID de déploiement Vercel v1.11 à compléter ; URL/alias public v1.11 à compléter.**
+Gates locaux v1.11 : 318/318 tests, build Vite réussi avec 49 modules, audit de production à 0 vulnérabilité, Chromium desktop et 390×844 sans erreur applicative ni débordement, et deux textures Bouvetøya servies en HTTP 200 local. Le commit fonctionnel `57f5a5c` est poussé sur `codex/professional-hunt-pass`. **Le déploiement Vercel et la vérification de l’alias public restent en attente d’une autorisation explicite de publication production.**
 
 ## Passe v1.10 — Los Angeles 1997 et City Hunter
 

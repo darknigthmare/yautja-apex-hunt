@@ -1,11 +1,11 @@
 # Rapport QA — candidate release 1.11.0
 
 **Date :** 25 août 2026
-**Statut :** candidate release 1.11.0 validée localement ; commit, push et publication non effectués.
+**Statut :** candidate release 1.11.0 validée localement et poussée sur GitHub ; publication Vercel non effectuée.
 **Production actuellement vérifiée :** release 1.10.0 sur <https://yautja-apex-hunt.vercel.app/>
-**Commit/push v1.11 :** à compléter — non effectué
-**Déploiement Vercel v1.11 :** à compléter — aucun ID créé
-**URL/alias public v1.11 :** à compléter après publication
+**Commit/push v1.11 :** `57f5a5c` — poussé sur `codex/professional-hunt-pass`
+**Déploiement Vercel v1.11 :** en attente d’une autorisation explicite de publication production — aucun ID créé
+**URL/alias public v1.11 :** production v1.10 inchangée jusqu’à autorisation et publication
 **Déploiement production v1.10 :** `dpl_2xbt59JRaxhUEcM7MNoqozPSUjqk` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `9f56b0d`
 **Déploiement production v1.9 :** `dpl_FofpWaJDdkSjrnQeNTtQRdwNmZ6L` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `3314fe4`
 **Déploiement production v1.8 :** `dpl_5zqD2XQgZ4vo8RKRAft8cM7yKfHL` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `54fad3c`
@@ -25,7 +25,7 @@
 | Textures Bouvetøya | **HTTP 200 local** | `bouvetoya-ice-rock.webp` et `bouvetoya-pyramid-stone.webp` servies localement ; aucun statut HTTP public v1.11 n’est revendiqué. |
 | Budget Grid Alien | **contrat respecté** | 25 244 triangles HD, 37 522 triangles au total et 30 meshes. |
 
-**Publication v1.11 non exécutée.** Le commit/push, l’ID de déploiement Vercel et l’URL/alias public v1.11 restent explicitement **à compléter**. La production actuellement vérifiée demeure la v1.10 indiquée en tête de rapport ; aucun résultat public v1.11 n’est inventé à partir des contrôles locaux.
+**Publication Vercel v1.11 non exécutée.** Le commit fonctionnel `57f5a5c` est bien poussé sur `codex/professional-hunt-pass`, mais l’ID de déploiement et le statut de l’alias public restent absents tant qu’une autorisation explicite de publication production n’a pas été donnée. La production actuellement vérifiée demeure la v1.10 indiquée en tête de rapport ; aucun résultat public v1.11 n’est inventé à partir des contrôles locaux.
 
 Contenu raccordé et contrôlé dans cette candidate :
 
