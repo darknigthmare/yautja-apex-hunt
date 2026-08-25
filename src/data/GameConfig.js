@@ -140,6 +140,20 @@ export const HUNT_DEFINITIONS = Object.freeze({
     recommendedBiome: 'los_angeles_1997',
     hud: { part1: ['BIO-MASQUE URBAIN:', 'maskIntact', 'INTACT', 'BRISÉ'], part2: ['MEDICOMP URBAIN:', 'medicompAvailable', 'DISPONIBLE', 'ÉPUISÉ'] },
   },
+  grid_alien: {
+    id: 'grid_alien',
+    name: 'Grid Alien — épreuve de Bouvetøya',
+    bossType: 'gridAlien',
+    colliderRadius: 5.8,
+    sourceTier: 'ORIGINAL',
+    basisTier: 'AVP_SCREEN',
+    continuity: 'Chasse de Blooding originale fondée sur Alien vs. Predator (2004), sans reproduction scène par scène',
+    objective: 'Lire les reconfigurations de la pyramide, rompre le dôme et sectionner la queue de Grid avant le prélèvement.',
+    reward: 2550,
+    trophyColor: 0x18372d,
+    recommendedBiome: 'bouvetoya_pyramid',
+    hud: { part1: ['DÔME DE GRID:', 'headIntact', 'INTACT', 'ROMPU'], part2: ['QUEUE SEGMENTÉE:', 'tailIntact', 'INTACTE', 'SECTIONNÉE'] },
+  },
 });
 
 export const BIOME_DEFINITIONS = Object.freeze({
@@ -187,6 +201,14 @@ export const BIOME_DEFINITIONS = Object.freeze({
     texture: '/assets/textures/los-angeles-heatwave-urban.webp',
     structureTexture: '/assets/textures/los-angeles-heatwave-urban.webp',
     assetPolicy: 'Texture OpenAI et géométries procédurales originales ; aucun asset officiel.',
+  },
+  bouvetoya_pyramid: {
+    name: 'Bouvetøya — pyramide du Blooding',
+    sourceTier: 'ORIGINAL',
+    basisTier: 'AVP_SCREEN',
+    texture: '/assets/textures/bouvetoya-ice-rock.webp',
+    structureTexture: '/assets/textures/bouvetoya-pyramid-stone.webp',
+    assetPolicy: 'Deux matières OpenAI et une architecture procédurale originales ; aucun décor, modèle ou asset officiel.',
   },
 });
 

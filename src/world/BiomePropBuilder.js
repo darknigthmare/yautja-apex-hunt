@@ -8,6 +8,7 @@ const BIOME_ACCENTS = Object.freeze({
   genna_deathworld: 0xb8ff5c,
   stargazer_blacksite: 0x58cfff,
   los_angeles_1997: 0xff9a52,
+  bouvetoya_pyramid: 0x6fe6ff,
 });
 
 const SURFACE_COLORS = Object.freeze({
@@ -19,9 +20,13 @@ const SURFACE_COLORS = Object.freeze({
   stone: 0x59616b,
   stargazer: 0x35444f,
   urban: 0x625044,
+  ice: 0x9bbdca,
+  pyramid: 0x4f4238,
 });
 
 function textureColor(path = '') {
+  if (path.includes('bouvetoya-ice')) return SURFACE_COLORS.ice;
+  if (path.includes('bouvetoya-pyramid')) return SURFACE_COLORS.pyramid;
   if (path.includes('frontier')) return SURFACE_COLORS.frontier;
   if (path.includes('stargazer')) return SURFACE_COLORS.stargazer;
   if (path.includes('los-angeles') || path.includes('heatwave')) return SURFACE_COLORS.urban;
@@ -429,6 +434,119 @@ export class BiomePropBuilder {
     return tagVisual(group, 'wreckage', 'split-hull-exposed-ribs');
   }
 
+  createPyramidStructure(spec, materials) {
+    const group = new THREE.Group();
+    const surface = this.material(spec.texture);
+    const box = (key, size) => this.geometry(key, () => new THREE.BoxGeometry(...size));
+    const cylinder = (key, top, bottom, height, segments = 10) => this.geometry(key, () => new THREE.CylinderGeometry(top, bottom, height, segments));
+
+    if (spec.type === 'weyland_drill_array') {
+      addMesh(group, cylinder('bouvet-drill-plinth', 5.8, 6.8, 1.4, 12), surface, { position: [0, 0.7, 0], name: `${spec.id}-ice-anchored-plinth` });
+      addInstancedMesh(group, cylinder('bouvet-drill-leg', 0.24, 0.42, 16, 8), materials.dark, [
+        { position: [-4.8, 8.2, -4.2], rotation: [0, 0, -0.12] },
+        { position: [4.8, 8.2, -4.2], rotation: [0, 0, 0.12] },
+        { position: [-4.8, 8.2, 4.2], rotation: [0, 0, -0.12] },
+        { position: [4.8, 8.2, 4.2], rotation: [0, 0, 0.12] },
+      ], { name: `${spec.id}-drill-gantry-legs` });
+      addMesh(group, box('bouvet-drill-head', [10.8, 3.4, 8.8]), surface, { position: [0, 14.2, 0], name: `${spec.id}-thermal-drill-head` });
+      addMesh(group, cylinder('bouvet-drill-shaft', 0.75, 1.15, 22, 10), materials.dark, { position: [0, 7.5, 0], name: `${spec.id}-bore-shaft` });
+      addInstancedMesh(group, this.geometry('bouvet-drill-lamp', () => new THREE.OctahedronGeometry(0.72, 0)), materials.signal, [
+        { position: [-4.7, 15.8, 3.8] }, { position: [4.7, 15.8, 3.8] },
+      ], { name: `${spec.id}-thermal-lamps`, castShadow: false });
+      return tagVisual(group, spec.type, 'weyland-four-leg-thermal-drill-gantry');
+    }
+
+    if (spec.type === 'pyramid_entrance') {
+      addMesh(group, box('pyramid-entrance-plinth', [35, 2.2, 22]), surface, { position: [0, 1.1, 0], name: `${spec.id}-threshold` });
+      addInstancedMesh(group, box('pyramid-entrance-step', [30, 1.1, 3]), surface,
+        Array.from({ length: 5 }, (_, index) => ({ position: [0, 0.6 + index * 0.8, 13 - index * 2.6], scale: [1 - index * 0.08, 1, 1] })),
+        { name: `${spec.id}-descending-steps` });
+      addInstancedMesh(group, box('pyramid-entrance-pier', [5.2, 24, 7]), surface, [
+        { position: [-13, 13, -3], rotation: [0, 0, -0.09] },
+        { position: [13, 13, -3], rotation: [0, 0, 0.09] },
+      ], { name: `${spec.id}-megalithic-piers` });
+      addMesh(group, box('pyramid-entrance-lintel', [31, 5, 8]), surface, { position: [0, 25, -3], name: `${spec.id}-megalithic-lintel` });
+      addInstancedMesh(group, box('pyramid-entrance-glyph', [3.1, 0.36, 0.2]), materials.signal,
+        Array.from({ length: 7 }, (_, index) => ({ position: [-9 + index * 3, 24.8 + Math.sin(index) * 0.8, 1.05], rotation: [0, 0, (index - 3) * 0.05] })),
+        { name: `${spec.id}-holographic-glyphs`, castShadow: false });
+      return tagVisual(group, spec.type, 'stepped-ice-buried-megalithic-threshold');
+    }
+
+    if (spec.type === 'pyramid_sacrificial_dais') {
+      addMesh(group, cylinder('pyramid-sacrifice-base', 16, 19, 3.2, 8), surface, { position: [0, 1.6, 0], name: `${spec.id}-octagonal-dais` });
+      addMesh(group, cylinder('pyramid-sacrifice-tier', 12, 15, 2.2, 8), surface, { position: [0, 4.3, 0], name: `${spec.id}-upper-tier` });
+      const slabs = Array.from({ length: 7 }, (_, index) => {
+        const angle = (index / 7) * Math.PI * 2;
+        return { position: [Math.cos(angle) * 8.4, 6.1, Math.sin(angle) * 8.4], rotation: [0, -angle, 0.08 * Math.sin(index)] };
+      });
+      addInstancedMesh(group, box('pyramid-sacrifice-slab', [3.1, 1.2, 8.2]), surface, slabs, { name: `${spec.id}-seven-sacrificial-slabs` });
+      addInstancedMesh(group, this.geometry('pyramid-restraint', () => new THREE.TorusGeometry(0.7, 0.12, 6, 14)), materials.signal,
+        slabs.map(({ position, rotation }) => ({ position: [position[0], 6.85, position[2]], rotation: [Math.PI / 2, rotation[1], 0] })),
+        { name: `${spec.id}-restraint-rings`, castShadow: false });
+      return tagVisual(group, spec.type, 'seven-slab-octagonal-sacrificial-chamber');
+    }
+
+    if (spec.type === 'pyramid_plasma_vault') {
+      addMesh(group, cylinder('pyramid-plasma-base', 14, 17, 2.8, 10), surface, { position: [0, 1.4, 0], name: `${spec.id}-weapon-dais` });
+      addInstancedMesh(group, cylinder('pyramid-plasma-pillar', 1.2, 1.8, 9, 8), surface, [-1, 0, 1].map((offset) => ({ position: [offset * 6.2, 5.8, 0] })), { name: `${spec.id}-weapon-pillars` });
+      addInstancedMesh(group, this.geometry('pyramid-plasma-caster', () => new THREE.CylinderGeometry(0.48, 0.72, 6.2, 9)), materials.dark,
+        [-1, 0, 1].map((offset) => ({ position: [offset * 6.2, 10.7, 0], rotation: [0, 0, offset * 0.18] })),
+        { name: `${spec.id}-three-plasma-casters` });
+      addInstancedMesh(group, this.geometry('pyramid-plasma-orb', () => new THREE.SphereGeometry(0.88, 12, 8)), materials.signal,
+        [-1, 0, 1].map((offset) => ({ position: [offset * 6.2, 13.7, 0] })),
+        { name: `${spec.id}-charged-plasma-cores`, castShadow: false });
+      return tagVisual(group, spec.type, 'tri-pedestal-young-blood-plasma-vault');
+    }
+
+    if (spec.type === 'pyramid_queen_restraint') {
+      addMesh(group, cylinder('pyramid-queen-pit', 18, 22, 3.2, 16), surface, { position: [0, 1.6, 0], name: `${spec.id}-royal-pit-rim` });
+      addMesh(group, cylinder('pyramid-queen-core', 8, 10, 2, 12), materials.membrane, { position: [0, 3.8, 0], name: `${spec.id}-resin-core` });
+      const anchors = Array.from({ length: 4 }, (_, index) => {
+        const angle = index * Math.PI / 2 + Math.PI / 4;
+        return { position: [Math.cos(angle) * 14, 9, Math.sin(angle) * 14], rotation: [0, -angle, 0] };
+      });
+      addInstancedMesh(group, box('pyramid-queen-anchor', [3.4, 15, 3.4]), surface, anchors, { name: `${spec.id}-four-restraint-towers` });
+      addInstancedMesh(group, this.geometry('pyramid-queen-chain', () => new THREE.TorusGeometry(7.6, 0.25, 7, 24, Math.PI)), materials.dark,
+        anchors.map(({ position }, index) => ({ position: [position[0] * 0.5, 8, position[2] * 0.5], rotation: [Math.PI / 2, index * Math.PI / 2, 0] })),
+        { name: `${spec.id}-restraint-chains` });
+      addMesh(group, this.geometry('pyramid-queen-holo', () => new THREE.TorusGeometry(11, 0.16, 7, 28)), materials.signal, { position: [0, 5.2, 0], rotation: [Math.PI / 2, 0, 0], castShadow: false, name: `${spec.id}-royal-status-ring` });
+      return tagVisual(group, spec.type, 'four-anchor-royal-restraint-pit');
+    }
+
+    if (spec.type === 'pyramid_arena_gate') {
+      addInstancedMesh(group, box('pyramid-arena-pier', [4.4, 18, 5.2]), surface, [
+        { position: [-9, 9, 0], rotation: [0, 0, -0.12] }, { position: [9, 9, 0], rotation: [0, 0, 0.12] },
+      ], { name: `${spec.id}-arena-piers` });
+      addMesh(group, box('pyramid-arena-lintel', [22, 4.2, 6]), surface, { position: [0, 18.2, 0], name: `${spec.id}-arena-lintel` });
+      addInstancedMesh(group, this.geometry('pyramid-arena-rib', () => new THREE.ConeGeometry(0.65, 15, 7)), materials.membrane,
+        Array.from({ length: 6 }, (_, index) => ({ position: [-6.5 + index * 2.6, 10, -2.8], rotation: [0, 0, (index - 2.5) * 0.05] })),
+        { name: `${spec.id}-resin-ribs` });
+      addMesh(group, this.geometry('pyramid-arena-mark', () => new THREE.OctahedronGeometry(1.15, 0)), materials.signal, { position: [0, 22, 0], castShadow: false, name: `${spec.id}-grid-mark` });
+      return tagVisual(group, spec.type, 'resin-invaded-megalithic-grid-arena-gate');
+    }
+
+    if (spec.type === 'pyramid_shift_wall') {
+      addMesh(group, box('pyramid-shift-wall-body', [15, 18, 3.4]), surface, { position: [0, 9, 0], name: `${spec.id}-sliding-megalith` });
+      addInstancedMesh(group, box('pyramid-shift-wall-tooth', [2.1, 2.1, 4.2]), surface,
+        Array.from({ length: 6 }, (_, index) => ({ position: [-6.2 + index * 2.48, 1.1, 0], rotation: [0, 0, Math.PI / 4] })),
+        { name: `${spec.id}-locking-teeth` });
+      addInstancedMesh(group, box('pyramid-shift-wall-glyph', [2.2, 0.3, 0.2]), materials.signal,
+        Array.from({ length: 5 }, (_, index) => ({ position: [0, 4.5 + index * 2.3, 1.78], rotation: [0, 0, (index - 2) * 0.11] })),
+        { name: `${spec.id}-moving-wall-glyphs`, castShadow: false });
+      group.userData.pyramidShiftWall = true;
+      group.userData.shiftGroup = spec.shiftGroup;
+      return tagVisual(group, spec.type, 'animated-locking-megalith-wall');
+    }
+
+    addMesh(group, cylinder('pyramid-weapon-pod-base', 4.2, 5.1, 1.2, 10), surface, { position: [0, 0.6, 0], name: `${spec.id}-landing-base` });
+    addMesh(group, this.geometry('pyramid-weapon-pod-shell', () => new THREE.CapsuleGeometry(2.8, 7, 6, 12)), surface, { position: [0, 5.3, 0], name: `${spec.id}-armored-shell` });
+    addMesh(group, box('pyramid-weapon-pod-door', [4.2, 6.2, 0.45]), materials.dark, { position: [0, 5, 2.55], rotation: [-0.1, 0, 0], name: `${spec.id}-open-rack-door` });
+    addInstancedMesh(group, this.geometry('pyramid-weapon-pod-rack', () => new THREE.CylinderGeometry(0.16, 0.24, 4.8, 7)), materials.signal, [
+      { position: [-1.15, 5, 2.9], rotation: [0, 0, -0.2] }, { position: [1.15, 5, 2.9], rotation: [0, 0, 0.2] },
+    ], { name: `${spec.id}-weapon-racks`, castShadow: false });
+    return tagVisual(group, spec.type, 'young-blood-armored-weapon-drop-pod');
+  }
+
   createShrine(spec, materials) {
     const group = new THREE.Group();
     const surface = this.material(spec.texture);
@@ -622,6 +740,61 @@ export class BiomePropBuilder {
       object.scale.setScalar(variation);
     };
 
+    if (spec.type === 'ice_crag_line') {
+      addInstances('fractured-ice-spires', this.geometry('bouvet-ice-spire', () => new THREE.ConeGeometry(2.7, 17, 6)), surface, (object, index, total) => {
+        linePosition(object, index, total, 8.5, 6.2);
+        object.rotation.set((index % 2 ? 1 : -1) * 0.13, index * 0.31, (index % 3 - 1) * 0.1);
+        object.scale.set(0.82 + (index % 3) * 0.13, 0.76 + (index % 4) * 0.11, 0.82 + (index % 3) * 0.13);
+      });
+      addInstances('ice-cap-facets', this.geometry('bouvet-ice-cap', () => new THREE.OctahedronGeometry(2.4, 0)), materials.signal, (object, index, total) => {
+        linePosition(object, index, total, 16, 6.2);
+        object.rotation.set(index * 0.11, index * 0.37, 0.18);
+        object.scale.set(0.75, 1.4, 0.75);
+      });
+      return tagVisual(group, spec.type, 'fractured-blue-ice-crag-line');
+    }
+
+    if (spec.type === 'pyramid_resin_ribs') {
+      addInstances('biomechanical-ribs', this.geometry('bouvet-resin-rib', () => new THREE.TorusGeometry(4.2, 0.62, 7, 18, Math.PI)), materials.membrane, (object, index, total) => {
+        linePosition(object, index, total, 5.2, 6.2);
+        object.rotation.set(0, Math.PI / 2 + (index % 2 ? 0.1 : -0.1), Math.PI / 2);
+        object.scale.set(1, 1.08 + (index % 3) * 0.08, 1);
+      });
+      addInstances('resin-spines', this.geometry('bouvet-resin-spine', () => new THREE.ConeGeometry(0.55, 8.5, 6)), materials.membrane, (object, index, total) => {
+        linePosition(object, index, total, 8.4, 6.2);
+        object.rotation.set(0, index * 0.2, (index % 2 ? 1 : -1) * 0.2);
+        object.scale.setScalar(1);
+      });
+      return tagVisual(group, spec.type, 'resin-overgrown-biomechanical-rib-gallery');
+    }
+
+    if (spec.type === 'pyramid_egg_cluster') {
+      addInstances('sealed-eggs', this.geometry('bouvet-pyramid-egg', () => new THREE.SphereGeometry(2.1, 12, 9)), materials.membrane, (object, index, total) => {
+        linePosition(object, index, total, 2.5, 4.3);
+        object.rotation.set(0.08 * Math.sin(index), index * 0.43, 0.05 * Math.cos(index));
+        object.scale.set(0.82, 1.42 + (index % 3) * 0.08, 0.82);
+      });
+      addInstances('egg-root-tendrils', this.geometry('bouvet-egg-tendril', () => new THREE.TorusGeometry(2.2, 0.18, 5, 14, Math.PI)), materials.membrane, (object, index, total) => {
+        linePosition(object, index, total, 0.35, 4.3);
+        object.rotation.set(Math.PI / 2, index * 0.65, 0);
+        object.scale.setScalar(1);
+      });
+      return tagVisual(group, spec.type, 'sealed-ovoid-resin-nursery-cluster');
+    }
+
+    if (spec.type === 'thermal_vent_array') {
+      addInstances('thermal-vents', this.geometry('bouvet-thermal-vent', () => new THREE.CylinderGeometry(1.45, 2.1, 3.2, 9)), surface, (object, index, total) => {
+        linePosition(object, index, total, 1.6, 5.2);
+        object.scale.setScalar(0.9 + (index % 3) * 0.12);
+      });
+      addInstances('thermal-plumes', this.geometry('bouvet-thermal-plume', () => new THREE.ConeGeometry(1.5, 7.5, 8, 1, true)), materials.signal, (object, index, total) => {
+        linePosition(object, index, total, 6.4, 5.2);
+        object.scale.set(0.72, 1 + (index % 2) * 0.18, 0.72);
+      });
+      addMesh(group, this.geometry('bouvet-thermal-manifold', () => new THREE.BoxGeometry(28, 0.7, 3.2)), materials.dark, { position: [0, 0.35, -2.8], name: `${spec.id}-drill-manifold` });
+      return tagVisual(group, spec.type, 'weyland-geothermal-vent-manifold');
+    }
+
     if (spec.type === 'police_vehicle_line') {
       addInstances('vehicle-bodies', this.geometry('urban-police-body', () => new THREE.BoxGeometry(6.8, 2.1, 3.2)), surface, (object, index, total) => {
         linePosition(object, index, total, 1.55, 8.4);
@@ -808,8 +981,19 @@ export class BiomePropBuilder {
     const facilityTypes = ['field_camp', 'frontier_homestead', 'wreckage', 'expedition_wreck', 'signal_array', 'stargazer_checkpoint', 'stargazer_containment_lab', 'urban_tenement', 'subway_entrance', 'slaughterhouse', 'owlf_command_van', 'lost_tribe_ship_hatch'];
     const shrineTypes = ['trophy_tree', 'royal_dais', 'blooding_dais', 'weapon_shrine', 'trophy_gallery', 'kalisk_nest'];
     const penTypes = ['egg_nursery', 'stock_pen', 'stargazer_kennel'];
+    const pyramidTypes = [
+      'weyland_drill_array',
+      'pyramid_entrance',
+      'pyramid_sacrificial_dais',
+      'pyramid_plasma_vault',
+      'pyramid_queen_restraint',
+      'pyramid_arena_gate',
+      'pyramid_shift_wall',
+      'pyramid_weapon_pod',
+    ];
     let group;
-    if (archTypes.includes(spec.type)) group = this.createArch(spec, materials);
+    if (pyramidTypes.includes(spec.type)) group = this.createPyramidStructure(spec, materials);
+    else if (archTypes.includes(spec.type)) group = this.createArch(spec, materials);
     else if (facilityTypes.includes(spec.type)) group = this.createFacility(spec, materials);
     else if (shrineTypes.includes(spec.type)) group = this.createShrine(spec, materials);
     else if (['water_tower', 'stargazer_watchtower'].includes(spec.type)) group = this.createTower(spec, materials);
@@ -923,10 +1107,11 @@ export class BiomePropBuilder {
     pulseRoot.userData.decorativePulse = true;
     group.add(pulseRoot);
     const isPool = spec.type === 'acid_pool';
-    const isEnergy = ['heat_vent', 'plasma_brazier', 'containment_arc'].includes(spec.type);
+    const isResin = spec.type === 'resin_snare';
+    const isEnergy = ['heat_vent', 'plasma_brazier', 'containment_arc', 'pyramid_crush_zone'].includes(spec.type);
     const material = isPool
       ? new THREE.MeshStandardMaterial({ color: 0x73ff35, emissive: 0x42ff12, emissiveIntensity: 1.35, transparent: true, opacity: 0.68, roughness: 0.18 })
-      : isEnergy ? materials.signal.clone() : materials.spore.clone();
+      : isEnergy ? materials.signal.clone() : isResin ? materials.membrane.clone() : materials.spore.clone();
     if (isPool) {
       addMesh(pulseRoot, this.geometry('hazard-pool', () => new THREE.CylinderGeometry(1, 1.2, 0.22, 24)), material, { position: [0, 0.12, 0], scale: [spec.radius * 0.82, 1, spec.radius * 0.82], castShadow: false, name: `${spec.id}-pool` });
     } else {

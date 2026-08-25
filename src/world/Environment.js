@@ -108,6 +108,19 @@ const BIOME_STYLE = Object.freeze({
     sun: 0xff7048,
     ground: 0x665044,
   },
+  bouvetoya_pyramid: {
+    background: 0x06111a,
+    fog: 0.0039,
+    ambient: 0x7599b3,
+    ambientIntensity: 1.78,
+    hemisphereSky: 0xaadfea,
+    hemisphereGround: 0x2d211d,
+    hemisphereIntensity: 1.52,
+    key: 0x9aeaff,
+    keyIntensity: 2.85,
+    sun: 0xc8f2ff,
+    ground: 0x637b85,
+  },
 });
 
 const PROP_HEIGHTS = Object.freeze({
@@ -138,6 +151,14 @@ const PROP_HEIGHTS = Object.freeze({
   slaughterhouse: 18,
   owlf_command_van: 14,
   lost_tribe_ship_hatch: 20,
+  weyland_drill_array: 26,
+  pyramid_entrance: 30,
+  pyramid_sacrificial_dais: 9,
+  pyramid_plasma_vault: 15,
+  pyramid_queen_restraint: 19,
+  pyramid_arena_gate: 23,
+  pyramid_shift_wall: 18,
+  pyramid_weapon_pod: 12,
 });
 
 const ARCH_PROP_TYPES = new Set(['ritual_gate', 'clan_gate', 'hive_bulkhead', 'bone_arch']);
@@ -161,6 +182,9 @@ const STATIC_INSTANCE_BATCH_NAMES = Object.freeze({
   losAngelesRoofRims: 'los-angeles-rooftop-heat-rims',
   losAngelesStreetlights: 'los-angeles-streetlight-masts',
   losAngelesLamps: 'los-angeles-sodium-lamps',
+  bouvetIceSpires: 'bouvetoya-surface-ice-spires',
+  bouvetPyramidMonoliths: 'bouvetoya-pyramid-monoliths',
+  bouvetResinRibs: 'bouvetoya-resin-ribs',
 });
 
 const DEATHWORLD_FLORA_BATCH_NAMES = Object.freeze({
@@ -315,6 +339,9 @@ export class Environment {
     this.propMetrics = { drawCallEstimate: 0, triangleEstimate: 0 };
     this.propFootprints = [];
     this.staticInstanceBatches = [];
+    this.pyramidInteriorLights = [];
+    this.pyramidShiftWalls = [];
+    this.pyramidShiftState = null;
     this.textureLoader = new THREE.TextureLoader();
     this.textureCache = new Map();
 
@@ -429,6 +456,9 @@ export class Environment {
     this.propMetrics = { drawCallEstimate: 0, triangleEstimate: 0 };
     this.propFootprints = [];
     this.staticInstanceBatches = [];
+    this.pyramidInteriorLights = [];
+    this.pyramidShiftWalls = [];
+    this.pyramidShiftState = null;
     this.routeRoot = null;
     this.routeMetrics = null;
     this.dynamicEventZones = [];
@@ -552,7 +582,12 @@ export class Environment {
     this.routeRoot = buildHuntRouteNetwork(this.huntLayout, (x, z) => this.sampleBaseHeight(x, z));
     this.routeMetrics = this.routeRoot.userData.huntLayoutMetrics;
     this.biomeGroup.add(this.routeRoot);
-    this.huntRouteColliders = this.routeRoot.userData.huntCoverColliders ?? [];
+    this.huntRouteColliders = (this.routeRoot.userData.huntCoverColliders ?? []).filter((collider) => (
+      this.propFootprints.every((footprint) => (
+        Math.hypot(collider.x - footprint.x, collider.z - footprint.z)
+          - collider.radius - footprint.radius >= 3 - 0.000001
+      ))
+    ));
     this.huntRoutePerches = this.routeRoot.userData.huntPerches ?? [];
 
     if (this.currentBiome === 'jungle') {
@@ -570,6 +605,9 @@ export class Environment {
     } else if (this.currentBiome === 'los_angeles_1997') {
       this.createLosAngelesCity();
       this.createDriftingParticles(0xff9a52, 180);
+    } else if (this.currentBiome === 'bouvetoya_pyramid') {
+      this.createBouvetoyaPyramid();
+      this.createDriftingParticles(0x9eeaff, 340);
     } else if (this.currentBiome === 'genna_deathworld') {
       this.createGennaDeathworld();
       this.createDriftingParticles(0xbaff69, 520);
@@ -580,6 +618,7 @@ export class Environment {
 
     this.reserveHuntRouteColliderBudget();
     this.buildBiomeProps();
+    this.setupPyramidShiftMechanism();
     this.completeHuntRouteColliderBudget();
     this.sunSphere.visible = this.biomeGroup.visible && !['hive_lv426', 'los_angeles_1997'].includes(this.currentBiome);
     this.setReducedMotion(this.reducedMotion);
@@ -629,6 +668,56 @@ export class Environment {
 
   getPropColliderParts(prop) {
     const nominalHeight = PROP_HEIGHTS[prop.type] ?? Math.max(6, Number(prop.colliderRadius) * 1.8);
+    if (prop.type === 'pyramid_shift_wall') {
+      return [{ part: 'sliding_megalith', x: 0, z: 0, radius: 7.8, height: 18 }];
+    }
+    if (prop.type === 'weyland_drill_array') {
+      return [
+        { part: 'north_west_leg', x: -4.8, z: -4.2, radius: 0.9, height: 17 },
+        { part: 'north_east_leg', x: 4.8, z: -4.2, radius: 0.9, height: 17 },
+        { part: 'south_west_leg', x: -4.8, z: 4.2, radius: 0.9, height: 17 },
+        { part: 'south_east_leg', x: 4.8, z: 4.2, radius: 0.9, height: 17 },
+        { part: 'drill_head', x: 0, z: 0, radius: 6.2, height: 4, baseYOffset: 12.5, blocksActors: false, blocksProjectiles: true },
+      ];
+    }
+    if (prop.type === 'pyramid_entrance') {
+      return [
+        { part: 'left_megalith', x: -13, z: -3, radius: 3.6, height: 28 },
+        { part: 'right_megalith', x: 13, z: -3, radius: 3.6, height: 28 },
+        { part: 'threshold', x: 0, z: 0, radius: 16.5, height: 2.4 },
+        { part: 'lintel', x: 0, z: -3, radius: 15.5, height: 5, baseYOffset: 22.5, blocksActors: false, blocksProjectiles: true },
+      ];
+    }
+    if (prop.type === 'pyramid_sacrificial_dais') {
+      return [{ part: 'sacrificial_dais', x: 0, z: 0, radius: 15.5, height: 7.4 }];
+    }
+    if (prop.type === 'pyramid_plasma_vault') {
+      return [
+        { part: 'weapon_dais', x: 0, z: 0, radius: 13.5, height: 3.2 },
+        { part: 'west_weapon_pillar', x: -6.2, z: 0, radius: 1.8, height: 14 },
+        { part: 'central_weapon_pillar', x: 0, z: 0, radius: 1.8, height: 14 },
+        { part: 'east_weapon_pillar', x: 6.2, z: 0, radius: 1.8, height: 14 },
+      ];
+    }
+    if (prop.type === 'pyramid_queen_restraint') {
+      return [
+        { part: 'royal_pit', x: 0, z: 0, radius: 18.5, height: 5 },
+        { part: 'north_west_anchor', x: -10, z: -10, radius: 2.4, height: 17 },
+        { part: 'north_east_anchor', x: 10, z: -10, radius: 2.4, height: 17 },
+        { part: 'south_west_anchor', x: -10, z: 10, radius: 2.4, height: 17 },
+        { part: 'south_east_anchor', x: 10, z: 10, radius: 2.4, height: 17 },
+      ];
+    }
+    if (prop.type === 'pyramid_arena_gate') {
+      return [
+        { part: 'left_arena_pier', x: -9, z: 0, radius: 3.2, height: 21 },
+        { part: 'right_arena_pier', x: 9, z: 0, radius: 3.2, height: 21 },
+        { part: 'arena_lintel', x: 0, z: 0, radius: 11, height: 4.2, baseYOffset: 16, blocksActors: false, blocksProjectiles: true },
+      ];
+    }
+    if (prop.type === 'pyramid_weapon_pod') {
+      return [{ part: 'armored_pod', x: 0, z: 0, radius: 4.4, height: 12 }];
+    }
     if (ARCH_PROP_TYPES.has(prop.type)) {
       return [
         { part: 'left_support', x: -5.6, z: 0, radius: 2.1, height: nominalHeight },
@@ -865,10 +954,155 @@ export class Environment {
     return this.getLevelDesignSnapshot();
   }
 
+  setupPyramidShiftMechanism() {
+    if (this.currentBiome !== 'bouvetoya_pyramid') return false;
+    const shiftProps = this.environmentProps.filter(({ type }) => type === 'pyramid_shift_wall');
+    if (shiftProps.length === 0) return false;
+
+    this.pyramidShiftWalls = shiftProps.map((prop) => {
+      const closedY = prop.mesh.position.y;
+      const openHeight = Math.max(12, Number(prop.openHeight) || 19) * (Number(prop.scale) || 1);
+      prop.mesh.userData.pyramidShiftWall = true;
+      prop.mesh.userData.shiftGroup = prop.shiftGroup;
+      return {
+        id: prop.id,
+        group: prop.shiftGroup === 'beta' ? 'beta' : 'alpha',
+        mesh: prop.mesh,
+        colliders: prop.colliderParts ?? [],
+        closedY,
+        openY: closedY + openHeight,
+        fromY: closedY,
+        targetY: closedY,
+      };
+    });
+    this.pyramidShiftState = {
+      mode: 'alpha_closed',
+      targetMode: 'alpha_closed',
+      active: false,
+      elapsed: 0,
+      duration: 0,
+      progress: 1,
+      generation: 0,
+    };
+    for (const wall of this.pyramidShiftWalls) {
+      wall.mesh.position.y = wall.group === 'alpha' ? wall.closedY : wall.openY;
+    }
+    this.syncPyramidShiftColliders('alpha_closed');
+    return this.getPyramidShiftSnapshot();
+  }
+
+  detachPyramidShiftColliders() {
+    if (this.pyramidShiftWalls.length === 0) return 0;
+    const wallColliders = new Set(this.pyramidShiftWalls.flatMap(({ colliders }) => colliders));
+    const previousCount = this.obstacleColliders.length + this.projectileCoverColliders.length;
+    this.obstacleColliders = this.obstacleColliders.filter((collider) => !wallColliders.has(collider));
+    this.projectileCoverColliders = this.projectileCoverColliders.filter((collider) => !wallColliders.has(collider));
+    return previousCount - this.obstacleColliders.length - this.projectileCoverColliders.length;
+  }
+
+  syncPyramidShiftColliders(mode = this.pyramidShiftState?.mode) {
+    this.detachPyramidShiftColliders();
+    const closedGroup = mode === 'beta_closed' ? 'beta' : 'alpha';
+    for (const wall of this.pyramidShiftWalls) {
+      if (wall.group !== closedGroup) continue;
+      for (const collider of wall.colliders) {
+        collider.baseY = wall.closedY;
+        if (collider.blocksActors !== false) {
+          if (this.obstacleColliders.length < ENVIRONMENT_PERFORMANCE_BUDGETS.maxColliders) {
+            this.obstacleColliders.push(collider);
+          }
+        } else if (!this.projectileCoverColliders.includes(collider)) {
+          this.projectileCoverColliders.push(collider);
+        }
+      }
+    }
+    return this.pyramidShiftWalls
+      .filter(({ group }) => group === closedGroup)
+      .flatMap(({ colliders }) => colliders)
+      .filter((collider) => this.obstacleColliders.includes(collider) || this.projectileCoverColliders.includes(collider))
+      .length;
+  }
+
+  triggerPyramidShift(signal = {}) {
+    if (this.currentBiome !== 'bouvetoya_pyramid' || !this.pyramidShiftState || this.pyramidShiftState.active) {
+      return false;
+    }
+    const request = typeof signal === 'string' ? { targetMode: signal } : (signal ?? {});
+    const requestedMode = request.targetMode ?? request.shiftMode;
+    const targetMode = ['alpha_closed', 'beta_closed'].includes(requestedMode)
+      ? requestedMode
+      : this.pyramidShiftState.mode === 'alpha_closed' ? 'beta_closed' : 'alpha_closed';
+    if (targetMode === this.pyramidShiftState.mode) return false;
+
+    const requestedDuration = Number(request.shiftDuration ?? request.duration);
+    const duration = THREE.MathUtils.clamp(Number.isFinite(requestedDuration) ? requestedDuration : 3.2, 1.2, 6);
+    const closedGroup = targetMode === 'beta_closed' ? 'beta' : 'alpha';
+    for (const wall of this.pyramidShiftWalls) {
+      wall.fromY = wall.mesh.position.y;
+      wall.targetY = wall.group === closedGroup ? wall.closedY : wall.openY;
+    }
+    this.detachPyramidShiftColliders();
+    Object.assign(this.pyramidShiftState, {
+      targetMode,
+      active: true,
+      elapsed: 0,
+      duration: this.reducedMotion ? Math.min(duration, 1.2) : duration,
+      progress: 0,
+      generation: this.pyramidShiftState.generation + 1,
+    });
+    return this.getPyramidShiftSnapshot();
+  }
+
+  updatePyramidShift(delta) {
+    const state = this.pyramidShiftState;
+    if (!state?.active) return false;
+    state.elapsed = Math.min(state.duration, state.elapsed + Math.max(0, Number(delta) || 0));
+    state.progress = state.duration > 0 ? state.elapsed / state.duration : 1;
+    const eased = state.progress * state.progress * (3 - 2 * state.progress);
+    for (const wall of this.pyramidShiftWalls) {
+      wall.mesh.position.y = THREE.MathUtils.lerp(wall.fromY, wall.targetY, eased);
+    }
+    if (state.progress >= 1) {
+      state.active = false;
+      state.mode = state.targetMode;
+      this.syncPyramidShiftColliders(state.mode);
+    }
+    return this.getPyramidShiftSnapshot();
+  }
+
+  getPyramidShiftSnapshot() {
+    const state = this.pyramidShiftState;
+    const colliderIds = new Set();
+    for (const wall of this.pyramidShiftWalls) {
+      for (const collider of wall.colliders) {
+        if (this.obstacleColliders.includes(collider) || this.projectileCoverColliders.includes(collider)) {
+          colliderIds.add(collider.sourceId);
+        }
+      }
+    }
+    return Object.freeze({
+      available: this.currentBiome === 'bouvetoya_pyramid' && this.pyramidShiftWalls.length > 0,
+      active: Boolean(state?.active),
+      mode: state?.mode ?? null,
+      targetMode: state?.targetMode ?? null,
+      progress: Number((state?.progress ?? 0).toFixed(4)),
+      generation: state?.generation ?? 0,
+      wallCount: this.pyramidShiftWalls.length,
+      activeColliderCount: colliderIds.size,
+      activeColliderIds: Object.freeze([...colliderIds].sort()),
+      wallPositions: Object.freeze(this.pyramidShiftWalls.map(({ id, group, mesh }) => Object.freeze({
+        id,
+        group,
+        y: Number(mesh.position.y.toFixed(4)),
+      }))),
+    });
+  }
+
   getLevelDesignSnapshot() {
     const totalMetrics = estimateRenderCost(this.biomeGroup);
     const huntMetrics = this.getHuntMetrics();
     const ecologyInstanceEstimate = Number(huntMetrics.ecologyInstanceEstimate) || 0;
+    const shift = this.getPyramidShiftSnapshot();
     return Object.freeze({
       biomeId: this.currentBiome,
       ...huntMetrics,
@@ -900,6 +1134,13 @@ export class Environment {
       ...totalMetrics,
       sceneInstanceEstimate: totalMetrics.totalMeshInstanceCount + ecologyInstanceEstimate,
       activeWeatherEvent: this.activeWeatherEvent,
+      pyramidInteriorLightCount: this.pyramidInteriorLights.length,
+      pyramidShiftWallCount: shift.wallCount,
+      pyramidShiftActive: shift.active,
+      pyramidShiftMode: shift.mode,
+      pyramidShiftProgress: shift.progress,
+      pyramidShiftGeneration: shift.generation,
+      pyramidShiftColliderCount: shift.activeColliderCount,
     });
   }
 
@@ -1013,7 +1254,7 @@ export class Environment {
     const x = vector ? vector.x : Number(xOrPosition) || 0;
     const z = vector ? vector.z : Number(zValue) || 0;
     const distance = Math.hypot(x, z);
-    const biomePhase = ['jungle', 'hive_lv426', 'ryushi_desert', 'yautja_prime', 'genna_deathworld', 'stargazer_blacksite', 'los_angeles_1997']
+    const biomePhase = ['jungle', 'hive_lv426', 'ryushi_desert', 'yautja_prime', 'genna_deathworld', 'stargazer_blacksite', 'los_angeles_1997', 'bouvetoya_pyramid']
       .indexOf(this.currentBiome) * 37;
     let height = Math.sin(x * 0.03) * Math.cos(z * 0.03) * 3.4;
     height += Math.sin((x + biomePhase) * 0.009) * Math.cos((z - biomePhase) * 0.011) * 6.2;
@@ -1751,6 +1992,107 @@ export class Environment {
     }
   }
 
+  createBouvetoyaPyramid() {
+    const ice = this.createTexturedMaterial({
+      color: 0x9bbdca,
+      path: '/assets/textures/bouvetoya-ice-rock.webp',
+      repeat: 4,
+      roughness: 0.86,
+      metalness: 0.03,
+    });
+    const pyramidStone = this.createTexturedMaterial({
+      color: 0x4f4238,
+      path: '/assets/textures/bouvetoya-pyramid-stone.webp',
+      repeat: 5,
+      roughness: 0.78,
+      metalness: 0.16,
+    });
+    const resin = this.createTexturedMaterial({
+      color: 0x263b32,
+      path: '/assets/textures/hive-biomechanical-membrane.webp',
+      repeat: 4,
+      roughness: 0.38,
+      metalness: 0.2,
+    });
+    const transform = new THREE.Object3D();
+
+    const iceSpires = new THREE.InstancedMesh(new THREE.ConeGeometry(5, 31, 7), ice, 28);
+    iceSpires.name = STATIC_INSTANCE_BATCH_NAMES.bouvetIceSpires;
+    for (let index = 0; index < iceSpires.count; index += 1) {
+      const angle = (index / iceSpires.count) * Math.PI * 2 + Math.sin(index * 2.17) * 0.12;
+      const radius = 515 + ((index * 47) % 155);
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
+      const scale = 0.72 + (index % 5) * 0.1;
+      transform.position.set(x, this.sampleHeight(x, z) + 15.5 * scale, z);
+      transform.rotation.set((index % 2 ? 1 : -1) * 0.08, angle, (index % 3 - 1) * 0.1);
+      transform.scale.set(scale, scale, scale);
+      transform.updateMatrix();
+      iceSpires.setMatrixAt(index, transform.matrix);
+    }
+
+    const monoliths = new THREE.InstancedMesh(new THREE.CylinderGeometry(3.7, 5.4, 27, 6), pyramidStone, 24);
+    monoliths.name = STATIC_INSTANCE_BATCH_NAMES.bouvetPyramidMonoliths;
+    for (let index = 0; index < monoliths.count; index += 1) {
+      const angle = index * 2.399963229728653 + 0.35;
+      const radius = 185 + ((index * 67) % 300);
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius - 35;
+      const scale = 0.68 + (index % 4) * 0.1;
+      transform.position.set(x, this.sampleHeight(x, z) + 13.5 * scale, z);
+      transform.rotation.set(0, angle + 0.2, (index % 2 ? 1 : -1) * 0.06);
+      transform.scale.set(scale, scale, scale);
+      transform.updateMatrix();
+      monoliths.setMatrixAt(index, transform.matrix);
+    }
+
+    const resinRibs = new THREE.InstancedMesh(new THREE.TorusGeometry(5.2, 0.68, 7, 18, Math.PI), resin, 20);
+    resinRibs.name = STATIC_INSTANCE_BATCH_NAMES.bouvetResinRibs;
+    for (let index = 0; index < resinRibs.count; index += 1) {
+      const progress = index / Math.max(1, resinRibs.count - 1);
+      const x = 520 - progress * 760 + Math.sin(index * 1.7) * 34;
+      const z = 30 - progress * 390 + Math.cos(index * 1.2) * 28;
+      transform.position.set(x, this.sampleHeight(x, z) + 5.4, z);
+      transform.rotation.set(0, Math.PI / 2 + Math.sin(index) * 0.12, Math.PI / 2);
+      transform.scale.set(0.82 + (index % 3) * 0.08, 0.92 + (index % 4) * 0.07, 0.82);
+      transform.updateMatrix();
+      resinRibs.setMatrixAt(index, transform.matrix);
+    }
+
+    for (const [batch, texturePath] of [
+      [iceSpires, '/assets/textures/bouvetoya-ice-rock.webp'],
+      [monoliths, '/assets/textures/bouvetoya-pyramid-stone.webp'],
+      [resinRibs, '/assets/textures/hive-biomechanical-membrane.webp'],
+    ]) {
+      batch.castShadow = true;
+      batch.receiveShadow = true;
+      batch.instanceMatrix.setUsage(THREE.StaticDrawUsage);
+      batch.instanceMatrix.needsUpdate = true;
+      batch.computeBoundingBox();
+      batch.computeBoundingSphere();
+      batch.userData.staticEnvironmentBatch = true;
+      batch.userData.texturePath = texturePath;
+      this.biomeGroup.add(batch);
+      this.staticInstanceBatches.push(batch);
+    }
+
+    const lightPlan = [
+      { color: 0xa9eeff, intensity: 2.2, distance: 360, position: [0, 30, 525], name: 'bouvet-surface-cold-fill' },
+      { color: 0xc47d45, intensity: 2.65, distance: 250, position: [-165, 18, 150], name: 'bouvet-plasma-vault-bronze-light' },
+      { color: 0xb76438, intensity: 2.4, distance: 280, position: [105, 16, 105], name: 'bouvet-shifting-crossroads-bronze-light' },
+      { color: 0x7da66c, intensity: 2.15, distance: 260, position: [-350, 20, -350], name: 'bouvet-queen-resin-light' },
+    ];
+    for (const entry of lightPlan) {
+      const light = new THREE.PointLight(entry.color, entry.intensity, entry.distance, 1.8);
+      light.name = entry.name;
+      light.position.set(entry.position[0], this.sampleHeight(entry.position[0], entry.position[2]) + entry.position[1], entry.position[2]);
+      light.castShadow = false;
+      light.userData.bouvetoyaInteriorLight = true;
+      this.biomeGroup.add(light);
+      this.pyramidInteriorLights.push(light);
+    }
+  }
+
   createColosseumPillars() {
     const stone = this.createTexturedMaterial({
       color: 0x7a3028,
@@ -2251,6 +2593,7 @@ export class Environment {
     }
     this.updateThermalFootprints(frameDelta, visionMode);
     this.updateDynamicEventZones(frameDelta);
+    this.updatePyramidShift(frameDelta);
     const hazardSignals = this.updateHazardZones(frameDelta, player);
     if (!this.reducedMotion) {
       for (const pointOfInterest of this.pointsOfInterest) {

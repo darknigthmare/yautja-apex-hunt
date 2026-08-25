@@ -31,6 +31,7 @@ export const HUNTER_CLASSES = Object.freeze([
   Object.freeze({ id: 'class_cleaner', name: 'Cleaner · confinement', maxHealth: 120, maxEnergy: 115, maxStamina: 90, moveSpeed: 15, sprintSpeed: 24, meleeMultiplier: 1.15, energyRegen: 8.5, description: 'Profil robuste destiné aux contaminations et aux combats d’attrition.', sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), implementationOriginal: true }),
   Object.freeze({ id: 'class_fugitive', name: 'Fugitive · récupération', maxHealth: 105, maxEnergy: 120, maxStamina: 110, moveSpeed: 17, sprintSpeed: 27.5, meleeMultiplier: 1.05, energyRegen: 10, description: 'Profil adaptable taillé pour reprendre une technologie confisquée en territoire hostile.', sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['thePredator2018']), implementationOriginal: true }),
   Object.freeze({ id: 'class_city_stalker', name: 'City Stalker · chasse de chaleur', maxHealth: 100, maxEnergy: 118, maxStamina: 112, moveSpeed: 17.2, sprintSpeed: 27.8, meleeMultiplier: 1.02, energyRegen: 10.2, description: 'Profil mobile optimisé pour les toits, la fumée et les signatures thermiques saturées.', sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predator2']), implementationOriginal: true }),
+  Object.freeze({ id: 'class_ritual_initiate', name: 'Ritual Initiate · jeune sang', maxHealth: 108, maxEnergy: 106, maxStamina: 118, moveSpeed: 16.6, sprintSpeed: 27.2, meleeMultiplier: 1.08, energyRegen: 8.6, description: 'Profil original de jeune chasseur préparé à l’épreuve xénomorphe : endurance, mêlée et réserve équilibrées.', sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), implementationOriginal: true }),
 ]);
 
 export const DREAD_STYLES = Object.freeze([
@@ -42,6 +43,7 @@ export const DREAD_STYLES = Object.freeze([
   Object.freeze({ id: 'dread_style_swept', name: 'Predlocks rejetées', lengthScale: 1.08, spreadScale: 0.82, beadStride: 3 }),
   Object.freeze({ id: 'dread_style_ceremonial', name: 'Parure cérémonielle', lengthScale: 1.28, spreadScale: 1.16, beadStride: 1 }),
   Object.freeze({ id: 'dread_style_city_dense', name: 'Tresses urbaines denses', lengthScale: 1.04, spreadScale: 0.68, beadStride: 2, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predator2']), implementationOriginal: true }),
+  Object.freeze({ id: 'dread_style_avp_heavy', name: 'Predlocks lourds du rite AVP', lengthScale: 1.18, spreadScale: 1.08, beadStride: 1, sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), implementationOriginal: true }),
 ]);
 
 export const ARMOR_FINISHES = Object.freeze([
@@ -54,6 +56,7 @@ export const ARMOR_FINISHES = Object.freeze([
   Object.freeze({ id: 'finish_sandblasted', name: 'Métal sablé', metalness: 0.69, roughness: 0.81 }),
   Object.freeze({ id: 'finish_stargazer_salvaged', name: 'Composite Stargazer récupéré', metalness: 0.72, roughness: 0.48, emissiveIntensity: 0.08, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['thePredator2018']), implementationOriginal: true }),
   Object.freeze({ id: 'finish_city_burnished', name: 'Alliage urbain bruni', metalness: 0.86, roughness: 0.5, emissiveIntensity: 0.03, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predator2']), implementationOriginal: true }),
+  Object.freeze({ id: 'finish_avp_frosted_alloy', name: 'Alliage rituel givré', metalness: 0.84, roughness: 0.66, emissiveIntensity: 0.025, sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), implementationOriginal: true }),
 ]);
 
 export const WARPAINT_PATTERNS = Object.freeze([
@@ -66,6 +69,7 @@ export const WARPAINT_PATTERNS = Object.freeze([
   Object.freeze({ id: 'warpaint_blood_oath', name: 'Serment écarlate', color: 0xa32125, pattern: 'ritual' }),
   Object.freeze({ id: 'warpaint_fugitive_scar', name: 'Balafre d’évadé Apex', color: 0x86d8bf, pattern: 'claw', sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['thePredator2018']), implementationOriginal: true }),
   Object.freeze({ id: 'warpaint_city_soot', name: 'Suie de la chasse urbaine', color: 0x292723, pattern: 'brow', sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predator2']), implementationOriginal: true }),
+  Object.freeze({ id: 'warpaint_scar_acid_mark', name: 'Marque acide de Scar', color: 0x9acd42, pattern: 'acid_mark', sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']) }),
 ]);
 
 export const PLAYER_GADGETS = Object.freeze([
@@ -162,6 +166,16 @@ export const WEAPON_TECH_VARIANTS = Object.freeze([
   }),
 ]);
 
+
+// Les variantes liées à un preset s'activent automatiquement et ne consomment
+// aucun raccourci d'arme supplémentaire.
+export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
+  Object.freeze({
+    id: 'variant_chopper_extended_wristblades', armorPresetId: 'chopper_avp', baseWeaponId: 'wristblades', name: 'Longues lames de Chopper',
+    sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), behavior: 'melee_fast',
+    modifiers: Object.freeze({ damageMultiplier: 1.08, cooldownMultiplier: 1.06, energyCostMultiplier: 1, rangeMultiplier: 1.38 }),
+  }),
+]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);
 
 const IDS_BY_FIELD = Object.freeze({
@@ -199,8 +213,14 @@ export const getPlayableWeaponBySlot = (slot) => PLAYABLE_WEAPONS.find((weapon) 
 export const getPlayableWeaponByKey = (key) => PLAYABLE_WEAPONS.find((weapon) => weapon.key === key) ?? null;
 export const getPlayerGadgetById = (id) => PLAYER_GADGETS.find((gadget) => gadget.id === id) ?? null;
 export const getPlayerGadgetByKey = (key) => PLAYER_GADGETS.find((gadget) => gadget.key === key) ?? null;
-export const getWeaponTechVariantById = (id) => WEAPON_TECH_VARIANTS.find((variant) => variant.id === id) ?? null;
+export const getWeaponTechVariantById = (id) => WEAPON_TECH_VARIANTS.find((variant) => variant.id === id)
+  ?? ARMOR_PRESET_WEAPON_VARIANTS.find((variant) => variant.id === id)
+  ?? null;
 export const getWeaponTechVariantsForWeapon = (weaponId) => {
   const variants = WEAPON_TECH_VARIANTS.filter(({ baseWeaponId }) => baseWeaponId === weaponId);
   return variants.length > 0 ? Object.freeze(variants) : EMPTY_WEAPON_VARIANTS;
 };
+export const getArmorPresetWeaponTechVariant = (armorPresetId, weaponId = 'wristblades') => (
+  ARMOR_PRESET_WEAPON_VARIANTS.find((variant) => variant.armorPresetId === armorPresetId && variant.baseWeaponId === weaponId)
+  ?? null
+);

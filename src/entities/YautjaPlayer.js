@@ -18,6 +18,7 @@ import {
   WARPAINT_PATTERNS,
   DEFAULT_CUSTOMIZATION,
   getArmorPresetCustomization,
+  getArmorPresetWeaponTechVariant,
   getPaletteEntry,
   sanitizeCustomization,
 } from '../data/RuntimeEquipment.js';
@@ -33,6 +34,7 @@ const LOST_TRIBE_PRESET_IDS = new Set([
   'guardian_lost_tribe', 'stalker_lost_tribe', 'warrior_lost_tribe',
   'armored_lost_tribe', 'scout_lost_tribe',
 ]);
+const AVP_RITUAL_PRESET_IDS = new Set(['scar_avp', 'celtic_avp', 'chopper_avp']);
 
 export class YautjaPlayer {
   constructor(scene) {
@@ -96,6 +98,10 @@ export class YautjaPlayer {
     this.lifetimeHonor = 1000;
     this.energyRegen = 8;
     this.meleeDamageMultiplier = 1;
+    this.hunterClassMeleeMultiplier = 1;
+    this.wristbladeDamageMultiplier = 1;
+    this.wristbladeRestPositionZ = 1.3;
+    this.wristbladeAttackPositionZ = 1.8;
     this.honorRankIndex = 1;
     this.completedHunts = [];
     this.completedDirectiveIds = [];
@@ -374,6 +380,9 @@ export class YautjaPlayer {
     shoulderL.userData.appearanceChannel = 'accent';
     yautjaGroup.add(shoulderL);
 
+    this.avpRitualArmorGroup = this.createAvpRitualArmor(armorMat, goldMat);
+    this.avpRitualArmorGroup.visible = false;
+    yautjaGroup.add(this.avpRitualArmorGroup);
     this.warpaintGroup = new THREE.Group();
     this.warpaintGroup.name = 'playerWarpaint';
     yautjaGroup.add(this.warpaintGroup);
@@ -383,6 +392,66 @@ export class YautjaPlayer {
     return yautjaGroup;
   }
 
+  createAvpRitualArmor(armorMaterial, accentMaterial) {
+    const group = new THREE.Group();
+    group.name = 'playerAvpRitualArmor';
+    group.userData.ritualPresetIds = [...AVP_RITUAL_PRESET_IDS];
+    const addArmorPart = (geometry, material, position, rotation = null, parent = group, channel = 'armor') => {
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(...position);
+      if (rotation) mesh.rotation.set(...rotation);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      mesh.userData.appearanceChannel = channel;
+      parent.add(mesh);
+      return mesh;
+    };
+
+    addArmorPart(new THREE.BoxGeometry(1.78, 1.28, 0.24, 3, 3, 1), armorMaterial, [0, 4.15, 0.86], [-0.08, 0, 0]);
+    addArmorPart(new THREE.BoxGeometry(0.76, 0.72, 0.3, 2, 2, 1), armorMaterial, [-0.62, 4.55, 0.93], [-0.12, 0.08, 0.14]);
+    addArmorPart(new THREE.BoxGeometry(0.76, 0.72, 0.3, 2, 2, 1), armorMaterial, [0.62, 4.55, 0.93], [-0.12, -0.08, -0.14]);
+    const collar = addArmorPart(new THREE.TorusGeometry(1.02, 0.13, 10, 28, Math.PI), accentMaterial, [0, 5.02, 0.16], [0, 0, Math.PI], group, 'accent');
+    collar.rotation.x = Math.PI / 2;
+    for (const x of [-0.68, 0, 0.68]) {
+      addArmorPart(new THREE.BoxGeometry(0.54, 0.58, 0.2, 2, 2, 1), armorMaterial, [x, 3.06, 0.84], [-0.15, 0, x * -0.08]);
+    }
+
+    for (const side of [-1, 1]) {
+      addArmorPart(new THREE.SphereGeometry(0.78, 14, 9, 0, Math.PI * 2, 0, Math.PI / 2), armorMaterial, [side * 1.55, 4.88, 0], [0, 0, side * -0.18]);
+      addArmorPart(new THREE.BoxGeometry(0.55, 1.22, 0.42, 2, 3, 1), armorMaterial, [side * 1.72, 3.23, 0.54], [-0.08, 0, side * 0.06]);
+      addArmorPart(new THREE.BoxGeometry(0.72, 1.38, 0.3, 2, 3, 1), armorMaterial, [side * 0.78, 2.1, 0.47], [-0.06, 0, side * 0.04]);
+      addArmorPart(new THREE.BoxGeometry(0.62, 1.15, 0.28, 2, 3, 1), armorMaterial, [side * 0.76, 0.78, 0.45], [0.08, 0, side * -0.03]);
+      addArmorPart(new THREE.DodecahedronGeometry(0.34, 1), accentMaterial, [side * 0.76, 1.43, 0.72], null, group, 'accent');
+    }
+
+    const scarGroup = new THREE.Group();
+    scarGroup.name = 'avpRitualIdentity:scar';
+    const acidMaterial = new THREE.MeshStandardMaterial({
+      color: 0x9acd42, emissive: 0x41680f, emissiveIntensity: 0.72, metalness: 0.14, roughness: 0.5,
+    });
+    for (const x of [-0.34, 0, 0.34]) {
+      addArmorPart(new THREE.BoxGeometry(0.1, 0.84, 0.06), acidMaterial, [x, 4.18, 1.04], [0, 0, x * -0.6], scarGroup, 'ritualMark');
+    }
+
+    const celticGroup = new THREE.Group();
+    celticGroup.name = 'avpRitualIdentity:celtic';
+    addArmorPart(new THREE.DodecahedronGeometry(0.38, 1), accentMaterial, [0, 4.22, 1.1], [0, 0, Math.PI / 4], celticGroup, 'accent');
+    for (const side of [-1, 1]) {
+      addArmorPart(new THREE.BoxGeometry(0.2, 0.92, 0.11), accentMaterial, [side * 0.52, 4.18, 1.04], [0, 0, side * 0.35], celticGroup, 'accent');
+    }
+
+    const chopperGroup = new THREE.Group();
+    chopperGroup.name = 'avpRitualIdentity:chopper';
+    for (const side of [-1, 1]) {
+      addArmorPart(new THREE.BoxGeometry(0.16, 0.22, 1.62), armorMaterial, [side * 1.75, 3.05, 0.94], [0, 0, side * 0.04], chopperGroup);
+      addArmorPart(new THREE.BoxGeometry(0.09, 0.16, 1.82), accentMaterial, [side * 1.75, 3.05, 1.02], [0, 0, side * 0.04], chopperGroup, 'accent');
+      addArmorPart(new THREE.ConeGeometry(0.1, 0.48, 8), accentMaterial, [side * 0.88, 5.05, 0.4], [0, 0, side * -0.38], chopperGroup, 'accent');
+    }
+
+    this.avpRitualIdentityGroups = { scar_avp: scarGroup, celtic_avp: celticGroup, chopper_avp: chopperGroup };
+    Object.values(this.avpRitualIdentityGroups).forEach((identityGroup) => group.add(identityGroup));
+    return group;
+  }
   createMaskGeometry(maskData) {
     const angularShapes = ['celtic', 'samurai', 'royal', 'guardian', 'warrior', 'armored'];
     const boneShapes = ['bone', 'kok_viking', 'kwei', 'boar'];
@@ -504,6 +573,33 @@ export class YautjaPlayer {
     return presetTexture;
   }
 
+  applyAvpRitualArmor(armorPresetId) {
+    const active = AVP_RITUAL_PRESET_IDS.has(armorPresetId);
+    if (!this.avpRitualArmorGroup) return active;
+    this.avpRitualArmorGroup.visible = active;
+    Object.entries(this.avpRitualIdentityGroups ?? {}).forEach(([presetId, group]) => {
+      group.visible = active && presetId === armorPresetId;
+    });
+    this.avpRitualArmorGroup.userData.activePresetId = active ? armorPresetId : null;
+    return active;
+  }
+
+  applyArmorPresetWeaponVariant(armorPresetId) {
+    const variant = getArmorPresetWeaponTechVariant(armorPresetId, 'wristblades');
+    this.activeWristbladeVariantId = variant?.id ?? null;
+    this.wristbladeDamageMultiplier = variant?.modifiers.damageMultiplier ?? 1;
+    const rangeMultiplier = variant?.modifiers.rangeMultiplier ?? 1;
+    this.wristbladeRestPositionZ = variant ? 1.52 : 1.3;
+    this.wristbladeAttackPositionZ = variant ? 2.48 : 1.8;
+    for (const blade of [this.wristbladeRight, this.wristbladeLeft]) {
+      if (!blade) continue;
+      blade.scale.z = rangeMultiplier;
+      if (!this.isAttacking) blade.position.z = this.wristbladeRestPositionZ;
+      blade.userData.techVariantId = this.activeWristbladeVariantId;
+      blade.userData.rangeMultiplier = rangeMultiplier;
+    }
+    return variant;
+  }
   applyCustomization(next = {}) {
     const preserveCloak = this.isCloaked;
     if (preserveCloak) this.restoreCloakMaterials();
@@ -536,10 +632,12 @@ export class YautjaPlayer {
       if (child.isMesh) child.userData.baseMaterial = child.material;
     });
     this.applyPresetMaterialTexture(merged.armorPresetId);
+    this.applyAvpRitualArmor(merged.armorPresetId);
     this.applyDreadStyle(merged.dreadStyleId);
     this.applyArmorFinish(merged.armorFinishId);
     this.rebuildWarpaint(merged.warpaintId);
     this.applyHunterClass(merged.hunterClassId);
+    this.applyArmorPresetWeaponVariant(merged.armorPresetId);
     if (preserveCloak) this.applyCloakMaterials();
     return this.customization;
   }
@@ -555,7 +653,8 @@ export class YautjaPlayer {
     this.moveSpeed = hunterClass.moveSpeed;
     this.sprintSpeed = hunterClass.sprintSpeed;
     this.energyRegen = hunterClass.energyRegen;
-    this.meleeDamageMultiplier = hunterClass.meleeMultiplier;
+    this.hunterClassMeleeMultiplier = hunterClass.meleeMultiplier;
+    this.meleeDamageMultiplier = this.hunterClassMeleeMultiplier;
     this.health = preserveRatio ? Math.min(this.maxHealth, this.maxHealth * healthRatio) : this.maxHealth;
     this.energy = preserveRatio ? Math.min(this.maxEnergy, this.maxEnergy * energyRatio) : this.maxEnergy;
     this.stamina = preserveRatio ? Math.min(this.maxStamina, this.maxStamina * staminaRatio) : this.maxStamina;
@@ -572,7 +671,11 @@ export class YautjaPlayer {
         group.position.x *= style.spreadScale;
       }
       if (baseRotation) group.rotation.copy(baseRotation);
-      group.rotation.y = style.id === 'dread_style_braided' ? ((index % 2) ? -0.22 : 0.22) : 0;
+      if (style.id === 'dread_style_braided') group.rotation.y = (index % 2) ? -0.22 : 0.22;
+      else if (style.id === 'dread_style_avp_heavy') {
+        group.rotation.y = ((index % 3) - 1) * 0.08;
+        group.rotation.x -= Math.abs(index - 5) * 0.008;
+      } else group.rotation.y = 0;
       group.scale.set(1, style.lengthScale, 1);
       group.children.slice(1).forEach((bead) => {
         bead.visible = index % style.beadStride === 0;
@@ -615,6 +718,12 @@ export class YautjaPlayer {
     };
     if (warpaint.pattern === 'brow') addMark(0, 5.93, 1.5, 0.16, -0.08);
     else if (warpaint.pattern === 'claw') [-0.42, 0, 0.42].forEach((x, index) => addMark(x, 5.63, 0.13, 1.25, -0.24 + index * 0.08));
+    else if (warpaint.pattern === 'acid_mark') {
+      addMark(0, 5.86, 0.24, 0.24, Math.PI / 4);
+      addMark(-0.3, 5.55, 0.11, 0.72, 0.48);
+      addMark(0.3, 5.55, 0.11, 0.72, -0.48);
+      addMark(0, 5.32, 0.72, 0.1);
+    }
     else {
       addMark(0, 6.12, 1.2, 0.14);
       addMark(-0.52, 5.62, 0.12, 0.86, 0.42);
@@ -880,6 +989,7 @@ export class YautjaPlayer {
 
   attack(targetPos) {
     if (this.isAttacking || this.isHealing || this.inQTE) return;
+    this.meleeDamageMultiplier = this.hunterClassMeleeMultiplier ?? 1;
 
     if (this.isPerched) {
       this.isAttacking = true;
@@ -893,9 +1003,10 @@ export class YautjaPlayer {
 
     if (this.selectedWeapon === 1) {
       this.isAttacking = true;
+      this.meleeDamageMultiplier *= this.wristbladeDamageMultiplier;
       audioSynth.playWristbladeSlash();
-      this.wristbladeRight.position.z = 1.8;
-      this.wristbladeLeft.position.z = 1.8;
+      this.wristbladeRight.position.z = this.wristbladeAttackPositionZ;
+      this.wristbladeLeft.position.z = this.wristbladeAttackPositionZ;
       this.attackTimer = 0.4;
       return 'wristblades';
     }
@@ -1219,8 +1330,8 @@ export class YautjaPlayer {
     this.isPerched = false;
     this.attackTimer = 0;
     this.healTimer = 0;
-    this.wristbladeRight.position.z = 1.3;
-    this.wristbladeLeft.position.z = 1.3;
+    this.wristbladeRight.position.z = this.wristbladeRestPositionZ;
+    this.wristbladeLeft.position.z = this.wristbladeRestPositionZ;
     if (this.fatherSwordMesh) this.fatherSwordMesh.visible = false;
     this.currentPerchNode = null;
     this.inQTE = false;
@@ -1294,8 +1405,8 @@ export class YautjaPlayer {
       this.attackTimer = Math.max(0, this.attackTimer - delta);
       if (this.attackTimer === 0) {
         this.isAttacking = false;
-        this.wristbladeRight.position.z = 1.3;
-        this.wristbladeLeft.position.z = 1.3;
+        this.wristbladeRight.position.z = this.wristbladeRestPositionZ;
+        this.wristbladeLeft.position.z = this.wristbladeRestPositionZ;
         if (this.fatherSwordMesh) this.fatherSwordMesh.visible = false;
       }
     }

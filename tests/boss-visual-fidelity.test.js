@@ -18,6 +18,7 @@ const BOSS_CASES = Object.freeze([
   ['wolfCleaner', 'wolf'],
   ['kalisk', 'kalisk'],
   ['cityHunter', 'city_hunter'],
+  ['gridAlien', 'grid_alien'],
 ]);
 
 function collectFeatureTags(root) {
@@ -36,7 +37,7 @@ function collectMeshes(root) {
   return meshes;
 }
 
-test('les dix boss reçoivent une couche géométrique HD au-dessus de 10k triangles', (t) => {
+test('les onze boss reçoivent une couche géométrique HD au-dessus de 10k triangles', (t) => {
   for (const [bossType, archetype] of BOSS_CASES) {
     const scene = new THREE.Scene();
     const boss = createBoss(scene, { bossType });

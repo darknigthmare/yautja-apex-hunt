@@ -163,6 +163,25 @@ const directiveDefinitions = [
     ],
   },
   {
+    id: 'avp_pyramid_trial',
+    title: 'Épreuve de la pyramide de Bouvetøya',
+    shortLabel: 'PYRAMIDE AVP',
+    description: 'Une chasse rituelle originale Apex Hunt : franchir l’expédition, survivre aux parasites puis vaincre la caste guerrière avant la reconfiguration des chambres.',
+    provenance: 'AVP_SCREEN_ADAPTATION',
+    recommendedBiomeId: 'bouvetoya_pyramid',
+    rewardMultiplier: 1.5,
+    objectives: [
+      objective('weyland_expedition_guard', 'Neutraliser le garde armé de l’expédition'),
+      objective('xeno_facehugger', 'Éliminer le Facehugger de la chambre sacrificielle'),
+      objective('xeno_warrior', 'Vaincre le guerrier xénomorphe du rite'),
+    ],
+    schedule: [
+      wave(11, 'weyland_expedition_guard'),
+      wave(36, 'xeno_facehugger'),
+      wave(63, 'xeno_warrior'),
+    ],
+  },
+  {
     id: 'game_preserve_escape',
     title: 'Évasion de la planète-réserve',
     shortLabel: 'RÉSERVE',

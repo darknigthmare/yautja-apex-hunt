@@ -19,7 +19,7 @@ function completeDirective(id) {
   );
 }
 
-test('les neuf directives et leurs collections imbriquées sont immuables', () => {
+test('les dix directives et leurs collections imbriquées sont immuables', () => {
   assert.deepEqual(Object.keys(HUNT_DIRECTIVES), [
     'standard_hunt',
     'jungle_fireteam',
@@ -28,6 +28,7 @@ test('les neuf directives et leurs collections imbriquées sont immuables', () =
     'deathworld_protocol',
     'stargazer_breach',
     'urban_heatwave_hunt',
+    'avp_pyramid_trial',
     'game_preserve_escape',
     'hive_containment_failure',
   ]);
@@ -71,6 +72,7 @@ test('le biome recommandé prime, tandis que la chasse standard conserve la dema
   assert.equal(resolveDirectiveBiome('urban_heatwave_hunt', 'jungle'), 'los_angeles_1997');
   assert.equal(resolveDirectiveBiome('game_preserve_escape', 'hive_lv426'), 'jungle');
   assert.equal(resolveDirectiveBiome('hive_containment_failure', 'jungle'), 'hive_lv426');
+  assert.equal(resolveDirectiveBiome('avp_pyramid_trial', 'jungle'), 'bouvetoya_pyramid');
   assert.equal(resolveDirectiveBiome('standard_hunt', 'hive_lv426'), 'hive_lv426');
   assert.equal(resolveDirectiveBiome('inconnue', 'ryushi_desert'), 'ryushi_desert');
   assert.equal(resolveDirectiveBiome('standard_hunt', ''), null);
@@ -114,6 +116,7 @@ test('le bonus de récompense ne s’applique qu’après tous les objectifs', (
   assert.equal(resolveDirectiveReward('deathworld_protocol', 1000, completeDirective('deathworld_protocol')), 1350);
   assert.equal(resolveDirectiveReward('game_preserve_escape', 1000, completeDirective('game_preserve_escape')), 1300);
   assert.equal(resolveDirectiveReward('hive_containment_failure', 1000, completeDirective('hive_containment_failure')), 1400);
+  assert.equal(resolveDirectiveReward('avp_pyramid_trial', 1000, completeDirective('avp_pyramid_trial')), 1500);
   assert.equal(resolveDirectiveReward('standard_hunt', 1000), 1000);
   assert.equal(resolveDirectiveReward('directive_absente', 1000), 1000);
   assert.equal(resolveDirectiveReward('standard_hunt', Number.NaN), 0);
@@ -168,4 +171,16 @@ test('les directives v1.9 rendent les cinq rôles orphelins accessibles avec une
   for (const npcType of [...preserve.objectives, ...containment.objectives].map(({ npcType }) => npcType)) {
     assert.ok(accessibleTypes.has(npcType), npcType);
   }
+});
+
+test('l’épreuve v1.11 raccorde Bouvetøya, l’expédition et les castes xénomorphes', () => {
+  const trial = HUNT_DIRECTIVES.avp_pyramid_trial;
+  assert.equal(trial.provenance, 'AVP_SCREEN_ADAPTATION');
+  assert.equal(trial.recommendedBiomeId, 'bouvetoya_pyramid');
+  assert.equal(trial.rewardMultiplier, 1.5);
+  assert.deepEqual(
+    trial.objectives.map(({ npcType }) => npcType),
+    ['weyland_expedition_guard', 'xeno_facehugger', 'xeno_warrior'],
+  );
+  assert.deepEqual(trial.schedule.map(({ at }) => at), [11, 36, 63]);
 });

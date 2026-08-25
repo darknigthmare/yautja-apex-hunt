@@ -406,6 +406,9 @@ export class MothershipHub {
 
     const definitions = Object.values(HUNT_DEFINITIONS);
     const spacing = 56 / Math.max(1, definitions.length - 1);
+    const frameRailGeometry = new THREE.BoxGeometry(1, 1, 1);
+    const vaultGlyphGeometry = new THREE.BoxGeometry(0.42, 0.12, 0.1);
+    const staticTransform = new THREE.Object3D();
     definitions.forEach((definition, index) => {
       const x = (index - ((definitions.length - 1) / 2)) * spacing;
       const display = new THREE.Group();
@@ -417,24 +420,38 @@ export class MothershipHub {
       display.add(plaque);
 
       const frameMaterial = this.createSignalMaterial(index % 2 === 0 ? 0xff4a22 : 0x8b43ff, 0.74);
-      for (const side of [-1, 1]) {
-        const sideRail = new THREE.Mesh(new THREE.BoxGeometry(0.13, 6.8, 0.16), frameMaterial);
-        sideRail.position.set(x + (side * 3.05), 13, -31.25);
-        display.add(sideRail);
-      }
-      for (const y of [9.65, 16.35]) {
-        const frameRail = new THREE.Mesh(new THREE.BoxGeometry(6.2, 0.13, 0.16), frameMaterial);
-        frameRail.position.set(x, y, -31.25);
-        display.add(frameRail);
-      }
+      const frameRails = new THREE.InstancedMesh(frameRailGeometry, frameMaterial, 4);
+      frameRails.name = `vault-frame-rails-${definition.id}`;
+      [-1, 1].forEach((side, railIndex) => {
+        staticTransform.position.set(x + (side * 3.05), 13, -31.25);
+        staticTransform.rotation.set(0, 0, 0);
+        staticTransform.scale.set(0.13, 6.8, 0.16);
+        staticTransform.updateMatrix();
+        frameRails.setMatrixAt(railIndex, staticTransform.matrix);
+      });
+      [9.65, 16.35].forEach((y, railIndex) => {
+        staticTransform.position.set(x, y, -31.25);
+        staticTransform.rotation.set(0, 0, 0);
+        staticTransform.scale.set(6.2, 0.13, 0.16);
+        staticTransform.updateMatrix();
+        frameRails.setMatrixAt(railIndex + 2, staticTransform.matrix);
+      });
+      frameRails.instanceMatrix.needsUpdate = true;
+      display.add(frameRails);
 
       // Motif déterministe : lisible comme identifiant alien sans faux texte minuscule.
       const glyphCount = 2 + (index % 3);
+      const glyphs = new THREE.InstancedMesh(vaultGlyphGeometry, frameMaterial, glyphCount);
+      glyphs.name = `vault-glyphs-${definition.id}`;
       for (let glyphIndex = 0; glyphIndex < glyphCount; glyphIndex += 1) {
-        const glyph = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.12, 0.1), frameMaterial);
-        glyph.position.set(x - 1 + (glyphIndex * 0.66), 10.25, -31.08);
-        display.add(glyph);
+        staticTransform.position.set(x - 1 + (glyphIndex * 0.66), 10.25, -31.08);
+        staticTransform.rotation.set(0, 0, 0);
+        staticTransform.scale.set(1, 1, 1);
+        staticTransform.updateMatrix();
+        glyphs.setMatrixAt(glyphIndex, staticTransform.matrix);
       }
+      glyphs.instanceMatrix.needsUpdate = true;
+      display.add(glyphs);
 
       const material = new THREE.MeshStandardMaterial({
         color: definition.trophyColor ?? 0xddccaa,

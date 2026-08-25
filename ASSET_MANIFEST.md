@@ -1,8 +1,8 @@
 # Manifest des assets — Yautja: Apex Hunt
 
 **Date d'inventaire :** 25 août 2026
-**Périmètre :** textures OpenAI du chantier de professionnalisation, de la passe props et des vagues contenu 1.3–1.10.
-**Provenance commune :** modèle ImageGen intégré OpenAI, créations originales fan-made produites du 21 au 25 août 2026, sans image officielle fournie comme référence ni copie d'assets officiels. Les sources PNG conservées restent hors Git et ne sont pas déployées ; le PNG temporaire de la matière urbaine 1.10 a été inspecté, converti puis supprimé après validation afin de libérer l’espace disque. Les WebP sont les fichiers runtime publics du livrable.
+**Périmètre :** textures OpenAI du chantier de professionnalisation, de la passe props et des vagues contenu 1.3–1.11.
+**Provenance commune :** modèle ImageGen intégré OpenAI, créations originales fan-made produites du 21 au 25 août 2026, sans image officielle fournie comme référence ni copie d'assets officiels. Les sources PNG conservées restent hors Git et ne sont pas déployées ; les WebP sont les fichiers runtime publics du livrable.
 
 ## Registre
 
@@ -36,8 +36,10 @@
 | `genna-spore-pod-hide` | `public/assets/textures/genna-spore-pod-hide.webp` | 1254×1254 | 561 416 octets | aire du Kalisk, bosquets de spores et nœuds régénératifs de Genna | présent et référencé par le catalogue de props v1.6 |
 | `genna-sporeback-carapace` | `public/assets/textures/genna-sporeback-carapace.webp` | 1024×1024 | 343 106 octets | mesh du Sporeback de Genna | WebP runtime présent ; PNG maître conservé localement hors Git |
 | `los-angeles-heatwave-urban` | `public/assets/textures/los-angeles-heatwave-urban.webp` | 1536×1536 | 846 546 octets | sols, façades et props du biome Los Angeles 1997 | WebP runtime référencé, couvert par contrat et servi en production HTTP 200 `image/webp` |
+| `bouvetoya-ice-rock` | `public/assets/textures/bouvetoya-ice-rock.webp` | 1254×1254 | 484 446 octets | terrain glaciaire, basalte et props de surface de Bouvetøya | WebP runtime décodé et référencé par le biome v1.11 |
+| `bouvetoya-pyramid-stone` | `public/assets/textures/bouvetoya-pyramid-stone.webp` | 1254×1254 | 409 994 octets | architecture, murs mobiles, chambres et props de la pyramide | WebP runtime décodé et référencé par le biome v1.11 |
 
-**Poids public total inventorié : 9 683 134 octets.** Les six matières de décor initiales ont été converties avec Sharp en WebP 1024×1024. Les trois matières de props 1024×1024 ont été normalisées par quadrants miroir. La vague 1.3 ajoute six sorties WebP 1254×1254 ; la vague 1.4 ajoute quatre sorties WebP 1024×1024 ; la vague 1.5 ajoute trois sorties WebP 1024×1024 ; la vague 1.6 ajoute quatre sorties WebP 1254×1254 ; la vague 1.8 ajoute une sortie WebP 1024×1024 ; la release 1.10 ajoute une sortie WebP 1536×1536. Les dimensions et poids des vingt-huit fichiers ainsi que les validations locales et publiques de la 1.10 sont consignés ici et dans `QA_REPORT.md`.
+**Poids public total inventorié : 10 577 574 octets.** Les deux matières v1.11 ajoutent 894 440 octets et portent l’inventaire à trente WebP. Les dimensions, poids et usages des sorties précédentes restent consignés avec leurs gates de release respectifs.
 
 Les quinze textures disponibles à l’issue de la 1.3 ont été chargées sans erreur dans Chromium et contrôlées sur la production correspondante. Les quatre matières 1.4 sont intégrées au biome Genna, au Feral, aux unités humaines et à la faune. Les trois matières 1.5 sont reliées à Wolf, au Lost Tribe et au Kalisk dans le code. Les quatre matières 1.6 sont référencées par les plans de props des biomes, décodées et chargées en HTTP 200 dans Chromium local puis sur l’alias de production avec le type `image/webp`. La répétition et le contraste doivent encore être jugés sur plusieurs écrans physiques, notamment avec GPU modeste.
 
@@ -60,6 +62,16 @@ Le lot v1.10 ajoute une matière OpenAI originale raccordable pour le septième 
 - aucune image officielle, texte, logo, UI, personnage ou reproduction d’un lieu de film n’a servi de contenu visuel.
 
 Cette sortie porte l’inventaire à 28 textures WebP et 9 683 134 octets. Son contrat automatisé confirme RIFF/WEBP, 1536×1536 et 846 546 octets ; elle a été chargée dans le parcours Chromium local puis servie en production en HTTP 200 avec le type `image/webp` par le déploiement `dpl_2xbt59JRaxhUEcM7MNoqozPSUjqk`.
+
+## Lot v1.11 — matières Bouvetøya et pyramide du Blooding
+
+- `bouvetoya-ice-rock.webp` — 1254×1254, 484 446 octets ;
+- `bouvetoya-pyramid-stone.webp` — 1254×1254, 409 994 octets ;
+- génération bitmap originale via le mode intégré ImageGen, sans image officielle fournie comme référence ;
+- inspection visuelle des PNG maîtres, conversion WebP locale et décodage Pillow validés ;
+- absence de texte, logo, UI, watermark, personnage, glyphe officiel et asset de film dans les deux prompts et sorties retenues.
+
+Ce lot porte l’inventaire à 30 textures WebP et 10 577 574 octets. La validation publique de ces deux chemins sera consignée après publication de la release 1.11.
 
 ## Lot v1.6 — synthèse props et level design
 
@@ -94,12 +106,13 @@ Pour chaque fichier :
 1. **Validé :** inspection visuelle des sources maîtres disponibles avant conversion ;
 2. **Partiel :** mosaïque 2×2 validée pour les trois matières de props ; contrôle physique multi-écran encore ouvert ;
 3. **Validé sur les sources maîtres :** absence de texte et de marques protégées ;
-4. **Validé pour l’inventaire :** dimensions déclarées, format, poids individuel et poids total des vingt-huit WebP ;
+4. **Validé pour l’inventaire :** dimensions déclarées, format, poids individuel et poids total des trente WebP ;
 5. **Validé :** inspection visuelle des matières OpenAI précédentes et des quatre sorties WebP 1.6 à leur définition native ;
 6. **Validé pour la 1.3 :** chargement Chromium et HTTP 200 des six nouveaux chemins publics ;
 7. **Validé dans le code :** le chargeur applique un matériau de fallback si un asset échoue ;
 8. **Validé localement et en production pour la 1.6 :** quatre nouveaux chemins décodés, rendus et chargés en HTTP 200 dans Chromium, puis servis en HTTP 200 avec le type `image/webp` sur l’alias public.
 9. **Validé localement et en production pour la 1.10 :** matière urbaine décodée, rendue dans les parcours Chromium, puis servie sur l’alias public en HTTP 200 `image/webp`, 846 546 octets.
+10. **Validé localement pour la 1.11 :** deux matières Bouvetøya décodées en WebP 1254×1254 ; rendu Chromium et contrôle public restent à enregistrer au gate de release.
 
 ## Publication et droits
 

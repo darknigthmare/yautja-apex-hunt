@@ -70,9 +70,9 @@ test('la passe contenu respecte les seuils de production demandés', () => {
     events: LEVEL_EVENT_CATALOG.length,
     bosses: HUNT_BOSS_CATALOG.length,
     support: SUPPORT_CATALOG.length,
-  }, { technologies: 42, vehicles: 13, enemies: 35, events: 23, bosses: 14, support: 13 });
-  assert.equal(TECH_CATALOG.length + VEHICLE_CATALOG.length + ENEMY_CATALOG.length + LEVEL_EVENT_CATALOG.length + HUNT_BOSS_CATALOG.length + SUPPORT_CATALOG.length, 140);
-  assert.equal(ALL_YAUTJA_CONTENT.length, 214);
+  }, { technologies: 43, vehicles: 13, enemies: 36, events: 24, bosses: 15, support: 13 });
+  assert.equal(TECH_CATALOG.length + VEHICLE_CATALOG.length + ENEMY_CATALOG.length + LEVEL_EVENT_CATALOG.length + HUNT_BOSS_CATALOG.length + SUPPORT_CATALOG.length, 144);
+  assert.equal(ALL_YAUTJA_CONTENT.length, 218);
 });
 
 test('tous les identifiants sont uniques et chaque fiche expose son statut réel', () => {
@@ -174,6 +174,11 @@ test('le catalogue couvre largement les concepts établis à l’écran', () => 
   assert.equal(getYautjaContentById('event_kalisk_regeneration')?.runtimeStatus, 'playable');
   assert.equal(getYautjaContentById('boss_wolf_cleaner')?.runtimeStatus, 'playable');
   assert.equal(getYautjaContentById('boss_kalisk_badlands')?.runtimeStatus, 'playable');
+  assert.equal(getYautjaContentById('grid_alien')?.runtimeStatus, 'playable');
+  assert.equal(getYautjaContentById('enemy_weyland_expedition_guard')?.runtimeStatus, 'encounter');
+  assert.equal(getYautjaContentById('event_pyramid_shift')?.runtimeStatus, 'encounter');
+  assert.equal(getYautjaContentById('event_avp_pyramid_trial_directive')?.runtimeStatus, 'playable');
+  assert.equal(getYautjaContentById('vehicle_avp_clan_ship')?.runtimeStatus, 'encounter');
   for (const existingBossId of ['goliath', 'xeno_queen', 'bad_blood', 'predalien']) {
     assert.ok(HUNT_BOSS_CATALOG.some(({ id }) => id === existingBossId), existingBossId);
   }

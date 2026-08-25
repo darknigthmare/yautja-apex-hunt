@@ -2,6 +2,29 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
+## [1.11.0] — 25 août 2026 (candidate locale)
+
+### Onzième chasse et pyramide de Bouvetøya
+
+- contrat `grid_alien` ajouté comme onzième chasse, biome `bouvetoya_pyramid` comme huitième terrain et directive `avp_pyramid_trial` comme dixième mode de chasse ;
+- adaptation originale de l’épreuve antarctique d’*Alien vs. Predator* (2004), séparée explicitement d’une reproduction de scène, de carte ou d’asset officiel ;
+- plan ouvert de rayon 740 avec dix secteurs, 18 routes bouclées, sept territoires et sept nœuds d’événements/migration, répartis entre surface Weyland, banquise, seuil, chambres, galeries et arène ;
+- directive en trois vagues opposant garde Weyland, Facehugger puis guerrier xénomorphe, avec objectifs et répartition spatiale propres.
+
+### Grid Alien, décor et contenu
+
+- boss Grid Alien procédural à 25 244 triangles HD, 37 522 triangles au total et 30 meshes ; dôme biomécanique et queue segmentée sont ciblables et destructibles ;
+- silhouette quadrillée, mâchoire interne, tubes dorsaux, bond, balayage de queue, sang/projections acides et réactions de phase raccordés au combat ;
+- deux matières OpenAI originales 1254×1254, `bouvetoya-ice-rock.webp` et `bouvetoya-pyramid-stone.webp`, branchées au biome et servies en HTTP 200 local ;
+- inventaire porté à 30 textures WebP pour 10 577 574 octets, et catalogues portés à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées.
+
+### Validation locale et publication à compléter
+
+- suite finale de 318/318 tests, build Vite réussi avec 49 modules et `npm audit --omit=dev` à 0 vulnérabilité ;
+- Chromium local desktop et 390×844 valide la sélection Bouvetøya, le lancement Grid et le responsive sans erreur applicative ni débordement horizontal ;
+- les deux textures Bouvetøya répondent en HTTP 200 local ; aucun contrôle public v1.11 n’est revendiqué avant publication ;
+- **commit/push v1.11 : à compléter — non effectué ; ID de déploiement Vercel v1.11 : à compléter — non créé ; URL/alias public v1.11 : à compléter après publication.**
+
 ## [1.10.0] — 25 août 2026
 
 ### Dixième chasse et Los Angeles 1997

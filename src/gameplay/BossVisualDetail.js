@@ -13,6 +13,7 @@ const BOSS_TYPE_TO_ARCHETYPE = Object.freeze({
   wolfCleaner: 'wolf',
   kalisk: 'kalisk',
   cityHunter: 'city_hunter',
+  gridAlien: 'grid_alien',
 });
 
 function freezeProfile(profile) {
@@ -56,6 +57,27 @@ export const BOSS_VISUAL_PROFILES = Object.freeze({
         { position: [-3.3, 5.2, 3.7], scale: [0.78, 3.35, 0.8], rotation: [0, 0, 0.7] },
         { position: [3.25, 3.5, -3.5], scale: [1.02, 3.4, 1.05] },
         { position: [-3.25, 3.5, -3.5], scale: [1.02, 3.4, 1.05] },
+      ],
+    },
+  }),
+  grid_alien: freezeProfile({
+    features: [
+      'elongated_translucent_dome',
+      'dorsal_tubes',
+      'inner_jaw',
+      'segmented_blade_tail',
+      'permanent_grid_acid_scars',
+    ],
+    texturePaths: ['/assets/textures/xeno-carapace.webp', '/assets/textures/hive-biomechanical-membrane.webp'],
+    colors: [0x0a1014, 0x2b373c, 0xb8c7b3, 0xbaff36],
+    foundation: {
+      torso: { position: [0, 5.2, -0.1], scale: [1.86, 2.7, 1.32] },
+      head: { position: [0, 8.65, 2.9], scale: [1.28, 1.08, 2.68] },
+      limbs: [
+        { position: [2.35, 4.95, 0.55], scale: [0.48, 2.55, 0.5], rotation: [-0.18, 0, -0.48] },
+        { position: [-2.35, 4.95, 0.55], scale: [0.48, 2.55, 0.5], rotation: [-0.18, 0, 0.48] },
+        { position: [1.12, 1.75, 0], scale: [0.7, 2.2, 0.74], rotation: [-0.18, 0, -0.2] },
+        { position: [-1.12, 1.75, 0], scale: [0.7, 2.2, 0.74], rotation: [-0.18, 0, 0.2] },
       ],
     },
   }),
@@ -316,6 +338,75 @@ function buildQueen(root, materials, features) {
     });
   }
 }
+function buildGridAlien(root, materials, features) {
+  // Dôme lisse et allongé : la masse avant reste immédiatement distincte de
+  // la couronne d'une reine et de la tête hybride du Predalien.
+  addFeatureMesh(root, new THREE.CapsuleGeometry(1.25, 4.5, 16, 38), materials.primary, features[0], {
+    name: 'gridAlienHighDefinitionDome',
+    position: [0, 8.82, 3.15],
+    rotation: [Math.PI / 2, 0, 0],
+    scale: [1.12, 1, 0.86],
+  });
+
+  // Les quatre tubes dorsaux sont construits comme des courbes indépendantes
+  // afin de conserver un profil lisible de trois quarts.
+  for (const side of [-1, 1]) {
+    for (let row = 0; row < 2; row += 1) {
+      const x = side * (0.76 + row * 0.45);
+      const curve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(x, 7.1 - row * 0.4, -0.55),
+        new THREE.Vector3(x * 1.18, 8.5 - row * 0.22, -1.45 - row * 0.55),
+        new THREE.Vector3(x * 1.28, 9.25 - row * 0.32, -3.05 - row * 0.72),
+      ]);
+      addFeatureMesh(root, new THREE.TubeGeometry(curve, 24, 0.22 - row * 0.025, 9, false), materials.accent, features[1]);
+    }
+  }
+
+  const jaw = new THREE.Group();
+  jaw.name = 'gridAlienHighDefinitionInnerJaw';
+  jaw.position.set(0, 8.05, 4.75);
+  addFeatureMesh(jaw, new THREE.CylinderGeometry(0.26, 0.34, 2.35, 16, 3), materials.dark, features[2], {
+    position: [0, 0, 0.95],
+    rotation: [Math.PI / 2, 0, 0],
+  });
+  addFeatureMesh(jaw, new THREE.ConeGeometry(0.43, 0.82, 16, 3), materials.bone, features[2], {
+    position: [0, 0, 2.35],
+    rotation: [Math.PI / 2, 0, 0],
+  });
+  root.add(jaw);
+
+  const tail = new THREE.Group();
+  tail.name = 'gridAlienHighDefinitionTail';
+  tail.userData.featureTag = features[3];
+  for (let index = 0; index < 10; index += 1) {
+    const radius = Math.max(0.22, 0.62 - index * 0.04);
+    addFeatureMesh(tail, new THREE.CapsuleGeometry(radius, 1.2, 7, 14), index < 4 ? materials.primary : materials.accent, features[3], {
+      position: [Math.sin(index * 0.31) * index * 0.16, 4.05 - index * 0.09, -2.7 - index * 1.32],
+      rotation: [Math.PI / 2, 0, -Math.sin(index * 0.31) * 0.12],
+    });
+  }
+  addFeatureMesh(tail, new THREE.ConeGeometry(0.75, 3.5, 16, 4), materials.bone, features[3], {
+    position: [0.15, 3.05, -16.4],
+    rotation: [-Math.PI / 2, 0, -0.08],
+    scale: [0.72, 1, 1.3],
+  });
+  root.add(tail);
+
+  // La grille acide est une marque identitaire permanente, pas une émission
+  // dépendante d'une phase ou d'un état de rage.
+  for (let index = -1; index <= 1; index += 1) {
+    addFeatureMesh(root, new THREE.BoxGeometry(0.085, 0.085, 3.65), materials.glow, features[4], {
+      position: [index * 0.46, 9.38, 3.2],
+      castShadow: false,
+      visionExempt: true,
+    });
+    addFeatureMesh(root, new THREE.BoxGeometry(1.9, 0.085, 0.085), materials.glow, features[4], {
+      position: [0, 9.4, 2.45 + index * 0.75],
+      castShadow: false,
+      visionExempt: true,
+    });
+  }
+}
 
 function buildBadBlood(root, materials, features) {
   addFeatureMesh(root, new THREE.SphereGeometry(1, 40, 24, 0, Math.PI * 2, 0, Math.PI * 0.72), materials.bone, features[0], {
@@ -506,6 +597,7 @@ function buildKalisk(root, materials, features) {
 const BUILDERS = Object.freeze({
   goliath: buildGoliath,
   queen: buildQueen,
+  grid_alien: buildGridAlien,
   bad_blood: buildBadBlood,
   predalien: buildPredalien,
   super_predator: buildSuperPredator,
@@ -575,6 +667,11 @@ export function syncBossVisualDetail(boss, bossType) {
     setFeatureVisibility(root, 'tail_guard', boss.tailIntact !== false);
   } else if (archetype === 'queen') {
     setFeatureVisibility(root, 'royal_crown', boss.crownIntact !== false);
+  } else if (archetype === 'grid_alien') {
+    const headVisible = boss.headIntact !== false;
+    setFeatureVisibility(root, 'elongated_translucent_dome', headVisible);
+    setFeatureVisibility(root, 'inner_jaw', headVisible);
+    setFeatureVisibility(root, 'segmented_blade_tail', boss.tailIntact !== false);
   } else if (archetype === 'predalien') {
     const headVisible = boss.headIntact !== false;
     setFeatureVisibility(root, 'elongated_dome', headVisible);

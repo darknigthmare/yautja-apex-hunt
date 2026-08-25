@@ -16,6 +16,7 @@ import { Environment } from '../src/world/Environment.js';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const BIOME_IDS = Object.keys(BIOME_DEFINITIONS).sort();
 const EXPECTED_BIOMES = [
+  'bouvetoya_pyramid',
   'genna_deathworld',
   'hive_lv426',
   'jungle',
@@ -373,6 +374,7 @@ test('props, POI, dangers et placements legacy restent ancrés au terrain sans c
         z: prop.position[2],
         runtimeY: prop.position[1],
         visualY: prop.mesh.position.y,
+        mobile: prop.type === 'pyramid_shift_wall',
       })),
       ...environment.pointsOfInterest.map((poi) => ({
         id: poi.id,
@@ -392,7 +394,11 @@ test('props, POI, dangers et placements legacy restent ancrés au terrain sans c
     anchoredEntries.forEach((entry) => {
       const terrainY = environment.sampleHeight(entry.x, entry.z);
       assert.ok(Math.abs(entry.runtimeY - terrainY) < 0.000001, `${entry.id}: runtime hors terrain`);
-      assert.ok(Math.abs(entry.visualY - terrainY) < 0.000001, `${entry.id}: visuel hors terrain`);
+      if (entry.mobile) {
+        assert.ok(entry.visualY >= terrainY && entry.visualY <= terrainY + 24, `${entry.id}: course mobile invalide`);
+      } else {
+        assert.ok(Math.abs(entry.visualY - terrainY) < 0.000001, `${entry.id}: visuel hors terrain`);
+      }
     });
 
     const propIds = new Set(getBiomePropPlan(biomeId).props.map(({ id }) => id));

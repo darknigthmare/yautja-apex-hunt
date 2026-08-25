@@ -1,10 +1,10 @@
 # Yautja: Apex Hunt
 
-Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur incarne un chasseur Yautja, forge une apparence modulaire dans le vaisseau-mère, puis affronte dix cibles et des incidents dynamiques dans sept biomes.
+Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur incarne un chasseur Yautja, forge une apparence modulaire dans le vaisseau-mère, puis affronte onze cibles et des incidents dynamiques dans huit biomes.
 
 ## État du projet
 
-La version 1.10.0 est publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Elle étend réellement le contenu à dix chasses, sept biomes, neuf directives, quinze armes, neuf classes et 214 entrées de catalogue. Les gates finaux comptent 299/299 tests, 48 modules Vite, 0 vulnérabilité de production et deux parcours Chromium locaux sans erreur ni débordement ; le commit fonctionnel `9f56b0d` est poussé et le déploiement Vercel `dpl_2xbt59JRaxhUEcM7MNoqozPSUjqk` est `READY` sur l’alias public HTTP 200.
+La version 1.10.0 reste la production publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). La candidate 1.11.0 Bouvetøya/Grid porte le contenu local à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées de catalogue. Ses gates locaux sont franchis avec 318/318 tests, un build Vite de 49 modules, un audit à 0 vulnérabilité et des parcours Chromium desktop/390×844 sans erreur ni débordement. **Commit/push v1.11 : à compléter — non effectué. Déploiement Vercel v1.11 : à compléter — non créé. URL/alias public v1.11 : à compléter après publication.**
 
 ## Lancer localement
 
@@ -26,21 +26,32 @@ npm audit
 ## Boucle de jeu
 
 - hub du vaisseau-mère, arsenal, forge et trophées persistants ;
-- dix chasses : Goliath Xeno-Akumo, Reine xénomorphe, rival Bad Blood, Predalien, Berserker Super Predator, Feral, Wolf Cleaner, Kalisk, Assassin Predator (2018), génétiquement amélioré, et City Hunter dans l’adaptation originale Los Angeles 1997 ;
-- sept biomes : jungle, ruche, Ryushi, arène de clan, monde mortel de Genna, site noir Stargazer et Los Angeles 1997 sous canicule ;
-- sept plans déterministes de 630 à 760 unités de rayon, avec neuf à dix secteurs et 12 à 18 routes bouclées ; Los Angeles déploie précisément dix secteurs, 18 routes non linéaires, sept territoires, 20 résidents, sept événements et six étapes de migration de la cible sur un rayon jouable de 760 unités ;
-- vingt-neuf familles de PNJ 3D, dont trois nouveaux adversaires urbains — homme de main de cartel, chasseur armé du métro et commando OWLF cryogénique —, avec comportements distincts, patrouilles territoriales, migrations de proies, conflits d’écosystème, renforts bornés et combat maintenu jusqu’au prélèvement ;
-- quatre véhicules/navettes 3D, dont l’appareil d’évasion Fugitive endommagé et l’intercepteur de clan déployé à Los Angeles, et six profils de conteneurs interactifs, dont la récupération Stargazer et le cache froid OWLF ;
+- onze chasses : Goliath Xeno-Akumo, Reine xénomorphe, rival Bad Blood, Predalien, Berserker Super Predator, Feral, Wolf Cleaner, Kalisk, Assassin Predator (2018), génétiquement amélioré, City Hunter dans l’adaptation originale Los Angeles 1997 et Grid Alien dans l’épreuve de Bouvetøya ;
+- huit biomes : jungle, ruche, Ryushi, arène de clan, monde mortel de Genna, site noir Stargazer, Los Angeles 1997 sous canicule et pyramide antarctique de Bouvetøya ;
+- huit plans déterministes de 630 à 760 unités de rayon, avec neuf à dix secteurs et 12 à 18 routes bouclées ; Bouvetøya déploie précisément dix secteurs, 18 routes non linéaires, sept territoires et sept nœuds d’événements/migration sur un rayon jouable de 740 unités ;
+- trente familles de PNJ 3D, dont le garde d’expédition Weyland polaire et trois adversaires urbains — homme de main de cartel, chasseur armé du métro et commando OWLF cryogénique —, avec comportements distincts, patrouilles territoriales, migrations de proies, conflits d’écosystème, renforts bornés et combat maintenu jusqu’au prélèvement ;
+- cinq véhicules/navettes 3D, dont l’appareil d’évasion Fugitive endommagé, l’intercepteur de clan de Los Angeles et le vaisseau rituel AVP à quatre capsules du Blooding, ainsi que six profils de conteneurs interactifs, dont la récupération Stargazer et le cache froid OWLF ;
 - quinze armes jouables : l’arsenal historique est complété par la roquette de poignet du profil City Stalker, avec explosion de zone, coût d’énergie et recharge propres ; bouclier `[B]`, drone-faucon `[G]`, shuriken `[T]`, leurre Apex `[Y]`, camouflage, vision et mimétisme complètent l’équipement ;
-- neuf classes jouables, 38 bio-masques, 50 presets d’armure et neuf axes modulaires : classe, masque, peau, couleur/style de predlocks, couleur/accent/finition d’armure et warpaint ; la sélection atteint huit styles de predlocks, neuf finitions et neuf warpaints ; les huit variantes Lost Tribe restent balisées `LICENSED_SCREEN_DESIGN` ;
+- dix classes jouables, 38 bio-masques, 50 presets d’armure et neuf axes modulaires : classe, masque, peau, couleur/style de predlocks, couleur/accent/finition d’armure et warpaint ; la sélection atteint neuf styles de predlocks, dix finitions et dix warpaints ; les huit variantes Lost Tribe restent balisées `LICENSED_SCREEN_DESIGN` ;
 - progression d’honneur cumulée, crédits de forge et sauvegarde locale v4 avec migration v1/v2/v3 ;
-- catalogue franchise/support au statut explicite : jouable, rencontre 3D, galerie 3D ou archive, complété par un registre de 29 œuvres et médias distinguant publié, coupé, non publié, promotion et crossover séparé ;
+- catalogue franchise/support de 218 entrées au statut explicite — jouable, rencontre 3D, galerie 3D ou archive — complété par un registre de 29 œuvres et médias distinguant publié, coupé, non publié, promotion et crossover séparé ;
 - pause, audio, mouvement réduit, fort contraste et échelle du HUD ;
 - Codex séparant écran Predator, écran AVP, univers étendu sous licence et créations originales.
 
 ## Direction artistique et assets
 
-Les vingt-huit textures de décor, props et créatures sous `public/assets/textures/`, totalisant 9 683 134 octets, sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La release 1.10 ajoute `los-angeles-heatwave-urban.webp`, matière urbaine raccordable 1536×1536 pour les sols et props de la canicule. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+Les trente textures de décor, props et créatures sous `public/assets/textures/`, totalisant 10 577 574 octets, sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La candidate 1.11 ajoute `bouvetoya-ice-rock.webp` et `bouvetoya-pyramid-stone.webp`, deux matières 1254×1254 pour la banquise, le basalte et l’architecture mobile de la pyramide. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+
+## Passe v1.11 — Bouvetøya et Grid Alien
+
+- onzième contrat `grid_alien`, huitième biome `bouvetoya_pyramid` et dixième directive `avp_pyramid_trial`, conçus comme une adaptation jouable originale de l’épreuve antarctique d’*Alien vs. Predator* (2004), sans reproduction de niveau ni d’asset officiel ;
+- carte ouverte de 740 unités de rayon, structurée en dix secteurs, 18 routes bouclées, sept territoires et sept nœuds d’événements/migration entre camp Weyland, banquise, tunnels, chambres sacrificielles, galeries de résine, chambre royale et arène de Grid ;
+- directive en trois vagues — garde Weyland, Facehugger puis guerrier xénomorphe — et distribution des menaces dans plusieurs branches de la pyramide afin de conserver exploration, retours et choix de route ;
+- Grid Alien procédural haute définition : 25 244 triangles HD, 37 522 triangles au total et 30 meshes, avec dôme et queue segmentée destructibles, cicatrices quadrillées, mâchoire interne, balayage, bond et projections acides ;
+- deux textures OpenAI originales réellement référencées par le biome : roche/glace de surface et pierre de pyramide ; l’inventaire public du projet atteint 30 WebP et 10 577 574 octets ;
+- catalogues et interfaces portés à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées sans effacer les vagues précédentes.
+
+Gates locaux v1.11 : 318/318 tests, build Vite réussi avec 49 modules, audit de production à 0 vulnérabilité, Chromium desktop et 390×844 sans erreur applicative ni débordement, et deux textures Bouvetøya servies en HTTP 200 local. La publication n’a pas encore été exécutée : **commit/push v1.11 à compléter ; ID de déploiement Vercel v1.11 à compléter ; URL/alias public v1.11 à compléter.**
 
 ## Passe v1.10 — Los Angeles 1997 et City Hunter
 

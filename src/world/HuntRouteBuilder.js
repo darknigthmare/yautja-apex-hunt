@@ -6,6 +6,7 @@ const ROUTE_STYLE = Object.freeze({
   ryushi_desert: { route: 0x6f4c2d, marker: 0xffce7a, event: 0xff7138 },
   yautja_prime: { route: 0x432522, marker: 0xff8f70, event: 0x76f6ff },
   genna_deathworld: { route: 0x2f3823, marker: 0xcaff73, event: 0xff9454 },
+  bouvetoya_pyramid: { route: 0x303b42, marker: 0x8feaff, event: 0xc58a52 },
 });
 
 function vectorFromLayout(value) {
@@ -188,6 +189,7 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
     ryushi_desert: new THREE.DodecahedronGeometry(7.5, 1),
     yautja_prime: new THREE.BoxGeometry(7, 30, 7, 2, 6, 2),
     genna_deathworld: new THREE.ConeGeometry(4.2, 27, 8),
+    bouvetoya_pyramid: new THREE.CylinderGeometry(3.6, 5.2, 28, 6),
   };
   const accentGeometryByBiome = {
     jungle: new THREE.DodecahedronGeometry(9, 1),
@@ -195,6 +197,7 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
     ryushi_desert: new THREE.OctahedronGeometry(5.2, 1),
     yautja_prime: new THREE.OctahedronGeometry(3.2, 1),
     genna_deathworld: new THREE.SphereGeometry(4.8, 12, 8),
+    bouvetoya_pyramid: new THREE.OctahedronGeometry(4.2, 1),
   };
   const placements = [];
   layout.sectors.forEach((sector, sectorIndex) => {
@@ -248,7 +251,7 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
     emissive: style.marker,
     emissiveIntensity: 0.035,
     roughness: 0.9,
-    metalness: layout.biomeId === 'yautja_prime' ? 0.26 : 0.04,
+    metalness: ['yautja_prime', 'bouvetoya_pyramid'].includes(layout.biomeId) ? 0.26 : 0.04,
   });
   const accentMaterial = new THREE.MeshStandardMaterial({
     color: style.marker,
@@ -281,7 +284,7 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
     transform.rotation.set(
       layout.biomeId === 'ryushi_desert' ? placement.angle * 0.11 : 0,
       placement.angle,
-      layout.biomeId === 'hive_lv426' || layout.biomeId === 'genna_deathworld'
+      ['hive_lv426', 'genna_deathworld', 'bouvetoya_pyramid'].includes(layout.biomeId)
         ? Math.sin(placement.angle) * 0.13
         : 0,
     );

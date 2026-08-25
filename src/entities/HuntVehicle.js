@@ -119,21 +119,27 @@ export class HuntVehicle {
   createMesh() {
     const group = new THREE.Group();
     const isFugitiveCraft = this.type === 'fugitive_escape_craft';
-    group.userData.vehicleProfile = isFugitiveCraft ? 'damaged_fugitive_escape' : 'clan_recon';
+    const isRitualShip = this.type === 'avp_ritual_ship';
+    group.userData.vehicleProfile = isFugitiveCraft
+      ? 'damaged_fugitive_escape'
+      : isRitualShip
+        ? 'bouvetoya_blooding_carrier'
+        : 'clan_recon';
+    group.userData.assetPolicy = 'Silhouette procédurale originale ; aucun modèle ou asset officiel.';
     const energyTexture = getYautjaEnergyTexture();
     const hullMaterial = new THREE.MeshStandardMaterial({
-      color: isFugitiveCraft ? 0x222c31 : 0x363d3c,
+      color: isFugitiveCraft ? 0x222c31 : isRitualShip ? 0x202a29 : 0x363d3c,
       metalness: 0.92,
-      roughness: isFugitiveCraft ? 0.42 : 0.24,
+      roughness: isFugitiveCraft ? 0.42 : isRitualShip ? 0.34 : 0.24,
     });
     const armorMaterial = new THREE.MeshStandardMaterial({
-      color: isFugitiveCraft ? 0x48575b : 0x625f51,
+      color: isFugitiveCraft ? 0x48575b : isRitualShip ? 0x71664f : 0x625f51,
       metalness: 0.86,
-      roughness: isFugitiveCraft ? 0.5 : 0.32,
+      roughness: isFugitiveCraft ? 0.5 : isRitualShip ? 0.4 : 0.32,
     });
     const energyMaterial = new THREE.MeshStandardMaterial({
-      color: isFugitiveCraft ? 0xff8c58 : 0x42fff0,
-      emissive: isFugitiveCraft ? 0xb63f18 : 0x0ba89c,
+      color: isFugitiveCraft ? 0xff8c58 : isRitualShip ? 0x74ffe2 : 0x42fff0,
+      emissive: isFugitiveCraft ? 0xb63f18 : isRitualShip ? 0x168f80 : 0x0ba89c,
       emissiveIntensity: 2.4,
       map: energyTexture,
       emissiveMap: energyTexture,
@@ -142,12 +148,20 @@ export class HuntVehicle {
     });
 
     const hull = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 12), hullMaterial);
-    hull.scale.set(isFugitiveCraft ? 4.25 : 4.8, isFugitiveCraft ? 1.12 : 1.35, isFugitiveCraft ? 8.7 : 7.6);
+    hull.scale.set(
+      isFugitiveCraft ? 4.25 : isRitualShip ? 6.2 : 4.8,
+      isFugitiveCraft ? 1.12 : isRitualShip ? 1.55 : 1.35,
+      isFugitiveCraft ? 8.7 : isRitualShip ? 9.2 : 7.6,
+    );
     hull.castShadow = true;
     hull.receiveShadow = true;
     group.add(hull);
 
-    const nose = new THREE.Mesh(new THREE.ConeGeometry(isFugitiveCraft ? 1.85 : 2.3, isFugitiveCraft ? 7.4 : 6.2, isFugitiveCraft ? 6 : 5), armorMaterial);
+    const nose = new THREE.Mesh(new THREE.ConeGeometry(
+      isFugitiveCraft ? 1.85 : isRitualShip ? 2.65 : 2.3,
+      isFugitiveCraft ? 7.4 : isRitualShip ? 7.8 : 6.2,
+      isFugitiveCraft ? 6 : isRitualShip ? 7 : 5,
+    ), armorMaterial);
     nose.rotation.x = Math.PI / 2;
     nose.position.z = isFugitiveCraft ? -8.2 : -6.8;
     nose.scale.x = isFugitiveCraft ? 1.12 : 1.35;
@@ -159,8 +173,8 @@ export class HuntVehicle {
     spine.castShadow = true;
     group.add(spine);
 
-    const wingReach = isFugitiveCraft ? 8.2 : 10.5;
-    const wingSweep = isFugitiveCraft ? 7.2 : 3.8;
+    const wingReach = isFugitiveCraft ? 8.2 : isRitualShip ? 12.8 : 10.5;
+    const wingSweep = isFugitiveCraft ? 7.2 : isRitualShip ? 6.4 : 3.8;
     const wingGeometry = new THREE.BufferGeometry();
     wingGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
       0, 0, -4.5,
@@ -199,6 +213,31 @@ export class HuntVehicle {
       distressBeacon.name = 'fugitiveDistressBeacon';
       distressBeacon.position.set(-1.25, 1.7, 3.1);
       group.add(distressBeacon);
+    }
+    if (isRitualShip) {
+      const podGeometry = new THREE.CapsuleGeometry(0.68, 3.6, 8, 12);
+      for (const side of [-1, 1]) {
+        for (const z of [-2.6, 2.8]) {
+          const pod = new THREE.Mesh(podGeometry, armorMaterial);
+          pod.name = `ritual-drop-pod:${side}:${z}`;
+          pod.position.set(side * 4.25, -1.25, z);
+          pod.rotation.x = Math.PI / 2;
+          pod.rotation.z = side * 0.08;
+          pod.castShadow = true;
+          group.add(pod);
+        }
+      }
+      for (const z of [-2.2, 2.6]) {
+        const crown = new THREE.Mesh(new THREE.TorusGeometry(3.25, 0.24, 10, 36, Math.PI), armorMaterial);
+        crown.name = `ritual-crown:${z}`;
+        crown.position.set(0, 1.5, z);
+        crown.rotation.set(Math.PI / 2, 0, Math.PI / 2);
+        group.add(crown);
+      }
+      const bloodingBeacon = new THREE.Mesh(new THREE.OctahedronGeometry(0.52, 1), energyMaterial);
+      bloodingBeacon.name = 'blooding-cycle-beacon';
+      bloodingBeacon.position.set(0, 2.35, -0.8);
+      group.add(bloodingBeacon);
     }
 
     const energyKeel = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.2, 8.8), energyMaterial);
@@ -314,10 +353,11 @@ export class HuntVehicle {
 
     this.interacted = true;
     const isFugitiveCraft = this.type === 'fugitive_escape_craft';
-    const scanDuration = isFugitiveCraft ? 8 : 6;
-    const scanRadius = isFugitiveCraft ? 110 : 85;
-    const energyRestored = restoreResource(player, 'energy', 'maxEnergy', isFugitiveCraft ? 60 : 45);
-    const staminaRestored = restoreResource(player, 'stamina', 'maxStamina', isFugitiveCraft ? 38 : 30);
+    const isRitualShip = this.type === 'avp_ritual_ship';
+    const scanDuration = isFugitiveCraft ? 8 : isRitualShip ? 9 : 6;
+    const scanRadius = isFugitiveCraft ? 110 : isRitualShip ? 120 : 85;
+    const energyRestored = restoreResource(player, 'energy', 'maxEnergy', isFugitiveCraft ? 60 : isRitualShip ? 70 : 45);
+    const staminaRestored = restoreResource(player, 'stamina', 'maxStamina', isFugitiveCraft ? 38 : isRitualShip ? 45 : 30);
     player.scanPulseTimer = Math.max(Number(player.scanPulseTimer) || 0, scanDuration);
     player.scanPulseRadius = Math.max(Number(player.scanPulseRadius) || 0, scanRadius);
     this.mesh.userData.interacted = true;

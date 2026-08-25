@@ -23,6 +23,7 @@ export const DEFAULT_LEVEL_EVENT_SCHEDULE = Object.freeze([
 ]);
 
 const EVENT_NODE_KIND_ALIASES = Object.freeze({
+  pyramid_shift: Object.freeze(['pyramid_shift']),
   localized_event: Object.freeze(['localized_hazard', 'localized_event']),
   spawn_cache: Object.freeze(['cache_drop']),
   prey_migration: Object.freeze(['prey_migration']),
@@ -36,6 +37,13 @@ const BIOME_LEVEL_EVENT_SCHEDULE_EXTENSIONS = Object.freeze({
   // supplémentaire consomme le troisième nœud sans modifier les autres cartes.
   los_angeles_1997: Object.freeze([
     Object.freeze({ at: 116, kind: 'localized_event' }),
+  ]),
+  // Trois cycles de pierre reconfigurent réellement les couloirs de Bouvetøya
+  // entre les vagues : le signal dédié pilote meshes et colliders du biome.
+  bouvetoya_pyramid: Object.freeze([
+    Object.freeze({ at: 48, kind: 'pyramid_shift' }),
+    Object.freeze({ at: 116, kind: 'pyramid_shift' }),
+    Object.freeze({ at: 166, kind: 'pyramid_shift' }),
   ]),
 });
 
@@ -74,6 +82,7 @@ export const HUNT_CACHE_TYPES = Object.freeze({
   trophy_reliquary: Object.freeze({ health: 0, energy: 20, honor: 240, shell: 0x4a3a2d, edge: 0xd1a54a, energyColor: 0xffc84b, emissive: 0xa35d0b }),
   stargazer_salvage: Object.freeze({ health: 28, energy: 65, honor: 180, shell: 0x343e44, edge: 0x8aa6ad, energyColor: 0xff8c58, emissive: 0x9b3014 }),
   owlf_cold_cache: Object.freeze({ health: 42, energy: 58, honor: 190, shell: 0x667278, edge: 0xb6d8df, energyColor: 0x75e8ff, emissive: 0x147c9b }),
+  ritual_weapon_pod: Object.freeze({ health: 24, energy: 85, honor: 210, shell: 0x242d2d, edge: 0x9b8964, energyColor: 0x74ffe2, emissive: 0x168f80 }),
 });
 
 let cacheSequence = 0;
@@ -431,6 +440,7 @@ export class LevelEventDirector {
   selectMigratingPreyType() {
     const biome = String(this.biomeId ?? '').toLowerCase();
     if (biome.includes('los_angeles')) return 'subway_armed_hunter';
+    if (biome.includes('bouvet') || biome.includes('pyramid')) return 'xeno_runner';
     if (biome.includes('hive')) return 'xeno_runner';
     if (biome.includes('genna') || biome.includes('yautja') || biome.includes('ryushi')) {
       return 'genna_grazer';
@@ -441,6 +451,7 @@ export class LevelEventDirector {
   selectTerritoryFactions() {
     const biome = String(this.biomeId ?? '').toLowerCase();
     if (biome.includes('los_angeles')) return ['urban_cartel_enforcer', 'subway_armed_hunter'];
+    if (biome.includes('bouvet') || biome.includes('pyramid')) return ['weyland_expedition_guard', 'xeno_warrior'];
     if (biome.includes('hive')) return ['xeno_drone', 'xeno_warrior'];
     if (biome.includes('genna')) return ['genna_grazer', 'genna_stalker'];
     if (biome.includes('yautja')) return ['hunting_hound', 'clan_sentry_drone'];
@@ -561,6 +572,11 @@ export class LevelEventDirector {
       if (ordinal === 2) return 'subway_armed_hunter';
       return 'owlf_cryo_commando';
     }
+    if (biome.includes('bouvet') || biome.includes('pyramid') || hunt.includes('grid_alien')) {
+      if (ordinal === 1) return 'weyland_expedition_guard';
+      if (ordinal === 2) return 'xeno_facehugger';
+      return 'xeno_warrior';
+    }
     if (biome.includes('hive') || biome.includes('xeno') || hunt.includes('xeno') || hunt.includes('predalien')) {
       return ordinal >= 3 ? 'xeno_warrior' : 'xeno';
     }
@@ -581,13 +597,16 @@ export class LevelEventDirector {
 
   selectHazardType() {
     const biome = String(this.biomeId ?? '').toLowerCase();
-    return biome.includes('jungle') || biome.includes('hive') ? 'rain' : 'thermal_storm';
+    return biome.includes('jungle') || biome.includes('hive') || biome.includes('bouvet')
+      ? 'rain'
+      : 'thermal_storm';
   }
 
   selectVehicleType() {
     const biome = String(this.biomeId ?? '').toLowerCase();
     if (biome.includes('los_angeles')) return 'clan_interceptor';
     if (biome.includes('stargazer')) return 'fugitive_escape_craft';
+    if (biome.includes('bouvet') || biome.includes('pyramid')) return 'avp_ritual_ship';
     if (biome.includes('hive')) return 'cleaner_shuttle';
     if (String(this.huntId).includes('bad_blood')) return 'clan_interceptor';
     return 'scout_shuttle';
@@ -597,6 +616,7 @@ export class LevelEventDirector {
     const biome = String(this.biomeId ?? '').toLowerCase();
     if (biome.includes('los_angeles')) return 'owlf_cold_cache';
     if (biome.includes('stargazer')) return 'stargazer_salvage';
+    if (biome.includes('bouvet') || biome.includes('pyramid')) return 'ritual_weapon_pod';
     if (biome.includes('hive')) return 'medicomp';
     if (biome.includes('yautja')) return 'trophy_reliquary';
     if (biome.includes('ryushi')) return 'energy_cell';
@@ -655,6 +675,27 @@ export class LevelEventDirector {
         objectiveId: event.objectiveId ?? null,
         enemyTypes,
         ordinal: ordinal + 1,
+        position: this.toSignalPosition(position),
+      });
+      return;
+    }
+
+    if (event.kind === 'pyramid_shift') {
+      const ordinal = this.getEventOrdinal(event);
+      const { node, position } = this.resolveEcosystemEvent(context, event.kind, ordinal, {
+        minRadius: 42,
+        maxRadius: 74,
+        clearance: 8,
+      });
+      this.emit({
+        type: 'pyramid_shift',
+        eventType: 'pyramid_shift',
+        sourceId: node?.id ?? `avp-pyramid-shift-${ordinal + 1}`,
+        label: node?.label ?? 'Reconfiguration de la pyramide',
+        description: 'Les blocs du temple ferment une voie et ouvrent un nouveau corridor de chasse.',
+        ordinal: ordinal + 1,
+        phase: ordinal % 3,
+        duration: Math.max(3, Number(node?.duration) || 7),
         position: this.toSignalPosition(position),
       });
       return;
@@ -790,6 +831,8 @@ export class LevelEventDirector {
         urban_cartel_enforcer: 'enemy_urban_cartel_enforcer',
         subway_armed_hunter: 'enemy_subway_armed_hunter',
         owlf_cryo_commando: 'enemy_owlf_cryo_commando',
+        weyland_expedition_guard: 'enemy_weyland_expedition_guard',
+        xeno_facehugger: 'enemy_xeno_facehugger',
       };
       this.enemySpawnCount = ordinal;
       const socket = this.getEncounterSocket(

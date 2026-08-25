@@ -9,6 +9,7 @@ import {
   PLAYER_GADGETS,
   PLAYABLE_WEAPONS,
   WARPAINT_PATTERNS,
+  ARMOR_PRESET_WEAPON_VARIANTS,
   WEAPON_TECH_VARIANTS,
   getPlayerGadgetById,
   getPlayerGadgetByKey,
@@ -21,10 +22,10 @@ import { YautjaPlayer } from '../src/entities/YautjaPlayer.js';
 const idsAreUnique = (entries) => new Set(entries.map(({ id }) => id)).size === entries.length;
 
 test('les nouvelles classes et apparences restent data-driven et conservent les défauts historiques', () => {
-  assert.equal(HUNTER_CLASSES.length, 9);
-  assert.equal(DREAD_STYLES.length, 8);
-  assert.equal(ARMOR_FINISHES.length, 9);
-  assert.equal(WARPAINT_PATTERNS.length, 9);
+  assert.equal(HUNTER_CLASSES.length, 10);
+  assert.equal(DREAD_STYLES.length, 9);
+  assert.equal(ARMOR_FINISHES.length, 10);
+  assert.equal(WARPAINT_PATTERNS.length, 10);
   [HUNTER_CLASSES, DREAD_STYLES, ARMOR_FINISHES, WARPAINT_PATTERNS].forEach((entries) => {
     assert.equal(idsAreUnique(entries), true);
     assert.equal(Object.isFrozen(entries), true);
@@ -211,4 +212,33 @@ test('les ajouts de classe et de finition déclarent leur provenance originale',
   }
   assert.equal(ARMOR_FINISHES.find(({ id }) => id === 'finish_stargazer_salvaged')?.implementationOriginal, true);
   assert.equal(WARPAINT_PATTERNS.find(({ id }) => id === 'warpaint_fugitive_scar')?.name, 'Balafre d’évadé Apex');
+});
+
+test('les personnalisations AVP 2004 changent réellement la silhouette et les lames rituelles', () => {
+  const ritualClass = HUNTER_CLASSES.find(({ id }) => id === 'class_ritual_initiate');
+  assert.equal(ritualClass?.basisTier, 'AVP_SCREEN');
+  assert.equal(DREAD_STYLES.find(({ id }) => id === 'dread_style_avp_heavy')?.lengthScale, 1.18);
+  assert.equal(ARMOR_FINISHES.find(({ id }) => id === 'finish_avp_frosted_alloy')?.roughness, 0.66);
+  assert.equal(WARPAINT_PATTERNS.find(({ id }) => id === 'warpaint_scar_acid_mark')?.pattern, 'acid_mark');
+
+  const chopperVariant = ARMOR_PRESET_WEAPON_VARIANTS.find(({ id }) => id === 'variant_chopper_extended_wristblades');
+  assert.equal(chopperVariant?.armorPresetId, 'chopper_avp');
+  assert.equal(chopperVariant?.modifiers.rangeMultiplier, 1.38);
+
+  const player = new YautjaPlayer(new THREE.Scene());
+  const result = player.applyCustomization({
+    armorPresetId: 'chopper_avp',
+    hunterClassId: 'class_ritual_initiate',
+    dreadStyleId: 'dread_style_avp_heavy',
+    armorFinishId: 'finish_avp_frosted_alloy',
+    warpaintId: 'warpaint_scar_acid_mark',
+  });
+  assert.equal(result.armorPresetId, 'chopper_avp');
+  assert.equal(player.avpRitualArmorGroup.visible, true);
+  assert.equal(player.avpRitualArmorGroup.userData.activePresetId, 'chopper_avp');
+  assert.equal(player.avpRitualIdentityGroups.chopper_avp.visible, true);
+  assert.equal(player.avpRitualIdentityGroups.scar_avp.visible, false);
+  assert.equal(player.activeWristbladeVariantId, 'variant_chopper_extended_wristblades');
+  assert.equal(player.wristbladeDamageMultiplier, 1.08);
+  assert.ok(player.warpaintGroup.children.length >= 4);
 });

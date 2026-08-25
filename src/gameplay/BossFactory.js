@@ -7,6 +7,7 @@ import { WolfCleanerBoss } from '../entities/WolfCleanerBoss.js';
 import { KaliskBoss } from '../entities/KaliskBoss.js';
 import { UpgradePredatorBoss } from '../entities/UpgradePredatorBoss.js';
 import { CityHunterBoss } from '../entities/CityHunterBoss.js';
+import { GridAlienBoss } from '../entities/GridAlienBoss.js';
 import { XenomorphQueen } from '../entities/XenomorphQueen.js';
 import { captureBaseMaterials, overrideMaterials } from '../utils/materialState.js';
 import {
@@ -26,6 +27,7 @@ export const BOSS_CONSTRUCTORS = Object.freeze({
   kalisk: KaliskBoss,
   upgradePredator: UpgradePredatorBoss,
   cityHunter: CityHunterBoss,
+  gridAlien: GridAlienBoss,
 });
 
 const DEFAULT_COLLIDER_RADII = Object.freeze({
@@ -39,6 +41,7 @@ const DEFAULT_COLLIDER_RADII = Object.freeze({
   kalisk: 6.8,
   upgradePredator: 6.4,
   cityHunter: 5.1,
+  gridAlien: 5.8,
 });
 
 function normalizeBossInterface(boss, bossType) {
@@ -63,7 +66,7 @@ function installVisualDetail(boss, bossType) {
   }
 
   syncBossVisualDetail(boss, bossType);
-  const stateMethods = ['takeDamage', 'breakMask', 'breakCleanerKit', 'exposeCore', 'syncDamageVisuals'];
+  const stateMethods = ['takeDamage', 'breakMask', 'breakCleanerKit', 'breakHead', 'breakTail', 'exposeCore', 'syncDamageVisuals'];
   stateMethods.forEach((methodName) => {
     const originalMethod = boss[methodName];
     if (typeof originalMethod !== 'function') return;

@@ -1,14 +1,43 @@
-# Rapport QA — release 1.10.0
+# Rapport QA — candidate release 1.11.0
 
 **Date :** 25 août 2026
-**Statut :** release 1.10.0 validée, poussée et publiée.
+**Statut :** candidate release 1.11.0 validée localement ; commit, push et publication non effectués.
 **Production actuellement vérifiée :** release 1.10.0 sur <https://yautja-apex-hunt.vercel.app/>
+**Commit/push v1.11 :** à compléter — non effectué
+**Déploiement Vercel v1.11 :** à compléter — aucun ID créé
+**URL/alias public v1.11 :** à compléter après publication
 **Déploiement production v1.10 :** `dpl_2xbt59JRaxhUEcM7MNoqozPSUjqk` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `9f56b0d`
 **Déploiement production v1.9 :** `dpl_FofpWaJDdkSjrnQeNTtQRdwNmZ6L` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `3314fe4`
 **Déploiement production v1.8 :** `dpl_5zqD2XQgZ4vo8RKRAft8cM7yKfHL` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `54fad3c`
 **Déploiement production v1.7 :** `dpl_En8EmhSsfxE7SZFPYEApyYwo134h` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `94bb326`
 **Premier déploiement de validation v1.6 :** `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` — `READY`, cible `production`, alias officiel appliqué
 **Source :** <https://github.com/darknigthmare/yautja-apex-hunt>
+
+## Passe v1.11 — Bouvetøya, Grid Alien et pyramide mobile
+
+| Gate déjà exécuté | Résultat vérifié | Périmètre exact |
+|---|---:|---|
+| Suite automatisée finale | **318/318 réussis** | Grid Alien, points faibles, combat acide, directive de la pyramide, biome Bouvetøya, textures et régressions historiques. |
+| Build production local | **Vite réussi** | 49 modules transformés sans erreur bloquante. |
+| Sécurité dépendances | **0 vulnérabilité** | `npm audit --omit=dev`. |
+| Chromium desktop local | **réussi** | Sélection Bouvetøya et lancement Grid contrôlés sans erreur applicative ni débordement horizontal. |
+| Chromium mobile local | **réussi** | Émulation 390×844 contrôlée sans erreur applicative ni débordement horizontal. |
+| Textures Bouvetøya | **HTTP 200 local** | `bouvetoya-ice-rock.webp` et `bouvetoya-pyramid-stone.webp` servies localement ; aucun statut HTTP public v1.11 n’est revendiqué. |
+| Budget Grid Alien | **contrat respecté** | 25 244 triangles HD, 37 522 triangles au total et 30 meshes. |
+
+**Publication v1.11 non exécutée.** Le commit/push, l’ID de déploiement Vercel et l’URL/alias public v1.11 restent explicitement **à compléter**. La production actuellement vérifiée demeure la v1.10 indiquée en tête de rapport ; aucun résultat public v1.11 n’est inventé à partir des contrôles locaux.
+
+Contenu raccordé et contrôlé dans cette candidate :
+
+- onzième chasse `grid_alien`, huitième biome `bouvetoya_pyramid` et dixième directive `avp_pyramid_trial` ;
+- terrain ouvert de rayon 740, dix secteurs, 18 routes bouclées, sept territoires et sept nœuds d’événements/migration ;
+- pyramide répartie entre camp Weyland, banquise, tunnel thermique, seuil, chambre sacrificielle, chambre des plasma casters, carrefour mobile, galerie de résine, chambre de la Reine et arène de Grid ;
+- directive en trois vagues : garde Weyland, Facehugger puis guerrier xénomorphe ;
+- Grid Alien procédural avec dôme et queue segmentée destructibles, cicatrices quadrillées, mâchoire interne, bond, balayage et attaques acides ;
+- inventaires consolidés à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées ;
+- 30 textures WebP pour 10 577 574 octets, dont deux matières OpenAI originales 1254×1254 dédiées à Bouvetøya.
+
+Verdict local v1.11 : **GO pour publication après création et vérification des identifiants publics**. Les 318 tests, le build de 49 modules, l’audit à 0 vulnérabilité, les parcours Chromium local desktop/mobile et les deux réponses texture HTTP 200 locales sont établis ; le push et Vercel restent hors de ce verdict tant qu’ils ne sont pas exécutés.
 
 ## Passe v1.10 — Los Angeles 1997, City Hunter et fermeture des écarts Excel
 

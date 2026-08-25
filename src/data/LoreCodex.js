@@ -150,10 +150,18 @@ export const HUNT_LOCATIONS = freezeEntries([
     summary: 'Interprétation jouable d’un domaine Yautja consacré aux duels et aux trophées.',
     sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
     canonNote: 'Yautja Prime et le domaine natal de Dek sont établis à l’écran dans Badlands ; cette arène sacrée et son conseil d’Anciens restent des créations du jeu.', sources: ['badlands2025']
-  }
+  },
+  {
+    id: 'bouvetoya_pyramid', entryType: 'location', category: 'lieu', title: 'Bouvetøya — pyramide du rite',
+    summary: 'Grande carte antarctique non linéaire reliant camp Weyland, tunnel thermique, chambres rituelles, labyrinthe mobile et fosse de la Reine.',
+    sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', isOriginal: true,
+    canonNote: 'Bouvetøya, l’expédition et la pyramide viennent d’AVP (2004) ; cette topologie, ses routes, événements et contrats sont une adaptation originale Apex Hunt.',
+    assetPolicy: 'Textures OpenAI et géométries procédurales originales ; aucun décor ou asset officiel du film.',
+    sources: ['avp2004']
+  },
 ]);
 
-const ALL_LOCATION_IDS = ['jungle', 'hive_lv426', 'ryushi_desert', 'stargazer_blacksite', 'yautja_prime', 'genna_deathworld', 'los_angeles_1997'];
+const ALL_LOCATION_IDS = ['jungle', 'hive_lv426', 'ryushi_desert', 'stargazer_blacksite', 'yautja_prime', 'genna_deathworld', 'los_angeles_1997', 'bouvetoya_pyramid'];
 
 // IDs match data-hunt and currentHuntType values in the game.
 export const CURRENT_HUNTS = freezeEntries([
@@ -220,7 +228,15 @@ export const CURRENT_HUNTS = freezeEntries([
     canonNote: 'L’Assassin Predator et ses capacités physiques viennent de The Predator ; statistiques, bio-armure segmentée, glandes destructibles, arène et contrat sont une adaptation originale Apex Hunt.',
     assetPolicy: 'Silhouette procédurale et matériaux originaux du jeu ; aucun modèle, texture ou asset officiel du film n’est utilisé.',
     sources: ['thePredator2018', 'assassin2018Gear'], locationIds: ['stargazer_blacksite']
-  }
+  },
+  {
+    id: 'grid_alien', entryType: 'hunt', category: 'cible', title: 'Grid Alien — champion de Bouvetøya',
+    summary: 'Xénomorphe balafré qui transforme la pyramide mouvante en chasse verticale et corrosive.',
+    sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', isOriginal: true,
+    canonNote: 'Grid et sa cicatrice quadrillée viennent d’AVP (2004) ; ses phases, faiblesses, trajectoires et récompenses sont une adaptation de gameplay Apex Hunt.',
+    assetPolicy: 'Modèle, matériaux et animations procéduraux originaux ; aucun modèle officiel du film.',
+    sources: ['avp2004'], locationIds: ['bouvetoya_pyramid']
+  },
 ]);
 
 export const ALL_LORE_ENTRIES = Object.freeze([...LORE_CODEX_ENTRIES, ...HUNT_LOCATIONS, ...CURRENT_HUNTS]);

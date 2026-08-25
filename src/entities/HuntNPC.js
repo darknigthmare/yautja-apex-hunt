@@ -30,6 +30,7 @@ export const HUNT_NPC_TEXTURES = Object.freeze({
   urban_cartel_enforcer: '/assets/textures/los-angeles-heatwave-urban.webp',
   subway_armed_hunter: '/assets/textures/los-angeles-heatwave-urban.webp',
   owlf_cryo_commando: '/assets/textures/los-angeles-heatwave-urban.webp',
+  weyland_expedition_guard: '/assets/textures/stargazer-tactical-composite.webp',
 });
 
 export const HUNT_NPC_ARCHETYPES = Object.freeze({
@@ -329,6 +330,20 @@ export const V110_HUNT_NPC_ARCHETYPES = Object.freeze({
   }),
 });
 
+// Vague v1.11 : garde humain original de l'expédition antarctique de 2004.
+// Sa silhouette, ses statistiques et sa tactique sont une adaptation Apex Hunt ;
+// elles ne prétendent pas reproduire un personnage individuel du film.
+export const V111_HUNT_NPC_ARCHETYPES = Object.freeze({
+  weyland_expedition_guard: Object.freeze({
+    type: 'weyland_expedition_guard', name: 'Garde de l’expédition Weyland',
+    health: 148, damage: 13, speed: 2.9, attackRange: 21,
+    colliderRadius: 0.59, attackInterval: 1.5, damageType: 'ballistic',
+    attackKind: 'projectile', projectileSpeed: 38,
+    behaviorKind: 'cover_burst', coverSearchRange: 18, preferredRange: 16,
+    burstCount: 3, behaviorInterval: 2.7, coverHoldDuration: 2.4,
+  }),
+});
+
 export const ALL_HUNT_NPC_ARCHETYPES = Object.freeze({
   ...HUNT_NPC_ARCHETYPES,
   ...EXPANDED_HUNT_NPC_ARCHETYPES,
@@ -340,6 +355,7 @@ export const AVAILABLE_HUNT_NPC_ARCHETYPES = Object.freeze({
   ...V18_HUNT_NPC_ARCHETYPES,
   ...V19_HUNT_NPC_ARCHETYPES,
   ...V110_HUNT_NPC_ARCHETYPES,
+  ...V111_HUNT_NPC_ARCHETYPES,
 });
 
 // Les noms courts émis par les événements sont résolus ici, en un seul point.
@@ -383,6 +399,8 @@ export const HUNT_NPC_TYPE_ALIASES = Object.freeze({
   subway_hunter: 'subway_armed_hunter',
   owlf_commando: 'owlf_cryo_commando',
   cryo_commando: 'owlf_cryo_commando',
+  expedition_guard: 'weyland_expedition_guard',
+  weyland_guard: 'weyland_expedition_guard',
 });
 
 export function resolveHuntNpcType(type) {
@@ -1190,6 +1208,46 @@ function makeUrbanCartelEnforcer(texture) { return makeUrbanCombatant(texture, '
 function makeSubwayArmedHunter(texture) { return makeUrbanCombatant(texture, 'subway'); }
 function makeOwlfCryoCommando(texture) { return makeUrbanCombatant(texture, 'owlf'); }
 
+function makeWeylandExpeditionGuard(texture) {
+  const group = new THREE.Group();
+  const parka = makeMaterial(0xc8c5b9, texture, { roughness: 0.96, metalness: 0.01 });
+  const armor = makeMaterial(0x3b474c, texture, { roughness: 0.56, metalness: 0.34 });
+  const weapon = makeMaterial(0x14191c, null, { roughness: 0.32, metalness: 0.82 });
+  const lens = makeMaterial(0x92dcea, null, {
+    roughness: 0.12, metalness: 0.28, emissive: 0x134d5b, emissiveIntensity: 0.82,
+  });
+
+  addPart(group, new THREE.CapsuleGeometry(0.4, 0.86, 6, 10), parka, [0, 1.28, 0]);
+  addPart(group, new THREE.BoxGeometry(0.78, 0.7, 0.32), armor, [0, 1.47, 0.02]);
+  addPart(group, new THREE.CylinderGeometry(0.47, 0.38, 0.35, 12), parka, [0, 0.84, 0]);
+  addPart(group, new THREE.SphereGeometry(0.28, 14, 9), parka, [0, 2.12, 0]);
+  const hood = addPart(group, new THREE.TorusGeometry(0.34, 0.1, 9, 20), parka, [0, 2.1, -0.02]);
+  hood.rotation.x = Math.PI / 2;
+  addPart(group, new THREE.BoxGeometry(0.4, 0.09, 0.08), lens, [0, 2.14, 0.28]);
+
+  for (const side of [-1, 1]) {
+    addPart(group, new THREE.CapsuleGeometry(0.11, 0.72, 5, 8), parka, [side * 0.21, 0.47, 0]);
+    addPart(group, new THREE.CapsuleGeometry(0.1, 0.67, 5, 8), parka, [side * 0.51, 1.35, 0.03], null, [0, 0, side * 0.2]);
+    addPart(group, new THREE.BoxGeometry(0.28, 0.2, 0.35), armor, [side * 0.44, 1.73, 0]);
+  }
+
+  addPart(group, new THREE.BoxGeometry(0.62, 0.78, 0.3), armor, [0, 1.43, -0.38]);
+  addPart(group, new THREE.CylinderGeometry(0.025, 0.03, 0.72, 7), weapon, [0.24, 2.02, -0.46], null, [0, 0, -0.1]);
+  addPart(group, new THREE.SphereGeometry(0.05, 8, 6), lens, [0.28, 2.38, -0.46]);
+  addPart(group, new THREE.BoxGeometry(0.16, 0.18, 1.46), weapon, [0.42, 1.38, 0.57], null, [0.06, 0, -0.08]);
+  addPart(group, new THREE.CylinderGeometry(0.03, 0.04, 0.72, 8), weapon, [0.42, 1.38, 1.62], null, [Math.PI / 2, 0, 0]);
+  addPart(group, new THREE.CylinderGeometry(0.065, 0.065, 0.3, 8), lens, [0.42, 1.57, 0.82], null, [Math.PI / 2, 0, 0]);
+
+  for (const side of [-1, 1]) {
+    addPart(group, new THREE.BoxGeometry(0.26, 0.1, 0.48), weapon, [side * 0.22, 0.08, 0.08]);
+  }
+
+  group.userData.silhouette = 'weyland_expedition_guard';
+  group.userData.combatRead = 'polar_cover_burst_reposition';
+  group.userData.sourceAdaptation = 'avp2004_expedition_original';
+  return group;
+}
+
 function makeModifiedPredatorHound(texture) {
   const group = new THREE.Group();
   const hide = makeMaterial(0x443126, texture, { roughness: 0.84, metalness: 0.04 });
@@ -1257,6 +1315,7 @@ const meshFactories = Object.freeze({
   urban_cartel_enforcer: makeUrbanCartelEnforcer,
   subway_armed_hunter: makeSubwayArmedHunter,
   owlf_cryo_commando: makeOwlfCryoCommando,
+  weyland_expedition_guard: makeWeylandExpeditionGuard,
 });
 
 function setPosition(target, value) {
@@ -1289,6 +1348,7 @@ const SYNTHETIC_SUPPORT_TYPES = new Set([
   'era_wartime_pilot',
   'colonial_marine_smartgunner',
   'weyland_field_synthetic',
+  'weyland_expedition_guard',
 ]);
 
 let nextNpcId = 1;
@@ -1350,8 +1410,10 @@ export class HuntNPC {
     this.coverSearchRange = Math.max(0, config.coverSearchRange ?? archetype.coverSearchRange ?? 0);
     this.preferredRange = Math.max(1, config.preferredRange ?? archetype.preferredRange ?? this.attackRange);
     this.netRepositionDuration = Math.max(0, config.netRepositionDuration ?? archetype.netRepositionDuration ?? 0);
+    this.coverHoldDuration = Math.max(0, config.coverHoldDuration ?? archetype.coverHoldDuration ?? 0);
     this._coverTarget = null;
     this._inCover = false;
+    this._coverHoldTimer = 0;
     this._coverSide = [...this.id].reduce((sum, character) => sum + character.charCodeAt(0), 0) % 2 === 0 ? 1 : -1;
     this._netRepositionTimer = 0;
     this._netRepositionAnnounced = false;
@@ -1629,7 +1691,23 @@ export class HuntNPC {
         }
         return true;
       }
+      const justEnteredCover = !this._inCover;
       this._inCover = true;
+      if (this.coverHoldDuration > 0) {
+        if (justEnteredCover) this._coverHoldTimer = this.coverHoldDuration;
+        else this._coverHoldTimer = Math.max(0, this._coverHoldTimer - dt);
+        if (this._coverHoldTimer === 0) {
+          this._coverSide *= -1;
+          this._coverTarget = this._resolveCoverTarget(targetPosition);
+          this._inCover = false;
+          this.mesh.userData.tacticalState = 'relocate_cover';
+          signals.push({
+            type: 'tactical_move', sourceId: this.id, sourceType: this.type,
+            mode: 'relocate_cover', coverPosition: this._coverTarget.clone(),
+          });
+          return true;
+        }
+      }
       this.mesh.userData.tacticalState = 'in_cover';
       return false;
     }
@@ -1986,6 +2064,7 @@ export class HuntNPC {
     if (damage > 0 && this.behaviorKind === 'cover_burst') {
       this._coverTarget = null;
       this._inCover = false;
+      this._coverHoldTimer = 0;
       this._coverSide *= -1;
       this.mesh.userData.tacticalState = 'relocate_cover';
     }

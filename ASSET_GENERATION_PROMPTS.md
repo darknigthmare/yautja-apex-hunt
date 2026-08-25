@@ -195,7 +195,27 @@ Les textes ci-dessous sont les formulations de production fidèles aux prompts e
 
 **Sortie runtime :** 1536×1536, 846 546 octets.
 
-Les PNG maîtres des vagues précédentes, les trois sorties sources de la 1.5, les quatre sorties sources de la 1.6, le PNG maître de la 1.8 et la source OpenAI de la 1.10 sont conservés localement hors Git ; seuls les WebP optimisés, dont `genna-sporeback-carapace.webp` et `los-angeles-heatwave-urban.webp`, sont livrés au navigateur.
+## `bouvetoya-ice-rock`
+
+**Mode :** nouvelle génération bitmap originale OpenAI, sans image de référence.
+
+> Résumé du prompt de production : matière raccordable vue du dessus mêlant glace subantarctique bleu-blanc, croûte de neige, basalte anthracite poreux et gravier gelé, sous lumière diffuse neutre. Surface continue sans horizon, bâtiment, créature, empreinte, texte, logo, UI, watermark, symbole de franchise ou décor officiel copié.
+
+**Destination runtime après conversion :** `public/assets/textures/bouvetoya-ice-rock.webp`
+
+**Sortie runtime :** 1254×1254, 484 446 octets.
+
+## `bouvetoya-pyramid-stone`
+
+**Mode :** nouvelle génération bitmap originale OpenAI, sans image de référence.
+
+> Résumé du prompt de production : matière raccordable de blocs de basalte graphite fusionnés à des coutures d’alliage bronze-noir, rainures d’usinage abstraites, usure, oxydation froide et dépôts de givre. Aucun glyphe lisible, emblème, couloir complet, créature, texte, logo, UI, watermark, symbole officiel ou production design copié.
+
+**Destination runtime après conversion :** `public/assets/textures/bouvetoya-pyramid-stone.webp`
+
+**Sortie runtime :** 1254×1254, 409 994 octets.
+
+Les PNG maîtres des vagues précédentes, les trois sorties sources de la 1.5, les quatre sorties sources de la 1.6, le PNG maître de la 1.8 et les sources OpenAI des 1.10–1.11 sont conservés localement hors Git ; seuls les WebP optimisés, dont `genna-sporeback-carapace.webp`, `los-angeles-heatwave-urban.webp` et les deux matières de Bouvetøya, sont livrés au navigateur.
 
 ## Passe v1.6 — intention de génération
 
@@ -214,4 +234,4 @@ Une génération doit être écartée si elle contient un mot, une signature, un
 
 ## Traçabilité
 
-Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor initiales, les trois matières de props, les quatre matières de la vague 1.4, les trois matières de la 1.5 et la matière `genna-sporeback-carapace` de la 1.8 restent en WebP 1024×1024 ; les six matières de la vague contenu 1.3 et les quatre matières de level design 1.6 sont encodées en WebP 1254×1254 après inspection visuelle ; `los-angeles-heatwave-urban.webp` est encodée en 1536×1536 pour la 1.10. Le manifest consigne les vingt-huit poids exacts, leur usage runtime et le niveau de contrôle effectivement obtenu. Ces créations originales n’accordent ni ne revendiquent de droit sur Predator, Alien, leurs personnages ou leurs designs officiels. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.
+Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor initiales, les trois matières de props, les quatre matières de la vague 1.4, les trois matières de la 1.5 et la matière `genna-sporeback-carapace` de la 1.8 restent en WebP 1024×1024 ; les six matières de la vague contenu 1.3, les quatre matières de level design 1.6 et les deux matières Bouvetøya 1.11 sont encodées en WebP 1254×1254 après inspection visuelle ; `los-angeles-heatwave-urban.webp` est encodée en 1536×1536 pour la 1.10. Le manifest consigne les trente poids exacts, leur usage runtime et le niveau de contrôle effectivement obtenu. Ces créations originales n’accordent ni ne revendiquent de droit sur Predator, Alien, leurs personnages ou leurs designs officiels. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.

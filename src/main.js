@@ -44,6 +44,7 @@ const DIRECTIVE_BIOME_LABELS = Object.freeze({
   genna_deathworld: 'MONDE MORTEL DE GENNA',
   stargazer_blacksite: 'COMPLEXE DE CONFINEMENT STARGAZER',
   los_angeles_1997: 'LOS ANGELES 1997',
+  bouvetoya_pyramid: 'BOUVETØYA — PYRAMIDE DU BLOODING',
 });
 const HIVE_EGG_OFFSETS = Object.freeze([
   Object.freeze([-19, 0, -7]),
@@ -64,6 +65,10 @@ const ENEMY_ATTACK_PROFILES = Object.freeze({
   kalisk_impale: { damage: 44, range: 9.5, cooldown: 1.55, telegraphed: true },
   upgrade_leap: { damage: 76, range: 13, cooldown: 2.1, telegraphed: true },
   city_combistick: { damage: 46, range: 10.2, cooldown: 1.35, telegraphed: true },
+  grid_bite: { damage: 34, range: 10.5, cooldown: 1.25, telegraphed: true },
+  grid_pounce: { damage: 52, range: 13.5, cooldown: 1.9, telegraphed: true },
+  grid_tail_sweep: { damage: 42, range: 17, cooldown: 1.65, telegraphed: true },
+  grid_acid_volley: { damage: 0, range: 68, cooldown: 1, telegraphed: true, projectileOnly: true },
 });
 const ENEMY_ATTACK_TELEGRAPHS = Object.freeze({
   attack_tail: 'BALAYAGE DE QUEUE DÉTECTÉ — ESQUIVEZ !',
@@ -74,6 +79,10 @@ const ENEMY_ATTACK_TELEGRAPHS = Object.freeze({
   kalisk_impale: 'EMPALAGE DU KALISK — ROMPEZ LE CONTACT !',
   upgrade_leap: 'BOND D’ÉCRASEMENT DE L’ASSASSIN — QUITTEZ LA ZONE D’IMPACT !',
   city_combistick: 'BALAYAGE DU COMBISTICK URBAIN — PASSEZ SOUS SA GARDE !',
+  grid_bite: 'MÂCHOIRE INTERNE DE GRID — ROMPEZ LE CONTACT !',
+  grid_pounce: 'BOND DE GRID — QUITTEZ SON AXE !',
+  grid_tail_sweep: 'QUEUE SEGMENTÉE DE GRID — ESQUIVEZ LE BALAYAGE !',
+  grid_acid_volley: 'VOLÉE ACIDE DE GRID — CHANGEZ DE COULOIR !',
 });
 
 
@@ -583,6 +592,9 @@ export class Game {
   }
 
   getProjectileCollisionRadius(projectile) {
+    if (Number.isFinite(projectile?.collisionRadius)) {
+      return Math.max(0.05, Number(projectile.collisionRadius));
+    }
     if (projectile?.isNet) return 1.25;
     if (projectile?.type === 'wrist_rocket') return 0.62;
     if (['plasma', 'heavy_plasma', 'wolf_twin_plasma'].includes(projectile?.type)) return 0.85;
@@ -778,6 +790,7 @@ export class Game {
       'era_wartime_pilot',
       'stargazer_rifleman',
       'stargazer_net_trapper',
+      'weyland_expedition_guard',
     ].includes(target?.type)) return 0xb41616;
     if (target?.type === 'combat_synthetic') return 0xf1f2df;
     return 0x00ff44;
@@ -1232,7 +1245,18 @@ export class Game {
 
   processEncounterSignals(signals) {
     signals.forEach((signal) => {
-      if (signal.type === 'localized_event') {
+      if (signal.type === 'pyramid_shift') {
+        const shifted = this.environment?.triggerPyramidShift?.({
+          ...signal,
+          id: signal.sourceId,
+        });
+        this.hud?.showLogMessage?.(
+          shifted === false
+            ? 'PYRAMIDE: CYCLE ARCHITECTURAL DÉJÀ EN COURS'
+            : `PYRAMIDE: ${signal.label?.toUpperCase() ?? 'LES COULOIRS SE RECONFIGURENT'}`,
+          2800,
+        );
+      } else if (signal.type === 'localized_event') {
         this.environment?.startLocalizedEvent?.({
           ...signal,
           id: signal.sourceId,
@@ -1261,14 +1285,28 @@ export class Game {
       } else if (signal.type === 'spawn_enemy') {
         this.spawnEncounterNpc(signal);
       } else if (signal.type === 'flyby') {
-        this.hud.showLogMessage('SURVOL YAUTJA: NAVETTE DE CHASSE EN APPROCHE', 2200);
+        this.hud.showLogMessage(
+          signal.vehicleType === 'avp_ritual_ship'
+            ? 'SURVOL YAUTJA: VAISSEAU DU RITE EN APPROCHE'
+            : 'SURVOL YAUTJA: NAVETTE DE CHASSE EN APPROCHE',
+          2200,
+        );
       } else if (signal.type === 'spawn_cache') {
-        this.hud.showLogMessage('CONTENEUR DE CHASSE LARGUÉ · APPROCHEZ ET APPUYEZ SUR [E]', 2600);
+        this.hud.showLogMessage(
+          signal.cacheType === 'ritual_weapon_pod'
+            ? 'POD D’ARMES DU BLOODING DÉVERROUILLÉ · APPROCHEZ ET APPUYEZ SUR [E]'
+            : 'CONTENEUR DE CHASSE LARGUÉ · APPROCHEZ ET APPUYEZ SUR [E]',
+          2600,
+        );
       } else if (signal.type === 'hazard') {
         this.activeHazard = signal.hazardType;
         this.hazardPulseTimer = 0;
         this.environment?.setWeatherEvent?.(signal.hazardType);
-        const label = signal.hazardType === 'rain' ? 'PLUIE RÉVÉLATRICE' : 'TEMPÊTE THERMIQUE';
+        const label = signal.hazardType === 'rain'
+          ? this.currentPlanet === 'bouvetoya_pyramid'
+            ? 'BLIZZARD RÉVÉLATEUR'
+            : 'PLUIE RÉVÉLATRICE'
+          : 'TEMPÊTE THERMIQUE';
         this.hud.showLogMessage(`ÉVÉNEMENT DE NIVEAU: ${label}`, 2600);
       } else if (signal.type === 'hazard_end') {
         this.activeHazard = null;
@@ -2075,7 +2113,12 @@ export class Game {
       5500,
     );
 
-    if (resolvedPlanet === 'hive_lv426' || this.currentHuntType === 'xeno_queen') {
+    if (
+      resolvedPlanet === 'hive_lv426'
+      || resolvedPlanet === 'bouvetoya_pyramid'
+      || this.currentHuntType === 'xeno_queen'
+      || this.currentHuntType === 'grid_alien'
+    ) {
       this.spawnHiveEggClusters();
     }
   }
@@ -2411,15 +2454,21 @@ export class Game {
     if (result) {
       this.eventDirector.drainSignals();
       if (result.type === 'cache_opened') {
+        const cacheLabel = result.cacheType === 'ritual_weapon_pod'
+          ? 'POD D’ARMES DU BLOODING OUVERT'
+          : 'CONTENEUR OUVERT';
         this.hud.showLogMessage(
-          `CONTENEUR OUVERT · +${result.healthRestored} SANTÉ · +${result.energyRestored} ÉNERGIE · +${result.honorAwarded} HONNEUR`,
+          `${cacheLabel} · +${result.healthRestored} SANTÉ · +${result.energyRestored} ÉNERGIE · +${result.honorAwarded} HONNEUR`,
           2600,
         );
       } else if (result.type === 'vehicle_scan') {
         const revealedCount = this.activateVehicleScan(result);
         const signatureLabel = revealedCount === 1 ? 'SIGNATURE MARQUÉE' : 'SIGNATURES MARQUÉES';
+        const vehicleLabel = result.vehicleType === 'avp_ritual_ship'
+          ? 'VAISSEAU DU RITE SYNCHRONISÉ'
+          : 'NAVETTE SYNCHRONISÉE';
         this.hud.showLogMessage(
-          `NAVETTE SYNCHRONISÉE · ${revealedCount} ${signatureLabel} · RECHARGE EFFECTUÉE`,
+          `${vehicleLabel} · ${revealedCount} ${signatureLabel} · RECHARGE EFFECTUÉE`,
           2600,
         );
       }
@@ -2818,6 +2867,12 @@ export class Game {
           this.removeActiveBossProjectile(i);
           continue;
         }
+        if (projectile.statusEffect === 'corrosion') {
+          this.player.applyCombatStatus?.('corrosion', projectile.statusDuration ?? 2.8);
+          this.player.energy = Math.max(0, this.player.energy - 10);
+          if (this.player.isCloaked) this.player.toggleCloak();
+          this.hud.showLogMessage('SANG ACIDE DE GRID — CORROSION ET CAMOUFLAGE ROMPU', 1700);
+        }
         if (projectile.type === 'smart_disc' && projectile.phase === 'outbound') {
           projectile.phase = 'returning';
           projectile.outboundTimer = 0;
@@ -2859,7 +2914,11 @@ export class Game {
       && ['leap_crush', 'leap_impact'].includes(this.activeBoss.aiState);
     const isUpgradePredatorCharge = this.currentHuntType === 'upgrade_predator'
       && this.activeBoss.aiState === 'charge';
-    const attackState = isUpgradeLeap ? 'upgrade_leap'
+    const isGridAttack = this.currentHuntType === 'grid_alien'
+      && ['grid_bite', 'grid_pounce', 'grid_tail_sweep', 'grid_acid_volley']
+        .includes(this.activeBoss.activeAttackType);
+    const attackState = isGridAttack ? this.activeBoss.activeAttackType
+      : isUpgradeLeap ? 'upgrade_leap'
       : isWolfWhip ? 'wolf_whip'
       : isKaliskAttack ? this.activeBoss.activeAttackType
         : isCityCombistick ? 'city_combistick'
@@ -2888,6 +2947,7 @@ export class Game {
     if (
       !this.activeBoss.isDead
       && attackProfile
+      && attackProfile.damage > 0
       && impactReady
       && this.enemyDamageCooldown <= 0
       && freshBadBloodMelee
@@ -2957,9 +3017,17 @@ export class Game {
       if (this.activeBoss.isDead && distToBoss < 14.0 && !this.trophyHarvested) {
         this.hud.showActionPrompt('RÉCOLTER LE TROPHÉE YAUTJA [E]');
       } else if (nearbyCache) {
-        this.hud.showActionPrompt('OUVRIR LE CONTENEUR DE CHASSE [E]');
+        this.hud.showActionPrompt(
+          nearbyCache.cacheType === 'ritual_weapon_pod'
+            ? 'OUVRIR LE POD D’ARMES DU BLOODING [E]'
+            : 'OUVRIR LE CONTENEUR DE CHASSE [E]',
+        );
       } else if (nearbyVehicle) {
-        this.hud.showActionPrompt('SYNCHRONISER LA NAVETTE DE RECONNAISSANCE [E]');
+        this.hud.showActionPrompt(
+          nearbyVehicle.type === 'avp_ritual_ship'
+            ? 'SYNCHRONISER LE VAISSEAU DU RITE [E]'
+            : 'SYNCHRONISER LA NAVETTE DE RECONNAISSANCE [E]',
+        );
       } else if (availablePointOfInterest) {
         this.hud.showActionPrompt(`ANALYSER ${availablePointOfInterest.label.toUpperCase()} [E]`);
       } else {
