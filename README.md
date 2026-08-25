@@ -4,7 +4,7 @@ Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur inca
 
 ## État du projet
 
-Le code source prépare la publication de la version 1.9.0 et reste disponible sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt). Cette vague ajoute la neuvième chasse contre l’Assassin Predator (2018), génétiquement amélioré, dans le site noir Stargazer, un sixième territoire ouvert, trois directives portant le total à huit, huit rôles de PNJ à comportements distincts, quatre armes jouables, un leurre holographique, quatre classes et de nouvelles variantes de personnalisation. Ses gates locaux sont validés ; tant que le push et le déploiement ne sont pas consignés dans `QA_REPORT.md`, l’URL de production [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/) reste celle de la release publiée précédente.
+La version 1.9.0 est publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Cette vague ajoute la neuvième chasse contre l’Assassin Predator (2018), génétiquement amélioré, dans le site noir Stargazer, un sixième territoire ouvert, trois directives portant le total à huit, huit rôles de PNJ à comportements distincts, quatre armes jouables, un leurre holographique, quatre classes et de nouvelles variantes de personnalisation. Les gates automatisés, build, navigateur desktop/mobile et production sont consignés dans `QA_REPORT.md`.
 
 ## Lancer localement
 

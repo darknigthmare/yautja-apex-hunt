@@ -2,7 +2,7 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
-## [1.9.0] — 25 août 2026 — candidate en validation
+## [1.9.0] — 25 août 2026
 
 ### Neuvième chasse et site noir Stargazer
 
@@ -49,7 +49,7 @@ Les versions sont considérées comme publiées uniquement après push du code, 
 
 - le tableur Excel évoqué par l’utilisateur n’était présent ni dans le dépôt ni dans les pièces jointes accessibles ; aucun chiffre et aucun ajout ne lui sont attribués ;
 - la candidate finale réussit 278/278 tests, le build Vite 8.2.2 de 47 modules, l’audit de production à 0 vulnérabilité et `git diff --check` ;
-- Chromium local valide neuf chasses, huit directives, le lancement Assassin/Stargazer et le responsive 390×844 sans overlay ni erreur applicative ; le push et le déploiement restent à consigner dans `QA_REPORT.md`, cette entrée ne déclarant donc pas encore la 1.9 publiée.
+- Chromium local et celui de production valident neuf chasses, huit directives, le lancement Assassin/Stargazer et le responsive 390×844 sans overlay ni erreur applicative ; le commit `3314fe4` est poussé et le déploiement `dpl_FofpWaJDdkSjrnQeNTtQRdwNmZ6L` est `READY` sur l’alias public HTTP 200.
 
 ## [1.8.0] — 25 août 2026
 

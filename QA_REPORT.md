@@ -1,8 +1,9 @@
-# Rapport QA — candidate 1.9.0
+# Rapport QA — release 1.9.0
 
 **Date :** 25 août 2026
-**Statut :** candidate 1.9.0 validée localement ; push GitHub et publication Vercel encore à exécuter.
-**Production actuellement vérifiée :** release 1.8.0 sur <https://yautja-apex-hunt.vercel.app/> jusqu’à la publication de cette candidate.
+**Statut :** release 1.9.0 validée, poussée et publiée.
+**Production actuellement vérifiée :** release 1.9.0 sur <https://yautja-apex-hunt.vercel.app/>
+**Déploiement production v1.9 :** `dpl_FofpWaJDdkSjrnQeNTtQRdwNmZ6L` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `3314fe4`
 **Déploiement production v1.8 :** `dpl_5zqD2XQgZ4vo8RKRAft8cM7yKfHL` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `54fad3c`
 **Déploiement production v1.7 :** `dpl_En8EmhSsfxE7SZFPYEApyYwo134h` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `94bb326`
 **Premier déploiement de validation v1.6 :** `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` — `READY`, cible `production`, alias officiel appliqué
@@ -19,10 +20,11 @@
 | Chromium desktop local | **réussi** | 1280×720 : neuf chasses, huit directives, lancement Assassin/Stargazer, HUD `0 / 3 OBJECTIFS`, 14 armes et métadonnée publique à jour. |
 | Chromium mobile local | **réussi** | 390×844 : document limité à 390 px, chasse Stargazer active, aucun débordement de page relevé. |
 | Console navigateur | **0 erreur applicative** | Aucun overlay Vite et journal applicatif vide sur le titre, la console des contrats et la chasse Stargazer. |
+| Chromium production | **réussi** | Alias officiel HTTP 200 : neuf chasses et huit directives visibles ; Assassin/Stargazer lancé à 1 115 m, HUD `0 / 3 OBJECTIFS`, responsive 390×844 et console vide. |
 
-**Publication 1.9 : à compléter après le push et le déploiement.** Aucun commit ni déploiement 1.9 n’est déclaré ici avant sa vérification effective.
+**Publication 1.9 validée.** Le commit fonctionnel `3314fe4` est poussé sur `codex/professional-hunt-pass` ; le déploiement production `dpl_FofpWaJDdkSjrnQeNTtQRdwNmZ6L` est `READY`, son alias officiel répond en HTTP 200 et le parcours public titre → contrats → Assassin/Stargazer ne produit aucune erreur applicative.
 
-Contenu raccordé dans cette candidate :
+Contenu raccordé dans cette release :
 
 - trois directives 1.9 portent le total à huit : `stargazer_breach`, `game_preserve_escape` et `hive_containment_failure` ;
 - neuvième chasse interne `upgrade_predator`, opposant l’Assassin Predator (2018), génétiquement amélioré, et directive `stargazer_breach` ;
