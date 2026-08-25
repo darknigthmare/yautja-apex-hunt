@@ -8,6 +8,7 @@ const BOSS_TYPE_TO_ARCHETYPE = Object.freeze({
   badBlood: 'bad_blood',
   predalien: 'predalien',
   superPredator: 'super_predator',
+  upgradePredator: 'super_predator',
   feralPredator: 'feral',
   wolfCleaner: 'wolf',
   kalisk: 'kalisk',

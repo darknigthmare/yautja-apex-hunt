@@ -124,6 +124,61 @@ const directiveDefinitions = [
       wave(55, 'combat_synthetic'),
     ],
   },
+  {
+    id: 'stargazer_breach',
+    title: 'Brèche Stargazer',
+    shortLabel: 'BLACKSITE',
+    description: 'Infiltrer le complexe, briser l’escouade de reprise et neutraliser le molosse modifié avant l’Assassin.',
+    provenance: 'SCREEN_ADAPTATION',
+    recommendedBiomeId: 'stargazer_blacksite',
+    rewardMultiplier: 1.45,
+    objectives: [
+      objective('stargazer_rifleman', 'Neutraliser le fusilier de l’équipe Stargazer'),
+      objective('stargazer_net_trapper', 'Neutraliser le spécialiste des filets'),
+      objective('modified_predator_hound', 'Abattre le molosse Predator modifié'),
+    ],
+    schedule: [
+      wave(8, 'stargazer_rifleman'),
+      wave(30, 'stargazer_net_trapper'),
+      wave(52, 'modified_predator_hound'),
+    ],
+  },
+  {
+    id: 'game_preserve_escape',
+    title: 'Évasion de la planète-réserve',
+    shortLabel: 'RÉSERVE',
+    description: 'Suivre une battue de Hell-Hounds puis intercepter la proie évadée sans confondre traque et combat rituel.',
+    provenance: 'SCREEN_ADAPTATION',
+    recommendedBiomeId: 'jungle',
+    rewardMultiplier: 1.3,
+    objectives: [
+      objective('hell_hound_alpha', 'Abattre l’Alpha Hell-Hound de la meute'),
+      objective('river_ghost', 'Intercepter le River Ghost évadé'),
+    ],
+    schedule: [
+      wave(11, 'hell_hound_alpha'),
+      wave(41, 'river_ghost'),
+    ],
+  },
+  {
+    id: 'hive_containment_failure',
+    title: 'Rupture du confinement de la ruche',
+    shortLabel: 'CONFINEMENT',
+    description: 'Briser le cordon colonial, empêcher le soutien synthétique puis purifier l’embuscade facehugger.',
+    provenance: 'CROSSOVER_SCREEN_ADAPTATION',
+    recommendedBiomeId: 'hive_lv426',
+    rewardMultiplier: 1.4,
+    objectives: [
+      objective('colonial_marine_smartgunner', 'Neutraliser le Smartgunner colonial'),
+      objective('weyland_field_synthetic', 'Neutraliser le synthétique de soutien Weyland'),
+      objective('xeno_facehugger', 'Éliminer le Facehugger embusqué'),
+    ],
+    schedule: [
+      wave(9, 'colonial_marine_smartgunner'),
+      wave(33, 'weyland_field_synthetic'),
+      wave(57, 'xeno_facehugger'),
+    ],
+  },
 ];
 
 export const HUNT_DIRECTIVES = Object.freeze(Object.fromEntries(

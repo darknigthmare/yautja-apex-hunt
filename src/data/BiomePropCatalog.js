@@ -3,6 +3,7 @@ export const ENVIRONMENT_PROP_TEXTURES = Object.freeze({
   hiveMembrane: '/assets/textures/hive-biomechanical-membrane.webp',
   ceremonialBronze: '/assets/textures/yautja-ceremonial-bronze.webp',
   gennaSporeHide: '/assets/textures/genna-spore-pod-hide.webp',
+  stargazerComposite: '/assets/textures/stargazer-tactical-composite.webp',
 });
 
 export const ENVIRONMENT_PERFORMANCE_BUDGETS = Object.freeze({
@@ -153,6 +154,35 @@ const PLAN_DATA = {
     hazardZones: [
       { id: 'genna-hazard-spore-west', type: 'spore_vent', position: [-28, 0, -104], radius: 7, damage: 6, interval: 2.6, status: 'venom', message: 'SPORES DE GENNA — ENDURANCE CONTAMINÉE' },
       { id: 'genna-hazard-spore-east', type: 'spore_vent', position: [32, 0, -112], radius: 7, damage: 6, interval: 2.6, status: 'venom', message: 'SPORES DE GENNA — ENDURANCE CONTAMINÉE' },
+    ],
+  },
+  stargazer_blacksite: {
+    sourceTier: 'ORIGINAL',
+    basisTier: 'SCREEN',
+    textureReferences: [
+      ENVIRONMENT_PROP_TEXTURES.frontierPanels,
+      ENVIRONMENT_PROP_TEXTURES.stargazerComposite,
+      '/assets/textures/yautja-alloy.webp',
+    ],
+    props: [
+      { id: 'stargazer-west-checkpoint', type: 'stargazer_checkpoint', position: [-325, 0, 365], rotation: 0.38, scale: 1.12, texture: ENVIRONMENT_PROP_TEXTURES.stargazerComposite, colliderRadius: 18 },
+      { id: 'stargazer-operations-lab', type: 'stargazer_containment_lab', position: [0, 0, 125], rotation: 0, scale: 1.25, texture: ENVIRONMENT_PROP_TEXTURES.stargazerComposite, colliderRadius: 20, perchHeight: 17 },
+      { id: 'stargazer-genetics-lab', type: 'stargazer_containment_lab', position: [305, 0, -300], rotation: -0.42, scale: 1.18, texture: ENVIRONMENT_PROP_TEXTURES.stargazerComposite, colliderRadius: 20, perchHeight: 17 },
+      { id: 'stargazer-west-kennel', type: 'stargazer_kennel', position: [-455, 0, 65], rotation: 0.22, scale: 1.14, texture: ENVIRONMENT_PROP_TEXTURES.frontierPanels, colliderRadius: 17 },
+      { id: 'stargazer-security-watchtower', type: 'stargazer_watchtower', position: [-245, 0, 285], rotation: 0, scale: 1.05, texture: ENVIRONMENT_PROP_TEXTURES.stargazerComposite, colliderRadius: 8, perchHeight: 25 },
+      { id: 'stargazer-east-watchtower', type: 'stargazer_watchtower', position: [415, 0, 115], rotation: 0, scale: 1.02, texture: ENVIRONMENT_PROP_TEXTURES.stargazerComposite, colliderRadius: 8, perchHeight: 25 },
+      { id: 'stargazer-south-barriers', type: 'stargazer_barrier_line', position: [0, 0, 405], rotation: 0, scale: 1, texture: ENVIRONMENT_PROP_TEXTURES.frontierPanels, instances: 8, colliderRadius: 18 },
+      { id: 'stargazer-containment-pods', type: 'stargazer_pod_line', position: [410, 0, -72], rotation: -0.28, scale: 1, texture: ENVIRONMENT_PROP_TEXTURES.stargazerComposite, instances: 6, colliderRadius: 16 },
+    ],
+    pointsOfInterest: [
+      { id: 'stargazer-poi-flight-recorder', type: 'field_record', label: 'Enregistreur de l’appareil du fugitif', position: [335, 0, 330], interactionRadius: 14, interactionType: 'decode_record', honor: 90, message: 'Archive : l’appareil capturé a forcé l’atterrissage avant la rupture du confinement.' },
+      { id: 'stargazer-poi-predator-killer', type: 'weapon_archive', label: 'Module Predator Killer confisqué', position: [-18, 0, 112], interactionRadius: 14, interactionType: 'scan_archive', honor: 110, message: 'Analyse : technologie yautja miniaturisée, verrouillée dans un berceau humain expérimental.' },
+      { id: 'stargazer-poi-adaptive-tissue', type: 'hive_sample', label: 'Échantillon de tissu adaptatif', position: [292, 0, -286], interactionRadius: 14, interactionType: 'scan_archive', honor: 100, message: 'Analyse : croissance accélérée et réponse défensive à chaque traumatisme enregistré.' },
+      { id: 'stargazer-poi-breach-trail', type: 'hunt_trace', label: 'Piste de poursuite de l’Assassin', position: [20, 0, -515], interactionRadius: 15, interactionType: 'scan_archive', honor: 105, message: 'Trace : impacts lourds, plaques biologiques et bond terminal vers le cratère.' },
+    ],
+    hazardZones: [
+      { id: 'stargazer-hazard-arc-field', type: 'containment_arc', position: [405, 0, -108], radius: 9, damage: 9, interval: 2.3, status: 'energy_jam', message: 'ARC DE CONFINEMENT — SYSTÈMES YAUTJA PERTURBÉS' },
+      { id: 'stargazer-hazard-sterilization', type: 'sterilization_vent', position: [245, 0, -205], radius: 8, damage: 8, interval: 2.6, status: 'corrosion', message: 'PURGE DE STÉRILISATION — ARMURE CORRODÉE' },
     ],
   },
 };

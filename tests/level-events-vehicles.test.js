@@ -98,7 +98,7 @@ test('le conteneur soigne, recharge et accorde son honneur une seule fois à pro
   assert.equal(cache.dispose(), false);
 });
 
-test('les quatre variantes de conteneur ont des récompenses distinctes et suivent le biome', () => {
+test('les variantes de conteneur ont des récompenses distinctes et suivent le biome', () => {
   const seenRewardProfiles = new Set();
   for (const [cacheType, expected] of Object.entries(HUNT_CACHE_TYPES)) {
     const scene = new THREE.Scene();
@@ -113,11 +113,12 @@ test('les quatre variantes de conteneur ont des récompenses distinctes et suive
     seenRewardProfiles.add(`${expected.health}:${expected.energy}:${expected.honor}`);
     cache.dispose();
   }
-  assert.equal(seenRewardProfiles.size, 4);
+  assert.equal(seenRewardProfiles.size, Object.keys(HUNT_CACHE_TYPES).length);
   const director = new LevelEventDirector(new THREE.Scene());
   for (const [biomeId, expected] of [
     ['jungle', 'balanced'], ['hive_lv426', 'medicomp'],
     ['ryushi_desert', 'energy_cell'], ['yautja_prime', 'trophy_reliquary'],
+    ['stargazer_blacksite', 'stargazer_salvage'],
   ]) {
     director.start({ biomeId });
     assert.equal(director.selectCacheType(), expected, biomeId);

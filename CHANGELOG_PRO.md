@@ -2,6 +2,55 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
+## [1.9.0] — 25 août 2026 — candidate en validation
+
+### Neuvième chasse et site noir Stargazer
+
+- contrat interne `upgrade_predator` ajouté pour la chasse de l’Assassin Predator (2018), génétiquement amélioré, avec biome recommandé `stargazer_blacksite` et directive `stargazer_breach` en trois vagues ;
+- sixième plan de chasse réellement parcourable : rayon 680, neuf secteurs, 16 routes bouclées, six territoires écologiques, 15 résidents, six événements, quatre points d’intérêt et deux dangers ;
+- huit groupes de props et des repères propres au site noir structurent checkpoints, laboratoire, piste, crash et archives sans réduire la carte à un couloir ; la piste suit la poursuite de l’Assassin autour de l’évasion du Fugitive ;
+- appareil d’évasion Fugitive endommagé ajouté comme véhicule interactif, avec scan amélioré, ainsi qu’un profil de cache `stargazer_salvage` donnant des ressources bornées ;
+- l’Assassin Predator (2018), génétiquement amélioré, dispose d’une silhouette procédurale haute définition de 29 468 triangles, d’une armure biologique, de glandes adaptatives destructibles, d’une régénération bornée et d’un bond écrasant télégraphié que le filet peut interrompre.
+
+### Accès aux rôles manquants par directive
+
+- trois directives sont ajoutées en 1.9, portant le total de cinq à huit avec `stargazer_breach` ;
+- `game_preserve_escape` — « Évasion de la planète-réserve » — se déroule dans la jungle et rend accessibles `hell_hound_alpha` à 11 s puis `river_ghost` à 41 s ; provenance `SCREEN_ADAPTATION`, récompense ×1,30 ;
+- `hive_containment_failure` — « Rupture du confinement de la ruche » — se déroule sur `hive_lv426` et introduit `colonial_marine_smartgunner` à 9 s, `weyland_field_synthetic` à 33 s puis `xeno_facehugger` à 57 s ; provenance `CROSSOVER_SCREEN_ADAPTATION`, récompense ×1,40 ;
+- ces deux parcours ferment le trou d’accessibilité qui laissait cinq rôles enregistrés dans le catalogue sans voie de rencontre en chasse.
+
+### Huit rôles PNJ à comportements distincts
+
+- `hell_hound_alpha` rallie la meute et renforce les molosses proches ;
+- `river_ghost` alterne pas de côté, harcèlement et repli ;
+- `colonial_marine_smartgunner` maintient une suppression à distance et recule lorsque la pression augmente ;
+- `weyland_field_synthetic` cherche et répare les alliés endommagés ;
+- `xeno_facehugger` prépare puis déclenche un bond rapproché ;
+- `stargazer_rifleman` exploite couvert et rafales ;
+- `stargazer_net_trapper` pose son filet puis change de position ;
+- `modified_predator_hound` combine ralliement de meute et charge coordonnée.
+
+### Arsenal, technologie et personnalisation
+
+- quatre armes sont réellement sélectionnables après l’arsenal historique : lance-traits Feral au slot 10 `[-]`, double plasma Wolf au slot 11 `[=]`, Eye of Ra puissant et précis mais à cadence lente au slot 12 `[`, et Épée Yautja — Father au slot 13 `]` ; leurs projectiles, cadence/coûts ou mêlée sont reliés au combat ;
+- gadget `apex_decoy` sur `[Y]` : hologramme 3D temporaire, consommation d’énergie, recharge et attraction effective des ennemis ;
+- classes Tracker, Falconer, Cleaner et Fugitive ajoutées, portant le total à huit profils jouables ;
+- trois styles de predlocks supplémentaires portent le total à sept ; les nouvelles finitions et warpaints portent chacun leur sélection à huit ;
+- métadonnées de provenance et d’équilibrage conservées pour les variantes Feral, Wolf, Eye of Ra et Father.
+
+### Hub, catalogue et cohérence
+
+- galerie et nexus étendus à neuf contrats ; les neuf stations sont réparties en double rangée avec une allée centrale dégagée ;
+- les trois anneaux holographiques répétés de chaque station sont regroupés en instancing afin d’absorber l’augmentation de contenu sans multiplier inutilement les appels de rendu ;
+- catalogue, Codex et registre de couverture raccordent Stargazer, l’Assassin Predator (2018) génétiquement amélioré, les nouvelles proies et les nouveaux équipements à un statut runtime honnête ;
+- l’adaptation reste une construction procédurale originale du fan game : aucun modèle, texture ou autre asset officiel n’est intégré.
+
+### État du tableur et validation
+
+- le tableur Excel évoqué par l’utilisateur n’était présent ni dans le dépôt ni dans les pièces jointes accessibles ; aucun chiffre et aucun ajout ne lui sont attribués ;
+- la candidate finale réussit 278/278 tests, le build Vite 8.2.2 de 47 modules, l’audit de production à 0 vulnérabilité et `git diff --check` ;
+- Chromium local valide neuf chasses, huit directives, le lancement Assassin/Stargazer et le responsive 390×844 sans overlay ni erreur applicative ; le push et le déploiement restent à consigner dans `QA_REPORT.md`, cette entrée ne déclarant donc pas encore la 1.9 publiée.
+
 ## [1.8.0] — 25 août 2026
 
 ### Directives de chasse

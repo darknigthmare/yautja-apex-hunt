@@ -82,6 +82,19 @@ const BIOME_STYLE = Object.freeze({
     sun: 0xff9a4a,
     ground: 0x5d4534,
   },
+  stargazer_blacksite: {
+    background: 0x050a10,
+    fog: 0.0035,
+    ambient: 0x658698,
+    ambientIntensity: 1.7,
+    hemisphereSky: 0x79a9ba,
+    hemisphereGround: 0x111820,
+    hemisphereIntensity: 1.48,
+    key: 0xa6dded,
+    keyIntensity: 2.75,
+    sun: 0x6bd9ff,
+    ground: 0x45505a,
+  },
 });
 
 const PROP_HEIGHTS = Object.freeze({
@@ -103,12 +116,16 @@ const PROP_HEIGHTS = Object.freeze({
   water_tower: 30,
   egg_nursery: 7,
   stock_pen: 6,
+  stargazer_checkpoint: 10,
+  stargazer_containment_lab: 15,
+  stargazer_kennel: 8,
+  stargazer_watchtower: 32,
 });
 
 const ARCH_PROP_TYPES = new Set(['ritual_gate', 'clan_gate', 'hive_bulkhead', 'bone_arch']);
-const FACILITY_PROP_TYPES = new Set(['field_camp', 'frontier_homestead', 'signal_array']);
+const FACILITY_PROP_TYPES = new Set(['field_camp', 'frontier_homestead', 'signal_array', 'stargazer_checkpoint', 'stargazer_containment_lab']);
 const WRECK_PROP_TYPES = new Set(['wreckage', 'expedition_wreck']);
-const PEN_PROP_TYPES = new Set(['egg_nursery', 'stock_pen']);
+const PEN_PROP_TYPES = new Set(['egg_nursery', 'stock_pen', 'stargazer_kennel']);
 const SHRINE_PROP_TYPES = new Set(['trophy_tree', 'royal_dais', 'blooding_dais', 'weapon_shrine', 'trophy_gallery', 'kalisk_nest']);
 
 const MIN_ROUTE_COVER_COLLIDERS = 9;
@@ -118,6 +135,10 @@ const STATIC_INSTANCE_BATCH_NAMES = Object.freeze({
   jungleCrowns: 'legacy-jungle-tree-crowns',
   hivePillars: 'legacy-hive-resin-pillars',
   primePillars: 'legacy-prime-arena-pillars',
+  stargazerPylons: 'stargazer-perimeter-pylons',
+  stargazerPanels: 'stargazer-perimeter-panels',
+  stargazerMasts: 'stargazer-floodlight-masts',
+  stargazerFloodlights: 'stargazer-floodlights',
 });
 
 const DEATHWORLD_FLORA_BATCH_NAMES = Object.freeze({
@@ -521,6 +542,9 @@ export class Environment {
       this.createDriftingParticles(0x00ff44, 500);
     } else if (this.currentBiome === 'ryushi_desert') {
       this.createDesertDunes();
+    } else if (this.currentBiome === 'stargazer_blacksite') {
+      this.createStargazerBlacksite();
+      this.createDriftingParticles(0x58cfff, 180);
     } else if (this.currentBiome === 'genna_deathworld') {
       this.createGennaDeathworld();
       this.createDriftingParticles(0xbaff69, 520);
@@ -584,6 +608,53 @@ export class Environment {
       return [
         { part: 'left_support', x: -5.6, z: 0, radius: 2.1, height: nominalHeight },
         { part: 'right_support', x: 5.6, z: 0, radius: 2.1, height: nominalHeight },
+      ];
+    }
+    if (prop.type === 'stargazer_checkpoint') {
+      return [
+        { part: 'security_booth', x: -7.4, z: 0.4, radius: 4.1, height: 8 },
+        { part: 'north_bollards', x: 4.5, z: -5, radius: 6.7, height: 3 },
+        { part: 'south_bollards', x: 4.5, z: 5, radius: 6.7, height: 3 },
+        { part: 'gate_arm', x: 4.8, z: 0, radius: 7.6, height: 1.2, baseYOffset: 3.1, blocksActors: false, blocksProjectiles: true },
+      ];
+    }
+    if (prop.type === 'stargazer_containment_lab') {
+      return [
+        { part: 'containment_core', x: 0, z: 0, radius: 8.8, height: 11 },
+        { part: 'west_lab_wing', x: -13, z: 0.8, radius: 5.8, height: 8 },
+        { part: 'east_lab_wing', x: 13, z: -0.8, radius: 5.8, height: 8 },
+        { part: 'containment_tube', x: 0, z: 8.8, radius: 2.5, height: 7 },
+      ];
+    }
+    if (prop.type === 'stargazer_kennel') {
+      return [
+        { part: 'north_cage', x: 0, z: -8, radius: 5, height: 7.4 },
+        { part: 'south_cage', x: 0, z: 8, radius: 5, height: 7.4 },
+        { part: 'west_cage', x: -8, z: 0, radius: 5, height: 7.4 },
+        { part: 'east_cage', x: 8, z: 0, radius: 5, height: 7.4 },
+      ];
+    }
+    if (prop.type === 'stargazer_watchtower') {
+      return [
+        { part: 'north_west_leg', x: -3.3, z: -3.3, radius: 0.95, height: 18 },
+        { part: 'north_east_leg', x: 3.3, z: -3.3, radius: 0.95, height: 18 },
+        { part: 'south_west_leg', x: -3.3, z: 3.3, radius: 0.95, height: 18 },
+        { part: 'south_east_leg', x: 3.3, z: 3.3, radius: 0.95, height: 18 },
+        { part: 'guard_cabin', x: 0, z: 0, radius: 5, height: 7.2, baseYOffset: 17.6, blocksActors: false, blocksProjectiles: true },
+      ];
+    }
+    if (prop.type === 'stargazer_barrier_line') {
+      return [
+        { part: 'west_barriers', x: -12, z: 0, radius: 5.2, height: 3.4 },
+        { part: 'central_barriers', x: 0, z: 0, radius: 5.2, height: 3.4 },
+        { part: 'east_barriers', x: 12, z: 0, radius: 5.2, height: 3.4 },
+      ];
+    }
+    if (prop.type === 'stargazer_pod_line') {
+      return [
+        { part: 'west_pods', x: -10, z: 0, radius: 3.8, height: 6.6 },
+        { part: 'central_pods', x: 0, z: 0, radius: 3.8, height: 6.6 },
+        { part: 'east_pods', x: 10, z: 0, radius: 3.8, height: 6.6 },
       ];
     }
     if (FACILITY_PROP_TYPES.has(prop.type)) {
@@ -861,7 +932,7 @@ export class Environment {
     const x = vector ? vector.x : Number(xOrPosition) || 0;
     const z = vector ? vector.z : Number(zValue) || 0;
     const distance = Math.hypot(x, z);
-    const biomePhase = ['jungle', 'hive_lv426', 'ryushi_desert', 'yautja_prime', 'genna_deathworld']
+    const biomePhase = ['jungle', 'hive_lv426', 'ryushi_desert', 'yautja_prime', 'genna_deathworld', 'stargazer_blacksite']
       .indexOf(this.currentBiome) * 37;
     let height = Math.sin(x * 0.03) * Math.cos(z * 0.03) * 3.4;
     height += Math.sin((x + biomePhase) * 0.009) * Math.cos((z - biomePhase) * 0.011) * 6.2;
@@ -1386,6 +1457,115 @@ export class Environment {
       mesh.castShadow = true;
       this.biomeGroup.add(mesh);
       this.obstacleColliders.push({ x, z, radius: rockRadius, height: rockRadius * 1.55, baseY: ground, blocksProjectiles: true, sourceId: `ryushi-rock-${i + 1}` });
+    }
+  }
+
+  /**
+   * Monte le périmètre du complexe Stargazer en lots instanciés : les trouées
+   * entre panneaux sont des accès de service lisibles, tandis que pylônes et
+   * mâts restent de vraies couvertures et perches dans le budget de collision.
+   */
+  createStargazerBlacksite() {
+    const composite = this.createTexturedMaterial({
+      color: 0x344550,
+      path: '/assets/textures/stargazer-tactical-composite.webp',
+      repeat: 3,
+      roughness: 0.58,
+      metalness: 0.62,
+    });
+    const frontier = this.createTexturedMaterial({
+      color: 0x6b655b,
+      path: '/assets/textures/ryushi-frontier-panels.webp',
+      repeat: 3,
+      roughness: 0.7,
+      metalness: 0.48,
+    });
+    const securityLight = new THREE.MeshStandardMaterial({
+      color: 0x73d9ff,
+      emissive: 0x2aa8e8,
+      emissiveIntensity: 1.55,
+      roughness: 0.24,
+      metalness: 0.18,
+    });
+    const segmentCount = 28;
+    const perimeterRadius = this.playableRadius * 0.9;
+    const pylonGeometry = new THREE.BoxGeometry(1.5, 9, 1.5);
+    const panelGeometry = new THREE.BoxGeometry(91, 4.8, 0.42);
+    const pylons = new THREE.InstancedMesh(pylonGeometry, frontier, segmentCount);
+    const panels = new THREE.InstancedMesh(panelGeometry, composite, segmentCount);
+    pylons.name = STATIC_INSTANCE_BATCH_NAMES.stargazerPylons;
+    panels.name = STATIC_INSTANCE_BATCH_NAMES.stargazerPanels;
+    const transform = new THREE.Object3D();
+    for (let index = 0; index < segmentCount; index += 1) {
+      const angle = (index / segmentCount) * Math.PI * 2;
+      const x = Math.cos(angle) * perimeterRadius;
+      const z = Math.sin(angle) * perimeterRadius;
+      const ground = this.sampleHeight(x, z);
+      transform.position.set(x, ground + 4.5, z);
+      transform.rotation.set(0, -angle + Math.PI / 2, 0);
+      transform.scale.setScalar(1);
+      transform.updateMatrix();
+      pylons.setMatrixAt(index, transform.matrix);
+      transform.position.y = ground + 5.1;
+      transform.updateMatrix();
+      panels.setMatrixAt(index, transform.matrix);
+      if (index % 2 === 0) {
+        this.obstacleColliders.push({
+          x, z, radius: 1.35, height: 9, baseY: ground,
+          blocksProjectiles: true,
+          sourceId: `stargazer-perimeter-pylon-${index + 1}`,
+        });
+      }
+    }
+    for (const batch of [pylons, panels]) {
+      batch.castShadow = true;
+      batch.receiveShadow = true;
+      batch.instanceMatrix.setUsage(THREE.StaticDrawUsage);
+      batch.instanceMatrix.needsUpdate = true;
+      batch.userData.staticEnvironmentBatch = true;
+      batch.userData.texturePath = batch === panels
+        ? '/assets/textures/stargazer-tactical-composite.webp'
+        : '/assets/textures/ryushi-frontier-panels.webp';
+      batch.computeBoundingBox();
+      batch.computeBoundingSphere();
+      this.biomeGroup.add(batch);
+      this.staticInstanceBatches.push(batch);
+    }
+
+    const mastCount = 12;
+    const mastGeometry = new THREE.CylinderGeometry(0.32, 0.52, 24, 8);
+    const floodlightGeometry = new THREE.BoxGeometry(2.8, 1, 1.2);
+    const masts = new THREE.InstancedMesh(mastGeometry, frontier, mastCount);
+    const floodlights = new THREE.InstancedMesh(floodlightGeometry, securityLight, mastCount);
+    masts.name = STATIC_INSTANCE_BATCH_NAMES.stargazerMasts;
+    floodlights.name = STATIC_INSTANCE_BATCH_NAMES.stargazerFloodlights;
+    for (let index = 0; index < mastCount; index += 1) {
+      const angle = (index / mastCount) * Math.PI * 2 + 0.17;
+      const radius = 370 + (index % 2) * 55;
+      const placement = this.resolveLegacyPlacement(Math.cos(angle) * radius, Math.sin(angle) * radius, 1.5, `stargazer-light-${index + 1}`);
+      const ground = this.sampleHeight(placement.x, placement.z);
+      transform.position.set(placement.x, ground + 12, placement.z);
+      transform.rotation.set(0, 0, 0);
+      transform.updateMatrix();
+      masts.setMatrixAt(index, transform.matrix);
+      transform.position.y = ground + 23.2;
+      transform.rotation.set(-0.35, -angle, 0);
+      transform.updateMatrix();
+      floodlights.setMatrixAt(index, transform.matrix);
+      this.treePerches.push(new THREE.Vector3(placement.x, ground + 24.5, placement.z));
+      this.obstacleColliders.push({ x: placement.x, z: placement.z, radius: 1.15, height: 24, baseY: ground, blocksProjectiles: true, sourceId: `stargazer-light-mast-${index + 1}` });
+    }
+    for (const batch of [masts, floodlights]) {
+      batch.castShadow = batch === masts;
+      batch.receiveShadow = true;
+      batch.instanceMatrix.setUsage(THREE.StaticDrawUsage);
+      batch.instanceMatrix.needsUpdate = true;
+      batch.userData.staticEnvironmentBatch = true;
+      batch.userData.texturePath = batch === masts ? '/assets/textures/ryushi-frontier-panels.webp' : null;
+      batch.computeBoundingBox();
+      batch.computeBoundingSphere();
+      this.biomeGroup.add(batch);
+      this.staticInstanceBatches.push(batch);
     }
   }
 

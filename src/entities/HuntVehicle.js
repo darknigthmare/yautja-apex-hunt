@@ -118,20 +118,22 @@ export class HuntVehicle {
 
   createMesh() {
     const group = new THREE.Group();
+    const isFugitiveCraft = this.type === 'fugitive_escape_craft';
+    group.userData.vehicleProfile = isFugitiveCraft ? 'damaged_fugitive_escape' : 'clan_recon';
     const energyTexture = getYautjaEnergyTexture();
     const hullMaterial = new THREE.MeshStandardMaterial({
-      color: 0x363d3c,
+      color: isFugitiveCraft ? 0x222c31 : 0x363d3c,
       metalness: 0.92,
-      roughness: 0.24,
+      roughness: isFugitiveCraft ? 0.42 : 0.24,
     });
     const armorMaterial = new THREE.MeshStandardMaterial({
-      color: 0x625f51,
+      color: isFugitiveCraft ? 0x48575b : 0x625f51,
       metalness: 0.86,
-      roughness: 0.32,
+      roughness: isFugitiveCraft ? 0.5 : 0.32,
     });
     const energyMaterial = new THREE.MeshStandardMaterial({
-      color: 0x42fff0,
-      emissive: 0x0ba89c,
+      color: isFugitiveCraft ? 0xff8c58 : 0x42fff0,
+      emissive: isFugitiveCraft ? 0xb63f18 : 0x0ba89c,
       emissiveIntensity: 2.4,
       map: energyTexture,
       emissiveMap: energyTexture,
@@ -140,15 +142,15 @@ export class HuntVehicle {
     });
 
     const hull = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 12), hullMaterial);
-    hull.scale.set(4.8, 1.35, 7.6);
+    hull.scale.set(isFugitiveCraft ? 4.25 : 4.8, isFugitiveCraft ? 1.12 : 1.35, isFugitiveCraft ? 8.7 : 7.6);
     hull.castShadow = true;
     hull.receiveShadow = true;
     group.add(hull);
 
-    const nose = new THREE.Mesh(new THREE.ConeGeometry(2.3, 6.2, 5), armorMaterial);
+    const nose = new THREE.Mesh(new THREE.ConeGeometry(isFugitiveCraft ? 1.85 : 2.3, isFugitiveCraft ? 7.4 : 6.2, isFugitiveCraft ? 6 : 5), armorMaterial);
     nose.rotation.x = Math.PI / 2;
-    nose.position.z = -6.8;
-    nose.scale.x = 1.35;
+    nose.position.z = isFugitiveCraft ? -8.2 : -6.8;
+    nose.scale.x = isFugitiveCraft ? 1.12 : 1.35;
     nose.castShadow = true;
     group.add(nose);
 
@@ -157,14 +159,16 @@ export class HuntVehicle {
     spine.castShadow = true;
     group.add(spine);
 
+    const wingReach = isFugitiveCraft ? 8.2 : 10.5;
+    const wingSweep = isFugitiveCraft ? 7.2 : 3.8;
     const wingGeometry = new THREE.BufferGeometry();
     wingGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
       0, 0, -4.5,
-      10.5, -0.2, 3.8,
+      wingReach, -0.2, wingSweep,
       2.2, 0.15, 5.8,
       0, 0, -4.5,
       -2.2, 0.15, 5.8,
-      -10.5, -0.2, 3.8,
+      -wingReach, -0.2, wingSweep,
     ]), 3));
     wingGeometry.computeVertexNormals();
     const wings = new THREE.Mesh(wingGeometry, armorMaterial);
@@ -178,6 +182,24 @@ export class HuntVehicle {
       engine.rotation.x = Math.PI / 2;
       group.add(engine);
     }
+    if (isFugitiveCraft) {
+      const scarMaterial = new THREE.MeshStandardMaterial({ color: 0x171b1c, metalness: 0.7, roughness: 0.78 });
+      for (const side of [-1, 1]) {
+        const stabilizer = new THREE.Mesh(new THREE.BoxGeometry(0.42, 2.2, 5.6, 2, 4, 8), armorMaterial);
+        stabilizer.position.set(side * 3.55, -0.25, 2.6);
+        stabilizer.rotation.z = side * 0.12;
+        stabilizer.rotation.y = side * -0.16;
+        group.add(stabilizer);
+      }
+      const damagedPlate = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.22, 3.6, 4, 2, 6), scarMaterial);
+      damagedPlate.position.set(2.15, 1.15, 1.25);
+      damagedPlate.rotation.set(0.1, -0.18, 0.14);
+      group.add(damagedPlate);
+      const distressBeacon = new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 8), energyMaterial);
+      distressBeacon.name = 'fugitiveDistressBeacon';
+      distressBeacon.position.set(-1.25, 1.7, 3.1);
+      group.add(distressBeacon);
+    }
 
     const energyKeel = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.2, 8.8), energyMaterial);
     energyKeel.position.set(0, -1.25, 0.5);
@@ -186,9 +208,9 @@ export class HuntVehicle {
     const cockpit = new THREE.Mesh(
       new THREE.SphereGeometry(1, 16, 8),
       new THREE.MeshStandardMaterial({
-        color: 0x172523,
-        emissive: 0x092f2d,
-        emissiveIntensity: 0.8,
+        color: isFugitiveCraft ? 0x241d1b : 0x172523,
+        emissive: isFugitiveCraft ? 0x5d2315 : 0x092f2d,
+        emissiveIntensity: isFugitiveCraft ? 1.15 : 0.8,
         metalness: 0.75,
         roughness: 0.12,
       }),
@@ -291,10 +313,13 @@ export class HuntVehicle {
     if (!playerPosition || this.mesh.position.distanceTo(playerPosition) > this.interactionDistance) return false;
 
     this.interacted = true;
-    const energyRestored = restoreResource(player, 'energy', 'maxEnergy', 45);
-    const staminaRestored = restoreResource(player, 'stamina', 'maxStamina', 30);
-    player.scanPulseTimer = Math.max(Number(player.scanPulseTimer) || 0, 6);
-    player.scanPulseRadius = Math.max(Number(player.scanPulseRadius) || 0, 85);
+    const isFugitiveCraft = this.type === 'fugitive_escape_craft';
+    const scanDuration = isFugitiveCraft ? 8 : 6;
+    const scanRadius = isFugitiveCraft ? 110 : 85;
+    const energyRestored = restoreResource(player, 'energy', 'maxEnergy', isFugitiveCraft ? 60 : 45);
+    const staminaRestored = restoreResource(player, 'stamina', 'maxStamina', isFugitiveCraft ? 38 : 30);
+    player.scanPulseTimer = Math.max(Number(player.scanPulseTimer) || 0, scanDuration);
+    player.scanPulseRadius = Math.max(Number(player.scanPulseRadius) || 0, scanRadius);
     this.mesh.userData.interacted = true;
     this.mesh.userData.interactable = false;
     if (this.energyMaterial) this.energyMaterial.emissiveIntensity = 3.5;
@@ -305,8 +330,8 @@ export class HuntVehicle {
       vehicleType: this.type,
       energyRestored,
       staminaRestored,
-      scanDuration: 6,
-      scanRadius: 85,
+      scanDuration,
+      scanRadius,
     };
   }
 

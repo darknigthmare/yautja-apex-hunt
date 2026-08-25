@@ -13,6 +13,7 @@ const BOSS_CASES = Object.freeze([
   ['badBlood', 'bad_blood'],
   ['predalien', 'predalien'],
   ['superPredator', 'super_predator'],
+  ['upgradePredator', 'super_predator'],
   ['feralPredator', 'feral'],
   ['wolfCleaner', 'wolf'],
   ['kalisk', 'kalisk'],
@@ -34,7 +35,7 @@ function collectMeshes(root) {
   return meshes;
 }
 
-test('les huit boss reçoivent une silhouette HD distincte au-dessus de 10k triangles', (t) => {
+test('les neuf boss reçoivent une couche géométrique HD au-dessus de 10k triangles', (t) => {
   for (const [bossType, archetype] of BOSS_CASES) {
     const scene = new THREE.Scene();
     const boss = createBoss(scene, { bossType });

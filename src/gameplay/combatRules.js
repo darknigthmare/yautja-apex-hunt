@@ -1,6 +1,7 @@
 export const MELEE_WEAPONS = Object.freeze({
   1: { id: 'wristblades', damage: 48, range: 8.5, honor: 18 },
   8: { id: 'whip', damage: 60, range: 18, honor: 24 },
+  13: { id: 'father_sword', damage: 92, range: 10, honor: 34 },
 });
 
 export function resolveMeleeStrike(weaponId, distance, { fromCanopy = false } = {}) {

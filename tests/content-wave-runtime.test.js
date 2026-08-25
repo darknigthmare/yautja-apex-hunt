@@ -158,11 +158,14 @@ test('les armes 9 et 0 créent leurs projectiles avec coûts et seuils exacts', 
   assert.ok(scene.children.includes(bolt.mesh));
 });
 
-test('le registre jouable expose dix raccourcis uniques, dont Digit0', () => {
-  assert.equal(PLAYABLE_WEAPONS.length, 10);
-  assert.equal(new Set(PLAYABLE_WEAPONS.map(({ slot }) => slot)).size, 10);
-  assert.equal(new Set(PLAYABLE_WEAPONS.map(({ key }) => key)).size, 10);
+test('le registre jouable expose tous ses raccourcis uniques, dont Digit0 et les armes v1.9', () => {
+  assert.equal(PLAYABLE_WEAPONS.length, 14);
+  assert.equal(new Set(PLAYABLE_WEAPONS.map(({ slot }) => slot)).size, PLAYABLE_WEAPONS.length);
+  assert.equal(new Set(PLAYABLE_WEAPONS.map(({ key }) => key)).size, PLAYABLE_WEAPONS.length);
   assert.equal(PLAYABLE_WEAPONS.find(({ key }) => key === 'Digit0')?.slot, 0);
+  for (const key of ['Minus', 'Equal', 'BracketLeft', 'BracketRight']) {
+    assert.ok(PLAYABLE_WEAPONS.some((weapon) => weapon.key === key), `raccourci v1.9 absent: ${key}`);
+  }
 });
 
 test('le hangar reste déterministe, borné et figé en mouvement réduit', () => {

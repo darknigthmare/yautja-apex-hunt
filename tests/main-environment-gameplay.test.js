@@ -363,6 +363,68 @@ test('une attaque PNJ de mêlée reste immédiate sans résolution projectile', 
   assert.equal(harness.bloodBursts, 1);
 });
 
+test('le filet PNJ draine l’énergie et applique réellement sa durée d’entrave', () => {
+  const harness = makeNpcAttackHarness({
+    type: 'attack_player',
+    damage: 8,
+    damageType: 'disruption',
+    status: 'snare',
+    statusDuration: 4.2,
+    snareDuration: 4.2,
+    energyDrain: 10,
+    projectile: { origin: new THREE.Vector3(0, 0, 0) },
+  });
+
+  harness.game.updateEncounterContent(0.1);
+
+  assert.equal(harness.game.player.health, 92);
+  assert.equal(harness.game.player.energy, 70);
+  assert.equal(harness.game.player.combatStatusTimers.snare, 4.2);
+  assert.equal(harness.game.player.isCloaked, true, 'un filet n’est pas un brouillage thermique');
+});
+
+test('la Smartgun résout chaque impact de rafale et pose la suppression temporaire', () => {
+  const harness = makeNpcAttackHarness({
+    type: 'attack_player',
+    damage: 18,
+    damageType: 'ballistic',
+    burstCount: 4,
+    suppression: true,
+    suppressionDuration: 2.6,
+    projectile: { origin: new THREE.Vector3(0, 0, 0), burstCount: 4 },
+  });
+
+  harness.game.updateEncounterContent(0.1);
+
+  assert.equal(harness.game.player.health, 28);
+  assert.equal(harness.game.player.combatStatusTimers.suppression, 2.6);
+  assert.equal(harness.bloodBursts, 1);
+});
+
+test('la désorientation facehugger coexiste avec corrosion et venin', () => {
+  const harness = makeNpcAttackHarness({
+    type: 'attack_player',
+    damage: 13,
+    damageType: 'corrosion',
+    status: 'disorientation',
+    statusDuration: 3.2,
+    secondaryStatus: 'venom',
+  });
+
+  harness.game.updateEncounterContent(0.1);
+
+  assert.equal(harness.game.player.health, 87);
+  assert.equal(harness.game.player.combatStatusTimers.disorientation, 3.2);
+  assert.equal(harness.game.player.corroded, true);
+  assert.equal(harness.game.player.stamina, 46);
+});
+
+test('les deux opérateurs Stargazer émettent du sang humain', () => {
+  const game = Object.create(Game.prototype);
+  assert.equal(game.getTargetBloodColor({ type: 'stargazer_rifleman' }), 0xb41616);
+  assert.equal(game.getTargetBloodColor({ type: 'stargazer_net_trapper' }), 0xb41616);
+});
+
 test('Space quitte une perche alignée au collider via un point d’atterrissage sûr', () => {
   const game = Object.create(Game.prototype);
   const perch = new THREE.Vector3(14, 32, -7);

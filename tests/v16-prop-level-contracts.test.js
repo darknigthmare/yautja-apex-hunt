@@ -9,6 +9,7 @@ import {
   ENVIRONMENT_PERFORMANCE_BUDGETS,
   getBiomePropPlan,
 } from '../src/data/BiomePropCatalog.js';
+import { getBiomeHuntLayout } from '../src/data/BiomeHuntLayout.js';
 import { BIOME_DEFINITIONS } from '../src/data/GameConfig.js';
 import { Environment } from '../src/world/Environment.js';
 
@@ -19,6 +20,7 @@ const EXPECTED_BIOMES = [
   'hive_lv426',
   'jungle',
   'ryushi_desert',
+  'stargazer_blacksite',
   'yautja_prime',
 ];
 
@@ -77,7 +79,7 @@ function propLayoutSignature(environment) {
   });
 }
 
-test('le catalogue v1.6 couvre exactement les cinq biomes et publie des budgets explicites', () => {
+test('le catalogue couvre tous les biomes jouables et publie des budgets explicites', () => {
   assert.deepEqual(BIOME_IDS, EXPECTED_BIOMES);
   assert.deepEqual(Object.keys(BIOME_PROP_CATALOG).sort(), EXPECTED_BIOMES);
   assert.equal(Object.isFrozen(BIOME_PROP_CATALOG), true);
@@ -105,6 +107,7 @@ test('les plans de props sont déterministes, identifiables et spatialement sûr
   for (const biomeId of BIOME_IDS) {
     const first = getBiomePropPlan(biomeId);
     const second = getBiomePropPlan(biomeId);
+    const playableRadius = getBiomeHuntLayout(biomeId).playableRadius;
 
     assert.deepEqual(first, second, `${biomeId}: le même biome doit produire le même plan`);
     assert.equal(first.biomeId, biomeId);
@@ -124,7 +127,7 @@ test('les plans de props sont déterministes, identifiables et spatialement sûr
     for (const prop of first.props) {
       assert.ok(typeof prop.type === 'string' && prop.type.length > 2, `${prop.id}: type absent`);
       const position = asPosition(prop.position, prop.id);
-      assert.ok(Math.hypot(position[0], position[2]) <= 330, `${prop.id}: prop hors de l'aire jouable`);
+      assert.ok(Math.hypot(position[0], position[2]) <= playableRadius - 18, `${prop.id}: prop hors de l'aire jouable`);
       const instances = prop.instances ?? prop.count ?? 1;
       assert.ok(Number.isInteger(instances) && instances > 0, `${prop.id}: nombre d'instances invalide`);
     }
@@ -141,6 +144,7 @@ test('les plans de props sont déterministes, identifiables et spatialement sûr
 test('les POI ont des fonctions distinctes, une zone d interaction et une composition lisible', () => {
   for (const biomeId of BIOME_IDS) {
     const { pointsOfInterest } = getBiomePropPlan(biomeId);
+    const playableRadius = getBiomeHuntLayout(biomeId).playableRadius;
     const poiTypes = new Set();
 
     pointsOfInterest.forEach((poi, index) => {
@@ -156,7 +160,7 @@ test('les POI ont des fonctions distinctes, une zone d interaction et une compos
         Number.isFinite(poi.interactionRadius) && poi.interactionRadius >= 3 && poi.interactionRadius <= 30,
         `${poi.id}: rayon d'interaction hors limites`,
       );
-      assert.ok(radiusFromCenter >= 12 && radiusFromCenter <= 300, `${poi.id}: POI mal placé`);
+      assert.ok(radiusFromCenter >= 12 && radiusFromCenter <= playableRadius - 18, `${poi.id}: POI mal placé`);
       poiTypes.add(poi.type);
 
       for (let previous = 0; previous < index; previous += 1) {

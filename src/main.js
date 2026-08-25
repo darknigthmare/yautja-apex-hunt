@@ -41,6 +41,7 @@ const DIRECTIVE_BIOME_LABELS = Object.freeze({
   ryushi_desert: 'DÉSERT DE RYUSHI',
   yautja_prime: 'DOMAINE YAUTJA',
   genna_deathworld: 'MONDE MORTEL DE GENNA',
+  stargazer_blacksite: 'COMPLEXE DE CONFINEMENT STARGAZER',
 });
 const HIVE_EGG_OFFSETS = Object.freeze([
   Object.freeze([-19, 0, -7]),
@@ -59,6 +60,7 @@ const ENEMY_ATTACK_PROFILES = Object.freeze({
   wolf_whip: { damage: 42, range: 18, cooldown: 1.7, telegraphed: true },
   kalisk_charge: { damage: 48, range: 11, cooldown: 1.8, telegraphed: true },
   kalisk_impale: { damage: 44, range: 9.5, cooldown: 1.55, telegraphed: true },
+  upgrade_leap: { damage: 76, range: 13, cooldown: 2.1, telegraphed: true },
 });
 const ENEMY_ATTACK_TELEGRAPHS = Object.freeze({
   attack_tail: 'BALAYAGE DE QUEUE DÉTECTÉ — ESQUIVEZ !',
@@ -67,6 +69,7 @@ const ENEMY_ATTACK_TELEGRAPHS = Object.freeze({
   wolf_whip: 'FOUET SEGMENTÉ DE WOLF — SORTEZ DU BALAYAGE !',
   kalisk_charge: 'CHARGE DU KALISK — QUITTEZ SON AXE !',
   kalisk_impale: 'EMPALAGE DU KALISK — ROMPEZ LE CONTACT !',
+  upgrade_leap: 'BOND D’ÉCRASEMENT DE L’ASSASSIN — QUITTEZ LA ZONE D’IMPACT !',
 });
 
 
@@ -717,6 +720,8 @@ export class Game {
       'era_viking_raider',
       'era_feudal_duelist',
       'era_wartime_pilot',
+      'stargazer_rifleman',
+      'stargazer_net_trapper',
     ].includes(target?.type)) return 0xb41616;
     if (target?.type === 'combat_synthetic') return 0xf1f2df;
     return 0x00ff44;
@@ -1120,7 +1125,7 @@ export class Game {
     this.updateTerritoryClashes(delta);
 
     for (const enemy of [...(this.activeEnemies ?? [])]) {
-      const signals = enemy.update(delta, { player: this.player });
+      const signals = enemy.update(delta, { player: this.player, allies: this.activeEnemies });
       const terrainHeight = this.environment?.sampleHeight?.(enemy.position);
       if (Number.isFinite(terrainHeight)) enemy.position.y = terrainHeight;
       enemy.mesh?.position?.copy(enemy.position);
@@ -1148,10 +1153,40 @@ export class Game {
             if (coverImpact?.point?.isVector3) return;
           }
 
-          this.player.takeDamage(signal.damage);
-          if (signal.status === 'corrosion') this.player.applyAcidCorrosion();
+          const burstCount = signal.projectile
+            ? Math.max(1, Math.min(6, Math.round(Number(signal.burstCount) || 1)))
+            : 1;
+          for (let round = 0; round < burstCount; round += 1) {
+            this.player.takeDamage(signal.damage);
+          }
+          if (signal.status === 'corrosion' || signal.damageType === 'corrosion') this.player.applyAcidCorrosion();
+          const applyCombatStatus = (status, duration) => {
+            if (this.player.applyCombatStatus?.(status, duration) === true) return true;
+            const seconds = Math.max(0, Number(duration) || 0);
+            if (seconds === 0) return false;
+            this.player.combatStatusTimers ??= {};
+            this.player.combatStatusTimers[status] = Math.max(
+              Number(this.player.combatStatusTimers[status]) || 0,
+              seconds,
+            );
+            return true;
+          };
+          if (signal.status === 'snare') {
+            applyCombatStatus('snare', signal.snareDuration ?? signal.statusDuration ?? 3.5);
+            this.hud.showLogMessage('FILET DE CONFINEMENT — MOBILITÉ ENTRAVÉE', 1500);
+          }
+          if (signal.status === 'disorientation') {
+            applyCombatStatus('disorientation', signal.statusDuration ?? 3.2);
+            this.hud.showLogMessage('ATTAQUE FACIALE — ORIENTATION PERTURBÉE', 1500);
+          }
+          if (signal.suppression === true) {
+            applyCombatStatus('suppression', signal.suppressionDuration ?? 2.5);
+            this.hud.showLogMessage(`TIR DE SUPPRESSION — RAFALE ×${burstCount}`, 1400);
+          }
+          if (Number(signal.energyDrain) > 0) {
+            this.player.energy = Math.max(0, this.player.energy - Number(signal.energyDrain));
+          }
           if (signal.status === 'energy_jam') {
-            this.player.energy = Math.max(0, this.player.energy - (signal.energyDrain || 18));
             if (this.player.isCloaked) this.player.toggleCloak();
             this.hud.showLogMessage('BROUILLAGE THERMIQUE — ÉNERGIE DRAINÉE, CAMOUFLAGE ROMPU', 1800);
           }
@@ -1212,7 +1247,7 @@ export class Game {
     const launchPosition = this.player.position.clone();
     const perchAnchor = this.player.currentPerchNode?.clone?.() ?? launchPosition.clone();
     const result = this.player.attack(targetPos);
-    if (!['death_from_above', 'wristblades', 'whip_slash'].includes(result)) return;
+    if (!['death_from_above', 'wristblades', 'whip_slash', 'father_sword'].includes(result)) return;
 
     const isDeathFromAbove = result === 'death_from_above';
     const distance = isDeathFromAbove
@@ -2066,6 +2101,28 @@ export class Game {
         break;
       }
 
+      case 'KeyY': {
+        const decoyPoint = new THREE.Vector3(0, 0, -24)
+          .applyAxisAngle(new THREE.Vector3(0, 1, 0), this.cameraYaw)
+          .add(this.player.position);
+        const sampledGroundHeight = this.environment?.sampleHeight?.(decoyPoint);
+        const decoy = this.player.deployApexDecoy(decoyPoint, {
+          groundHeight: Number.isFinite(sampledGroundHeight)
+            ? sampledGroundHeight
+            : this.player.position.y,
+        });
+        const affected = decoy ? (this.activeEnemies ?? []).reduce((count, enemy) => {
+          if (enemy.isDead || enemy.position.distanceTo(decoy.position) > 110) return count;
+          return count + (enemy.hearMimicry?.(decoy.position, 8) ? 1 : 0);
+        }, 0) : 0;
+        this.hud.showLogMessage(
+          decoy
+            ? `LEURRE APEX DÉPLOYÉ — ${affected} MENACE${affected > 1 ? 'S' : ''} DÉTOURNÉE${affected > 1 ? 'S' : ''}`
+            : 'LEURRE APEX INDISPONIBLE OU EN RECHARGE',
+        );
+        break;
+      }
+
       case 'Space':
         if (this.gameState === 'HUNT') {
           const wasPerched = this.player.isPerched;
@@ -2601,13 +2658,20 @@ export class Game {
       && this.activeBoss.activeAttackType === 'whip_sweep';
     const isKaliskAttack = this.currentHuntType === 'kalisk'
       && ['kalisk_charge', 'kalisk_impale'].includes(this.activeBoss.activeAttackType);
-    const attackState = isWolfWhip ? 'wolf_whip'
+    const isUpgradeLeap = this.currentHuntType === 'upgrade_predator'
+      && ['leap_crush', 'leap_impact'].includes(this.activeBoss.aiState);
+    const isUpgradePredatorCharge = this.currentHuntType === 'upgrade_predator'
+      && this.activeBoss.aiState === 'charge';
+    const attackState = isUpgradeLeap ? 'upgrade_leap'
+      : isWolfWhip ? 'wolf_whip'
       : isKaliskAttack ? this.activeBoss.activeAttackType
         : chargeImpactReady ? 'charge' : this.activeBoss.aiState;
     const attackProfile = ENEMY_ATTACK_PROFILES[attackState];
-    if ((attackProfile?.telegraphed || isSuperPredatorCharge || isFeralSpearAttack) && this.activeBoss.attackTelegraphAnnounced === false) {
+    if ((attackProfile?.telegraphed || isSuperPredatorCharge || isFeralSpearAttack || isUpgradePredatorCharge) && this.activeBoss.attackTelegraphAnnounced === false) {
       const message = isSuperPredatorCharge
         ? 'CHARGE DU SUPER PREDATOR — BRISEZ SON AXE !'
+        : isUpgradePredatorCharge
+          ? 'CHARGE DE L’ASSASSIN — BRISEZ SON AXE !'
         : isFeralSpearAttack
           ? this.activeBoss.aiState === 'charge'
             ? 'CHARGE À LA LANCE DU FERAL — ESQUIVEZ SON AXE !'
@@ -2616,7 +2680,8 @@ export class Game {
       if (message) this.hud.showLogMessage(message, 1200);
       this.activeBoss.attackTelegraphAnnounced = true;
     }
-    const requiresExplicitImpact = attackProfile?.telegraphed || isSuperPredatorCharge || isFeralSpearAttack;
+    const requiresExplicitImpact = attackProfile?.telegraphed || isSuperPredatorCharge
+      || isFeralSpearAttack || isUpgradePredatorCharge;
     const impactReady = !requiresExplicitImpact || this.activeBoss.attackImpactReady === true;
     const freshBadBloodMelee = this.currentHuntType !== 'bad_blood'
       || attackState !== 'melee'

@@ -112,6 +112,20 @@ export const HUNT_DEFINITIONS = Object.freeze({
     recommendedBiome: 'genna_deathworld',
     hud: { part1: ['CARAPACE ADAPTATIVE:', 'carapaceIntact', 'INTACTE', 'ROMPUE'], part2: ['NOYAU DU KALISK:', 'coreExposed', 'EXPOSÉ', 'PROTÉGÉ'] },
   },
+  upgrade_predator: {
+    id: 'upgrade_predator',
+    name: 'Assassin Predator — brèche Stargazer',
+    bossType: 'upgradePredator',
+    colliderRadius: 6.4,
+    sourceTier: 'ORIGINAL',
+    basisTier: 'SCREEN',
+    continuity: 'Adaptation Apex Hunt fondée sur The Predator (2018), avec silhouette et règles de combat procédurales originales',
+    objective: 'Rompre la bio-armure, esquiver les bonds d’écrasement et détruire les glandes adaptatives avant leur régénération.',
+    reward: 2600,
+    trophyColor: 0x55715d,
+    recommendedBiome: 'stargazer_blacksite',
+    hud: { part1: ['BIO-ARMURE:', 'bioArmorIntact', 'INTACTE', 'ROMPUE'], part2: ['GLANDES ADAPTATIVES:', 'adaptiveGlandsIntact', 'ACTIVES', 'DÉTRUITES'] },
+  },
 });
 
 export const BIOME_DEFINITIONS = Object.freeze({
@@ -144,6 +158,13 @@ export const BIOME_DEFINITIONS = Object.freeze({
     basisTier: 'SCREEN',
     texture: '/assets/textures/genna-deathworld-ground.webp',
     floraTexture: '/assets/textures/deathworld-alien-flora.webp',
+  },
+  stargazer_blacksite: {
+    name: 'Complexe de confinement Stargazer',
+    sourceTier: 'ORIGINAL',
+    basisTier: 'SCREEN',
+    texture: '/assets/textures/ryushi-frontier-panels.webp',
+    structureTexture: '/assets/textures/stargazer-tactical-composite.webp',
   },
 });
 

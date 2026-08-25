@@ -63,6 +63,7 @@ export const HUNT_CACHE_TYPES = Object.freeze({
   medicomp: Object.freeze({ health: 55, energy: 25, honor: 80, shell: 0x35433b, edge: 0x9caa8c, energyColor: 0x76ff9a, emissive: 0x168a3b }),
   energy_cell: Object.freeze({ health: 15, energy: 75, honor: 90, shell: 0x2f3948, edge: 0x6e8ba3, energyColor: 0x58bfff, emissive: 0x155fa3 }),
   trophy_reliquary: Object.freeze({ health: 0, energy: 20, honor: 240, shell: 0x4a3a2d, edge: 0xd1a54a, energyColor: 0xffc84b, emissive: 0xa35d0b }),
+  stargazer_salvage: Object.freeze({ health: 28, energy: 65, honor: 180, shell: 0x343e44, edge: 0x8aa6ad, energyColor: 0xff8c58, emissive: 0x9b3014 }),
 });
 
 let cacheSequence = 0;
@@ -567,6 +568,7 @@ export class LevelEventDirector {
 
   selectVehicleType() {
     const biome = String(this.biomeId ?? '').toLowerCase();
+    if (biome.includes('stargazer')) return 'fugitive_escape_craft';
     if (biome.includes('hive')) return 'cleaner_shuttle';
     if (String(this.huntId).includes('bad_blood')) return 'clan_interceptor';
     return 'scout_shuttle';
@@ -574,6 +576,7 @@ export class LevelEventDirector {
 
   selectCacheType() {
     const biome = String(this.biomeId ?? '').toLowerCase();
+    if (biome.includes('stargazer')) return 'stargazer_salvage';
     if (biome.includes('hive')) return 'medicomp';
     if (biome.includes('yautja')) return 'trophy_reliquary';
     if (biome.includes('ryushi')) return 'energy_cell';

@@ -1,12 +1,42 @@
-# Rapport QA — release 1.8.0
+# Rapport QA — candidate 1.9.0
 
 **Date :** 25 août 2026
-**Statut :** release 1.8.0 validée, poussée sur GitHub et publiée en production Vercel.
-**Production :** <https://yautja-apex-hunt.vercel.app/>
+**Statut :** candidate 1.9.0 validée localement ; push GitHub et publication Vercel encore à exécuter.
+**Production actuellement vérifiée :** release 1.8.0 sur <https://yautja-apex-hunt.vercel.app/> jusqu’à la publication de cette candidate.
 **Déploiement production v1.8 :** `dpl_5zqD2XQgZ4vo8RKRAft8cM7yKfHL` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `54fad3c`
 **Déploiement production v1.7 :** `dpl_En8EmhSsfxE7SZFPYEApyYwo134h` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `94bb326`
 **Premier déploiement de validation v1.6 :** `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` — `READY`, cible `production`, alias officiel appliqué
 **Source :** <https://github.com/darknigthmare/yautja-apex-hunt>
+
+## Passe v1.9 — brèche Stargazer, Assassin Predator et contenu transversal
+
+| Gate déjà exécuté | Résultat vérifié | Périmètre exact |
+|---|---:|---|
+| Suite automatisée finale | **278/278 réussis** | Boss, biomes, directives, comportements PNJ, statuts, arsenal, personnalisation, catalogues, sauvegarde et régressions historiques. |
+| Build production local | **Vite 8.2.2 réussi** | 47 modules ; HTML 26,84 Ko ; CSS 27,28 Ko ; jeu 581,94 Ko ; Three.js 505,00 Ko. Avertissement de taille non bloquant. |
+| Sécurité dépendances | **0 vulnérabilité** | `npm audit --omit=dev`. |
+| Qualité Git | **propre** | `git diff --check` sans erreur et aucun patch/capture temporaire v1.9 conservé. |
+| Chromium desktop local | **réussi** | 1280×720 : neuf chasses, huit directives, lancement Assassin/Stargazer, HUD `0 / 3 OBJECTIFS`, 14 armes et métadonnée publique à jour. |
+| Chromium mobile local | **réussi** | 390×844 : document limité à 390 px, chasse Stargazer active, aucun débordement de page relevé. |
+| Console navigateur | **0 erreur applicative** | Aucun overlay Vite et journal applicatif vide sur le titre, la console des contrats et la chasse Stargazer. |
+
+**Publication 1.9 : à compléter après le push et le déploiement.** Aucun commit ni déploiement 1.9 n’est déclaré ici avant sa vérification effective.
+
+Contenu raccordé dans cette candidate :
+
+- trois directives 1.9 portent le total à huit : `stargazer_breach`, `game_preserve_escape` et `hive_containment_failure` ;
+- neuvième chasse interne `upgrade_predator`, opposant l’Assassin Predator (2018), génétiquement amélioré, et directive `stargazer_breach` ;
+- « Évasion de la planète-réserve » rend `hell_hound_alpha` et `river_ghost` accessibles dans la jungle via `game_preserve_escape` ;
+- « Rupture du confinement de la ruche » rend le Smartgunner Colonial, le synthétique Weyland de terrain et le Facehugger accessibles sur `hive_lv426` via `hive_containment_failure` ;
+- site noir Stargazer de rayon 680, avec neuf secteurs, 16 routes non linéaires, six territoires, 15 résidents écologiques, six événements, quatre POI, deux dangers et huit groupes de props ; sa piste suit la poursuite de l’Assassin autour de l’évasion du Fugitive ;
+- huit rôles à comportements distincts : alpha de meute, River Ghost, Smartgunner Colonial, synthétique Weyland de terrain, Facehugger, fusilier Stargazer, trappeur Stargazer et molosse modifié ;
+- quatre armes jouables supplémentaires aux slots 10–13 : lance-traits Feral, double plasma Wolf, Eye of Ra puissant et précis à cadence lente, et Épée Yautja — Father ;
+- leurre `apex_decoy` sur `[Y]`, avec objet 3D temporaire, coût énergétique, recharge et attraction réelle des ennemis ;
+- quatre classes supplémentaires — Tracker, Falconer, Cleaner et Fugitive — ainsi que de nouveaux styles de predlocks, finitions et warpaints ;
+- appareil d’évasion Fugitive, récupération `stargazer_salvage` et hub porté à neuf stations en double rangée avec anneaux holographiques instanciés ;
+- Assassin Predator (2018), génétiquement amélioré, à 29 468 triangles au total, avec armure biologique, glandes adaptatives destructibles et bond écrasant télégraphié.
+
+Le tableur Excel évoqué par l’utilisateur n’était accessible ni dans le workspace ni dans les pièces jointes disponibles. Aucun ajout, total ou résultat QA ne lui est attribué ; les écarts ont été reconstruits à partir du catalogue versionné, des surfaces runtime et des contrats automatisés.
 
 ## Passe v1.8 — directives de longue chasse et nouvelles proies
 
@@ -61,14 +91,15 @@ Le benchmark MHW s’appuie sur les principes officiels publiés par Capcom — 
 
 ## Contenu réellement jouable contrôlé
 
-- [x] huit contrats : Goliath, Reine xénomorphe, Bad Blood, Predalien, Berserker, Feral, Wolf Cleaner et Kalisk ;
+- [x] neuf contrats couverts par les contrats automatisés : Goliath, Reine xénomorphe, Bad Blood, Predalien, Berserker, Feral, Wolf Cleaner, Kalisk et Assassin Predator (2018), génétiquement amélioré ;
 - [x] Wolf : double plasma, fouet télégraphié, mine, agent dissolvant, bio-masque et mallette destructibles ;
 - [x] Kalisk : carapace adaptative, charge, empalement, régénération interruptible et noyau exposé ;
+- [x] Assassin Predator (2018), génétiquement amélioré : 29 468 triangles, armure biologique, glandes adaptatives, régénération bornée, bond écrasant et interruption au filet ;
 - [x] points faibles visés en coordonnées monde et collision de projectile balayée pour éviter le tunneling ;
 - [x] secteurs narratifs imposés au lancement : Wolf sur LV-426 et Kalisk sur Genna ;
 - [x] huit presets Lost Tribe, 38 bio-masques et texture rituelle réellement appliquée puis restaurée lors d’un changement de preset ;
 - [x] registre de 29 œuvres et médias, avec statuts séparés pour sorties, bonus, coupés, non publiés, promotionnels et crossovers ;
-- [x] galerie de huit trophées et parité entre les contrats, les biomes et le Codex ;
+- [x] galerie et nexus de neuf trophées/contrats, distribués en double rangée avec anneaux instanciés ;
 - [x] trois textures originales OpenAI en WebP 1024×1024 : alliage Cleaner, os rituel Lost Tribe et peau adaptative Kalisk.
 
 ## État du classeur de franchise

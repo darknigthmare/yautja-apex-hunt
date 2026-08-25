@@ -42,6 +42,7 @@ const ALLOWED_SOURCES = new Set([
   'huntingGroundsUpdates',
   'badlandsGear',
   'avp2004',
+  'aliens1986',
   'avpRequiem2007',
   'huntingGrounds',
   'avpOriginalComics',
@@ -69,9 +70,9 @@ test('la passe contenu respecte les seuils de production demandés', () => {
     events: LEVEL_EVENT_CATALOG.length,
     bosses: HUNT_BOSS_CATALOG.length,
     support: SUPPORT_CATALOG.length,
-  }, { technologies: 37, vehicles: 13, enemies: 27, events: 21, bosses: 13, support: 13 });
-  assert.equal(TECH_CATALOG.length + VEHICLE_CATALOG.length + ENEMY_CATALOG.length + LEVEL_EVENT_CATALOG.length + HUNT_BOSS_CATALOG.length + SUPPORT_CATALOG.length, 124);
-  assert.equal(ALL_YAUTJA_CONTENT.length, 198);
+  }, { technologies: 37, vehicles: 13, enemies: 32, events: 21, bosses: 13, support: 13 });
+  assert.equal(TECH_CATALOG.length + VEHICLE_CATALOG.length + ENEMY_CATALOG.length + LEVEL_EVENT_CATALOG.length + HUNT_BOSS_CATALOG.length + SUPPORT_CATALOG.length, 129);
+  assert.equal(ALL_YAUTJA_CONTENT.length, 203);
 });
 
 test('tous les identifiants sont uniques et chaque fiche expose son statut réel', () => {

@@ -139,6 +139,15 @@ export class YautjaPlayer {
     this.scoutDroneCooldown = 0;
     this.scoutDroneAge = 0;
     this.shurikenCooldown = 0;
+    this.apexDecoy = null;
+    this.apexDecoyTimer = 0;
+    this.apexDecoyCooldown = 0;
+    this.apexDecoyAge = 0;
+    this.combatStatusTimers = {
+      snare: 0,
+      disorientation: 0,
+      suppression: 0,
+    };
 
     // QTE State
     this.inQTE = false;
@@ -300,6 +309,23 @@ export class YautjaPlayer {
     this.wristbladeLeft = new THREE.Mesh(bladeGeo, bladeMat);
     this.wristbladeLeft.position.set(-1.65, 2.5, 1.3);
     yautjaGroup.add(this.wristbladeLeft);
+
+    this.fatherSwordMesh = new THREE.Group();
+    this.fatherSwordMesh.name = 'playerFatherThermalSword';
+    this.fatherSwordMesh.position.set(2.2, 3.2, 0.7);
+    this.fatherSwordMesh.rotation.set(-0.2, 0, -0.28);
+    const fatherSwordMaterial = new THREE.MeshStandardMaterial({ color: 0xc8f4ef, emissive: 0x2dc7b6, emissiveIntensity: 1.35, metalness: 0.94, roughness: 0.12 });
+    const fatherBlade = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.16, 4.5, 2, 2, 12), fatherSwordMaterial);
+    fatherBlade.position.z = 2.25;
+    fatherBlade.castShadow = true;
+    const fatherGuard = new THREE.Mesh(new THREE.BoxGeometry(1.25, 0.24, 0.35), bladeMat);
+    fatherGuard.position.z = 0.18;
+    const fatherGrip = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.15, 1.05, 10), dreadMat);
+    fatherGrip.rotation.x = Math.PI / 2;
+    fatherGrip.position.z = -0.48;
+    this.fatherSwordMesh.add(fatherBlade, fatherGuard, fatherGrip);
+    this.fatherSwordMesh.visible = false;
+    yautjaGroup.add(this.fatherSwordMesh);
 
     this.wristShieldMesh = new THREE.Group();
     this.wristShieldMesh.name = 'playerWristShield';
@@ -619,13 +645,67 @@ export class YautjaPlayer {
   }
 
   clearTransientGadgets() {
-    const changed = this.wristShieldActive || Boolean(this.scoutDrone);
+    const changed = this.wristShieldActive || Boolean(this.scoutDrone) || Boolean(this.apexDecoy);
     this.deactivateWristShield();
     if (this.scoutDrone) disposeObject3D(this.scoutDrone);
     this.scoutDrone = null;
     this.scoutDroneTimer = 0;
     this.scoutDroneAge = 0;
+    if (this.apexDecoy) disposeObject3D(this.apexDecoy);
+    this.apexDecoy = null;
+    this.apexDecoyTimer = 0;
+    this.apexDecoyAge = 0;
     return changed;
+  }
+
+  deployApexDecoy(targetPosition = this.position, { groundHeight, sampleGroundHeight } = {}) {
+    if (this.isDead || this.apexDecoyCooldown > 0 || this.energy < 22) return null;
+    this.energy -= 22;
+    this.apexDecoyCooldown = 18;
+    this.apexDecoyTimer = 8;
+    this.apexDecoyAge = 0;
+    if (this.apexDecoy) disposeObject3D(this.apexDecoy);
+
+    const hologram = new THREE.Group();
+    hologram.name = 'playerApexDecoy';
+    const hologramMaterial = new THREE.MeshBasicMaterial({
+      color: 0x55ffdc,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.64,
+      depthWrite: false,
+    });
+    const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.82, 2.8, 6, 10), hologramMaterial);
+    torso.position.y = 3.1;
+    torso.scale.set(1.25, 1, 0.76);
+    const head = new THREE.Mesh(new THREE.DodecahedronGeometry(0.72, 1), hologramMaterial);
+    head.position.y = 5.55;
+    hologram.add(torso, head);
+    for (const side of [-1, 1]) {
+      const limb = new THREE.Mesh(new THREE.CapsuleGeometry(0.22, 2.4, 4, 8), hologramMaterial);
+      limb.position.set(side * 1.16, 3.15, 0);
+      limb.rotation.z = side * -0.18;
+      hologram.add(limb);
+    }
+    hologram.position.copy(targetPosition?.isVector3 ? targetPosition : this.position);
+    const sampledHeight = typeof sampleGroundHeight === 'function'
+      ? Number(sampleGroundHeight(hologram.position.clone()))
+      : Number.NaN;
+    const requestedHeight = Number(groundHeight);
+    const fallbackHeight = Number.isFinite(hologram.position.y)
+      ? hologram.position.y
+      : Number(this.position.y) || 0;
+    hologram.position.y = Number.isFinite(sampledHeight)
+      ? sampledHeight
+      : Number.isFinite(requestedHeight)
+        ? requestedHeight
+        : fallbackHeight;
+    hologram.userData.threatSource = 'apex_decoy';
+    hologram.userData.groundAnchored = true;
+    this.apexDecoy = hologram;
+    this.scene.add(hologram);
+    audioSynth.playThermalSwitch();
+    return hologram;
   }
 
   deployScoutDrone() {
@@ -723,6 +803,29 @@ export class YautjaPlayer {
     this.acidTimer = 5.0;
     audioSynth.playAcidSizzle();
     return true;
+  }
+
+  applyCombatStatus(status, duration = 0) {
+    if (!Object.hasOwn(this.combatStatusTimers, status)) return false;
+    const seconds = Math.max(0, Number(duration) || 0);
+    if (seconds === 0) return false;
+    this.combatStatusTimers[status] = Math.max(this.combatStatusTimers[status], seconds);
+    return true;
+  }
+
+  getCombatMovementMultiplier() {
+    if (this.combatStatusTimers.snare > 0) return 0.25;
+    if (this.combatStatusTimers.disorientation > 0) return 0.55;
+    if (this.combatStatusTimers.suppression > 0) return 0.7;
+    return 1;
+  }
+
+  clearCombatStatuses() {
+    const changed = Object.values(this.combatStatusTimers).some((timer) => timer > 0);
+    Object.keys(this.combatStatusTimers).forEach((status) => {
+      this.combatStatusTimers[status] = 0;
+    });
+    return changed;
   }
 
   triggerQTE() {
@@ -858,6 +961,39 @@ export class YautjaPlayer {
       this.fireSpeargunBolt(targetPos);
       this.attackTimer = 0.35;
     }
+    else if (this.selectedWeapon === 10) {
+      if (this.energy < 9) return;
+      this.energy -= 9;
+      this.isAttacking = true;
+      audioSynth.playSpearThrow();
+      this.fireFeralBolt(targetPos);
+      this.attackTimer = 0.3;
+    }
+    else if (this.selectedWeapon === 11) {
+      if (this.energy < 34) return;
+      this.energy -= 34;
+      this.isAttacking = true;
+      audioSynth.playPlasmacasterBlast();
+      this.fireWolfDualPlasma(targetPos);
+      this.attackTimer = 0.72;
+    }
+    else if (this.selectedWeapon === 12) {
+      if (this.energy < 32) return;
+      this.energy -= 32;
+      this.isAttacking = true;
+      audioSynth.playPlasmacasterBlast();
+      this.fireEyeOfRa(targetPos);
+      this.attackTimer = 0.9;
+    }
+    else if (this.selectedWeapon === 13) {
+      if (this.stamina < 26) return;
+      this.stamina -= 26;
+      this.isAttacking = true;
+      if (this.fatherSwordMesh) this.fatherSwordMesh.visible = true;
+      audioSynth.playWristbladeSlash();
+      this.attackTimer = 0.62;
+      return 'father_sword';
+    }
   }
 
   deployPlasmaMine() {
@@ -953,6 +1089,46 @@ export class YautjaPlayer {
     this.scene.add(bolt);
   }
 
+  fireFeralBolt(targetPos) {
+    const bolt = new THREE.Mesh(
+      new THREE.ConeGeometry(0.11, 2.45, 8),
+      new THREE.MeshStandardMaterial({ color: 0xe4d7b5, metalness: 0.84, roughness: 0.18 }),
+    );
+    bolt.position.copy(this.mesh.position).add(new THREE.Vector3(0, 4.15, 0));
+    const dir = targetPos.clone().sub(bolt.position).normalize();
+    bolt.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+    this.projectiles.push({ mesh: bolt, dir, speed: 136, type: 'feral_bolt', damage: 78, lifetime: 2.2 });
+    this.scene.add(bolt);
+    return bolt;
+  }
+
+  fireWolfDualPlasma(targetPos) {
+    const spawnPos = new THREE.Vector3();
+    this.plasmacasterMesh.getWorldPosition(spawnPos);
+    const shots = [];
+    for (const offset of [-0.34, 0.34]) {
+      const orb = new THREE.Mesh(new THREE.SphereGeometry(0.54, 14, 12), ShaderManager.createPlasmaMaterial());
+      orb.position.copy(spawnPos).add(new THREE.Vector3(offset, 0, 0));
+      const dir = targetPos.clone().sub(orb.position).normalize();
+      dir.x += offset * 0.035;
+      dir.normalize();
+      const shot = { mesh: orb, dir, speed: 72, type: 'wolf_plasma', damage: 34, lifetime: 3 };
+      this.projectiles.push(shot);
+      shots.push(shot);
+      this.scene.add(orb);
+    }
+    return shots;
+  }
+
+  fireEyeOfRa(targetPos) {
+    const orb = new THREE.Mesh(new THREE.SphereGeometry(0.38, 12, 10), ShaderManager.createPlasmaMaterial());
+    orb.position.copy(this.mesh.position).add(new THREE.Vector3(-1.45, 5, 0.4));
+    const dir = targetPos.clone().sub(orb.position).normalize();
+    this.projectiles.push({ mesh: orb, dir, speed: 90, type: 'eye_of_ra_plasma', damage: 68, lifetime: 2.8 });
+    this.scene.add(orb);
+    return orb;
+  }
+
   triggerSelfDestruct() {
     if (this.isSelfDestructing || this.isDead || this.selfDestructComplete) return false;
     this.isSelfDestructing = true;
@@ -1014,6 +1190,7 @@ export class YautjaPlayer {
     this.healTimer = 0;
     this.wristbladeRight.position.z = 1.3;
     this.wristbladeLeft.position.z = 1.3;
+    if (this.fatherSwordMesh) this.fatherSwordMesh.visible = false;
     this.currentPerchNode = null;
     this.inQTE = false;
     this.qteTimer = 0;
@@ -1026,6 +1203,11 @@ export class YautjaPlayer {
     this.scoutDroneCooldown = 0;
     this.scoutDroneAge = 0;
     this.shurikenCooldown = 0;
+    this.apexDecoyTimer = 0;
+    this.apexDecoyCooldown = 0;
+    this.apexDecoyAge = 0;
+    this.clearCombatStatuses();
+    this.apexDecoy = null;
     this.isSelfDestructing = false;
     this.selfDestructTimer = 0;
     this.selfDestructComplete = false;
@@ -1044,6 +1226,10 @@ export class YautjaPlayer {
     this.wristShieldCooldown = Math.max(0, this.wristShieldCooldown - delta);
     this.scoutDroneCooldown = Math.max(0, this.scoutDroneCooldown - delta);
     this.shurikenCooldown = Math.max(0, this.shurikenCooldown - delta);
+    this.apexDecoyCooldown = Math.max(0, this.apexDecoyCooldown - delta);
+    Object.keys(this.combatStatusTimers).forEach((status) => {
+      this.combatStatusTimers[status] = Math.max(0, this.combatStatusTimers[status] - delta);
+    });
     if (this.wristShieldActive) {
       this.wristShieldTimer = Math.max(0, this.wristShieldTimer - delta);
       if (this.wristShieldTimer === 0) this.deactivateWristShield();
@@ -1058,6 +1244,19 @@ export class YautjaPlayer {
         this.scoutDrone = null;
       }
     }
+    if (this.apexDecoy) {
+      this.apexDecoyTimer = Math.max(0, this.apexDecoyTimer - delta);
+      this.apexDecoyAge += delta;
+      this.apexDecoy.rotation.y += delta * 0.85;
+      const pulse = 0.56 + Math.sin(this.apexDecoyAge * 8) * 0.14;
+      this.apexDecoy.traverse((child) => {
+        if (child.isMesh && child.material?.transparent) child.material.opacity = pulse;
+      });
+      if (this.apexDecoyTimer === 0) {
+        disposeObject3D(this.apexDecoy);
+        this.apexDecoy = null;
+      }
+    }
 
 
     if (this.attackTimer > 0) {
@@ -1066,6 +1265,7 @@ export class YautjaPlayer {
         this.isAttacking = false;
         this.wristbladeRight.position.z = 1.3;
         this.wristbladeLeft.position.z = 1.3;
+        if (this.fatherSwordMesh) this.fatherSwordMesh.visible = false;
       }
     }
 
@@ -1105,13 +1305,19 @@ export class YautjaPlayer {
     }
 
     if (!this.isHealing && !this.isSelfDestructing && !this.isPerched && !this.inQTE) {
-      const isSprinting = inputDir.isSprinting && hasMovementInput && this.stamina > 10;
-      const speed = isSprinting ? this.sprintSpeed : this.moveSpeed;
+      const sprintBlocked = this.combatStatusTimers.snare > 0 || this.combatStatusTimers.suppression > 0;
+      const isSprinting = inputDir.isSprinting && hasMovementInput && this.stamina > 10 && !sprintBlocked;
+      const statusMultiplier = this.getCombatMovementMultiplier();
+      const speed = (isSprinting ? this.sprintSpeed : this.moveSpeed) * statusMultiplier;
       if (isSprinting) this.stamina = Math.max(0, this.stamina - delta * 30.0);
 
       if (hasMovementInput) {
         const moveVector = new THREE.Vector3(inputDir.x, 0, inputDir.z).normalize();
         moveVector.applyAxisAngle(new THREE.Vector3(0, 1, 0), cameraYaw);
+        if (this.combatStatusTimers.disorientation > 0) {
+          const disorientationAngle = Math.sin(this.combatStatusTimers.disorientation * 7.5) * 0.55;
+          moveVector.applyAxisAngle(new THREE.Vector3(0, 1, 0), disorientationAngle);
+        }
 
         this.position.addScaledVector(moveVector, speed * delta);
 

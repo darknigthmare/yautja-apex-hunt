@@ -19,13 +19,16 @@ function completeDirective(id) {
   );
 }
 
-test('les cinq directives et leurs collections imbriquées sont immuables', () => {
+test('les huit directives et leurs collections imbriquées sont immuables', () => {
   assert.deepEqual(Object.keys(HUNT_DIRECTIVES), [
     'standard_hunt',
     'jungle_fireteam',
     'blooding_rite',
     'killer_eras',
     'deathworld_protocol',
+    'stargazer_breach',
+    'game_preserve_escape',
+    'hive_containment_failure',
   ]);
   assert.ok(Object.isFrozen(HUNT_DIRECTIVES));
 
@@ -64,6 +67,8 @@ test('le biome recommandé prime, tandis que la chasse standard conserve la dema
   assert.equal(resolveDirectiveBiome('blooding_rite', 'jungle'), 'hive_lv426');
   assert.equal(resolveDirectiveBiome('killer_eras', 'jungle'), 'yautja_prime');
   assert.equal(resolveDirectiveBiome('deathworld_protocol', 'jungle'), 'genna_deathworld');
+  assert.equal(resolveDirectiveBiome('game_preserve_escape', 'hive_lv426'), 'jungle');
+  assert.equal(resolveDirectiveBiome('hive_containment_failure', 'jungle'), 'hive_lv426');
   assert.equal(resolveDirectiveBiome('standard_hunt', 'hive_lv426'), 'hive_lv426');
   assert.equal(resolveDirectiveBiome('inconnue', 'ryushi_desert'), 'ryushi_desert');
   assert.equal(resolveDirectiveBiome('standard_hunt', ''), null);
@@ -105,6 +110,8 @@ test('le bonus de récompense ne s’applique qu’après tous les objectifs', (
   assert.equal(resolveDirectiveReward('blooding_rite', 1000, completeDirective('blooding_rite')), 1300);
   assert.equal(resolveDirectiveReward('killer_eras', 1000, completeDirective('killer_eras')), 1400);
   assert.equal(resolveDirectiveReward('deathworld_protocol', 1000, completeDirective('deathworld_protocol')), 1350);
+  assert.equal(resolveDirectiveReward('game_preserve_escape', 1000, completeDirective('game_preserve_escape')), 1300);
+  assert.equal(resolveDirectiveReward('hive_containment_failure', 1000, completeDirective('hive_containment_failure')), 1400);
   assert.equal(resolveDirectiveReward('standard_hunt', 1000), 1000);
   assert.equal(resolveDirectiveReward('directive_absente', 1000), 1000);
   assert.equal(resolveDirectiveReward('standard_hunt', Number.NaN), 0);
@@ -132,5 +139,31 @@ test('chaque planning est trié, immuable et couvre exactement ses objectifs', (
       if (index > 0) assert.ok(entry.at > schedule[index - 1].at, directive.id);
     });
     assert.throws(() => schedule.push({ at: 999, kind: 'directive_wave' }), TypeError);
+  }
+});
+
+test('les directives v1.9 rendent les cinq rôles orphelins accessibles avec une provenance honnête', () => {
+  const preserve = HUNT_DIRECTIVES.game_preserve_escape;
+  assert.equal(preserve.provenance, 'SCREEN_ADAPTATION');
+  assert.equal(preserve.recommendedBiomeId, 'jungle');
+  assert.deepEqual(
+    preserve.objectives.map(({ npcType }) => npcType),
+    ['hell_hound_alpha', 'river_ghost'],
+  );
+  assert.deepEqual(preserve.schedule.map(({ at }) => at), [11, 41]);
+
+  const containment = HUNT_DIRECTIVES.hive_containment_failure;
+  assert.equal(containment.provenance, 'CROSSOVER_SCREEN_ADAPTATION');
+  assert.equal(containment.recommendedBiomeId, 'hive_lv426');
+  assert.deepEqual(
+    containment.objectives.map(({ npcType }) => npcType),
+    ['colonial_marine_smartgunner', 'weyland_field_synthetic', 'xeno_facehugger'],
+  );
+  assert.deepEqual(containment.schedule.map(({ at }) => at), [9, 33, 57]);
+
+  const accessibleTypes = new Set(Object.values(HUNT_DIRECTIVES)
+    .flatMap(({ schedule }) => schedule.map(({ npcType }) => npcType)));
+  for (const npcType of [...preserve.objectives, ...containment.objectives].map(({ npcType }) => npcType)) {
+    assert.ok(accessibleTypes.has(npcType), npcType);
   }
 });

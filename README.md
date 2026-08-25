@@ -1,10 +1,10 @@
 # Yautja: Apex Hunt
 
-Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur incarne un chasseur Yautja, forge une apparence modulaire dans le vaisseau-mère, puis affronte huit cibles et des incidents dynamiques dans cinq biomes.
+Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur incarne un chasseur Yautja, forge une apparence modulaire dans le vaisseau-mère, puis affronte neuf cibles et des incidents dynamiques dans six biomes.
 
 ## État du projet
 
-Le code source porte la version 1.8.0 et reste disponible sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt). Cette vague ajoute cinq directives de chasse, sept archétypes de PNJ 3D, un suivi d’objectifs intégré au HUD et la persistance des directives accomplies, tout en conservant les cinq territoires ouverts de la 1.7. L’URL de production de référence reste [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/).
+Le code source prépare la publication de la version 1.9.0 et reste disponible sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt). Cette vague ajoute la neuvième chasse contre l’Assassin Predator (2018), génétiquement amélioré, dans le site noir Stargazer, un sixième territoire ouvert, trois directives portant le total à huit, huit rôles de PNJ à comportements distincts, quatre armes jouables, un leurre holographique, quatre classes et de nouvelles variantes de personnalisation. Ses gates locaux sont validés ; tant que le push et le déploiement ne sont pas consignés dans `QA_REPORT.md`, l’URL de production [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/) reste celle de la release publiée précédente.
 
 ## Lancer localement
 
@@ -26,13 +26,13 @@ npm audit
 ## Boucle de jeu
 
 - hub du vaisseau-mère, arsenal, forge et trophées persistants ;
-- huit chasses : Goliath Xeno-Akumo, Reine xénomorphe, rival Bad Blood, Predalien, Berserker Super Predator, Feral, Wolf Cleaner et Kalisk ;
-- cinq biomes : jungle, ruche, Ryushi, arène de clan et monde mortel de Genna ;
-- cinq plans déterministes de 630 à 660 unités de rayon, chacun avec neuf secteurs, 12 à 13 routes bouclées, des repères, couvertures extérieures, perches et limites circulaires réellement parcourables ;
-- dix-huit familles de PNJ 3D, dont sept archétypes ajoutés par les directives 1.8, 12 à 15 créatures résidentes par biome, patrouilles territoriales, migrations de proies, conflits d’écosystème, renforts bornés et combat maintenu jusqu’au prélèvement ;
-- trois navettes 3D et quatre conteneurs interactifs aux récompenses propres à chaque biome ;
-- dix armes jouables sur `1` à `0`, bouclier `[B]`, drone-faucon `[G]`, shuriken `[T]`, camouflage, vision et mimétisme ;
-- 38 bio-masques, 50 presets d’armure et neuf axes modulaires : classe, masque, peau, couleur/style de predlocks, couleur/accent/finition d’armure et warpaint ; les huit variantes Lost Tribe sont balisées `LICENSED_SCREEN_DESIGN` ;
+- neuf chasses : Goliath Xeno-Akumo, Reine xénomorphe, rival Bad Blood, Predalien, Berserker Super Predator, Feral, Wolf Cleaner, Kalisk et Assassin Predator (2018), génétiquement amélioré, dans le complexe Stargazer ;
+- six biomes : jungle, ruche, Ryushi, arène de clan, monde mortel de Genna et site noir Stargazer ;
+- six plans déterministes de 630 à 680 unités de rayon, chacun avec neuf secteurs et 12 à 16 routes bouclées ; Stargazer déploie précisément 16 routes, 15 résidents écologiques, six événements, quatre POI et deux dangers sur un rayon jouable de 680 unités ;
+- vingt-six familles de PNJ 3D, dont huit rôles 1.9 à comportements distincts, 12 à 15 créatures résidentes par biome, patrouilles territoriales, migrations de proies, conflits d’écosystème, renforts bornés et combat maintenu jusqu’au prélèvement ;
+- quatre véhicules/navettes 3D, dont l’appareil d’évasion Fugitive endommagé, et cinq profils de conteneurs interactifs, dont la récupération Stargazer ;
+- quatorze armes jouables : dix sur `1` à `0`, puis lance-traits Feral `[-]`, double plasma Wolf `[=]`, Eye of Ra `[` — puissant et précis, mais lent — et Épée Yautja — Father `]` ; bouclier `[B]`, drone-faucon `[G]`, shuriken `[T]`, leurre Apex `[Y]`, camouflage, vision et mimétisme complètent l’équipement ;
+- huit classes jouables, 38 bio-masques, 50 presets d’armure et neuf axes modulaires : classe, masque, peau, couleur/style de predlocks, couleur/accent/finition d’armure et warpaint ; Tracker, Falconer, Cleaner et Fugitive rejoignent la sélection, portée à sept styles de predlocks, huit finitions et huit warpaints ; les huit variantes Lost Tribe sont balisées `LICENSED_SCREEN_DESIGN` ;
 - progression d’honneur cumulée, crédits de forge et sauvegarde locale v4 avec migration v1/v2/v3 ;
 - catalogue franchise/support au statut explicite : jouable, rencontre 3D, galerie 3D ou archive, complété par un registre de 29 œuvres et médias distinguant publié, coupé, non publié, promotion et crossover séparé ;
 - pause, audio, mouvement réduit, fort contraste et échelle du HUD ;
@@ -41,6 +41,19 @@ npm audit
 ## Direction artistique et assets
 
 Les vingt-sept textures de décor, props et créatures sous `public/assets/textures/` sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La vague 1.6 ajoute `ryushi-frontier-panels.webp`, `hive-biomechanical-membrane.webp`, `yautja-ceremonial-bronze.webp` et `genna-spore-pod-hide.webp` ; la vague 1.8 complète Genna avec `genna-sporeback-carapace.webp`, raccordée au mesh du Sporeback. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+
+## Passe v1.9 — brèche Stargazer et arsenal étendu
+
+- trois directives 1.9 portent le total à huit : `stargazer_breach`, `game_preserve_escape` (« Évasion de la planète-réserve ») dans la jungle et `hive_containment_failure` (« Rupture du confinement de la ruche ») sur `hive_lv426` ; les deux dernières rendent enfin accessibles en chasse cinq des nouveaux rôles ;
+- `stargazer_breach` relie une mission en trois vagues au neuvième contrat `upgrade_predator` ; son arène ouverte `stargazer_blacksite` couvre un rayon de 680 unités, neuf secteurs et 16 connexions non linéaires ;
+- le niveau répartit 15 habitants sur six territoires, six événements, quatre POI, deux dangers et huit groupes de props ; sa piste principale raconte la poursuite de l’Assassin Predator autour de l’évasion du Fugitive, avec appareil accidenté et cache de récupération Stargazer aux effets propres ;
+- huit rôles reçoivent des logiques de combat dédiées : alpha de meute et ralliement, River Ghost en esquive/repli, Smartgunner Colonial en suppression, synthétique Weyland en réparation d’alliés, Facehugger en bond, fusilier Stargazer en couverture/rafales, trappeur Stargazer en filet/repositionnement et molosse modifié en charge coordonnée ;
+- les quatre nouveaux raccourcis d’arme déclenchent des attaques réelles : lance-traits Feral `[-]`, double plasma Wolf `[=]`, Eye of Ra `[` puissant et précis à cadence lente, et Épée Yautja — Father `]` ; le leurre Apex `[Y]` matérialise un hologramme temporaire qui attire les ennemis, consomme de l’énergie et respecte sa recharge ;
+- les classes Tracker, Falconer, Cleaner et Fugitive sont disponibles avec de nouveaux styles de predlocks, finitions d’armure et warpaints, sans remplacer les personnalisations déjà acquises ;
+- l’Assassin Predator (2018), génétiquement amélioré, possède son propre combat, une armure biologique et des glandes adaptatives destructibles, une attaque de bond télégraphiée et une silhouette procédurale haute définition de 29 468 triangles au total ;
+- le nexus du vaisseau-mère aligne désormais neuf stations en double rangée tout en conservant l’allée centrale ; les trois anneaux holographiques répétés de chaque station sont instanciés afin de contenir le nombre d’appels de rendu.
+
+Le tableur Excel évoqué pendant la passe n’était accessible ni dans le dépôt ni dans les pièces jointes disponibles. La 1.9 comble donc les manques identifiés par confrontation du catalogue versionné, des contrats runtime et des tests ; elle n’attribue aucun ajout ni aucun décompte au classeur absent.
 
 ## Passe v1.8 — directives de chasse
 

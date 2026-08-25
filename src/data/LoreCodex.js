@@ -17,7 +17,7 @@ export const LORE_SOURCES = Object.freeze({
   predators2010: { title: 'Predators (2010)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/predators' },
   prey2022: { title: 'Prey (2022)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/prey' },
   thePredator2018: { title: 'The Predator (2018)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/the-predator' },
-  assassin2018Gear: { title: 'The Predator — Armored Assassin', tier: 'SCREEN', url: 'https://store.necaonline.com/products/predator-2018-deluxe-armored-assassin-predator-12-inch-action-figure' },
+  assassin2018Gear: { title: 'The Predator — Armored Assassin', tier: 'LICENSED_SCREEN_DESIGN', url: 'https://store.necaonline.com/products/predator-2018-deluxe-armored-assassin-predator-12-inch-action-figure' },
   killerOfKillers: { title: 'Predator: Killer of Killers (2025)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/predator-killer-of-killers' },
   badlands2025: { title: 'Predator: Badlands (2025)', tier: 'SCREEN', url: 'https://thewaltdisneycompany.com/news/predator-badlands/' },
   badlandsGear: { title: 'Predator: Badlands — équipement de Dek', tier: 'SCREEN', url: 'https://store.necaonline.com/products/predator-badlands-ultimate-dek-training-armor-7-inch-scale-action-figure' },
@@ -118,6 +118,14 @@ export const HUNT_LOCATIONS = freezeEntries([
     canonNote: 'Ryushi est EU ; la tempête et l’arène du jeu sont originales.', sources: ['avpOriginalComics', 'avpPreyOmnibus']
   },
   {
+    id: 'stargazer_blacksite', entryType: 'location', category: 'lieu', title: 'Complexe de confinement Stargazer',
+    summary: 'Site humain de détention, d’analyse et de récupération technologique transformé en vaste territoire de brèche.',
+    sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
+    canonNote: 'Stargazer, la captivité du Fugitive et son évasion sont établis dans The Predator ; cette implantation, ses secteurs, ses dangers et sa route de chasse sont une adaptation originale Apex Hunt.',
+    assetPolicy: 'Géométries, textures et accessoires sont des créations originales du jeu ; aucun asset officiel du film n’est intégré.',
+    sources: ['thePredator2018']
+  },
+  {
     id: 'yautja_prime', entryType: 'location', category: 'lieu', title: 'Yautja Prime — arène du clan',
     summary: 'Interprétation jouable d’un domaine Yautja consacré aux duels et aux trophées.',
     sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
@@ -125,7 +133,7 @@ export const HUNT_LOCATIONS = freezeEntries([
   }
 ]);
 
-const ALL_LOCATION_IDS = ['jungle', 'hive_lv426', 'ryushi_desert', 'yautja_prime', 'genna_deathworld'];
+const ALL_LOCATION_IDS = ['jungle', 'hive_lv426', 'ryushi_desert', 'stargazer_blacksite', 'yautja_prime', 'genna_deathworld'];
 
 // IDs match data-hunt and currentHuntType values in the game.
 export const CURRENT_HUNTS = freezeEntries([
@@ -176,6 +184,14 @@ export const CURRENT_HUNTS = freezeEntries([
     summary: 'Chef brutal du groupe antagoniste qui exploite la planète-réserve de Predators.',
     sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
     canonNote: 'Le personnage et la planète-réserve sont établis à l’écran ; ses valeurs, phases et récompenses sont une adaptation de gameplay Apex Hunt.', sources: ['predators2010'], locationIds: ALL_LOCATION_IDS
+  },
+  {
+    id: 'upgrade_predator', entryType: 'hunt', category: 'cible', title: 'Assassin Predator — brèche Stargazer',
+    summary: 'Traque d’un chasseur génétiquement modifié dont la bio-armure et la régénération imposent de détruire ses défenses dans le bon ordre.',
+    sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
+    canonNote: 'L’Assassin Predator et ses capacités physiques viennent de The Predator ; statistiques, bio-armure segmentée, glandes destructibles, arène et contrat sont une adaptation originale Apex Hunt.',
+    assetPolicy: 'Silhouette procédurale et matériaux originaux du jeu ; aucun modèle, texture ou asset officiel du film n’est utilisé.',
+    sources: ['thePredator2018', 'assassin2018Gear'], locationIds: ['stargazer_blacksite']
   }
 ]);
 

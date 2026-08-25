@@ -13,7 +13,7 @@
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="Yautja: Apex Hunt">
   <meta property="og:title" content="Yautja: Apex Hunt — Chasse 3D fan-made">
-  <meta property="og:description" content="Endossez le bio-masque, choisissez parmi huit chasses et cinq directives, puis prouvez votre valeur dans un monde 3D vivant.">
+  <meta property="og:description" content="Endossez le bio-masque, choisissez parmi neuf chasses et huit directives, puis prouvez votre valeur dans un monde 3D vivant.">
   <meta property="og:url" content="https://yautja-apex-hunt.vercel.app/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Yautja: Apex Hunt">
@@ -120,6 +120,9 @@
         <button type="button" class="gadget-status" data-gadget="shuriken" data-gadget-key="KeyT" aria-label="Lancer le shuriken">
           <span>[T] SHURIKEN</span><strong id="gadget-shuriken-state">PRÊT</strong>
         </button>
+        <button type="button" class="gadget-status" data-gadget="decoy" data-gadget-key="KeyY" aria-label="Déployer le leurre holographique Apex">
+          <span>[Y] LEURRE APEX</span><strong id="gadget-decoy-state">PRÊT</strong>
+        </button>
         <button type="button" class="gadget-status gadget-roar" data-gadget="roar" data-gadget-key="KeyR" aria-label="Déclencher le rugissement d’honneur">
           <span>[R] RUGISSEMENT</span><strong id="gadget-roar-state">DISPONIBLE</strong>
         </button>
@@ -204,7 +207,7 @@
         <div><strong>[T] :</strong> Lancer le shuriken de combat</div>
         <div><strong>[V] :</strong> Mode de vision</div>
         <div><strong>[C] :</strong> Camouflage optique</div>
-        <div><strong>[1] à [0] :</strong> 10 armes Yautja jouables</div>
+        <div><strong>[1] à [0], [−], [=], [[], []] :</strong> 14 armes Yautja jouables</div>
         <div><strong>[E] / [A] / tactile :</strong> Interagir avec une station ou récolter un trophée</div>
         <div><strong>[Échap] / [P] :</strong> Console du hub ou pause en chasse</div>
         <div><strong>[Start] / [Select] :</strong> Rouvrir la console pendant l’exploration du hub</div>
@@ -247,6 +250,7 @@
             <option value="ryushi_desert">DÉSERT DE RYUSHI (TEMPÊTE DE SABLE)</option>
             <option value="yautja_prime">DOMAINE YAUTJA — ARÈNE APEX ORIGINALE</option>
             <option value="genna_deathworld">MONDE MORTEL DE GENNA — FLORE HOSTILE & TEMPÊTE</option>
+            <option value="stargazer_blacksite">COMPLEXE STARGAZER — CONFINEMENT & BRÈCHE</option>
           </select>
         </div>
 
@@ -307,6 +311,11 @@
             <h3>8. KALISK — APEX DE GENNA</h3>
             <p>Carapace adaptative, régénération interruptible, charge et noyau exposé.</p>
             <button class="btn-launch-hunt" type="button" data-hunt="kalisk">TRAQUER LE KALISK</button>
+          </article>
+          <article class="mission-card mission-card-upgrade">
+            <h3>9. ASSASSIN PREDATOR — BRÈCHE STARGAZER</h3>
+            <p>Bio-armure destructible, bonds d’écrasement et glandes adaptatives régénérantes.</p>
+            <button class="btn-launch-hunt" type="button" data-hunt="upgrade_predator">TRAQUER L’ASSASSIN</button>
           </article>
         </div>
 

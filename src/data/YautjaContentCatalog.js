@@ -14,11 +14,11 @@ import {
 
 const PLAYABLE_CONTENT_IDS = new Set([
   'goliath', 'xeno_queen', 'bad_blood', 'predalien', 'boss_berserker_super_predator', 'boss_feral_2022', 'boss_wolf_cleaner', 'boss_kalisk_badlands',
-  'tech_biomask', 'tech_cloak', 'tech_wrist_computer', 'tech_wrist_blades', 'tech_plasma_caster', 'tech_tri_laser', 'tech_self_destruct', 'tech_medicomp', 'tech_voice_mimic', 'tech_smart_disc', 'tech_combistick', 'tech_net_launcher', 'tech_speargun', 'tech_yautja_bow', 'tech_falcon_drone', 'tech_wrist_shield', 'tech_shuriken_avp',
+  'tech_biomask', 'tech_cloak', 'tech_wrist_computer', 'tech_wrist_blades', 'tech_plasma_caster', 'tech_tri_laser', 'tech_self_destruct', 'tech_medicomp', 'tech_voice_mimic', 'tech_smart_disc', 'tech_combistick', 'tech_net_launcher', 'tech_speargun', 'tech_yautja_bow', 'tech_falcon_drone', 'tech_wrist_shield', 'tech_shuriken_avp', 'tech_apex_decoy', 'tech_feral_bolt_launcher', 'tech_wolf_dual_plasma', 'tech_eye_of_ra_hg', 'tech_father_yautja_sword_hg',
 ]);
 const ENCOUNTER_CONTENT_IDS = new Set([
   'enemy_elite_commando', 'enemy_hunting_hound', 'enemy_xenomorph_drone', 'enemy_xenomorph_warrior', 'enemy_grizzly', 'enemy_thermal_trap_team', 'enemy_genna_hostile_fauna',
-  'event_rain_cloak_reveal', 'event_preserve_hound_release', 'event_genna_predation_cycle', 'tech_hunting_hounds', 'tech_feral_bolt_launcher', 'tech_feral_combistick',
+  'event_rain_cloak_reveal', 'event_preserve_hound_release', 'event_genna_predation_cycle', 'tech_hunting_hounds', 'tech_feral_combistick',
 ]);
 const getRuntimeStatus = (entry) => {
   if (entry.runtimeStatus) return entry.runtimeStatus;
@@ -225,7 +225,7 @@ export const TECH_CATALOG = freezeCatalog([
   { id: 'tech_hunting_hounds', name: 'Créatures de pistage', sourceTier: 'SCREEN', description: 'Bêtes lâchées par le Tracker pour poursuivre les captifs.', sources: ['predators2010'], gameplay: 'Forcent les proies à quitter leur abri et suivent les traces fraîches.' },
   { id: 'tech_yautja_bow', name: 'Arc composite Yautja', sourceTier: 'SCREEN', description: 'Arc composite associé à Dek dans Badlands et aussi proposé dans Hunting Grounds.', sources: ['badlandsGear', 'huntingGrounds'], gameplay: 'Arme silencieuse jouable à forte vélocité et coût d’endurance.' },
   { id: 'tech_wrist_shield', name: 'Bouclier de poignet', sourceTier: 'SCREEN', description: 'Protection déployable utilisée par le chasseur de Prey.', sources: ['prey2022'], gameplay: 'Jouable avec [B] : absorbe 68 % des impacts, possède une intégrité visible et consomme 25 énergie.' },
-  { id: 'tech_apex_decoy', name: 'Leurre holographique Apex', sourceTier: 'ORIGINAL', description: 'Interprétation originale Apex Hunt : projecteur de fausse signature sans équivalent précis revendiqué.', sources: [], gameplay: 'Crée un double thermique temporaire qui détourne les tirs.' },
+  { id: 'tech_apex_decoy', name: 'Leurre holographique Apex', sourceTier: 'ORIGINAL', description: 'Interprétation originale Apex Hunt : projecteur de fausse signature sans équivalent précis revendiqué.', sources: [], gameplay: 'Gadget [Y] : déploie pendant huit secondes une fausse menace thermique qui attire les PNJ dans un rayon de 110 mètres.', implementationOriginal: true },
   ...EXPANDED_TECH_CATALOG,
 ]);
 

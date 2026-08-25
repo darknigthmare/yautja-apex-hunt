@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
+import { HUNT_DEFINITIONS } from '../src/data/GameConfig.js';
 import { MothershipHub } from '../src/world/MothershipHub.js';
 
 test('le hub expose quatre silhouettes spatiales et une allée centrale praticable', () => {
@@ -17,7 +18,7 @@ test('le hub expose quatre silhouettes spatiales et une allée centrale praticab
   hub.landmarks.get('mission-nexus').traverse((object) => {
     if (object.name.startsWith('mission-station-')) missionStations.push(object);
   });
-  assert.equal(missionStations.length, 8);
+  assert.equal(missionStations.length, Object.keys(HUNT_DEFINITIONS).length);
   assert.ok(
     missionStations.every(({ position }) => Math.abs(position.x) >= 5),
     'les socles holographiques doivent laisser un couloir central d’au moins quatre mètres',
@@ -78,7 +79,10 @@ test('la forge, le hangar et les trophées possèdent des props identifiables', 
   assert.ok(hub.group.getObjectByName('hangar-shuttle'));
   assert.ok(hub.group.getObjectByName('hangar-pod'));
 
-  assert.equal(new Set([...hub.trophyDisplays.values()].map(({ userData }) => userData.silhouetteVariant)).size, 8);
+  assert.equal(
+    new Set([...hub.trophyDisplays.values()].map(({ userData }) => userData.silhouetteVariant)).size,
+    Object.keys(HUNT_DEFINITIONS).length,
+  );
   hub.setTrophyState(['wolf_cleaner']);
   const wolf = hub.trophyDisplays.get('wolf_cleaner');
   assert.equal(wolf.userData.unlocked, true);

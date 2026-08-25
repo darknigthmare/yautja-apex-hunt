@@ -16,6 +16,19 @@ const SIGNAL_COLORS = Object.freeze({
   navigation: 0x69f7d0,
 });
 
+function getMissionStationPosition(index, count) {
+  const leftCount = Math.ceil(count / 2);
+  const isLeft = index < leftCount;
+  const sideIndex = isLeft ? index : index - leftCount;
+  const sideCount = isLeft ? leftCount : Math.max(1, count - leftCount);
+  const magnitude = sideCount <= 1 ? 6 : 6 + ((22 * sideIndex) / (sideCount - 1));
+  const stagger = sideIndex % 2;
+  return {
+    x: (isLeft ? -1 : 1) * magnitude,
+    z: isLeft ? -10 + (stagger * 10) : -(stagger * 10),
+  };
+}
+
 export class MothershipHub {
   constructor(scene) {
     this.scene = scene;
@@ -329,6 +342,7 @@ export class MothershipHub {
       feralPredator: () => new THREE.CylinderGeometry(1.25, 1.55, 2.7, 7),
       wolfCleaner: () => new THREE.CylinderGeometry(1.42, 1.2, 2.75, 8),
       kalisk: () => new THREE.OctahedronGeometry(1.8, 1),
+      upgradePredator: () => new THREE.DodecahedronGeometry(1.95, 1),
     };
     const trophy = new THREE.Mesh(
       (geometryByType[definition.bossType] ?? (() => new THREE.IcosahedronGeometry(1.55, 1)))(),
@@ -340,7 +354,7 @@ export class MothershipHub {
 
     const appendageCount = ['xenoQueen', 'kalisk'].includes(definition.bossType)
       ? 4
-      : ['wolfCleaner', 'superPredator'].includes(definition.bossType) ? 3 : 2;
+      : ['wolfCleaner', 'superPredator', 'upgradePredator'].includes(definition.bossType) ? 3 : 2;
     for (let part = 0; part < appendageCount; part += 1) {
       const appendage = new THREE.Mesh(
         new THREE.ConeGeometry(0.25, 1.15 + (((index + part) % 2) * 0.28), 6),
@@ -485,21 +499,20 @@ export class MothershipHub {
       new THREE.Group(),
       'Nexus holographique des contrats',
     );
-    const colors = [0xff3300, 0x00ff66, 0x00f0ff, 0xff0055, 0xff7a2e, 0xffc65a, 0x67e8f9, 0x9d5cff];
+    const colors = [0xff3300, 0x00ff66, 0x00f0ff, 0xff0055, 0xff7a2e, 0xffc65a, 0x67e8f9, 0x9d5cff, 0xff8c58];
     const definitions = Object.values(HUNT_DEFINITIONS);
-    const spacing = 54 / Math.max(1, definitions.length - 1);
-    const nexusDeck = new THREE.Mesh(new THREE.BoxGeometry(62, 0.28, 10), this.createAlloyMaterial(0x1f2933));
+    const nexusDeck = new THREE.Mesh(new THREE.BoxGeometry(62, 0.28, 18), this.createAlloyMaterial(0x1f2933));
     nexusDeck.position.set(0, 0.18, -5);
     missionNexus.add(nexusDeck);
+    const ringGeometry = new THREE.TorusGeometry(2.15, 0.08, 5, 24);
+    const ringMatrixSource = new THREE.Object3D();
 
     definitions.forEach((definition, index) => {
-      const sideIndex = index % Math.ceil(definitions.length / 2);
-      const side = index < Math.ceil(definitions.length / 2) ? -1 : 1;
-      const x = side * ((spacing * 0.68) + (sideIndex * spacing));
+      const { x, z } = getMissionStationPosition(index, definitions.length);
       const color = colors[index % colors.length];
       const station = new THREE.Group();
       station.name = `mission-station-${definition.id}`;
-      station.position.set(x, 0, -5);
+      station.position.set(x, 0, z);
       station.userData.huntId = definition.id;
 
       const pedestal = new THREE.Mesh(
@@ -509,12 +522,17 @@ export class MothershipHub {
       pedestal.position.y = 1.75;
       station.add(pedestal);
 
-      for (const y of [3.55, 6.5, 10.2]) {
-        const ring = new THREE.Mesh(new THREE.TorusGeometry(2.15, 0.08, 5, 24), this.createSignalMaterial(color, 0.78));
-        ring.position.y = y;
-        ring.rotation.x = Math.PI / 2;
-        station.add(ring);
-      }
+      const rings = new THREE.InstancedMesh(ringGeometry, this.createSignalMaterial(color, 0.78), 3);
+      [3.55, 6.5, 10.2].forEach((y, ringIndex) => {
+        ringMatrixSource.position.set(0, y, 0);
+        ringMatrixSource.rotation.set(Math.PI / 2, 0, 0);
+        ringMatrixSource.updateMatrix();
+        rings.setMatrixAt(ringIndex, ringMatrixSource.matrix);
+      });
+      rings.instanceMatrix.needsUpdate = true;
+      rings.name = `mission-rings-${definition.id}`;
+      rings.userData.instanceCount = 3;
+      station.add(rings);
 
       const beam = new THREE.Mesh(
         new THREE.CylinderGeometry(2.05, 2.05, 7.3, 16, 1, true),
@@ -964,15 +982,13 @@ export class MothershipHub {
 
     const colliders = [];
     const definitions = Object.values(HUNT_DEFINITIONS);
-    const spacing = 54 / Math.max(1, definitions.length - 1);
     definitions.forEach((definition, index) => {
-      const sideIndex = index % Math.ceil(definitions.length / 2);
-      const side = index < Math.ceil(definitions.length / 2) ? -1 : 1;
+      const { x, z } = getMissionStationPosition(index, definitions.length);
       colliders.push({
         id: 'mission-pedestal-' + definition.id,
         type: 'circle',
-        x: side * ((spacing * 0.68) + (sideIndex * spacing)),
-        z: -5,
+        x,
+        z,
         radius: 2.8,
       });
     });

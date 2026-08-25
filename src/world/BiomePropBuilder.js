@@ -6,6 +6,7 @@ const BIOME_ACCENTS = Object.freeze({
   ryushi_desert: 0xffbd55,
   yautja_prime: 0xff4a24,
   genna_deathworld: 0xb8ff5c,
+  stargazer_blacksite: 0x58cfff,
 });
 
 const SURFACE_COLORS = Object.freeze({
@@ -15,10 +16,12 @@ const SURFACE_COLORS = Object.freeze({
   genna: 0x334a43,
   bone: 0xb8a67b,
   stone: 0x59616b,
+  stargazer: 0x35444f,
 });
 
 function textureColor(path = '') {
   if (path.includes('frontier')) return SURFACE_COLORS.frontier;
+  if (path.includes('stargazer')) return SURFACE_COLORS.stargazer;
   if (path.includes('membrane') || path.includes('hive') || path.includes('egg')) return SURFACE_COLORS.hive;
   if (path.includes('bronze') || path.includes('alloy')) return SURFACE_COLORS.bronze;
   if (path.includes('genna') || path.includes('flora')) return SURFACE_COLORS.genna;
@@ -268,6 +271,50 @@ export class BiomePropBuilder {
       return tagVisual(group, 'signal_array', 'tri-dish-synthetic-array');
     }
 
+    if (spec.type === 'stargazer_checkpoint') {
+      addMesh(group, box('stargazer-checkpoint-deck', [24, 0.8, 12]), surface, { position: [0, 0.4, 0], name: `${spec.id}-armored-deck` });
+      addMesh(group, box('stargazer-checkpoint-booth', [7.5, 6.5, 7]), surface, { position: [-7.4, 3.6, 0.4], name: `${spec.id}-security-booth` });
+      addMesh(group, box('stargazer-checkpoint-roof', [9, 0.65, 8.5]), materials.dark, { position: [-7.4, 7.2, 0.4], name: `${spec.id}-blast-roof` });
+      addMesh(group, box('stargazer-checkpoint-window', [0.25, 2.1, 4.8]), materials.signal, { position: [-3.55, 4.3, 0.4], castShadow: false, name: `${spec.id}-observation-window` });
+      addMesh(group, box('stargazer-checkpoint-gate-arm', [15.5, 0.55, 0.7]), surface, { position: [4.8, 3.7, 0], rotation: [0, 0, -0.08], name: `${spec.id}-gate-arm` });
+      addInstancedMesh(group, box('stargazer-checkpoint-bollard', [1.2, 2.6, 1.2]), materials.dark, [
+        { position: [-11, 1.3, -5] }, { position: [-11, 1.3, 5] },
+        { position: [0, 1.3, -5] }, { position: [0, 1.3, 5] },
+        { position: [11, 1.3, -5] }, { position: [11, 1.3, 5] },
+      ], { name: `${spec.id}-impact-bollards` });
+      addInstancedMesh(group, cylinder('stargazer-checkpoint-lamp-mast', 0.14, 0.22, 8, 7), materials.dark, [
+        { position: [-11, 4.8, -5] }, { position: [11, 4.8, -5] },
+      ], { name: `${spec.id}-floodlight-masts` });
+      addInstancedMesh(group, this.geometry('stargazer-checkpoint-floodlight', () => new THREE.BoxGeometry(1.8, 0.7, 0.55)), materials.signal, [
+        { position: [-11, 8.7, -4.7], rotation: [-0.25, 0, 0] },
+        { position: [11, 8.7, -4.7], rotation: [-0.25, 0, 0] },
+      ], { name: `${spec.id}-floodlights`, castShadow: false });
+      return tagVisual(group, 'stargazer_checkpoint', 'armored-booth-bollard-gate');
+    }
+
+    if (spec.type === 'stargazer_containment_lab') {
+      addMesh(group, box('stargazer-lab-core', [18, 10, 15]), surface, { position: [0, 5.2, 0], name: `${spec.id}-containment-core` });
+      addMesh(group, box('stargazer-lab-wing', [9, 7.2, 12]), surface, { position: [-13, 3.8, 0.8], name: `${spec.id}-west-lab-wing` });
+      addMesh(group, box('stargazer-lab-wing', [9, 7.2, 12]), surface, { position: [13, 3.8, -0.8], name: `${spec.id}-east-lab-wing` });
+      addInstancedMesh(group, box('stargazer-lab-roof-slab', [10, 0.65, 16]), materials.dark, [
+        { position: [-8.8, 10.5, 0], rotation: [0, 0, -0.06] },
+        { position: [8.8, 10.5, 0], rotation: [0, 0, 0.06] },
+      ], { name: `${spec.id}-armored-roof-slabs` });
+      addInstancedMesh(group, box('stargazer-lab-window', [3.2, 2.1, 0.24]), materials.signal, [
+        { position: [-5.8, 6, 7.62] }, { position: [0, 6, 7.62] }, { position: [5.8, 6, 7.62] },
+        { position: [-13, 4.7, 6.9] }, { position: [13, 4.7, 5.4] },
+      ], { name: `${spec.id}-observation-windows`, castShadow: false });
+      addInstancedMesh(group, cylinder('stargazer-lab-vent', 1.05, 1.25, 3.4, 9), materials.dark, [
+        { position: [-5.5, 12.1, -2.8] }, { position: [0, 12.1, -2.8] }, { position: [5.5, 12.1, -2.8] },
+      ], { name: `${spec.id}-roof-scrubbers` });
+      addMesh(group, cylinder('stargazer-lab-tube', 2.2, 2.2, 5.8, 14), materials.signal, { position: [0, 3.4, 8.8], castShadow: false, name: `${spec.id}-containment-tube` });
+      addMesh(group, this.geometry('stargazer-lab-tube-cap', () => new THREE.TorusGeometry(2.25, 0.32, 7, 18)), materials.dark, { position: [0, 6.3, 8.8], rotation: [Math.PI / 2, 0, 0], name: `${spec.id}-tube-cap` });
+      addInstancedMesh(group, box('stargazer-lab-stair', [7.5, 0.45, 1.6]), surface,
+        Array.from({ length: 5 }, (_, index) => ({ position: [0, 0.25 + index * 0.35, 11.3 + index * 1.15] })),
+        { name: `${spec.id}-access-steps` });
+      return tagVisual(group, 'stargazer_containment_lab', 'three-module-observation-laboratory');
+    }
+
     const expedition = spec.type === 'expedition_wreck';
     const bodyGeo = expedition
       ? cylinder('expedition-fuselage', 4.2, 4.8, 16, 12)
@@ -391,6 +438,27 @@ export class BiomePropBuilder {
   createTower(spec, materials) {
     const group = new THREE.Group();
     const surface = this.material(spec.texture);
+    if (spec.type === 'stargazer_watchtower') {
+      const legGeo = this.geometry('stargazer-watchtower-leg', () => new THREE.BoxGeometry(0.7, 18, 0.7));
+      addInstancedMesh(group, legGeo, materials.dark, [
+        { position: [-3.3, 9, -3.3], rotation: [0, 0, -0.03] },
+        { position: [3.3, 9, -3.3], rotation: [0, 0, 0.03] },
+        { position: [-3.3, 9, 3.3], rotation: [0, 0, -0.03] },
+        { position: [3.3, 9, 3.3], rotation: [0, 0, 0.03] },
+      ], { name: `${spec.id}-armored-legs` });
+      addMesh(group, this.geometry('stargazer-watchtower-platform', () => new THREE.BoxGeometry(9.5, 0.8, 9.5)), surface, { position: [0, 18, 0], name: `${spec.id}-platform` });
+      addMesh(group, this.geometry('stargazer-watchtower-cabin', () => new THREE.BoxGeometry(7, 5.8, 7)), surface, { position: [0, 21.3, 0], name: `${spec.id}-guard-cabin` });
+      addInstancedMesh(group, this.geometry('stargazer-watchtower-window', () => new THREE.BoxGeometry(4.6, 1.8, 0.2)), materials.signal, [
+        { position: [0, 22.2, 3.55] },
+        { position: [0, 22.2, -3.55] },
+        { position: [3.55, 22.2, 0], rotation: [0, Math.PI / 2, 0] },
+        { position: [-3.55, 22.2, 0], rotation: [0, Math.PI / 2, 0] },
+      ], { name: `${spec.id}-panoramic-windows`, castShadow: false });
+      addMesh(group, this.geometry('stargazer-watchtower-roof', () => new THREE.CylinderGeometry(5.4, 5.4, 0.7, 8)), materials.dark, { position: [0, 24.6, 0], rotation: [0, Math.PI / 8, 0], name: `${spec.id}-roof` });
+      addMesh(group, this.geometry('stargazer-watchtower-mast', () => new THREE.CylinderGeometry(0.16, 0.24, 6.5, 7)), materials.dark, { position: [0, 28, 0], name: `${spec.id}-sensor-mast` });
+      addMesh(group, this.geometry('stargazer-watchtower-beacon', () => new THREE.OctahedronGeometry(0.9, 0)), materials.signal, { position: [0, 31.5, 0], castShadow: false, name: `${spec.id}-tracking-beacon` });
+      return tagVisual(group, 'stargazer_watchtower', 'four-leg-panoramic-security-tower');
+    }
     const legGeo = this.geometry('tower-leg', () => new THREE.CylinderGeometry(0.48, 0.72, 18, 8));
     for (const [x, z] of [[-3, -3], [3, -3], [-3, 3], [3, 3]]) addMesh(group, legGeo, materials.dark, { position: [x, 9, z], rotation: [0, 0, x * 0.018] });
     addMesh(group, this.geometry('tower-tank', () => new THREE.CylinderGeometry(5.4, 5.4, 8, 14)), surface, { position: [0, 21, 0], name: `${spec.id}-tank` });
@@ -402,6 +470,29 @@ export class BiomePropBuilder {
   createPen(spec, materials) {
     const group = new THREE.Group();
     const surface = this.material(spec.texture);
+    if (spec.type === 'stargazer_kennel') {
+      const cagePost = this.geometry('stargazer-kennel-post', () => new THREE.BoxGeometry(0.65, 6.8, 0.65));
+      const corners = [[-8, -8], [0, -8], [8, -8], [-8, 0], [8, 0], [-8, 8], [0, 8], [8, 8]];
+      addInstancedMesh(group, cagePost, surface, corners.map(([x, z]) => ({ position: [x, 3.4, z] })), { name: `${spec.id}-reinforced-posts` });
+      const railTransforms = [];
+      for (const z of [-8, 8]) for (const y of [1.2, 3.4, 5.8]) railTransforms.push({ position: [0, y, z] });
+      for (const x of [-8, 8]) for (const y of [1.2, 3.4, 5.8]) railTransforms.push({ position: [x, y, 0], rotation: [0, Math.PI / 2, 0] });
+      addInstancedMesh(group, this.geometry('stargazer-kennel-rail', () => new THREE.BoxGeometry(16, 0.34, 0.42)), materials.dark, railTransforms, { name: `${spec.id}-containment-rails` });
+      const energyBars = [];
+      for (let index = 0; index < 9; index += 1) {
+        const offset = -7 + index * 1.75;
+        energyBars.push({ position: [offset, 3.4, -8.25] });
+        energyBars.push({ position: [offset, 3.4, 8.25] });
+      }
+      addInstancedMesh(group, this.geometry('stargazer-kennel-energy-bar', () => new THREE.BoxGeometry(0.16, 5.6, 0.16)), materials.signal, energyBars, { name: `${spec.id}-energy-grid`, castShadow: false });
+      addMesh(group, this.geometry('stargazer-kennel-roof', () => new THREE.BoxGeometry(17, 0.55, 17)), surface, { position: [0, 7, 0], name: `${spec.id}-armored-roof` });
+      addInstancedMesh(group, this.geometry('stargazer-kennel-subject', () => new THREE.DodecahedronGeometry(1.7, 0)), materials.dark, [
+        { position: [-4.2, 1.5, -2.4], rotation: [0, 0.4, 0], scale: [1.8, 0.75, 0.78] },
+        { position: [3.8, 1.5, 2.5], rotation: [0, -0.7, 0], scale: [1.8, 0.75, 0.78] },
+      ], { name: `${spec.id}-hound-silhouettes` });
+      addMesh(group, this.geometry('stargazer-kennel-console', () => new THREE.BoxGeometry(3.4, 2.2, 1.8)), materials.signal, { position: [9.2, 1.2, -5.3], rotation: [0, -0.18, 0], castShadow: false, name: `${spec.id}-release-console` });
+      return tagVisual(group, 'stargazer_kennel', 'reinforced-energy-grid-hound-kennel');
+    }
     const postGeo = this.geometry('pen-post', () => new THREE.BoxGeometry(0.55, 4.8, 0.55));
     const railGeo = this.geometry('pen-rail', () => new THREE.BoxGeometry(8, 0.35, 0.45));
     for (const [x, z] of [[-7, -7], [7, -7], [-7, 7], [7, 7]]) addMesh(group, postGeo, surface, { position: [x, 2.4, z] });
@@ -446,6 +537,39 @@ export class BiomePropBuilder {
       const variation = 0.82 + (index % 4) * 0.09;
       object.scale.setScalar(variation);
     };
+
+    if (spec.type === 'stargazer_barrier_line') {
+      addInstances('blast-barriers', this.geometry('stargazer-barrier-body', () => new THREE.BoxGeometry(3.8, 2.5, 1.8)), surface, (object, index, total) => {
+        linePosition(object, index, total, 1.25, 4.5);
+        object.rotation.y = (index % 2 ? 1 : -1) * 0.08;
+        object.scale.set(1, 1, 0.9);
+      });
+      addInstances('armor-chevrons', this.geometry('stargazer-barrier-chevron', () => new THREE.BoxGeometry(2.5, 0.32, 1.9)), materials.dark, (object, index, total) => {
+        linePosition(object, index, total, 2.45, 4.5);
+        object.rotation.set(0, 0, (index % 2 ? 1 : -1) * 0.22);
+        object.scale.setScalar(1);
+      });
+      addInstances('warning-lamps', this.geometry('stargazer-barrier-lamp', () => new THREE.OctahedronGeometry(0.38, 0)), materials.signal, (object, index, total) => {
+        linePosition(object, index, total, 3.25, 4.5);
+        object.scale.setScalar(1);
+      });
+      return tagVisual(group, 'stargazer_barrier_line', 'armored-chevron-security-line');
+    }
+
+    if (spec.type === 'stargazer_pod_line') {
+      addInstances('containment-pods', this.geometry('stargazer-pod-body', () => new THREE.CylinderGeometry(1.65, 1.9, 5.6, 12)), surface, (object, index, total) => linePosition(object, index, total, 3, 5.1));
+      addInstances('containment-domes', this.geometry('stargazer-pod-dome', () => new THREE.SphereGeometry(1.68, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2)), materials.signal, (object, index, total) => {
+        linePosition(object, index, total, 5.8, 5.1);
+        object.scale.set(1, 0.7, 1);
+      });
+      addInstances('containment-rings', this.geometry('stargazer-pod-ring', () => new THREE.TorusGeometry(1.82, 0.2, 6, 18)), materials.dark, (object, index, total) => {
+        linePosition(object, index, total, 3.5, 5.1);
+        object.rotation.x = Math.PI / 2;
+        object.scale.setScalar(1);
+      });
+      addMesh(group, this.geometry('stargazer-pod-manifold', () => new THREE.BoxGeometry(31, 0.65, 3.8)), materials.dark, { position: [0, 0.35, 0], name: `${spec.id}-pod-manifold` });
+      return tagVisual(group, 'stargazer_pod_line', 'sealed-observation-pod-array');
+    }
 
     if (spec.type === 'cleaner_canisters') {
       addInstances('canister-bodies', this.geometry('cleaner-canister', () => new THREE.CylinderGeometry(1.05, 1.18, 4.8, 10)), surface, (object, index, total) => {
@@ -540,14 +664,14 @@ export class BiomePropBuilder {
 
   createProp(spec, materials) {
     const archTypes = ['ritual_gate', 'clan_gate', 'hive_bulkhead', 'bone_arch'];
-    const facilityTypes = ['field_camp', 'frontier_homestead', 'wreckage', 'expedition_wreck', 'signal_array'];
+    const facilityTypes = ['field_camp', 'frontier_homestead', 'wreckage', 'expedition_wreck', 'signal_array', 'stargazer_checkpoint', 'stargazer_containment_lab'];
     const shrineTypes = ['trophy_tree', 'royal_dais', 'blooding_dais', 'weapon_shrine', 'trophy_gallery', 'kalisk_nest'];
-    const penTypes = ['egg_nursery', 'stock_pen'];
+    const penTypes = ['egg_nursery', 'stock_pen', 'stargazer_kennel'];
     let group;
     if (archTypes.includes(spec.type)) group = this.createArch(spec, materials);
     else if (facilityTypes.includes(spec.type)) group = this.createFacility(spec, materials);
     else if (shrineTypes.includes(spec.type)) group = this.createShrine(spec, materials);
-    else if (spec.type === 'water_tower') group = this.createTower(spec, materials);
+    else if (['water_tower', 'stargazer_watchtower'].includes(spec.type)) group = this.createTower(spec, materials);
     else if (penTypes.includes(spec.type)) group = this.createPen(spec, materials);
     else group = this.createInstancedCluster(spec, materials);
     group.name = spec.id;
@@ -658,7 +782,7 @@ export class BiomePropBuilder {
     pulseRoot.userData.decorativePulse = true;
     group.add(pulseRoot);
     const isPool = spec.type === 'acid_pool';
-    const isEnergy = ['heat_vent', 'plasma_brazier'].includes(spec.type);
+    const isEnergy = ['heat_vent', 'plasma_brazier', 'containment_arc'].includes(spec.type);
     const material = isPool
       ? new THREE.MeshStandardMaterial({ color: 0x73ff35, emissive: 0x42ff12, emissiveIntensity: 1.35, transparent: true, opacity: 0.68, roughness: 0.18 })
       : isEnergy ? materials.signal.clone() : materials.spore.clone();

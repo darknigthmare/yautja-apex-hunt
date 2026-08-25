@@ -14,6 +14,7 @@ const EXPECTED_BIOMES = [
   'ryushi_desert',
   'yautja_prime',
   'genna_deathworld',
+  'stargazer_blacksite',
 ];
 
 function horizontalDistance(point) {
@@ -63,7 +64,7 @@ function disposeRoot(root) {
   root.clear();
 }
 
-test('les cinq terrains respectent le contrat de chasse ouverte inspiré de MHW', () => {
+test('les six terrains respectent le contrat de chasse ouverte inspiré de MHW', () => {
   assert.deepEqual(Object.keys(BIOME_HUNT_LAYOUTS), EXPECTED_BIOMES);
 
   for (const biomeId of EXPECTED_BIOMES) {

@@ -72,6 +72,7 @@ export class HUDManager {
       shield: document.getElementById('gadget-shield-state'),
       drone: document.getElementById('gadget-drone-state'),
       shuriken: document.getElementById('gadget-shuriken-state'),
+      decoy: document.getElementById('gadget-decoy-state'),
       roar: document.getElementById('gadget-roar-state'),
     };
 
@@ -229,7 +230,7 @@ export class HUDManager {
 
       const number = document.createElement('span');
       number.className = 'wep-num';
-      number.textContent = `[${weapon.slot}]`;
+      number.textContent = `[${weapon.keyLabel ?? weapon.slot}]`;
       const name = document.createElement('span');
       name.className = 'wep-name';
       name.textContent = weapon.shortName;
@@ -446,9 +447,11 @@ export class HUDManager {
     this.setText(this.gadgetStates?.shield, shieldState);
     this.setText(this.gadgetStates?.drone, player.scoutDrone ? `EN VOL · ${(player.scoutDroneTimer ?? 0).toFixed(1)}s` : cooldownText(player.scoutDroneCooldown ?? 0));
     this.setText(this.gadgetStates?.shuriken, cooldownText(player.shurikenCooldown ?? 0));
+    this.setText(this.gadgetStates?.decoy, player.apexDecoy ? `ACTIF · ${(player.apexDecoyTimer ?? 0).toFixed(1)}s` : cooldownText(player.apexDecoyCooldown ?? 0));
     this.setText(this.gadgetStates?.roar, player.roarUsed ? 'CONSOMMÉ POUR CETTE CHASSE' : 'DISPONIBLE');
     this.setClassState(this.gadgetStates?.shield?.parentElement, 'active', player.wristShieldActive === true);
     this.setClassState(this.gadgetStates?.drone?.parentElement, 'active', Boolean(player.scoutDrone));
+    this.setClassState(this.gadgetStates?.decoy?.parentElement, 'active', Boolean(player.apexDecoy));
 
 
     if (player.isCloaked) {

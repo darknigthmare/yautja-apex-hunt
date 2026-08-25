@@ -117,7 +117,7 @@ test('canisters, coupe-vent, couverture et nœuds de régénération gardent l i
   assert.equal(new Set(props.map(meshSignature)).size, types.length);
 });
 
-test('les trois POI de chaque biome ont trois signatures visuelles runtime distinctes', () => {
+test('tous les POI de chaque biome ont des signatures visuelles runtime distinctes', () => {
   for (const biomeId of Object.keys(BIOME_PROP_CATALOG)) {
     const builder = makeBuilder();
     const build = builder.build(getBiomePropPlan(biomeId));
@@ -127,8 +127,8 @@ test('les trois POI de chaque biome ont trois signatures visuelles runtime disti
       assert.ok(mesh.userData.visualSignature.length > 5);
       return visualVariant;
     });
-    assert.equal(new Set(variants).size, 3, `${biomeId}: signatures POI confondues`);
-    assert.equal(new Set(build.pointsOfInterest.map(({ mesh }) => meshSignature(mesh))).size, 3);
+    assert.equal(new Set(variants).size, variants.length, `${biomeId}: signatures POI confondues`);
+    assert.equal(new Set(build.pointsOfInterest.map(({ mesh }) => meshSignature(mesh))).size, build.pointsOfInterest.length);
     assert.ok(build.props.every(({ visualVariant, mesh }) => visualVariant === mesh.userData.visualVariant));
     assert.ok(build.metrics.drawCallEstimate <= ENVIRONMENT_PERFORMANCE_BUDGETS.maxDrawCalls, `${biomeId}: draw calls`);
     assert.ok(build.metrics.triangleEstimate <= ENVIRONMENT_PERFORMANCE_BUDGETS.maxTriangles, `${biomeId}: triangles`);

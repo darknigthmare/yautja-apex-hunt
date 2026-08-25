@@ -1,15 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
+import { HUNT_DEFINITIONS } from '../src/data/GameConfig.js';
 import { MothershipHub } from '../src/world/MothershipHub.js';
 
-test('le vaisseau-mère expose et déverrouille les huit trophées de chasse', () => {
+test('le vaisseau-mère expose et déverrouille tous les trophées de chasse', () => {
   const hub = new MothershipHub(new THREE.Scene());
-  assert.equal(hub.trophyDisplays.size, 8);
+  const huntCount = Object.keys(HUNT_DEFINITIONS).length;
+  assert.equal(hub.trophyDisplays.size, huntCount);
   assert.ok(hub.trophyDisplays.has('feral_predator'));
   assert.ok(hub.trophyDisplays.has('wolf_cleaner'));
   assert.ok(hub.trophyDisplays.has('kalisk'));
-  assert.equal(hub.animatedProps.filter(({ huntId }) => huntId && huntId !== 'forge').length, 8);
+  assert.equal(hub.animatedProps.filter(({ huntId }) => huntId && huntId !== 'forge').length, huntCount);
 
   hub.setTrophyState(['feral_predator']);
   const feral = hub.trophyDisplays.get('feral_predator');
