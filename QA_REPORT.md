@@ -1,8 +1,9 @@
-# Rapport QA — candidate release 1.10.0
+# Rapport QA — release 1.10.0
 
 **Date :** 25 août 2026
-**Statut :** release 1.10.0 validée localement ; publication finale GitHub/Vercel en attente.
-**Production actuellement vérifiée :** release 1.9.0 sur <https://yautja-apex-hunt.vercel.app/>
+**Statut :** release 1.10.0 validée, poussée et publiée.
+**Production actuellement vérifiée :** release 1.10.0 sur <https://yautja-apex-hunt.vercel.app/>
+**Déploiement production v1.10 :** `dpl_2xbt59JRaxhUEcM7MNoqozPSUjqk` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `9f56b0d`
 **Déploiement production v1.9 :** `dpl_FofpWaJDdkSjrnQeNTtQRdwNmZ6L` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `3314fe4`
 **Déploiement production v1.8 :** `dpl_5zqD2XQgZ4vo8RKRAft8cM7yKfHL` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `54fad3c`
 **Déploiement production v1.7 :** `dpl_En8EmhSsfxE7SZFPYEApyYwo134h` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `94bb326`
@@ -21,7 +22,7 @@
 | Console et réseau navigateur | **0 erreur / 0 requête échouée** | Aucun overlay Vite, aucune erreur d'exécution et aucune requête échouée sur les parcours desktop et mobile. |
 | Texture urbaine OpenAI | **WebP valide** | `los-angeles-heatwave-urban.webp`, 1536×1536, 846 546 octets ; en-tête RIFF/WEBP et dimensions exactes couverts par le contrat automatisé. |
 
-**Publication 1.10 en attente.** Les gates locaux sont franchis, mais aucun commit, push ou déploiement Vercel 1.10 n'est annoncé dans ce rapport avant sa vérification effective. La production officiellement confirmée reste donc la 1.9.0 indiquée ci-dessus.
+**Publication 1.10 validée.** Le commit fonctionnel `9f56b0d` est poussé sur `codex/professional-hunt-pass`. Le déploiement `dpl_2xbt59JRaxhUEcM7MNoqozPSUjqk` est `READY` en production ; l’alias officiel répond en HTTP 200, la texture urbaine répond en HTTP 200 `image/webp` avec 846 546 octets, et les réponses publiques HTML/bundle confirment `city_hunter`, `los_angeles_1997`, `wrist_rocket`, `la-lightning-grid` et `la-owlf-cache`. Les parcours Chromium desktop/mobile détaillés ci-dessus ont été exécutés localement.
 
 Le classeur de la conversation ChatGPT a été retrouvé et authentifié pour cette passe : `C:\Users\chuck\Downloads\Encyclopedie_exhaustive_franchise_Predator.xlsx`, SHA-256 `47C659F4F79CA0E71D8B8B7B8DB2CD7B7363827224BC081D59E9DD9D9576983C`. Son flux `Zone.Identifier` renvoie à la conversation <https://chatgpt.com/c/6a8adeed-b6f8-83ed-9d07-5088fa50b8a9>. Les 20 feuilles et 915 entrées uniques du catalogue ont servi à sélectionner une vague cohérente *Predator 2* / Los Angeles 1997, puis chaque ajout retenu a été raccordé à une surface jouable plutôt que seulement cité dans le Codex.
 
@@ -190,7 +191,7 @@ Puis lancer le serveur local et vérifier sur Chromium desktop :
 
 ## Verdict
 
-La candidate 1.10.0 franchit ses gates locaux avec 299/299 tests, 48 modules Vite, 0 vulnérabilité de production et deux parcours Chromium sans erreur, requête échouée ni débordement horizontal. Les trois dangers de Los Angeles et le cache OWLF sont couverts comme événements réellement déclenchés puis résolus. Le classeur ChatGPT est désormais une source effectivement authentifiée et exploitée ; la vague Los Angeles 1997 ajoute une chasse, un biome ouvert, des adversaires, des systèmes de combat et une texture originale réellement câblés. Le commit, le push et le déploiement Vercel restent volontairement marqués en attente jusqu'à leur contrôle effectif.
+La release 1.10.0 franchit ses gates avec 299/299 tests, 48 modules Vite, 0 vulnérabilité de production, deux parcours Chromium locaux sans erreur, requête échouée ni débordement horizontal, puis une publication Vercel `READY` contrôlée en HTTP. Les trois dangers de Los Angeles et le cache OWLF sont couverts comme événements réellement déclenchés puis résolus. Le classeur ChatGPT est désormais une source effectivement authentifiée et exploitée ; la vague Los Angeles 1997 ajoute une chasse, un biome ouvert, des adversaires, des systèmes de combat et une texture originale réellement câblés. Le commit `9f56b0d` est poussé et le déploiement production `dpl_2xbt59JRaxhUEcM7MNoqozPSUjqk` sert l’alias officiel en HTTP 200.
 
 La 1.5.0 ne se limite pas à ajouter des noms au Codex : Wolf et le Kalisk possèdent leurs propres boucles de combat, états, dangers, points faibles, textures et contrats. La couverture du Lost Tribe et des médias reste clairement séparée par provenance, et la production déployée a franchi les gates automatisés, navigateur, responsive, sécurité, assets et Vercel.
 

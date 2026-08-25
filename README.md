@@ -4,7 +4,7 @@ Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur inca
 
 ## État du projet
 
-La version 1.9.0 reste la version publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). La candidate 1.10.0 étend réellement le contenu à dix chasses, sept biomes, neuf directives, quinze armes, neuf classes et 214 entrées de catalogue. Ses gates finaux et sa publication ne sont pas déclarés dans ce document tant qu’ils ne sont pas achevés.
+La version 1.10.0 est publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Elle étend réellement le contenu à dix chasses, sept biomes, neuf directives, quinze armes, neuf classes et 214 entrées de catalogue. Les gates finaux comptent 299/299 tests, 48 modules Vite, 0 vulnérabilité de production et deux parcours Chromium locaux sans erreur ni débordement ; le commit fonctionnel `9f56b0d` est poussé et le déploiement Vercel `dpl_2xbt59JRaxhUEcM7MNoqozPSUjqk` est `READY` sur l’alias public HTTP 200.
 
 ## Lancer localement
 
@@ -40,7 +40,7 @@ npm audit
 
 ## Direction artistique et assets
 
-Les vingt-huit textures de décor, props et créatures sous `public/assets/textures/`, totalisant 9 683 134 octets, sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La candidate 1.10 ajoute `los-angeles-heatwave-urban.webp`, matière urbaine raccordable 1536×1536 pour les sols et props de la canicule. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+Les vingt-huit textures de décor, props et créatures sous `public/assets/textures/`, totalisant 9 683 134 octets, sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La release 1.10 ajoute `los-angeles-heatwave-urban.webp`, matière urbaine raccordable 1536×1536 pour les sols et props de la canicule. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
 
 ## Passe v1.10 — Los Angeles 1997 et City Hunter
 

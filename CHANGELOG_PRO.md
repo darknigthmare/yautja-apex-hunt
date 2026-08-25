@@ -2,7 +2,7 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
-## [1.10.0] — 25 août 2026 (candidate)
+## [1.10.0] — 25 août 2026
 
 ### Dixième chasse et Los Angeles 1997
 
@@ -38,9 +38,13 @@ Les versions sont considérées comme publiées uniquement après push du code, 
 - la matière raccordable combine asphalte, béton et métal sous lampes sodium, salissures de canicule et micro-détails, sans texte, logo, UI, personnage ou asset officiel ;
 - l’inventaire public atteint 28 textures et 9 683 134 octets.
 
-### État de la candidate
+### Validation et publication
 
-- cette entrée consigne les changements et inventaires présents ; elle ne déclare encore aucun résultat final de tests, build, navigateur, push GitHub ou déploiement Vercel pour la 1.10.
+- 299/299 tests réussis, `node --check` validé, build Vite 8.2.2 de 48 modules en 525 ms, audit de production à 0 vulnérabilité et `git diff --check` propre ;
+- Chromium local 1280×720 et 390×844 valide les dix chasses, les neuf directives, le lancement City Hunter/Los Angeles, la texture urbaine et l’absence d’erreur, de requête échouée ou de débordement horizontal ;
+- commit fonctionnel `9f56b0d` poussé sur `codex/professional-hunt-pass` ;
+- déploiement Vercel `dpl_2xbt59JRaxhUEcM7MNoqozPSUjqk` en production `READY`, alias public HTTP 200 ; le HTML et le bundle publics confirment `city_hunter`, `los_angeles_1997`, `wrist_rocket`, `la-lightning-grid` et `la-owlf-cache` ;
+- la texture urbaine publique répond en HTTP 200 avec le type `image/webp` et sa taille attendue de 846 546 octets.
 
 ## [1.9.0] — 25 août 2026
 
@@ -87,7 +91,7 @@ Les versions sont considérées comme publiées uniquement après push du code, 
 
 ### État du tableur et validation
 
-- le tableur n’avait pas été exploité pour cette release 1.9 ; il a depuis été retrouvé et lu pour la candidate 1.10, ce qui corrige l’ancienne conclusion selon laquelle il était absent ;
+- le tableur n’avait pas été exploité pour cette release 1.9 ; il a depuis été retrouvé et lu pour la release 1.10, ce qui corrige l’ancienne conclusion selon laquelle il était absent ;
 - la candidate finale réussit 278/278 tests, le build Vite 8.2.2 de 47 modules, l’audit de production à 0 vulnérabilité et `git diff --check` ;
 - Chromium local et celui de production valident neuf chasses, huit directives, le lancement Assassin/Stargazer et le responsive 390×844 sans overlay ni erreur applicative ; le commit `3314fe4` est poussé et le déploiement `dpl_FofpWaJDdkSjrnQeNTtQRdwNmZ6L` est `READY` sur l’alias public HTTP 200.
 
