@@ -1,11 +1,30 @@
-# Rapport QA — release 1.7.0
+# Rapport QA — release 1.8.0
 
 **Date :** 25 août 2026
-**Statut :** release 1.7.0 validée, poussée sur GitHub et publiée en production Vercel.
+**Statut :** release 1.8.0 validée, poussée sur GitHub et publiée en production Vercel.
 **Production :** <https://yautja-apex-hunt.vercel.app/>
+**Déploiement production v1.8 :** `dpl_5zqD2XQgZ4vo8RKRAft8cM7yKfHL` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `54fad3c`
 **Déploiement production v1.7 :** `dpl_En8EmhSsfxE7SZFPYEApyYwo134h` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `94bb326`
 **Premier déploiement de validation v1.6 :** `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` — `READY`, cible `production`, alias officiel appliqué
 **Source :** <https://github.com/darknigthmare/yautja-apex-hunt>
+
+## Passe v1.8 — directives de longue chasse et nouvelles proies
+
+| Gate | Résultat vérifié | Couverture |
+|---|---:|---|
+| Tests Node | **238/238 réussis** | Directives, progression, récompenses, sauvegarde v4, sept archétypes PNJ, événements spatialisés, plafond de population et régression complète. |
+| Build production local | **Vite 8.2.2 réussi** | 46 modules ; HTML 26,09 Ko ; CSS 27,28 Ko ; jeu 513,05 Ko ; Three.js 505,00 Ko. Avertissement de taille non bloquant. |
+| Build et déploiement Vercel | **READY** | Commit `54fad3c` poussé sur `codex/professional-hunt-pass`, déploiement production `dpl_5zqD2XQgZ4vo8RKRAft8cM7yKfHL`, alias officiel en HTTP 200. |
+| Sécurité dépendances | **0 vulnérabilité** | `npm audit --omit=dev`. |
+| Qualité Git | **propre** | `git diff --check`, revue P0/P1 indépendante sans régression et aucun patch temporaire conservé. |
+| Chromium desktop local | **réussi** | 1280×720 : cinq directives, aperçu des objectifs, lancement Kalisk/Genna, HUD compact `0 / 3 OBJECTIFS`, événement d’écosystème et 0 violation Axe sur les surfaces contrôlées. |
+| Chromium mobile local | **réussi** | 390×844 : aucun débordement horizontal du document ou de la modale ; sélecteur de directive contenu à 334 px. |
+| Chromium production | **réussi** | Cinq directives et huit contrats visibles ; le protocole du monde mortel sélectionne Genna, lance Kalisk, affiche les trois objectifs et charge la nouvelle texture en HTTP 200. |
+| Console navigateur | **0 erreur applicative** | Console et journal d’erreurs vides pendant le parcours public titre → contrats → directive Genna → chasse Kalisk. |
+
+Contenu contrôlé : quatre directives spécialisées plus la chasse standard, sept nouvelles proies 3D procédurales, vagues typées et spatialisées, suivi HUD, bonus conditionnel et persistance des directives accomplies. Le plafond global reste strictement limité à 24 PNJ et les types inconnus ne sont jamais remplacés silencieusement.
+
+L’asset original OpenAI `genna-sporeback-carapace.webp` est un WebP 1024×1024 de 343 106 octets. Il est appliqué au dos-à-spores, conservé sans copie d’asset officiel et vérifié localement puis sur l’alias public avec le type `image/webp`.
 
 ## Passe v1.7 — territoires ouverts, écologie et boss HD
 
