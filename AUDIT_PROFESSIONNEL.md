@@ -2,7 +2,7 @@
 
 **Date de mise à jour :** 25 août 2026
 **Périmètre :** code source, données de jeu, sauvegarde, interface, assets et release publique.
-**Statut :** audit initial suivi des vagues de professionnalisation jusqu’à la version 1.7.0, validée localement et dans Chromium sans défaut P0/P1 connu ; publication en cours.
+**Statut :** audit initial suivi des vagues de professionnalisation jusqu’à la version 1.7.0, validée sans défaut P0/P1 connu et publiée en production.
 
 ## Résumé exécutif
 
@@ -54,6 +54,7 @@ Le chantier a traité la jouabilité, la persistance, les fenêtres de réaction
 | Cohérence runtime | PNJ recalés au terrain, mesh/position resynchronisés, limites dynamiques, transitoires de boss maintenus au delta. | Sessions manuelles longues avec chaque boss et chaque météo. |
 | Gates automatisés | 218/218 tests, 45 modules Vite, 0 vulnérabilité et diff-check propre. | Aucun gate logiciel local ouvert. |
 | Chromium | Huit contrats, Genna/Kalisk, vision normale, cible >800 m, événement écologique et console propre à 1280×720. | Contrôle tactile et manette sur appareils physiques. |
+| Publication | Commit `94bb326` poussé, Vercel `dpl_En8EmhSsfxE7SZFPYEApyYwo134h` `READY`, alias HTTP 200 et chasse Kalisk vérifiée en production. | Aucun gate web de publication ouvert. |
 
 Ces métriques sont des contrats de construction et non des mesures de performance matérielle. La comparaison à *Monster Hunter: World* porte sur l’organisation continue, les boucles, la densité et l’écosystème décrits par Capcom, pas sur une superficie officielle non publiée.
 
@@ -109,5 +110,7 @@ La release ne peut être qualifiée qu'après réussite des étapes suivantes :
 7. revue du diff et commit sélectif des seuls fichiers validés.
 
 ## Publication
+
+La release 1.7.0 a été poussée sur GitHub au commit fonctionnel `94bb326`, puis publiée via `dpl_En8EmhSsfxE7SZFPYEApyYwo134h`. Vercel la déclare `READY`, l’alias <https://yautja-apex-hunt.vercel.app/> répond en HTTP 200 et le parcours production contrats → Genna → Kalisk a été exécuté sans erreur console.
 
 La release 1.6.0 a été poussée sur GitHub au commit `8df30a7` puis publiée via le déploiement `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3`. La production <https://yautja-apex-hunt.vercel.app/> est en état `READY`, répond en HTTP 200 et sert les quatre nouvelles matières v1.6 en `image/webp` avec leurs poids attendus.

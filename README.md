@@ -58,7 +58,7 @@ Les vingt-six textures de décor, props et créatures sous `public/assets/textur
 
 Références de conception consultées : [Capcom — création de Monster Hunter: World](https://www.capcom.co.jp/ir/english/feature/2017_mh_crvoice.html), [Capcom — projet de développement](https://www.capcom.co.jp/recruit/project/monhan-world.html) et [annonce officielle du Wildspire Waste](https://news.capcomusa.com/lets/browse/new-ecosystem-revealed-for-monster-hunter-world-the-wildspire-waste). Ces sources décrivent une direction de design, pas une superficie officielle en kilomètres carrés ; le projet n’invente donc aucune comparaison métrique non publiée.
 
-Gates locaux v1.7 : 218/218 tests, build Vite 8.2.2 de 45 modules, audit de production à 0 vulnérabilité et diff-check propre. Chromium 1280×720 a validé les huit contrats, le lancement Kalisk/Genna, la vision normale, un signal Apex à plus de 800 m, un conflit d’écosystème réel et une console sans erreur applicative.
+Gates v1.7 : 218/218 tests, build Vite 8.2.2 de 45 modules, audit de production à 0 vulnérabilité et diff-check propre. Chromium 1280×720 a validé les huit contrats, le lancement Kalisk/Genna, un signal Apex à plus de 800 m, un conflit d’écosystème réel et une console sans erreur applicative. Le commit fonctionnel `94bb326` est poussé sur GitHub ; Vercel a publié `dpl_En8EmhSsfxE7SZFPYEApyYwo134h` en production `READY`, l’alias public répond en HTTP 200 et une chasse Kalisk/Genna y a été relancée sans erreur console.
 
 ## Passe v1.6 — props et level design
 

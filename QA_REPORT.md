@@ -1,8 +1,9 @@
 # Rapport QA — release 1.7.0
 
 **Date :** 25 août 2026
-**Statut :** release 1.7.0 validée localement et dans Chromium ; publication GitHub/Vercel à finaliser.
+**Statut :** release 1.7.0 validée, poussée sur GitHub et publiée en production Vercel.
 **Production :** <https://yautja-apex-hunt.vercel.app/>
+**Déploiement production v1.7 :** `dpl_En8EmhSsfxE7SZFPYEApyYwo134h` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `94bb326`
 **Premier déploiement de validation v1.6 :** `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` — `READY`, cible `production`, alias officiel appliqué
 **Source :** <https://github.com/darknigthmare/yautja-apex-hunt>
 
@@ -12,10 +13,12 @@
 |---|---:|---|
 | Tests Node | **218/218 réussis** | Cartes ouvertes, relief transformé, routes, colliders distribués, écologie, événements, migrations Apex, huit boss HD, combat, sauvegarde et hub. |
 | Build production local | **Vite 8.2.2 réussi** | 45 modules ; HTML 24,44 Ko ; CSS 25,39 Ko ; jeu 491,40 Ko ; Three.js 505,00 Ko. Avertissement de taille non bloquant. |
+| Build et déploiement Vercel | **READY** | Commit `94bb326` poussé sur `codex/professional-hunt-pass`, déploiement production `dpl_En8EmhSsfxE7SZFPYEApyYwo134h`, alias officiel en HTTP 200. |
 | Sécurité dépendances | **0 vulnérabilité** | `npm audit --omit=dev`. |
 | Qualité Git | **propre** | `git diff --check`, aucun patch temporaire conservé. |
 | Chromium desktop local | **réussi** | 1280×720 : titre, huit contrats, lancement Kalisk/Genna, vision normale, signal Apex à 826–1 009 m, événement `CONFLIT PRÉDATEUR-PROIE` et HUD complet. |
-| Console navigateur | **0 erreur applicative** | Seulement les messages de connexion Vite attendus. |
+| Chromium production | **réussi** | Huit contrats visibles, Genna/Kalisk lancé, signal thermique à 1 020 m, tempête thermique, HUD et parties destructibles présents. |
+| Console navigateur | **0 erreur applicative** | Console vide sur la production ; seulement les messages de connexion Vite attendus en local. |
 
 Contrats mesurés : cinq rayons de 630–660 unités, neuf secteurs et 12–13 routes bouclées par carte, 12–15 formes de vie résidentes, six nœuds d’événements et cinq étapes de migration Apex. Les 43 couverts extérieurs estimés par biome conservent au moins neuf colliders physiques distribués sur les neuf secteurs, sans dépasser le plafond global. Le terrain transformé, les routes, les props, les PNJ et les meshes après collision partagent la même hauteur runtime.
 

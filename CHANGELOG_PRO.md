@@ -37,12 +37,14 @@ Les versions sont considérées comme publiées uniquement après push du code, 
 - aucune superficie MHW inventée : la comparaison de production repose sur la durée de traversée, les boucles, les secteurs, la distribution des menaces et le nombre d’événements ;
 - cartes Yautja originales et non linéaires, sans clonage d’un niveau Capcom.
 
-### Validation locale
+### Validation et publication
 
 - 218/218 tests Node réussis, dont nouveaux contrats layout, écologie, événements, migration Apex, terrain transformé, steering et budgets HD ;
 - build Vite 8.2.2 réussi avec 45 modules ; jeu à 491,40 Ko et chunk Three.js à 505 Ko, avec avertissement de taille non bloquant ;
 - `npm audit --omit=dev` à 0 vulnérabilité et `git diff --check` sans erreur ;
-- Chromium 1280×720 : huit contrats présents, Kalisk/Genna lancé, vision normale, cible à plus de 800 m, événement écologique visible et 0 erreur applicative ; commit, push et déploiement consignés dans `QA_REPORT.md` après publication.
+- Chromium 1280×720 local : huit contrats présents, Kalisk/Genna lancé, vision normale, cible à plus de 800 m, événement écologique visible et 0 erreur applicative ;
+- commit fonctionnel `94bb326` poussé sur `codex/professional-hunt-pass`, déploiement Vercel `dpl_En8EmhSsfxE7SZFPYEApyYwo134h` en production `READY` et alias public contrôlé en HTTP 200 ;
+- Chromium production : huit contrats visibles, Kalisk/Genna actif à 1 020 m, tempête thermique, HUD et parties destructibles présents, console sans erreur.
 
 ## [1.6.0] — 25 août 2026
 
