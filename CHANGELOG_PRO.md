@@ -2,6 +2,33 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
+## [1.8.0] — 25 août 2026
+
+### Directives de chasse
+
+- cinq profils immuables sont disponibles : `standard_hunt` sans objectif et à multiplicateur ×1, `jungle_fireteam` pour les trois rôles de la fireteam de jungle, `blooding_rite` pour trois castes xénomorphes, `killer_eras` pour les trois ères Viking, Japon féodal et Seconde Guerre mondiale, et `deathworld_protocol` pour la faune et les synthétiques de Genna ;
+- chaque directive recommande son biome, expose un planning de vagues `directive_wave` et conserve une provenance explicite `SCREEN` ou `ORIGINAL` ;
+- les identifiants inconnus retombent explicitement sur `standard_hunt` sans muter les définitions partagées.
+
+### Rencontres 3D et directeur
+
+- sept nouveaux archétypes 3D : `jungle_scout`, `jungle_gunner`, `jungle_trapper`, `era_viking_raider`, `era_feudal_duelist`, `era_wartime_pilot` et `genna_sporeback` ;
+- les vagues imposent strictement leurs `enemyTypes`, rejettent les types non enregistrés et respectent un plafond global de 24 PNJ actifs ;
+- les ennemis des trois ères, les rencontres de jungle et de Genna ainsi que les événements `event_killer_eras` et `event_genna_predation_cycle` portent désormais un statut runtime `encounter` cohérent avec leur présence jouable.
+
+### Progression, HUD et sauvegarde
+
+- la progression sérialisable mémorise les éliminations par objectif sans modifier les définitions de directive ;
+- le HUD affiche la directive active, l’avancement de chaque objectif et l’état du bonus ;
+- la sauvegarde v4 restaure les identifiants des directives accomplies ; l’avancement actif reste propre à la chasse en cours et un identifiant de sélection absent ou inconnu retombe sur la chasse standard ;
+- le multiplicateur de récompense ne s’applique que lorsque tous les objectifs de la directive sont complets.
+
+### Catalogue et assets
+
+- deux entrées de niveau sont ajoutées : `event_jungle_fireteam_directive`, sourcée sur *Predator* (1987), et `event_avp_blooding_directive`, sourcée sur *Alien vs. Predator* (2004) ; leur orchestration gameplay reste balisée comme implémentation originale ;
+- `genna-sporeback-carapace.webp`, matière OpenAI originale 1024×1024 de 343 106 octets, est destinée au mesh du Sporeback de Genna ;
+- l’inventaire public passe à 27 textures WebP pour un poids total de 8 836 588 octets, le PNG maître restant conservé localement hors Git.
+
 ## [1.7.0] — 25 août 2026
 
 ### Grande chasse ouverte

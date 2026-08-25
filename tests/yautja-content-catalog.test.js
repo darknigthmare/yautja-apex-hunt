@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { LORE_SOURCES } from '../src/data/LoreCodex.js';
+import { AVAILABLE_HUNT_NPC_ARCHETYPES } from '../src/entities/HuntNPC.js';
+import { HUNT_DIRECTIVES } from '../src/gameplay/HuntDirectiveSystem.js';
 import {
   ALL_YAUTJA_CONTENT,
   ARMOR_ACCENTS,
@@ -67,9 +69,9 @@ test('la passe contenu respecte les seuils de production demandés', () => {
     events: LEVEL_EVENT_CATALOG.length,
     bosses: HUNT_BOSS_CATALOG.length,
     support: SUPPORT_CATALOG.length,
-  }, { technologies: 37, vehicles: 13, enemies: 27, events: 19, bosses: 13, support: 13 });
-  assert.equal(TECH_CATALOG.length + VEHICLE_CATALOG.length + ENEMY_CATALOG.length + LEVEL_EVENT_CATALOG.length + HUNT_BOSS_CATALOG.length + SUPPORT_CATALOG.length, 122);
-  assert.equal(ALL_YAUTJA_CONTENT.length, 196);
+  }, { technologies: 37, vehicles: 13, enemies: 27, events: 21, bosses: 13, support: 13 });
+  assert.equal(TECH_CATALOG.length + VEHICLE_CATALOG.length + ENEMY_CATALOG.length + LEVEL_EVENT_CATALOG.length + HUNT_BOSS_CATALOG.length + SUPPORT_CATALOG.length, 124);
+  assert.equal(ALL_YAUTJA_CONTENT.length, 198);
 });
 
 test('tous les identifiants sont uniques et chaque fiche expose son statut réel', () => {
@@ -173,5 +175,46 @@ test('le catalogue couvre largement les concepts établis à l’écran', () => 
   assert.equal(getYautjaContentById('boss_kalisk_badlands')?.runtimeStatus, 'playable');
   for (const existingBossId of ['goliath', 'xeno_queen', 'bad_blood', 'predalien']) {
     assert.ok(HUNT_BOSS_CATALOG.some(({ id }) => id === existingBossId), existingBossId);
+  }
+});
+
+test('les rencontres v1.8 du catalogue possèdent toutes leur implémentation runtime', () => {
+  const npcTypesByCatalogId = {
+    enemy_elite_commando: ['jungle_scout', 'jungle_gunner', 'jungle_trapper'],
+    enemy_viking_raider: ['era_viking_raider'],
+    enemy_feudal_assassin: ['era_feudal_duelist'],
+    enemy_wartime_pilot: ['era_wartime_pilot'],
+    enemy_genna_hostile_fauna: ['genna_sporeback', 'genna_stalker'],
+  };
+
+  for (const [catalogId, runtimeTypes] of Object.entries(npcTypesByCatalogId)) {
+    const entry = getYautjaContentById(catalogId);
+    assert.equal(entry?.runtimeStatus, 'encounter', catalogId);
+    for (const runtimeType of runtimeTypes) {
+      assert.ok(AVAILABLE_HUNT_NPC_ARCHETYPES[runtimeType], `${catalogId}:${runtimeType}`);
+    }
+  }
+
+  const directiveIdByEventId = {
+    event_jungle_fireteam_directive: 'jungle_fireteam',
+    event_avp_blooding_directive: 'blooding_rite',
+    event_killer_eras: 'killer_eras',
+    event_genna_predation_cycle: 'deathworld_protocol',
+  };
+
+  for (const [eventId, directiveId] of Object.entries(directiveIdByEventId)) {
+    const entry = getYautjaContentById(eventId);
+    const directive = HUNT_DIRECTIVES[directiveId];
+    assert.equal(entry?.runtimeStatus, 'encounter', eventId);
+    assert.ok(directive, `${eventId}:${directiveId}`);
+    assert.ok(directive.schedule.length > 0, `${eventId}: planning vide`);
+    assert.deepEqual(
+      directive.schedule.map(({ npcType }) => npcType),
+      directive.objectives.map(({ npcType }) => npcType),
+      eventId,
+    );
+    for (const { npcType } of directive.objectives) {
+      assert.ok(AVAILABLE_HUNT_NPC_ARCHETYPES[npcType], `${eventId}:${npcType}`);
+    }
   }
 });

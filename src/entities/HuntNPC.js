@@ -12,6 +12,13 @@ export const HUNT_NPC_TEXTURES = Object.freeze({
   xeno_runner: '/assets/textures/xeno-carapace.webp',
   clan_sentry_drone: '/assets/textures/yautja-energy-lattice.webp',
   genna_grazer: '/assets/textures/deathworld-alien-flora.webp',
+  jungle_scout: '/assets/textures/stargazer-tactical-composite.webp',
+  jungle_gunner: '/assets/textures/stargazer-tactical-composite.webp',
+  jungle_trapper: '/assets/textures/stargazer-tactical-composite.webp',
+  era_viking_raider: '/assets/textures/hunting-hound-hide.webp',
+  era_feudal_duelist: '/assets/textures/yautja-leather-net.webp',
+  era_wartime_pilot: '/assets/textures/ryushi-frontier-panels.webp',
+  genna_sporeback: '/assets/textures/genna-sporeback-carapace.webp',
 });
 
 export const HUNT_NPC_ARCHETYPES = Object.freeze({
@@ -174,6 +181,51 @@ export const AMBIENT_HUNT_NPC_ARCHETYPES = Object.freeze({
   }),
 });
 
+// Vague de contenu v1.8. Ce registre séparé préserve les contrats historiques
+// HUNT_NPC_ARCHETYPES et ALL_HUNT_NPC_ARCHETYPES consommés par les anciennes
+// sauvegardes et par les tests de compatibilité.
+export const V18_HUNT_NPC_ARCHETYPES = Object.freeze({
+  jungle_scout: Object.freeze({
+    type: 'jungle_scout', name: 'Éclaireur de jungle', health: 88, damage: 9,
+    speed: 3.75, attackRange: 17, colliderRadius: 0.5, attackInterval: 1.15,
+    damageType: 'ballistic', attackKind: 'projectile', projectileSpeed: 36,
+  }),
+  jungle_gunner: Object.freeze({
+    type: 'jungle_gunner', name: 'Mitrailleur de jungle', health: 168, damage: 17,
+    speed: 2.05, attackRange: 22, colliderRadius: 0.68, attackInterval: 1.95,
+    damageType: 'ballistic', attackKind: 'projectile', projectileSpeed: 27,
+    knockback: 3,
+  }),
+  jungle_trapper: Object.freeze({
+    type: 'jungle_trapper', name: 'Piégeur de jungle', health: 112, damage: 8,
+    speed: 2.7, attackRange: 16, colliderRadius: 0.56, attackInterval: 1.7,
+    damageType: 'disruption', attackKind: 'projectile', projectileSpeed: 24,
+    energyDrain: 12, status: 'snare', statusDuration: 3.5,
+  }),
+  era_viking_raider: Object.freeze({
+    type: 'era_viking_raider', name: 'Pillard de l’ère viking', health: 225, damage: 32,
+    speed: 3.05, attackRange: 3.3, colliderRadius: 0.94, attackInterval: 2.15,
+    damageType: 'impact', attackKind: 'charge', chargeRange: 12.5,
+    chargeMultiplier: 2.25, knockback: 8,
+  }),
+  era_feudal_duelist: Object.freeze({
+    type: 'era_feudal_duelist', name: 'Duelliste de l’ère féodale', health: 142, damage: 24,
+    speed: 4.85, attackRange: 3.05, colliderRadius: 0.52, attackInterval: 0.78,
+    damageType: 'laceration', attackKind: 'melee',
+  }),
+  era_wartime_pilot: Object.freeze({
+    type: 'era_wartime_pilot', name: 'Pilote de l’ère industrielle', health: 104, damage: 11,
+    speed: 3.2, attackRange: 23, colliderRadius: 0.5, attackInterval: 1.02,
+    damageType: 'ballistic', attackKind: 'projectile', projectileSpeed: 40,
+  }),
+  genna_sporeback: Object.freeze({
+    type: 'genna_sporeback', name: 'Dos-à-spores de Genna', health: 278, damage: 27,
+    speed: 2.75, attackRange: 3.55, colliderRadius: 1.18, attackInterval: 2.3,
+    damageType: 'corrosion', attackKind: 'charge', chargeRange: 10.5,
+    chargeMultiplier: 1.9, knockback: 6, status: 'venom', statusDuration: 4.5,
+  }),
+});
+
 export const ALL_HUNT_NPC_ARCHETYPES = Object.freeze({
   ...HUNT_NPC_ARCHETYPES,
   ...EXPANDED_HUNT_NPC_ARCHETYPES,
@@ -182,7 +234,41 @@ export const ALL_HUNT_NPC_ARCHETYPES = Object.freeze({
 export const AVAILABLE_HUNT_NPC_ARCHETYPES = Object.freeze({
   ...ALL_HUNT_NPC_ARCHETYPES,
   ...AMBIENT_HUNT_NPC_ARCHETYPES,
+  ...V18_HUNT_NPC_ARCHETYPES,
 });
+
+// Les noms courts émis par les événements sont résolus ici, en un seul point.
+// Un identifiant canonique présent dans AVAILABLE_HUNT_NPC_ARCHETYPES est aussi
+// accepté directement. Toute autre valeur renvoie explicitement null.
+export const HUNT_NPC_TYPE_ALIASES = Object.freeze({
+  xeno: 'xeno_drone',
+  hound: 'hunting_hound',
+  human: 'human_fireteam',
+  synthetic: 'combat_synthetic',
+  grizzly: 'grizzly_territorial',
+  scout: 'jungle_scout',
+  jungle_commando: 'jungle_scout',
+  gunner: 'jungle_gunner',
+  jungle_heavy: 'jungle_gunner',
+  trapper: 'jungle_trapper',
+  jungle_trap_team: 'jungle_trapper',
+  viking: 'era_viking_raider',
+  viking_raider: 'era_viking_raider',
+  feudal: 'era_feudal_duelist',
+  feudal_duelist: 'era_feudal_duelist',
+  wartime: 'era_wartime_pilot',
+  wartime_pilot: 'era_wartime_pilot',
+  sporeback: 'genna_sporeback',
+});
+
+export function resolveHuntNpcType(type) {
+  if (typeof type !== 'string') return null;
+  const normalized = type.trim().toLowerCase();
+  if (!normalized) return null;
+  if (AVAILABLE_HUNT_NPC_ARCHETYPES[normalized]) return normalized;
+  const resolved = HUNT_NPC_TYPE_ALIASES[normalized];
+  return resolved && AVAILABLE_HUNT_NPC_ARCHETYPES[resolved] ? resolved : null;
+}
 
 const sharedTextureCache = new Map();
 const direction = new THREE.Vector3();
@@ -546,6 +632,161 @@ function makeGennaGrazer(texture) {
   return group;
 }
 
+function makeJungleOperative(texture, role) {
+  const group = new THREE.Group();
+  const rolePalette = {
+    scout: { fabric: 0x344a2f, armor: 0x202b24, read: 'fast_recon_marksman' },
+    gunner: { fabric: 0x273329, armor: 0x303a32, read: 'armored_suppression' },
+    trapper: { fabric: 0x3c4230, armor: 0x252b22, read: 'snare_disruptor' },
+  }[role];
+  const fabric = makeMaterial(rolePalette.fabric, texture, { roughness: 0.92, metalness: 0.02 });
+  const armor = makeMaterial(rolePalette.armor, texture, { roughness: 0.48, metalness: 0.58 });
+  const skin = makeMaterial(0x8b5b3c, null, { roughness: 0.92, metalness: 0 });
+  const lens = makeMaterial(0x6eeaff, null, {
+    roughness: 0.12,
+    metalness: 0.42,
+    emissive: 0x083f4e,
+    emissiveIntensity: 1.1,
+  });
+
+  addPart(group, new THREE.CapsuleGeometry(0.34, 0.74, 5, 8), fabric, [0, 1.25, 0]);
+  addPart(group, new THREE.SphereGeometry(0.27, 12, 8), skin, [0, 1.96, 0.03]);
+  addPart(group, new THREE.CylinderGeometry(0.31, 0.34, 0.2, 10), armor, [0, 2.14, 0]);
+  for (const side of [-1, 1]) {
+    addPart(group, new THREE.CapsuleGeometry(0.1, 0.68, 4, 7), fabric, [side * 0.18, 0.48, 0], null, [0, 0, side * 0.05]);
+    addPart(group, new THREE.CapsuleGeometry(0.085, 0.58, 4, 7), fabric, [side * 0.48, 1.27, 0.04], null, [0, 0, side * 0.22]);
+    addPart(group, new THREE.BoxGeometry(0.25, 0.18, 0.32), armor, [side * 0.42, 1.67, 0]);
+  }
+  addPart(group, new THREE.BoxGeometry(0.55, 0.68, 0.24), armor, [0, 1.34, -0.25]);
+
+  if (role === 'scout') {
+    addPart(group, new THREE.BoxGeometry(0.18, 0.45, 0.13), armor, [0.31, 1.52, -0.31]);
+    addPart(group, new THREE.CylinderGeometry(0.012, 0.012, 0.72, 5), lens, [0.34, 2.05, -0.25], null, [0, 0, -0.12]);
+    addPart(group, new THREE.BoxGeometry(0.42, 0.1, 1.2), armor, [-0.18, 1.35, 0.48], null, [0.1, -0.15, -0.08]);
+    addPart(group, new THREE.CylinderGeometry(0.055, 0.055, 0.45, 8), lens, [-0.04, 1.62, 0.46], null, [Math.PI / 2, 0, 0]);
+    addPart(group, new THREE.SphereGeometry(0.055, 8, 6), lens, [0.09, 1.98, 0.25]);
+  } else if (role === 'gunner') {
+    addPart(group, new THREE.BoxGeometry(0.78, 0.22, 0.38), armor, [0, 1.64, 0]);
+    addPart(group, new THREE.BoxGeometry(0.58, 0.65, 0.32), armor, [0, 1.33, -0.34]);
+    addPart(group, new THREE.CylinderGeometry(0.13, 0.18, 0.62, 10), armor, [0.5, 1.22, 0.28], null, [Math.PI / 2, 0, 0]);
+    for (let barrel = -1; barrel <= 1; barrel += 1) {
+      addPart(group, new THREE.CylinderGeometry(0.025, 0.025, 1.05, 7), armor, [0.5 + barrel * 0.06, 1.19, 0.86], null, [Math.PI / 2, 0, 0]);
+    }
+    addPart(group, new THREE.BoxGeometry(0.26, 0.45, 0.2), armor, [-0.43, 1.16, 0.18]);
+  } else {
+    addPart(group, new THREE.TorusGeometry(0.24, 0.035, 7, 16), armor, [0, 1.52, -0.43], null, [Math.PI / 2, 0, 0]);
+    addPart(group, new THREE.CylinderGeometry(0.075, 0.1, 0.82, 8), armor, [0.39, 1.23, 0.38], null, [Math.PI / 2, 0, 0]);
+    for (const side of [-1, 1]) {
+      addPart(group, new THREE.CylinderGeometry(0.11, 0.11, 0.18, 10), lens, [side * 0.26, 0.76, -0.13], null, [Math.PI / 2, 0, 0]);
+    }
+  }
+
+  group.userData.silhouette = `jungle_${role}`;
+  group.userData.combatRead = rolePalette.read;
+  return group;
+}
+
+function makeJungleScout(texture) { return makeJungleOperative(texture, 'scout'); }
+function makeJungleGunner(texture) { return makeJungleOperative(texture, 'gunner'); }
+function makeJungleTrapper(texture) { return makeJungleOperative(texture, 'trapper'); }
+
+function makeEraVikingRaider(texture) {
+  const group = new THREE.Group();
+  const hide = makeMaterial(0x493426, texture, { roughness: 0.9, metalness: 0.03 });
+  const mail = makeMaterial(0x586064, texture, { roughness: 0.42, metalness: 0.76 });
+  const wood = makeMaterial(0x4a2c19, null, { roughness: 0.82, metalness: 0.04 });
+  addPart(group, new THREE.CapsuleGeometry(0.48, 0.9, 5, 9), hide, [0, 1.28, 0]);
+  addPart(group, new THREE.SphereGeometry(0.32, 12, 8), hide, [0, 2.08, 0.04]);
+  addPart(group, new THREE.CylinderGeometry(0.36, 0.32, 0.28, 10), mail, [0, 2.22, 0]);
+  for (const side of [-1, 1]) {
+    addPart(group, new THREE.CapsuleGeometry(0.13, 0.76, 4, 7), hide, [side * 0.22, 0.45, 0], null, [0, 0, side * 0.08]);
+    addPart(group, new THREE.CapsuleGeometry(0.12, 0.7, 4, 7), hide, [side * 0.56, 1.3, 0], null, [0, 0, side * 0.24]);
+    addPart(group, new THREE.SphereGeometry(0.18, 9, 6), mail, [side * 0.47, 1.68, 0]);
+  }
+  addPart(group, new THREE.CylinderGeometry(0.58, 0.58, 0.1, 18), wood, [-0.67, 1.24, 0.18], null, [Math.PI / 2, 0, 0]);
+  addPart(group, new THREE.TorusGeometry(0.48, 0.055, 8, 20), mail, [-0.67, 1.24, 0.24], null, [Math.PI / 2, 0, 0]);
+  addPart(group, new THREE.CylinderGeometry(0.035, 0.045, 1.45, 7), wood, [0.68, 1.3, 0.2], null, [0, 0, -0.18]);
+  addPart(group, new THREE.BoxGeometry(0.12, 0.42, 0.5), mail, [0.79, 1.91, 0.2], null, [0, 0, -0.18]);
+  group.scale.setScalar(1.08);
+  group.userData.silhouette = 'era_viking_raider';
+  group.userData.combatRead = 'shield_charge';
+  return group;
+}
+
+function makeEraFeudalDuelist(texture) {
+  const group = new THREE.Group();
+  const cloth = makeMaterial(0x302a22, texture, { roughness: 0.86, metalness: 0.05 });
+  const lacquer = makeMaterial(0x501b18, texture, { roughness: 0.38, metalness: 0.55 });
+  const blade = makeMaterial(0xc5d0ce, null, { roughness: 0.2, metalness: 0.9 });
+  addPart(group, new THREE.CapsuleGeometry(0.32, 0.82, 5, 8), cloth, [0, 1.25, 0]);
+  addPart(group, new THREE.SphereGeometry(0.25, 11, 8), cloth, [0, 1.98, 0.03]);
+  addPart(group, new THREE.CylinderGeometry(0.32, 0.27, 0.26, 10), lacquer, [0, 2.13, 0]);
+  addPart(group, new THREE.BoxGeometry(0.86, 0.16, 0.35), lacquer, [0, 1.62, 0]);
+  for (const y of [1.08, 1.28, 1.48]) {
+    addPart(group, new THREE.BoxGeometry(0.72, 0.13, 0.38), lacquer, [0, y, 0]);
+  }
+  for (const side of [-1, 1]) {
+    addPart(group, new THREE.CapsuleGeometry(0.085, 0.72, 4, 7), cloth, [side * 0.16, 0.46, 0], null, [0, 0, side * 0.05]);
+    addPart(group, new THREE.CapsuleGeometry(0.075, 0.66, 4, 7), cloth, [side * 0.46, 1.27, 0.04], null, [0, 0, side * 0.2]);
+  }
+  addPart(group, new THREE.BoxGeometry(0.055, 0.12, 1.52), blade, [0.48, 1.14, 0.48], null, [0.16, -0.28, -0.16]);
+  addPart(group, new THREE.BoxGeometry(0.45, 0.055, 0.12), lacquer, [0.45, 1.08, -0.18], null, [0, 0.25, 0]);
+  group.userData.silhouette = 'era_feudal_duelist';
+  group.userData.combatRead = 'counter_duelist';
+  return group;
+}
+
+function makeEraWartimePilot(texture) {
+  const group = new THREE.Group();
+  const suit = makeMaterial(0x4a4b38, texture, { roughness: 0.88, metalness: 0.04 });
+  const harness = makeMaterial(0x5a3823, texture, { roughness: 0.72, metalness: 0.12 });
+  const metal = makeMaterial(0x30383b, null, { roughness: 0.38, metalness: 0.72 });
+  const lens = makeMaterial(0x6fb5ca, null, { roughness: 0.14, metalness: 0.5, emissive: 0x06222b, emissiveIntensity: 0.55 });
+  addPart(group, new THREE.CapsuleGeometry(0.33, 0.76, 5, 8), suit, [0, 1.22, 0]);
+  addPart(group, new THREE.SphereGeometry(0.26, 12, 8), suit, [0, 1.94, 0.03]);
+  addPart(group, new THREE.SphereGeometry(0.07, 8, 6), lens, [-0.1, 2, 0.23]);
+  addPart(group, new THREE.SphereGeometry(0.07, 8, 6), lens, [0.1, 2, 0.23]);
+  for (const side of [-1, 1]) {
+    addPart(group, new THREE.CapsuleGeometry(0.09, 0.68, 4, 7), suit, [side * 0.17, 0.45, 0], null, [0, 0, side * 0.05]);
+    addPart(group, new THREE.CapsuleGeometry(0.08, 0.62, 4, 7), suit, [side * 0.45, 1.24, 0.04], null, [0, 0, side * 0.2]);
+    addPart(group, new THREE.BoxGeometry(0.09, 0.72, 0.08), harness, [side * 0.17, 1.33, 0.25], null, [0, 0, side * 0.18]);
+  }
+  addPart(group, new THREE.BoxGeometry(0.66, 0.1, 0.08), harness, [0, 1.28, 0.28]);
+  addPart(group, new THREE.CylinderGeometry(0.12, 0.12, 0.5, 9), metal, [0, 1.4, -0.3]);
+  addPart(group, new THREE.BoxGeometry(0.32, 0.12, 1.25), metal, [0.25, 1.28, 0.48], null, [0.12, -0.12, -0.1]);
+  addPart(group, new THREE.BoxGeometry(1.18, 0.08, 0.28), metal, [0, 1.76, -0.2], null, [0, 0, 0.06]);
+  group.userData.silhouette = 'era_wartime_pilot';
+  group.userData.combatRead = 'mobile_marksman';
+  return group;
+}
+
+function makeGennaSporeback(texture) {
+  const group = new THREE.Group();
+  const hide = makeMaterial(0x334a35, texture, { roughness: 0.82, metalness: 0.08 });
+  const shell = makeMaterial(0x172e25, texture, { roughness: 0.42, metalness: 0.36 });
+  const spore = makeMaterial(0xb6f25a, texture, { roughness: 0.3, metalness: 0.08, emissive: 0x275c12, emissiveIntensity: 1.35 });
+  addPart(group, new THREE.SphereGeometry(0.9, 16, 10), hide, [0, 0.92, 0], [1.18, 0.74, 1.55]);
+  addPart(group, new THREE.SphereGeometry(0.84, 16, 9), shell, [0, 1.32, -0.2], [1.2, 0.5, 1.32]);
+  addPart(group, new THREE.SphereGeometry(0.48, 13, 8), shell, [0, 0.96, 1.22], [0.86, 0.68, 1]);
+  for (const side of [-1, 1]) {
+    for (const z of [-0.72, 0, 0.72]) {
+      addPart(group, new THREE.CylinderGeometry(0.07, 0.15, 1.05, 7), hide, [side * 0.67, 0.4, z], null, [0, 0, side * 0.34]);
+    }
+    addPart(group, new THREE.ConeGeometry(0.1, 0.68, 7), shell, [side * 0.28, 1.17, 1.7], null, [Math.PI / 2.5, 0, side * 0.12]);
+  }
+  for (let pod = 0; pod < 7; pod += 1) {
+    const angle = ((pod - 3) / 6) * Math.PI;
+    addPart(group, new THREE.SphereGeometry(0.2, 10, 7), spore, [Math.sin(angle) * 0.72, 1.72 + Math.cos(angle) * 0.14, -0.25 + Math.cos(angle) * 0.5]);
+  }
+  const tail = addPart(group, new THREE.CylinderGeometry(0.04, 0.17, 1.75, 8), shell, [0, 0.75, -1.42]);
+  tail.rotation.x = Math.PI / 2.3;
+  group.scale.setScalar(1.12);
+  group.userData.silhouette = 'genna_sporeback';
+  group.userData.combatRead = 'venom_spore_charge';
+  group.userData.sporePodCount = 7;
+  return group;
+}
+
 const meshFactories = Object.freeze({
   xeno_drone: makeXenoDrone,
   hunting_hound: makeHuntingHound,
@@ -558,6 +799,13 @@ const meshFactories = Object.freeze({
   xeno_runner: makeXenoRunner,
   clan_sentry_drone: makeClanSentryDrone,
   genna_grazer: makeGennaGrazer,
+  jungle_scout: makeJungleScout,
+  jungle_gunner: makeJungleGunner,
+  jungle_trapper: makeJungleTrapper,
+  era_viking_raider: makeEraVikingRaider,
+  era_feudal_duelist: makeEraFeudalDuelist,
+  era_wartime_pilot: makeEraWartimePilot,
+  genna_sporeback: makeGennaSporeback,
 });
 
 function setPosition(target, value) {
@@ -586,10 +834,12 @@ export class HuntNPC {
     const config = typeof typeOrOptions === 'string'
       ? { ...options, type: typeOrOptions }
       : { ...(typeOrOptions || {}) };
-    const archetype = AVAILABLE_HUNT_NPC_ARCHETYPES[config.type];
+    const requestedType = config.type;
+    const resolvedType = resolveHuntNpcType(requestedType);
+    const archetype = resolvedType ? AVAILABLE_HUNT_NPC_ARCHETYPES[resolvedType] : null;
 
     if (!archetype) {
-      throw new Error(`Unknown hunt NPC archetype: ${config.type}`);
+      throw new Error(`Unknown hunt NPC archetype: ${requestedType}`);
     }
 
     this.type = archetype.type;
@@ -941,13 +1191,16 @@ export class HuntNPC {
         if (mode === 'thermal') {
           const thermalColor = this.type === 'combat_synthetic'
             ? 0x74baff
-            : this.type === 'thermal_trapper'
+            : this.type === 'thermal_trapper' || this.type === 'jungle_trapper'
               ? 0xffc24d
-              : this.type === 'genna_stalker'
+              : this.type === 'genna_stalker' || this.type === 'genna_sporeback'
                 ? 0x7ee83c
                 : 0xff6a1f;
           material.color.setHex(thermalColor);
-          if (material.emissive) material.emissive.setHex(this.type === 'genna_stalker' ? 0x245d0e : 0x6b1600);
+          const thermalEmissive = this.type === 'genna_stalker' || this.type === 'genna_sporeback'
+            ? 0x245d0e
+            : 0x6b1600;
+          if (material.emissive) material.emissive.setHex(thermalEmissive);
           material.emissiveIntensity = 0.8;
         } else if (mode === 'tech') {
           material.color.setHex(0x4de8ff);

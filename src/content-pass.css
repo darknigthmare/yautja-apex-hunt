@@ -1,4 +1,71 @@
-/* Content wave 1.4 — living Genna biome, modular hunter and field technologies. */
+/* Content wave 1.8 — directives, historic encounters and living Genna fauna. */
+.directive-config {
+  background: linear-gradient(135deg, rgba(6, 18, 22, 0.94), rgba(20, 10, 7, 0.9));
+  border: 1px solid rgba(86, 231, 255, 0.38);
+  border-left: 3px solid var(--yautja-gold);
+  border-radius: 6px;
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+  padding: 10px 12px;
+}
+.directive-select-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+}
+.directive-select-row label {
+  color: var(--yautja-gold);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+}
+.directive-select-row select { margin-left: 0; min-width: min(100%, 330px); }
+.directive-preview { display: grid; gap: 3px; }
+.directive-preview-heading { align-items: center; display: flex; flex-wrap: wrap; gap: 7px; }
+.directive-preview-heading strong { color: #d9fbff; font-family: 'Orbitron', sans-serif; font-size: 12px; }
+.directive-preview p { color: #b8c9cf; font-size: 11px; margin: 0; }
+.directive-preview #directive-preview-objectives { color: #e8d4a1; }
+.directive-reward,
+.directive-status {
+  border: 1px solid rgba(255, 194, 87, 0.48);
+  border-radius: 999px;
+  color: #ffd889;
+  font: 700 9px 'Orbitron', sans-serif;
+  padding: 3px 6px;
+}
+.directive-status.completed { border-color: #4de8b2; color: #75ffd0; }
+.directive-hud {
+  background: linear-gradient(145deg, rgba(5, 18, 22, 0.92), rgba(12, 7, 5, 0.92));
+  border: 1px solid rgba(255, 196, 91, 0.46);
+  border-left: 3px solid var(--yautja-gold);
+  border-radius: 4px;
+  margin-top: 8px;
+  padding: 8px 10px;
+}
+.directive-hud-title { color: #ffe0a0; font: 700 10px 'Orbitron', sans-serif; }
+.directive-hud-progress { color: #5ce7ff; font: 700 10px 'Rajdhani', sans-serif; margin-top: 3px; }
+.directive-hud-objective {
+  color: #c9d3d7;
+  font-size: 10px;
+  line-height: 1.25;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.directive-result {
+  background: rgba(5, 18, 22, 0.8);
+  border: 1px solid rgba(83, 227, 255, 0.38);
+  border-radius: 5px;
+  display: grid;
+  gap: 4px;
+  margin: 12px 0;
+  padding: 10px;
+}
+.directive-result strong { color: #ffe0a0; font: 700 12px 'Orbitron', sans-serif; }
+.directive-result span { color: #bfeef6; font-size: 12px; }
 .mission-cards-container {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -267,6 +334,8 @@ body.reduced-motion .gadget-status.active strong {
   .content-catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 760px) {
+  .directive-select-row { align-items: stretch; flex-direction: column; }
+  .directive-select-row select { width: 100%; }
   .mission-cards-container,
   .customization-grid,
   .content-catalog-grid { grid-template-columns: 1fr; }

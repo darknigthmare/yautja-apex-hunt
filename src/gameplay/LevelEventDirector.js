@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { HuntVehicle, getYautjaEnergyTexture } from '../entities/HuntVehicle.js';
 import { disposeObject3D } from '../utils/materialState.js';
+import { getDirectiveSchedule } from './HuntDirectiveSystem.js';
 
 export const DEFAULT_LEVEL_EVENT_SCHEDULE = Object.freeze([
   Object.freeze({ at: 3, kind: 'flyby' }),
@@ -26,7 +27,36 @@ const EVENT_NODE_KIND_ALIASES = Object.freeze({
   prey_migration: Object.freeze(['prey_migration']),
   territory_clash: Object.freeze(['territory_clash']),
   boss_migration: Object.freeze(['boss_trail', 'boss_migration']),
+  directive_wave: Object.freeze(['directive_wave', 'encounter', 'reinforcement']),
 });
+
+function cloneScheduleEntry(entry) {
+  if (!entry || typeof entry !== 'object') return null;
+  const kind = typeof entry.kind === 'string'
+    ? entry.kind
+    : (typeof entry.type === 'string' ? entry.type : null);
+  if (!Number.isFinite(entry.at) || entry.at < 0 || !kind) return null;
+  return {
+    ...entry,
+    kind,
+    ...(Array.isArray(entry.enemyTypes) ? { enemyTypes: [...entry.enemyTypes] } : {}),
+  };
+}
+
+function cloneSchedule(schedule) {
+  if (!schedule || typeof schedule[Symbol.iterator] !== 'function') return [];
+  return [...schedule]
+    .map(cloneScheduleEntry)
+    .filter(Boolean)
+    .sort((a, b) => a.at - b.at);
+}
+
+function composeSchedule(baseSchedule, directiveSchedule) {
+  return [
+    ...cloneSchedule(baseSchedule),
+    ...cloneSchedule(directiveSchedule),
+  ].sort((a, b) => a.at - b.at);
+}
 
 export const HUNT_CACHE_TYPES = Object.freeze({
   balanced: Object.freeze({ health: 35, energy: 50, honor: 120, shell: 0x484a42, edge: 0x8a7854, energyColor: 0x49fff0, emissive: 0x0ba397 }),
@@ -228,9 +258,8 @@ export class LevelEventDirector {
     this.maxEnemySpawns = Math.max(0, Math.floor(maxEnemySpawns));
     this.maxVehicles = Math.max(0, Math.floor(maxVehicles));
     this.maxCaches = Math.max(0, Math.floor(maxCaches));
-    this.scheduleTemplate = [...schedule]
-      .filter(({ at, kind }) => Number.isFinite(at) && at >= 0 && typeof kind === 'string')
-      .sort((a, b) => a.at - b.at);
+    this.baseScheduleTemplate = cloneSchedule(schedule);
+    this.scheduleTemplate = cloneSchedule(this.baseScheduleTemplate);
     this.root = new THREE.Group();
     this.root.name = 'level-event-director';
     this.scene?.add?.(this.root);
@@ -248,6 +277,7 @@ export class LevelEventDirector {
     this.activeHazard = null;
     this.huntId = null;
     this.biomeId = null;
+    this.directiveId = null;
     this.reducedMotion = Boolean(reducedMotion);
   }
 
@@ -264,11 +294,18 @@ export class LevelEventDirector {
     return changed;
   }
 
-  start({ huntId = 'goliath', biomeId = 'jungle' } = {}) {
+  start({ huntId = 'goliath', biomeId = 'jungle', directiveId = 'standard_hunt' } = {}) {
     if (this.disposed) return false;
     this.stop();
     this.huntId = huntId;
     this.biomeId = biomeId;
+    this.directiveId = typeof directiveId === 'string' && directiveId.trim()
+      ? directiveId.trim()
+      : 'standard_hunt';
+    this.scheduleTemplate = composeSchedule(
+      this.baseScheduleTemplate,
+      getDirectiveSchedule(this.directiveId),
+    );
     this.elapsed = 0;
     this.scheduleIndex = 0;
     this.enemySpawnCount = 0;
@@ -320,7 +357,14 @@ export class LevelEventDirector {
       for (const alias of aliases) {
         try {
           const node = environment.getEventNode(alias, safeOrdinal);
-          if (node) return node;
+          if (!node) continue;
+          const nodeKind = node.eventType ?? node.kind ?? node.type;
+          // Certains environnements historiques renvoient leur premier nœud
+          // lorsqu'aucun type ne correspond. Un nœud explicitement typé ne
+          // peut être utilisé que s'il appartient réellement à la famille
+          // demandée. Les simples Vector3/non typés restent compatibles.
+          if (nodeKind && !aliases.includes(String(nodeKind).toLowerCase())) continue;
+          return node;
         } catch {
           // Un faux environnement incomplet ne doit jamais interrompre la chasse.
         }
@@ -352,10 +396,11 @@ export class LevelEventDirector {
 
     const validCandidates = candidates.filter(Boolean);
     const typedCandidates = validCandidates.filter((node) => (
-      aliases.includes(node.eventType ?? node.kind ?? node.type)
+      aliases.includes(String(node.eventType ?? node.kind ?? node.type).toLowerCase())
     ));
-    const pool = typedCandidates.length > 0 ? typedCandidates : validCandidates;
-    return pool.length > 0 ? pool[safeOrdinal % pool.length] : null;
+    return typedCandidates.length > 0
+      ? typedCandidates[safeOrdinal % typedCandidates.length]
+      : null;
   }
 
   resolveEcosystemEvent(context, kind, ordinal, {
@@ -541,6 +586,7 @@ export class LevelEventDirector {
       at: this.elapsed,
       huntId: this.huntId,
       biomeId: this.biomeId,
+      directiveId: this.directiveId,
     };
     this.pendingSignals.push(enriched);
     this.currentSignals?.push(enriched);
@@ -548,6 +594,49 @@ export class LevelEventDirector {
   }
 
   triggerEvent(event, context) {
+    if (event.kind === 'directive_wave') {
+      const enemyTypes = Array.isArray(event.enemyTypes)
+        ? event.enemyTypes.filter((enemyType) => (
+          typeof enemyType === 'string' && enemyType.trim().length > 0
+        )).map((enemyType) => enemyType.trim())
+        : [];
+      // Une directive doit toujours nommer ses proies. Ne jamais substituer
+      // ici un ennemi générique qui fausserait contrat et progression.
+      if (enemyTypes.length === 0) return;
+
+      const ordinal = this.getEventOrdinal(event);
+      const node = this.getEventNode(context.environment, event.kind, ordinal);
+      const rawNodePosition = node?.position ?? node?.center ?? node;
+      const nodePosition = readPosition({ position: rawNodePosition }, null);
+      const socket = nodePosition
+        ? null
+        : this.getEncounterSocket(
+          context.environment,
+          'reinforcement',
+          ordinal,
+          Math.max(4, enemyTypes.length),
+        );
+      const preferred = nodePosition ?? socket ?? this.positionAround(context.player, 34, 58);
+      const position = this.getSafeGroundPosition(context.environment, preferred, { clearance: 5 });
+      const sourceId = typeof event.id === 'string' && event.id.trim()
+        ? event.id.trim()
+        : `${this.directiveId}-wave-${ordinal + 1}`;
+
+      this.emit({
+        type: 'spawn_enemy_group',
+        id: sourceId,
+        sourceId,
+        label: typeof event.label === 'string' && event.label.trim()
+          ? event.label.trim()
+          : `Vague de directive ${ordinal + 1}`,
+        objectiveId: event.objectiveId ?? null,
+        enemyTypes,
+        ordinal: ordinal + 1,
+        position: this.toSignalPosition(position),
+      });
+      return;
+    }
+
     if (event.kind === 'localized_event') {
       const ordinal = this.getEventOrdinal(event);
       const { node, position } = this.resolveEcosystemEvent(context, event.kind, ordinal, {
@@ -747,6 +836,7 @@ export class LevelEventDirector {
     if (this.disposed) return [];
     this.setReducedMotion(reducedMotion);
     if (!this.active || !Number.isFinite(delta) || delta <= 0) return [];
+    if (boss?.isDead === true) return [];
     const endTime = this.elapsed + delta;
     const context = { player, boss, environment, reducedMotion: this.reducedMotion };
     this.currentSignals = [];
@@ -794,6 +884,8 @@ export class LevelEventDirector {
     this.pendingSignals = [];
     this.currentSignals = null;
     this.activeHazard = null;
+    this.directiveId = null;
+    this.scheduleTemplate = cloneSchedule(this.baseScheduleTemplate);
     return changed;
   }
 

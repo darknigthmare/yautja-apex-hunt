@@ -13,7 +13,7 @@
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="Yautja: Apex Hunt">
   <meta property="og:title" content="Yautja: Apex Hunt — Chasse 3D fan-made">
-  <meta property="og:description" content="Endossez le bio-masque, choisissez votre contrat et prouvez votre valeur au cours de six chasses et d’événements dynamiques.">
+  <meta property="og:description" content="Endossez le bio-masque, choisissez parmi huit chasses et cinq directives, puis prouvez votre valeur dans un monde 3D vivant.">
   <meta property="og:url" content="https://yautja-apex-hunt.vercel.app/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Yautja: Apex Hunt">
@@ -152,6 +152,11 @@
           <span id="tail-status" class="part-intact">INTACTE (TROPHÉE)</span>
         </div>
       </div>
+      <div id="directive-hud" class="directive-hud hidden" aria-live="polite">
+        <div id="directive-hud-title" class="directive-hud-title">DIRECTIVE DE CHASSE</div>
+        <div id="directive-hud-progress" class="directive-hud-progress">0 / 0 OBJECTIF</div>
+        <div id="directive-hud-objective" class="directive-hud-objective">AUCUN OBJECTIF SECONDAIRE</div>
+      </div>
     </div>
 
     <!-- Bottom Bar: Weapons -->
@@ -244,6 +249,23 @@
             <option value="genna_deathworld">MONDE MORTEL DE GENNA — FLORE HOSTILE & TEMPÊTE</option>
           </select>
         </div>
+
+        <section class="directive-config" aria-labelledby="directive-config-title">
+          <div class="directive-select-row">
+            <label id="directive-config-title" for="directive-selector">DIRECTIVE DE LA LONGUE CHASSE :</label>
+            <select id="directive-selector" aria-describedby="directive-preview-description"></select>
+          </div>
+          <div id="directive-preview" class="directive-preview">
+            <div class="directive-preview-heading">
+              <strong id="directive-preview-title">CHASSE STANDARD</strong>
+              <span id="directive-preview-reward" class="directive-reward">RÉCOMPENSE ×1,00</span>
+              <span id="directive-preview-status" class="directive-status">DISPONIBLE</span>
+            </div>
+            <p id="directive-preview-description">Contrat libre sans objectif de directive supplémentaire.</p>
+            <p id="directive-preview-biome">SECTEUR : LIBRE</p>
+            <p id="directive-preview-objectives">OBJECTIF : TROPHÉE APEX</p>
+          </div>
+        </section>
 
         <div class="mission-cards-container">
           <article class="mission-card">
@@ -435,6 +457,10 @@
       <div class="final-rank-box">
         <div>SCORE D'HONNEUR FINAL : <span id="final-honor-score">4500 PTS</span></div>
         <div>RANG YAUTJA ATTEINT : <span id="final-yautja-rank">ANCIEN MAÎTRE (YAUTJA ELDER)</span></div>
+      </div>
+      <div id="directive-result" class="directive-result" aria-live="polite">
+        <strong>DIRECTIVE STANDARD</strong>
+        <span>AUCUN OBJECTIF SECONDAIRE</span>
       </div>
       <button id="btn-restart-game" type="button">RETOURNER AU VAISSEAU-MÈRE</button>
     </div>

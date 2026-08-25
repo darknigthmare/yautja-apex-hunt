@@ -1,9 +1,18 @@
 import * as THREE from 'three';
 import { Environment } from './world/Environment.js';
 import { YautjaPlayer } from './entities/YautjaPlayer.js';
-import { HuntNPC } from './entities/HuntNPC.js';
+import { HuntNPC, resolveHuntNpcType } from './entities/HuntNPC.js';
 import { createBoss } from './gameplay/BossFactory.js';
 import { LevelEventDirector } from './gameplay/LevelEventDirector.js';
+import {
+  HUNT_DIRECTIVES,
+  createDirectiveProgress,
+  getDirectiveProgressSummary,
+  getHuntDirective,
+  recordDirectiveNpcDefeat,
+  resolveDirectiveBiome,
+  resolveDirectiveReward,
+} from './gameplay/HuntDirectiveSystem.js';
 import { FacehuggerEggCluster } from './entities/FacehuggerEgg.js';
 import { disposeObject3D } from './utils/materialState.js';
 import { MothershipHub } from './world/MothershipHub.js';
@@ -25,6 +34,14 @@ const VICTORY_DELAY_SECONDS = 3;
 const GOLIATH_CHARGE_WINDOW_SECONDS = 4;
 const GOLIATH_CHARGE_IMPACT_RANGE = 10;
 const PLAYER_COLLIDER_RADIUS = 1.8;
+const MAX_ACTIVE_HUNT_NPCS = 24;
+const DIRECTIVE_BIOME_LABELS = Object.freeze({
+  jungle: 'JUNGLE EXTRATERRESTRE',
+  hive_lv426: 'RUCHES DE LV-426',
+  ryushi_desert: 'DÉSERT DE RYUSHI',
+  yautja_prime: 'DOMAINE YAUTJA',
+  genna_deathworld: 'MONDE MORTEL DE GENNA',
+});
 const HIVE_EGG_OFFSETS = Object.freeze([
   Object.freeze([-19, 0, -7]),
   Object.freeze([-18, 0, 9]),
@@ -83,6 +100,9 @@ export class Game {
     this.gameState = 'HUB';
     this.currentHuntType = 'goliath';
     this.currentPlanet = 'jungle';
+    this.currentDirectiveId = 'standard_hunt';
+    this.directiveProgress = createDirectiveProgress(this.currentDirectiveId);
+    this.directiveOutcome = null;
     this.timeScale = 1.0;
 
     this.hub = new MothershipHub(this.scene);
@@ -145,6 +165,7 @@ export class Game {
 
     this.applySettings(false);
     this.renderLoreCodex();
+    this.renderDirectiveSelector();
     this.initEventListeners();
     this.setupUIButtons();
     this.hud.updateVitals(this.player);
@@ -390,6 +411,93 @@ export class Game {
     codexGrid.replaceChildren(...cards);
   }
 
+  renderDirectiveSelector(preferredId = this.currentDirectiveId) {
+    const selector = document.getElementById('directive-selector');
+    if (!selector) return null;
+    const completed = new Set(this.player.completedDirectiveIds ?? []);
+    const options = Object.values(HUNT_DIRECTIVES).map((directive) => {
+      const option = document.createElement('option');
+      option.value = directive.id;
+      const cleared = directive.id !== 'standard_hunt' && completed.has(directive.id);
+      option.textContent = `${cleared ? '✓ ' : ''}${directive.title.toUpperCase()} · ×${directive.rewardMultiplier.toFixed(2).replace('.', ',')}`;
+      return option;
+    });
+    selector.replaceChildren(...options);
+    selector.value = getHuntDirective(preferredId).id;
+    this.updateDirectivePreview(selector.value);
+    return selector.value;
+  }
+
+  updateDirectivePreview(directiveId) {
+    const directive = getHuntDirective(directiveId);
+    const completed = directive.id !== 'standard_hunt'
+      && (this.player.completedDirectiveIds ?? []).includes(directive.id);
+    const title = document.getElementById('directive-preview-title');
+    const reward = document.getElementById('directive-preview-reward');
+    const status = document.getElementById('directive-preview-status');
+    const description = document.getElementById('directive-preview-description');
+    const biome = document.getElementById('directive-preview-biome');
+    const objectives = document.getElementById('directive-preview-objectives');
+    if (title) title.textContent = directive.title.toUpperCase();
+    if (reward) reward.textContent = `RÉCOMPENSE ×${directive.rewardMultiplier.toFixed(2).replace('.', ',')}`;
+    if (status) {
+      status.textContent = directive.id === 'standard_hunt' ? 'LIBRE' : completed ? 'ACCOMPLIE' : 'DISPONIBLE';
+      status.classList.toggle('completed', completed);
+    }
+    if (description) description.textContent = directive.description;
+    if (biome) {
+      const biomeLabel = directive.recommendedBiomeId
+        ? DIRECTIVE_BIOME_LABELS[directive.recommendedBiomeId] ?? directive.recommendedBiomeId
+        : 'LIBRE';
+      biome.textContent = `SECTEUR ${directive.recommendedBiomeId ? 'REQUIS' : 'CONSEILLÉ'} : ${biomeLabel}`;
+    }
+    if (objectives) {
+      const objectiveText = directive.objectives.length > 0
+        ? directive.objectives.map(({ label }) => label).join(' · ')
+        : 'Prélever le trophée de la cible Apex';
+      objectives.textContent = `OBJECTIFS : ${objectiveText}`;
+    }
+    const planetSelector = document.getElementById('planet-selector');
+    if (planetSelector && directive.recommendedBiomeId) {
+      planetSelector.value = directive.recommendedBiomeId;
+    }
+    return directive;
+  }
+
+  refreshDirectiveHud() {
+    const directive = getHuntDirective(this.currentDirectiveId);
+    const summary = getDirectiveProgressSummary(this.directiveProgress);
+    this.hud.updateDirectiveStatus?.(directive, summary);
+    return summary;
+  }
+
+  updateDirectiveResultPanel(success) {
+    const panel = document.getElementById('directive-result');
+    const title = panel?.querySelector?.('strong');
+    const detail = panel?.querySelector?.('span');
+    if (!panel || !title || !detail) return;
+    const directive = getHuntDirective(this.currentDirectiveId);
+    const outcome = this.directiveOutcome;
+    const summary = outcome?.summary ?? getDirectiveProgressSummary(this.directiveProgress);
+    title.textContent = directive.title.toUpperCase();
+    if (directive.id === 'standard_hunt') {
+      detail.textContent = success
+        ? 'CHASSE LIBRE VALIDÉE · RÉCOMPENSE APEX STANDARD'
+        : 'CHASSE LIBRE INTERROMPUE · AUCUNE PRIME';
+      return;
+    }
+    if (!success) {
+      detail.textContent = `DIRECTIVE ÉCHOUÉE · ${summary.completedObjectives}/${summary.totalObjectives} OBJECTIFS`;
+      return;
+    }
+    if (summary.isComplete) {
+      const firstCompletion = outcome?.newlyCompleted ? ' · PREMIÈRE VALIDATION' : '';
+      detail.textContent = `DIRECTIVE ACCOMPLIE · +${outcome?.bonus ?? 0} HONNEUR${firstCompletion}`;
+      return;
+    }
+    detail.textContent = `DIRECTIVE INCOMPLÈTE · ${summary.completedObjectives}/${summary.totalObjectives} OBJECTIFS · PRIME NON ACCORDÉE`;
+  }
+
   getCombatTargets() {
     return [this.activeBoss, ...(this.activeEnemies ?? [])]
       .filter((target) => target && !target.isDead && target.position?.isVector3);
@@ -599,7 +707,17 @@ export class Game {
   }
 
   getTargetBloodColor(target) {
-    if (['human_fireteam', 'thermal_trapper', 'grizzly_territorial'].includes(target?.type)) return 0xb41616;
+    if ([
+      'human_fireteam',
+      'thermal_trapper',
+      'grizzly_territorial',
+      'jungle_scout',
+      'jungle_gunner',
+      'jungle_trapper',
+      'era_viking_raider',
+      'era_feudal_duelist',
+      'era_wartime_pilot',
+    ].includes(target?.type)) return 0xb41616;
     if (target?.type === 'combat_synthetic') return 0xf1f2df;
     return 0x00ff44;
   }
@@ -607,8 +725,18 @@ export class Game {
   handleNpcDefeat(enemy, honorBase = 90) {
     const index = (this.activeEnemies ?? []).indexOf(enemy);
     if (index < 0) return;
+    const previousSummary = getDirectiveProgressSummary(this.directiveProgress);
+    this.directiveProgress = recordDirectiveNpcDefeat(this.directiveProgress, enemy.type);
+    const directiveSummary = this.refreshDirectiveHud();
+    const directiveAdvanced = directiveSummary.completedObjectives > previousSummary.completedObjectives;
     const honorGained = this.player.addHonor(honorBase);
-    this.hud.showLogMessage(`${enemy.name.toUpperCase()} NEUTRALISÉ · +${honorGained} PTS`, 1800);
+    const directiveSuffix = directiveAdvanced
+      ? ` · DIRECTIVE ${directiveSummary.completedObjectives}/${directiveSummary.totalObjectives}`
+      : '';
+    this.hud.showLogMessage(
+      `${enemy.name.toUpperCase()} NEUTRALISÉ · +${honorGained} PTS${directiveSuffix}`,
+      directiveAdvanced ? 2600 : 1800,
+    );
     enemy.dispose();
     this.activeEnemies.splice(index, 1);
   }
@@ -870,22 +998,15 @@ export class Game {
   }
 
   spawnEncounterNpc(signal) {
-    const encounterTypes = {
-      xeno: 'xeno_drone',
-      xeno_warrior: 'xeno_warrior',
-      hound: 'hunting_hound',
-      grizzly: 'grizzly_territorial',
-      thermal_trapper: 'thermal_trapper',
-      genna_stalker: 'genna_stalker',
-      synthetic: 'combat_synthetic',
-      xeno_runner: 'xeno_runner',
-      clan_sentry_drone: 'clan_sentry_drone',
-      genna_grazer: 'genna_grazer',
-    };
-    const type = encounterTypes[signal.enemyType]
-      ?? (signal.ordinal >= 3 ? 'combat_synthetic' : 'human_fireteam');
+    const livingCount = (this.activeEnemies ?? []).filter((enemy) => !enemy.isDead).length;
+    if (livingCount >= MAX_ACTIVE_HUNT_NPCS) return null;
+    const type = resolveHuntNpcType(signal.enemyType);
+    if (!type) {
+      console.warn(`Type de rencontre ignoré: ${signal.enemyType ?? 'absent'}`);
+      return null;
+    }
     const preferredPosition = signal.position?.isVector3
-      ? signal.position
+      ? signal.position.clone()
       : Array.isArray(signal.position)
         ? new THREE.Vector3(...signal.position)
         : Number.isFinite(signal.position?.x) && Number.isFinite(signal.position?.z)
@@ -895,6 +1016,12 @@ export class Game {
             Number(signal.position.z),
           )
           : this.player.position.clone().add(new THREE.Vector3(18, 0, -18));
+    const groupIndex = Math.max(0, Number(signal.groupIndex) || 0);
+    if (groupIndex > 0) {
+      const angle = groupIndex * 2.399963;
+      const radius = 3.2 + groupIndex * 0.9;
+      preferredPosition.add(new THREE.Vector3(Math.cos(angle) * radius, 0, Math.sin(angle) * radius));
+    }
     const spawnPosition = this.environment?.getSafeSpawnPosition?.(
       preferredPosition,
       { clearance: 3 },
@@ -905,6 +1032,23 @@ export class Game {
     this.activeEnemies.push(enemy);
     this.hud.showLogMessage(`ÉVÉNEMENT: ${enemy.name.toUpperCase()} ENTRE DANS LA CHASSE`, 2200);
     return enemy;
+  }
+
+  spawnEncounterGroup(signal) {
+    const enemyTypes = Array.isArray(signal.enemyTypes)
+      ? signal.enemyTypes.filter((type) => typeof type === 'string')
+      : [];
+    const count = Math.max(0, Math.min(
+      enemyTypes.length,
+      MAX_ACTIVE_HUNT_NPCS - (this.activeEnemies ?? []).filter((enemy) => !enemy.isDead).length,
+    ));
+    return enemyTypes.slice(0, count)
+      .map((enemyType, groupIndex) => this.spawnEncounterNpc({
+        ...signal,
+        enemyType,
+        groupIndex,
+      }))
+      .filter(Boolean);
   }
 
   spawnEnemyTracer(origin, target, color = 0xffb84a) {
@@ -936,6 +1080,13 @@ export class Game {
       } else if (signal.type === 'boss_migration') {
         this.requestBossMigration(signal.position, { forced: true });
         this.hud?.showLogMessage?.('PISTE APEX: LA CIBLE CHANGE DE TERRITOIRE', 2400);
+      } else if (signal.type === 'spawn_enemy_group') {
+        const spawned = this.spawnEncounterGroup(signal);
+        const directive = getHuntDirective(signal.directiveId ?? this.currentDirectiveId);
+        this.hud?.showLogMessage?.(
+          `${directive.shortLabel}: ${spawned.length} NOUVELLE${spawned.length > 1 ? 'S' : ''} SIGNATURE${spawned.length > 1 ? 'S' : ''}`,
+          2400,
+        );
       } else if (signal.type === 'spawn_enemy') {
         this.spawnEncounterNpc(signal);
       } else if (signal.type === 'flyby') {
@@ -1405,14 +1556,22 @@ export class Game {
     });
     this.hud.syncCustomization(this.player.customization);
 
+    const directiveSelector = document.getElementById('directive-selector');
+    directiveSelector?.addEventListener('change', () => {
+      this.updateDirectivePreview(directiveSelector.value);
+      audioSynth.playYautjaClick();
+    });
+
     document.querySelectorAll('.btn-launch-hunt').forEach(btn => {
       btn.addEventListener('click', () => {
         const huntType = btn.getAttribute('data-hunt');
         const planetSelector = document.getElementById('planet-selector');
-        const planetType = resolveHuntBiome(huntType, planetSelector?.value);
+        const directiveId = directiveSelector?.value ?? 'standard_hunt';
+        const requestedPlanet = resolveHuntBiome(huntType, planetSelector?.value);
+        const planetType = resolveDirectiveBiome(directiveId, requestedPlanet) ?? requestedPlanet;
         if (planetSelector) planetSelector.value = planetType;
         document.getElementById('mission-modal').classList.add('hidden');
-        this.startHunt(huntType, planetType);
+        this.startHunt(huntType, planetType, directiveId);
         this.requestPointerLockSafely();
       });
     });
@@ -1578,6 +1737,7 @@ export class Game {
     this.setHubTouchControlsVisible(false);
     this.syncInputDirection();
     this.activateMissionTab?.(tabKey, false);
+    this.renderDirectiveSelector(document.getElementById('directive-selector')?.value ?? this.currentDirectiveId);
     this.refreshForgeButtons();
     this.isScopeZooming = false;
     this.hud.hideActionPrompt();
@@ -1664,19 +1824,24 @@ export class Game {
     return true;
   }
 
-  startHunt(huntType, planetType) {
+  startHunt(huntType, planetType, directiveId = 'standard_hunt') {
     const huntDefinition = HUNT_DEFINITIONS[huntType] ?? HUNT_DEFINITIONS.goliath;
+    const directive = getHuntDirective(directiveId);
+    const resolvedPlanet = resolveDirectiveBiome(directive.id, planetType) ?? planetType;
     this.cleanupHunt();
+    this.currentDirectiveId = directive.id;
+    this.directiveProgress = createDirectiveProgress(directive.id);
+    this.directiveOutcome = null;
 
     this.gameState = 'HUNT';
     this.isHubExploring = false;
     document.getElementById('mission-modal')?.classList.add('hidden');
     document.getElementById('mission-modal')?.setAttribute('aria-hidden', 'true');
     this.currentHuntType = huntDefinition.id;
-    this.currentPlanet = planetType;
+    this.currentPlanet = resolvedPlanet;
     this.hub.setVisible(false);
     this.environment.setDiscoveredPoiIds(this.player.discoveredPoiIds);
-    this.environment.setBiome(planetType);
+    this.environment.setBiome(resolvedPlanet);
     this.environment.setDiscoveredPoiIds(this.player.discoveredPoiIds);
     this.environment.setVisible(true);
     this.environment.setReducedMotion(this.settings.reducedMotion);
@@ -1696,17 +1861,18 @@ export class Game {
     this.activeBoss = createBoss(this.scene, huntDefinition);
     this.configureBossTerritory();
     const ecologyCount = this.spawnBiomeEcology();
-    this.eventDirector.start({ huntId: this.currentHuntType, biomeId: planetType });
+    this.eventDirector.start({ huntId: this.currentHuntType, biomeId: resolvedPlanet, directiveId: directive.id });
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
     this.activeBoss?.setVisionMode?.(this.player.activeVisionMode);
+    this.refreshDirectiveHud();
     const huntMetrics = this.environment.getHuntMetrics?.() ?? {};
     this.hud.showLogMessage(
-      `CHASSE: ${huntDefinition.name.toUpperCase()} — ${huntDefinition.objective} · ${huntMetrics.sectorCount ?? 9} SECTEURS · ${ecologyCount} FORMES DE VIE`,
+      `CHASSE: ${huntDefinition.name.toUpperCase()} · ${directive.shortLabel} · ${huntMetrics.sectorCount ?? 9} SECTEURS · ${ecologyCount} FORMES DE VIE`,
       5500,
     );
 
-    if (planetType === 'hive_lv426' || this.currentHuntType === 'xeno_queen') {
+    if (resolvedPlanet === 'hive_lv426' || this.currentHuntType === 'xeno_queen') {
       this.spawnHiveEggClusters();
     }
   }
@@ -1752,6 +1918,10 @@ export class Game {
     this.bossMigrationForced = false;
     this.goliathChargeWindow = 0;
     this.goliathChargeLatched = false;
+    this.currentDirectiveId = 'standard_hunt';
+    this.directiveProgress = createDirectiveProgress(this.currentDirectiveId);
+    this.directiveOutcome = null;
+    this.hud.updateDirectiveStatus?.(null, null);
     this.trophyHarvested = false;
     this.huntResultShown = false;
     this.isScopeZooming = false;
@@ -2079,14 +2249,37 @@ export class Game {
       this.neutralizeVictoryDangers();
 
       const huntDefinition = HUNT_DEFINITIONS[this.currentHuntType];
-      const honorGained = this.player.addHonor(huntDefinition?.reward ?? 1200);
+      const baseReward = huntDefinition?.reward ?? 1200;
+      const directive = getHuntDirective(this.currentDirectiveId);
+      const summary = getDirectiveProgressSummary(this.directiveProgress);
+      const totalReward = resolveDirectiveReward(directive.id, baseReward, this.directiveProgress);
+      const bonus = Math.max(0, totalReward - baseReward);
+      const previouslyCompleted = (this.player.completedDirectiveIds ?? []).includes(directive.id);
+      const directiveCompleted = directive.id !== 'standard_hunt' && summary.isComplete;
+      if (directiveCompleted) {
+        this.player.completedDirectiveIds = [
+          ...new Set([...(this.player.completedDirectiveIds ?? []), directive.id]),
+        ];
+      }
+      this.directiveOutcome = {
+        directiveId: directive.id,
+        summary,
+        baseReward,
+        bonus,
+        totalReward,
+        newlyCompleted: directiveCompleted && !previouslyCompleted,
+      };
+      const honorGained = this.player.addHonor(totalReward);
       this.player.completedHunts = [...new Set([...this.player.completedHunts, this.currentHuntType])];
       this.hub.setTrophyState(this.player.completedHunts);
 
       this.saveProgress();
 
       audioSynth.playTrophyHarvest();
-      this.hud.showLogMessage(`TROPHÉE D'HONNEUR PRÉLEVÉ! +${honorGained} PTS`, 5000);
+      const directiveMessage = directiveCompleted
+        ? ` · ${directive.shortLabel} ACCOMPLIE${bonus > 0 ? ` (+${bonus})` : ''}`
+        : directive.id === 'standard_hunt' ? '' : ' · DIRECTIVE INCOMPLÈTE';
+      this.hud.showLogMessage(`TROPHÉE D'HONNEUR PRÉLEVÉ! +${honorGained} PTS${directiveMessage}`, 5000);
     }
   }
 
@@ -2535,6 +2728,7 @@ export class Game {
     document.getElementById('endgame-desc').textContent = `${huntDefinition?.name ?? 'La proie'} rejoint la salle des trophées du clan.`;
     document.getElementById('final-honor-score').textContent = `${this.player.honorScore} PTS`;
     document.getElementById('final-yautja-rank').textContent = this.player.ranks[this.player.honorRankIndex];
+    this.updateDirectiveResultPanel(true);
     document.getElementById('pause-modal')?.classList.add('hidden');
     modal.classList.remove('hidden');
     this.saveProgress();
@@ -2565,6 +2759,7 @@ export class Game {
       : "L'auto-destruction a consumé le terrain de chasse. Aucun trophée n'est validé.";
     document.getElementById('final-honor-score').textContent = `${this.player.honorScore} PTS`;
     document.getElementById('final-yautja-rank').textContent = this.player.ranks[this.player.honorRankIndex];
+    this.updateDirectiveResultPanel(false);
     document.getElementById('pause-modal')?.classList.add('hidden');
     modal.classList.remove('hidden');
     this.saveProgress();

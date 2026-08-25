@@ -1,8 +1,8 @@
 # Manifest des assets — Yautja: Apex Hunt
 
-**Date d'inventaire :** 24 août 2026
-**Périmètre :** textures OpenAI du chantier de professionnalisation, de la passe props et des vagues contenu 1.3–1.6.
-**Provenance commune :** modèle ImageGen intégré OpenAI, créations originales fan-made produites du 21 au 24 août 2026, sans image officielle fournie comme référence ni copie d'assets officiels. Les PNG maîtres sont conservés localement comme sources de travail, mais ne sont ni versionnés ni déployés ; les WebP sont les seuls fichiers publics du livrable.
+**Date d'inventaire :** 25 août 2026
+**Périmètre :** textures OpenAI du chantier de professionnalisation, de la passe props et des vagues contenu 1.3–1.8.
+**Provenance commune :** modèle ImageGen intégré OpenAI, créations originales fan-made produites du 21 au 25 août 2026, sans image officielle fournie comme référence ni copie d'assets officiels. Les PNG maîtres, dont celui de `genna-sporeback-carapace`, sont conservés localement comme sources de travail hors Git et ne sont ni versionnés ni déployés ; les WebP sont les fichiers runtime publics du livrable.
 
 ## Registre
 
@@ -34,10 +34,21 @@
 | `hive-biomechanical-membrane` | `public/assets/textures/hive-biomechanical-membrane.webp` | 1254×1254 | 339 384 octets | nursery, estrade royale, corridors de côtes, cocons et croissance de ruche | présent et référencé par le catalogue de props v1.6 |
 | `yautja-ceremonial-bronze` | `public/assets/textures/yautja-ceremonial-bronze.webp` | 1254×1254 | 367 858 octets | portes, sanctuaires, braseros, balises et architecture cérémonielle Yautja | présent et référencé par le catalogue de props v1.6 |
 | `genna-spore-pod-hide` | `public/assets/textures/genna-spore-pod-hide.webp` | 1254×1254 | 561 416 octets | aire du Kalisk, bosquets de spores et nœuds régénératifs de Genna | présent et référencé par le catalogue de props v1.6 |
+| `genna-sporeback-carapace` | `public/assets/textures/genna-sporeback-carapace.webp` | 1024×1024 | 343 106 octets | mesh du Sporeback de Genna | WebP runtime présent ; PNG maître conservé localement hors Git |
 
-**Poids public total inventorié : 8 493 482 octets.** Les six matières de décor initiales ont été converties avec Sharp en WebP 1024×1024. Les trois matières de props 1024×1024 ont été normalisées par quadrants miroir. La vague 1.3 ajoute six sorties WebP 1254×1254 ; la vague 1.4 ajoute quatre sorties WebP 1024×1024 ; la vague 1.5 ajoute trois sorties WebP 1024×1024 ; la vague 1.6 ajoute quatre sorties WebP 1254×1254. Les dimensions et poids des vingt-six fichiers sont consignés ici ; la validation Chromium locale et la vérification HTTP de production v1.6 sont reportées dans `QA_REPORT.md`.
+**Poids public total inventorié : 8 836 588 octets.** Les six matières de décor initiales ont été converties avec Sharp en WebP 1024×1024. Les trois matières de props 1024×1024 ont été normalisées par quadrants miroir. La vague 1.3 ajoute six sorties WebP 1254×1254 ; la vague 1.4 ajoute quatre sorties WebP 1024×1024 ; la vague 1.5 ajoute trois sorties WebP 1024×1024 ; la vague 1.6 ajoute quatre sorties WebP 1254×1254 ; la vague 1.8 ajoute une sortie WebP 1024×1024. Les dimensions et poids des vingt-sept fichiers sont consignés ici ; la validation Chromium locale et la vérification HTTP de production v1.6 restent reportées dans `QA_REPORT.md`.
 
 Les quinze textures disponibles à l’issue de la 1.3 ont été chargées sans erreur dans Chromium et contrôlées sur la production correspondante. Les quatre matières 1.4 sont intégrées au biome Genna, au Feral, aux unités humaines et à la faune. Les trois matières 1.5 sont reliées à Wolf, au Lost Tribe et au Kalisk dans le code. Les quatre matières 1.6 sont référencées par les plans de props des biomes, décodées et chargées en HTTP 200 dans Chromium local puis sur l’alias de production avec le type `image/webp`. La répétition et le contraste doivent encore être jugés sur plusieurs écrans physiques, notamment avec GPU modeste.
+
+## Lot v1.8 — carapace du Sporeback
+
+Le lot v1.8 ajoute une matière OpenAI originale destinée au mesh du Sporeback de Genna :
+
+- `genna-sporeback-carapace.webp` — 1024×1024, 343 106 octets ;
+- PNG maître conservé localement hors Git ;
+- WebP utilisé comme version runtime sous `public/assets/textures/`.
+
+Cette sortie porte l’inventaire à 27 textures WebP et 8 836 588 octets. Cette section consigne uniquement l’état de l’asset et n’attribue aucun résultat de gate ou de publication à la v1.8.
 
 ## Lot v1.6 — synthèse props et level design
 
@@ -72,7 +83,7 @@ Pour chaque fichier :
 1. **Validé :** inspection visuelle des PNG maîtres à leur définition native ;
 2. **Partiel :** mosaïque 2×2 validée pour les trois matières de props ; contrôle physique multi-écran encore ouvert ;
 3. **Validé sur les PNG maîtres :** absence de texte et de marques protégées ;
-4. **Validé pour l’inventaire :** dimensions déclarées, format, poids individuel et poids total des vingt-six WebP ;
+4. **Validé pour l’inventaire :** dimensions déclarées, format, poids individuel et poids total des vingt-sept WebP ;
 5. **Validé :** inspection visuelle des matières OpenAI précédentes et des quatre sorties WebP 1.6 à leur définition native ;
 6. **Validé pour la 1.3 :** chargement Chromium et HTTP 200 des six nouveaux chemins publics ;
 7. **Validé dans le code :** le chargeur applique un matériau de fallback si un asset échoue ;

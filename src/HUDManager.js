@@ -85,6 +85,10 @@ export class HUDManager {
     this.part2Label = document.getElementById('part-2-label');
     this.hornStatus = document.getElementById('horn-status');
     this.tailStatus = document.getElementById('tail-status');
+    this.directiveHud = document.getElementById('directive-hud');
+    this.directiveHudTitle = document.getElementById('directive-hud-title');
+    this.directiveHudProgress = document.getElementById('directive-hud-progress');
+    this.directiveHudObjective = document.getElementById('directive-hud-objective');
 
     this.triLaser = document.getElementById('tri-laser-container');
     this.lockonBracket = document.getElementById('lockon-bracket');
@@ -495,8 +499,28 @@ export class HUDManager {
     this.setText(this.targetScannedName, `${definition.name.toUpperCase()} — BIOSIGNATURE VERROUILLÉE`);
   }
 
+  updateDirectiveStatus(directive, summary) {
+    const visible = Boolean(directive && directive.id !== 'standard_hunt' && summary);
+    this.setClassState(this.directiveHud, 'hidden', !visible);
+    if (!visible) return;
+
+    const total = Math.max(0, Number(summary.totalObjectives) || 0);
+    const completed = Math.max(0, Math.min(total, Number(summary.completedObjectives) || 0));
+    const nextObjective = summary.objectives?.find(({ completed: done }) => !done);
+    this.setText(this.directiveHudTitle, directive.title.toUpperCase());
+    this.setText(
+      this.directiveHudProgress,
+      summary.isComplete ? 'DIRECTIVE ACCOMPLIE' : `${completed} / ${total} OBJECTIFS`,
+    );
+    this.setText(
+      this.directiveHudObjective,
+      summary.isComplete ? 'BONUS D’HONNEUR SÉCURISÉ' : nextObjective?.label?.toUpperCase() ?? 'TRAQUE EN COURS',
+    );
+  }
+
   showHubTarget() {
     this.setClassState(this.bossCard, 'hidden', true);
+    this.setClassState(this.directiveHud, 'hidden', true);
     this.setText(this.targetScannedName, 'VAISSEAU-MÈRE YAUTJA — SALLE DES TROPHÉES');
   }
 

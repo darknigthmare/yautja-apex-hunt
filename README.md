@@ -4,7 +4,7 @@ Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur inca
 
 ## État du projet
 
-Le code source porte la version 1.7.0 et reste disponible sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt). Cette vague transforme les cinq cartes en territoires de chasse ouverts et bouclés : grande surface réellement parcourable, neuf secteurs par biome, écologie résidente, événements localisés et migration de la cible Apex. La production officielle reste [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/).
+Le code source porte la version 1.8.0 et reste disponible sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt). Cette vague ajoute cinq directives de chasse, sept archétypes de PNJ 3D, un suivi d’objectifs intégré au HUD et la persistance des directives accomplies, tout en conservant les cinq territoires ouverts de la 1.7. L’URL de production de référence reste [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/).
 
 ## Lancer localement
 
@@ -29,7 +29,7 @@ npm audit
 - huit chasses : Goliath Xeno-Akumo, Reine xénomorphe, rival Bad Blood, Predalien, Berserker Super Predator, Feral, Wolf Cleaner et Kalisk ;
 - cinq biomes : jungle, ruche, Ryushi, arène de clan et monde mortel de Genna ;
 - cinq plans déterministes de 630 à 660 unités de rayon, chacun avec neuf secteurs, 12 à 13 routes bouclées, des repères, couvertures extérieures, perches et limites circulaires réellement parcourables ;
-- onze familles de PNJ 3D, 12 à 15 créatures résidentes par biome, patrouilles territoriales, migrations de proies, conflits d’écosystème, renforts bornés et combat maintenu jusqu’au prélèvement ;
+- dix-huit familles de PNJ 3D, dont sept archétypes ajoutés par les directives 1.8, 12 à 15 créatures résidentes par biome, patrouilles territoriales, migrations de proies, conflits d’écosystème, renforts bornés et combat maintenu jusqu’au prélèvement ;
 - trois navettes 3D et quatre conteneurs interactifs aux récompenses propres à chaque biome ;
 - dix armes jouables sur `1` à `0`, bouclier `[B]`, drone-faucon `[G]`, shuriken `[T]`, camouflage, vision et mimétisme ;
 - 38 bio-masques, 50 presets d’armure et neuf axes modulaires : classe, masque, peau, couleur/style de predlocks, couleur/accent/finition d’armure et warpaint ; les huit variantes Lost Tribe sont balisées `LICENSED_SCREEN_DESIGN` ;
@@ -40,7 +40,16 @@ npm audit
 
 ## Direction artistique et assets
 
-Les vingt-six textures de décor, props et créatures sous `public/assets/textures/` sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La vague 1.6 ajoute `ryushi-frontier-panels.webp`, `hive-biomechanical-membrane.webp`, `yautja-ceremonial-bronze.webp` et `genna-spore-pod-hide.webp` pour différencier les constructions humaines, la croissance de ruche, l’architecture cérémonielle et les organismes de Genna. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+Les vingt-sept textures de décor, props et créatures sous `public/assets/textures/` sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La vague 1.6 ajoute `ryushi-frontier-panels.webp`, `hive-biomechanical-membrane.webp`, `yautja-ceremonial-bronze.webp` et `genna-spore-pod-hide.webp` ; la vague 1.8 complète Genna avec `genna-sporeback-carapace.webp`, raccordée au mesh du Sporeback. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+
+## Passe v1.8 — directives de chasse
+
+- cinq directives immuables structurent des chasses optionnelles : `standard_hunt` sans objectif et à multiplicateur ×1, `jungle_fireteam` inspirée de l’écran *Predator* (1987), `blooding_rite` inspirée du rite et des castes d’*Alien vs. Predator* (2004), `killer_eras` répartie entre trois ères de *Predator: Killer of Killers* et `deathworld_protocol`, création originale située sur Genna ;
+- sept archétypes 3D deviennent des rencontres effectives : `jungle_scout`, `jungle_gunner`, `jungle_trapper`, `era_viking_raider`, `era_feudal_duelist`, `era_wartime_pilot` et `genna_sporeback` ;
+- chaque objectif suit les éliminations par type, produit un résumé sérialisable, alimente le HUD et la sauvegarde, puis n’applique le multiplicateur de récompense qu’une fois tous les objectifs de la directive accomplis ;
+- le directeur ne génère que les `enemyTypes` demandés par la vague, refuse les types inconnus et maintient un plafond strict de 24 PNJ actifs ;
+- `event_jungle_fireteam_directive` et `event_avp_blooding_directive` ajoutent au catalogue deux événements de niveau au statut runtime `encounter`, avec orchestration originale explicitement séparée de leur provenance écran ;
+- la matière raccordable `genna-sporeback-carapace.webp` porte l’inventaire public à 27 textures et fournit la carapace du nouvel archétype de Genna.
 
 ## Passe v1.7 — territoires ouverts et boss haute définition
 
