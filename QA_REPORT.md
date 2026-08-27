@@ -1,11 +1,11 @@
-# Rapport QA — candidate release 1.11.0
+# Rapport QA — release 1.11.0
 
-**Date :** 25 août 2026
-**Statut :** candidate release 1.11.0 validée localement et poussée sur GitHub ; publication Vercel non effectuée.
-**Production actuellement vérifiée :** release 1.10.0 sur <https://yautja-apex-hunt.vercel.app/>
+**Date :** 28 août 2026
+**Statut :** release 1.11.0 validée, poussée et publiée.
+**Production actuellement vérifiée :** release 1.11.0 sur <https://yautja-apex-hunt.vercel.app/>
 **Commit/push v1.11 :** `57f5a5c` — poussé sur `codex/professional-hunt-pass`
-**Déploiement Vercel v1.11 :** en attente d’une autorisation explicite de publication production — aucun ID créé
-**URL/alias public v1.11 :** production v1.10 inchangée jusqu’à autorisation et publication
+**Déploiement Vercel v1.11 :** `dpl_Cu8rczE4atodhPm2N5mJgr74TBxL` — `READY`, cible `production`
+**URL/alias public v1.11 :** <https://yautja-apex-hunt.vercel.app/> — HTTP 200, alias confirmé le 28 août 2026
 **Déploiement production v1.10 :** `dpl_2xbt59JRaxhUEcM7MNoqozPSUjqk` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `9f56b0d`
 **Déploiement production v1.9 :** `dpl_FofpWaJDdkSjrnQeNTtQRdwNmZ6L` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `3314fe4`
 **Déploiement production v1.8 :** `dpl_5zqD2XQgZ4vo8RKRAft8cM7yKfHL` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `54fad3c`
@@ -22,12 +22,12 @@
 | Sécurité dépendances | **0 vulnérabilité** | `npm audit --omit=dev`. |
 | Chromium desktop local | **réussi** | Sélection Bouvetøya et lancement Grid contrôlés sans erreur applicative ni débordement horizontal. |
 | Chromium mobile local | **réussi** | Émulation 390×844 contrôlée sans erreur applicative ni débordement horizontal. |
-| Textures Bouvetøya | **HTTP 200 local** | `bouvetoya-ice-rock.webp` et `bouvetoya-pyramid-stone.webp` servies localement ; aucun statut HTTP public v1.11 n’est revendiqué. |
+| Textures Bouvetøya | **HTTP 200 local et public** | `bouvetoya-ice-rock.webp` et `bouvetoya-pyramid-stone.webp` servis en `image/webp`, 484 446 et 409 994 octets. |
 | Budget Grid Alien | **contrat respecté** | 25 244 triangles HD, 37 522 triangles au total et 30 meshes. |
 
-**Publication Vercel v1.11 non exécutée.** Le commit fonctionnel `57f5a5c` est bien poussé sur `codex/professional-hunt-pass`, mais l’ID de déploiement et le statut de l’alias public restent absents tant qu’une autorisation explicite de publication production n’a pas été donnée. La production actuellement vérifiée demeure la v1.10 indiquée en tête de rapport ; aucun résultat public v1.11 n’est inventé à partir des contrôles locaux.
+**Publication v1.11 validée.** Le commit fonctionnel `57f5a5c` est poussé sur `codex/professional-hunt-pass`. Le déploiement `dpl_Cu8rczE4atodhPm2N5mJgr74TBxL` est `READY` en production et conserve l’alias officiel. Le HTML public répond en HTTP 200, le bundle `index-B0Rz8E1y.js` répond en HTTP 200 pour 703 336 octets et contient `grid_alien`, `bouvetoya_pyramid`, `avp_ritual_ship`, `weyland_expedition_guard` et `pyramid_shift`. Les deux WebP Bouvetøya répondent en HTTP 200 avec leurs poids exacts.
 
-Contenu raccordé et contrôlé dans cette candidate :
+Contenu raccordé et contrôlé dans cette release :
 
 - onzième chasse `grid_alien`, huitième biome `bouvetoya_pyramid` et dixième directive `avp_pyramid_trial` ;
 - terrain ouvert de rayon 740, dix secteurs, 18 routes bouclées, sept territoires et sept nœuds d’événements/migration ;
@@ -37,7 +37,7 @@ Contenu raccordé et contrôlé dans cette candidate :
 - inventaires consolidés à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées ;
 - 30 textures WebP pour 10 577 574 octets, dont deux matières OpenAI originales 1254×1254 dédiées à Bouvetøya.
 
-Verdict local v1.11 : **GO pour publication après création et vérification des identifiants publics**. Les 318 tests, le build de 49 modules, l’audit à 0 vulnérabilité, les parcours Chromium local desktop/mobile et les deux réponses texture HTTP 200 locales sont établis ; le push et Vercel restent hors de ce verdict tant qu’ils ne sont pas exécutés.
+Verdict final v1.11 : **GO — publiée et vérifiée**. Les 318 tests, le build de 49 modules, l’audit à 0 vulnérabilité, les parcours Chromium local desktop/mobile, le push GitHub, le statut Vercel `READY`, l’alias HTTP 200, les cinq marqueurs du bundle et les deux réponses texture publiques sont établis. Le scan Vercel ne retourne aucun journal d’erreur ; le projet est statique et ne possède pas de fonction runtime à journaliser.
 
 ## Passe v1.10 — Los Angeles 1997, City Hunter et fermeture des écarts Excel
 

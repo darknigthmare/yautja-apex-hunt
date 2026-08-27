@@ -2,7 +2,7 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
-## [1.11.0] — 25 août 2026 (candidate locale)
+## [1.11.0] — 26 août 2026
 
 ### Onzième chasse et pyramide de Bouvetøya
 
@@ -18,12 +18,13 @@ Les versions sont considérées comme publiées uniquement après push du code, 
 - deux matières OpenAI originales 1254×1254, `bouvetoya-ice-rock.webp` et `bouvetoya-pyramid-stone.webp`, branchées au biome et servies en HTTP 200 local ;
 - inventaire porté à 30 textures WebP pour 10 577 574 octets, et catalogues portés à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées.
 
-### Validation locale, GitHub et publication Vercel à compléter
+### Validation locale, GitHub et production
 
 - suite finale de 318/318 tests, build Vite réussi avec 49 modules et `npm audit --omit=dev` à 0 vulnérabilité ;
 - Chromium local desktop et 390×844 valide la sélection Bouvetøya, le lancement Grid et le responsive sans erreur applicative ni débordement horizontal ;
-- les deux textures Bouvetøya répondent en HTTP 200 local ; aucun contrôle public v1.11 n’est revendiqué avant publication ;
-- commit fonctionnel `57f5a5c` poussé sur `codex/professional-hunt-pass` ; **déploiement Vercel v1.11 non exécuté, en attente d’une autorisation explicite de publication production ; aucun ID ni statut public v1.11 n’est revendiqué.**
+- les deux textures Bouvetøya répondent en HTTP 200 local puis en production avec leur type `image/webp` et leurs poids exacts de 484 446 et 409 994 octets ;
+- commit fonctionnel `57f5a5c` poussé sur `codex/professional-hunt-pass`, puis déploiement `dpl_Cu8rczE4atodhPm2N5mJgr74TBxL` publié `READY` en production sur l’alias officiel ;
+- alias HTML, bundle de 703 336 octets et cinq marqueurs v1.11 contrôlés en HTTP 200 le 28 août 2026 ; aucun journal d’erreur Vercel n’est présent pour ce site statique.
 
 ## [1.10.0] — 25 août 2026
 

@@ -4,7 +4,7 @@ Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur inca
 
 ## État du projet
 
-La version 1.10.0 reste la production servie sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). La candidate 1.11.0 Bouvetøya/Grid, poussée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) au commit `57f5a5c`, porte le contenu à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées de catalogue. Ses gates locaux sont franchis avec 318/318 tests, un build Vite de 49 modules, un audit à 0 vulnérabilité et des parcours Chromium desktop/390×844 sans erreur ni débordement. **Déploiement Vercel v1.11 : en attente d’une autorisation explicite de publication production ; aucun ID ni statut public v1.11 n’est revendiqué.**
+La version 1.11.0 Bouvetøya/Grid est publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Le commit fonctionnel `57f5a5c` porte le contenu à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées de catalogue. Ses gates comptent 318/318 tests, un build Vite de 49 modules, un audit à 0 vulnérabilité, des parcours Chromium desktop/390×844 sans erreur ni débordement, puis le déploiement production `dpl_Cu8rczE4atodhPm2N5mJgr74TBxL` contrôlé `READY` sur l’alias public HTTP 200.
 
 ## Lancer localement
 
@@ -40,7 +40,7 @@ npm audit
 
 ## Direction artistique et assets
 
-Les trente textures de décor, props et créatures sous `public/assets/textures/`, totalisant 10 577 574 octets, sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La candidate 1.11 ajoute `bouvetoya-ice-rock.webp` et `bouvetoya-pyramid-stone.webp`, deux matières 1254×1254 pour la banquise, le basalte et l’architecture mobile de la pyramide. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+Les trente textures de décor, props et créatures sous `public/assets/textures/`, totalisant 10 577 574 octets, sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La release 1.11 ajoute `bouvetoya-ice-rock.webp` et `bouvetoya-pyramid-stone.webp`, deux matières 1254×1254 pour la banquise, le basalte et l’architecture mobile de la pyramide. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
 
 ## Passe v1.11 — Bouvetøya et Grid Alien
 
@@ -51,7 +51,7 @@ Les trente textures de décor, props et créatures sous `public/assets/textures/
 - deux textures OpenAI originales réellement référencées par le biome : roche/glace de surface et pierre de pyramide ; l’inventaire public du projet atteint 30 WebP et 10 577 574 octets ;
 - catalogues et interfaces portés à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées sans effacer les vagues précédentes.
 
-Gates locaux v1.11 : 318/318 tests, build Vite réussi avec 49 modules, audit de production à 0 vulnérabilité, Chromium desktop et 390×844 sans erreur applicative ni débordement, et deux textures Bouvetøya servies en HTTP 200 local. Le commit fonctionnel `57f5a5c` est poussé sur `codex/professional-hunt-pass`. **Le déploiement Vercel et la vérification de l’alias public restent en attente d’une autorisation explicite de publication production.**
+Gates v1.11 : 318/318 tests, build Vite réussi avec 49 modules, audit de production à 0 vulnérabilité, Chromium desktop et 390×844 sans erreur applicative ni débordement. Le commit fonctionnel `57f5a5c` est poussé sur `codex/professional-hunt-pass` et le déploiement `dpl_Cu8rczE4atodhPm2N5mJgr74TBxL` est `READY` en production. L’alias officiel, le bundle de 703 336 octets et les deux textures Bouvetøya répondent en HTTP 200 ; le bundle public contient `grid_alien`, `bouvetoya_pyramid`, `avp_ritual_ship`, `weyland_expedition_guard` et `pyramid_shift`.
 
 ## Passe v1.10 — Los Angeles 1997 et City Hunter
 
