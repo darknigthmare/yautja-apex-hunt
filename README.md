@@ -4,9 +4,9 @@ Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur inca
 
 ## État du projet
 
-La version 1.11.0 Bouvetøya/Grid reste la dernière release publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Le commit fonctionnel `57f5a5c` porte cette release historique à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées de catalogue ; ses gates publiées restent consignées dans la section v1.11 ci-dessous.
+La version 1.12.0 Gunnison/Predalien est publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Le commit fonctionnel `5b340ca`, complété par le correctif de métadonnée `e249bf2`, est poussé sur `codex/professional-hunt-pass` ; le déploiement de validation `dpl_Cxx5T43crYq8wc9Jv5PKek9bDi6j` est `READY` en production.
 
-La v1.12 Gunnison/Predalien est intégrée et a franchi ses gates locales : 365 tests, build Vite, audit de production et parcours Chromium desktop/mobile. Elle porte le contenu courant à neuf biomes, onze directives et 236 entrées de catalogue, corrige le déplacement AZERTY, remplace le mannequin joueur par un rig Yautja procédural animé et transforme Gunnison en véritable territoire de chasse ouvert. Son commit, son push et sa publication sont consignés uniquement après leur exécution.
+La v1.12 a franchi 365 tests, le build Vite, l’audit de production et les parcours Chromium desktop/mobile locaux puis publics. Elle porte le contenu courant à neuf biomes, onze directives et 236 entrées de catalogue, corrige le déplacement AZERTY, remplace le mannequin joueur par un rig Yautja procédural animé et transforme Gunnison en véritable territoire de chasse ouvert.
 
 ## Lancer localement
 
@@ -59,7 +59,7 @@ Les trente-et-une textures de décor, props et créatures sous `public/assets/te
 
 Le lot Gunnison/AVP:R provient du classeur réellement lu `C:\Users\chuck\Downloads\Encyclopedie_exhaustive_franchise_Predator.xlsx`, SHA-256 `47C659F4F79CA0E71D8B8B7B8DB2CD7B7363827224BC081D59E9DD9D9576983C`, composé de 20 feuilles et 915 entrées uniques, issu de la [conversation ChatGPT source](https://chatgpt.com/c/6a8adeed-b6f8-83ed-9d07-5088fa50b8a9). Les rapprochements v1.12 utilisent `Lieux!A20:Q20`, `A29:Q29`, `A41:Q41`, `A49:Q51`, `A62:Q62`, `A105:Q105`, `A115:Q119` ; `Armes!A45:Q45`, `A50:Q50`, `A58:Q59`, `A78:Q79` ; `Équipements!A5:Q5`, `A13:Q14`, `A35:Q35`, `A40:Q40`, `A61:Q61` ; `Véhicules!A38:Q48`, `A64:Q64` ; `Masques!A61:Q61` ; `Peaux!A36:Q36` ; `Dreads!A10:Q10`, `A45:Q45` et `Rituels!A33:Q33`. Chaque élément retenu reste séparé entre référence `AVP_SCREEN` et topologie, statistiques, événements ou géométries `ORIGINAL` du fan game.
 
-La v1.12 n’est pas déclarée publiée dans ce document tant que son commit, son push et son déploiement n’ont pas été vérifiés et consignés ; ses gates locales sont établies dans `QA_REPORT.md`.
+Publication v1.12 validée : commits `5b340ca` et `e249bf2` poussés, déploiement de validation `dpl_Cxx5T43crYq8wc9Jv5PKek9bDi6j` `READY`, alias officiel et texture Gunnison en HTTP 200, bundle public et parcours Chromium desktop/mobile contrôlés.
 
 ## Passe v1.11 — Bouvetøya et Grid Alien
 

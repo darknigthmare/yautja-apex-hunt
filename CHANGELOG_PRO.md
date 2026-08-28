@@ -2,9 +2,9 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
-## [1.12.0] — en préparation, 28 août 2026
+## [1.12.0] — 28 août 2026
 
-Cette section décrit le contenu réellement intégré au worktree. Elle ne constitue pas encore une déclaration de release : aucune réussite de test, de build, de commit, de push ou de déploiement v1.12 n’est attribuée avant l’exécution des gates correspondants.
+Release publiée après 365/365 tests, build Vite 8.2.2, audit à 0 vulnérabilité et parcours Chromium desktop/mobile locaux puis publics. Le commit fonctionnel `5b340ca` et le correctif de métadonnée `e249bf2` sont poussés ; le déploiement de validation `dpl_Cxx5T43crYq8wc9Jv5PKek9bDi6j` est `READY` en production sur l’alias officiel.
 
 ### Gunnison — neuvième territoire de chasse
 

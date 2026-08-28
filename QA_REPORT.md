@@ -1,8 +1,12 @@
-# Rapport QA — candidate 1.12.0
+# Rapport QA — release 1.12.0
 
 **Date :** 28 août 2026
-**Statut :** candidate 1.12.0 validée localement ; commit, push et publication à consigner après exécution.
-**Production actuellement vérifiée :** release 1.11.0 sur <https://yautja-apex-hunt.vercel.app/> jusqu’au déploiement v1.12.
+**Statut :** release 1.12.0 validée, poussée et publiée.
+**Production actuellement vérifiée :** release 1.12.0 sur <https://yautja-apex-hunt.vercel.app/>
+**Commit fonctionnel/push v1.12 :** `5b340ca` — poussé sur `codex/professional-hunt-pass`
+**Correctif métadonnée/push v1.12 :** `e249bf2` — poussé sur `codex/professional-hunt-pass`
+**Déploiement de validation Vercel v1.12 :** `dpl_Cxx5T43crYq8wc9Jv5PKek9bDi6j` — `READY`, cible `production`
+**URL/alias public v1.12 :** <https://yautja-apex-hunt.vercel.app/> — HTTP 200, alias confirmé le 28 août 2026
 **Commit/push v1.11 :** `57f5a5c` — poussé sur `codex/professional-hunt-pass`
 **Déploiement Vercel v1.11 :** `dpl_Cu8rczE4atodhPm2N5mJgr74TBxL` — `READY`, cible `production`
 **URL/alias public v1.11 :** <https://yautja-apex-hunt.vercel.app/> — HTTP 200, alias confirmé le 28 août 2026
@@ -23,13 +27,15 @@
 | Qualité Git | **propre** | `git diff --check` sans erreur ; avertissements de normalisation LF/CRLF uniquement. |
 | Chromium desktop local | **réussi** | Gunnison/Predalien lancé, canvas 1 258×566, aucun overlay ni erreur applicative ; texture Gunnison répond en HTTP 200. |
 | Chromium mobile local | **réussi après polish** | 390×844, canvas 390×844, document sans débordement horizontal, Gunnison/Predalien actif, texture HTTP 200 et console vide ; blocs haut 6–201 px, technologies 694–748 px et arsenal 792–838 px, sans chevauchement majeur. |
+| Chromium production | **réussi** | Gunnison/Predalien et directive Cleaner lancés sur l’alias : 1 280×720 puis 390×844, overflow 0, aucun overlay ni erreur console ; mêmes bandes HUD mobiles sans chevauchement. |
+| Réseau public | **HTTP 200** | HTML v1.12, bundle `index-uuQGdAWz.js`, CSS `index-Bbre5vU2.css` et texture Gunnison `image/webp` de 492 416 octets. |
 | Budget joueur | **contrat respecté** | Rig 17 articulations/8 états ; 79 286 triangles authored, 65 092 actifs en standard et 73 170 avec le kit Wolf. |
 | Budget Predalien | **contrat respecté** | 111 670 triangles/150 meshes en production ; retrait de 17 910 triangles et 32 draws génériques redondants, weakpoints conservés. |
 | LOD PNJ | **contrat respecté** | 31 archétypes ; 499 → 87 draws (−82,57 %), réduction minimale de 75 % par archétype. |
 
-La candidate 1.12 ajoute le biome ouvert Gunnison (rayon 760, dix secteurs, 21 routes, sept territoires, 19 PNJ et huit nœuds d’événements), la directive Cleaner en quatre objectifs et extraction de 45 secondes, le vaisseau de Wolf, les événements blackout/ruche/Garde/hôpital, un rig Yautja animé et un arsenal procédural identifiable. Les wristblades disposent maintenant de portées/cadences réelles : standard 8,50 m/0,400 s, Chopper 11,73 m/0,424 s et Wolf 9,52 m/0,432 s.
+La release 1.12 ajoute le biome ouvert Gunnison (rayon 760, dix secteurs, 21 routes, sept territoires, 19 PNJ et huit nœuds d’événements), la directive Cleaner en quatre objectifs et extraction de 45 secondes, le vaisseau de Wolf, les événements blackout/ruche/Garde/hôpital, un rig Yautja animé et un arsenal procédural identifiable. Les wristblades disposent maintenant de portées/cadences réelles : standard 8,50 m/0,400 s, Chopper 11,73 m/0,424 s et Wolf 9,52 m/0,432 s.
 
-Publication v1.12 : **EN ATTENTE** du commit, du push, du déploiement `READY`, des contrôles HTTP publics et des marqueurs du bundle. Aucun identifiant n’est pré-déclaré.
+**Publication v1.12 validée.** Les commits `5b340ca` et `e249bf2` sont poussés ; le déploiement `dpl_Cxx5T43crYq8wc9Jv5PKek9bDi6j` est `READY` en production. L’alias et la texture répondent en HTTP 200 ; le bundle public contient `gunnison_outbreak`, `gunnison_cleanup`, `gunnison_national_guard`, `wolf_cleaner_ship`, `guard_radio`, `nativeHighDetail` et `gunnison-extraction-countdown`. Les parcours publics desktop/mobile sont exempts d’overlay et d’erreur console.
 
 ## Passe v1.11 — Bouvetøya, Grid Alien et pyramide mobile
 
