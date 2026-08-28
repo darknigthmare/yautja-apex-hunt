@@ -56,7 +56,17 @@ function normalizeBossInterface(boss, bossType) {
 }
 
 function installVisualDetail(boss, bossType) {
-  const visualDetail = applyBossVisualDetail(boss, bossType);
+  // Certains boss récents portent déjà leur anatomie HD complète. Leur mesh
+  // natif devient alors l'interface visualDetail commune : aucune fondation
+  // générique ne doit être empilée au-dessus de cette silhouette de production.
+  const usesNativeHighDetail = boss.nativeHighDetail === true;
+  const visualDetail = usesNativeHighDetail
+    ? (boss.visualDetail ?? boss.mesh)
+    : applyBossVisualDetail(boss, bossType);
+  if (!visualDetail?.isObject3D || (usesNativeHighDetail && visualDetail.userData?.nativeHighDetail !== true)) {
+    throw new TypeError(`Le boss ${String(bossType)} ne fournit pas un contrat visualDetail natif valide.`);
+  }
+  boss.visualDetail = visualDetail;
 
   // Les nouveaux meshes sont ajoutés après le constructeur : on capture donc
   // leur matière de référence avant toute vision thermique ou occultation.
@@ -79,7 +89,7 @@ function installVisualDetail(boss, bossType) {
 
   const originalDispose = boss.dispose.bind(boss);
   boss.dispose = function disposeDetailedBoss(...args) {
-    disposeBossVisualDetail(this);
+    if (!usesNativeHighDetail) disposeBossVisualDetail(this);
     return originalDispose(...args);
   };
   return boss;

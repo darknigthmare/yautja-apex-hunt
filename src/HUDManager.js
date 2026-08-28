@@ -90,6 +90,10 @@ export class HUDManager {
     this.directiveHudTitle = document.getElementById('directive-hud-title');
     this.directiveHudProgress = document.getElementById('directive-hud-progress');
     this.directiveHudObjective = document.getElementById('directive-hud-objective');
+    this.levelEventHud = document.getElementById('level-event-hud');
+    this.levelEventHudTitle = document.getElementById('level-event-hud-title');
+    this.levelEventHudTimer = document.getElementById('level-event-hud-timer');
+    this.levelEventHudObjective = document.getElementById('level-event-hud-objective');
 
     this.triLaser = document.getElementById('tri-laser-container');
     this.lockonBracket = document.getElementById('lockon-bracket');
@@ -521,9 +525,30 @@ export class HUDManager {
     );
   }
 
+  updateLevelEventObjective({ label, remaining, distance, state = 'active' } = {}) {
+    if (!this.levelEventHud) return false;
+    const normalizedState = ['active', 'secured', 'failed'].includes(state) ? state : 'active';
+    this.setClassState(this.levelEventHud, 'hidden', false);
+    this.levelEventHud.dataset.state = normalizedState;
+    this.setText(this.levelEventHudTitle, String(label ?? 'OBJECTIF DE SECTEUR').toUpperCase());
+    if (normalizedState === 'active') {
+      this.setText(this.levelEventHudTimer, `${Math.max(0, Math.ceil(Number(remaining) || 0))} S · ${Math.max(0, Math.round(Number(distance) || 0))} M`);
+      this.setText(this.levelEventHudObjective, 'REJOIGNEZ LA BALISE D’EXTRACTION AVANT LA FRAPPE');
+    } else {
+      this.setText(this.levelEventHudTimer, normalizedState === 'secured' ? 'EXTRACTION SÉCURISÉE' : 'FENÊTRE FERMÉE');
+      this.setText(this.levelEventHudObjective, normalizedState === 'secured' ? 'BONUS D’HONNEUR ET SCAN LONGUE PORTÉE ACQUIS' : 'FRAPPE DE CONFINEMENT — ÉNERGIE NEUTRALISÉE');
+    }
+    return true;
+  }
+
+  hideLevelEventObjective() {
+    this.setClassState(this.levelEventHud, 'hidden', true);
+  }
+
   showHubTarget() {
     this.setClassState(this.bossCard, 'hidden', true);
     this.setClassState(this.directiveHud, 'hidden', true);
+    this.hideLevelEventObjective();
     this.setText(this.targetScannedName, 'VAISSEAU-MÈRE YAUTJA — SALLE DES TROPHÉES');
   }
 

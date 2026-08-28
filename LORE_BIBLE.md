@@ -56,7 +56,7 @@ Les films montrent crânes, colonnes vertébrales, armes conservées et trophée
 
 Le crâne xénomorphe de *Predator 2* prouve au minimum une rencontre. *Alien vs. Predator* confirme, dans sa branche, des œufs semés pour une épreuve de passage. Cela ne prouve pas que tous les clans fondent leur culture sur la chasse aux Xénomorphes.
 
-Le terme **kiande amedha**, Ryushi et de nombreux détails de castes ou de marquage restent `LICENSED_EU`. Le Predalien existe dans `AVP_SCREEN`, mais la variante « légendaire » et sa mission dans le jeu sont `ORIGINAL`.
+Le terme **kiande amedha**, Ryushi et de nombreux détails de castes ou de marquage restent `LICENSED_EU`. Le Predalien, Wolf et l’épidémie de Gunnison existent dans `AVP_SCREEN`, mais la topologie ouverte, les événements, les statistiques et les géométries procédurales de leur adaptation dans le jeu sont `ORIGINAL`.
 
 ## Lieux de chasse actuels
 
@@ -67,6 +67,10 @@ Le terme **kiande amedha**, Ryushi et de nombreux détails de castes ou de marqu
 | `ryushi_desert` | Désert de Ryushi | `LICENSED_EU` | Ryushi vient des comics/du roman AVP ; tempête et arène sont une interprétation originale. |
 | `yautja_prime` | Yautja Prime — arène du clan | `ORIGINAL`, base `SCREEN` | *Badlands* établit Yautja Prime et le domaine natal de Dek, mais ni ce colisée sacré ni ce conseil d’Anciens. |
 | `genna_deathworld` | Genna — monde mortel | `ORIGINAL`, base `SCREEN` | Genna vient de *Badlands* ; la topologie, les vagues et l’écosystème jouables sont une adaptation originale et encore partielle. |
+| `stargazer_blacksite` | Complexe de confinement Stargazer | `ORIGINAL`, base `SCREEN` | Stargazer et l’incident du Fugitive viennent de *The Predator* ; cette installation, sa brèche, ses routes et ses props sont originaux. |
+| `los_angeles_1997` | Los Angeles — chasse de chaleur | `ORIGINAL`, base `SCREEN` | La chasse urbaine vient de *Predator 2* ; la carte ouverte, les événements et le duel de clan ne reproduisent pas le film. |
+| `bouvetoya_pyramid` | Bouvetøya — pyramide du Blooding | `ORIGINAL`, base `AVP_SCREEN` | L’île, l’expédition et la pyramide viennent d’*AVP* ; ces secteurs, routes, reconfigurations et contrats sont une adaptation originale. |
+| `gunnison_outbreak` | Gunnison — nuit de l’épidémie | `ORIGINAL`, base `AVP_SCREEN` | Gunnison, le crash, Wolf et le Predalien viennent d’*AVP: Requiem* ; les dix secteurs, 21 routes, événements et compte à rebours appartiennent à *Apex Hunt*. |
 
 Le sélecteur autorise toute cible sur tout lieu. Cette liberté de gameplay ne crée pas un événement canon.
 
@@ -88,6 +92,14 @@ Les cinq installations, six sanctuaires et huit signatures de POI sont des outil
 
 Chaque décor conserve le tier de sa fiche ou de son biome : `SCREEN`, `AVP_SCREEN`, `LICENSED_SCREEN_DESIGN`, `LICENSED_EU`, `MERCH_CONCEPT` ou `ORIGINAL`. Un matériau inspiré d’un média écran ne change pas une disposition de niveau `ORIGINAL` en événement canonique. Les quatre textures OpenAI de la v1.6 sont des créations fan-made originales, sans revendication de droits sur les designs de Predator ou Alien.
 
+### Contrat de provenance Gunnison v1.12
+
+La carte `gunnison_outbreak` adapte des motifs d’*Aliens vs. Predator: Requiem* sans prétendre reproduire sa géographie ni sa chronologie. Forêt du crash, cimetière, centrale, ville, égouts, lycée, hôpital, toits et extraction sont répartis en dix secteurs reliés par 21 routes pour les besoins du jeu. Les sept territoires, 19 habitants, huit nœuds d’événements, quatre POI, quatre dangers et la directive en quatre vagues sont donc `ORIGINAL`, avec `basisTier: AVP_SCREEN`.
+
+Les éléments écran conservés comme base sont Wolf, le Predalien, l’épidémie, la Garde nationale, le signal de détresse, l’équipement Cleaner et le contexte urbain pluvieux. Le gantelet de puissance, les mines, l’armure anti-acide, la seringue et le vaisseau sont décrits selon leur fiche `AVP_SCREEN` ou `LICENSED_SCREEN_DESIGN`; leurs valeurs, interactions, emplacements et géométries sont des implémentations de gameplay originales. Le blackout, la rupture de ruche, l’effondrement militaire, les sprinklers et l’extraction chronométrée ne sont pas présentés comme le déroulé canonique du film.
+
+La matière `gunnison-rain-urban.webp`, les bâtiments, véhicules et props sont des créations OpenAI ou procédurales originales. Aucun décor, modèle, logo, plan de ville, image ou texture officielle d’*AVP:R* n’est intégré. La silhouette haute densité du Predalien suit les traits généraux de sa branche écran — dôme/crête, mandibules, predlocks, tubes dorsaux, membres digitigrades et queue — mais ses 150 meshes, ses 111 670 triangles assemblés et ses animations sont construits pour ce fan game.
+
 ## Cibles actuelles
 
 | ID runtime | Cible | Provenance de la mission | Règle |
@@ -95,11 +107,14 @@ Chaque décor conserve le tier de sa fiche ou de son biome : `SCREEN`, `AVP_SCRE
 | `goliath` | Goliath Xeno-Akumo | `ORIGINAL` | Nom, espèce, anatomie, origine et chasse créés pour le jeu. |
 | `xeno_queen` | Reine xénomorphe | `ORIGINAL`, base `SCREEN`, relation `AVP_SCREEN` | La Reine vient d’*Aliens* et apparaît aussi dans *AVP* ; combat, arène et récompense actuels sont originaux. |
 | `bad_blood` | Rival Yautja Bad Blood | `ORIGINAL`, base `LICENSED_EU` | Le personnage précis est inventé ; Bad Blood n’est pas une caste écran universelle. |
-| `predalien` | Predalien légendaire | `ORIGINAL`, base `AVP_SCREEN` | Le type existe dans *AVP: Requiem* ; variante et statut de boss sont propres au jeu. |
+| `predalien` | Predalien — toit de Gunnison | `ORIGINAL`, base `AVP_SCREEN` | Le type et l’épidémie existent dans *AVP: Requiem* ; topologie, événements, statistiques et combat procédural sont propres au jeu. |
 | `super_predator` | Berserker Super Predator | `ORIGINAL`, base `SCREEN` | Le Berserker et le conflit de groupes viennent de *Predators* ; ce contrat et ses phases sont une adaptation de gameplay. |
 | `feral_predator` | Feral Predator | `ORIGINAL`, base `SCREEN` | Le chasseur vient de *Prey* ; la mission, l’arène et la progression du combat sont propres au jeu. |
 | `wolf_cleaner` | Wolf — opération Cleaner | `ORIGINAL`, base `AVP_SCREEN` | Wolf et son arsenal viennent d’*AVP: Requiem* ; ce duel et ses systèmes destructibles sont une adaptation jouable originale. |
 | `kalisk` | Kalisk de Genna | `ORIGINAL`, base `SCREEN` | L’espèce et sa régénération viennent de *Badlands* ; les phases, le noyau exposé et l’équilibrage appartiennent au jeu. |
+| `upgrade_predator` | Assassin Predator — brèche Stargazer | `ORIGINAL`, base `SCREEN` | Le personnage vient de *The Predator* ; bio-armure segmentée, glandes destructibles, arène et contrat sont adaptés au gameplay. |
+| `city_hunter` | City Hunter — épreuve urbaine 1997 | `ORIGINAL`, base `SCREEN` | Le chasseur et son arsenal viennent de *Predator 2* ; ce duel, ses statistiques et ses événements ne rejouent pas le film. |
+| `grid_alien` | Grid Alien — champion de Bouvetøya | `ORIGINAL`, base `AVP_SCREEN` | Grid et sa cicatrice viennent d’*AVP* ; ses phases, faiblesses, routes et récompenses sont une adaptation originale. |
 
 ### Goliath Xeno-Akumo
 
@@ -138,13 +153,15 @@ Boar, Shaman, Snake, Guardian, Stalker, Warrior, Armored Lost et Scout sont disp
 - `PROMO` : contenu promotionnel isolé du lore jouable ;
 - `ALT_CROSSOVER` : crossover référencé sans fusion avec la continuité principale.
 
-Le tableur évoqué par l’utilisateur n’était pas accessible dans le workspace ni parmi les pièces jointes disponibles pendant cette passe. Il n’a donc pas servi de source, de compteur ou de backlog effectivement vérifié. Lorsqu’il sera disponible, chaque ligne retenue devra être rapprochée d’une source indépendante, d’une provenance et d’un statut runtime avant toute intégration.
+Le classeur de la conversation ChatGPT a depuis été retrouvé et réellement lu sous `C:\Users\chuck\Downloads\Encyclopedie_exhaustive_franchise_Predator.xlsx`. Son SHA-256 est `47C659F4F79CA0E71D8B8B7B8DB2CD7B7363827224BC081D59E9DD9D9576983C` ; il comprend 20 feuilles et 915 entrées uniques et provient de la [conversation ChatGPT source](https://chatgpt.com/c/6a8adeed-b6f8-83ed-9d07-5088fa50b8a9).
+
+Le lot Gunnison/AVP:R rapproche les plages `Lieux!A20:Q20`, `A29:Q29`, `A41:Q41`, `A49:Q51`, `A62:Q62`, `A105:Q105`, `A115:Q119` ; `Armes!A45:Q45`, `A50:Q50`, `A58:Q59`, `A78:Q79` ; `Équipements!A5:Q5`, `A13:Q14`, `A35:Q35`, `A40:Q40`, `A61:Q61` ; `Véhicules!A38:Q48`, `A64:Q64` ; `Masques!A61:Q61` ; `Peaux!A36:Q36` ; `Dreads!A10:Q10`, `A45:Q45` et `Rituels!A33:Q33`. Le classeur est un inventaire de production secondaire, pas une autorité canonique : chaque ligne retenue doit toujours recevoir une œuvre, une provenance et un statut runtime indépendants.
 
 ## Limites de couverture assumées
 
-- Gunnison doit encore devenir un niveau vertical et multi-zones complet, au-delà du contrat de boss actuel ;
 - *Killer of Killers* et *Alien vs. Predator* disposent de jalons dans le catalogue, mais pas encore de campagnes complètes ;
 - Genna possède un biome et le Kalisk jouable, mais sa faune et sa flore demandent davantage d’espèces et de comportements distincts.
+- Gunnison possède désormais un niveau multi-zones ; ses intérieurs, variantes d’événements et performances sur GPU modestes demandent encore une passe dédiée avant toute nouvelle hausse de densité.
 
 ### Sources primaires de contrôle pour le catalogue
 

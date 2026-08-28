@@ -91,6 +91,19 @@
   border-color: #69d8c8;
   box-shadow: inset 0 0 34px rgba(30, 255, 203, 0.1), 0 0 18px rgba(52, 184, 170, 0.08);
 }
+.level-event-hud {
+  background: linear-gradient(145deg, rgba(6, 24, 24, 0.95), rgba(18, 8, 5, 0.94));
+  border: 1px solid rgba(111, 255, 209, 0.56);
+  border-left: 3px solid #6fffd1;
+  border-radius: 4px;
+  margin-top: 8px;
+  padding: 8px 10px;
+}
+.level-event-hud[data-state='failed'] { border-color: rgba(255, 77, 55, 0.7); border-left-color: #ff4d37; }
+.level-event-hud[data-state='secured'] { border-color: rgba(127, 255, 135, 0.72); border-left-color: #7fff87; }
+.level-event-hud-title { color: #d8fff4; font: 700 10px 'Orbitron', sans-serif; }
+.level-event-hud-timer { color: #ffdb72; font: 800 15px 'Orbitron', sans-serif; margin-top: 3px; }
+.level-event-hud-objective { color: #c9d3d7; font-size: 10px; line-height: 1.25; margin-top: 2px; }
 .mission-card-grid h3 { color: #a9ffe9; }
 
 .gadget-rack {
@@ -356,5 +369,90 @@ body.reduced-motion .gadget-status.active strong {
     flex: 0 0 44px;
     min-height: 44px;
     min-width: 44px;
+  }
+}
+
+@media (max-width: 430px) {
+  .directive-hud,
+  .level-event-hud {
+    margin-top: 4px;
+    padding: 5px 6px;
+  }
+  .directive-hud-title,
+  .directive-hud-progress,
+  .directive-hud-objective,
+  .level-event-hud-title,
+  .level-event-hud-objective {
+    font-size: 8px;
+    line-height: 1.15;
+  }
+  .directive-hud-progress { margin-top: 2px; }
+  .directive-hud-objective,
+  .level-event-hud-objective { margin-top: 1px; }
+  .level-event-hud-timer {
+    font-size: 11px;
+    line-height: 1.1;
+    margin-top: 2px;
+  }
+
+  /* Five compact, stateful touch targets replace the tall vertical technology rack. */
+  #gadget-rack {
+    bottom: max(96px, calc(env(safe-area-inset-bottom) + 96px));
+    display: grid;
+    gap: 3px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    left: max(6px, env(safe-area-inset-left));
+    margin: 0;
+    max-width: none;
+    padding: 4px;
+    position: fixed;
+    right: max(6px, env(safe-area-inset-right));
+    width: auto;
+    z-index: 12;
+  }
+  .gadget-status {
+    background: rgba(3, 15, 20, 0.82);
+    border: 1px solid rgba(105, 247, 208, 0.34);
+    border-radius: 3px;
+    flex-direction: column;
+    font-size: 7px;
+    gap: 2px;
+    justify-content: center;
+    line-height: 1.05;
+    min-height: 44px;
+    min-width: 0;
+    padding: 3px 2px;
+  }
+  .gadget-status span,
+  .gadget-status strong {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+  .gadget-status strong { font-size: 6px; }
+  .gadget-status.active {
+    background: rgba(65, 45, 10, 0.86);
+    border-color: #fff0a4;
+  }
+
+  .weapon-slot {
+    flex: 0 0 48px;
+    min-width: 48px;
+  }
+  #weapon-selector {
+    flex-wrap: nowrap;
+    gap: 4px;
+    justify-content: flex-start;
+    max-width: calc(100vw - 12px);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-bottom: 2px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    width: 100%;
   }
 }

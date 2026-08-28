@@ -1,7 +1,7 @@
 # Game Design Bible — Yautja: Apex Hunt
 
-**Version :** 1.2 — territoires de chasse ouverts
-**Date :** 25 août 2026
+**Version :** 1.12 — Gunnison, chasseur articulé et équipement lisible
+**Date :** 28 août 2026
 **Règle de lecture :** « actuel » décrit un système présent ou en intégration dans le worktree ; « cible » décrit le comportement de production attendu.
 
 ## Vision
@@ -67,7 +67,14 @@ Toute migration de sauvegarde doit être versionnée, tolérer une donnée ancie
 | Goliath Xeno-Akumo | `ORIGINAL` | Masse, charges et lecture du terrain ; aucun lien implicite avec les Xénomorphes. |
 | Reine xénomorphe | Mission `ORIGINAL`, base `AVP_SCREEN` | Contrôle de zone, queue télégraphiée, pression de ruche. |
 | Rival Bad Blood | Personnage `ORIGINAL`, base `LICENSED_EU` | Duel miroir : mêlée, mobilité et projectiles hostiles réellement dommageables. |
-| Predalien légendaire | Variante `ORIGINAL`, base `AVP_SCREEN` | Agressivité, mêlée rapprochée et phases terminales. |
+| Predalien de Gunnison | Mission `ORIGINAL`, base `AVP_SCREEN` | Verticalité, morsure/frénésie, queue segmentée et phases terminales. |
+| Berserker Super Predator | Mission `ORIGINAL`, base `SCREEN` | Duel de chasseur rival, masque destructible et pression de trophée. |
+| Feral Predator | Mission `ORIGINAL`, base `SCREEN` | Bouclier, lance, salves de traits et garde rapprochée. |
+| Wolf Cleaner | Mission `ORIGINAL`, base `AVP_SCREEN` | Double plasma, fouet, agent de dissolution et kit Cleaner destructible. |
+| Kalisk de Genna | Mission `ORIGINAL`, base `SCREEN` | Carapace adaptative, régénération interrompue et noyau exposé. |
+| Assassin Predator (2018) | Mission `ORIGINAL`, base `SCREEN` | Bio-armure, bonds télégraphiés et glandes adaptatives destructibles. |
+| City Hunter | Mission `ORIGINAL`, base `SCREEN` | Smart disc, filet, Medicomp et verrou multispectral urbain. |
+| Grid Alien | Mission `ORIGINAL`, base `AVP_SCREEN` | Dôme et queue destructibles, bond, sang acide et reconfiguration de pyramide. |
 
 Chaque attaque doit respecter le contrat **signal → fenêtre de réaction → impact → récupération**. Les attaques invisibles ou sans délai de réaction sont réservées à aucune difficulté standard.
 
@@ -79,6 +86,11 @@ Chaque attaque doit respecter le contrat **signal → fenêtre de réaction → 
 | Ruche LV-426 | Couloirs organiques et danger rapproché. | Résine sombre, silhouettes nervurées, reflets limités. |
 | Désert de Ryushi | Lignes de vue et tempête. | Sable rouille, relief minéral et météo réduisible. |
 | Arène de Yautja Prime | Duel cérémoniel original. | Pierre basaltique, alliage gunmetal/bronze et accents d'interface. |
+| Genna — monde mortel | Écologie adaptative, spores et grande faune. | Sol sombre, bioluminescence chartreuse et silhouettes organiques. |
+| Complexe Stargazer | Confinement, évasion et technologie humaine. | Panneaux tactiques, froid clinique et alertes orange. |
+| Los Angeles 1997 | Toits, rues, métro et lignes de vue urbaines. | Béton chauffé, sodium, fumée et contrastes de canicule. |
+| Bouvetøya | Surface glaciaire et pyramide mobile. | Glace froide, basalte graphite et coutures bronze-noir. |
+| Gunnison | Ville pluvieuse, égouts, hôpital et extraction. | Asphalte mouillé, béton froid, urgences rouges et noirs encore lisibles. |
 
 Le choix libre d'une cible sur un lieu est une convention de gameplay et ne transforme pas cette combinaison en événement canon.
 
@@ -86,9 +98,27 @@ Le choix libre d'une cible sur un lieu est une convention de gameplay et ne tran
 
 La caméra doit conserver la cible et les menaces proches dans le cadre tout en évitant les obstacles. Le zoom acheté doit produire une différence mesurable de FOV ou de distance de visée, fournir un retour HUD et revenir proprement à l'état normal lors d'un changement de mode, d'une pause ou d'une défaite.
 
+### Contrat de déplacement clavier v1.12
+
+Le repère est exprimé par rapport à la caméra : `Z`, `W` et flèche haut avancent ; `S` et flèche bas reculent ; `Q`, `A` et flèche gauche vont à gauche ; `D` et flèche droite vont à droite. Le tactile et le stick gauche doivent produire les mêmes directions. Une modification de caméra ne doit jamais inverser le signe de l’avant, et les contrôles du hub et de la chasse doivent rester cohérents.
+
+## Contrat v1.12 — chasseur articulé, arsenal et Gunnison
+
+Le personnage joueur n’est plus traité comme une silhouette rigide. Son contrat courant comprend 17 articulations et huit états — repos, marche, sprint, attaque, impact, soin, perchoir et autodestruction. Les transitions doivent préserver la visée, les collisions et les fenêtres de combat. Le budget authored est de 79 286 triangles ; une configuration standard rend 65 092 triangles actifs et le kit Wolf 73 170. Ce niveau de détail reste procédural et original : il ne justifie ni copie ni extraction d’un modèle officiel.
+
+Les lames de poignet doivent se lire comme des armes : profil effilé, tranchants distincts, fourreau, rails, pistons et verrouillages. Chopper utilise une variante à trois longues lames et Wolf une paire renforcée. Canon d’épaule, brassards, armure, grèves et bottes suivent la même règle. Combistick, smart disc, filet, mine, shuriken et roquette possèdent chacun une construction géométrique dédiée ; un volume générique marqué comme équipement n’est pas considéré comme livré.
+
+Le Predalien de Gunnison possède 111 670 triangles dans l’assemblage final de production, distribués sur 150 meshes nommés sans `BoxGeometry` de substitution. Son marquage `nativeHighDetail` empêche la factory d’ajouter la greffe générique historique de 17 910 triangles et 32 draws. Sa lecture de combat repose sur crête/dôme, quatre mandibules, mâchoire interne, quatre tubes dorsaux, membres digitigrades, quatorze predlocks/quilles et douze segments de queue. Respiration, course, morsure/frénésie, balayage et impacts doivent rester visibles sous la pluie et dans les visions alternatives.
+
+Les 31 archétypes de PNJ possèdent un LOD distant simplifié et une hystérésis de transition. Le corpus de référence passe de 499 à 87 draws (−82,57 %) ; chaque archétype doit conserver une réduction d’au moins 75 % à distance sans changer ses statistiques, son comportement ou sa hitbox de gameplay.
+
+Gunnison est un grand niveau ouvert de rayon 760 : dix secteurs, 21 routes bouclées, sept territoires, 19 habitants et huit nœuds d’événements. Ses 17 familles de props, quatre POI et quatre dangers répartissent la chasse entre forêt du crash, cimetière, centrale, rues, égouts, lycée, hôpital, toits et extraction. Les événements ne sont pas de simples messages : blackout et éclairage, rupture de ruche, chute du cordon militaire, sprinklers et extraction de 45 secondes doivent modifier un état runtime puis être nettoyés.
+
+Le contrat de performance statique de Gunnison fixe neuf lots/216 instances, 180 appels de rendu maximum, 220 000 triangles maximum et 72 colliders. L’état de construction mesuré est 166 appels, 66 082 triangles et 72 colliders. Les PNJ distants doivent pouvoir employer une silhouette simplifiée avec hystérésis afin de contenir les appels de rendu sans faire disparaître les menaces. Ces valeurs n’équivalent pas à un profilage GPU matériel.
+
 ## Contrat v1.7 — surface, écologie et cible Apex
 
-Un terrain de chasse ne peut plus être qualifié de grand uniquement parce que son mesh est large. Le contrat v1.7 exige simultanément : rayon jouable de 630 à 660 unités, neuf secteurs nommés, au moins douze connexions, plusieurs cycles dans le graphe, un camp distinct de la tanière, six nœuds d’événements, cinq étapes de migration du boss et une traversée directe d’au moins 43 secondes même avec le Scout à 29 unités/s.
+Un terrain de chasse ne peut plus être qualifié de grand uniquement parce que son mesh est large. Le socle v1.7 exigeait simultanément : rayon jouable de 630 à 660 unités, neuf secteurs nommés, au moins douze connexions, plusieurs cycles dans le graphe, un camp distinct de la tanière, six nœuds d’événements, cinq étapes de migration du boss et une traversée directe d’au moins 43 secondes même avec le Scout à 29 unités/s. Les extensions 1.9–1.12 montent jusqu’à 760 unités, dix secteurs et 21 routes tout en conservant ces principes.
 
 Les routes sont des aides de lecture et non des murs : le joueur peut couper à travers les sous-biomes, contourner les couverts et choisir plusieurs accès. Les balises, silhouettes hautes, points d’intérêt et événements compensent la densité sans imposer un corridor. Chaque secteur conserve au moins un couvert physique distribué ; les élévations macro affectent terrain, pistes et acteurs. Les limites de déplacement sont dérivées du biome et réappliquées circulairement par l’environnement.
 

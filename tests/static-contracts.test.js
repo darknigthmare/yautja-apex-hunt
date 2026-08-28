@@ -155,3 +155,15 @@ test('HUD target lock stays inside a narrow mobile viewport', () => {
     else globalThis.innerHeight = previousHeight;
   }
 });
+
+test('portrait mobile HUD keeps vital panels and touch controls in dedicated bands', () => {
+  const professionalCss = read('src/professional.css');
+  const contentCss = read('src/content-pass.css');
+
+  assert.match(professionalCss, /@media \(max-width: 430px\)/);
+  assert.match(professionalCss, /#weapon-selector\s*\{[\s\S]*?flex-wrap:\s*nowrap;[\s\S]*?overflow-x:\s*auto;/);
+  assert.match(professionalCss, /#weakpoint-tag\s*\{\s*display:\s*none;/);
+  assert.match(professionalCss, /:has\(\.touch-hub-controls:not\(\.hidden\)\) #gadget-rack/);
+  assert.match(contentCss, /#gadget-rack\s*\{[\s\S]*?grid-template-columns:\s*repeat\(5, minmax\(0, 1fr\)\);[\s\S]*?position:\s*fixed;/);
+  assert.match(contentCss, /\.gadget-status\s*\{[\s\S]*?min-height:\s*44px;/);
+});

@@ -120,26 +120,29 @@ export class HuntVehicle {
     const group = new THREE.Group();
     const isFugitiveCraft = this.type === 'fugitive_escape_craft';
     const isRitualShip = this.type === 'avp_ritual_ship';
+    const isCleanerCraft = this.type === 'wolf_cleaner_ship' || this.type === 'cleaner_shuttle';
     group.userData.vehicleProfile = isFugitiveCraft
       ? 'damaged_fugitive_escape'
       : isRitualShip
         ? 'bouvetoya_blooding_carrier'
-        : 'clan_recon';
+        : isCleanerCraft
+          ? 'gunnison_cleaner_response'
+          : 'clan_recon';
     group.userData.assetPolicy = 'Silhouette procédurale originale ; aucun modèle ou asset officiel.';
     const energyTexture = getYautjaEnergyTexture();
     const hullMaterial = new THREE.MeshStandardMaterial({
-      color: isFugitiveCraft ? 0x222c31 : isRitualShip ? 0x202a29 : 0x363d3c,
+      color: isFugitiveCraft ? 0x222c31 : isRitualShip ? 0x202a29 : isCleanerCraft ? 0x28332f : 0x363d3c,
       metalness: 0.92,
       roughness: isFugitiveCraft ? 0.42 : isRitualShip ? 0.34 : 0.24,
     });
     const armorMaterial = new THREE.MeshStandardMaterial({
-      color: isFugitiveCraft ? 0x48575b : isRitualShip ? 0x71664f : 0x625f51,
+      color: isFugitiveCraft ? 0x48575b : isRitualShip ? 0x71664f : isCleanerCraft ? 0x647069 : 0x625f51,
       metalness: 0.86,
       roughness: isFugitiveCraft ? 0.5 : isRitualShip ? 0.4 : 0.32,
     });
     const energyMaterial = new THREE.MeshStandardMaterial({
-      color: isFugitiveCraft ? 0xff8c58 : isRitualShip ? 0x74ffe2 : 0x42fff0,
-      emissive: isFugitiveCraft ? 0xb63f18 : isRitualShip ? 0x168f80 : 0x0ba89c,
+      color: isFugitiveCraft ? 0xff8c58 : isRitualShip ? 0x74ffe2 : isCleanerCraft ? 0x9dffb5 : 0x42fff0,
+      emissive: isFugitiveCraft ? 0xb63f18 : isRitualShip ? 0x168f80 : isCleanerCraft ? 0x247a45 : 0x0ba89c,
       emissiveIntensity: 2.4,
       map: energyTexture,
       emissiveMap: energyTexture,
@@ -149,18 +152,18 @@ export class HuntVehicle {
 
     const hull = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 12), hullMaterial);
     hull.scale.set(
-      isFugitiveCraft ? 4.25 : isRitualShip ? 6.2 : 4.8,
-      isFugitiveCraft ? 1.12 : isRitualShip ? 1.55 : 1.35,
-      isFugitiveCraft ? 8.7 : isRitualShip ? 9.2 : 7.6,
+      isFugitiveCraft ? 4.25 : isRitualShip ? 6.2 : isCleanerCraft ? 5.35 : 4.8,
+      isFugitiveCraft ? 1.12 : isRitualShip ? 1.55 : isCleanerCraft ? 1.42 : 1.35,
+      isFugitiveCraft ? 8.7 : isRitualShip ? 9.2 : isCleanerCraft ? 8.25 : 7.6,
     );
     hull.castShadow = true;
     hull.receiveShadow = true;
     group.add(hull);
 
     const nose = new THREE.Mesh(new THREE.ConeGeometry(
-      isFugitiveCraft ? 1.85 : isRitualShip ? 2.65 : 2.3,
-      isFugitiveCraft ? 7.4 : isRitualShip ? 7.8 : 6.2,
-      isFugitiveCraft ? 6 : isRitualShip ? 7 : 5,
+      isFugitiveCraft ? 1.85 : isRitualShip ? 2.65 : isCleanerCraft ? 2.5 : 2.3,
+      isFugitiveCraft ? 7.4 : isRitualShip ? 7.8 : isCleanerCraft ? 7.1 : 6.2,
+      isFugitiveCraft ? 6 : isRitualShip ? 7 : isCleanerCraft ? 8 : 5,
     ), armorMaterial);
     nose.rotation.x = Math.PI / 2;
     nose.position.z = isFugitiveCraft ? -8.2 : -6.8;
@@ -173,8 +176,8 @@ export class HuntVehicle {
     spine.castShadow = true;
     group.add(spine);
 
-    const wingReach = isFugitiveCraft ? 8.2 : isRitualShip ? 12.8 : 10.5;
-    const wingSweep = isFugitiveCraft ? 7.2 : isRitualShip ? 6.4 : 3.8;
+    const wingReach = isFugitiveCraft ? 8.2 : isRitualShip ? 12.8 : isCleanerCraft ? 11.4 : 10.5;
+    const wingSweep = isFugitiveCraft ? 7.2 : isRitualShip ? 6.4 : isCleanerCraft ? 5.2 : 3.8;
     const wingGeometry = new THREE.BufferGeometry();
     wingGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
       0, 0, -4.5,
@@ -238,6 +241,34 @@ export class HuntVehicle {
       bloodingBeacon.name = 'blooding-cycle-beacon';
       bloodingBeacon.position.set(0, 2.35, -0.8);
       group.add(bloodingBeacon);
+    }
+    if (isCleanerCraft) {
+      const canisterGeometry = new THREE.CylinderGeometry(0.28, 0.32, 1.85, 12);
+      for (const side of [-1, 1]) {
+        for (let index = 0; index < 3; index += 1) {
+          const canister = new THREE.Mesh(canisterGeometry, armorMaterial);
+          canister.name = `cleaner-canister:${side}:${index}`;
+          canister.position.set(side * 3.25, -0.92, -0.8 + index * 1.65);
+          canister.rotation.z = side * 0.1;
+          canister.castShadow = true;
+          group.add(canister);
+        }
+        const equipmentRail = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.5, 6.2), hullMaterial);
+        equipmentRail.name = `cleaner-equipment-rail:${side}`;
+        equipmentRail.position.set(side * 3.25, -0.55, 0.9);
+        group.add(equipmentRail);
+        const plasmaPod = new THREE.Mesh(new THREE.CapsuleGeometry(0.35, 2.2, 6, 10), armorMaterial);
+        plasmaPod.name = `cleaner-plasma-pod:${side}`;
+        plasmaPod.position.set(side * 1.5, 1.72, -0.6);
+        plasmaPod.rotation.x = Math.PI / 2;
+        group.add(plasmaPod);
+      }
+      const cleanerBeacon = new THREE.Mesh(new THREE.OctahedronGeometry(0.42, 1), energyMaterial);
+      cleanerBeacon.name = 'wolf-cleaner-response-beacon';
+      cleanerBeacon.position.set(0, 2.2, 2.8);
+      group.add(cleanerBeacon);
+      group.userData.cleanerCanisterCount = 6;
+      group.userData.dualPlasmaPods = 2;
     }
 
     const energyKeel = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.2, 8.8), energyMaterial);
@@ -354,10 +385,11 @@ export class HuntVehicle {
     this.interacted = true;
     const isFugitiveCraft = this.type === 'fugitive_escape_craft';
     const isRitualShip = this.type === 'avp_ritual_ship';
-    const scanDuration = isFugitiveCraft ? 8 : isRitualShip ? 9 : 6;
-    const scanRadius = isFugitiveCraft ? 110 : isRitualShip ? 120 : 85;
-    const energyRestored = restoreResource(player, 'energy', 'maxEnergy', isFugitiveCraft ? 60 : isRitualShip ? 70 : 45);
-    const staminaRestored = restoreResource(player, 'stamina', 'maxStamina', isFugitiveCraft ? 38 : isRitualShip ? 45 : 30);
+    const isCleanerCraft = this.type === 'wolf_cleaner_ship' || this.type === 'cleaner_shuttle';
+    const scanDuration = isFugitiveCraft ? 8 : isRitualShip ? 9 : isCleanerCraft ? 10 : 6;
+    const scanRadius = isFugitiveCraft ? 110 : isRitualShip ? 120 : isCleanerCraft ? 125 : 85;
+    const energyRestored = restoreResource(player, 'energy', 'maxEnergy', isFugitiveCraft ? 60 : isRitualShip ? 70 : isCleanerCraft ? 75 : 45);
+    const staminaRestored = restoreResource(player, 'stamina', 'maxStamina', isFugitiveCraft ? 38 : isRitualShip ? 45 : isCleanerCraft ? 42 : 30);
     player.scanPulseTimer = Math.max(Number(player.scanPulseTimer) || 0, scanDuration);
     player.scanPulseRadius = Math.max(Number(player.scanPulseRadius) || 0, scanRadius);
     this.mesh.userData.interacted = true;

@@ -17,6 +17,7 @@ const EXPECTED_BIOMES = [
   'stargazer_blacksite',
   'los_angeles_1997',
   'bouvetoya_pyramid',
+  'gunnison_outbreak',
 ];
 
 function horizontalDistance(point) {
@@ -66,7 +67,7 @@ function disposeRoot(root) {
   root.clear();
 }
 
-test('les huit terrains respectent le contrat de chasse ouverte inspiré de MHW', () => {
+test('les neuf terrains respectent le contrat de chasse ouverte inspiré de MHW', () => {
   assert.deepEqual(Object.keys(BIOME_HUNT_LAYOUTS), EXPECTED_BIOMES);
 
   for (const biomeId of EXPECTED_BIOMES) {

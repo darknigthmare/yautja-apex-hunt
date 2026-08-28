@@ -121,6 +121,19 @@ const BIOME_STYLE = Object.freeze({
     sun: 0xc8f2ff,
     ground: 0x637b85,
   },
+  gunnison_outbreak: {
+    background: 0x02070b,
+    fog: 0.0042,
+    ambient: 0x607887,
+    ambientIntensity: 1.52,
+    hemisphereSky: 0x6f8794,
+    hemisphereGround: 0x11191c,
+    hemisphereIntensity: 1.34,
+    key: 0xb5d6dd,
+    keyIntensity: 2.25,
+    sun: 0x7ba4b0,
+    ground: 0x39464a,
+  },
 });
 
 const PROP_HEIGHTS = Object.freeze({
@@ -185,6 +198,15 @@ const STATIC_INSTANCE_BATCH_NAMES = Object.freeze({
   bouvetIceSpires: 'bouvetoya-surface-ice-spires',
   bouvetPyramidMonoliths: 'bouvetoya-pyramid-monoliths',
   bouvetResinRibs: 'bouvetoya-resin-ribs',
+  gunnisonBlocks: 'gunnison-rain-soaked-blocks',
+  gunnisonRoofCaps: 'gunnison-rooftop-caps',
+  gunnisonWindows: 'gunnison-emergency-windows',
+  gunnisonPineTrunks: 'gunnison-crash-forest-pine-trunks',
+  gunnisonPineCrowns: 'gunnison-crash-forest-pine-crowns',
+  gunnisonHeadstones: 'gunnison-cemetery-headstones',
+  gunnisonStreetlights: 'gunnison-streetlight-masts',
+  gunnisonLamps: 'gunnison-failing-streetlamps',
+  gunnisonResinRibs: 'gunnison-sewer-resin-ribs',
 });
 
 const DEATHWORLD_FLORA_BATCH_NAMES = Object.freeze({
@@ -429,6 +451,7 @@ export class Environment {
 
   clearBiome() {
     if (!this.biomeGroup) return false;
+    this.dynamicEventZones.forEach((zone) => this.endLocalizedEventMechanism(zone));
     const geometries = new Set();
     const materials = new Set();
     this.biomeGroup.traverse((object) => {
@@ -608,6 +631,9 @@ export class Environment {
     } else if (this.currentBiome === 'bouvetoya_pyramid') {
       this.createBouvetoyaPyramid();
       this.createDriftingParticles(0x9eeaff, 340);
+    } else if (this.currentBiome === 'gunnison_outbreak') {
+      this.createGunnisonOutbreak();
+      this.createDriftingParticles(0xb8d9df, 150);
     } else if (this.currentBiome === 'genna_deathworld') {
       this.createGennaDeathworld();
       this.createDriftingParticles(0xbaff69, 520);
@@ -620,7 +646,8 @@ export class Environment {
     this.buildBiomeProps();
     this.setupPyramidShiftMechanism();
     this.completeHuntRouteColliderBudget();
-    this.sunSphere.visible = this.biomeGroup.visible && !['hive_lv426', 'los_angeles_1997'].includes(this.currentBiome);
+    if (this.currentBiome === 'gunnison_outbreak') this.setWeatherEvent('rain');
+    this.sunSphere.visible = this.biomeGroup.visible && !['hive_lv426', 'los_angeles_1997', 'gunnison_outbreak'].includes(this.currentBiome);
     this.setReducedMotion(this.reducedMotion);
     return true;
   }
@@ -1254,7 +1281,7 @@ export class Environment {
     const x = vector ? vector.x : Number(xOrPosition) || 0;
     const z = vector ? vector.z : Number(zValue) || 0;
     const distance = Math.hypot(x, z);
-    const biomePhase = ['jungle', 'hive_lv426', 'ryushi_desert', 'yautja_prime', 'genna_deathworld', 'stargazer_blacksite', 'los_angeles_1997', 'bouvetoya_pyramid']
+    const biomePhase = ['jungle', 'hive_lv426', 'ryushi_desert', 'yautja_prime', 'genna_deathworld', 'stargazer_blacksite', 'los_angeles_1997', 'bouvetoya_pyramid', 'gunnison_outbreak']
       .indexOf(this.currentBiome) * 37;
     let height = Math.sin(x * 0.03) * Math.cos(z * 0.03) * 3.4;
     height += Math.sin((x + biomePhase) * 0.009) * Math.cos((z - biomePhase) * 0.011) * 6.2;
@@ -1367,10 +1394,12 @@ export class Environment {
     position.y = this.sampleHeight(position);
     const radius = Math.max(5, Number(event.radius) || 18);
     const duration = Math.max(1, Number(event.duration) || 18);
+    const mechanism = event.mechanism ?? null;
+    const isObjectiveZone = mechanism === 'evacuation_countdown';
     const ring = new THREE.Mesh(
       new THREE.RingGeometry(radius * 0.82, radius, 48),
       new THREE.MeshBasicMaterial({
-        color: event.status === 'corrosion' ? 0x9dff3c : 0xff8a3d,
+        color: isObjectiveZone ? 0x6fffd1 : event.status === 'corrosion' ? 0x9dff3c : 0xff8a3d,
         transparent: true,
         opacity: 0.56,
         side: THREE.DoubleSide,
@@ -1388,9 +1417,12 @@ export class Environment {
       radius,
       duration,
       remaining: duration,
-      damage: Math.max(0, Number(event.damage) || 0),
-      status: event.status ?? null,
+      damage: isObjectiveZone ? 0 : Math.max(0, Number(event.damage) || 0),
+      status: isObjectiveZone ? null : event.status ?? null,
       message: event.label ?? event.message ?? 'Anomalie locale détectée',
+      mechanism,
+      countdownSeconds: Math.max(0, Number(event.countdownSeconds) || 0),
+      isObjectiveZone,
       interval: 2.25,
       cooldown: 0,
       pulsePhase: 0,
@@ -1398,9 +1430,40 @@ export class Environment {
       pulseRoot: ring,
       dynamic: true,
     };
-    this.hazardZones.push(hazard);
+    if (!isObjectiveZone) this.hazardZones.push(hazard);
     this.dynamicEventZones.push(hazard);
+    this.applyLocalizedEventMechanism(hazard);
     return hazard;
+  }
+
+  applyLocalizedEventMechanism(zone) {
+    if (zone?.mechanism !== 'power_grid_blackout' || zone.mechanismState) return false;
+    const emergencyLights = this.biomeGroup.children.filter(({ userData }) => userData?.gunnisonEmergencyLight === true);
+    zone.mechanismState = {
+      restored: false,
+      mainLightIntensity: this.mainLight.intensity,
+      ambientLightIntensity: this.ambientLight.intensity,
+      hemisphereLightIntensity: this.hemisphereLight.intensity,
+      emergencyLights: emergencyLights.map((light) => ({ light, intensity: light.intensity })),
+    };
+    this.mainLight.intensity *= 0.24;
+    this.ambientLight.intensity *= 0.38;
+    this.hemisphereLight.intensity *= 0.42;
+    emergencyLights.forEach((light) => { light.intensity *= 0.08; });
+    return true;
+  }
+
+  endLocalizedEventMechanism(zone) {
+    const state = zone?.mechanismState;
+    if (!state || state.restored) return false;
+    state.restored = true;
+    this.mainLight.intensity = state.mainLightIntensity;
+    this.ambientLight.intensity = state.ambientLightIntensity;
+    this.hemisphereLight.intensity = state.hemisphereLightIntensity;
+    state.emergencyLights.forEach(({ light, intensity }) => {
+      if (light) light.intensity = intensity;
+    });
+    return true;
   }
 
   updateDynamicEventZones(delta) {
@@ -1413,6 +1476,7 @@ export class Environment {
       if (zone.remaining <= 0) expired.push(zone);
     }
     for (const zone of expired) {
+      this.endLocalizedEventMechanism(zone);
       this.biomeGroup.remove(zone.mesh);
       zone.mesh?.geometry?.dispose();
       zone.mesh?.material?.dispose();
@@ -1992,6 +2056,240 @@ export class Environment {
     }
   }
 
+  /**
+   * Gunnison reste une carte ouverte et lisible malgré la nuit et la pluie.
+   * Les bâtiments, conifères, tombes, éclairages et nervures de ruche sont
+   * regroupés en lots instanciés : la ville paraît dense sans exploser les
+   * appels GPU ni le budget de collisions réservé aux routes de chasse.
+   */
+  createGunnisonOutbreak() {
+    const wetUrban = this.createTexturedMaterial({
+      color: 0x465258,
+      path: '/assets/textures/gunnison-rain-urban.webp',
+      repeat: 4,
+      roughness: 0.76,
+      metalness: 0.13,
+    });
+    const wetRoof = this.createTexturedMaterial({
+      color: 0x252f34,
+      path: '/assets/textures/gunnison-rain-urban.webp',
+      repeat: 3,
+      roughness: 0.62,
+      metalness: 0.22,
+    });
+    const forestSurface = this.createTexturedMaterial({
+      color: 0x26342f,
+      path: '/assets/textures/gunnison-rain-urban.webp',
+      repeat: 3,
+      roughness: 0.94,
+      metalness: 0.01,
+    });
+    const resinSurface = this.createTexturedMaterial({
+      color: 0x22372f,
+      path: '/assets/textures/hive-biomechanical-membrane.webp',
+      repeat: 3,
+      roughness: 0.42,
+      metalness: 0.2,
+    });
+    const emergencySurface = new THREE.MeshStandardMaterial({
+      color: 0xaed4db,
+      emissive: 0x456f78,
+      emissiveIntensity: 1.35,
+      roughness: 0.28,
+      metalness: 0.18,
+    });
+    const failedLampSurface = new THREE.MeshStandardMaterial({
+      color: 0xdce7c4,
+      emissive: 0x9ca832,
+      emissiveIntensity: 1.7,
+      roughness: 0.24,
+      metalness: 0.06,
+    });
+    const transform = new THREE.Object3D();
+
+    const buildingCount = 20;
+    const blocks = new THREE.InstancedMesh(new THREE.BoxGeometry(22, 34, 18, 2, 5, 2), wetUrban, buildingCount);
+    const roofs = new THREE.InstancedMesh(new THREE.BoxGeometry(23, 0.7, 19, 2, 1, 2), wetRoof, buildingCount);
+    const windows = new THREE.InstancedMesh(new THREE.BoxGeometry(11, 7, 0.24), emergencySurface, buildingCount * 2);
+    blocks.name = STATIC_INSTANCE_BATCH_NAMES.gunnisonBlocks;
+    roofs.name = STATIC_INSTANCE_BATCH_NAMES.gunnisonRoofCaps;
+    windows.name = STATIC_INSTANCE_BATCH_NAMES.gunnisonWindows;
+    for (let index = 0; index < buildingCount; index += 1) {
+      const angle = index * 2.399963229728653 + 0.18;
+      const radius = 235 + ((index * 83) % 315);
+      const candidateX = Math.cos(angle) * radius - 18;
+      const candidateZ = Math.sin(angle) * radius - 35;
+      const placement = this.resolveLegacyPlacement(candidateX, candidateZ, 13, `gunnison-block-${index + 1}`);
+      const ground = this.sampleHeight(placement.x, placement.z);
+      const widthScale = 0.72 + (index % 4) * 0.11;
+      const heightScale = 0.7 + (index % 5) * 0.1;
+      const depthScale = 0.78 + ((index + 2) % 4) * 0.09;
+      const yaw = -angle + (index % 3 - 1) * 0.14;
+      transform.position.set(placement.x, ground + 17 * heightScale, placement.z);
+      transform.rotation.set(0, yaw, 0);
+      transform.scale.set(widthScale, heightScale, depthScale);
+      transform.updateMatrix();
+      blocks.setMatrixAt(index, transform.matrix);
+
+      transform.position.y = ground + 34 * heightScale + 0.36;
+      transform.scale.set(widthScale, 1, depthScale);
+      transform.updateMatrix();
+      roofs.setMatrixAt(index, transform.matrix);
+
+      for (let face = 0; face < 2; face += 1) {
+        const side = face === 0 ? 1 : -1;
+        const offset = new THREE.Vector3(0, 0, side * 9.15 * depthScale).applyAxisAngle(THREE.Object3D.DEFAULT_UP, yaw);
+        transform.position.set(
+          placement.x + offset.x,
+          ground + 17 * heightScale,
+          placement.z + offset.z,
+        );
+        transform.rotation.set(0, yaw + (face === 0 ? 0 : Math.PI), 0);
+        transform.scale.set(widthScale, Math.max(0.7, heightScale), 1);
+        transform.updateMatrix();
+        windows.setMatrixAt(index * 2 + face, transform.matrix);
+      }
+      this.treePerches.push(new THREE.Vector3(placement.x, ground + 34 * heightScale + 1.4, placement.z));
+      this.obstacleColliders.push({
+        x: placement.x,
+        z: placement.z,
+        radius: 11.5 * Math.max(widthScale, depthScale),
+        height: 34 * heightScale,
+        baseY: ground,
+        blocksProjectiles: true,
+        routeBudgetDemotable: true,
+        sourceId: `gunnison-city-block-${index + 1}`,
+      });
+    }
+
+    const pineCount = 24;
+    const pineTrunks = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.75, 1.45, 24, 8), forestSurface, pineCount);
+    const pineCrowns = new THREE.InstancedMesh(new THREE.ConeGeometry(5.8, 20, 9), forestSurface, pineCount);
+    pineTrunks.name = STATIC_INSTANCE_BATCH_NAMES.gunnisonPineTrunks;
+    pineCrowns.name = STATIC_INSTANCE_BATCH_NAMES.gunnisonPineCrowns;
+    for (let index = 0; index < pineCount; index += 1) {
+      const clusterX = index % 2 === 0 ? -235 : 35;
+      const clusterZ = index % 3 === 0 ? 510 : 585;
+      const angle = index * 2.399963229728653;
+      const distance = 55 + (index % 6) * 18;
+      const placement = this.resolveLegacyPlacement(
+        clusterX + Math.cos(angle) * distance,
+        clusterZ + Math.sin(angle) * distance,
+        3.4,
+        `gunnison-pine-${index + 1}`,
+      );
+      const ground = this.sampleHeight(placement.x, placement.z);
+      const scale = 0.74 + (index % 5) * 0.09;
+      transform.position.set(placement.x, ground + 12 * scale, placement.z);
+      transform.rotation.set(0, angle, (index % 3 - 1) * 0.035);
+      transform.scale.setScalar(scale);
+      transform.updateMatrix();
+      pineTrunks.setMatrixAt(index, transform.matrix);
+      transform.position.y = ground + 25 * scale;
+      transform.updateMatrix();
+      pineCrowns.setMatrixAt(index, transform.matrix);
+      if (index % 4 === 0) {
+        this.obstacleColliders.push({
+          x: placement.x, z: placement.z, radius: 2.2 * scale, height: 32 * scale, baseY: ground,
+          blocksProjectiles: true, routeBudgetDemotable: true, sourceId: `gunnison-pine-${index + 1}`,
+        });
+        this.treePerches.push(new THREE.Vector3(placement.x, ground + 32 * scale, placement.z));
+      }
+    }
+
+    const headstoneCount = 30;
+    const headstones = new THREE.InstancedMesh(new THREE.BoxGeometry(0.85, 2.6, 0.38, 1, 2, 1), wetRoof, headstoneCount);
+    headstones.name = STATIC_INSTANCE_BATCH_NAMES.gunnisonHeadstones;
+    for (let index = 0; index < headstoneCount; index += 1) {
+      const row = Math.floor(index / 6);
+      const column = index % 6;
+      const x = -470 + column * 15 + (row % 2) * 2.5;
+      const z = 410 + row * 17;
+      const ground = this.sampleHeight(x, z);
+      transform.position.set(x, ground + 1.3, z);
+      transform.rotation.set(0, 0.12 + (index % 3 - 1) * 0.08, (index % 4 - 1.5) * 0.025);
+      transform.scale.set(0.82 + (index % 4) * 0.07, 0.85 + (index % 3) * 0.09, 1);
+      transform.updateMatrix();
+      headstones.setMatrixAt(index, transform.matrix);
+    }
+
+    const streetlightCount = 20;
+    const streetlights = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.16, 0.26, 13, 7), wetUrban, streetlightCount);
+    const lamps = new THREE.InstancedMesh(new THREE.BoxGeometry(1.7, 0.52, 0.74), failedLampSurface, streetlightCount);
+    streetlights.name = STATIC_INSTANCE_BATCH_NAMES.gunnisonStreetlights;
+    lamps.name = STATIC_INSTANCE_BATCH_NAMES.gunnisonLamps;
+    for (let index = 0; index < streetlightCount; index += 1) {
+      const progress = index / Math.max(1, streetlightCount - 1);
+      const x = -520 + progress * 1040;
+      const z = index % 2 === 0 ? 185 : -185;
+      const placement = this.resolveLegacyPlacement(x, z, 1, `gunnison-streetlight-${index + 1}`);
+      const ground = this.sampleHeight(placement.x, placement.z);
+      transform.position.set(placement.x, ground + 6.5, placement.z);
+      transform.rotation.set(0, 0, 0);
+      transform.scale.setScalar(1);
+      transform.updateMatrix();
+      streetlights.setMatrixAt(index, transform.matrix);
+      transform.position.y = ground + 13;
+      transform.rotation.set(-0.16, 0, index % 2 === 0 ? -0.15 : 0.15);
+      transform.updateMatrix();
+      lamps.setMatrixAt(index, transform.matrix);
+    }
+
+    const resinRibCount = 18;
+    const resinRibs = new THREE.InstancedMesh(new THREE.TorusGeometry(5, 0.62, 7, 18, Math.PI), resinSurface, resinRibCount);
+    resinRibs.name = STATIC_INSTANCE_BATCH_NAMES.gunnisonResinRibs;
+    for (let index = 0; index < resinRibCount; index += 1) {
+      const progress = index / Math.max(1, resinRibCount - 1);
+      const x = 485 - progress * 155 + Math.sin(index * 1.4) * 14;
+      const z = 30 - progress * 345 + Math.cos(index * 1.1) * 16;
+      transform.position.set(x, this.sampleHeight(x, z) + 5.2, z);
+      transform.rotation.set(0, Math.PI / 2 + Math.sin(index) * 0.1, Math.PI / 2);
+      transform.scale.set(0.78 + (index % 3) * 0.08, 0.88 + (index % 4) * 0.06, 0.8);
+      transform.updateMatrix();
+      resinRibs.setMatrixAt(index, transform.matrix);
+    }
+
+    const textureByBatch = new Map([
+      [blocks, '/assets/textures/gunnison-rain-urban.webp'],
+      [roofs, '/assets/textures/gunnison-rain-urban.webp'],
+      [windows, null],
+      [pineTrunks, '/assets/textures/gunnison-rain-urban.webp'],
+      [pineCrowns, '/assets/textures/gunnison-rain-urban.webp'],
+      [headstones, '/assets/textures/gunnison-rain-urban.webp'],
+      [streetlights, '/assets/textures/gunnison-rain-urban.webp'],
+      [lamps, null],
+      [resinRibs, '/assets/textures/hive-biomechanical-membrane.webp'],
+    ]);
+    for (const batch of textureByBatch.keys()) {
+      batch.castShadow = [blocks, pineTrunks, headstones, streetlights].includes(batch);
+      batch.receiveShadow = true;
+      batch.instanceMatrix.setUsage(THREE.StaticDrawUsage);
+      batch.instanceMatrix.needsUpdate = true;
+      batch.computeBoundingBox();
+      batch.computeBoundingSphere();
+      batch.userData.staticEnvironmentBatch = true;
+      batch.userData.texturePath = textureByBatch.get(batch);
+      batch.userData.sourceAdaptation = 'avpr_gunnison_original';
+      this.biomeGroup.add(batch);
+      this.staticInstanceBatches.push(batch);
+    }
+
+    const emergencyLights = [
+      { name: 'gunnison-power-emergency-light', color: 0x9ecdd8, intensity: 2.25, distance: 235, position: [425, 20, 445] },
+      { name: 'gunnison-guard-emergency-light', color: 0xd8b849, intensity: 2.05, distance: 210, position: [0, 16, 145] },
+      { name: 'gunnison-hospital-emergency-light', color: 0xe35e4b, intensity: 2.2, distance: 250, position: [360, 28, -285] },
+      { name: 'gunnison-extraction-beacon-light', color: 0x9fbf48, intensity: 2.35, distance: 260, position: [0, 22, -620] },
+    ];
+    for (const entry of emergencyLights) {
+      const light = new THREE.PointLight(entry.color, entry.intensity, entry.distance, 1.9);
+      light.name = entry.name;
+      light.position.set(entry.position[0], this.sampleHeight(entry.position[0], entry.position[2]) + entry.position[1], entry.position[2]);
+      light.castShadow = false;
+      light.userData.gunnisonEmergencyLight = true;
+      this.biomeGroup.add(light);
+    }
+  }
+
   createBouvetoyaPyramid() {
     const ice = this.createTexturedMaterial({
       color: 0x9bbdca,
@@ -2516,10 +2814,11 @@ export class Environment {
     this.activeWeatherEvent = normalized;
     if (normalized === 'rain') {
       const isHive = this.currentBiome === 'hive_lv426';
+      const isGunnison = this.currentBiome === 'gunnison_outbreak';
       this.rainParticles = this.createWeatherParticles({
-        color: isHive ? 0x00ff44 : 0x8fc7dc,
-        count: isHive ? 1000 : 850,
-        size: isHive ? 1 : 0.72,
+        color: isHive ? 0x00ff44 : isGunnison ? 0xa7ccd6 : 0x8fc7dc,
+        count: isHive ? 1000 : isGunnison ? 1150 : 850,
+        size: isHive ? 1 : isGunnison ? 0.66 : 0.72,
       });
       this.acidRainActive = isHive;
     } else if (normalized === 'thermal_storm') {
@@ -2547,7 +2846,7 @@ export class Environment {
   setVisible(visible) {
     const isVisible = Boolean(visible);
     this.biomeGroup.visible = isVisible;
-    this.sunSphere.visible = isVisible && !['hive_lv426', 'los_angeles_1997'].includes(this.currentBiome);
+    this.sunSphere.visible = isVisible && !['hive_lv426', 'los_angeles_1997', 'gunnison_outbreak'].includes(this.currentBiome);
     this.ambientLight.visible = isVisible;
     this.hemisphereLight.visible = isVisible;
     this.mainLight.visible = isVisible;
@@ -2588,8 +2887,11 @@ export class Environment {
 
   update(delta, visionMode, { player = null, weatherEvent } = {}) {
     const frameDelta = Number.isFinite(delta) ? Math.max(0, delta) : 0;
-    if (weatherEvent !== undefined && weatherEvent !== this.activeWeatherEvent) {
-      this.setWeatherEvent(weatherEvent);
+    const requestedWeather = weatherEvent == null && this.currentBiome === 'gunnison_outbreak'
+      ? 'rain'
+      : weatherEvent;
+    if (requestedWeather !== undefined && requestedWeather !== this.activeWeatherEvent) {
+      this.setWeatherEvent(requestedWeather);
     }
     this.updateThermalFootprints(frameDelta, visionMode);
     this.updateDynamicEventZones(frameDelta);

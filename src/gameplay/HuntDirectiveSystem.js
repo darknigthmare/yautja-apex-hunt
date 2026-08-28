@@ -182,6 +182,27 @@ const directiveDefinitions = [
     ],
   },
   {
+    id: 'gunnison_cleanup',
+    title: 'Protocole Cleaner — Gunnison',
+    shortLabel: 'CLEANER',
+    description: 'Traverser la quarantaine sous la pluie, briser le cordon contaminé puis purifier les castes qui convergent vers l’hôpital.',
+    provenance: 'AVP_SCREEN_ADAPTATION',
+    recommendedBiomeId: 'gunnison_outbreak',
+    rewardMultiplier: 1.6,
+    objectives: [
+      objective('gunnison_national_guard', 'Neutraliser le fusilier contaminé du cordon'),
+      objective('xeno_facehugger', 'Éliminer le Facehugger du lycée'),
+      objective('xeno_drone', 'Abattre le drone des rues évacuées'),
+      objective('xeno_warrior', 'Vaincre le guerrier de la ruche hospitalière'),
+    ],
+    schedule: [
+      wave(8, 'gunnison_national_guard'),
+      wave(27, 'xeno_facehugger'),
+      wave(49, 'xeno_drone'),
+      wave(73, 'xeno_warrior'),
+    ],
+  },
+  {
     id: 'game_preserve_escape',
     title: 'Évasion de la planète-réserve',
     shortLabel: 'RÉSERVE',

@@ -23,9 +23,9 @@ const idsAreUnique = (entries) => new Set(entries.map(({ id }) => id)).size === 
 
 test('les nouvelles classes et apparences restent data-driven et conservent les défauts historiques', () => {
   assert.equal(HUNTER_CLASSES.length, 10);
-  assert.equal(DREAD_STYLES.length, 9);
-  assert.equal(ARMOR_FINISHES.length, 10);
-  assert.equal(WARPAINT_PATTERNS.length, 10);
+  assert.equal(DREAD_STYLES.length, 10);
+  assert.equal(ARMOR_FINISHES.length, 11);
+  assert.equal(WARPAINT_PATTERNS.length, 11);
   [HUNTER_CLASSES, DREAD_STYLES, ARMOR_FINISHES, WARPAINT_PATTERNS].forEach((entries) => {
     assert.equal(idsAreUnique(entries), true);
     assert.equal(Object.isFrozen(entries), true);
@@ -241,4 +241,39 @@ test('les personnalisations AVP 2004 changent réellement la silhouette et les l
   assert.equal(player.activeWristbladeVariantId, 'variant_chopper_extended_wristblades');
   assert.equal(player.wristbladeDamageMultiplier, 1.08);
   assert.ok(player.warpaintGroup.children.length >= 4);
+});
+
+test('les variantes Chopper et Wolf appliquent leurs statistiques de wristblades sans altérer le profil standard', () => {
+  const player = new YautjaPlayer(new THREE.Scene());
+  player.selectedWeapon = 1;
+
+  assert.equal(player.wristbladeRangeMultiplier, 1);
+  assert.equal(player.wristbladeCooldownMultiplier, 1);
+  assert.equal(player.wristbladeVisualLengthScale, 1);
+  assert.equal(player.attack(new THREE.Vector3(0, 0, 10)), 'wristblades');
+  assert.equal(player.attackTimer, 0.4);
+
+  player.isAttacking = false;
+  player.applyCustomization({ armorPresetId: 'chopper_avp' });
+  assert.equal(player.wristbladeRangeMultiplier, 1.38);
+  assert.equal(player.wristbladeCooldownMultiplier, 1.06);
+  assert.equal(player.wristbladeVisualLengthScale, 1.38);
+  assert.equal(player.attack(new THREE.Vector3(0, 0, 10)), 'wristblades');
+  assert.equal(player.attackTimer, 0.4 * 1.06);
+
+  player.isAttacking = false;
+  player.applyCustomization({ armorPresetId: 'wolf_avpr' });
+  assert.equal(player.wristbladeRangeMultiplier, 1.12);
+  assert.equal(player.wristbladeCooldownMultiplier, 1.08);
+  assert.equal(player.wristbladeVisualLengthScale, 1.12);
+  assert.equal(player.attack(new THREE.Vector3(0, 0, 10)), 'wristblades');
+  assert.equal(player.attackTimer, 0.4 * 1.08);
+
+  player.isAttacking = false;
+  player.applyCustomization({ armorPresetId: 'jungle_1987' });
+  assert.equal(player.wristbladeRangeMultiplier, 1);
+  assert.equal(player.wristbladeCooldownMultiplier, 1);
+  assert.equal(player.wristbladeVisualLengthScale, 1);
+  assert.equal(player.attack(new THREE.Vector3(0, 0, 10)), 'wristblades');
+  assert.equal(player.attackTimer, 0.4);
 });

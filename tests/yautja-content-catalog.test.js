@@ -53,8 +53,8 @@ const ALLOWED_SOURCES = new Set([
 
 test('la passe contenu respecte les seuils de production demandés', () => {
   assert.equal(MASK_VARIANTS.length, 38);
-  assert.equal(DREAD_PALETTES.length, 8);
-  assert.equal(SKIN_PALETTES.length, 8);
+  assert.equal(DREAD_PALETTES.length, 9);
+  assert.equal(SKIN_PALETTES.length, 9);
   assert.ok(ARMOR_PALETTES.length >= 10);
   assert.ok(ARMOR_ACCENTS.length >= 6);
   assert.ok(TECH_CATALOG.length >= 12);
@@ -70,9 +70,9 @@ test('la passe contenu respecte les seuils de production demandés', () => {
     events: LEVEL_EVENT_CATALOG.length,
     bosses: HUNT_BOSS_CATALOG.length,
     support: SUPPORT_CATALOG.length,
-  }, { technologies: 43, vehicles: 13, enemies: 36, events: 24, bosses: 15, support: 13 });
-  assert.equal(TECH_CATALOG.length + VEHICLE_CATALOG.length + ENEMY_CATALOG.length + LEVEL_EVENT_CATALOG.length + HUNT_BOSS_CATALOG.length + SUPPORT_CATALOG.length, 144);
-  assert.equal(ALL_YAUTJA_CONTENT.length, 218);
+  }, { technologies: 48, vehicles: 15, enemies: 37, events: 31, bosses: 15, support: 13 });
+  assert.equal(TECH_CATALOG.length + VEHICLE_CATALOG.length + ENEMY_CATALOG.length + LEVEL_EVENT_CATALOG.length + HUNT_BOSS_CATALOG.length + SUPPORT_CATALOG.length, 159);
+  assert.equal(ALL_YAUTJA_CONTENT.length, 236);
 });
 
 test('tous les identifiants sont uniques et chaque fiche expose son statut réel', () => {

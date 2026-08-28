@@ -46,15 +46,16 @@ export const HUNT_DEFINITIONS = Object.freeze({
   },
   predalien: {
     id: 'predalien',
-    name: 'Predalien',
+    name: 'Predalien — toit de Gunnison',
     bossType: 'predalien',
     colliderRadius: 6.5,
     sourceTier: 'ORIGINAL',
     basisTier: 'AVP_SCREEN',
     continuity: 'Mission originale fondée sur la continuité cinéma AVP: Requiem',
-    objective: 'Résister à la frénésie acide et rompre les appendices avant l’exécution.',
+    objective: 'Traverser l’épidémie, gagner le toit sous la pluie, résister à la frénésie acide et rompre les appendices avant l’exécution.',
     reward: 1800,
     trophyColor: 0xb00045,
+    recommendedBiome: 'gunnison_outbreak',
     hud: { part1: ['DÔME BIOMÉCANIQUE:', 'headIntact', 'INTACT', 'BRISÉ'], part2: ["QUEUE D'ÉPINE:", 'tailIntact', 'INTACTE', 'TRANCHÉE'] },
   },
   super_predator: {
@@ -95,7 +96,7 @@ export const HUNT_DEFINITIONS = Object.freeze({
     objective: 'Briser le bio-masque et la mallette Cleaner, puis survivre au plasma double, au fouet et aux zones dissolvantes.',
     reward: 2250,
     trophyColor: 0x59686b,
-    recommendedBiome: 'hive_lv426',
+    recommendedBiome: 'gunnison_outbreak',
     hud: { part1: ['BIO-MASQUE WOLF:', 'maskIntact', 'INTACT', 'BRISÉ'], part2: ['KIT CLEANER:', 'cleanerKitIntact', 'OPÉRATIONNEL', 'DÉTRUIT'] },
   },
   kalisk: {
@@ -209,6 +210,14 @@ export const BIOME_DEFINITIONS = Object.freeze({
     texture: '/assets/textures/bouvetoya-ice-rock.webp',
     structureTexture: '/assets/textures/bouvetoya-pyramid-stone.webp',
     assetPolicy: 'Deux matières OpenAI et une architecture procédurale originales ; aucun décor, modèle ou asset officiel.',
+  },
+  gunnison_outbreak: {
+    name: 'Gunnison — nuit de l’épidémie',
+    sourceTier: 'ORIGINAL',
+    basisTier: 'AVP_SCREEN',
+    texture: '/assets/textures/gunnison-rain-urban.webp',
+    structureTexture: '/assets/textures/gunnison-rain-urban.webp',
+    assetPolicy: 'Texture OpenAI et ville procédurale originales inspirées des motifs d’AVP: Requiem ; aucun décor, modèle ou asset officiel.',
   },
 });
 

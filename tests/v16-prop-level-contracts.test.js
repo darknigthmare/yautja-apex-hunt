@@ -18,6 +18,7 @@ const BIOME_IDS = Object.keys(BIOME_DEFINITIONS).sort();
 const EXPECTED_BIOMES = [
   'bouvetoya_pyramid',
   'genna_deathworld',
+  'gunnison_outbreak',
   'hive_lv426',
   'jungle',
   'los_angeles_1997',

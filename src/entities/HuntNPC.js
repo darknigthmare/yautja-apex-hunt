@@ -31,6 +31,7 @@ export const HUNT_NPC_TEXTURES = Object.freeze({
   subway_armed_hunter: '/assets/textures/los-angeles-heatwave-urban.webp',
   owlf_cryo_commando: '/assets/textures/los-angeles-heatwave-urban.webp',
   weyland_expedition_guard: '/assets/textures/stargazer-tactical-composite.webp',
+  gunnison_national_guard: '/assets/textures/gunnison-rain-urban.webp',
 });
 
 export const HUNT_NPC_ARCHETYPES = Object.freeze({
@@ -344,6 +345,21 @@ export const V111_HUNT_NPC_ARCHETYPES = Object.freeze({
   }),
 });
 
+// Vague v1.12 : unité de la Garde nationale prise dans l'effondrement de
+// Gunnison. Il s'agit d'un combattant de gameplay original, sans identité de
+// personnage ni uniforme officiel reproduit.
+export const V112_HUNT_NPC_ARCHETYPES = Object.freeze({
+  gunnison_national_guard: Object.freeze({
+    type: 'gunnison_national_guard', name: 'Fusilier de la Garde nationale',
+    health: 172, damage: 14, speed: 2.82, attackRange: 22,
+    colliderRadius: 0.62, attackInterval: 1.42, damageType: 'ballistic',
+    attackKind: 'projectile', projectileSpeed: 40,
+    behaviorKind: 'cover_burst', coverSearchRange: 20, preferredRange: 17,
+    burstCount: 4, behaviorInterval: 2.55, coverHoldDuration: 2.7,
+    suppressionDuration: 1.1,
+  }),
+});
+
 export const ALL_HUNT_NPC_ARCHETYPES = Object.freeze({
   ...HUNT_NPC_ARCHETYPES,
   ...EXPANDED_HUNT_NPC_ARCHETYPES,
@@ -356,6 +372,7 @@ export const AVAILABLE_HUNT_NPC_ARCHETYPES = Object.freeze({
   ...V19_HUNT_NPC_ARCHETYPES,
   ...V110_HUNT_NPC_ARCHETYPES,
   ...V111_HUNT_NPC_ARCHETYPES,
+  ...V112_HUNT_NPC_ARCHETYPES,
 });
 
 // Les noms courts émis par les événements sont résolus ici, en un seul point.
@@ -401,6 +418,8 @@ export const HUNT_NPC_TYPE_ALIASES = Object.freeze({
   cryo_commando: 'owlf_cryo_commando',
   expedition_guard: 'weyland_expedition_guard',
   weyland_guard: 'weyland_expedition_guard',
+  national_guard: 'gunnison_national_guard',
+  gunnison_guard: 'gunnison_national_guard',
 });
 
 export function resolveHuntNpcType(type) {
@@ -414,6 +433,186 @@ export function resolveHuntNpcType(type) {
 
 const sharedTextureCache = new Map();
 const direction = new THREE.Vector3();
+
+const HUMANOID_LOD_TYPES = new Set([
+  'human_fireteam',
+  'combat_synthetic',
+  'thermal_trapper',
+  'jungle_scout',
+  'jungle_gunner',
+  'jungle_trapper',
+  'era_viking_raider',
+  'era_feudal_duelist',
+  'era_wartime_pilot',
+  'colonial_marine_smartgunner',
+  'weyland_field_synthetic',
+  'stargazer_rifleman',
+  'stargazer_net_trapper',
+  'urban_cartel_enforcer',
+  'subway_armed_hunter',
+  'owlf_cryo_commando',
+  'weyland_expedition_guard',
+  'gunnison_national_guard',
+]);
+const QUADRUPED_LOD_TYPES = new Set([
+  'hunting_hound',
+  'grizzly_territorial',
+  'genna_grazer',
+  'genna_sporeback',
+  'hell_hound_alpha',
+  'modified_predator_hound',
+  'xeno_runner',
+]);
+const XENO_LOD_TYPES = new Set(['xeno_drone', 'genna_stalker', 'xeno_warrior', 'river_ghost']);
+
+const NPC_LOD_FAMILIES = Object.freeze({
+  humanoid: Object.freeze({ primary: 0x39433c, secondary: 0x171c1c, accent: 0x69766a }),
+  quadruped: Object.freeze({ primary: 0x3c2f27, secondary: 0x171513, accent: 0x665044 }),
+  xeno: Object.freeze({ primary: 0x101817, secondary: 0x202b28, accent: 0x657069 }),
+  facehugger: Object.freeze({ primary: 0x322d25, secondary: 0x171613, accent: 0x655e4f }),
+  drone: Object.freeze({ primary: 0x28383d, secondary: 0x11191c, accent: 0x72ddc4 }),
+});
+
+function resolveNpcLodFamily(type) {
+  if (HUMANOID_LOD_TYPES.has(type)) return 'humanoid';
+  if (QUADRUPED_LOD_TYPES.has(type)) return 'quadruped';
+  if (XENO_LOD_TYPES.has(type)) return 'xeno';
+  if (type === 'xeno_facehugger') return 'facehugger';
+  if (type === 'clan_sentry_drone') return 'drone';
+  return 'xeno';
+}
+
+// Contrat data-driven unique pour tous les PNJ. La distance de retour plus
+// courte forme une bande d'hystérésis : le rendu ne peut donc pas osciller
+// quand le joueur reste à la frontière du LOD.
+export const HUNT_NPC_LOD_PROFILES = Object.freeze(Object.fromEntries(
+  Object.keys(AVAILABLE_HUNT_NPC_ARCHETYPES).map((type) => {
+    const family = resolveNpcLodFamily(type);
+    const switchDistance = family === 'facehugger' ? 185 : family === 'quadruped' ? 200 : 210;
+    const hysteresis = family === 'facehugger' ? 20 : 24;
+    return [type, Object.freeze({
+      family,
+      switchDistance,
+      hysteresis,
+      returnDistance: switchDistance - hysteresis,
+      palette: NPC_LOD_FAMILIES[family],
+    })];
+  }),
+));
+
+function countRenderableMeshes(root) {
+  let count = 0;
+  root?.traverse?.((node) => {
+    if (node.isMesh) count += 1;
+  });
+  return count;
+}
+
+function getNpcLocalBounds(group) {
+  group.updateWorldMatrix(true, true);
+  const bounds = new THREE.Box3().setFromObject(group);
+  const size = bounds.getSize(new THREE.Vector3());
+  const center = bounds.getCenter(new THREE.Vector3());
+  const scale = group.scale;
+  size.set(
+    size.x / Math.max(0.0001, Math.abs(scale.x)),
+    size.y / Math.max(0.0001, Math.abs(scale.y)),
+    size.z / Math.max(0.0001, Math.abs(scale.z)),
+  );
+  center.set(
+    center.x / Math.max(0.0001, Math.abs(scale.x)),
+    center.y / Math.max(0.0001, Math.abs(scale.y)),
+    center.z / Math.max(0.0001, Math.abs(scale.z)),
+  );
+  return { size, center };
+}
+
+function makeNpcLodMaterial(color, options = {}) {
+  return makeMaterial(color, null, {
+    roughness: options.roughness ?? 0.82,
+    metalness: options.metalness ?? 0.08,
+    emissive: options.emissive ?? 0x000000,
+    emissiveIntensity: options.emissiveIntensity ?? 0,
+  });
+}
+
+function makeLowPolyNpcSilhouette(type, detailedGroup, profile) {
+  const lod = new THREE.Group();
+  lod.name = `hunt-npc-lod:${type}`;
+  lod.userData.isHuntNpcLod = true;
+  lod.userData.lodFamily = profile.family;
+
+  const { size, center } = getNpcLocalBounds(detailedGroup);
+  // Les silhouettes les plus légères restent à deux meshes lorsque le modèle
+  // détaillé compte dix draws ou moins. Cela garantit une économie d'au moins
+  // 75 % jusque sur les archétypes historiquement les plus simples.
+  const meshBudget = countRenderableMeshes(detailedGroup) <= 10 ? 2 : 3;
+  const height = THREE.MathUtils.clamp(size.y || 2, 0.55, 4.8);
+  const width = THREE.MathUtils.clamp(size.x || 1, height * 0.18, height * 0.72);
+  const depth = THREE.MathUtils.clamp(size.z || 1, height * 0.2, height * 1.15);
+  const primary = makeNpcLodMaterial(profile.palette.primary);
+  const secondary = makeNpcLodMaterial(profile.palette.secondary, { roughness: 0.68, metalness: 0.2 });
+  const accent = makeNpcLodMaterial(profile.palette.accent, {
+    roughness: profile.family === 'drone' ? 0.32 : 0.74,
+    metalness: profile.family === 'drone' ? 0.72 : 0.1,
+    emissive: profile.family === 'drone' ? 0x174c42 : 0x000000,
+    emissiveIntensity: profile.family === 'drone' ? 0.5 : 0,
+  });
+  const addLodPart = (name, geometry, material, position, rotation) => {
+    const mesh = addPart(lod, geometry, material, position, null, rotation);
+    mesh.name = `lod:${type}:${name}`;
+    mesh.castShadow = false;
+    mesh.receiveShadow = false;
+    return mesh;
+  };
+
+  if (profile.family === 'humanoid') {
+    const bodyHeight = height * 0.66;
+    addLodPart('body', new THREE.CapsuleGeometry(width * 0.31, bodyHeight * 0.78, 2, 5), primary,
+      [center.x, center.y + (height * 0.01), center.z]);
+    addLodPart('weapon', new THREE.BoxGeometry(width * 0.11, height * 0.075, Math.min(depth, height * 0.7)), accent,
+      [center.x + (width * 0.23), center.y + (height * 0.03), center.z + (depth * 0.2)], [0.08, 0, -0.12]);
+    if (meshBudget >= 3) {
+      addLodPart('head', new THREE.IcosahedronGeometry(height * 0.105, 0), secondary,
+        [center.x, center.y + (height * 0.39), center.z + (depth * 0.035)]);
+    }
+  } else if (profile.family === 'quadruped') {
+    addLodPart('body', new THREE.CapsuleGeometry(height * 0.2, Math.max(0.12, depth * 0.62), 2, 5), primary,
+      [center.x, center.y + (height * 0.08), center.z], [Math.PI / 2, 0, 0]);
+    addLodPart('head', new THREE.IcosahedronGeometry(height * 0.2, 0), secondary,
+      [center.x, center.y + (height * 0.13), center.z + (depth * 0.42)]);
+    if (meshBudget >= 3) {
+      addLodPart('legs', new THREE.BoxGeometry(Math.min(width, height * 0.65), height * 0.43, height * 0.11), accent,
+        [center.x, center.y - (height * 0.25), center.z - (depth * 0.05)]);
+    }
+  } else if (profile.family === 'facehugger') {
+    addLodPart('carapace', new THREE.IcosahedronGeometry(height * 0.28, 0), primary,
+      [center.x, center.y, center.z]);
+    addLodPart('limbs', new THREE.TorusGeometry(height * 0.35, height * 0.07, 3, 8), secondary,
+      [center.x, center.y - (height * 0.05), center.z], [Math.PI / 2, 0, 0]);
+  } else if (profile.family === 'drone') {
+    addLodPart('core', new THREE.OctahedronGeometry(height * 0.3, 0), primary,
+      [center.x, center.y, center.z]);
+    addLodPart('wings', new THREE.BoxGeometry(Math.min(width, height * 0.95), height * 0.07, height * 0.22), secondary,
+      [center.x, center.y, center.z - (depth * 0.04)]);
+    if (meshBudget >= 3) {
+      addLodPart('sensor', new THREE.IcosahedronGeometry(height * 0.11, 0), accent,
+        [center.x, center.y + (height * 0.08), center.z + (depth * 0.3)]);
+    }
+  } else {
+    addLodPart('torso', new THREE.CapsuleGeometry(width * 0.28, height * 0.5, 2, 5), primary,
+      [center.x, center.y - (height * 0.05), center.z]);
+    addLodPart('dome', new THREE.SphereGeometry(height * 0.18, 6, 4), secondary,
+      [center.x, center.y + (height * 0.3), center.z + (depth * 0.12)], [Math.PI / 2, 0, 0]);
+    if (meshBudget >= 3) {
+      addLodPart('tail', new THREE.ConeGeometry(height * 0.07, Math.min(depth, height * 0.9), 5), accent,
+        [center.x, center.y - (height * 0.06), center.z - (depth * 0.36)], [Math.PI / 2, 0, 0]);
+    }
+  }
+
+  lod.visible = false;
+  return lod;
+}
 
 function loadSharedTexture(path) {
   if (!path || typeof document === 'undefined') return null;
@@ -514,6 +713,7 @@ function makeHumanFireteam(texture) {
     addPart(group, new THREE.CylinderGeometry(0.09, 0.12, 0.96, 7), fatigues, [side * 0.22, 0.48, 0]);
     addPart(group, new THREE.CylinderGeometry(0.07, 0.1, 0.88, 7), fatigues, [side * 0.52, 1.43, 0.04], null, [0, 0, side * 0.32]);
   }
+  addPart(group, new THREE.BoxGeometry(0.5, 0.62, 0.24), armor, [0, 1.42, -0.34]);
   addPart(group, new THREE.BoxGeometry(0.16, 0.18, 1.22), weapon, [0.38, 1.45, 0.43], null, [0.08, 0, -0.18]);
   group.userData.silhouette = 'human_fireteam';
   return group;
@@ -1248,6 +1448,45 @@ function makeWeylandExpeditionGuard(texture) {
   return group;
 }
 
+function makeGunnisonNationalGuard(texture) {
+  const group = new THREE.Group();
+  const fatigues = makeMaterial(0x455044, texture, { roughness: 0.94, metalness: 0.02 });
+  const vest = makeMaterial(0x252d29, texture, { roughness: 0.66, metalness: 0.24 });
+  const webbing = makeMaterial(0x68705d, texture, { roughness: 0.82, metalness: 0.08 });
+  const weapon = makeMaterial(0x14181a, null, { roughness: 0.34, metalness: 0.78 });
+  const lens = makeMaterial(0x9fd7bd, null, {
+    roughness: 0.14, metalness: 0.28, emissive: 0x183f30, emissiveIntensity: 0.62,
+  });
+
+  addPart(group, new THREE.CapsuleGeometry(0.36, 0.84, 6, 10), fatigues, [0, 1.28, 0]);
+  addPart(group, new THREE.BoxGeometry(0.78, 0.72, 0.34), vest, [0, 1.46, 0.02]);
+  addPart(group, new THREE.SphereGeometry(0.28, 14, 9), fatigues, [0, 2.08, 0]);
+  addPart(group, new THREE.SphereGeometry(0.31, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), vest, [0, 2.17, 0]);
+  addPart(group, new THREE.BoxGeometry(0.42, 0.08, 0.08), lens, [0, 2.1, 0.28]);
+
+  for (const side of [-1, 1]) {
+    addPart(group, new THREE.CapsuleGeometry(0.105, 0.76, 5, 8), fatigues, [side * 0.22, 0.48, 0]);
+    addPart(group, new THREE.BoxGeometry(0.25, 0.16, 0.3), vest, [side * 0.22, 0.3, 0.06]);
+    addPart(group, new THREE.CapsuleGeometry(0.095, 0.68, 5, 8), fatigues, [side * 0.5, 1.34, 0.04], null, [0, 0, side * 0.2]);
+    addPart(group, new THREE.BoxGeometry(0.28, 0.2, 0.34), vest, [side * 0.43, 1.73, 0]);
+    addPart(group, new THREE.BoxGeometry(0.23, 0.09, 0.42), weapon, [side * 0.22, 0.08, 0.08]);
+  }
+
+  for (let pouch = -1; pouch <= 1; pouch += 1) {
+    addPart(group, new THREE.BoxGeometry(0.18, 0.28, 0.13), webbing, [pouch * 0.23, 1.15, 0.25]);
+  }
+  addPart(group, new THREE.BoxGeometry(0.58, 0.72, 0.28), webbing, [0, 1.43, -0.36]);
+  addPart(group, new THREE.BoxGeometry(0.16, 0.2, 1.5), weapon, [0.42, 1.39, 0.56], null, [0.05, 0, -0.08]);
+  addPart(group, new THREE.CylinderGeometry(0.032, 0.04, 0.82, 9), weapon, [0.42, 1.39, 1.71], null, [Math.PI / 2, 0, 0]);
+  addPart(group, new THREE.BoxGeometry(0.12, 0.16, 0.32), lens, [0.42, 1.57, 0.78]);
+  addPart(group, new THREE.CylinderGeometry(0.018, 0.02, 0.7, 7), weapon, [0.23, 2.28, -0.2], null, [0, 0, -0.18]);
+
+  group.userData.silhouette = 'gunnison_national_guard';
+  group.userData.combatRead = 'four_round_cover_suppression';
+  group.userData.sourceAdaptation = 'avpr_gunnison_original';
+  return group;
+}
+
 function makeModifiedPredatorHound(texture) {
   const group = new THREE.Group();
   const hide = makeMaterial(0x443126, texture, { roughness: 0.84, metalness: 0.04 });
@@ -1316,6 +1555,7 @@ const meshFactories = Object.freeze({
   subway_armed_hunter: makeSubwayArmedHunter,
   owlf_cryo_commando: makeOwlfCryoCommando,
   weyland_expedition_guard: makeWeylandExpeditionGuard,
+  gunnison_national_guard: makeGunnisonNationalGuard,
 });
 
 function setPosition(target, value) {
@@ -1349,6 +1589,7 @@ const SYNTHETIC_SUPPORT_TYPES = new Set([
   'colonial_marine_smartgunner',
   'weyland_field_synthetic',
   'weyland_expedition_guard',
+  'gunnison_national_guard',
 ]);
 
 let nextNpcId = 1;
@@ -1437,6 +1678,15 @@ export class HuntNPC {
 
     const texture = loadSharedTexture(HUNT_NPC_TEXTURES[this.type]);
     this.mesh = meshFactories[this.type](texture);
+    this.detailedGroup = this.mesh;
+    this.detailedGroup.userData.isHuntNpcDetailed = true;
+    this.lodProfile = HUNT_NPC_LOD_PROFILES[this.type];
+    this.lodGroup = makeLowPolyNpcSilhouette(this.type, this.detailedGroup, this.lodProfile);
+    this.lodGroup.name = `hunt-npc-lod:${this.id}`;
+    this.detailedVisuals = [...this.detailedGroup.children];
+    const detailedDrawCalls = countRenderableMeshes(this.detailedGroup);
+    const distantDrawCalls = countRenderableMeshes(this.lodGroup);
+    this.mesh.add(this.lodGroup);
     this.mesh.name = `hunt-npc:${this.id}`;
     this.mesh.userData.huntNpc = this;
     this.mesh.userData.npcId = this.id;
@@ -1446,6 +1696,21 @@ export class HuntNPC {
     this.mesh.userData.tacticalState = this._ambushState === 'concealed' ? 'concealed' : 'engage';
     this.mesh.userData.ambushState = this._ambushState;
     this.mesh.userData.packSize = this._activePackSize;
+    this.lodLevel = 'detailed';
+    this.lodMetrics = {
+      family: this.lodProfile.family,
+      activeLevel: this.lodLevel,
+      switchDistance: this.lodProfile.switchDistance,
+      returnDistance: this.lodProfile.returnDistance,
+      hysteresis: this.lodProfile.hysteresis,
+      detailedDrawCalls,
+      distantDrawCalls,
+      drawCallReduction: 1 - (distantDrawCalls / Math.max(1, detailedDrawCalls)),
+      lastDistance: 0,
+    };
+    this.mesh.userData.lod = this.lodMetrics;
+    this.mesh.userData.activeLod = this.lodLevel;
+    this.mesh.userData.detailedVisible = true;
     setPosition(this.mesh.position, config.position);
     this.position = this.mesh.position;
     if (config.coverPosition) {
@@ -1477,6 +1742,35 @@ export class HuntNPC {
     this.mesh.userData.territoryCenter = this.territoryCenter.clone();
     this.mesh.userData.patrolRadius = this.patrolRadius;
     this.mesh.userData.leashRadius = this.leashRadius;
+  }
+
+  _updateVisualLod(player) {
+    const playerPosition = getPlayerPosition(player);
+    if (
+      !playerPosition
+      || !Number.isFinite(playerPosition.x)
+      || !Number.isFinite(playerPosition.y)
+      || !Number.isFinite(playerPosition.z)
+      || !this.position?.isVector3
+    ) return this.lodLevel;
+
+    const distance = Math.hypot(
+      playerPosition.x - this.position.x,
+      playerPosition.y - this.position.y,
+      playerPosition.z - this.position.z,
+    );
+    const nextLevel = this.lodLevel === 'distant'
+      ? (distance <= this.lodProfile.returnDistance ? 'detailed' : 'distant')
+      : (distance >= this.lodProfile.switchDistance ? 'distant' : 'detailed');
+
+    this.lodLevel = nextLevel;
+    for (const visual of this.detailedVisuals) visual.visible = nextLevel === 'detailed';
+    this.detailedGroup.userData.detailedVisible = nextLevel === 'detailed';
+    this.lodGroup.visible = nextLevel === 'distant';
+    this.lodMetrics.activeLevel = nextLevel;
+    this.lodMetrics.lastDistance = distance;
+    this.mesh.userData.activeLod = nextLevel;
+    return nextLevel;
   }
 
   _setAmbientState(state, signals) {
@@ -1818,6 +2112,7 @@ export class HuntNPC {
     const signals = [];
     if (this._disposed || this.isDead) return signals;
 
+    this._updateVisualLod(player);
     const dt = Math.max(0, Number(delta) || 0);
     if (this.isNetted) {
       this._isCharging = false;
@@ -2097,6 +2392,8 @@ export class HuntNPC {
     if (this._disposed) return false;
     this._visionMode = mode;
     this.mesh.userData.visionMode = mode;
+    this.detailedGroup.userData.visionMode = mode;
+    this.lodGroup.userData.visionMode = mode;
     this.mesh.traverse((node) => {
       const materials = Array.isArray(node.material) ? node.material : [node.material];
       for (const material of materials) {
@@ -2159,6 +2456,10 @@ export class HuntNPC {
     }
     this.projectiles.length = 0;
     this.mesh.userData.huntNpc = null;
+    this.detailedGroup.userData.disposed = true;
+    this.lodGroup.userData.disposed = true;
+    this.lodMetrics.activeLevel = 'disposed';
+    this.mesh.userData.activeLod = 'disposed';
     return true;
   }
 }

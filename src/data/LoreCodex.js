@@ -72,6 +72,12 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     sourceTier: 'SCREEN', isOriginal: false, sources: ['predator1987', 'predator2', 'huntingGrounds']
   },
   {
+    id: 'technologie-agent-cleaner', entryType: 'codex', category: 'technologie', title: 'Agent de dissolution Cleaner',
+    summary: 'Wolf transporte un composé bleu destiné à effacer les organismes et les traces de l’épidémie de Gunnison.',
+    body: 'L’usage de l’agent et la mission de nettoyage viennent d’AVP: Requiem. Les bassins persistants, leurs dégâts de corrosion et les conteneurs récupérables sont des systèmes de gameplay originaux Apex Hunt.',
+    sourceTier: 'AVP_SCREEN', isOriginal: false, gameInterpretationOriginal: true, sources: ['avpRequiem2007', 'wolfArsenalDesigns']
+  },
+  {
     id: 'technologie-fusee-poignet', entryType: 'codex', category: 'technologie', title: 'Fusée de poignet',
     summary: 'Projectile explosif compact associé à l’arsenal du chasseur urbain.',
     body: 'Le jeu en fait une arme à souffle dégressif afin de distinguer sa fonction du canon à plasma. Dégâts, rayon et coût énergétique sont des valeurs originales de gameplay.',
@@ -159,9 +165,17 @@ export const HUNT_LOCATIONS = freezeEntries([
     assetPolicy: 'Textures OpenAI et géométries procédurales originales ; aucun décor ou asset officiel du film.',
     sources: ['avp2004']
   },
+  {
+    id: 'gunnison_outbreak', entryType: 'location', category: 'lieu', title: 'Gunnison — nuit de l’épidémie',
+    summary: 'Grande carte pluvieuse et non linéaire reliant forêt du crash, cimetière, centrale, ville, égouts, lycée, hôpital, toits et extraction.',
+    sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', isOriginal: true,
+    canonNote: 'Gunnison, le crash, l’épidémie, Wolf et le Predalien viennent d’AVP: Requiem ; ces dix secteurs, leurs vingt-et-une routes, leurs vagues et leur compte à rebours sont une adaptation originale Apex Hunt.',
+    assetPolicy: 'Texture OpenAI, architecture, props et mise en scène procéduraux originaux ; aucun asset officiel du film.',
+    sources: ['avpRequiem2007', 'wolfArsenalDesigns']
+  },
 ]);
 
-const ALL_LOCATION_IDS = ['jungle', 'hive_lv426', 'ryushi_desert', 'stargazer_blacksite', 'yautja_prime', 'genna_deathworld', 'los_angeles_1997', 'bouvetoya_pyramid'];
+const ALL_LOCATION_IDS = ['jungle', 'hive_lv426', 'ryushi_desert', 'stargazer_blacksite', 'yautja_prime', 'genna_deathworld', 'los_angeles_1997', 'bouvetoya_pyramid', 'gunnison_outbreak'];
 
 // IDs match data-hunt and currentHuntType values in the game.
 export const CURRENT_HUNTS = freezeEntries([
@@ -183,7 +197,7 @@ export const CURRENT_HUNTS = freezeEntries([
     id: 'wolf_cleaner', entryType: 'hunt', category: 'cible', title: 'Wolf — opération Cleaner',
     summary: 'Affronter le vétéran de Gunnison, ses deux canons à plasma, son fouet et ses agents de dissolution.',
     sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', isOriginal: true,
-    canonNote: 'Wolf et son arsenal sont établis dans AVP:R ; ce duel et ses règles de destruction de kit sont une adaptation originale.', sources: ['avpRequiem2007', 'wolfArsenalDesigns'], locationIds: ALL_LOCATION_IDS
+    canonNote: 'Wolf et son arsenal sont établis dans AVP:R ; ce duel et ses règles de destruction de kit sont une adaptation originale.', sources: ['avpRequiem2007', 'wolfArsenalDesigns'], locationIds: ['gunnison_outbreak']
   },
   {
     id: 'kalisk', entryType: 'hunt', category: 'cible', title: 'Kalisk de Genna',
@@ -210,10 +224,10 @@ export const CURRENT_HUNTS = freezeEntries([
     canonNote: 'Le titre Bad Blood vient surtout de l’EU ; ce rival précis est une création du jeu.', sources: ['predators2010', 'predatorBadBloodComics'], locationIds: ALL_LOCATION_IDS
   },
   {
-    id: 'predalien', entryType: 'hunt', category: 'cible', title: 'Predalien légendaire',
-    summary: 'Hybride de la branche AVP transformé ici en cible de chasse exceptionnelle.',
+    id: 'predalien', entryType: 'hunt', category: 'cible', title: 'Predalien — toit de Gunnison',
+    summary: 'Hybride de la branche AVP poursuivi à travers la ville contaminée jusqu’au toit de l’hôpital.',
     sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', isOriginal: true,
-    canonNote: 'Le Predalien existe dans AVP: Requiem ; cette variante et cette mission sont originales.', sources: ['avpRequiem2007'], locationIds: ALL_LOCATION_IDS
+    canonNote: 'Le Predalien et l’épidémie de Gunnison existent dans AVP: Requiem ; la topologie ouverte, les événements, les statistiques et le combat procédural sont une adaptation originale.', sources: ['avpRequiem2007'], locationIds: ['gunnison_outbreak']
   },
   {
     id: 'super_predator', entryType: 'hunt', category: 'cible', title: 'Berserker — Super Predator',

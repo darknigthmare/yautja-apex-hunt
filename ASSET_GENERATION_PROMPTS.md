@@ -1,7 +1,7 @@
 # Prompts de génération des textures
 
 **Outil :** modèle ImageGen intégré OpenAI
-**Dates :** 21–25 août 2026
+**Dates :** 21–28 août 2026
 **Mode :** génération bitmap originale, sans image officielle de référence
 **Usage :** textures de décor et de props pour le fan game Yautja: Apex Hunt
 
@@ -215,7 +215,37 @@ Les textes ci-dessous sont les formulations de production fidèles aux prompts e
 
 **Sortie runtime :** 1254×1254, 409 994 octets.
 
-Les PNG maîtres des vagues précédentes, les trois sorties sources de la 1.5, les quatre sorties sources de la 1.6, le PNG maître de la 1.8 et les sources OpenAI des 1.10–1.11 sont conservés localement hors Git ; seuls les WebP optimisés, dont `genna-sporeback-carapace.webp`, `los-angeles-heatwave-urban.webp` et les deux matières de Bouvetøya, sont livrés au navigateur.
+## `gunnison-rain-urban`
+
+**Mode :** `stylized-concept`, nouvelle génération bitmap originale OpenAI, sans image de référence.
+
+**Prompt exact de production :**
+
+> Use case: stylized-concept
+>
+> Asset type: seamless tileable game environment texture for a WebGL urban level
+>
+> Primary request: an original rain-soaked small-town Colorado asphalt and damaged municipal concrete surface, suitable for roads, alleys, hospital service yards and sewer access areas during a nighttime emergency
+>
+> Style/medium: highly detailed realistic PBR-style diffuse/albedo material reference, physically plausible, production game texture
+>
+> Composition/framing: exact top-down orthographic surface, even texel density, seamless edges in both axes, no horizon, no perspective, no single focal object
+>
+> Lighting/mood: neutral diffuse overcast illumination baked as lightly as possible; wet dark charcoal asphalt, cold concrete aggregate, restrained rusty runoff and subtle cracked repairs
+>
+> Materials/textures: fine asphalt grains, aggregate, hairline cracks, shallow rain sheen, subtle wear, sparse grime; details distributed evenly for tiling
+>
+> Constraints: completely original; no characters, creatures, vehicles, props, text, road markings, logos, trademarks, signage, gore, watermark or recognizable copyrighted imagery; no dramatic cast shadows; no border; no frame; no obvious repeating centerpiece
+>
+> Avoid: concept-art vista, camera perspective, large potholes, arrows, words, license plates, poster art, collage
+
+**PNG maître local hors Git :** `art_sources/openai-masters/gunnison-rain-urban.png`
+
+**Destination runtime après conversion :** `public/assets/textures/gunnison-rain-urban.webp`
+
+**Sortie runtime :** 1254×1254, 492 416 octets.
+
+Les PNG maîtres des vagues précédentes, les trois sorties sources de la 1.5, les quatre sorties sources de la 1.6, le PNG maître de la 1.8 et les sources OpenAI des 1.10–1.12 sont conservés localement hors Git ; seuls les WebP optimisés, dont `genna-sporeback-carapace.webp`, `los-angeles-heatwave-urban.webp`, les deux matières de Bouvetøya et `gunnison-rain-urban.webp`, sont livrés au navigateur.
 
 ## Passe v1.6 — intention de génération
 
@@ -234,4 +264,4 @@ Une génération doit être écartée si elle contient un mot, une signature, un
 
 ## Traçabilité
 
-Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor initiales, les trois matières de props, les quatre matières de la vague 1.4, les trois matières de la 1.5 et la matière `genna-sporeback-carapace` de la 1.8 restent en WebP 1024×1024 ; les six matières de la vague contenu 1.3, les quatre matières de level design 1.6 et les deux matières Bouvetøya 1.11 sont encodées en WebP 1254×1254 après inspection visuelle ; `los-angeles-heatwave-urban.webp` est encodée en 1536×1536 pour la 1.10. Le manifest consigne les trente poids exacts, leur usage runtime et le niveau de contrôle effectivement obtenu. Ces créations originales n’accordent ni ne revendiquent de droit sur Predator, Alien, leurs personnages ou leurs designs officiels. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.
+Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor initiales, les trois matières de props, les quatre matières de la vague 1.4, les trois matières de la 1.5 et la matière `genna-sporeback-carapace` de la 1.8 restent en WebP 1024×1024 ; les six matières de la vague contenu 1.3, les quatre matières de level design 1.6, les deux matières Bouvetøya 1.11 et la matière Gunnison 1.12 sont encodées en WebP 1254×1254 après inspection visuelle ; `los-angeles-heatwave-urban.webp` est encodée en 1536×1536 pour la 1.10. Le manifest consigne les trente-et-un poids exacts, leur usage runtime et le niveau de contrôle effectivement obtenu. Ces créations originales n’accordent ni ne revendiquent de droit sur Predator, Alien, leurs personnages ou leurs designs officiels. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.

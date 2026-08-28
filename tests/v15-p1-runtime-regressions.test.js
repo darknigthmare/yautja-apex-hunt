@@ -84,7 +84,7 @@ test('quitter un preset texturé restaure une seule base par matériau partagé'
 
 test('le clic mission impose le biome recommandé tout en préservant les chasses libres', () => {
   assert.equal(resolveHuntBiome('kalisk', 'jungle'), 'genna_deathworld');
-  assert.equal(resolveHuntBiome('wolf_cleaner', 'ryushi_desert'), 'hive_lv426');
+  assert.equal(resolveHuntBiome('wolf_cleaner', 'ryushi_desert'), 'gunnison_outbreak');
   assert.equal(resolveHuntBiome('feral_predator', 'yautja_prime'), 'jungle');
   assert.equal(resolveHuntBiome('goliath', 'ryushi_desert'), 'ryushi_desert');
   assert.equal(resolveHuntBiome('goliath', 'secteur_obsolete'), 'jungle');

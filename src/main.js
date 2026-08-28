@@ -36,6 +36,20 @@ const GOLIATH_CHARGE_IMPACT_RANGE = 10;
 const PLAYER_COLLIDER_RADIUS = 1.8;
 const MAX_ACTIVE_HUNT_NPCS = 24;
 const MAX_PENDING_DIRECTIVE_WAVES = 8;
+const EXTRACTION_OUTCOME_DISPLAY_SECONDS = 4;
+const NEUTRAL_PLAYER_FRAME_INPUT = Object.freeze({ x: 0, z: 0, isSprinting: false });
+const KEYBOARD_MOVEMENT_BINDINGS = Object.freeze({
+  KeyW: Object.freeze({ axis: 'z', value: 1 }),
+  KeyZ: Object.freeze({ axis: 'z', value: 1 }),
+  ArrowUp: Object.freeze({ axis: 'z', value: 1 }),
+  KeyS: Object.freeze({ axis: 'z', value: -1 }),
+  ArrowDown: Object.freeze({ axis: 'z', value: -1 }),
+  KeyA: Object.freeze({ axis: 'x', value: 1 }),
+  KeyQ: Object.freeze({ axis: 'x', value: 1 }),
+  ArrowLeft: Object.freeze({ axis: 'x', value: 1 }),
+  KeyD: Object.freeze({ axis: 'x', value: -1 }),
+  ArrowRight: Object.freeze({ axis: 'x', value: -1 }),
+});
 const DIRECTIVE_BIOME_LABELS = Object.freeze({
   jungle: 'JUNGLE EXTRATERRESTRE',
   hive_lv426: 'RUCHES DE LV-426',
@@ -45,6 +59,7 @@ const DIRECTIVE_BIOME_LABELS = Object.freeze({
   stargazer_blacksite: 'COMPLEXE DE CONFINEMENT STARGAZER',
   los_angeles_1997: 'LOS ANGELES 1997',
   bouvetoya_pyramid: 'BOUVETØYA — PYRAMIDE DU BLOODING',
+  gunnison_outbreak: 'GUNNISON — ZONE D’INFESTATION',
 });
 const HIVE_EGG_OFFSETS = Object.freeze([
   Object.freeze([-19, 0, -7]),
@@ -52,6 +67,20 @@ const HIVE_EGG_OFFSETS = Object.freeze([
   Object.freeze([18, 0, -8]),
   Object.freeze([19, 0, 8]),
 ]);
+const HUNT_VEHICLE_HUD_LABELS = Object.freeze({
+  avp_ritual_ship: Object.freeze({
+    prompt: 'SYNCHRONISER LE VAISSEAU DU RITE [E]',
+    synchronized: 'VAISSEAU DU RITE SYNCHRONISÉ',
+  }),
+  wolf_cleaner_ship: Object.freeze({
+    prompt: 'SYNCHRONISER L’APPAREIL CLEANER DE WOLF [E]',
+    synchronized: 'APPAREIL CLEANER DE WOLF SYNCHRONISÉ',
+  }),
+  default: Object.freeze({
+    prompt: 'SYNCHRONISER LA NAVETTE DE RECONNAISSANCE [E]',
+    synchronized: 'NAVETTE SYNCHRONISÉE',
+  }),
+});
 const ENEMY_ATTACK_PROFILES = Object.freeze({
   melee: { damage: 26, range: 7.5, cooldown: 1.5 },
   attack_claw: { damage: 22, range: 9.5, cooldown: 1.1 },
@@ -152,11 +181,14 @@ export class Game {
     this.bossMigrationForced = false;
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
+    this.activeExtractionObjective = null;
+    this.extractionOutcome = null;
     this.eggClusters = [];
 
     // Inputs
     this.inputDir = { x: 0, z: 0, isSprinting: false };
     this.keyboardInputDir = { x: 0, z: 0, isSprinting: false };
+    this.pressedKeyboardCodes = new Set();
     this.cameraPitch = 0.2;
     // Le chasseur apparaît au sud des zones et regarde naturellement vers leur centre.
     this.cameraYaw = Math.PI;
@@ -234,6 +266,66 @@ export class Game {
     this.inputDir.isSprinting = this.keyboardInputDir.isSprinting;
   }
 
+  recomputeKeyboardInputDirection() {
+    this.pressedKeyboardCodes ??= new Set();
+    this.keyboardInputDir ??= { x: 0, z: 0, isSprinting: false };
+    let x = 0;
+    let z = 0;
+    this.pressedKeyboardCodes.forEach((code) => {
+      const binding = KEYBOARD_MOVEMENT_BINDINGS[code];
+      if (binding?.axis === 'x') x += binding.value;
+      if (binding?.axis === 'z') z += binding.value;
+    });
+    this.keyboardInputDir.x = THREE.MathUtils.clamp(x, -1, 1);
+    this.keyboardInputDir.z = THREE.MathUtils.clamp(z, -1, 1);
+    this.keyboardInputDir.isSprinting = this.pressedKeyboardCodes.has('ShiftLeft')
+      || this.pressedKeyboardCodes.has('ShiftRight');
+    return this.keyboardInputDir;
+  }
+
+  applyKeyboardMovementInput(code, pressed) {
+    const binding = KEYBOARD_MOVEMENT_BINDINGS[code];
+    if (!binding) return false;
+    this.pressedKeyboardCodes ??= new Set();
+    if (pressed) this.pressedKeyboardCodes.add(code);
+    else this.pressedKeyboardCodes.delete(code);
+    this.recomputeKeyboardInputDirection();
+    return true;
+  }
+
+  applyKeyboardSprintInput(code, pressed) {
+    if (code !== 'ShiftLeft' && code !== 'ShiftRight') return false;
+    this.pressedKeyboardCodes ??= new Set();
+    if (pressed) this.pressedKeyboardCodes.add(code);
+    else this.pressedKeyboardCodes.delete(code);
+    this.recomputeKeyboardInputDirection();
+    return true;
+  }
+
+  resetKeyboardInput() {
+    this.pressedKeyboardCodes ??= new Set();
+    this.pressedKeyboardCodes.clear();
+    this.keyboardInputDir ??= { x: 0, z: 0, isSprinting: false };
+    this.keyboardInputDir.x = 0;
+    this.keyboardInputDir.z = 0;
+    this.keyboardInputDir.isSprinting = false;
+    return this.keyboardInputDir;
+  }
+
+  getPlayerFrameInput() {
+    return this.player?.inQTE ? NEUTRAL_PLAYER_FRAME_INPUT : this.inputDir;
+  }
+
+  updatePlayerFrame(delta) {
+    const frameInput = this.getPlayerFrameInput();
+    this.player.update(delta, frameInput, this.cameraYaw);
+    return frameInput;
+  }
+
+  getVehicleHudLabels(vehicleType) {
+    return HUNT_VEHICLE_HUD_LABELS[vehicleType] ?? HUNT_VEHICLE_HUD_LABELS.default;
+  }
+
   updateShaderUniforms(delta) {
     const shaderMaterials = new Set();
     this.scene.traverse((object) => {
@@ -265,6 +357,7 @@ export class Game {
     this.eventDirector?.stop();
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
+    this.clearExtractionObjective();
     this.environment?.clearWeatherEvent?.();
 
     this.activeBoss?.projectiles?.forEach((projectile) => disposeObject3D(projectile.mesh));
@@ -660,6 +753,100 @@ export class Game {
     return applied;
   }
 
+  startExtractionObjective(signal = {}, zone = null) {
+    if (signal.mechanism !== 'evacuation_countdown') return null;
+    const rawPosition = zone?.position ?? signal.position;
+    const position = rawPosition?.isVector3
+      ? rawPosition.clone()
+      : new THREE.Vector3(Number(rawPosition?.x) || 0, Number(rawPosition?.y) || 0, Number(rawPosition?.z) || 0);
+    const duration = Math.max(10, Math.min(120, Number(signal.countdownSeconds ?? signal.duration) || 45));
+    const radius = Math.max(8, Number(signal.radius ?? zone?.radius) || 42);
+    this.activeExtractionObjective = {
+      sourceId: signal.sourceId ?? signal.id ?? 'gunnison-extraction-countdown',
+      label: signal.label ?? 'Extraction compromise — compte à rebours',
+      position,
+      radius,
+      duration,
+      remaining: duration,
+      zone,
+    };
+    this.extractionOutcome = null;
+    const distance = this.player?.position?.isVector3
+      ? Math.hypot(this.player.position.x - position.x, this.player.position.z - position.z)
+      : 0;
+    this.hud?.updateLevelEventObjective?.({ ...this.activeExtractionObjective, distance, state: 'active' });
+    this.hud?.showLogMessage?.(`EXTRACTION COMPROMISE — REJOIGNEZ LA BALISE EN ${Math.ceil(duration)} S`, 3200);
+    return this.activeExtractionObjective;
+  }
+
+  finishExtractionObjective(state) {
+    const objective = this.activeExtractionObjective;
+    if (!objective || !['secured', 'failed'].includes(state)) return null;
+    if (objective.zone) objective.zone.remaining = Math.min(Number(objective.zone.remaining) || 0, 0.25);
+    let honorAwarded = 0;
+    if (state === 'secured') {
+      const before = Number(this.player?.honorScore) || 0;
+      this.player?.addHonor?.(250);
+      honorAwarded = Math.max(0, (Number(this.player?.honorScore) || 0) - before);
+      if (this.player) {
+        this.player.energy = Math.min(Number(this.player.maxEnergy) || 100, (Number(this.player.energy) || 0) + 45);
+        this.player.scanPulseTimer = Math.max(Number(this.player.scanPulseTimer) || 0, 10);
+        this.player.scanPulseRadius = Math.max(Number(this.player.scanPulseRadius) || 0, 150);
+      }
+      this.hud?.showLogMessage?.(`EXTRACTION SÉCURISÉE — +${honorAwarded} HONNEUR · SCAN LONGUE PORTÉE`, 3200);
+    } else {
+      this.player?.takeDamage?.(48);
+      if (this.player) this.player.energy = 0;
+      if (this.player?.isCloaked) this.player.toggleCloak?.();
+      this.player?.applyCombatStatus?.('suppression', 6);
+      this.requestBossMigration?.(objective.position, { forced: true });
+      this.hud?.showLogMessage?.('FRAPPE DE CONFINEMENT — 48 DÉGÂTS · ÉNERGIE ET CAMOUFLAGE NEUTRALISÉS', 3600);
+    }
+    this.extractionOutcome = {
+      sourceId: objective.sourceId,
+      state,
+      honorAwarded,
+      remaining: objective.remaining,
+      displayRemaining: EXTRACTION_OUTCOME_DISPLAY_SECONDS,
+    };
+    this.activeExtractionObjective = null;
+    this.hud?.updateLevelEventObjective?.({ label: objective.label, remaining: objective.remaining, distance: 0, state });
+    return this.extractionOutcome;
+  }
+
+  updateExtractionObjective(delta) {
+    const objective = this.activeExtractionObjective;
+    if (!Number.isFinite(delta) || delta <= 0) return objective ?? this.extractionOutcome;
+    if (!objective) {
+      if (!this.extractionOutcome) return null;
+      this.extractionOutcome.displayRemaining = Math.max(
+        0,
+        (Number(this.extractionOutcome.displayRemaining) || 0) - delta,
+      );
+      if (this.extractionOutcome.displayRemaining <= 0) {
+        this.extractionOutcome = null;
+        this.hud?.hideLevelEventObjective?.();
+        return null;
+      }
+      return this.extractionOutcome;
+    }
+    objective.remaining = Math.max(0, objective.remaining - delta);
+    const playerPosition = this.player?.position;
+    const distance = playerPosition?.isVector3
+      ? Math.hypot(playerPosition.x - objective.position.x, playerPosition.z - objective.position.z)
+      : Infinity;
+    if (distance <= objective.radius * 0.72) return this.finishExtractionObjective('secured');
+    if (objective.remaining <= 0) return this.finishExtractionObjective('failed');
+    this.hud?.updateLevelEventObjective?.({ ...objective, distance, state: 'active' });
+    return objective;
+  }
+
+  clearExtractionObjective() {
+    this.activeExtractionObjective = null;
+    this.extractionOutcome = null;
+    this.hud?.hideLevelEventObjective?.();
+  }
+
   createScanMarker(target) {
     const marker = new THREE.Group();
     const targetRadius = Math.max(1.4, (target.colliderRadius ?? 1) * 1.35);
@@ -791,6 +978,7 @@ export class Game {
       'stargazer_rifleman',
       'stargazer_net_trapper',
       'weyland_expedition_guard',
+      'gunnison_national_guard',
     ].includes(target?.type)) return 0xb41616;
     if (target?.type === 'combat_synthetic') return 0xf1f2df;
     return 0x00ff44;
@@ -1257,10 +1445,11 @@ export class Game {
           2800,
         );
       } else if (signal.type === 'localized_event') {
-        this.environment?.startLocalizedEvent?.({
+        const zone = this.environment?.startLocalizedEvent?.({
           ...signal,
           id: signal.sourceId,
         });
+        this.startExtractionObjective(signal, zone);
         this.hud?.showLogMessage?.(`ÉVÉNEMENT LOCAL: ${signal.label?.toUpperCase() ?? 'ANOMALIE DÉTECTÉE'}`, 2400);
       } else if (signal.type === 'prey_migration') {
         const spawned = this.spawnPreyMigration(signal);
@@ -1288,7 +1477,9 @@ export class Game {
         this.hud.showLogMessage(
           signal.vehicleType === 'avp_ritual_ship'
             ? 'SURVOL YAUTJA: VAISSEAU DU RITE EN APPROCHE'
-            : 'SURVOL YAUTJA: NAVETTE DE CHASSE EN APPROCHE',
+            : signal.vehicleType === 'wolf_cleaner_ship'
+              ? 'SURVOL YAUTJA: APPAREIL CLEANER DE WOLF EN APPROCHE'
+              : 'SURVOL YAUTJA: NAVETTE DE CHASSE EN APPROCHE',
           2200,
         );
       } else if (signal.type === 'spawn_cache') {
@@ -1326,6 +1517,7 @@ export class Game {
       reducedMotion: this.settings?.reducedMotion === true,
     }) ?? [];
     this.processEncounterSignals(scheduledSignals);
+    this.updateExtractionObjective(delta);
     this.eventDirector?.drainSignals();
     this.updateTerritoryClashes(delta);
 
@@ -1461,7 +1653,11 @@ export class Game {
         launchPosition.z - target.position.z,
       )
       : this.player.position.distanceTo(target.position);
-    const strike = resolveMeleeStrike(this.player.selectedWeapon, distance, {
+    const wristbladeRangeMultiplier = result === 'wristblades'
+      ? this.player.wristbladeRangeMultiplier ?? 1
+      : 1;
+    const effectiveMeleeDistance = distance / wristbladeRangeMultiplier;
+    const strike = resolveMeleeStrike(this.player.selectedWeapon, effectiveMeleeDistance, {
       fromCanopy: isDeathFromAbove,
     });
 
@@ -1592,7 +1788,7 @@ export class Game {
 
     window.addEventListener('blur', () => {
       this.isScopeZooming = false;
-      this.keyboardInputDir = { x: 0, z: 0, isSprinting: false };
+      this.resetKeyboardInput();
       this.gamepadAxes = { x: 0, z: 0 };
       this.resetHubTouchInput();
     });
@@ -1932,10 +2128,10 @@ export class Game {
     } else {
       this.activeHubTouchDirections.delete(direction);
     }
-    this.touchInputDir.x = (this.activeHubTouchDirections.has('right') ? 1 : 0)
-      - (this.activeHubTouchDirections.has('left') ? 1 : 0);
-    this.touchInputDir.z = (this.activeHubTouchDirections.has('down') ? 1 : 0)
-      - (this.activeHubTouchDirections.has('up') ? 1 : 0);
+    this.touchInputDir.x = (this.activeHubTouchDirections.has('left') ? 1 : 0)
+      - (this.activeHubTouchDirections.has('right') ? 1 : 0);
+    this.touchInputDir.z = (this.activeHubTouchDirections.has('up') ? 1 : 0)
+      - (this.activeHubTouchDirections.has('down') ? 1 : 0);
     this.syncInputDirection();
     return true;
   }
@@ -1952,7 +2148,7 @@ export class Game {
     if (!this.isGameStarted || !this.isHuntFlowActive() || this.huntResultShown) return;
     this.isPaused = Boolean(paused);
     this.isScopeZooming = false;
-    this.keyboardInputDir = { x: 0, z: 0, isSprinting: false };
+    this.resetKeyboardInput();
     this.inputDir = { x: 0, z: 0, isSprinting: false };
     document.getElementById('pause-modal')?.classList.toggle('hidden', !this.isPaused);
 
@@ -1972,7 +2168,7 @@ export class Game {
     modal?.classList.remove('hidden');
     modal?.setAttribute('aria-hidden', 'false');
     this.isHubExploring = false;
-    this.keyboardInputDir = { x: 0, z: 0, isSprinting: false };
+    this.resetKeyboardInput();
     this.gamepadAxes = { x: 0, z: 0 };
     this.setHubTouchControlsVisible(false);
     this.syncInputDirection();
@@ -1996,7 +2192,7 @@ export class Game {
     modal?.classList.add('hidden');
     modal?.setAttribute('aria-hidden', 'true');
     this.isHubExploring = true;
-    this.keyboardInputDir = { x: 0, z: 0, isSprinting: false };
+    this.resetKeyboardInput();
     this.gamepadAxes = { x: 0, z: 0 };
     this.resetHubTouchInput();
     this.syncInputDirection();
@@ -2057,7 +2253,7 @@ export class Game {
 
   updateHubExploration(delta) {
     if (this.gameState !== 'HUB' || !this.isHubExploring) return false;
-    this.player.update(delta, this.inputDir, this.cameraYaw);
+    this.updatePlayerFrame(delta);
     this.hub.constrainPlayer(this.player.position, PLAYER_COLLIDER_RADIUS);
     this.updateCamera(delta);
     this.updateHubHUD();
@@ -2116,7 +2312,9 @@ export class Game {
     if (
       resolvedPlanet === 'hive_lv426'
       || resolvedPlanet === 'bouvetoya_pyramid'
+      || resolvedPlanet === 'gunnison_outbreak'
       || this.currentHuntType === 'xeno_queen'
+      || this.currentHuntType === 'predalien'
       || this.currentHuntType === 'grid_alien'
     ) {
       this.spawnHiveEggClusters();
@@ -2136,6 +2334,7 @@ export class Game {
     this.eventDirector?.stop();
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
+    this.clearExtractionObjective();
     this.environment?.clearWeatherEvent?.();
 
     if (this.activeBoss) {
@@ -2172,7 +2371,7 @@ export class Game {
     this.trophyHarvested = false;
     this.huntResultShown = false;
     this.isScopeZooming = false;
-    this.keyboardInputDir = { x: 0, z: 0, isSprinting: false };
+    this.resetKeyboardInput();
     this.gamepadAxes = { x: 0, z: 0 };
     this.inputDir = { x: 0, z: 0, isSprinting: false };
     this.timeScale = 1;
@@ -2210,17 +2409,14 @@ export class Game {
       if (!this.isHubExploring) return;
 
       switch (e.code) {
-        case 'KeyW': case 'ArrowUp': this.keyboardInputDir.z = -1; break;
-        case 'KeyS': case 'ArrowDown': this.keyboardInputDir.z = 1; break;
-        case 'KeyA': case 'ArrowLeft': this.keyboardInputDir.x = -1; break;
-        case 'KeyD': case 'ArrowRight': this.keyboardInputDir.x = 1; break;
-        case 'ShiftLeft': case 'ShiftRight': this.keyboardInputDir.isSprinting = true; break;
         case 'KeyE':
           if (!e.repeat) this.attemptHubInteraction();
           break;
         default:
           break;
       }
+      this.applyKeyboardSprintInput(e.code, true);
+      this.applyKeyboardMovementInput(e.code, true);
       if (e.code.startsWith('Arrow')) e.preventDefault?.();
       this.syncInputDirection();
       return;
@@ -2246,12 +2442,8 @@ export class Game {
       return;
     }
 
+    const sprintChanged = this.applyKeyboardSprintInput(e.code, true);
     switch (e.code) {
-      case 'KeyW': case 'ArrowUp': this.keyboardInputDir.z = -1; break;
-      case 'KeyS': case 'ArrowDown': this.keyboardInputDir.z = 1; break;
-      case 'KeyA': case 'ArrowLeft': this.keyboardInputDir.x = -1; break;
-      case 'KeyD': case 'ArrowRight': this.keyboardInputDir.x = 1; break;
-      case 'ShiftLeft': case 'ShiftRight': this.keyboardInputDir.isSprinting = true; break;
 
       case 'KeyR': {
         const roared = this.player.triggerVictoryRoar();
@@ -2381,16 +2573,16 @@ export class Game {
         break;
 
     }
+    const movementChanged = this.applyKeyboardMovementInput(e.code, true);
+    if (movementChanged || sprintChanged) {
+      if (e.code.startsWith('Arrow')) e.preventDefault?.();
+      this.syncInputDirection();
+    }
   }
 
   onKeyUp(e) {
-    switch (e.code) {
-      case 'KeyW': case 'ArrowUp': if (this.keyboardInputDir.z === -1) this.keyboardInputDir.z = 0; break;
-      case 'KeyS': case 'ArrowDown': if (this.keyboardInputDir.z === 1) this.keyboardInputDir.z = 0; break;
-      case 'KeyA': case 'ArrowLeft': if (this.keyboardInputDir.x === -1) this.keyboardInputDir.x = 0; break;
-      case 'KeyD': case 'ArrowRight': if (this.keyboardInputDir.x === 1) this.keyboardInputDir.x = 0; break;
-      case 'ShiftLeft': case 'ShiftRight': this.keyboardInputDir.isSprinting = false; break;
-    }
+    this.applyKeyboardSprintInput(e.code, false);
+    this.applyKeyboardMovementInput(e.code, false);
     this.syncInputDirection();
   }
 
@@ -2413,8 +2605,8 @@ export class Game {
     const buttons = gp.buttons ?? [];
     const axisX = Number(axes[0]) || 0;
     const axisZ = Number(axes[1]) || 0;
-    this.gamepadAxes.x = Math.abs(axisX) > 0.15 ? axisX : 0;
-    this.gamepadAxes.z = Math.abs(axisZ) > 0.15 ? axisZ : 0;
+    this.gamepadAxes.x = Math.abs(axisX) > 0.15 ? -axisX : 0;
+    this.gamepadAxes.z = Math.abs(axisZ) > 0.15 ? -axisZ : 0;
     this.syncInputDirection();
 
     const cameraAxisX = Number(axes[2]) || 0;
@@ -2464,9 +2656,7 @@ export class Game {
       } else if (result.type === 'vehicle_scan') {
         const revealedCount = this.activateVehicleScan(result);
         const signatureLabel = revealedCount === 1 ? 'SIGNATURE MARQUÉE' : 'SIGNATURES MARQUÉES';
-        const vehicleLabel = result.vehicleType === 'avp_ritual_ship'
-          ? 'VAISSEAU DU RITE SYNCHRONISÉ'
-          : 'NAVETTE SYNCHRONISÉE';
+        const vehicleLabel = this.getVehicleHudLabels(result.vehicleType).synchronized;
         this.hud.showLogMessage(
           `${vehicleLabel} · ${revealedCount} ${signatureLabel} · RECHARGE EFFECTUÉE`,
           2600,
@@ -2518,7 +2708,7 @@ export class Game {
       this.gameState = 'VICTORY_PENDING';
       this.victoryCountdown = VICTORY_DELAY_SECONDS;
       this.isScopeZooming = false;
-      this.keyboardInputDir = { x: 0, z: 0, isSprinting: false };
+      this.resetKeyboardInput();
       this.gamepadAxes = { x: 0, z: 0 };
       this.inputDir = { x: 0, z: 0, isSprinting: false };
       this.neutralizeVictoryDangers();
@@ -3023,11 +3213,7 @@ export class Game {
             : 'OUVRIR LE CONTENEUR DE CHASSE [E]',
         );
       } else if (nearbyVehicle) {
-        this.hud.showActionPrompt(
-          nearbyVehicle.type === 'avp_ritual_ship'
-            ? 'SYNCHRONISER LE VAISSEAU DU RITE [E]'
-            : 'SYNCHRONISER LA NAVETTE DE RECONNAISSANCE [E]',
-        );
+        this.hud.showActionPrompt(this.getVehicleHudLabels(nearbyVehicle.type).prompt);
       } else if (availablePointOfInterest) {
         this.hud.showActionPrompt(`ANALYSER ${availablePointOfInterest.label.toUpperCase()} [E]`);
       } else {
@@ -3073,6 +3259,7 @@ export class Game {
     this.environment?.clearWeatherEvent?.();
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
+    this.clearExtractionObjective();
     this.player.clearTransientGadgets();
 
     this.huntResultShown = true;
@@ -3124,7 +3311,7 @@ export class Game {
           this.hud.hideActionPrompt();
         }
       } else if (this.gameState === 'HUNT') {
-        this.player.update(delta, this.inputDir, this.cameraYaw);
+        this.updatePlayerFrame(delta);
         if (this.player.selfDestructComplete) {
           this.triggerDefeatScreen();
         } else {

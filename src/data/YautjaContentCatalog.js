@@ -168,6 +168,7 @@ export const DREAD_PALETTES = freezeCatalog([
   originalPalette('dread_ivoire', 'Ivoire patiné', 0xb4aa91, 'ton clair très visible dans la forge.'),
   originalPalette('dread_mousse', 'Mousse nocturne', 0x25382f, 'vert noir pour le camouflage forestier.'),
   originalPalette('dread_sang_seche', 'Sang séché', 0x4c1719, 'accent rouge sombre réservé à la personnalisation.'),
+  originalPalette('dread_wolf_noir_gris', 'Noir-gris de Wolf', 0x343638, 'mélange noir et gris usé qui souligne les tresses endommagées du vétéran Cleaner.'),
 ]);
 
 export const SKIN_PALETTES = freezeCatalog([
@@ -179,6 +180,7 @@ export const SKIN_PALETTES = freezeCatalog([
   originalPalette('skin_marais', 'Marais', 0x4c5235, 'vert brun pour les jungles humides.'),
   originalPalette('skin_ocre', 'Ocre', 0x8a6841, 'ocre minéral pour les cartes rocheuses.'),
   originalPalette('skin_nuit', 'Nuit bleutée', 0x303b42, 'ton froid fantastique explicitement propre à Apex Hunt.'),
+  originalPalette('skin_wolf_scarred', 'Gris-vert cicatrisé', 0x536258, 'palette jouable de vétéran Cleaner, avec contraste prévu pour les balafres faciales.'),
 ]);
 
 export const ARMOR_PALETTES = freezeCatalog([
@@ -194,6 +196,7 @@ export const ARMOR_PALETTES = freezeCatalog([
   originalPalette('armor_royal', 'Violet du clan Apex', 0x493c5f, 'couleur de clan entièrement originale.'),
   originalPalette('armor_industriel', 'Acier industriel', 0x687079, 'finition lisible dans les complexes humains.'),
   originalPalette('armor_xeno', 'Résine noire', 0x252c2d, 'aspect de résine inspiré des ruches, sans prétendre à une armure écran.'),
+  originalPalette('armor_cleaner_acid', 'Composite Cleaner anti-acide', 0x66716a, 'plaques gris-vertes mates prévues pour rendre lisibles les projections corrosives.'),
 ]);
 
 export const ARMOR_ACCENTS = freezeCatalog([
@@ -237,7 +240,7 @@ export const VEHICLE_CATALOG = freezeCatalog([
   { id: 'vehicle_preserve_parachute_drop', name: 'Système de largage parachuté', sourceTier: 'SCREEN', description: 'Déploiement aérien des captifs équipés de parachutes sur la planète-réserve.', sources: ['predators2010'], role: 'Archive de niveau : introduit des escouades de proies à des points variables.' },
   { id: 'vehicle_feral_scout', name: 'Éclaireur du Feral', sourceTier: 'SCREEN', description: 'Petit appareil associé à l’arrivée du chasseur de Prey.', sources: ['prey2022'], role: 'Insertion solitaire sur un territoire de chasse éloigné.' },
   { id: 'vehicle_avp_clan_ship', name: 'Vaisseau du rite antarctique', sourceTier: 'AVP_SCREEN', description: 'Vaisseau du groupe Yautja venu superviser la chasse de la pyramide.', sources: ['avp2004'], role: 'Rencontre de niveau : survol rituel, capsules d’insertion et extraction au-dessus de Bouvetøya.', runtimeStatus: 'encounter' },
-  { id: 'vehicle_wolf_cleaner_ship', name: 'Appareil du nettoyeur Wolf', sourceTier: 'AVP_SCREEN', description: 'Vaisseau utilisé pour rejoindre le site d’infestation de Gunnison.', sources: ['avpRequiem2007'], role: 'Intervention rapide et transport d’un arsenal de confinement.' },
+  { id: 'vehicle_wolf_cleaner_ship', name: 'Appareil du nettoyeur Wolf', sourceTier: 'AVP_SCREEN', description: 'Vaisseau utilisé pour rejoindre le site d’infestation de Gunnison.', sources: ['avpRequiem2007'], role: 'Rencontre de niveau : arrivée Cleaner, transport de l’arsenal et extraction au-dessus du secteur contaminé.', runtimeStatus: 'encounter' },
   { id: 'vehicle_badlands_clan_craft', name: 'Appareil du clan de Dek', sourceTier: 'SCREEN', description: 'Vaisseau rattaché au parcours du jeune exilé dans Badlands.', sources: ['badlands2025'], role: 'Relie territoire clanique, exil et expédition sur un monde mortel.' },
   { id: 'vehicle_apex_trophy_barge', name: 'Barge aux trophées Apex', sourceTier: 'ORIGINAL', description: 'Interprétation originale Apex Hunt : transport blindé conçu comme galerie de campagne mobile.', sources: [], role: 'Expose les trophées du joueur et débloque des contrats itinérants.' },
   ...EXPANDED_VEHICLE_CATALOG,
@@ -258,7 +261,7 @@ export const ENEMY_CATALOG = freezeCatalog([
   { id: 'enemy_xenomorph_drone', name: 'Drone xénomorphe', sourceTier: 'AVP_SCREEN', description: 'Organisme de ruche rapide et létal de la branche écran AVP.', sources: ['avp2004', 'avpRequiem2007'], role: 'Attaque depuis murs et plafond, avec sang acide à la mort.' },
   { id: 'enemy_facehugger', name: 'Facehugger', sourceTier: 'AVP_SCREEN', description: 'Organisme issu des œufs de la pyramide dans AVP.', sources: ['avp2004'], role: 'Rencontre 3D : embuscade dissimulée, avertissement puis bond désorientant.', runtimeStatus: 'encounter' },
   { id: 'enemy_xenomorph_queen', name: 'Reine xénomorphe', sourceTier: 'AVP_SCREEN', description: 'Matrice de la ruche affrontée dans la pyramide antarctique.', sources: ['avp2004'], role: 'Boss territorial jouable qui pond, commande les drones et projette de l’acide.', runtimeStatus: 'playable' },
-  { id: 'enemy_predalien', name: 'Predalien', sourceTier: 'AVP_SCREEN', description: 'Hybride xénomorphe/Yautja central à AVP: Requiem.', sources: ['avpRequiem2007'], role: 'Boss agressif combinant mobilité de ruche et puissance physique.' },
+  { id: 'enemy_predalien', name: 'Predalien', sourceTier: 'AVP_SCREEN', description: 'Hybride xénomorphe/Yautja central à AVP: Requiem.', sources: ['avpRequiem2007'], role: 'Boss jouable de Gunnison combinant mobilité de ruche, puissance physique et pression verticale.', runtimeStatus: 'playable' },
   { id: 'enemy_kalisk', name: 'Kalisk', sourceTier: 'SCREEN', description: 'Adversaire suprême recherché par Dek sur le monde de Badlands.', sources: ['badlands2025'], role: 'Mégafaune adaptative dont les points faibles changent entre les phases.' },
   { id: 'enemy_goliath_akumo', name: 'Goliath Xeno-Akumo', sourceTier: 'ORIGINAL', description: 'Interprétation originale Apex Hunt : mégafaune blindée propre au jeu.', sources: [], role: 'Briseur de garde dont les plaques doivent être détruites par secteurs.' },
   ...EXPANDED_ENEMY_CATALOG,
@@ -286,7 +289,7 @@ export const HUNT_BOSS_CATALOG = freezeCatalog([
   { id: 'goliath', name: 'Goliath Xeno-Akumo', sourceTier: 'ORIGINAL', description: 'Interprétation originale Apex Hunt : espèce, anatomie et chasse propres au jeu.', sources: [], gameplay: 'Détruire ses plaques blindées ouvre de courtes fenêtres de dégâts.' },
   { id: 'xeno_queen', name: 'Reine xénomorphe de la ruche', sourceTier: 'ORIGINAL', description: 'Interprétation originale Apex Hunt : mission originale fondée sur la Reine de la branche AVP écran.', sources: [], gameplay: 'Brûler les œufs réduit les renforts avant l’assaut de la Reine.' },
   { id: 'bad_blood', name: 'Rival Yautja « Bad Blood »', sourceTier: 'ORIGINAL', description: 'Interprétation originale Apex Hunt : rival précis créé pour le duel miroir du jeu.', sources: [], gameplay: 'Copie une partie de l’équipement du joueur et punit les abus de camouflage.' },
-  { id: 'predalien', name: 'Predalien légendaire', sourceTier: 'ORIGINAL', description: 'Interprétation originale Apex Hunt : variante de boss distincte du Predalien écran.', sources: [], gameplay: 'Alterner vision xénomorphe et mobilité verticale pour anticiper ses charges.' },
+  { id: 'predalien', name: 'Predalien de Gunnison', sourceTier: 'AVP_SCREEN', description: 'Hybride montré dans AVP: Requiem ; sa mission, ses statistiques et sa géométrie jouable sont une interprétation originale Apex Hunt.', sources: ['avpRequiem2007'], gameplay: 'Lire ses mandibules, sa queue articulée, sa frénésie et ses migrations verticales avant de rompre ses appendices.', implementationOriginal: true, runtimeStatus: 'playable' },
   { id: 'boss_berserker_super_predator', name: 'Super Predator — Berserker', sourceTier: 'SCREEN', description: 'Chef brutal du trio de chasseurs antagonistes de Predators.', sources: ['predators2010'], gameplay: 'Boss miroir lourd : plasma, camouflage et exécution au corps à corps.' },
   { id: 'boss_feral_2022', name: 'Feral Predator', sourceTier: 'SCREEN', description: 'Chasseur de Prey doté d’un arsenal et d’une approche distincts.', sources: ['prey2022'], gameplay: 'Sixième boss jouable : triple lance-traits, bouclier frontal destructible, estoc et charge à la lance.' },
   { id: 'boss_wolf_cleaner', name: 'Wolf — nettoyeur', sourceTier: 'AVP_SCREEN', description: 'Chasseur expérimenté envoyé contre l’infestation de Gunnison.', sources: ['avpRequiem2007'], gameplay: 'Duel tactique multi-outils où chaque gadget contré change sa rotation.' },

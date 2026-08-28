@@ -7,6 +7,7 @@ const ROUTE_STYLE = Object.freeze({
   yautja_prime: { route: 0x432522, marker: 0xff8f70, event: 0x76f6ff },
   genna_deathworld: { route: 0x2f3823, marker: 0xcaff73, event: 0xff9454 },
   bouvetoya_pyramid: { route: 0x303b42, marker: 0x8feaff, event: 0xc58a52 },
+  gunnison_outbreak: { route: 0x252c31, marker: 0xa8d9e8, event: 0xdbe666 },
 });
 
 function vectorFromLayout(value) {
@@ -190,6 +191,7 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
     yautja_prime: new THREE.BoxGeometry(7, 30, 7, 2, 6, 2),
     genna_deathworld: new THREE.ConeGeometry(4.2, 27, 8),
     bouvetoya_pyramid: new THREE.CylinderGeometry(3.6, 5.2, 28, 6),
+    gunnison_outbreak: new THREE.BoxGeometry(5.5, 16, 3.4, 2, 4, 2),
   };
   const accentGeometryByBiome = {
     jungle: new THREE.DodecahedronGeometry(9, 1),
@@ -198,6 +200,7 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
     yautja_prime: new THREE.OctahedronGeometry(3.2, 1),
     genna_deathworld: new THREE.SphereGeometry(4.8, 12, 8),
     bouvetoya_pyramid: new THREE.OctahedronGeometry(4.2, 1),
+    gunnison_outbreak: new THREE.CylinderGeometry(1.8, 2.6, 5.8, 8),
   };
   const placements = [];
   layout.sectors.forEach((sector, sectorIndex) => {

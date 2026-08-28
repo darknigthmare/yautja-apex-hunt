@@ -45,6 +45,22 @@ const BIOME_LEVEL_EVENT_SCHEDULE_EXTENSIONS = Object.freeze({
     Object.freeze({ at: 116, kind: 'pyramid_shift' }),
     Object.freeze({ at: 166, kind: 'pyramid_shift' }),
   ]),
+  // Les temps pointent des nœuds nommés afin que le blackout, la rupture de
+  // ruche, la chute du cordon et l’extraction ne deviennent jamais des textes
+  // génériques déplacés ailleurs sur la carte.
+  gunnison_outbreak: Object.freeze([
+    Object.freeze({ at: 38, kind: 'localized_event', nodeId: 'gunnison-grid-blackout' }),
+    Object.freeze({ at: 68, kind: 'prey_migration', nodeId: 'gunnison-hive-rupture' }),
+    Object.freeze({ at: 94, kind: 'territory_clash', nodeId: 'gunnison-guard-collapse' }),
+    Object.freeze({ at: 164, kind: 'localized_event', nodeId: 'gunnison-extraction-countdown' }),
+  ]),
+});
+
+const BIOME_LEVEL_EVENT_SCHEDULE_OMISSIONS = Object.freeze({
+  // Gunnison fournit ses propres nœuds nommés pour ces familles. Conserver les
+  // occurrences génériques ferait rejouer la même rupture de ruche et le même
+  // effondrement militaire par modulo au lieu de raconter une progression.
+  gunnison_outbreak: Object.freeze(['prey_migration', 'territory_clash']),
 });
 
 function cloneScheduleEntry(entry) {
@@ -83,6 +99,7 @@ export const HUNT_CACHE_TYPES = Object.freeze({
   stargazer_salvage: Object.freeze({ health: 28, energy: 65, honor: 180, shell: 0x343e44, edge: 0x8aa6ad, energyColor: 0xff8c58, emissive: 0x9b3014 }),
   owlf_cold_cache: Object.freeze({ health: 42, energy: 58, honor: 190, shell: 0x667278, edge: 0xb6d8df, energyColor: 0x75e8ff, emissive: 0x147c9b }),
   ritual_weapon_pod: Object.freeze({ health: 24, energy: 85, honor: 210, shell: 0x242d2d, edge: 0x9b8964, energyColor: 0x74ffe2, emissive: 0x168f80 }),
+  cleaner_case: Object.freeze({ health: 42, energy: 72, honor: 220, shell: 0x293437, edge: 0x87999a, energyColor: 0x6fffd1, emissive: 0x168f74 }),
 });
 
 let cacheSequence = 0;
@@ -323,8 +340,12 @@ export class LevelEventDirector {
       ? directiveId.trim()
       : 'standard_hunt';
     const biomeSchedule = BIOME_LEVEL_EVENT_SCHEDULE_EXTENSIONS[this.biomeId] ?? [];
+    const omittedKinds = BIOME_LEVEL_EVENT_SCHEDULE_OMISSIONS[this.biomeId] ?? [];
+    const baseSchedule = omittedKinds.length > 0
+      ? this.baseScheduleTemplate.filter(({ kind }) => !omittedKinds.includes(kind))
+      : this.baseScheduleTemplate;
     this.scheduleTemplate = composeSchedule(
-      composeSchedule(this.baseScheduleTemplate, biomeSchedule),
+      composeSchedule(baseSchedule, biomeSchedule),
       getDirectiveSchedule(this.directiveId),
     );
     this.elapsed = 0;
@@ -428,8 +449,17 @@ export class LevelEventDirector {
     minRadius = 42,
     maxRadius = 92,
     clearance = 5,
+    nodeId = null,
   } = {}) {
-    const node = this.getEventNode(context.environment, kind, ordinal);
+    let node = null;
+    if (typeof nodeId === 'string' && typeof context.environment?.getEventNodes === 'function') {
+      try {
+        node = context.environment.getEventNodes().find(({ id }) => id === nodeId) ?? null;
+      } catch {
+        node = null;
+      }
+    }
+    node ??= this.getEventNode(context.environment, kind, ordinal);
     const rawPosition = node?.position ?? node?.center ?? node;
     const nodePosition = readPosition({ position: rawPosition }, null);
     const preferred = nodePosition ?? this.positionAround(context.player, minRadius, maxRadius);
@@ -439,6 +469,7 @@ export class LevelEventDirector {
 
   selectMigratingPreyType() {
     const biome = String(this.biomeId ?? '').toLowerCase();
+    if (biome.includes('gunnison')) return 'xeno_runner';
     if (biome.includes('los_angeles')) return 'subway_armed_hunter';
     if (biome.includes('bouvet') || biome.includes('pyramid')) return 'xeno_runner';
     if (biome.includes('hive')) return 'xeno_runner';
@@ -450,6 +481,7 @@ export class LevelEventDirector {
 
   selectTerritoryFactions() {
     const biome = String(this.biomeId ?? '').toLowerCase();
+    if (biome.includes('gunnison')) return ['gunnison_national_guard', 'xeno_warrior'];
     if (biome.includes('los_angeles')) return ['urban_cartel_enforcer', 'subway_armed_hunter'];
     if (biome.includes('bouvet') || biome.includes('pyramid')) return ['weyland_expedition_guard', 'xeno_warrior'];
     if (biome.includes('hive')) return ['xeno_drone', 'xeno_warrior'];
@@ -567,6 +599,11 @@ export class LevelEventDirector {
   selectEnemyType(ordinal = this.enemySpawnCount + 1) {
     const biome = String(this.biomeId ?? '').toLowerCase();
     const hunt = String(this.huntId ?? '').toLowerCase();
+    if (biome.includes('gunnison') || hunt.includes('wolf_cleaner')) {
+      if (ordinal === 1) return 'gunnison_national_guard';
+      if (ordinal === 2) return 'xeno_facehugger';
+      return 'xeno_warrior';
+    }
     if (biome.includes('los_angeles') || hunt.includes('city_hunter')) {
       if (ordinal === 1) return 'urban_cartel_enforcer';
       if (ordinal === 2) return 'subway_armed_hunter';
@@ -597,13 +634,14 @@ export class LevelEventDirector {
 
   selectHazardType() {
     const biome = String(this.biomeId ?? '').toLowerCase();
-    return biome.includes('jungle') || biome.includes('hive') || biome.includes('bouvet')
+    return biome.includes('jungle') || biome.includes('hive') || biome.includes('bouvet') || biome.includes('gunnison')
       ? 'rain'
       : 'thermal_storm';
   }
 
   selectVehicleType() {
     const biome = String(this.biomeId ?? '').toLowerCase();
+    if (biome.includes('gunnison')) return 'wolf_cleaner_ship';
     if (biome.includes('los_angeles')) return 'clan_interceptor';
     if (biome.includes('stargazer')) return 'fugitive_escape_craft';
     if (biome.includes('bouvet') || biome.includes('pyramid')) return 'avp_ritual_ship';
@@ -614,6 +652,7 @@ export class LevelEventDirector {
 
   selectCacheType() {
     const biome = String(this.biomeId ?? '').toLowerCase();
+    if (biome.includes('gunnison')) return 'cleaner_case';
     if (biome.includes('los_angeles')) return 'owlf_cold_cache';
     if (biome.includes('stargazer')) return 'stargazer_salvage';
     if (biome.includes('bouvet') || biome.includes('pyramid')) return 'ritual_weapon_pod';
@@ -707,6 +746,7 @@ export class LevelEventDirector {
         minRadius: 46,
         maxRadius: 88,
         clearance: 7,
+        nodeId: event.nodeId,
       });
       this.emit({
         type: 'localized_event',
@@ -722,6 +762,8 @@ export class LevelEventDirector {
         duration: Math.max(1, Number(node?.duration) || 18),
         damage: Math.max(0, Number(node?.damage) || 0),
         status: node?.status ?? null,
+        mechanism: node?.mechanism ?? null,
+        countdownSeconds: Number(node?.countdownSeconds) || null,
       });
       return;
     }
@@ -732,6 +774,7 @@ export class LevelEventDirector {
         minRadius: 58,
         maxRadius: 112,
         clearance: 5,
+        nodeId: event.nodeId,
       });
       const creatureType = node?.creatureType ?? this.selectMigratingPreyType();
       const creatureCount = Math.max(1, Math.min(6, Math.floor(Number(node?.creatureCount) || 3)));
@@ -745,6 +788,7 @@ export class LevelEventDirector {
         creatureType,
         creatureCount,
         radius: Math.max(12, Number(node?.radius) || 42),
+        mechanism: node?.mechanism ?? null,
       });
       return;
     }
@@ -755,6 +799,7 @@ export class LevelEventDirector {
         minRadius: 72,
         maxRadius: 128,
         clearance: 8,
+        nodeId: event.nodeId,
       });
       const factions = this.selectTerritoryFactions();
       this.emit({
@@ -767,6 +812,7 @@ export class LevelEventDirector {
         factions,
         radius: Math.max(20, Number(node?.radius) || 70),
         duration: Math.max(8, Number(node?.duration) || 18),
+        mechanism: node?.mechanism ?? null,
       });
       return;
     }
@@ -833,6 +879,7 @@ export class LevelEventDirector {
         owlf_cryo_commando: 'enemy_owlf_cryo_commando',
         weyland_expedition_guard: 'enemy_weyland_expedition_guard',
         xeno_facehugger: 'enemy_xeno_facehugger',
+        gunnison_national_guard: 'enemy_gunnison_national_guard',
       };
       this.enemySpawnCount = ordinal;
       const socket = this.getEncounterSocket(

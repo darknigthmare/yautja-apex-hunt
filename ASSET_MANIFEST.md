@@ -1,8 +1,8 @@
 # Manifest des assets — Yautja: Apex Hunt
 
 **Date d'inventaire :** 28 août 2026
-**Périmètre :** textures OpenAI du chantier de professionnalisation, de la passe props et des vagues contenu 1.3–1.11.
-**Provenance commune :** modèle ImageGen intégré OpenAI, créations originales fan-made produites du 21 au 25 août 2026, sans image officielle fournie comme référence ni copie d'assets officiels. Les sources PNG conservées restent hors Git et ne sont pas déployées ; les WebP sont les fichiers runtime publics du livrable.
+**Périmètre :** textures OpenAI du chantier de professionnalisation, de la passe props et des vagues contenu 1.3–1.12.
+**Provenance commune :** modèle ImageGen intégré OpenAI, créations originales fan-made produites du 21 au 28 août 2026, sans image officielle fournie comme référence ni copie d'assets officiels. Les sources PNG conservées restent hors Git et ne sont pas déployées ; les WebP sont les fichiers runtime publics du livrable.
 
 ## Registre
 
@@ -38,8 +38,9 @@
 | `los-angeles-heatwave-urban` | `public/assets/textures/los-angeles-heatwave-urban.webp` | 1536×1536 | 846 546 octets | sols, façades et props du biome Los Angeles 1997 | WebP runtime référencé, couvert par contrat et servi en production HTTP 200 `image/webp` |
 | `bouvetoya-ice-rock` | `public/assets/textures/bouvetoya-ice-rock.webp` | 1254×1254 | 484 446 octets | terrain glaciaire, basalte et props de surface de Bouvetøya | WebP runtime décodé, référencé et servi en production HTTP 200 `image/webp` |
 | `bouvetoya-pyramid-stone` | `public/assets/textures/bouvetoya-pyramid-stone.webp` | 1254×1254 | 409 994 octets | architecture, murs mobiles, chambres et props de la pyramide | WebP runtime décodé, référencé et servi en production HTTP 200 `image/webp` |
+| `gunnison-rain-urban` | `public/assets/textures/gunnison-rain-urban.webp` | 1254×1254 | 492 416 octets | routes, ruelles, cour de service de l’hôpital et accès aux égouts de Gunnison | WebP runtime généré avec ImageGen, référencé et décodé localement ; gate navigateur/public v1.12 encore ouverte |
 
-**Poids public total inventorié : 10 577 574 octets.** Les deux matières v1.11 ajoutent 894 440 octets et portent l’inventaire à trente WebP. Les dimensions, poids et usages des sorties précédentes restent consignés avec leurs gates de release respectifs.
+**Poids public total inventorié : 11 069 990 octets.** La matière v1.12 ajoute 492 416 octets et porte l’inventaire à trente-et-un WebP. Les dimensions, poids et usages des sorties précédentes restent consignés avec leurs gates de release respectifs.
 
 Les quinze textures disponibles à l’issue de la 1.3 ont été chargées sans erreur dans Chromium et contrôlées sur la production correspondante. Les quatre matières 1.4 sont intégrées au biome Genna, au Feral, aux unités humaines et à la faune. Les trois matières 1.5 sont reliées à Wolf, au Lost Tribe et au Kalisk dans le code. Les quatre matières 1.6 sont référencées par les plans de props des biomes, décodées et chargées en HTTP 200 dans Chromium local puis sur l’alias de production avec le type `image/webp`. La répétition et le contraste doivent encore être jugés sur plusieurs écrans physiques, notamment avec GPU modeste.
 
@@ -72,6 +73,16 @@ Cette sortie porte l’inventaire à 28 textures WebP et 9 683 134 octets. Son c
 - absence de texte, logo, UI, watermark, personnage, glyphe officiel et asset de film dans les deux prompts et sorties retenues.
 
 Ce lot porte l’inventaire à 30 textures WebP et 10 577 574 octets. Les deux chemins ont été contrôlés en HTTP 200 `image/webp` sur l’alias production du déploiement `dpl_Cu8rczE4atodhPm2N5mJgr74TBxL`, avec leurs poids exacts.
+
+## Lot v1.12 — matière urbaine pluvieuse de Gunnison
+
+- `gunnison-rain-urban.webp` — 1254×1254, 492 416 octets ;
+- génération bitmap originale via le modèle intégré ImageGen, sans image de référence ;
+- surface orthographique raccordable mêlant asphalte charbon, agrégat de béton, microfissures, réparations, pluie, salissures et ruissellement rouillé contenu ;
+- aucune route reconnaissable, signalétique, marque, texte, personnage, créature, véhicule, prop, logo, UI, watermark ou image officielle n’est demandé dans le prompt ;
+- PNG maître conservé localement hors Git sous `art_sources/openai-masters/gunnison-rain-urban.png` ; seul le WebP runtime est destiné au dépôt et au navigateur.
+
+Ce lot porte l’inventaire courant à 31 textures WebP et 11 069 990 octets. Présence, dimensions, poids, décodage local et référence runtime sont consignés ; les contrôles navigateur, HTTP public et publication v1.12 restent à effectuer et ne sont pas revendiqués ici.
 
 ## Lot v1.6 — synthèse props et level design
 
@@ -106,14 +117,15 @@ Pour chaque fichier :
 1. **Validé :** inspection visuelle des sources maîtres disponibles avant conversion ;
 2. **Partiel :** mosaïque 2×2 validée pour les trois matières de props ; contrôle physique multi-écran encore ouvert ;
 3. **Validé sur les sources maîtres :** absence de texte et de marques protégées ;
-4. **Validé pour l’inventaire :** dimensions déclarées, format, poids individuel et poids total des trente WebP ;
+4. **Validé pour l’inventaire :** dimensions déclarées, format, poids individuel et poids total des trente-et-un WebP ;
 5. **Validé :** inspection visuelle des matières OpenAI précédentes et des quatre sorties WebP 1.6 à leur définition native ;
 6. **Validé pour la 1.3 :** chargement Chromium et HTTP 200 des six nouveaux chemins publics ;
 7. **Validé dans le code :** le chargeur applique un matériau de fallback si un asset échoue ;
 8. **Validé localement et en production pour la 1.6 :** quatre nouveaux chemins décodés, rendus et chargés en HTTP 200 dans Chromium, puis servis en HTTP 200 avec le type `image/webp` sur l’alias public.
 9. **Validé localement et en production pour la 1.10 :** matière urbaine décodée, rendue dans les parcours Chromium, puis servie sur l’alias public en HTTP 200 `image/webp`, 846 546 octets.
 10. **Validé localement et en production pour la 1.11 :** deux matières Bouvetøya décodées en WebP 1254×1254, rendues dans Chromium local puis servies sur l’alias public en HTTP 200 `image/webp`, 484 446 et 409 994 octets.
+11. **État v1.12 avant release :** matière Gunnison présente, référencée et décodée en WebP 1254×1254 de 492 416 octets ; revue Chromium et contrôle HTTP public encore ouverts.
 
 ## Publication et droits
 
-Ces assets sont destinés au fan game et ne transfèrent aucun droit sur les franchises Predator ou Alien. Aucun asset officiel n'a été demandé comme source à copier. La release 1.11 a été poussée sur GitHub au commit fonctionnel `57f5a5c` et publiée sur Vercel par `dpl_Cu8rczE4atodhPm2N5mJgr74TBxL` après validation de ses gates locaux et publics.
+Ces assets sont destinés au fan game et ne transfèrent aucun droit sur les franchises Predator ou Alien. Aucun asset officiel n'a été demandé comme source à copier. La release 1.11 a été poussée sur GitHub au commit fonctionnel `57f5a5c` et publiée sur Vercel par `dpl_Cu8rczE4atodhPm2N5mJgr74TBxL` après validation de ses gates locaux et publics. La matière v1.12 est inventoriée dans le worktree sans prétention de commit, push ou publication tant que ces étapes ne sont pas effectivement vérifiées.

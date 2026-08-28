@@ -620,6 +620,15 @@ export function countBossVisualTriangles(root) {
 export function applyBossVisualDetail(boss, bossType) {
   if (!boss?.mesh?.isObject3D) throw new TypeError('applyBossVisualDetail requiert un boss doté d’un mesh THREE.');
 
+  if (boss.nativeHighDetail === true) {
+    const nativeDetail = boss.visualDetail ?? boss.mesh;
+    if (nativeDetail?.userData?.nativeHighDetail !== true) {
+      throw new TypeError(`Le boss natif HD ${String(bossType)} ne documente pas son détail visuel.`);
+    }
+    boss.visualDetail = nativeDetail;
+    return nativeDetail;
+  }
+
   const archetype = BOSS_TYPE_TO_ARCHETYPE[bossType] ?? bossType;
   const profile = BOSS_VISUAL_PROFILES[archetype];
   if (!profile) throw new RangeError(`Profil visuel de boss inconnu : ${String(bossType)}.`);
@@ -653,7 +662,10 @@ export function applyBossVisualDetail(boss, bossType) {
 
 function setFeatureVisibility(root, featureTag, visible) {
   root?.traverse((object) => {
-    if (object.userData?.featureTag === featureTag) object.visible = visible;
+    const aliases = object.userData?.bossVisualFeatureTags;
+    if (object.userData?.featureTag === featureTag || aliases?.includes?.(featureTag)) {
+      object.visible = visible;
+    }
   });
 }
 
@@ -696,6 +708,9 @@ export function disposeBossVisualDetail(boss) {
   const root = boss?.visualDetail
     ?? boss?.mesh?.children?.find((child) => child.userData?.bossVisualDetail === true);
   if (!root) return false;
+  // Le détail natif est le mesh de gameplay lui-même. Son cycle de vie reste
+  // celui du boss et ne doit jamais être détaché comme une greffe générique.
+  if (root.userData?.nativeHighDetail === true) return false;
   const disposed = disposeObject3D(root);
   if (boss?.visualDetail === root) boss.visualDetail = null;
   if (boss?.mesh?.userData) delete boss.mesh.userData.bossVisualDetail;

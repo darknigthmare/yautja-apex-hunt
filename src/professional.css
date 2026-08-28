@@ -339,6 +339,149 @@ body.reduced-motion #tri-laser-container { will-change: auto; }
   select { margin-left: 0; max-width: 100%; width: 100%; }
 }
 
+/* Portrait phones: preserve the playfield while keeping every combat control tactile. */
+@media (max-width: 430px) {
+  #hud-container {
+    padding:
+      max(6px, env(safe-area-inset-top))
+      max(6px, env(safe-area-inset-right))
+      max(6px, env(safe-area-inset-bottom))
+      max(6px, env(safe-area-inset-left));
+  }
+
+  #hud-top {
+    align-items: stretch;
+    gap: 5px;
+  }
+  #hud-top .hud-panel {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 5px 6px;
+  }
+  .hud-label {
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+  .honor-rank,
+  .vision-mode-text {
+    font-size: 10px;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+  .honor-score {
+    font-size: 12px;
+    line-height: 1.1;
+  }
+
+  #hud-left,
+  #hud-right {
+    top: max(68px, calc(env(safe-area-inset-top) + 62px));
+    width: calc(50vw - 8.5px);
+  }
+  #hud-left {
+    left: max(6px, env(safe-area-inset-left));
+    gap: 4px;
+  }
+  #hud-right { right: max(6px, env(safe-area-inset-right)); }
+
+  .stat-group { padding: 4px 6px; }
+  .stat-header {
+    font-size: 9px;
+    gap: 4px;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+  .stat-header span:last-child { white-space: nowrap; }
+  .stat-bar-bg { height: 7px; }
+  .status-card { padding: 4px 5px; }
+  .status-title {
+    font-size: 8px;
+    line-height: 1.1;
+  }
+  .status-state {
+    font-size: 10px;
+    line-height: 1.15;
+  }
+
+  .boss-card { padding: 5px 6px; }
+  .boss-name {
+    font-size: 10px;
+    line-height: 1.2;
+    margin-bottom: 3px;
+  }
+  .boss-hp-bg {
+    height: 8px;
+    margin-bottom: 4px;
+  }
+  .boss-parts-header {
+    font-size: 8px;
+    line-height: 1.1;
+    margin-bottom: 3px;
+  }
+  .part-row {
+    font-size: 8px;
+    gap: 4px;
+    line-height: 1.15;
+    margin-bottom: 2px;
+  }
+  .part-row span:first-child { min-width: 0; }
+
+  /* A projected weak-point label can cross both HUD columns near screen edges. */
+  #weakpoint-tag { display: none; }
+
+  #hud-bottom {
+    gap: 4px;
+    margin-bottom: 0;
+    min-width: 0;
+  }
+  #weapon-selector {
+    flex-wrap: nowrap;
+    gap: 4px;
+    justify-content: flex-start;
+    max-width: calc(100vw - 12px);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-bottom: 2px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    width: 100%;
+  }
+  #weapon-selector::-webkit-scrollbar { display: none; }
+  .weapon-slot { scroll-snap-align: start; }
+
+  #action-prompt {
+    border-width: 1px;
+    gap: 5px;
+    max-width: calc(100vw - 12px);
+    padding: 4px 7px;
+  }
+  .prompt-key {
+    font-size: 11px;
+    padding: 2px 5px;
+    white-space: nowrap;
+  }
+  .prompt-text {
+    font-size: 11px;
+    line-height: 1.1;
+    text-align: center;
+  }
+  #log-banner {
+    bottom: max(154px, calc(env(safe-area-inset-bottom) + 154px));
+    font-size: 10px;
+    line-height: 1.2;
+    max-width: calc(100vw - 12px);
+    padding: 5px 8px;
+  }
+
+  /* Hub exploration has its own D-pad and action buttons; combat bars stay out of it. */
+  #hud-container:has(.touch-hub-controls:not(.hidden)) #hud-bottom,
+  #hud-container:has(.touch-hub-controls:not(.hidden)) #gadget-rack {
+    display: none;
+  }
+}
+
 @media (max-height: 700px) and (min-width: 761px) {
   #hud-left,
   #hud-right { top: 82px; }

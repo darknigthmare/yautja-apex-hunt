@@ -44,6 +44,7 @@ export const DREAD_STYLES = Object.freeze([
   Object.freeze({ id: 'dread_style_ceremonial', name: 'Parure cérémonielle', lengthScale: 1.28, spreadScale: 1.16, beadStride: 1 }),
   Object.freeze({ id: 'dread_style_city_dense', name: 'Tresses urbaines denses', lengthScale: 1.04, spreadScale: 0.68, beadStride: 2, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predator2']), implementationOriginal: true }),
   Object.freeze({ id: 'dread_style_avp_heavy', name: 'Predlocks lourds du rite AVP', lengthScale: 1.18, spreadScale: 1.08, beadStride: 1, sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), implementationOriginal: true }),
+  Object.freeze({ id: 'dread_style_wolf_veteran', name: 'Tresses vétéran de Wolf', lengthScale: 1.12, spreadScale: 0.86, beadStride: 2, sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), implementationOriginal: true }),
 ]);
 
 export const ARMOR_FINISHES = Object.freeze([
@@ -57,6 +58,7 @@ export const ARMOR_FINISHES = Object.freeze([
   Object.freeze({ id: 'finish_stargazer_salvaged', name: 'Composite Stargazer récupéré', metalness: 0.72, roughness: 0.48, emissiveIntensity: 0.08, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['thePredator2018']), implementationOriginal: true }),
   Object.freeze({ id: 'finish_city_burnished', name: 'Alliage urbain bruni', metalness: 0.86, roughness: 0.5, emissiveIntensity: 0.03, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predator2']), implementationOriginal: true }),
   Object.freeze({ id: 'finish_avp_frosted_alloy', name: 'Alliage rituel givré', metalness: 0.84, roughness: 0.66, emissiveIntensity: 0.025, sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), implementationOriginal: true }),
+  Object.freeze({ id: 'finish_cleaner_acid_resistant', name: 'Alliage Cleaner anti-acide', metalness: 0.72, roughness: 0.74, emissiveIntensity: 0.045, sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), implementationOriginal: true }),
 ]);
 
 export const WARPAINT_PATTERNS = Object.freeze([
@@ -70,6 +72,7 @@ export const WARPAINT_PATTERNS = Object.freeze([
   Object.freeze({ id: 'warpaint_fugitive_scar', name: 'Balafre d’évadé Apex', color: 0x86d8bf, pattern: 'claw', sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['thePredator2018']), implementationOriginal: true }),
   Object.freeze({ id: 'warpaint_city_soot', name: 'Suie de la chasse urbaine', color: 0x292723, pattern: 'brow', sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predator2']), implementationOriginal: true }),
   Object.freeze({ id: 'warpaint_scar_acid_mark', name: 'Marque acide de Scar', color: 0x9acd42, pattern: 'acid_mark', sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']) }),
+  Object.freeze({ id: 'warpaint_wolf_veteran_scars', name: 'Balafres du vétéran Wolf', color: 0xa4b09d, pattern: 'claw', sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), implementationOriginal: true }),
 ]);
 
 export const PLAYER_GADGETS = Object.freeze([
@@ -174,6 +177,11 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     id: 'variant_chopper_extended_wristblades', armorPresetId: 'chopper_avp', baseWeaponId: 'wristblades', name: 'Longues lames de Chopper',
     sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), behavior: 'melee_fast',
     modifiers: Object.freeze({ damageMultiplier: 1.08, cooldownMultiplier: 1.06, energyCostMultiplier: 1, rangeMultiplier: 1.38 }),
+  }),
+  Object.freeze({
+    id: 'variant_wolf_power_glove', armorPresetId: 'wolf_avpr', baseWeaponId: 'wristblades', name: 'Gantelet de puissance de Wolf',
+    sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), behavior: 'melee_fast',
+    modifiers: Object.freeze({ damageMultiplier: 1.18, cooldownMultiplier: 1.08, energyCostMultiplier: 1, rangeMultiplier: 1.12 }),
   }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);

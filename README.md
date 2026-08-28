@@ -1,10 +1,12 @@
 # Yautja: Apex Hunt
 
-Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur incarne un chasseur Yautja, forge une apparence modulaire dans le vaisseau-mère, puis affronte onze cibles et des incidents dynamiques dans huit biomes.
+Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur incarne un chasseur Yautja, forge une apparence modulaire dans le vaisseau-mère, puis affronte onze cibles et des incidents dynamiques dans neuf biomes.
 
 ## État du projet
 
-La version 1.11.0 Bouvetøya/Grid est publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Le commit fonctionnel `57f5a5c` porte le contenu à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées de catalogue. Ses gates comptent 318/318 tests, un build Vite de 49 modules, un audit à 0 vulnérabilité, des parcours Chromium desktop/390×844 sans erreur ni débordement, puis le déploiement production `dpl_Cu8rczE4atodhPm2N5mJgr74TBxL` contrôlé `READY` sur l’alias public HTTP 200.
+La version 1.11.0 Bouvetøya/Grid reste la dernière release publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Le commit fonctionnel `57f5a5c` porte cette release historique à onze chasses, huit biomes, dix directives, quinze armes et 218 entrées de catalogue ; ses gates publiées restent consignées dans la section v1.11 ci-dessous.
+
+La v1.12 Gunnison/Predalien est intégrée et a franchi ses gates locales : 365 tests, build Vite, audit de production et parcours Chromium desktop/mobile. Elle porte le contenu courant à neuf biomes, onze directives et 236 entrées de catalogue, corrige le déplacement AZERTY, remplace le mannequin joueur par un rig Yautja procédural animé et transforme Gunnison en véritable territoire de chasse ouvert. Son commit, son push et sa publication sont consignés uniquement après leur exécution.
 
 ## Lancer localement
 
@@ -27,20 +29,37 @@ npm audit
 
 - hub du vaisseau-mère, arsenal, forge et trophées persistants ;
 - onze chasses : Goliath Xeno-Akumo, Reine xénomorphe, rival Bad Blood, Predalien, Berserker Super Predator, Feral, Wolf Cleaner, Kalisk, Assassin Predator (2018), génétiquement amélioré, City Hunter dans l’adaptation originale Los Angeles 1997 et Grid Alien dans l’épreuve de Bouvetøya ;
-- huit biomes : jungle, ruche, Ryushi, arène de clan, monde mortel de Genna, site noir Stargazer, Los Angeles 1997 sous canicule et pyramide antarctique de Bouvetøya ;
-- huit plans déterministes de 630 à 760 unités de rayon, avec neuf à dix secteurs et 12 à 18 routes bouclées ; Bouvetøya déploie précisément dix secteurs, 18 routes non linéaires, sept territoires et sept nœuds d’événements/migration sur un rayon jouable de 740 unités ;
-- trente familles de PNJ 3D, dont le garde d’expédition Weyland polaire et trois adversaires urbains — homme de main de cartel, chasseur armé du métro et commando OWLF cryogénique —, avec comportements distincts, patrouilles territoriales, migrations de proies, conflits d’écosystème, renforts bornés et combat maintenu jusqu’au prélèvement ;
-- cinq véhicules/navettes 3D, dont l’appareil d’évasion Fugitive endommagé, l’intercepteur de clan de Los Angeles et le vaisseau rituel AVP à quatre capsules du Blooding, ainsi que six profils de conteneurs interactifs, dont la récupération Stargazer et le cache froid OWLF ;
+- neuf biomes : jungle, ruche, Ryushi, arène de clan, monde mortel de Genna, site noir Stargazer, Los Angeles 1997 sous canicule, pyramide antarctique de Bouvetøya et Gunnison sous pluie nocturne ;
+- neuf plans déterministes de 630 à 760 unités de rayon, tous organisés en boucles ; Gunnison déploie dix secteurs, 21 routes non linéaires, sept territoires, 19 habitants et huit nœuds d’événements sur un rayon jouable de 760 unités ;
+- trente-et-une familles de PNJ 3D, dont le garde d’expédition Weyland polaire, trois adversaires urbains et le fusilier de la Garde nationale de Gunnison, avec comportements distincts, patrouilles territoriales, migrations de proies, conflits d’écosystème, renforts bornés et combat maintenu jusqu’au prélèvement ;
+- six profils de véhicules/navettes 3D de niveau, dont l’appareil d’évasion Fugitive endommagé, l’intercepteur de clan de Los Angeles, le vaisseau rituel AVP et l’appareil Cleaner de Wolf, ainsi que huit profils de conteneurs interactifs, dont la récupération Stargazer, le cache froid OWLF et la mallette Cleaner ;
 - quinze armes jouables : l’arsenal historique est complété par la roquette de poignet du profil City Stalker, avec explosion de zone, coût d’énergie et recharge propres ; bouclier `[B]`, drone-faucon `[G]`, shuriken `[T]`, leurre Apex `[Y]`, camouflage, vision et mimétisme complètent l’équipement ;
-- dix classes jouables, 38 bio-masques, 50 presets d’armure et neuf axes modulaires : classe, masque, peau, couleur/style de predlocks, couleur/accent/finition d’armure et warpaint ; la sélection atteint neuf styles de predlocks, dix finitions et dix warpaints ; les huit variantes Lost Tribe restent balisées `LICENSED_SCREEN_DESIGN` ;
+- dix classes jouables, 38 bio-masques, 50 presets d’armure et neuf axes modulaires : classe, masque, peau, couleur/style de predlocks, couleur/accent/finition d’armure et warpaint ; la sélection atteint dix styles de predlocks, onze finitions et onze warpaints grâce aux variantes Wolf ; les huit variantes Lost Tribe restent balisées `LICENSED_SCREEN_DESIGN` ;
 - progression d’honneur cumulée, crédits de forge et sauvegarde locale v4 avec migration v1/v2/v3 ;
-- catalogue franchise/support de 218 entrées au statut explicite — jouable, rencontre 3D, galerie 3D ou archive — complété par un registre de 29 œuvres et médias distinguant publié, coupé, non publié, promotion et crossover séparé ;
+- catalogue franchise/support de 236 entrées au statut explicite — jouable, rencontre 3D, galerie 3D ou archive — complété par un registre de 29 œuvres et médias distinguant publié, coupé, non publié, promotion et crossover séparé ;
 - pause, audio, mouvement réduit, fort contraste et échelle du HUD ;
 - Codex séparant écran Predator, écran AVP, univers étendu sous licence et créations originales.
 
 ## Direction artistique et assets
 
-Les trente textures de décor, props et créatures sous `public/assets/textures/`, totalisant 10 577 574 octets, sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La release 1.11 ajoute `bouvetoya-ice-rock.webp` et `bouvetoya-pyramid-stone.webp`, deux matières 1254×1254 pour la banquise, le basalte et l’architecture mobile de la pyramide. Elles ont été produites en nouvelle génération, sans image officielle fournie comme référence ; elles ne transfèrent ni ne revendiquent de droit sur les designs ou marques de la franchise. Les prompts résumés, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+Les trente-et-une textures de décor, props et créatures sous `public/assets/textures/`, totalisant 11 069 990 octets, sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La v1.12 ajoute `gunnison-rain-urban.webp`, matière 1254×1254 de 492 416 octets pour l’asphalte, le béton, les ruelles, la cour de service de l’hôpital et les accès aux égouts. Elle a été produite en nouvelle génération, sans image officielle fournie comme référence ; elle ne transfère ni ne revendique de droit sur les designs ou marques de la franchise. Le prompt exact, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+
+## Passe v1.12 — Gunnison, animation et fidélité d’équipement
+
+- neuvième biome `gunnison_outbreak` : rayon 760, dix secteurs, 21 routes bouclées, sept territoires, 19 habitants, huit nœuds d’événements, 17 familles de props, quatre POI et quatre dangers ; le plan relie forêt du crash, cimetière, centrale, ville, égouts, lycée, hôpital, toits et zone d’extraction sans imposer de couloir unique ;
+- onzième directive `gunnison_cleanup` en quatre vagues/objectifs, Garde nationale 3D avec rafales de quatre tirs et couverture, vaisseau Cleaner de Wolf, balise de détresse, mines laser, mallette, seringue, gantelet de puissance et armure anti-acide ;
+- événements réellement spatialisés : panne du réseau qui coupe les lumières, rupture de ruche dans les égouts, effondrement du cordon militaire, sprinklers de l’hôpital et extraction à compte à rebours avec réussite ou sanction ;
+- contrôle AZERTY corrigé : `Z`/`W`/flèche haut avance dans l’axe caméra, `S` recule, `Q`/`A` va à gauche et `D` à droite ; le tactile et la manette suivent la même convention ;
+- rig Yautja procédural de 17 articulations et huit états — repos, marche, sprint, attaque, impact, soin, perchoir et autodestruction — avec 79 286 triangles authored ; la silhouette active représente 65 092 triangles en standard et 73 170 avec le kit Wolf ;
+- lames de poignet reconstruites comme armes effilées avec fourreaux, rails, pistons et verrouillages, variantes triple Chopper et double Wolf ; leur portée/cadence réellement jouable vaut 8,50 m/0,400 s en standard, 11,73 m/0,424 s pour Chopper et 9,52 m/0,432 s pour Wolf ; combistick, smart disc, lance-filet, mine plasma, shuriken et roquette de poignet disposent chacun d’une géométrie procédurale identifiable au lieu d’un volume générique ;
+- Predalien de Gunnison reconstruit à 111 670 triangles et 150 meshes nommés dans l’assemblage final de production : dôme/crête, quatre mandibules, mâchoire interne, tubes dorsaux, membres digitigrades, predlocks, queue segmentée, respiration, course, morsure, frénésie, balayage et réactions aux impacts ; la factory reconnaît ce rig `nativeHighDetail` et n’ajoute plus les 17 910 triangles/32 draws génériques redondants ;
+- LOD distant dédié aux 31 familles de PNJ : le contrat de référence passe de 499 à 87 draws (−82,57 %), sans qu’aucun archétype ne réduise de moins de 75 %, avec hystérésis pour éviter le clignotement de niveau de détail ;
+- budget statique Gunnison documenté à neuf lots instanciés et 216 instances, 166 appels de rendu sur un plafond de 180, 66 082 triangles sur 220 000 et 72 colliders sur 72 ; ces valeurs sont des budgets de construction, pas un profilage GPU matériel ;
+- catalogues courants : 236 entrées, dont 48 technologies, 15 véhicules, 37 ennemis, 31 événements, 15 boss et 13 éléments de support ; les statuts `playable`, `encounter`, `customization` et `archive` restent explicites.
+
+Le lot Gunnison/AVP:R provient du classeur réellement lu `C:\Users\chuck\Downloads\Encyclopedie_exhaustive_franchise_Predator.xlsx`, SHA-256 `47C659F4F79CA0E71D8B8B7B8DB2CD7B7363827224BC081D59E9DD9D9576983C`, composé de 20 feuilles et 915 entrées uniques, issu de la [conversation ChatGPT source](https://chatgpt.com/c/6a8adeed-b6f8-83ed-9d07-5088fa50b8a9). Les rapprochements v1.12 utilisent `Lieux!A20:Q20`, `A29:Q29`, `A41:Q41`, `A49:Q51`, `A62:Q62`, `A105:Q105`, `A115:Q119` ; `Armes!A45:Q45`, `A50:Q50`, `A58:Q59`, `A78:Q79` ; `Équipements!A5:Q5`, `A13:Q14`, `A35:Q35`, `A40:Q40`, `A61:Q61` ; `Véhicules!A38:Q48`, `A64:Q64` ; `Masques!A61:Q61` ; `Peaux!A36:Q36` ; `Dreads!A10:Q10`, `A45:Q45` et `Rituels!A33:Q33`. Chaque élément retenu reste séparé entre référence `AVP_SCREEN` et topologie, statistiques, événements ou géométries `ORIGINAL` du fan game.
+
+La v1.12 n’est pas déclarée publiée dans ce document tant que son commit, son push et son déploiement n’ont pas été vérifiés et consignés ; ses gates locales sont établies dans `QA_REPORT.md`.
 
 ## Passe v1.11 — Bouvetøya et Grid Alien
 
@@ -119,7 +138,7 @@ Les gates v1.6 sont à 193/193 tests, 42 modules Vite, 0 vulnérabilité de prod
 
 Le registre runtime suit 29 œuvres et médias séparément afin de ne pas confondre film sorti, bonus vidéo, scène coupée, projet non publié, promotion, jeu, roman, comic ou crossover. Pendant la passe 1.9, le tableur évoqué par l’utilisateur n’était pas encore accessible et aucun ajout ne lui avait donc été attribué. Pour la 1.10, le classeur a été retrouvé, authentifié par sa provenance ChatGPT et confronté au runtime avec une source vérifiable, un niveau de provenance et un statut d’implémentation honnête pour chaque élément retenu.
 
-Les principaux lots de contenu encore distincts de cette passe restent une carte urbaine de Gunnison réellement multi-niveaux, des campagnes complètes dédiées à *Killer of Killers* et à *Alien vs. Predator*, ainsi qu’un profilage GPU sur machines modestes avant d’augmenter encore la densité géométrique.
+Les principaux lots de contenu encore distincts de cette passe restent des campagnes complètes dédiées à *Killer of Killers* et aux ramifications d’*Alien vs. Predator* qui ne disposent encore que de contrats, ainsi qu’un profilage GPU sur machines modestes avant d’augmenter encore la densité géométrique. Gunnison possède désormais sa carte multi-zones ; ses extensions futures doivent enrichir les intérieurs et les variations d’événements sans doubler les occurrences déjà orchestrées.
 
 ## Documentation
 

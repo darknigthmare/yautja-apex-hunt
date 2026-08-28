@@ -1029,6 +1029,16 @@ export class BiomePropBuilder {
       addMesh(group, this.geometry('poi-console-antenna', () => new THREE.CylinderGeometry(0.1, 0.15, 3.8, 6)), materials.dark, { position: [1.45, 3, 0], name: `${spec.id}-antenna` });
       addIndicator(this.geometry('poi-record-indicator', () => new THREE.BoxGeometry(0.75, 0.75, 0.75)), [1.45, 5, 0], 'data-cube');
       tagVisual(group, 'poi-field_record', 'tilted-console-data-cube');
+    } else if (spec.type === 'guard_radio') {
+      addMesh(group, this.geometry('poi-guard-radio-case', () => new THREE.BoxGeometry(3.4, 1.5, 2.4)), materials.dark, { position: [0, 0.75, 0], name: spec.id + '-radio-case' });
+      addMesh(group, this.geometry('poi-guard-radio-panel', () => new THREE.BoxGeometry(2.5, 1.05, 0.22)), signal, { position: [0, 1.25, 1.22], rotation: [-0.08, 0, 0], castShadow: false, name: spec.id + '-frequency-panel' });
+      for (const side of [-1, 1]) {
+        addMesh(group, this.geometry('poi-guard-radio-dial', () => new THREE.CylinderGeometry(0.28, 0.28, 0.22, 12)), materials.dark, { position: [side * 0.8, 1.1, 1.38], rotation: [Math.PI / 2, 0, 0], name: spec.id + (side < 0 ? '-dial-left' : '-dial-right') });
+      }
+      addMesh(group, this.geometry('poi-guard-radio-antenna', () => new THREE.CylinderGeometry(0.08, 0.12, 5.2, 8)), materials.dark, { position: [1.25, 3.3, -0.25], rotation: [0, 0, -0.12], name: spec.id + '-whip-antenna' });
+      addMesh(group, this.geometry('poi-guard-radio-handset', () => new THREE.CapsuleGeometry(0.22, 1.65, 4, 8)), materials.dark, { position: [-1.5, 1.7, 0], rotation: [0, 0, Math.PI / 2], name: spec.id + '-handset' });
+      addIndicator(this.geometry('poi-guard-radio-indicator', () => new THREE.OctahedronGeometry(0.68, 0)), [0, 4.7, 0], 'distress-pulse');
+      tagVisual(group, 'poi-guard_radio', 'field-radio-whip-antenna-handset');
     } else if (spec.type === 'hunt_trace') {
       addMesh(group, this.geometry('poi-trace-ring', () => new THREE.TorusGeometry(2.8, 0.18, 6, 20)), signal, { position: [0, 0.2, 0], rotation: [Math.PI / 2, 0, 0], castShadow: false, name: `${spec.id}-trace-ring` });
       for (let index = 0; index < 3; index += 1) addMesh(group, this.geometry('poi-footprint', () => new THREE.ConeGeometry(0.45, 1.5, 3)), materials.dark, { position: [-1.3 + index * 1.2, 0.25, -1.2 + index * 0.9], rotation: [Math.PI / 2, index * 0.35, 0], name: `${spec.id}-trace-${index + 1}` });

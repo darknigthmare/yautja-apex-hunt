@@ -1,8 +1,8 @@
-# Rapport QA — release 1.11.0
+# Rapport QA — candidate 1.12.0
 
 **Date :** 28 août 2026
-**Statut :** release 1.11.0 validée, poussée et publiée.
-**Production actuellement vérifiée :** release 1.11.0 sur <https://yautja-apex-hunt.vercel.app/>
+**Statut :** candidate 1.12.0 validée localement ; commit, push et publication à consigner après exécution.
+**Production actuellement vérifiée :** release 1.11.0 sur <https://yautja-apex-hunt.vercel.app/> jusqu’au déploiement v1.12.
 **Commit/push v1.11 :** `57f5a5c` — poussé sur `codex/professional-hunt-pass`
 **Déploiement Vercel v1.11 :** `dpl_Cu8rczE4atodhPm2N5mJgr74TBxL` — `READY`, cible `production`
 **URL/alias public v1.11 :** <https://yautja-apex-hunt.vercel.app/> — HTTP 200, alias confirmé le 28 août 2026
@@ -12,6 +12,24 @@
 **Déploiement production v1.7 :** `dpl_En8EmhSsfxE7SZFPYEApyYwo134h` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `94bb326`
 **Premier déploiement de validation v1.6 :** `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` — `READY`, cible `production`, alias officiel appliqué
 **Source :** <https://github.com/darknigthmare/yautja-apex-hunt>
+
+## Passe v1.12 — Gunnison, rig Yautja, équipement et Predalien natif
+
+| Gate déjà exécuté | Résultat vérifié | Périmètre exact |
+|---|---:|---|
+| Suite automatisée finale | **365/365 réussis** | Déplacement caméra AZERTY, entrées simultanées, rig/animations, géométries d’armes, statistiques de wristblades, Predalien/weakpoints, Gunnison, extraction, LOD PNJ, HUD mobile et régressions historiques. |
+| Build production local | **Vite 8.2.2 réussi** | 49 modules ; HTML 28,34 Ko (gzip 7,76), CSS 31,76 Ko (gzip 7,33), jeu 792,79 Ko (gzip 210,74), Three.js 517,65 Ko (gzip 131,59). Build terminé en 2,84 s ; avertissement de taille non bloquant. |
+| Sécurité dépendances | **0 vulnérabilité** | `npm audit --omit=dev`. |
+| Qualité Git | **propre** | `git diff --check` sans erreur ; avertissements de normalisation LF/CRLF uniquement. |
+| Chromium desktop local | **réussi** | Gunnison/Predalien lancé, canvas 1 258×566, aucun overlay ni erreur applicative ; texture Gunnison répond en HTTP 200. |
+| Chromium mobile local | **réussi après polish** | 390×844, canvas 390×844, document sans débordement horizontal, Gunnison/Predalien actif, texture HTTP 200 et console vide ; blocs haut 6–201 px, technologies 694–748 px et arsenal 792–838 px, sans chevauchement majeur. |
+| Budget joueur | **contrat respecté** | Rig 17 articulations/8 états ; 79 286 triangles authored, 65 092 actifs en standard et 73 170 avec le kit Wolf. |
+| Budget Predalien | **contrat respecté** | 111 670 triangles/150 meshes en production ; retrait de 17 910 triangles et 32 draws génériques redondants, weakpoints conservés. |
+| LOD PNJ | **contrat respecté** | 31 archétypes ; 499 → 87 draws (−82,57 %), réduction minimale de 75 % par archétype. |
+
+La candidate 1.12 ajoute le biome ouvert Gunnison (rayon 760, dix secteurs, 21 routes, sept territoires, 19 PNJ et huit nœuds d’événements), la directive Cleaner en quatre objectifs et extraction de 45 secondes, le vaisseau de Wolf, les événements blackout/ruche/Garde/hôpital, un rig Yautja animé et un arsenal procédural identifiable. Les wristblades disposent maintenant de portées/cadences réelles : standard 8,50 m/0,400 s, Chopper 11,73 m/0,424 s et Wolf 9,52 m/0,432 s.
+
+Publication v1.12 : **EN ATTENTE** du commit, du push, du déploiement `READY`, des contrôles HTTP publics et des marqueurs du bundle. Aucun identifiant n’est pré-déclaré.
 
 ## Passe v1.11 — Bouvetøya, Grid Alien et pyramide mobile
 
@@ -164,7 +182,7 @@ Le benchmark MHW s’appuie sur les principes officiels publiés par Capcom — 
 
 L'absence signalée dans les rapports v1.9 et antérieurs correspondait à l'état des fichiers alors disponibles. Pour la v1.10, le classeur de la conversation ChatGPT a été retrouvé dans les téléchargements, son origine ChatGPT authentifiée par `Zone.Identifier`, puis ses 20 feuilles et 915 entrées uniques ont été confrontées aux catalogues et surfaces runtime. La vague Los Angeles 1997 ci-dessus ferme un lot d'écarts identifié dans ce document ; elle ne signifie pas que les 915 lignes sont toutes devenues des entités jouables distinctes.
 
-Les prochains lots déjà identifiés sont une carte de Gunnison réellement multi-niveaux, des campagnes complètes *Killer of Killers* et *Alien vs. Predator*, puis une faune et une flore de Genna plus variées.
+Les prochains lots déjà identifiés après Gunnison sont des campagnes complètes *Killer of Killers* et *Alien vs. Predator*, une faune et une flore de Genna plus variées, puis du profilage GPU sur matériel modeste et une validation tactile physique.
 
 ## Passe v1.6 — état de validation props et level design
 

@@ -19,7 +19,7 @@ function completeDirective(id) {
   );
 }
 
-test('les dix directives et leurs collections imbriquées sont immuables', () => {
+test('les onze directives et leurs collections imbriquées sont immuables', () => {
   assert.deepEqual(Object.keys(HUNT_DIRECTIVES), [
     'standard_hunt',
     'jungle_fireteam',
@@ -29,6 +29,7 @@ test('les dix directives et leurs collections imbriquées sont immuables', () =>
     'stargazer_breach',
     'urban_heatwave_hunt',
     'avp_pyramid_trial',
+    'gunnison_cleanup',
     'game_preserve_escape',
     'hive_containment_failure',
   ]);

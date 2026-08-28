@@ -562,3 +562,38 @@ test('un death-from-above hors portée retombe près de l’ancienne perche', ()
   assert.deepEqual(game.player.position.toArray(), landing.toArray());
   assert.equal(game.player.currentPerchNode, null);
 });
+
+function resolveWristbladeDamageAtRange(distance, wristbladeRangeMultiplier) {
+  const game = Object.create(Game.prototype);
+  let damage = 0;
+  game.isGameStarted = true;
+  game.isPaused = false;
+  game.gameState = 'HUNT';
+  game.activeEnemies = [];
+  game.activeBoss = {
+    isDead: false,
+    position: new THREE.Vector3(distance, 0, 0),
+    takeDamage(amount) { damage += amount; return { killed: false }; },
+  };
+  game.player = {
+    position: new THREE.Vector3(0, 0, 0),
+    selectedWeapon: 1,
+    meleeDamageMultiplier: 1,
+    wristbladeRangeMultiplier,
+    health: 100,
+    attack: () => 'wristblades',
+    addHonor() {},
+  };
+  game.hud = { showLogMessage() {} };
+  game.spawnBloodSpatterVFX = () => {};
+
+  game.performAttack();
+  return damage;
+}
+
+test('la résolution de mêlée emploie la portée gameplay des wristblades Chopper et Wolf', () => {
+  assert.equal(resolveWristbladeDamageAtRange(9, undefined), 0, 'le profil historique reste limité à 8,5 m');
+  assert.equal(resolveWristbladeDamageAtRange(10, 1.38), 48, 'Chopper porte à 11,73 m');
+  assert.equal(resolveWristbladeDamageAtRange(9.4, 1.12), 48, 'Wolf porte à 9,52 m');
+  assert.equal(resolveWristbladeDamageAtRange(9.6, 1.12), 0, 'Wolf ne dépasse pas sa portée calculée');
+});

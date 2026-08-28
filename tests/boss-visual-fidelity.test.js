@@ -25,6 +25,7 @@ function collectFeatureTags(root) {
   const tags = new Set();
   root.traverse((object) => {
     if (object.userData?.featureTag) tags.add(object.userData.featureTag);
+    object.userData?.bossVisualFeatureTags?.forEach?.((tag) => tags.add(tag));
   });
   return tags;
 }
@@ -37,15 +38,28 @@ function collectMeshes(root) {
   return meshes;
 }
 
-test('les onze boss reçoivent une couche géométrique HD au-dessus de 10k triangles', (t) => {
+test('les onze boss exposent un contrat visuel HD au-dessus de 10k triangles', (t) => {
   for (const [bossType, archetype] of BOSS_CASES) {
     const scene = new THREE.Scene();
     const boss = createBoss(scene, { bossType });
-    const detail = boss.mesh.getObjectByName(`bossVisualDetail:${archetype}`);
+    const detail = boss.visualDetail;
 
     assert.ok(detail?.isGroup, `${bossType} doit recevoir son groupe visuel HD`);
     assert.equal(detail, boss.visualDetail);
-    assert.equal(detail.userData.archetype, archetype);
+    if (bossType === 'predalien') {
+      assert.equal(boss.nativeHighDetail, true);
+      assert.equal(detail, boss.mesh, 'le Predalien doit employer sa géométrie native comme détail de production');
+      assert.equal(detail.userData.archetype, 'predalien_hybrid');
+      assert.equal(detail.userData.bossVisualArchetype, archetype);
+      assert.equal(detail.userData.bossVisualDetail.archetype, archetype);
+      assert.equal(
+        boss.mesh.getObjectByName('bossVisualDetail:predalien'), undefined,
+        'aucune fondation générique ne doit doubler le Predalien natif',
+      );
+    } else {
+      assert.equal(detail.userData.archetype, archetype);
+      assert.equal(detail, boss.mesh.getObjectByName(`bossVisualDetail:${archetype}`));
+    }
 
     const detailTriangles = countBossVisualTriangles(detail);
     const totalTriangles = countBossVisualTriangles(boss.mesh);
@@ -77,8 +91,12 @@ test('les onze boss reçoivent une couche géométrique HD au-dessus de 10k tria
 
     t.diagnostic(`${bossType}: ${detailTriangles} triangles HD, ${totalTriangles} triangles au total, ${meshes.length} meshes`);
     boss.dispose();
-    assert.equal(detail.parent, null, `${bossType} doit nettoyer le groupe HD au dispose`);
-    assert.equal(detail.userData.disposeComplete, true);
+    if (bossType === 'predalien') {
+      assert.notEqual(detail.userData.disposeComplete, true, 'le détail natif reste géré par le cycle de vie du boss');
+    } else {
+      assert.equal(detail.parent, null, `${bossType} doit nettoyer le groupe HD au dispose`);
+      assert.equal(detail.userData.disposeComplete, true);
+    }
   }
 });
 

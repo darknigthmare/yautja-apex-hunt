@@ -2,6 +2,43 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
+## [1.12.0] — en préparation, 28 août 2026
+
+Cette section décrit le contenu réellement intégré au worktree. Elle ne constitue pas encore une déclaration de release : aucune réussite de test, de build, de commit, de push ou de déploiement v1.12 n’est attribuée avant l’exécution des gates correspondants.
+
+### Gunnison — neuvième territoire de chasse
+
+- biome `gunnison_outbreak` ajouté comme neuvième terrain : rayon jouable 760, terrain 1 720, dix secteurs, 21 routes bouclées, sept territoires, 19 PNJ initiaux et huit nœuds d’événements ;
+- 17 familles de props, quatre POI et quatre dangers relient forêt du crash, cimetière, centrale, rues, égouts, lycée, hôpital, toits et extraction dans une carte non linéaire ;
+- neuf lots statiques regroupent 216 instances ; le budget de construction produit 166 appels de rendu sur un plafond de 180, 66 082 triangles sur 220 000 et 72 colliders sur 72 ;
+- directive `gunnison_cleanup` ajoutée comme onzième directive, avec quatre vagues/objectifs, fusilier de la Garde nationale en couverture et rafales de quatre tirs, caches Cleaner et progression vers le Predalien ;
+- événements locaux raccordés au runtime : panne électrique qui réduit réellement l’éclairage, rupture de ruche dans les égouts, effondrement du cordon de la Garde, sprinklers de l’hôpital et extraction de 45 secondes ; atteindre la zone récompense l’approche, l’échec inflige dégâts, panne d’énergie, décloak, suppression et migration forcée de la cible ;
+- appareil Cleaner de Wolf, épave éclaireuse, convoi militaire, balise de détresse, mines laser, mallette, seringue de prélèvement, gantelet de puissance et armure anti-acide enrichissent le décor, les rencontres et la personnalisation ;
+- `gunnison-rain-urban.webp`, matière OpenAI originale 1254×1254 de 492 416 octets, est reliée aux routes, ruelles, cours de service et accès aux égouts ; l’inventaire courant atteint 31 WebP et 11 069 990 octets.
+
+### Joueur, animations et équipement identifiable
+
+- correction du repère d’entrée : `Z`/`W`/flèche haut produit désormais l’avant caméra, `S` l’arrière, `Q`/`A` la gauche et `D` la droite ; tactile et manette appliquent les mêmes signes ; un `Set` de touches conserve correctement l’avance lorsque deux directions opposées sont pressées puis relâchées et neutralise le rig pendant les QTE ;
+- nouveau rig Yautja procédural de 17 articulations et huit états animés — repos, marche, sprint, attaque, impact, soin, perchoir et autodestruction ;
+- budget authored de 79 286 triangles, avec 65 092 triangles visibles pour le chasseur standard et 73 170 pour le preset Wolf ; les volumes sont construits pour la silhouette de jeu et ne copient aucun modèle officiel ;
+- lames de poignet remaniées en lames effilées extrudées avec fourreaux, rails, pistons et verrouillages ; Chopper dispose de trois longues lames et Wolf d’une paire renforcée ; portée/cadence : standard 8,50 m/0,400 s, Chopper 11,73 m/0,424 s, Wolf 9,52 m/0,432 s ;
+- combistick à seize pièces, smart disc à 21, projectile de lance-filet tressé, mine plasma, shuriken et roquette de poignet reçoivent chacun une géométrie dédiée, sans `placeholder` ni volume de substitution ;
+- canon d’épaule, brassards, armure, bottes et grèves sont détaillés ; le kit Wolf expose aussi plaques anti-acide, mallette Cleaner, seringue, quatre mines laser et gantelet de puissance.
+- HUD portrait 390×844 réorganisé en deux colonnes non chevauchantes ; technologies en barre tactile basse, arsenal horizontal défilable, points faibles projetés masqués sur petit écran et commandes du hub protégées.
+
+### Predalien et contenu franchise
+
+- Predalien de Gunnison reconstruit avec 111 670 triangles et 150 meshes nommés dans l’assemblage final de production, aucune `BoxGeometry` de substitution et contrat `nativeHighDetail` ; la factory ne greffe plus les 17 910 triangles et 32 draws génériques redondants ;
+- crête et dôme, quatre mandibules, mâchoire interne, quatre tubes dorsaux, membres digitigrades, quatorze predlocks/quilles et queue de douze segments composent sa silhouette ; respiration, course, morsure/frénésie, balayage de queue et réaction aux impacts l’animent en combat ;
+- catalogue consolidé porté à 236 entrées : 48 technologies, 15 véhicules, 37 ennemis, 31 événements, 15 boss et 13 éléments de support, avec statuts runtime explicites ;
+- personnalisation Wolf ajoutée sans retirer les variantes existantes : dixième style de predlocks, onzième finition d’armure et onzième warpaint ;
+- LOD distant propre aux 31 archétypes de PNJ : 499 draws proches contre 87 draws distants sur le corpus de contrôle (−82,57 %), réduction minimale de 75 % par archétype et seuils avec hystérésis ;
+- le Predalien et Wolf sont fondés sur `AVP_SCREEN`, tandis que la carte, ses routes, statistiques, événements et géométries procédurales restent `ORIGINAL` à *Apex Hunt*.
+
+### Provenance du lot AVP:R
+
+Le lot Gunnison/AVP:R provient du classeur réellement lu `C:\Users\chuck\Downloads\Encyclopedie_exhaustive_franchise_Predator.xlsx`, SHA-256 `47C659F4F79CA0E71D8B8B7B8DB2CD7B7363827224BC081D59E9DD9D9576983C`, composé de 20 feuilles et 915 entrées uniques, issu de la [conversation ChatGPT source](https://chatgpt.com/c/6a8adeed-b6f8-83ed-9d07-5088fa50b8a9). Les rapprochements utilisent `Lieux!A20:Q20`, `A29:Q29`, `A41:Q41`, `A49:Q51`, `A62:Q62`, `A105:Q105`, `A115:Q119` ; `Armes!A45:Q45`, `A50:Q50`, `A58:Q59`, `A78:Q79` ; `Équipements!A5:Q5`, `A13:Q14`, `A35:Q35`, `A40:Q40`, `A61:Q61` ; `Véhicules!A38:Q48`, `A64:Q64` ; `Masques!A61:Q61` ; `Peaux!A36:Q36` ; `Dreads!A10:Q10`, `A45:Q45` et `Rituels!A33:Q33`. Le classeur sert d’inventaire de travail, jamais de preuve suffisante pour fusionner continuités écran, EU et créations originales.
+
 ## [1.11.0] — 26 août 2026
 
 ### Onzième chasse et pyramide de Bouvetøya

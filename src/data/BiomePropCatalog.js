@@ -7,6 +7,7 @@ export const ENVIRONMENT_PROP_TEXTURES = Object.freeze({
   urbanHeatwave: '/assets/textures/los-angeles-heatwave-urban.webp',
   bouvetIceRock: '/assets/textures/bouvetoya-ice-rock.webp',
   bouvetPyramidStone: '/assets/textures/bouvetoya-pyramid-stone.webp',
+  gunnisonRainUrban: '/assets/textures/gunnison-rain-urban.webp',
 });
 
 export const ENVIRONMENT_PERFORMANCE_BUDGETS = Object.freeze({
@@ -260,6 +261,49 @@ const PLAN_DATA = {
       { id: 'bouvet-hazard-acid-channel', type: 'acid_pool', position: [-260, 0, -250], radius: 10, damage: 11, interval: 2.1, status: 'corrosion', message: 'SANG ACIDE — ARMURE ET CAMOUFLAGE CORRODÉS' },
       { id: 'bouvet-hazard-resin-snare', type: 'resin_snare', position: [475, 0, 115], radius: 9, damage: 6, interval: 2.7, status: 'snare', message: 'RÉSINE ACTIVE — MOBILITÉ RÉDUITE' },
       { id: 'bouvet-hazard-crush-zone', type: 'pyramid_crush_zone', position: [105, 0, 38], radius: 11, damage: 10, interval: 2.8, status: 'impact', message: 'MÉCANISME PYRAMIDAL — ZONE D’ÉCRASEMENT' },
+    ],
+  },
+  gunnison_outbreak: {
+    sourceTier: 'ORIGINAL',
+    basisTier: 'AVP_SCREEN',
+    assetPolicy: 'Adaptation procédurale originale de la topologie de Gunnison ; aucun décor ou asset officiel.',
+    textureReferences: [
+      ENVIRONMENT_PROP_TEXTURES.gunnisonRainUrban,
+      ENVIRONMENT_PROP_TEXTURES.hiveMembrane,
+      ENVIRONMENT_PROP_TEXTURES.frontierPanels,
+      '/assets/textures/wolf-cleaner-alloy.webp',
+      '/assets/textures/yautja-alloy.webp',
+    ],
+    props: [
+      { id: 'gunnison-crashed-scout-hull', type: 'lost_tribe_ship_hatch', position: [0, 0, 585], rotation: Math.PI, scale: 1.08, texture: '/assets/textures/yautja-alloy.webp', colliderRadius: 17, perchHeight: 16 },
+      { id: 'gunnison-cemetery-chapel', type: 'urban_tenement', position: [-430, 0, 455], rotation: 0.22, scale: 0.72, texture: ENVIRONMENT_PROP_TEXTURES.gunnisonRainUrban, colliderRadius: 17, perchHeight: 25 },
+      { id: 'gunnison-cemetery-headstones', type: 'bone_line', position: [-385, 0, 410], rotation: -0.3, scale: 0.84, texture: ENVIRONMENT_PROP_TEXTURES.gunnisonRainUrban, instances: 12, colliderRadius: 15 },
+      { id: 'gunnison-power-station', type: 'stargazer_containment_lab', position: [425, 0, 445], rotation: -0.28, scale: 1.12, texture: ENVIRONMENT_PROP_TEXTURES.gunnisonRainUrban, colliderRadius: 21, perchHeight: 18 },
+      { id: 'gunnison-downtown-west-block', type: 'urban_tenement', position: [-520, 0, 115], rotation: 0.08, scale: 1.08, texture: ENVIRONMENT_PROP_TEXTURES.gunnisonRainUrban, colliderRadius: 21, perchHeight: 32 },
+      { id: 'gunnison-downtown-east-block', type: 'urban_tenement', position: [-445, 0, 35], rotation: -0.18, scale: 0.96, texture: ENVIRONMENT_PROP_TEXTURES.gunnisonRainUrban, colliderRadius: 20, perchHeight: 30 },
+      { id: 'gunnison-sewer-access', type: 'subway_entrance', position: [470, 0, 35], rotation: -0.46, scale: 1.16, texture: ENVIRONMENT_PROP_TEXTURES.gunnisonRainUrban, colliderRadius: 14, perchHeight: 11 },
+      { id: 'gunnison-sewer-resin-ribs', type: 'rib_corridor', position: [425, 0, -55], rotation: 0.24, scale: 1, texture: ENVIRONMENT_PROP_TEXTURES.hiveMembrane, instances: 8, colliderRadius: 13 },
+      { id: 'gunnison-high-school', type: 'urban_tenement', position: [-390, 0, -270], rotation: 0.16, scale: 1.18, texture: ENVIRONMENT_PROP_TEXTURES.gunnisonRainUrban, colliderRadius: 23, perchHeight: 27 },
+      { id: 'gunnison-pool-cocoons', type: 'cocoon_cluster', position: [-330, 0, -305], rotation: -0.4, scale: 1, texture: ENVIRONMENT_PROP_TEXTURES.hiveMembrane, instances: 7, colliderRadius: 12 },
+      { id: 'gunnison-hospital', type: 'urban_tenement', position: [360, 0, -285], rotation: -0.12, scale: 1.28, texture: ENVIRONMENT_PROP_TEXTURES.gunnisonRainUrban, colliderRadius: 25, perchHeight: 38 },
+      { id: 'gunnison-hospital-rooftop', type: 'rooftop_equipment', position: [155, 0, -470], rotation: 0.18, scale: 1.08, texture: ENVIRONMENT_PROP_TEXTURES.gunnisonRainUrban, instances: 8, colliderRadius: 18, perchHeight: 10 },
+      { id: 'gunnison-guard-command', type: 'owlf_command_van', position: [0, 0, 145], rotation: -0.08, scale: 1.06, texture: ENVIRONMENT_PROP_TEXTURES.frontierPanels, colliderRadius: 10, perchHeight: 6.5 },
+      { id: 'gunnison-guard-vehicle-line', type: 'police_vehicle_line', position: [-105, 0, 55], rotation: 0.32, scale: 1, texture: ENVIRONMENT_PROP_TEXTURES.gunnisonRainUrban, instances: 8, colliderRadius: 20 },
+      { id: 'gunnison-quarantine-barriers', type: 'stargazer_barrier_line', position: [95, 0, 110], rotation: -0.25, scale: 1, texture: ENVIRONMENT_PROP_TEXTURES.frontierPanels, instances: 9, colliderRadius: 19 },
+      { id: 'gunnison-wolf-cleaner-canisters', type: 'cleaner_canisters', position: [-285, 0, 310], rotation: 0.25, scale: 1.04, texture: '/assets/textures/wolf-cleaner-alloy.webp', instances: 6, colliderRadius: 10 },
+      { id: 'gunnison-extraction-roadblock', type: 'police_vehicle_line', position: [0, 0, -610], rotation: Math.PI / 2, scale: 1.06, texture: ENVIRONMENT_PROP_TEXTURES.gunnisonRainUrban, instances: 7, colliderRadius: 20 },
+    ],
+    pointsOfInterest: [
+      { id: 'gunnison-poi-scout-recorder', type: 'field_record', label: 'Enregistreur du vaisseau yautja', position: [22, 0, 565], interactionRadius: 15, interactionType: 'decode_record', honor: 110, message: 'Archive : un organisme hybride a quitté l’épave avant l’arrivée du signal Cleaner.' },
+      { id: 'gunnison-poi-guard-radio', type: 'guard_radio', label: 'Radio de la Garde nationale', position: [-92, 0, 68], interactionRadius: 14, interactionType: 'decode_record', honor: 95, message: 'Transmission : le cordon de la ville s’est effondré après une attaque venue des égouts.' },
+      { id: 'gunnison-poi-cleaner-residue', type: 'cleaner_trace', label: 'Résidus de dissolution Cleaner', position: [-275, 0, 302], interactionRadius: 14, interactionType: 'scan_archive', honor: 120, message: 'Analyse : l’agent bleu détruit tissus, résine et preuves biologiques sans distinguer les structures proches.' },
+      { id: 'gunnison-poi-hospital-nest', type: 'hive_sample', label: 'Mue de la ruche hospitalière', position: [340, 0, -310], interactionRadius: 15, interactionType: 'scan_archive', honor: 125, message: 'Analyse : la croissance accélérée converge vers le toit et la signature du Predalien.' },
+    ],
+    hazardZones: [
+      { id: 'gunnison-hazard-transformer', type: 'transformer_arc', position: [390, 0, 390], radius: 9, damage: 9, interval: 2.4, status: 'energy_jam', message: 'ARC DE LA CENTRALE — TECHNOLOGIE YAUTJA PERTURBÉE' },
+      { id: 'gunnison-hazard-sewer-acid', type: 'acid_pool', position: [455, 0, -120], radius: 10, damage: 11, interval: 2.1, status: 'corrosion', message: 'RÉSEAU D’ÉGOUT ACIDE — ARMURE CORRODÉE' },
+      { id: 'gunnison-hazard-cleaner-solvent', type: 'acid_pool', position: [-250, 0, 285], radius: 8, damage: 10, interval: 2.4, status: 'corrosion', message: 'AGENT CLEANER — MATIÈRE ORGANIQUE EN DISSOLUTION' },
+      { id: 'gunnison-hazard-hospital-steam', type: 'subway_steam', position: [300, 0, -360], radius: 9, damage: 7, interval: 2.5, status: 'snare', message: 'VAPEUR DE SECOURS — VISIONS ET MOBILITÉ RÉDUITES' },
     ],
   },
 };

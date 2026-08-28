@@ -367,9 +367,9 @@ test('le pavé tactile du hub combine les directions et reste inactif pendant la
     const press = up.emit('pointerdown');
     right.emit('pointerdown');
     assert.equal(press.defaultPrevented, true);
-    assert.deepEqual(game.inputDir, { x: 1, z: -1, isSprinting: false });
+    assert.deepEqual(game.inputDir, { x: -1, z: 1, isSprinting: false });
     up.emit('pointerup');
-    assert.deepEqual(game.inputDir, { x: 1, z: 0, isSprinting: false });
+    assert.deepEqual(game.inputDir, { x: -1, z: 0, isSprinting: false });
     right.emit('lostpointercapture');
     assert.deepEqual(game.inputDir, { x: 0, z: 0, isSprinting: false });
 
