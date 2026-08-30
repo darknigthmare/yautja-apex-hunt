@@ -1,5 +1,11 @@
 # Bible de lore — Yautja: Apex Hunt
 
+## Croiseur de clan — adaptation originale v1.13
+
+Le vaisseau combine des motifs récurrents de la franchise sans reproduire un plan officiel : volumes organiques et métalliques, iconographie Yautja, sols perforés, projection holographique physique, cryostase, pods d’évasion, armurerie rituelle, hangar et sas arrière. Le laboratoire Cleaner relie le rôle de Wolf à la quarantaine, aux prélèvements et aux protections anti-acide ; le noyau et les coursives techniques expliquent l’alimentation des technologies de chasse.
+
+La séparation des salles traduit la hiérarchie du clan : le pont commande, l’armurerie prépare, la forge inscrit l’identité, la galerie des trophées conserve la mémoire, l’infirmerie répare sans effacer le prix de la chasse et le sas marque le passage rituel vers le terrain. Cette disposition est une synthèse fan-made originale, compatible avec plusieurs représentations filmées sans prétendre constituer un plan canon unique.
+
 Cette bible empêche de mélanger films Predator, crossovers AVP, univers étendu sous licence et inventions du fan game comme s’ils formaient une continuité unique. Le projet peut utiliser ces quatre couches, mais leur provenance doit rester visible.
 
 ## Niveaux de provenance

@@ -183,6 +183,7 @@ test('directive selection, preview, HUD and result expose a complete accessible 
 test('main forwards directive identity and enforces strict capped encounter spawning', () => {
   const mainSource = read('src/main.js');
   const setupUi = methodSection(mainSource, 'setupUIButtons', 'setupHubTouchControls');
+  const deployLoadout = methodSection(mainSource, 'deployPreparedHunt', 'setupHuntLoadoutControls');
   const startHunt = methodSection(mainSource, 'startHunt', 'cleanupHunt');
   const spawnNpc = methodSection(mainSource, 'spawnEncounterNpc', 'spawnEncounterGroup');
   const spawnGroup = methodSection(mainSource, 'spawnEncounterGroup', 'spawnEnemyTracer');
@@ -190,7 +191,11 @@ test('main forwards directive identity and enforces strict capped encounter spaw
   assert.match(mainSource, /import \{ HuntNPC, resolveHuntNpcType \} from '\.\/entities\/HuntNPC\.js';/);
   assert.match(mainSource, /const MAX_ACTIVE_HUNT_NPCS = 24;/);
   assert.match(setupUi, /const directiveId = directiveSelector\?\.value \?\? 'standard_hunt';/);
-  assert.match(setupUi, /this\.startHunt\(huntType, planetType, directiveId\);/);
+  assert.match(setupUi, /this\.prepareHunt\(huntType, planetType, directiveId\);/);
+  assert.match(
+    deployLoadout,
+    /this\.startHunt\(pending\.huntType, pending\.planetType, pending\.directiveId\);/,
+  );
 
   assert.match(startHunt, /startHunt\(huntType, planetType, directiveId = 'standard_hunt'\)/);
   assert.match(startHunt, /createDirectiveProgress\(directive\.id\)/);

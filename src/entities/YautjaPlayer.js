@@ -36,6 +36,69 @@ const LOST_TRIBE_PRESET_IDS = new Set([
 ]);
 const AVP_RITUAL_PRESET_IDS = new Set(['scar_avp', 'celtic_avp', 'chopper_avp']);
 
+const MANDATORY_HUNT_VISUAL_IDS = Object.freeze([
+  'wristblades',
+  'biomask_vision',
+  'optical_cloak',
+]);
+
+const PLASMACASTER_LOADOUT_IDS = Object.freeze([
+  'plasmacaster_single',
+  'wolf_dual_plasma',
+  'eye_of_ra',
+]);
+
+// Contrat extensible des accessoires réellement portés. Les propriétés couvrent
+// les futurs assemblages dédiés tandis que les noms permettent de brancher des
+// props ajoutés au rig sans rendre YautjaPlayer dépendant du système de loadout.
+const STOWED_LOADOUT_VISUAL_BINDINGS = Object.freeze({
+  combi_stick: Object.freeze({ properties: Object.freeze(['combiStickStowedMesh', 'combiStickHolsterMesh']), names: Object.freeze(['equipment:combi_stick_stowed', 'equipment:combi_stick_holster']) }),
+  smart_disc: Object.freeze({ properties: Object.freeze(['smartDiscStowedMesh', 'smartDiscHolsterMesh']), names: Object.freeze(['equipment:smart_disc_stowed', 'equipment:smart_disc_holster']) }),
+  netgun: Object.freeze({ properties: Object.freeze(['netgunStowedMesh', 'netgunHolsterMesh']), names: Object.freeze(['equipment:netgun_stowed', 'equipment:netgun_holster']) }),
+  medicomp: Object.freeze({ properties: Object.freeze(['medicompStowedMesh', 'medicompPouchMesh']), names: Object.freeze(['equipment:medicomp_stowed', 'equipment:medicomp_pouch', 'equipment:wolf_cleaner_case', 'equipment:wolf_sampling_syringe']) }),
+  plasma_mines: Object.freeze({ properties: Object.freeze(['plasmaMineRackMesh']), names: Object.freeze(['equipment:plasma_mine_rack', 'equipment:wolf_laser_mine_rack']) }),
+  whip_thorns: Object.freeze({ properties: Object.freeze(['whipStowedMesh', 'whipCoilMesh']), names: Object.freeze(['equipment:whip_stowed', 'equipment:whip_coil']) }),
+  yautja_bow: Object.freeze({ properties: Object.freeze(['bowStowedMesh', 'yautjaBowStowedMesh']), names: Object.freeze(['equipment:yautja_bow_stowed', 'equipment:bow_holster']) }),
+  speargun: Object.freeze({ properties: Object.freeze(['speargunStowedMesh']), names: Object.freeze(['equipment:speargun_stowed']) }),
+  feral_bolt_launcher: Object.freeze({ properties: Object.freeze(['feralBoltLauncherStowedMesh']), names: Object.freeze(['equipment:feral_bolt_launcher_stowed']) }),
+  father_sword: Object.freeze({ properties: Object.freeze(['fatherSwordStowedMesh']), names: Object.freeze(['equipment:father_sword_stowed', 'equipment:father_sword_scabbard']) }),
+  wrist_rocket: Object.freeze({ properties: Object.freeze(['wristRocketStowedMesh']), names: Object.freeze(['equipment:wrist_rocket_stowed']) }),
+  wrist_shield: Object.freeze({ properties: Object.freeze(['wristShieldStowedMesh']), names: Object.freeze(['equipment:wrist_shield_stowed']) }),
+  scout_drone: Object.freeze({ properties: Object.freeze(['scoutDroneStowedMesh']), names: Object.freeze(['equipment:scout_drone_stowed']) }),
+  shuriken: Object.freeze({ properties: Object.freeze(['shurikenStowedMesh']), names: Object.freeze(['equipment:shuriken_stowed']) }),
+  apex_decoy: Object.freeze({ properties: Object.freeze(['apexDecoyStowedMesh']), names: Object.freeze(['equipment:apex_decoy_stowed']) }),
+});
+
+function collectHuntLoadoutIds(loadoutOrIds) {
+  const ids = [];
+  const add = (value) => {
+    if (typeof value === 'string' && value.trim() && !ids.includes(value.trim())) ids.push(value.trim());
+  };
+  const addMany = (value) => {
+    if (Array.isArray(value) || value instanceof Set) [...value].forEach(add);
+  };
+
+  MANDATORY_HUNT_VISUAL_IDS.forEach(add);
+  if (typeof loadoutOrIds === 'string') add(loadoutOrIds);
+  else if (Array.isArray(loadoutOrIds) || loadoutOrIds instanceof Set) addMany(loadoutOrIds);
+  else if (loadoutOrIds && typeof loadoutOrIds === 'object') {
+    addMany(loadoutOrIds.activeItemIds);
+    addMany(loadoutOrIds.equippedItemIds);
+    addMany(loadoutOrIds.selectedWeaponIds);
+    addMany(loadoutOrIds.selectedGadgetIds);
+    addMany(loadoutOrIds.weapons);
+    addMany(loadoutOrIds.gadgets);
+    Object.values(loadoutOrIds.core ?? {}).forEach(add);
+    const slots = loadoutOrIds.slots ?? {};
+    add(slots.melee);
+    add(slots.secondary);
+    add(slots.ranged);
+    addMany(slots.gadgets);
+    add(slots.support);
+  }
+  return ids;
+}
+
 const PLAYER_RIG_JOINTS = Object.freeze([
   'rig_root', 'pelvis', 'torso', 'neck', 'head',
   'shoulder_l', 'elbow_l', 'wrist_l', 'shoulder_r', 'elbow_r', 'wrist_r',
@@ -189,6 +252,8 @@ export class YautjaPlayer {
     this.currentSkinId = 'jungle_1987';
     this.customization = { ...DEFAULT_CUSTOMIZATION };
     this.mimicryLureIndex = 0;
+    this.activeHuntLoadoutIds = [];
+    this.huntLoadoutVisualApplied = false;
 
     // Forge Upgrades
     this.hasTriBeam = false;
@@ -252,6 +317,8 @@ export class YautjaPlayer {
     // Mesh
     this.mesh = this.createYautjaMesh();
     this.scene.add(this.mesh);
+    this.mesh.userData.activeHuntLoadoutIds = [];
+    this.mesh.userData.huntLoadoutVisualApplied = false;
 
     this.mesh.traverse((child) => {
       if (child.isMesh) child.userData.baseMaterial = child.material;
@@ -1245,6 +1312,18 @@ export class YautjaPlayer {
     powerGlove.add(gloveCore);
     group.add(powerGlove);
 
+    // Les accessoires du Cleaner partagent un groupe d'apparence, mais leur
+    // visibilité doit suivre individuellement le paquetage de la chasse.
+    group.traverse((child) => {
+      if (child.name.includes('wolf_cleaner_case')
+        || child.name.includes('wolf_case_')
+        || child.name.includes('wolf_sampling_')) {
+        child.userData.stowedEquipmentId = 'medicomp';
+      } else if (child.name.includes('wolf_laser_mine')) {
+        child.userData.stowedEquipmentId = 'plasma_mines';
+      }
+    });
+
     return group;
   }
 
@@ -1253,8 +1332,123 @@ export class YautjaPlayer {
     if (this.wolfCleanerKitGroup) {
       this.wolfCleanerKitGroup.visible = active;
       this.wolfCleanerKitGroup.userData.active = active;
+      this.wolfCleanerKitGroup.userData.appearanceActive = active;
     }
     return active;
+  }
+
+  applyHuntLoadout(loadoutOrIds = []) {
+    const activeIds = collectHuntLoadoutIds(loadoutOrIds);
+    const equipped = new Set(activeIds);
+    const boundVisuals = new Map();
+    const bindVisual = (equipmentId, object) => {
+      if (!object?.isObject3D) return;
+      if (!boundVisuals.has(equipmentId)) boundVisuals.set(equipmentId, new Set());
+      boundVisuals.get(equipmentId).add(object);
+    };
+
+    Object.entries(STOWED_LOADOUT_VISUAL_BINDINGS).forEach(([equipmentId, binding]) => {
+      binding.properties.forEach((property) => bindVisual(equipmentId, this[property]));
+      binding.names.forEach((name) => bindVisual(equipmentId, this.mesh?.getObjectByName(name)));
+    });
+    this.mesh?.traverse((child) => {
+      const equipmentId = child.userData?.stowedEquipmentId ?? child.userData?.loadoutEquipmentId;
+      if (equipmentId) bindVisual(equipmentId, child);
+    });
+
+    boundVisuals.forEach((objects, equipmentId) => {
+      const isEquipped = equipped.has(equipmentId);
+      objects.forEach((object) => {
+        object.visible = isEquipped;
+        object.userData.loadoutEquipped = isEquipped;
+      });
+    });
+
+    // Les wristblades font partie du noyau obligatoire et restent physiquement
+    // montées, quelle que soit l'arme lourde choisie pour la chasse.
+    [this.wristbladeLeft, this.wristbladeRight].forEach((assembly) => {
+      if (!assembly) return;
+      assembly.visible = true;
+      assembly.userData.loadoutEquipped = true;
+    });
+
+    const activePlasmaIds = PLASMACASTER_LOADOUT_IDS.filter((id) => equipped.has(id));
+    if (this.plasmacasterMesh) {
+      this.plasmacasterMesh.visible = activePlasmaIds.length > 0;
+      this.plasmacasterMesh.userData.loadoutEquipped = activePlasmaIds.length > 0;
+      this.plasmacasterMesh.userData.activeLoadoutVariantIds = [...activePlasmaIds];
+    }
+    if (this.maskMesh) this.maskMesh.userData.loadoutEquipped = equipped.has('biomask_vision');
+    if (this.mesh) this.mesh.userData.cloakEmitterEquipped = equipped.has('optical_cloak');
+
+    // L'épée et le bouclier utilisent leur assemblage déployé pendant l'action :
+    // on les marque comme embarqués sans les forcer en main au repos.
+    if (this.fatherSwordMesh) {
+      const isEquipped = equipped.has('father_sword');
+      this.fatherSwordMesh.userData.loadoutEquipped = isEquipped;
+      if (!isEquipped) this.fatherSwordMesh.visible = false;
+    }
+    if (this.wristShieldMesh) {
+      const isEquipped = equipped.has('wrist_shield');
+      this.wristShieldMesh.userData.loadoutEquipped = isEquipped;
+      if (!isEquipped) this.wristShieldMesh.visible = false;
+    }
+
+    // Le kit Wolf contient à la fois des pièces d'armure liées au preset et des
+    // consommables : l'armure suit l'apparence, les props suivent le loadout.
+    if (this.wolfCleanerKitGroup) {
+      const appearanceActive = this.customization?.armorPresetId === 'wolf_avpr';
+      let hasActiveCarriedPart = false;
+      this.wolfCleanerKitGroup.traverse((child) => {
+        if (child === this.wolfCleanerKitGroup) return;
+        const equipmentId = child.userData?.stowedEquipmentId;
+        if (equipmentId) {
+          const isEquipped = equipped.has(equipmentId);
+          child.visible = isEquipped;
+          child.userData.loadoutEquipped = isEquipped;
+          hasActiveCarriedPart ||= isEquipped;
+        } else {
+          child.visible = appearanceActive;
+        }
+      });
+      this.wolfCleanerKitGroup.visible = appearanceActive || hasActiveCarriedPart;
+      this.wolfCleanerKitGroup.userData.active = this.wolfCleanerKitGroup.visible;
+      this.wolfCleanerKitGroup.userData.appearanceActive = appearanceActive;
+      this.wolfCleanerKitGroup.userData.loadoutCarriedPartActive = hasActiveCarriedPart;
+    }
+
+    const linkedStowedVisualIds = Object.entries(STOWED_LOADOUT_VISUAL_BINDINGS)
+      .filter(([equipmentId]) => (boundVisuals.get(equipmentId)?.size ?? 0) > 0)
+      .map(([equipmentId]) => equipmentId);
+    const visibleStowedVisualIds = linkedStowedVisualIds.filter((id) => equipped.has(id));
+    const missingStowedVisualIds = activeIds.filter((id) => (
+      STOWED_LOADOUT_VISUAL_BINDINGS[id]
+      && !linkedStowedVisualIds.includes(id)
+    ));
+    const deploymentOnlyIds = [
+      this.fatherSwordMesh && equipped.has('father_sword') ? 'father_sword' : null,
+      this.wristShieldMesh && equipped.has('wrist_shield') ? 'wrist_shield' : null,
+    ].filter(Boolean);
+
+    this.activeHuntLoadoutIds = [...activeIds];
+    this.huntLoadoutVisualApplied = true;
+    const contract = {
+      schemaVersion: 1,
+      activeIds: [...activeIds],
+      mandatoryIds: [...MANDATORY_HUNT_VISUAL_IDS],
+      plasmaCasterVariantIds: [...activePlasmaIds],
+      linkedStowedVisualIds,
+      visibleStowedVisualIds,
+      missingStowedVisualIds,
+      deploymentOnlyIds,
+    };
+    if (this.mesh) {
+      this.mesh.userData.activeHuntLoadoutIds = [...activeIds];
+      this.mesh.userData.huntLoadoutVisualApplied = true;
+      this.mesh.userData.huntLoadoutVisualContract = contract;
+    }
+    this.refreshVisualFidelityMetrics(this.mesh);
+    return contract;
   }
 
   refreshVisualFidelityMetrics(root = this.mesh) {
@@ -1583,6 +1777,7 @@ export class YautjaPlayer {
     this.rebuildWarpaint(merged.warpaintId);
     this.applyHunterClass(merged.hunterClassId);
     this.applyArmorPresetWeaponVariant(merged.armorPresetId);
+    if (this.huntLoadoutVisualApplied) this.applyHuntLoadout(this.activeHuntLoadoutIds);
     if (preserveCloak) this.applyCloakMaterials();
     this.refreshVisualFidelityMetrics(this.mesh);
     return this.customization;

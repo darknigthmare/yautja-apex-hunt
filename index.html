@@ -30,6 +30,15 @@
   <main id="game-stage" aria-label="Zone de jeu">
   <canvas id="game-canvas" aria-label="Vue 3D du vaisseau-mère et des chasses" tabindex="-1"></canvas>
 
+  <div id="fatal-error" class="fatal-error hidden" role="alertdialog" aria-modal="true" aria-labelledby="fatal-error-title" aria-describedby="fatal-error-message">
+    <div class="fatal-error-panel">
+      <p class="modal-eyebrow">SYSTÈME DU BIO-MASQUE</p>
+      <h2 id="fatal-error-title">RENDU 3D INDISPONIBLE</h2>
+      <p id="fatal-error-message">Le moteur WebGL n’a pas pu démarrer. Vérifiez l’accélération matérielle du navigateur puis rechargez la chasse.</p>
+      <button id="btn-reload-game" type="button">RECHARGER LE JEU</button>
+    </div>
+  </div>
+
   <div id="vision-overlay" class="vision-normal" aria-hidden="true"></div>
   <div id="scanline-overlay" aria-hidden="true"></div>
 
@@ -37,7 +46,7 @@
   <div id="qte-overlay" class="hidden" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="qte-box">
       <div class="qte-title">ALERTE PARASITE FACEHUGGER !</div>
-      <div class="qte-prompt">APPUYEZ RAPIDEMENT SUR <span class="qte-key">[ESPACE]</span> OU <span class="qte-key">[CLIC DROIT]</span> POUR TRANCHER !</div>
+      <div class="qte-prompt">APPUYEZ RAPIDEMENT SUR <span class="qte-key">[ESPACE]</span>, <span class="qte-key">[CLIC]</span> OU <span class="qte-key">[ATTAQUE]</span> POUR TRANCHER !</div>
     </div>
   </div>
 
@@ -111,19 +120,19 @@
       </div>
 
       <div id="gadget-rack" class="gadget-rack" aria-label="Technologies Yautja actives">
-        <button type="button" class="gadget-status" data-gadget="shield" data-gadget-key="KeyB" aria-label="Déployer le bouclier de poignet">
+        <button type="button" class="gadget-status" data-gadget="shield" data-loadout-id="wrist_shield" data-gadget-key="KeyB" aria-label="Déployer le bouclier de poignet">
           <span>[B] BOUCLIER</span><strong id="gadget-shield-state">PRÊT · 100%</strong>
         </button>
-        <button type="button" class="gadget-status" data-gadget="drone" data-gadget-key="KeyG" aria-label="Déployer le drone-faucon">
+        <button type="button" class="gadget-status" data-gadget="drone" data-loadout-id="scout_drone" data-gadget-key="KeyG" aria-label="Déployer le drone-faucon">
           <span>[G] DRONE-FAUCON</span><strong id="gadget-drone-state">PRÊT</strong>
         </button>
-        <button type="button" class="gadget-status" data-gadget="shuriken" data-gadget-key="KeyT" aria-label="Lancer le shuriken">
+        <button type="button" class="gadget-status" data-gadget="shuriken" data-loadout-id="shuriken" data-gadget-key="KeyT" aria-label="Lancer le shuriken">
           <span>[T] SHURIKEN</span><strong id="gadget-shuriken-state">PRÊT</strong>
         </button>
-        <button type="button" class="gadget-status" data-gadget="decoy" data-gadget-key="KeyY" aria-label="Déployer le leurre holographique Apex">
+        <button type="button" class="gadget-status" data-gadget="decoy" data-loadout-id="apex_decoy" data-gadget-key="KeyY" aria-label="Déployer le leurre holographique Apex">
           <span>[Y] LEURRE APEX</span><strong id="gadget-decoy-state">PRÊT</strong>
         </button>
-        <button type="button" class="gadget-status gadget-roar" data-gadget="roar" data-gadget-key="KeyR" aria-label="Déclencher le rugissement d’honneur">
+        <button type="button" class="gadget-status gadget-roar" data-gadget="roar" data-loadout-id="victory_roar" data-gadget-key="KeyR" aria-label="Déclencher le rugissement d’honneur">
           <span>[R] RUGISSEMENT</span><strong id="gadget-roar-state">DISPONIBLE</strong>
         </button>
       </div>
@@ -191,6 +200,22 @@
       </div>
     </div>
 
+    <div id="touch-hunt-controls" class="touch-hunt-controls hidden" aria-label="Commandes tactiles de chasse">
+      <div class="touch-hunt-dpad" role="group" aria-label="Déplacement pendant la chasse">
+        <button class="touch-hunt-up" type="button" data-hunt-move="up" aria-label="Avancer">▲</button>
+        <button class="touch-hunt-left" type="button" data-hunt-move="left" aria-label="Aller à gauche">◀</button>
+        <button class="touch-hunt-down" type="button" data-hunt-move="down" aria-label="Reculer">▼</button>
+        <button class="touch-hunt-right" type="button" data-hunt-move="right" aria-label="Aller à droite">▶</button>
+      </div>
+      <div class="touch-hunt-actions" role="group" aria-label="Actions de chasse">
+        <button id="btn-touch-hunt-attack" class="touch-primary-action" type="button">ATTAQUE</button>
+        <button id="btn-touch-hunt-interact" type="button">INTERAGIR</button>
+        <button id="btn-touch-hunt-vision" type="button">VISION</button>
+        <button id="btn-touch-hunt-cloak" type="button">CAMOUFLAGE</button>
+        <button id="btn-touch-hunt-pause" type="button">PAUSE</button>
+      </div>
+    </div>
+
   </div>
   </main>
 
@@ -199,7 +224,7 @@
     <div class="modal-box modal-scroll" tabindex="-1">
       <p class="modal-eyebrow">BRIEFING DE CHASSE</p>
       <h2 id="controls-title">MÉCANIQUES DU CHASSEUR YAUTJA</h2>
-      <p class="modal-intro">Jeu fan-made indépendant. Souris et clavier recommandés.</p>
+      <p class="modal-intro">Jeu fan-made indépendant. Clavier/souris, manette et commandes tactiles sont pris en charge.</p>
       <div class="controls-grid">
         <div><strong>Z Q S D :</strong> Déplacement Yautja</div>
         <div><strong>Souris :</strong> Caméra du bio-masque</div>
@@ -227,6 +252,7 @@
     <div class="modal-box mission-box modal-scroll" tabindex="-1">
       <p class="modal-eyebrow">VAISSEAU-MÈRE · CONSOLE DE CHASSE</p>
       <h2 id="mission-title">ARMURERIE & CONTRATS YAUTJA</h2>
+      <p id="persistence-status" class="persistence-status hidden" role="alert" aria-live="assertive">SAUVEGARDE LOCALE INDISPONIBLE — les changements restent actifs uniquement pour cette session.</p>
 
       <div class="mission-modal-actions" role="group" aria-label="Exploration libre du vaisseau-mère">
         <button
@@ -240,6 +266,7 @@
 
       <div class="tab-row" role="tablist" aria-label="Sections du vaisseau-mère">
         <button id="tab-btn-missions" class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="tab-content-missions">CONTRATS</button>
+        <button id="tab-btn-loadout" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-loadout">PRÉPARATION</button>
         <button id="tab-btn-armory" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-armory">ARMURERIE</button>
         <button id="tab-btn-codex" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-codex">CODEX</button>
         <button id="tab-btn-options" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-options">OPTIONS</button>
@@ -347,7 +374,67 @@
         </div>
       </div>
 
-      <!-- Tab 2: Yautja Skin Vault -->
+      <!-- Tab 2: mandatory pre-hunt equipment preparation -->
+      <div id="tab-content-loadout" class="hidden" role="tabpanel" aria-labelledby="tab-btn-loadout">
+        <div class="section-heading loadout-heading">
+          <div>
+            <p class="section-kicker">SAS D’ARMEMENT · CONFIGURATION LIMITÉE</p>
+            <h3>PRÉPARATION DE LA CHASSE</h3>
+          </div>
+          <p>Chaque équipement occupe un emplacement et consomme la capacité de votre classe. L’arsenal complet ne peut plus être emporté.</p>
+        </div>
+
+        <section class="loadout-mission-card" aria-labelledby="loadout-mission-title">
+          <div>
+            <span class="loadout-label">CONTRAT SÉLECTIONNÉ</span>
+            <strong id="loadout-mission-title">AUCUN CONTRAT SÉLECTIONNÉ</strong>
+            <p id="loadout-mission-context">Choisissez d’abord une cible dans l’onglet Contrats.</p>
+          </div>
+          <button id="btn-loadout-back" class="button-secondary" type="button">RETOUR AUX CONTRATS</button>
+        </section>
+
+        <div class="loadout-capacity-card">
+          <div class="loadout-capacity-copy">
+            <span id="loadout-class-label">CLASSE HUNTER</span>
+            <strong id="loadout-capacity-label">CAPACITÉ 0/20</strong>
+          </div>
+          <div class="loadout-capacity-track" role="progressbar" aria-label="Capacité du harnais" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0">
+            <div id="loadout-capacity-fill" class="loadout-capacity-fill"></div>
+          </div>
+          <p id="loadout-recommendation">Le nexus analysera la cible et proposera un équipement adapté.</p>
+        </div>
+
+        <section class="loadout-core-card" aria-labelledby="loadout-core-title">
+          <h4 id="loadout-core-title">NOYAU OBLIGATOIRE</h4>
+          <div id="loadout-core-list" class="loadout-core-list"></div>
+        </section>
+
+        <form id="loadout-form" class="loadout-form">
+          <div id="loadout-slot-grid" class="loadout-slot-grid"></div>
+        </form>
+
+        <section class="loadout-presets" aria-labelledby="loadout-presets-title">
+          <div>
+            <h4 id="loadout-presets-title">PRESETS DU CLAN</h4>
+            <p>Enregistrez jusqu’à douze configurations locales.</p>
+          </div>
+          <div class="loadout-preset-controls">
+            <label for="loadout-preset-select"><span>Preset enregistré</span><select id="loadout-preset-select"><option value="">AUCUN PRESET</option></select></label>
+            <button id="btn-loadout-activate-preset" type="button">CHARGER</button>
+            <button id="btn-loadout-delete-preset" class="button-secondary" type="button">SUPPRIMER</button>
+            <label for="loadout-preset-name"><span>Nouveau nom</span><input id="loadout-preset-name" type="text" maxlength="40" placeholder="Ex. Nettoyage de ruche"></label>
+            <button id="btn-loadout-save-preset" type="button">ENREGISTRER LE PRESET</button>
+          </div>
+        </section>
+
+        <div id="loadout-validation" class="loadout-validation" role="status" aria-live="polite">Configuration à vérifier.</div>
+        <div class="loadout-actions">
+          <button id="btn-loadout-recommended" type="button">APPLIQUER LA RECOMMANDATION</button>
+          <button id="btn-loadout-deploy" class="loadout-deploy" type="button" disabled>VALIDER ET DÉPLOYER</button>
+        </div>
+      </div>
+
+      <!-- Tab 3: Yautja Skin Vault -->
       <div id="tab-content-armory" class="hidden" role="tabpanel" aria-labelledby="tab-btn-armory">
         <div class="section-heading">
           <div>

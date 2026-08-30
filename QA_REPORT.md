@@ -1,8 +1,8 @@
-# Rapport QA — release 1.12.0
+# Rapport QA — candidat 1.13.0
 
-**Date :** 28 août 2026
-**Statut :** release 1.12.0 validée, poussée et publiée.
-**Production actuellement vérifiée :** release 1.12.0 sur <https://yautja-apex-hunt.vercel.app/>
+**Date :** 30 août 2026
+**Statut :** candidat 1.13.0 validé localement ; publication finale en attente du gate Vercel.
+**Production actuellement vérifiée :** release 1.12.0 sur <https://yautja-apex-hunt.vercel.app/> jusqu’au déploiement v1.13.
 **Commit fonctionnel/push v1.12 :** `5b340ca` — poussé sur `codex/professional-hunt-pass`
 **Correctif métadonnée/push v1.12 :** `e249bf2` — poussé sur `codex/professional-hunt-pass`
 **Déploiement de validation Vercel v1.12 :** `dpl_Cxx5T43crYq8wc9Jv5PKek9bDi6j` — `READY`, cible `production`
@@ -16,6 +16,17 @@
 **Déploiement production v1.7 :** `dpl_En8EmhSsfxE7SZFPYEApyYwo134h` — `READY`, cible `production`, alias officiel HTTP 200, commit fonctionnel `94bb326`
 **Premier déploiement de validation v1.6 :** `dpl_HgUgNRS9k92Asi1Mq8BNVhCLn6C3` — `READY`, cible `production`, alias officiel appliqué
 **Source :** <https://github.com/darknigthmare/yautja-apex-hunt>
+
+## Passe v1.13 — croiseur, paquetage et fermeture professionnelle
+
+| Gate exécuté | Résultat vérifié | Périmètre exact |
+|---|---:|---|
+| Suite automatisée finale | **391/391 réussis** | 365 régressions historiques, 12 contrats loadout, quatre contrats visuels portés, cinq contrats d’architecture du croiseur et cinq contrats UI/résilience. |
+| Build production local | **Vite 8.2.2 réussi** | 50 modules ; chunks applicatifs de 109,17 à 388,51 Ko, chunk Three.js isolé à 517,65 Ko ; aucun chunk applicatif au-dessus de 400 Ko. |
+| Sécurité dépendances | **0 vulnérabilité** | Audit npm des dépendances de production. |
+| Syntaxe et qualité Git | **réussi** | Cinq modules critiques contrôlés par Node ; diff sans erreur, avertissements LF/CRLF uniquement. |
+| HTTP local | **200** | Présence de PRÉPARATION, du panneau loadout, des contrôles tactiles et de l’overlay fatal. |
+| Audit visuel navigateur intégré | **bloqué par l’environnement** | Le processus navigateur de validation échoue sur les ACL Windows lors de l’application du sandbox ; aucune capture visuelle v1.13 n’est revendiquée. |
 
 ## Passe v1.12 — Gunnison, rig Yautja, équipement et Predalien natif
 

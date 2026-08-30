@@ -1,8 +1,31 @@
 # Audit professionnel — Yautja: Apex Hunt
 
-**Date de mise à jour :** 25 août 2026
+**Date de mise à jour :** 30 août 2026
 **Périmètre :** code source, données de jeu, sauvegarde, interface, assets et release publique.
-**Statut :** audit initial suivi des vagues de professionnalisation jusqu’à la version 1.7.0, validée sans défaut P0/P1 connu et publiée en production.
+**Statut :** audit initial suivi jusqu’au candidat v1.13.0 ; les corrections logicielles P0/P1 listées ci-dessous sont implémentées, les limites commerciales externes restent explicites.
+
+## Addendum v1.13 — comparaison à un jeu fini professionnel
+
+| Domaine | Écart constaté avant v1.13 | Correction réellement livrée | Risque restant |
+| --- | --- | --- | --- |
+| Préparation | tout l’arsenal était accessible pendant une chasse | slots, budget de classe, déblocages, incompatibilités, presets, recommandations et filtrage runtime | équilibrage télémétrique sur un grand panel |
+| Hub | quatre stations dans un volume de hangar compact | onze compartiments, treize portes, dix stations et circulation en boucles | optimisation GPU sur matériel bas de gamme |
+| Mobile | le hub était tactile mais la chasse ne l’était pas | déplacement, attaque/QTE, interaction, vision, camouflage et pause tactiles | essais physiques iOS/Android |
+| Manette | combat partiel, menus non navigables | armes équipées, gadgets, vision, camouflage, pause et focus des dialogues | certification par modèle de contrôleur |
+| Résilience | perte WebGL, blur et échec de sauvegarde peu lisibles | overlay fatal récupérable, pause automatique et alerte de persistance | télémétrie distante et rapport de crash |
+| Accessibilité | focus fragile dans les modales | boucle de focus, focus initial et libellés renforcés | audit lecteur d’écran/contrastes spécialisé |
+
+### Bloqueur commercial non logiciel
+
+Le dépôt emploie l’univers, les noms et les références de la franchise Predator/Alien. Il peut être présenté comme projet fan-made gratuit, mais ne doit pas être déclaré vendable ou « commercialement publiable » sans autorisation des ayants droit. Le code peut atteindre un niveau de finition professionnel ; le droit de commercialisation ne peut pas être corrigé dans le dépôt.
+
+### Gates restant nécessaires avant une revendication « gold »
+
+- campagne complète de tests sur appareils physiques, longues sessions et reprise après veille ;
+- profils graphiques et budget frame-time mesurés sur GPU intégré, milieu et haut de gamme ;
+- audit WCAG outillé avec technologies d’assistance ;
+- télémétrie de crash, politique de confidentialité, support, localisation et processus de patch ;
+- autorisation de licence écrite pour toute exploitation commerciale de la franchise.
 
 ## Résumé exécutif
 

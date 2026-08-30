@@ -21,6 +21,7 @@ import {
   PLAYABLE_WEAPONS,
   WARPAINT_PATTERNS,
 } from './data/RuntimeEquipment.js';
+import { getEquippedLoadoutItemIds } from './gameplay/HuntLoadoutSystem.js';
 import {
   MEDIA_COVERAGE_CATALOG,
   MEDIA_PROVENANCE_TIERS,
@@ -230,6 +231,7 @@ export class HUDManager {
       slot.className = 'weapon-slot';
       slot.id = `wep-${weapon.slot}`;
       slot.dataset.wep = String(weapon.slot);
+      slot.dataset.weaponId = weapon.id;
       slot.title = `${weapon.name} — ${weapon.sourceTier}`;
 
       const number = document.createElement('span');
@@ -242,6 +244,35 @@ export class HUDManager {
       return slot;
     });
     this.weaponSelector.replaceChildren(...buttons);
+  }
+
+  setActiveLoadout(loadout) {
+    const equippedIds = new Set(getEquippedLoadoutItemIds(loadout));
+    this.activeLoadoutItemIds = equippedIds;
+    this.weaponSlots?.forEach((slot) => {
+      const equipped = equippedIds.has(slot.dataset.weaponId);
+      slot.hidden = !equipped;
+      slot.disabled = !equipped;
+      this.setAttribute(slot, 'aria-hidden', String(!equipped));
+      this.setAttribute(slot, 'aria-disabled', String(!equipped));
+    });
+
+    document.querySelectorAll('[data-loadout-id]').forEach((control) => {
+      const itemId = control.dataset.loadoutId;
+      const equipped = itemId === 'victory_roar' || equippedIds.has(itemId);
+      control.hidden = !equipped;
+      control.disabled = !equipped;
+      this.setAttribute(control, 'aria-hidden', String(!equipped));
+      this.setAttribute(control, 'aria-disabled', String(!equipped));
+    });
+
+    const weaponCount = [...this.weaponSlots ?? []].filter((slot) => !slot.hidden).length;
+    this.setAttribute(
+      this.weaponSelector,
+      'aria-label',
+      `Arsenal embarqué : ${weaponCount} armes disponibles`,
+    );
+    return equippedIds;
   }
 
   fillSelect(select, entries) {

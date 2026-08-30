@@ -2,6 +2,31 @@
 
 Les versions sont considérées comme publiées uniquement après push du code, validation du Preview et contrôle de l’URL de production.
 
+## [1.13.0] — 30 août 2026
+
+### Croiseur Yautja compartimenté
+
+- coque jouable portée à 138 × 184 × 38 m avec onze zones connectées, treize portes, dix perchoirs, 86 colliders et dix consoles/stations ;
+- pont/cockpit, navigation, cryostase, baie de pods, laboratoire Cleaner et infirmerie, hangar agrandi, armurerie, noyau énergétique, forge/trophées et sas arrière forment désormais un véritable plan de circulation ;
+- coursives, cloisons, arches, panneaux, conduites, projecteurs, consoles, alcôves et sols perforés totalisent 295 assemblages, 1 569 instances et environ 248 584 triangles dans le budget WebGL ;
+- les matériaux procéduraux et WebP OpenAI déjà produits sont réemployés dans une synthèse fan-made originale ; aucun modèle ni texture officiel n’est copié.
+
+### Préparation de chasse et arsenal limité
+
+- nouvel écran « PRÉPARATION » obligatoire entre le contrat et le déploiement ;
+- paquetage atomique séparé de la sauvegarde principale : trois systèmes de base, mêlée, secondaire, distance, un ou deux gadgets et soutien ;
+- dix budgets de classe, déblocages, incompatibilités matérielles, doublons exclus, messages de validation en français et recommandations par classe pour les onze chasses ;
+- jusqu’à douze presets nommés, activables, remplaçables et supprimables ; migration sûre d’un ancien état « tout équipé » ;
+- HUD, raccourcis, attaque et géométrie portée appliquent réellement la sélection ; les armes et gadgets non embarqués sont masqués et bloqués.
+
+### Fermeture des risques professionnels prioritaires
+
+- contrôles tactiles complets en chasse, QTE tactile et navigation manette des dialogues ;
+- pause automatique lors d’une perte de focus/visibilité, piège de focus dans les modales et focus initial des résultats ;
+- écran d’erreur récupérable pour échec de démarrage ou perte de contexte WebGL ;
+- avertissement visible si la sauvegarde locale échoue ;
+- le projet reste une création fan-made non commerciale : une licence des ayants droit demeure indispensable avant toute vente sous la franchise.
+
 ## [1.12.0] — 28 août 2026
 
 Release publiée après 365/365 tests, build Vite 8.2.2, audit à 0 vulnérabilité et parcours Chromium desktop/mobile locaux puis publics. Le commit fonctionnel `5b340ca` et le correctif de métadonnée `e249bf2` sont poussés ; le déploiement de validation `dpl_Cxx5T43crYq8wc9Jv5PKek9bDi6j` est `READY` en production sur l’alias officiel.

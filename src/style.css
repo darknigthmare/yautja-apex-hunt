@@ -192,8 +192,80 @@ html, body { width: 100%; height: 100%; overflow: hidden; background-color: #030
   border-color: #ff786e;
 }
 
+.touch-hunt-controls {
+  align-items: flex-end;
+  bottom: max(62px, calc(env(safe-area-inset-bottom) + 62px));
+  display: none;
+  justify-content: space-between;
+  left: max(10px, env(safe-area-inset-left));
+  pointer-events: none;
+  position: absolute;
+  right: max(10px, env(safe-area-inset-right));
+  z-index: 48;
+}
+.touch-hunt-dpad {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(3, 48px);
+  grid-template-rows: repeat(2, 48px);
+}
+.touch-hunt-controls button {
+  background: rgba(4, 18, 24, 0.9);
+  border: 1px solid rgba(0, 240, 255, 0.78);
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.18);
+  font-size: 10px;
+  min-height: 46px;
+  min-width: 46px;
+  padding: 5px;
+  pointer-events: auto;
+  touch-action: none;
+}
+.touch-hunt-controls button:active {
+  background: rgba(0, 145, 160, 0.48);
+  transform: scale(0.96);
+}
+.touch-hunt-up { grid-column: 2; grid-row: 1; }
+.touch-hunt-left { grid-column: 1; grid-row: 2; }
+.touch-hunt-down { grid-column: 2; grid-row: 2; }
+.touch-hunt-right { grid-column: 3; grid-row: 2; }
+.touch-hunt-actions {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(2, minmax(72px, 1fr));
+  max-width: 176px;
+}
+.touch-hunt-actions .touch-primary-action {
+  background: rgba(93, 18, 20, 0.94);
+  border-color: #ff786e;
+  grid-column: 1 / -1;
+}
+#btn-touch-hunt-pause { grid-column: 1 / -1; min-height: 34px; }
+
+.fatal-error {
+  align-items: center;
+  background: rgba(2, 4, 7, 0.97);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 24px;
+  pointer-events: auto;
+  position: fixed;
+  z-index: 300;
+}
+.fatal-error-panel {
+  background: linear-gradient(145deg, rgba(18, 25, 34, 0.99), rgba(8, 11, 17, 0.99));
+  border: 2px solid var(--yautja-red);
+  border-radius: 8px;
+  max-width: 620px;
+  padding: 28px;
+  text-align: center;
+}
+.fatal-error-panel h2 { color: var(--yautja-red); font-family: 'Orbitron', sans-serif; }
+.fatal-error-panel p { color: #dbe5ee; line-height: 1.55; margin: 14px 0 20px; }
+
 @media (hover: none), (pointer: coarse) {
   .touch-hub-controls:not(.hidden) { display: flex; }
+  .touch-hunt-controls:not(.hidden) { display: flex; }
 }
 
 .tab-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }

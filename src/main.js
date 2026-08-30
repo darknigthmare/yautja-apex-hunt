@@ -23,7 +23,26 @@ import { DEFAULT_SETTINGS, HUNT_DEFINITIONS, resolveHuntBiome } from './data/Gam
 import { ALL_LORE_ENTRIES, LORE_SOURCE_TIERS, LORE_SOURCES } from './data/LoreCodex.js';
 import { resolveMeleeStrike } from './gameplay/combatRules.js';
 import { applyPointOfInterestEffect } from './gameplay/PointOfInterestEffects.js';
-import { getPlayableWeaponByKey } from './data/RuntimeEquipment.js';
+import {
+  HUNTER_CLASSES,
+  PLAYABLE_WEAPONS,
+  getPlayableWeaponByKey,
+  getPlayerGadgetByKey,
+} from './data/RuntimeEquipment.js';
+import {
+  HuntLoadoutSystem,
+  LOADOUT_SLOT_DEFINITIONS,
+  MANDATORY_LOADOUT_CORE,
+  getEquippedLoadoutItemIds,
+  getLoadoutCapacity,
+  getLoadoutItemById,
+  getLoadoutItemsForSlot,
+  getRecommendedHuntLoadout,
+  isGadgetEquipped,
+  isWeaponEquipped,
+  sanitizeHuntLoadout,
+  validateHuntLoadout,
+} from './gameplay/HuntLoadoutSystem.js';
 
 const DEFAULT_CAMERA_FOV = 65;
 const SCOPE_CAMERA_FOV = THREE.MathUtils.radToDeg(
@@ -38,6 +57,16 @@ const MAX_ACTIVE_HUNT_NPCS = 24;
 const MAX_PENDING_DIRECTIVE_WAVES = 8;
 const EXTRACTION_OUTCOME_DISPLAY_SECONDS = 4;
 const NEUTRAL_PLAYER_FRAME_INPUT = Object.freeze({ x: 0, z: 0, isSprinting: false });
+
+function showFatalGameError(message) {
+  const overlay = document.getElementById('fatal-error');
+  const output = document.getElementById('fatal-error-message');
+  if (output && message) output.textContent = message;
+  overlay?.classList.remove('hidden');
+  overlay?.setAttribute('aria-hidden', 'false');
+  document.getElementById('btn-reload-game')?.focus?.();
+  return Boolean(overlay);
+}
 const KEYBOARD_MOVEMENT_BINDINGS = Object.freeze({
   KeyW: Object.freeze({ axis: 'z', value: 1 }),
   KeyZ: Object.freeze({ axis: 'z', value: 1 }),
@@ -159,8 +188,23 @@ export class Game {
     const loadResult = saveManager.load(this.player);
     this.environment.setDiscoveredPoiIds(this.player.discoveredPoiIds);
     this.settings = { ...DEFAULT_SETTINGS, ...loadResult.settings };
+    this.loadoutSystem = new HuntLoadoutSystem();
+    const loadoutResult = this.loadoutSystem.load({
+      hunterClassId: this.player.customization?.hunterClassId,
+      unlockedWeaponIds: this.player.unlockedWeaponIds,
+    });
+    this.activeHuntLoadout = this.resolveClassAlignedLoadout(loadoutResult.state.activeLoadout);
+    const initialLoadoutResult = this.loadoutSystem.setActiveLoadout(
+      this.activeHuntLoadout,
+      this.getLoadoutValidationOptions(),
+    );
+    if (initialLoadoutResult.applied) this.activeHuntLoadout = initialLoadoutResult.validation.loadout;
+    this.draftHuntLoadout = this.activeHuntLoadout;
+    this.pendingHunt = null;
+    this.pendingHuntRecommendation = null;
     this.player.applyCustomization(this.player.customization);
     this.hud.syncCustomization(this.player.customization);
+    this.applyActiveHuntLoadout();
     this.player.resetForHunt(HUB_PLAYER_POSITION);
     this.hub.setTrophyState(this.player.completedHunts);
     this.hub.setVisible(true);
@@ -205,8 +249,16 @@ export class Game {
     this.gamepadAttackPressed = false;
     this.gamepadInteractPressed = false;
     this.gamepadMenuPressed = false;
+    this.gamepadWeaponCyclePressed = { previous: false, next: false };
+    this.gamepadVisionPressed = false;
+    this.gamepadCloakPressed = false;
+    this.gamepadGadgetPressed = [false, false, false, false];
+    this.gamepadNavigationPressed = [false, false, false, false];
     this.touchInputDir = { x: 0, z: 0 };
     this.activeHubTouchDirections = new Set();
+    this.activeHuntTouchDirections = new Set();
+    this.touchLookPointerId = null;
+    this.touchLookPosition = null;
     this.gamepadAxes = { x: 0, z: 0 };
     this.activeFacehuggerCluster = null;
     this.goliathChargeWindow = 0;
@@ -217,12 +269,367 @@ export class Game {
     this.renderDirectiveSelector();
     this.initEventListeners();
     this.setupUIButtons();
+    this.renderHuntLoadoutUI();
     this.hud.updateVitals(this.player);
     this.hud.setVisionModeUI(this.player.activeVisionMode);
   }
 
   saveProgress() {
-    return saveManager.save(this.player, this.settings);
+    const saved = saveManager.save(this.player, this.settings);
+    this.setPersistenceUnavailable(!saved);
+    return saved;
+  }
+
+  setPersistenceUnavailable(unavailable, message = null) {
+    const status = document.getElementById('persistence-status');
+    status?.classList.toggle('hidden', !unavailable);
+    if (unavailable && message && status) status.textContent = message;
+    document.body?.classList.toggle('persistence-unavailable', Boolean(unavailable));
+    if (unavailable && !this.persistenceWarningShown) {
+      this.persistenceWarningShown = true;
+      this.hud?.showLogMessage?.('SAUVEGARDE LOCALE INDISPONIBLE — PROGRESSION LIMITÉE À CETTE SESSION', 4800);
+    }
+    return !unavailable;
+  }
+
+  getLoadoutValidationOptions() {
+    return { unlockedWeaponIds: this.player?.unlockedWeaponIds ?? null };
+  }
+
+  getCurrentHunterClassId() {
+    return this.player?.customization?.hunterClassId ?? 'class_hunter';
+  }
+
+  resolveClassAlignedLoadout(loadout, missionContext = {}) {
+    const hunterClassId = this.getCurrentHunterClassId();
+    const candidate = sanitizeHuntLoadout({
+      ...loadout,
+      hunterClassId,
+      slots: loadout?.slots,
+    }, { fillDefaults: true });
+    const validationOptions = this.getLoadoutValidationOptions();
+    const validation = validateHuntLoadout(candidate, validationOptions);
+    if (validation.valid) return validation.loadout;
+    return getRecommendedHuntLoadout({
+      ...missionContext,
+      hunterClassId,
+      ...validationOptions,
+    }).loadout;
+  }
+
+  applyActiveHuntLoadout() {
+    const loadout = this.activeHuntLoadout ?? this.loadoutSystem?.state?.activeLoadout;
+    if (!loadout) return false;
+    this.activeHuntLoadout = loadout;
+    this.hud?.setActiveLoadout?.(loadout);
+    this.player?.applyHuntLoadout?.(loadout);
+    if (!isWeaponEquipped(loadout, this.player.selectedWeapon)) {
+      const firstEquipped = PLAYABLE_WEAPONS.find((weapon) => isWeaponEquipped(loadout, weapon.id));
+      this.player.selectedWeapon = firstEquipped?.slot ?? 1;
+    }
+    return true;
+  }
+
+  commitHuntLoadout(loadout) {
+    const result = this.loadoutSystem.setActiveLoadout(loadout, this.getLoadoutValidationOptions());
+    if (!result.applied) return result;
+    this.activeHuntLoadout = result.validation.loadout;
+    this.draftHuntLoadout = this.activeHuntLoadout;
+    this.applyActiveHuntLoadout();
+    if (result.persistence?.saved === false) {
+      this.setPersistenceUnavailable(true, 'SAUVEGARDE DU LOADOUT INDISPONIBLE — cette configuration reste active uniquement pour cette session.');
+    }
+    return result;
+  }
+
+  syncHuntLoadoutClass() {
+    const missionContext = this.pendingHunt ?? {};
+    const aligned = this.resolveClassAlignedLoadout(this.activeHuntLoadout, {
+      huntType: missionContext.huntType,
+      biomeId: missionContext.planetType,
+    });
+    this.commitHuntLoadout(aligned);
+    this.draftHuntLoadout = this.activeHuntLoadout;
+    this.renderHuntLoadoutUI();
+    return this.activeHuntLoadout;
+  }
+
+  updateDraftHuntLoadoutSlot(slotId, itemId, checked = true) {
+    const source = this.draftHuntLoadout ?? this.activeHuntLoadout;
+    const slots = {
+      ...source.slots,
+      gadgets: [...source.slots.gadgets],
+    };
+    if (slotId === 'gadgets') {
+      const selected = new Set(slots.gadgets);
+      if (checked) {
+        if (!selected.has(itemId) && selected.size >= LOADOUT_SLOT_DEFINITIONS.gadgets.maxItems) {
+          const status = document.getElementById('loadout-validation');
+          if (status) status.textContent = 'Deux gadgets optionnels maximum peuvent être embarqués. Retirez-en un avant de poursuivre.';
+          this.renderHuntLoadoutUI();
+          return false;
+        }
+        selected.add(itemId);
+      } else {
+        selected.delete(itemId);
+      }
+      slots.gadgets = [...selected];
+    } else {
+      slots[slotId] = itemId;
+    }
+    this.draftHuntLoadout = sanitizeHuntLoadout({
+      ...source,
+      hunterClassId: this.getCurrentHunterClassId(),
+      slots,
+    });
+    this.renderHuntLoadoutUI();
+    return true;
+  }
+
+  renderHuntLoadoutUI() {
+    const grid = document.getElementById('loadout-slot-grid');
+    if (!grid) return false;
+    this.draftHuntLoadout ??= this.activeHuntLoadout;
+    const draft = this.draftHuntLoadout;
+    const validationOptions = this.getLoadoutValidationOptions();
+    const validation = validateHuntLoadout(draft, validationOptions);
+    const capacity = validation.capacity ?? getLoadoutCapacity(draft);
+    const classProfile = HUNTER_CLASSES.find(({ id }) => id === draft.hunterClassId)
+      ?? HUNTER_CLASSES[0];
+
+    const missionDefinition = this.pendingHunt
+      ? HUNT_DEFINITIONS[this.pendingHunt.huntType] ?? HUNT_DEFINITIONS.goliath
+      : null;
+    const directive = this.pendingHunt ? getHuntDirective(this.pendingHunt.directiveId) : null;
+    const missionTitle = document.getElementById('loadout-mission-title');
+    const missionContext = document.getElementById('loadout-mission-context');
+    if (missionTitle) missionTitle.textContent = missionDefinition?.name?.toUpperCase() ?? 'AUCUN CONTRAT SÉLECTIONNÉ';
+    if (missionContext) {
+      missionContext.textContent = missionDefinition
+        ? `${DIRECTIVE_BIOME_LABELS[this.pendingHunt.planetType] ?? this.pendingHunt.planetType} · ${directive?.shortLabel ?? 'CHASSE STANDARD'}`
+        : 'Choisissez d’abord une cible dans l’onglet Contrats.';
+    }
+
+    const classLabel = document.getElementById('loadout-class-label');
+    if (classLabel) classLabel.textContent = `CLASSE · ${classProfile.name.toUpperCase()}`;
+    const capacityLabel = document.getElementById('loadout-capacity-label');
+    if (capacityLabel) capacityLabel.textContent = validation.capacityLabel;
+    const capacityCard = capacityLabel?.closest('.loadout-capacity-card');
+    capacityCard?.classList.toggle('overloaded', capacity.exceeded > 0);
+    const capacityTrack = capacityCard?.querySelector('.loadout-capacity-track');
+    capacityTrack?.setAttribute('aria-valuemax', String(capacity.budget));
+    capacityTrack?.setAttribute('aria-valuenow', String(Math.min(capacity.used, capacity.budget)));
+    capacityTrack?.setAttribute('aria-valuetext', validation.capacityLabel);
+    const capacityFill = document.getElementById('loadout-capacity-fill');
+    if (capacityFill) capacityFill.style.width = `${Math.min(100, (capacity.used / Math.max(1, capacity.budget)) * 100)}%`;
+    const recommendation = document.getElementById('loadout-recommendation');
+    if (recommendation) {
+      recommendation.textContent = this.pendingHuntRecommendation?.reason
+        ? `RECOMMANDATION DU NEXUS : ${this.pendingHuntRecommendation.reason}`
+        : 'Le nexus analysera la cible et proposera un équipement adapté.';
+    }
+
+    const coreList = document.getElementById('loadout-core-list');
+    if (coreList) {
+      const coreItems = [
+        MANDATORY_LOADOUT_CORE.wristWeaponId,
+        MANDATORY_LOADOUT_CORE.biomaskGadgetId,
+        MANDATORY_LOADOUT_CORE.cloakGadgetId,
+      ].map((id) => {
+        const item = getLoadoutItemById(id);
+        const chip = document.createElement('span');
+        chip.className = 'loadout-core-item';
+        chip.textContent = `${item?.name ?? id} · ${item?.capacityCost ?? 0} CAP`;
+        return chip;
+      });
+      coreList.replaceChildren(...coreItems);
+    }
+
+    const unlockedWeapons = new Set(this.player.unlockedWeaponIds ?? PLAYABLE_WEAPONS.map(({ id }) => id));
+    const singleSlots = ['melee', 'secondary', 'ranged', 'support'];
+    const selectedSingleItems = Object.fromEntries(singleSlots.map((slotId) => [slotId, draft.slots[slotId]]));
+    const slotCards = Object.values(LOADOUT_SLOT_DEFINITIONS).map((slotDefinition) => {
+      const fieldset = document.createElement('fieldset');
+      fieldset.className = 'loadout-slot-card';
+      const legend = document.createElement('legend');
+      legend.textContent = slotDefinition.id === 'gadgets'
+        ? `${slotDefinition.label} · 1 À ${slotDefinition.maxItems}`
+        : slotDefinition.label;
+      const choices = document.createElement('div');
+      choices.className = 'loadout-slot-choices';
+
+      getLoadoutItemsForSlot(slotDefinition.id).forEach((item) => {
+        const selected = slotDefinition.id === 'gadgets'
+          ? draft.slots.gadgets.includes(item.id)
+          : draft.slots[slotDefinition.id] === item.id;
+        const usedElsewhere = slotDefinition.id !== 'gadgets'
+          && Object.entries(selectedSingleItems).some(([otherSlot, selectedId]) => (
+            otherSlot !== slotDefinition.id && selectedId === item.id
+          ));
+        const locked = item.type === 'weapon' && !unlockedWeapons.has(item.id);
+        const choice = document.createElement('label');
+        choice.className = 'loadout-choice';
+        const input = document.createElement('input');
+        input.type = slotDefinition.id === 'gadgets' ? 'checkbox' : 'radio';
+        input.name = `loadout-${slotDefinition.id}`;
+        input.value = item.id;
+        input.checked = selected;
+        input.disabled = locked || usedElsewhere;
+        input.dataset.loadoutSlot = slotDefinition.id;
+        input.dataset.loadoutItem = item.id;
+        input.addEventListener('change', () => this.updateDraftHuntLoadoutSlot(
+          slotDefinition.id,
+          item.id,
+          input.checked,
+        ));
+        const copy = document.createElement('span');
+        const name = document.createElement('span');
+        name.className = 'loadout-item-name';
+        name.textContent = item.name;
+        const meta = document.createElement('span');
+        meta.className = 'loadout-item-meta';
+        meta.textContent = locked
+          ? 'VERROUILLÉ PAR LA PROGRESSION'
+          : usedElsewhere
+            ? 'DÉJÀ AFFECTÉ À UN AUTRE SLOT'
+            : `${item.keyLabel ? `[${item.keyLabel}] · ` : ''}${String(item.behavior ?? 'technologie').replaceAll('_', ' ').toUpperCase()}`;
+        copy.append(name, meta);
+        const cost = document.createElement('span');
+        cost.className = 'loadout-item-cost';
+        cost.textContent = `${item.capacityCost} CAP`;
+        choice.append(input, copy, cost);
+        choices.append(choice);
+      });
+      fieldset.append(legend, choices);
+      return fieldset;
+    });
+    grid.replaceChildren(...slotCards);
+
+    const presetSelect = document.getElementById('loadout-preset-select');
+    if (presetSelect) {
+      const preferredPresetId = this.loadoutSystem.state.activePresetId ?? presetSelect.value;
+      const empty = document.createElement('option');
+      empty.value = '';
+      empty.textContent = 'AUCUN PRESET';
+      const options = this.loadoutSystem.state.presets.map((preset) => {
+        const option = document.createElement('option');
+        option.value = preset.id;
+        option.textContent = preset.name;
+        return option;
+      });
+      presetSelect.replaceChildren(empty, ...options);
+      presetSelect.value = options.some(({ value }) => value === preferredPresetId) ? preferredPresetId : '';
+    }
+
+    const validationStatus = document.getElementById('loadout-validation');
+    if (validationStatus) {
+      const messages = [
+        ...validation.errors.map(({ message }) => message),
+        ...validation.warnings.map(({ message }) => `Avertissement : ${message}`),
+      ];
+      if (!this.pendingHunt) messages.unshift('Sélectionnez un contrat avant le déploiement.');
+      validationStatus.textContent = messages.length > 0
+        ? messages.join(' · ')
+        : `Configuration valide · ${getEquippedLoadoutItemIds(draft).length} systèmes embarqués.`;
+      validationStatus.classList.toggle('valid', validation.valid && Boolean(this.pendingHunt));
+      validationStatus.classList.toggle('invalid', !validation.valid);
+    }
+    const deployButton = document.getElementById('btn-loadout-deploy');
+    if (deployButton) deployButton.disabled = !validation.valid || !this.pendingHunt;
+    const presetActionDisabled = this.loadoutSystem.state.presets.length === 0;
+    document.getElementById('btn-loadout-activate-preset')?.toggleAttribute('disabled', presetActionDisabled);
+    document.getElementById('btn-loadout-delete-preset')?.toggleAttribute('disabled', presetActionDisabled);
+    return validation;
+  }
+
+  prepareHunt(huntType, planetType, directiveId = 'standard_hunt') {
+    const huntDefinition = HUNT_DEFINITIONS[huntType] ?? HUNT_DEFINITIONS.goliath;
+    this.pendingHunt = { huntType: huntDefinition.id, planetType, directiveId };
+    this.pendingHuntRecommendation = this.loadoutSystem.recommend({
+      huntType: huntDefinition.id,
+      biomeId: planetType,
+      hunterClassId: this.getCurrentHunterClassId(),
+      ...this.getLoadoutValidationOptions(),
+    });
+    this.draftHuntLoadout = this.resolveClassAlignedLoadout(this.activeHuntLoadout, {
+      huntType: huntDefinition.id,
+      biomeId: planetType,
+    });
+    document.querySelectorAll('.mission-card').forEach((card) => {
+      card.classList.toggle('selected-contract', card.querySelector('[data-hunt]')?.dataset.hunt === huntDefinition.id);
+    });
+    this.activateMissionTab?.('loadout', false);
+    this.renderHuntLoadoutUI();
+    document.getElementById('btn-loadout-recommended')?.focus?.();
+    this.hud.showLogMessage(`CONTRAT ${huntDefinition.name.toUpperCase()} — CONFIGUREZ VOTRE ÉQUIPEMENT`, 2600);
+    return this.pendingHunt;
+  }
+
+  deployPreparedHunt() {
+    if (!this.pendingHunt) return false;
+    const validation = validateHuntLoadout(this.draftHuntLoadout, this.getLoadoutValidationOptions());
+    if (!validation.valid) {
+      this.renderHuntLoadoutUI();
+      return false;
+    }
+    const committed = this.commitHuntLoadout(validation.loadout);
+    if (!committed.applied) return false;
+    const pending = this.pendingHunt;
+    this.pendingHunt = null;
+    this.startHunt(pending.huntType, pending.planetType, pending.directiveId);
+    this.requestPointerLockSafely();
+    return true;
+  }
+
+  setupHuntLoadoutControls() {
+    document.getElementById('loadout-form')?.addEventListener('submit', (event) => event.preventDefault());
+    document.getElementById('btn-loadout-back')?.addEventListener('click', () => this.activateMissionTab?.('missions', true));
+    document.getElementById('btn-loadout-recommended')?.addEventListener('click', () => {
+      if (!this.pendingHuntRecommendation) return;
+      this.draftHuntLoadout = this.pendingHuntRecommendation.loadout;
+      audioSynth.playYautjaClick();
+      this.renderHuntLoadoutUI();
+    });
+    document.getElementById('btn-loadout-deploy')?.addEventListener('click', () => this.deployPreparedHunt());
+    document.getElementById('btn-loadout-activate-preset')?.addEventListener('click', () => {
+      const presetId = document.getElementById('loadout-preset-select')?.value;
+      if (!presetId) return;
+      const result = this.loadoutSystem.activatePreset(presetId, this.getLoadoutValidationOptions());
+      if (!result.activated) return;
+      this.activeHuntLoadout = result.state.activeLoadout;
+      this.draftHuntLoadout = this.activeHuntLoadout;
+      this.applyActiveHuntLoadout();
+      const persistence = this.loadoutSystem.save();
+      if (!persistence.saved) this.setPersistenceUnavailable(true, 'SAUVEGARDE DU PRESET INDISPONIBLE — configuration active pour cette session uniquement.');
+      audioSynth.playYautjaClick();
+      this.renderHuntLoadoutUI();
+    });
+    document.getElementById('btn-loadout-delete-preset')?.addEventListener('click', () => {
+      const presetId = document.getElementById('loadout-preset-select')?.value;
+      if (!presetId) return;
+      const result = this.loadoutSystem.deletePreset(presetId);
+      if (!result.persistence.saved) this.setPersistenceUnavailable(true, 'SUPPRESSION NON PERSISTÉE — stockage local indisponible.');
+      this.renderHuntLoadoutUI();
+    });
+    document.getElementById('btn-loadout-save-preset')?.addEventListener('click', () => {
+      const nameInput = document.getElementById('loadout-preset-name');
+      const result = this.loadoutSystem.savePreset({
+        name: nameInput?.value ?? 'Preset de chasse',
+        loadout: this.draftHuntLoadout,
+      }, this.getLoadoutValidationOptions());
+      if (!result.saved) {
+        this.renderHuntLoadoutUI();
+        return;
+      }
+      this.activeHuntLoadout = result.state.activeLoadout;
+      this.draftHuntLoadout = this.activeHuntLoadout;
+      this.applyActiveHuntLoadout();
+      const persistence = this.loadoutSystem.save();
+      if (!persistence.saved) this.setPersistenceUnavailable(true, 'PRESET ACTIF MAIS NON PERSISTÉ — stockage local indisponible.');
+      if (nameInput) nameInput.value = '';
+      audioSynth.playYautjaClick();
+      this.renderHuntLoadoutUI();
+    });
   }
 
   refreshForgeButtons() {
@@ -1635,6 +2042,11 @@ export class Game {
       || (this.activeBoss.isDead && !hasLivingEncounterEnemy)
       || this.isPlayerCombatDisabled()
     ) return;
+    if (!isWeaponEquipped(this.activeHuntLoadout, this.player.selectedWeapon)) {
+      this.player.selectedWeapon = 1;
+      this.hud.showLogMessage('SÉCURITÉ DU HARNAIS — ARME NON EMBARQUÉE REFUSÉE', 1800);
+      return;
+    }
 
     const target = this.resolveCombatTarget();
     if (!target) return;
@@ -1758,8 +2170,66 @@ export class Game {
       this.isPointerLocked = (document.pointerLockElement === this.container);
     });
 
+    this.container.addEventListener('webglcontextlost', (event) => {
+      event.preventDefault();
+      if (this.isHuntFlowActive() && !this.isPaused) this.setPaused(true);
+      showFatalGameError('Le contexte WebGL a été perdu. Rechargez le jeu pour reconstruire proprement le vaisseau, les textures et la chasse en cours.');
+    });
+    this.container.addEventListener('webglcontextrestored', () => {
+      const message = document.getElementById('fatal-error-message');
+      if (message) message.textContent = 'Le contexte graphique répond de nouveau. Rechargez afin de restaurer toutes les ressources 3D dans un état vérifié.';
+    });
+
+    this.container.addEventListener('pointerdown', (event) => {
+      if (event.pointerType !== 'touch' || this.gameState !== 'HUNT' || this.isPaused) return;
+      this.touchLookPointerId = event.pointerId;
+      this.touchLookPosition = { x: event.clientX, y: event.clientY };
+      try {
+        this.container.setPointerCapture?.(event.pointerId);
+      } catch {
+        // Le glissement tactile reste facultatif si la capture est refusée.
+      }
+    });
+    this.container.addEventListener('pointermove', (event) => {
+      if (event.pointerId !== this.touchLookPointerId || !this.touchLookPosition || this.isPaused) return;
+      const deltaX = event.clientX - this.touchLookPosition.x;
+      const deltaY = event.clientY - this.touchLookPosition.y;
+      this.cameraYaw -= deltaX * 0.008;
+      this.cameraPitch = THREE.MathUtils.clamp(this.cameraPitch - (deltaY * 0.006), -0.6, 0.8);
+      this.touchLookPosition = { x: event.clientX, y: event.clientY };
+      event.preventDefault?.();
+    });
+    const releaseTouchLook = (event) => {
+      if (event.pointerId !== this.touchLookPointerId) return;
+      this.touchLookPointerId = null;
+      this.touchLookPosition = null;
+    };
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach((eventName) => {
+      this.container.addEventListener(eventName, releaseTouchLook);
+    });
+
     window.addEventListener('keydown', (e) => this.onKeyDown(e));
     window.addEventListener('keyup', (e) => this.onKeyUp(e));
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Tab') return;
+      const dialog = this.getVisibleDialog();
+      if (!dialog) return;
+      const controls = [...dialog.querySelectorAll('button, select, input, [tabindex]')]
+        .filter((element) => !element.disabled
+          && !element.hidden
+          && !element.closest('.hidden')
+          && element.tabIndex >= 0);
+      if (controls.length === 0) return;
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
 
     window.addEventListener('mousedown', (e) => {
       if (!this.isGameStarted || this.gameState !== 'HUNT' || this.isPaused) return;
@@ -1786,11 +2256,17 @@ export class Game {
       if (e.button === 2) this.isScopeZooming = false;
     });
 
-    window.addEventListener('blur', () => {
+    const pauseForBackground = () => {
       this.isScopeZooming = false;
       this.resetKeyboardInput();
       this.gamepadAxes = { x: 0, z: 0 };
       this.resetHubTouchInput();
+      this.resetHuntTouchInput();
+      if (this.isHuntFlowActive() && !this.isPaused && !this.huntResultShown) this.setPaused(true);
+    };
+    window.addEventListener('blur', pauseForBackground);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) pauseForBackground();
     });
   }
 
@@ -1883,7 +2359,7 @@ export class Game {
   }
 
   setupMissionTabs() {
-    const tabKeys = ['missions', 'armory', 'codex', 'options'];
+    const tabKeys = ['missions', 'loadout', 'armory', 'codex', 'options'];
     const tabs = tabKeys.map((key) => ({
       key,
       button: document.getElementById(`tab-btn-${key}`),
@@ -1943,10 +2419,12 @@ export class Game {
     });
 
     this.setupMissionTabs();
+    this.setupHuntLoadoutControls();
     document.getElementById('btn-explore-hub')?.addEventListener('click', () => {
       this.enterHubExploration();
     });
     this.setupHubTouchControls();
+    this.setupHuntTouchControls();
 
     document.querySelectorAll('.skin-card').forEach(card => {
       card.addEventListener('click', () => {
@@ -1984,6 +2462,7 @@ export class Game {
       select?.addEventListener('change', () => {
         this.player.applyCustomization({ [field]: select.value });
         this.hud.syncCustomization(this.player.customization);
+        if (field === 'hunterClassId') this.syncHuntLoadoutClass();
         this.saveProgress();
         audioSynth.playYautjaClick();
         const status = document.getElementById('customization-status');
@@ -2006,9 +2485,7 @@ export class Game {
         const requestedPlanet = resolveHuntBiome(huntType, planetSelector?.value);
         const planetType = resolveDirectiveBiome(directiveId, requestedPlanet) ?? requestedPlanet;
         if (planetSelector) planetSelector.value = planetType;
-        document.getElementById('mission-modal').classList.add('hidden');
-        this.startHunt(huntType, planetType, directiveId);
-        this.requestPointerLockSafely();
+        this.prepareHunt(huntType, planetType, directiveId);
       });
     });
 
@@ -2051,6 +2528,10 @@ export class Game {
     document.querySelectorAll('.weapon-slot').forEach(slot => {
       slot.addEventListener('click', () => {
         const wepId = parseInt(slot.getAttribute('data-wep'));
+        if (!isWeaponEquipped(this.activeHuntLoadout, wepId)) {
+          this.hud.showLogMessage('ARME NON EMBARQUÉE — MODIFIEZ LE LOADOUT AVANT LA PROCHAINE CHASSE', 2400);
+          return;
+        }
         this.player.selectedWeapon = wepId;
         audioSynth.playYautjaClick();
       });
@@ -2110,6 +2591,54 @@ export class Game {
     return true;
   }
 
+  setupHuntTouchControls() {
+    const controls = document.getElementById('touch-hunt-controls');
+    if (!controls) return false;
+    const releaseDirection = (event) => {
+      event.preventDefault?.();
+      this.setHuntTouchDirection(event.currentTarget?.dataset?.huntMove, false);
+    };
+    controls.querySelectorAll('[data-hunt-move]').forEach((button) => {
+      button.addEventListener('pointerdown', (event) => {
+        if (this.gameState !== 'HUNT' || this.isPaused) return;
+        event.preventDefault?.();
+        try {
+          button.setPointerCapture?.(event.pointerId);
+        } catch {
+          // Une annulation système peut empêcher la capture sans invalider le contrôle.
+        }
+        this.setHuntTouchDirection(button.dataset.huntMove, true);
+      });
+      ['pointerup', 'pointercancel', 'lostpointercapture'].forEach((eventName) => {
+        button.addEventListener(eventName, releaseDirection);
+      });
+    });
+    document.getElementById('btn-touch-hunt-attack')?.addEventListener('click', (event) => {
+      event.preventDefault?.();
+      if (this.gameState !== 'HUNT' || this.isPaused) return;
+      audioSynth.init();
+      if (this.player?.inQTE) this.resolveFacehuggerQTE(true);
+      else this.performAttack();
+    });
+    document.getElementById('btn-touch-hunt-interact')?.addEventListener('click', (event) => {
+      event.preventDefault?.();
+      if (this.gameState === 'HUNT' && !this.isPaused) this.attemptContextInteraction();
+    });
+    document.getElementById('btn-touch-hunt-vision')?.addEventListener('click', (event) => {
+      event.preventDefault?.();
+      this.onKeyDown({ code: 'KeyV', repeat: false, preventDefault() {} });
+    });
+    document.getElementById('btn-touch-hunt-cloak')?.addEventListener('click', (event) => {
+      event.preventDefault?.();
+      this.onKeyDown({ code: 'KeyC', repeat: false, preventDefault() {} });
+    });
+    document.getElementById('btn-touch-hunt-pause')?.addEventListener('click', (event) => {
+      event.preventDefault?.();
+      if (this.isHuntFlowActive()) this.togglePause();
+    });
+    return true;
+  }
+
   resetHubTouchInput() {
     this.activeHubTouchDirections?.clear();
     this.touchInputDir ??= { x: 0, z: 0 };
@@ -2149,12 +2678,16 @@ export class Game {
     this.isPaused = Boolean(paused);
     this.isScopeZooming = false;
     this.resetKeyboardInput();
+    this.resetHuntTouchInput();
     this.inputDir = { x: 0, z: 0, isSprinting: false };
-    document.getElementById('pause-modal')?.classList.toggle('hidden', !this.isPaused);
+    const pauseModal = document.getElementById('pause-modal');
+    pauseModal?.classList.toggle('hidden', !this.isPaused);
 
     if (this.isPaused) {
       if (document.pointerLockElement) document.exitPointerLock();
+      pauseModal?.querySelector?.('.modal-box')?.focus?.();
     } else {
+      this.container?.focus?.();
       this.requestPointerLockSafely();
     }
   }
@@ -2171,10 +2704,12 @@ export class Game {
     this.resetKeyboardInput();
     this.gamepadAxes = { x: 0, z: 0 };
     this.setHubTouchControlsVisible(false);
+    this.setHuntTouchControlsVisible(false);
     this.syncInputDirection();
     this.activateMissionTab?.(tabKey, false);
     this.renderDirectiveSelector(document.getElementById('directive-selector')?.value ?? this.currentDirectiveId);
     this.refreshForgeButtons();
+    if (tabKey === 'loadout') this.renderHuntLoadoutUI();
     this.isScopeZooming = false;
     this.hud.hideActionPrompt();
     if (document.pointerLockElement) document.exitPointerLock();
@@ -2195,6 +2730,7 @@ export class Game {
     this.resetKeyboardInput();
     this.gamepadAxes = { x: 0, z: 0 };
     this.resetHubTouchInput();
+    this.setHuntTouchControlsVisible(false);
     this.syncInputDirection();
     this.hud.hideActionPrompt();
     this.setHubTouchControlsVisible(true);
@@ -2247,6 +2783,29 @@ export class Game {
         'HANGAR DE CHASSE — ' + vehicles + ' · NEXUS CENTRAL POUR LE DÉPLOIEMENT',
         3600,
       );
+    } else if (station.interactionType === 'navigation') {
+      const zoneCount = this.hub.getZones?.().length ?? 11;
+      this.hud.showLogMessage(`PONT DE NAVIGATION — ${zoneCount} COMPARTIMENTS PRESSURISÉS · ROUTES DE CHASSE SYNCHRONISÉES`, 3600);
+    } else if (station.interactionType === 'cryo') {
+      this.player.health = this.player.maxHealth;
+      this.player.stamina = this.player.maxStamina;
+      this.hud.updateVitals(this.player);
+      this.hud.showLogMessage('CRYOSTASE — CONSTANTES RESTAURÉES ET MÉTABOLISME STABILISÉ', 3000);
+    } else if (station.interactionType === 'escape_pods') {
+      this.hud.showLogMessage('BAIE DES PODS — SIX CAPSULES DE TRAQUE ET DEUX VECTEURS D’ÉVACUATION PRÊTS', 3200);
+    } else if (station.interactionType === 'cleaner_lab') {
+      this.player.health = this.player.maxHealth;
+      this.player.energy = this.player.maxEnergy;
+      this.player.isAcidCorroded = false;
+      this.player.acidTimer = 0;
+      this.hud.updateVitals(this.player);
+      this.hud.showLogMessage('LABORATOIRE CLEANER — CONTAMINATION PURGÉE, MEDICOMP ET SOLVANTS CONTRÔLÉS', 3400);
+    } else if (station.interactionType === 'core') {
+      this.player.energy = this.player.maxEnergy;
+      this.hud.updateVitals(this.player);
+      this.hud.showLogMessage('NOYAU DU VAISSEAU — HARNAIS ÉNERGÉTIQUE RECHARGÉ À 100 %', 3000);
+    } else if (station.interactionType === 'airlock') {
+      this.showMissionSelectionModal('loadout');
     }
     return station;
   }
@@ -2276,6 +2835,8 @@ export class Game {
     this.currentHuntType = huntDefinition.id;
     this.currentPlanet = resolvedPlanet;
     this.hub.setVisible(false);
+    this.applyActiveHuntLoadout();
+    this.setHuntTouchControlsVisible(true);
     this.environment.setDiscoveredPoiIds(this.player.discoveredPoiIds);
     this.environment.setBiome(resolvedPlanet);
     this.environment.setDiscoveredPoiIds(this.player.discoveredPoiIds);
@@ -2346,6 +2907,7 @@ export class Game {
     }
 
     this.player.clearTransientGadgets();
+    this.setHuntTouchControlsVisible(false);
     this.player.projectiles.forEach((projectile) => disposeObject3D(projectile.mesh));
     this.player.mines.forEach((mine) => disposeObject3D(mine.mesh));
     this.player.projectiles = [];
@@ -2437,8 +2999,18 @@ export class Game {
 
     const weapon = getPlayableWeaponByKey(e.code);
     if (weapon) {
+      if (!isWeaponEquipped(this.activeHuntLoadout, weapon.id)) {
+        this.hud.showLogMessage(`${weapon.name.toUpperCase()} NON EMBARQUÉE — MODIFIEZ LE LOADOUT AU VAISSEAU`, 2200);
+        return;
+      }
       this.player.selectedWeapon = weapon.slot;
       audioSynth.playYautjaClick();
+      return;
+    }
+
+    const loadoutGadget = getPlayerGadgetByKey(e.code);
+    if (loadoutGadget && !isGadgetEquipped(this.activeHuntLoadout, loadoutGadget.id)) {
+      this.hud.showLogMessage(`${loadoutGadget.name.toUpperCase()} NON EMBARQUÉ — TECHNOLOGIE INDISPONIBLE`, 2200);
       return;
     }
 
@@ -2580,10 +3152,79 @@ export class Game {
     }
   }
 
+  resetHuntTouchInput() {
+    this.activeHuntTouchDirections?.clear();
+    this.touchInputDir ??= { x: 0, z: 0 };
+    this.touchInputDir.x = 0;
+    this.touchInputDir.z = 0;
+    if (this.inputDir && this.keyboardInputDir && this.gamepadAxes) this.syncInputDirection();
+  }
+
+  setHuntTouchDirection(direction, pressed) {
+    if (!['up', 'down', 'left', 'right'].includes(direction)) return false;
+    this.activeHuntTouchDirections ??= new Set();
+    if (pressed) {
+      if (this.gameState !== 'HUNT' || this.isPaused) return false;
+      this.activeHuntTouchDirections.add(direction);
+    } else {
+      this.activeHuntTouchDirections.delete(direction);
+    }
+    this.touchInputDir.x = (this.activeHuntTouchDirections.has('left') ? 1 : 0)
+      - (this.activeHuntTouchDirections.has('right') ? 1 : 0);
+    this.touchInputDir.z = (this.activeHuntTouchDirections.has('up') ? 1 : 0)
+      - (this.activeHuntTouchDirections.has('down') ? 1 : 0);
+    this.syncInputDirection();
+    return true;
+  }
+
+  setHuntTouchControlsVisible(visible) {
+    if (typeof document === 'undefined') return false;
+    const controls = document.getElementById('touch-hunt-controls');
+    controls?.classList?.toggle?.('hidden', !visible);
+    if (!visible) this.resetHuntTouchInput();
+    return Boolean(controls);
+  }
+
   onKeyUp(e) {
     this.applyKeyboardSprintInput(e.code, false);
     this.applyKeyboardMovementInput(e.code, false);
     this.syncInputDirection();
+  }
+
+  cycleEquippedWeapon(direction = 1) {
+    const equipped = PLAYABLE_WEAPONS.filter((weapon) => isWeaponEquipped(this.activeHuntLoadout, weapon.id));
+    if (equipped.length === 0) return null;
+    const currentIndex = equipped.findIndex(({ slot }) => slot === this.player.selectedWeapon);
+    const startIndex = currentIndex >= 0 ? currentIndex : 0;
+    const nextIndex = (startIndex + (direction < 0 ? -1 : 1) + equipped.length) % equipped.length;
+    const next = equipped[nextIndex];
+    this.player.selectedWeapon = next.slot;
+    audioSynth.playYautjaClick();
+    this.hud.showLogMessage(`ARME EMBARQUÉE : ${next.name.toUpperCase()}`, 1200);
+    return next;
+  }
+
+  getVisibleDialog() {
+    if (typeof document === 'undefined') return null;
+    return [...document.querySelectorAll('[role="dialog"], [role="alertdialog"]')]
+      .find((dialog) => !dialog.classList.contains('hidden') && dialog.getAttribute('aria-hidden') !== 'true')
+      ?? null;
+  }
+
+  moveDialogFocus(direction = 1) {
+    const dialog = this.getVisibleDialog();
+    if (!dialog) return false;
+    const controls = [...dialog.querySelectorAll('button, select, input, [tabindex]')]
+      .filter((element) => !element.disabled
+        && !element.hidden
+        && !element.closest('.hidden')
+        && element.tabIndex >= 0);
+    if (controls.length === 0) return false;
+    const currentIndex = controls.indexOf(document.activeElement);
+    const startIndex = currentIndex >= 0 ? currentIndex : 0;
+    const nextIndex = (startIndex + (direction < 0 ? -1 : 1) + controls.length) % controls.length;
+    controls[nextIndex].focus();
+    return true;
   }
 
   updateGamepad() {
@@ -2598,11 +3239,49 @@ export class Game {
       this.gamepadAttackPressed = false;
       this.gamepadInteractPressed = false;
       this.gamepadMenuPressed = false;
+      this.gamepadWeaponCyclePressed = { previous: false, next: false };
+      this.gamepadVisionPressed = false;
+      this.gamepadCloakPressed = false;
+      this.gamepadGadgetPressed = [false, false, false, false];
+      this.gamepadNavigationPressed = [false, false, false, false];
       return;
     }
 
     const axes = gp.axes ?? [];
     const buttons = gp.buttons ?? [];
+    const menuPressed = buttons[9]?.pressed === true || buttons[8]?.pressed === true;
+    if (menuPressed && !this.gamepadMenuPressed) {
+      if (this.isHuntFlowActive()) this.togglePause();
+      else if (this.gameState === 'HUB' && this.isHubExploring) this.showMissionSelectionModal('missions');
+    }
+    this.gamepadMenuPressed = menuPressed;
+
+    const dialog = this.getVisibleDialog();
+    const navigationButtons = [12, 13, 14, 15].map((index) => buttons[index]?.pressed === true);
+    if (dialog) {
+      navigationButtons.forEach((pressed, index) => {
+        if (pressed && !this.gamepadNavigationPressed[index]) {
+          this.moveDialogFocus(index === 0 || index === 2 ? -1 : 1);
+        }
+      });
+      this.gamepadNavigationPressed = navigationButtons;
+      const dialogActivatePressed = buttons[0]?.pressed === true;
+      if (dialogActivatePressed && !this.gamepadInteractPressed) document.activeElement?.click?.();
+      this.gamepadInteractPressed = dialogActivatePressed;
+      this.gamepadAxes.x = 0;
+      this.gamepadAxes.z = 0;
+      this.syncInputDirection();
+      return;
+    }
+    this.gamepadNavigationPressed = navigationButtons;
+
+    if (this.isPaused) {
+      this.gamepadAxes.x = 0;
+      this.gamepadAxes.z = 0;
+      this.syncInputDirection();
+      return;
+    }
+
     const axisX = Number(axes[0]) || 0;
     const axisZ = Number(axes[1]) || 0;
     this.gamepadAxes.x = Math.abs(axisX) > 0.15 ? -axisX : 0;
@@ -2617,13 +3296,6 @@ export class Game {
       this.cameraPitch = Math.max(-0.6, Math.min(0.8, this.cameraPitch));
     }
 
-    const menuPressed = buttons[9]?.pressed === true || buttons[8]?.pressed === true;
-    if (menuPressed && !this.gamepadMenuPressed
-      && this.gameState === 'HUB' && this.isHubExploring) {
-      this.showMissionSelectionModal('missions');
-    }
-    this.gamepadMenuPressed = menuPressed;
-
     const interactPressed = buttons[0]?.pressed === true;
     if (interactPressed && !this.gamepadInteractPressed) {
       if (this.gameState === 'HUB' && this.isHubExploring) this.attemptHubInteraction();
@@ -2631,9 +3303,41 @@ export class Game {
     }
     this.gamepadInteractPressed = interactPressed;
 
+    const previousWeaponPressed = buttons[4]?.pressed === true;
+    const nextWeaponPressed = buttons[5]?.pressed === true;
+    if (this.gameState === 'HUNT') {
+      if (previousWeaponPressed && !this.gamepadWeaponCyclePressed.previous) this.cycleEquippedWeapon(-1);
+      if (nextWeaponPressed && !this.gamepadWeaponCyclePressed.next) this.cycleEquippedWeapon(1);
+    }
+    this.gamepadWeaponCyclePressed = { previous: previousWeaponPressed, next: nextWeaponPressed };
+
+    const visionPressed = buttons[2]?.pressed === true;
+    if (visionPressed && !this.gamepadVisionPressed && this.gameState === 'HUNT') {
+      this.onKeyDown({ code: 'KeyV', repeat: false, preventDefault() {} });
+    }
+    this.gamepadVisionPressed = visionPressed;
+    const cloakPressed = buttons[3]?.pressed === true;
+    if (cloakPressed && !this.gamepadCloakPressed && this.gameState === 'HUNT') {
+      this.onKeyDown({ code: 'KeyC', repeat: false, preventDefault() {} });
+    }
+    this.gamepadCloakPressed = cloakPressed;
+
+    const activeGadgetKeys = (this.activeHuntLoadout?.slots?.gadgets ?? [])
+      .map((id) => getLoadoutItemById(id)?.key)
+      .filter(Boolean);
+    const gadgetKeys = [activeGadgetKeys[0], 'KeyR', 'Space', activeGadgetKeys[1]];
+    navigationButtons.forEach((pressed, index) => {
+      if (pressed && !this.gamepadGadgetPressed[index] && this.gameState === 'HUNT' && gadgetKeys[index]) {
+        this.onKeyDown({ code: gadgetKeys[index], repeat: false, preventDefault() {} });
+      }
+    });
+    this.gamepadGadgetPressed = navigationButtons;
+
     const attackPressed = buttons[7]?.pressed === true;
-    if (attackPressed && !this.gamepadAttackPressed
-      && this.gameState === 'HUNT' && !this.isPaused) this.performAttack();
+    if (attackPressed && !this.gamepadAttackPressed && this.gameState === 'HUNT') {
+      if (this.player?.inQTE) this.resolveFacehuggerQTE(true);
+      else this.performAttack();
+    }
     this.gamepadAttackPressed = attackPressed;
   }
 
@@ -3248,6 +3952,8 @@ export class Game {
     this.updateDirectiveResultPanel(true);
     document.getElementById('pause-modal')?.classList.add('hidden');
     modal.classList.remove('hidden');
+    this.setHuntTouchControlsVisible(false);
+    modal.querySelector?.('.modal-box')?.focus?.();
     this.saveProgress();
     if (document.pointerLockElement) document.exitPointerLock();
   }
@@ -3280,6 +3986,8 @@ export class Game {
     this.updateDirectiveResultPanel(false);
     document.getElementById('pause-modal')?.classList.add('hidden');
     modal.classList.remove('hidden');
+    this.setHuntTouchControlsVisible(false);
+    modal.querySelector?.('.modal-box')?.focus?.();
     this.saveProgress();
     if (document.pointerLockElement) document.exitPointerLock();
   }
@@ -3299,8 +4007,9 @@ export class Game {
     const frameDelta = Math.min(rawDelta, 0.1);
     const delta = frameDelta * this.timeScale;
 
+    if (this.isGameStarted) this.updateGamepad();
+
     if (this.isGameStarted && !this.isPaused) {
-      this.updateGamepad();
       this.updateShaderUniforms(delta);
       this.updateVFX(delta);
 
@@ -3346,6 +4055,23 @@ export class Game {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  const game = new Game();
-  game.animate();
+  document.getElementById('btn-reload-game')?.addEventListener('click', () => window.location.reload());
+  try {
+    const game = new Game();
+    window.__YAUTJA_APEX_HUNT__ = game;
+    document.querySelector('#controls-modal .modal-box')?.focus?.();
+    game.animate();
+  } catch (error) {
+    console.error('Échec du démarrage de Yautja: Apex Hunt', error);
+    showFatalGameError(
+      error instanceof Error
+        ? `Le moteur 3D n’a pas pu démarrer : ${error.message}. Vérifiez WebGL et l’accélération matérielle, puis rechargez.`
+        : 'Le moteur 3D n’a pas pu démarrer. Vérifiez WebGL et l’accélération matérielle, puis rechargez.',
+    );
+  }
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Erreur asynchrone non gérée', event.reason);
+  showFatalGameError('Une ressource essentielle du jeu n’a pas pu être initialisée. Rechargez la page ; si le problème persiste, vérifiez la console et l’accélération matérielle.');
 });

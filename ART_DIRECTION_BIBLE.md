@@ -1,7 +1,15 @@
 # Bible de direction artistique — Yautja: Apex Hunt
 
-**Date :** 28 août 2026
-**Statut :** direction de production v1.12 pour personnages, équipements, décors et props du fan game.
+**Date :** 30 août 2026
+**Statut :** direction de production v1.13 pour personnages, équipements, décors, props et croiseur du fan game.
+
+## Densité du croiseur v1.13
+
+La silhouette intérieure repose sur des couches géométriques lisibles : coque et cloisons, arches de coursive, rails/structures, conduites et câblage, panneaux techniques, consoles et props fonctionnels. Les onze zones utilisent 295 assemblages, 32 lots instanciés, 1 569 instances et environ 248 584 triangles. Les détails servent la navigation et l’identité de chaque salle ; ils ne doivent jamais fermer un passage ou masquer une console interactive.
+
+Les références de production convergent vers un langage mêlant iconographie Predator, flux organique, surfaces militaires et formes de véhicule performantes. Le jeu reprend ce vocabulaire dans des volumes et matériaux originaux, avec les WebP OpenAI du projet pour casser l’uniformité des surfaces sans importer d’asset officiel.
+
+Références de travail v1.13 : les concepts du vaisseau Ark par Andrew Lee McConnell pour [The Predator](http://www.streamofconcept.com/work/the-predator-722t5), le retour de production [Envisioning Alien Technology for The Predator](https://www.cgw.com/Press-Center/Web-Exclusives/2018/Envisioning-Alien-Technology-for-The-Predator.aspx) et les concepts AVP:R publiés par [Farzad Varahramyan](https://farzadart.com/avpr/). Ces sources guident le vocabulaire ; tous les volumes runtime restent des créations procédurales propres au projet.
 
 ## Intention visuelle
 

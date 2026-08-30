@@ -4,9 +4,9 @@ Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur inca
 
 ## État du projet
 
-La version 1.12.0 Gunnison/Predalien est publiée sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et sur [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Le commit fonctionnel `5b340ca`, complété par le correctif de métadonnée `e249bf2`, est poussé sur `codex/professional-hunt-pass` ; le déploiement de validation `dpl_Cxx5T43crYq8wc9Jv5PKek9bDi6j` est `READY` en production.
+La version 1.13.0 Croiseur/Paquetage prolonge la release Gunnison/Predalien sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Elle transforme le hub en croiseur compartimenté et impose une préparation de chasse persistante : le joueur ne peut plus emporter simultanément tout l’arsenal.
 
-La v1.12 a franchi 365 tests, le build Vite, l’audit de production et les parcours Chromium desktop/mobile locaux puis publics. Elle porte le contenu courant à neuf biomes, onze directives et 236 entrées de catalogue, corrige le déplacement AZERTY, remplace le mannequin joueur par un rig Yautja procédural animé et transforme Gunnison en véritable territoire de chasse ouvert.
+La baseline v1.12 avait franchi 365 tests, le build Vite, l’audit de production et les parcours Chromium desktop/mobile locaux puis publics. La v1.13 conserve les neuf biomes, onze directives et 236 entrées de catalogue, ajoute onze zones de vaisseau, treize portes, dix stations, un système de presets de paquetage et des commandes de chasse tactiles/manette complètes.
 
 ## Lancer localement
 
@@ -27,6 +27,9 @@ npm audit
 
 ## Boucle de jeu
 
+- croiseur de 138 × 184 × 38 m, onze compartiments, treize portes/coursives, dix perchoirs et dix stations : pont, navigation, cryostase, pods d’évasion, laboratoire Cleaner/infirmerie, hangar, armurerie, noyau, forge/trophées et sas arrière ;
+- préparation obligatoire avant chaque contrat : systèmes de base permanents, slots mêlée/secondaire/distance/gadgets/soutien, capacité propre à chacune des dix classes, restrictions de déblocage, incompatibilités, recommandations et douze presets persistants ;
+- le HUD, les raccourcis, les attaques et les assemblages 3D portés sont filtrés par le paquetage actif ; les wristblades, le biomask et le camouflage optique restent le noyau du chasseur ;
 - hub du vaisseau-mère, arsenal, forge et trophées persistants ;
 - onze chasses : Goliath Xeno-Akumo, Reine xénomorphe, rival Bad Blood, Predalien, Berserker Super Predator, Feral, Wolf Cleaner, Kalisk, Assassin Predator (2018), génétiquement amélioré, City Hunter dans l’adaptation originale Los Angeles 1997 et Grid Alien dans l’épreuve de Bouvetøya ;
 - neuf biomes : jungle, ruche, Ryushi, arène de clan, monde mortel de Genna, site noir Stargazer, Los Angeles 1997 sous canicule, pyramide antarctique de Bouvetøya et Gunnison sous pluie nocturne ;

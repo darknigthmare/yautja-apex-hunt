@@ -1,5 +1,11 @@
 # Game Design Bible — Yautja: Apex Hunt
 
+## Contrat de préparation v1.13
+
+Le contrat n’envoie plus le joueur directement sur la planète. La séquence canonique est « contrat → préparation → validation → déploiement ». Le noyau wristblades/biomask/camouflage reste obligatoire ; les cinq familles de slots et le budget de la classe forcent un choix de style. Les recommandations donnent un départ viable sans retirer la maîtrise aux joueurs experts, et les presets accélèrent les chasses répétées. Toute activation en mission doit vérifier le paquetage actif : une entrée HUD masquée n’est jamais considérée comme une protection suffisante.
+
+Le croiseur sert de niveau de respiration et de lisibilité systémique. Ses onze compartiments distribuent préparation, soin, énergie, lore, trophées et déploiement dans des salles identifiables reliées par des coursives, avec plusieurs boucles de navigation et aucun long cul-de-sac obligatoire.
+
 **Version :** 1.12 — Gunnison, chasseur articulé et équipement lisible
 **Date :** 28 août 2026
 **Règle de lecture :** « actuel » décrit un système présent ou en intégration dans le worktree ; « cible » décrit le comportement de production attendu.
