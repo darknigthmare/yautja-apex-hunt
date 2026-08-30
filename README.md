@@ -6,7 +6,7 @@ Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur inca
 
 La version 1.13.0 Croiseur/Paquetage prolonge la release Gunnison/Predalien sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Elle transforme le hub en croiseur compartimenté et impose une préparation de chasse persistante : le joueur ne peut plus emporter simultanément tout l’arsenal.
 
-Le commit fonctionnel 89518b9 est poussé sur codex/professional-hunt-pass ; le déploiement dpl_AeeAnjSarUhCmcWQ9iaVcMkgzAhu est READY en production et l’alias officiel répond en HTTP 200 avec les marqueurs v1.13.
+Le commit fonctionnel 89518b9 et le commit de release 2b6b330 sont poussés sur codex/professional-hunt-pass ; le déploiement dpl_Dk6hZRRY95owRHVtakEu6pGLijhu est READY en production et l’alias officiel répond en HTTP 200 avec les marqueurs v1.13.
 
 La baseline v1.12 avait franchi 365 tests, le build Vite, l’audit de production et les parcours Chromium desktop/mobile locaux puis publics. La v1.13 conserve les neuf biomes, onze directives et 236 entrées de catalogue, ajoute onze zones de vaisseau, treize portes, dix stations, un système de presets de paquetage et des commandes de chasse tactiles/manette complètes.
 

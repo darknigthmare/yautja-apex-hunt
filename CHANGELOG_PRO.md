@@ -4,7 +4,7 @@ Les versions sont considérées comme publiées uniquement après push du code, 
 
 ## [1.13.0] — 30 août 2026
 
-Release publiée après 391/391 tests, build Vite 8.2.2 en 50 modules et quatre chunks applicatifs sous 400 Ko, audit à zéro vulnérabilité, contrôle HTTP local puis public. Le commit fonctionnel 89518b9 est poussé et le déploiement dpl_AeeAnjSarUhCmcWQ9iaVcMkgzAhu est READY en production.
+Release publiée après 391/391 tests, build Vite 8.2.2 en 50 modules et quatre chunks applicatifs sous 400 Ko, audit à zéro vulnérabilité, contrôle HTTP local puis public. Les commits 89518b9 et 2b6b330 sont poussés ; le déploiement dpl_Dk6hZRRY95owRHVtakEu6pGLijhu est READY en production.
 
 ### Croiseur Yautja compartimenté
 
