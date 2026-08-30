@@ -1,8 +1,10 @@
-# Rapport QA — candidat 1.13.0
+# Rapport QA — release 1.13.0
 
 **Date :** 30 août 2026
-**Statut :** candidat 1.13.0 validé localement ; publication finale en attente du gate Vercel.
-**Production actuellement vérifiée :** release 1.12.0 sur <https://yautja-apex-hunt.vercel.app/> jusqu’au déploiement v1.13.
+**Statut :** release 1.13.0 validée, poussée et publiée.
+**Production actuellement vérifiée :** release 1.13.0 sur <https://yautja-apex-hunt.vercel.app/> — HTTP 200 et marqueurs v1.13 confirmés.
+**Commit fonctionnel/push v1.13 :** 89518b9 — poussé sur codex/professional-hunt-pass.
+**Déploiement Vercel v1.13 :** dpl_AeeAnjSarUhCmcWQ9iaVcMkgzAhu — READY, cible production, alias officiel confirmé.
 **Commit fonctionnel/push v1.12 :** `5b340ca` — poussé sur `codex/professional-hunt-pass`
 **Correctif métadonnée/push v1.12 :** `e249bf2` — poussé sur `codex/professional-hunt-pass`
 **Déploiement de validation Vercel v1.12 :** `dpl_Cxx5T43crYq8wc9Jv5PKek9bDi6j` — `READY`, cible `production`

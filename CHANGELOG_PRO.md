@@ -4,6 +4,8 @@ Les versions sont considérées comme publiées uniquement après push du code, 
 
 ## [1.13.0] — 30 août 2026
 
+Release publiée après 391/391 tests, build Vite 8.2.2 en 50 modules et quatre chunks applicatifs sous 400 Ko, audit à zéro vulnérabilité, contrôle HTTP local puis public. Le commit fonctionnel 89518b9 est poussé et le déploiement dpl_AeeAnjSarUhCmcWQ9iaVcMkgzAhu est READY en production.
+
 ### Croiseur Yautja compartimenté
 
 - coque jouable portée à 138 × 184 × 38 m avec onze zones connectées, treize portes, dix perchoirs, 86 colliders et dix consoles/stations ;
