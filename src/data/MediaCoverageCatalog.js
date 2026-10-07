@@ -60,8 +60,11 @@ const work = (
 export const MEDIA_COVERAGE_CATALOG = freezeCatalog([
   work('film_predator_1987', 'Predator', 1987, 'Film live action', 'SCREEN', 'Écran principal',
     'https://www.20thcenturystudios.com/movies/predator',
-    [{ type: 'contract', id: 'jungle_hunt', label: 'Jungle, commandos, pièges et autodestruction' }],
-    'partial', 'Jungle, arsenal classique et apparence couverts ; contrat narratif complet restant.'),
+    [
+      { type: 'hunt', id: 'jungle_hunter_1987', label: 'Jungle Hunter, bio-masque classique, tri-laser, plasma d’épaule et autodestruction' },
+      { type: 'contract', id: 'jungle_hunt', label: 'Jungle centraméricaine, pièges et affrontement de l’escouade' },
+    ],
+    'playable', 'Adaptation jouable intégrale : duel Jungle Hunter 1987, canon à plasma unique, verrou tri-laser, masque classique et séquence d’autodestruction avec rire mimique.'),
   work('film_predator_2', 'Predator 2', 1990, 'Film live action', 'SCREEN', 'Écran principal',
     'https://www.20thcenturystudios.com/movies/predator-2',
     [

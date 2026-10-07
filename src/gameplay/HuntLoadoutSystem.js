@@ -187,10 +187,11 @@ const HUNT_RECOMMENDATIONS = Object.freeze({
   upgrade_predator: Object.freeze({ melee: 'father_sword', secondary: 'smart_disc', ranged: 'speargun', gadgets: Object.freeze(['scout_drone', 'voice_mimic']), support: 'medicomp', reason: 'Impact lourd et précision pour rompre la bio-armure sans saturer l’énergie.' }),
   city_hunter: Object.freeze({ melee: 'combi_stick', secondary: 'netgun', ranged: 'speargun', gadgets: Object.freeze(['scout_drone', 'voice_mimic']), support: 'medicomp', reason: 'Configuration urbaine silencieuse avec contrôle des toits et des ruelles.' }),
   grid_alien: Object.freeze({ melee: 'combi_stick', secondary: 'smart_disc', ranged: 'yautja_bow', gadgets: Object.freeze(['shuriken', 'voice_mimic']), support: 'medicomp', reason: 'Mobilité rituelle et armes tranchantes pour la pyramide en mouvement.' }),
+  jungle_hunter_1987: Object.freeze({ melee: 'combi_stick', secondary: 'smart_disc', ranged: 'speargun', gadgets: Object.freeze(['scout_drone', 'apex_decoy']), support: 'medicomp', reason: 'Équipement canonique furtif : tirs précis pour faire sauter le bio-masque avant la détonation.' }),
 });
 
 const BIOME_RECOMMENDATIONS = Object.freeze({
-  jungle: HUNT_RECOMMENDATIONS.goliath,
+  jungle: HUNT_RECOMMENDATIONS.jungle_hunter_1987,
   hive_lv426: HUNT_RECOMMENDATIONS.xeno_queen,
   ryushi_desert: HUNT_RECOMMENDATIONS.goliath,
   yautja_prime: HUNT_RECOMMENDATIONS.bad_blood,

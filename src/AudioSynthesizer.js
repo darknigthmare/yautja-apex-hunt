@@ -417,6 +417,66 @@ class AudioSynthesizer {
     noise.start(now);
   }
 
+  playBillyLaughMimic() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Stan Winston 1987 iconic manic playback mimicry: staggered resonant laughing bursts
+    const laughPitches = [340, 290, 420, 360, 270, 310, 260];
+    laughPitches.forEach((pitch, i) => {
+      const startTime = now + (i * 0.22);
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(pitch, startTime);
+      osc.frequency.exponentialRampToValueAtTime(pitch * 0.72, startTime + 0.18);
+      gain.gain.setValueAtTime(0.01, startTime);
+      gain.gain.linearRampToValueAtTime(0.28, startTime + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.2);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(startTime);
+      osc.stop(startTime + 0.21);
+    });
+  }
+
+  playTriLaserLock() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Distinct high-pitched tri-laser lock chirp
+    for (let i = 0; i < 3; i++) {
+      const t = now + (i * 0.07);
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(2400 + (i * 280), t);
+      osc.frequency.exponentialRampToValueAtTime(1400, t + 0.05);
+      gain.gain.setValueAtTime(0.22, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.055);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.06);
+    }
+  }
+
+  playPlasmacasterCharge() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Rising energy buildup sweep
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(280, now);
+    osc.frequency.exponentialRampToValueAtTime(1950, now + 0.45);
+    gain.gain.setValueAtTime(0.05, now);
+    gain.gain.linearRampToValueAtTime(0.35, now + 0.35);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.49);
+  }
+
   startAmbientJungle() {
     if (!this.ctx) return;
     const windOsc = this.ctx.createOscillator();

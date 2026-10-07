@@ -251,6 +251,14 @@ export const CURRENT_HUNTS = freezeEntries([
     assetPolicy: 'Modèle, matériaux et animations procéduraux originaux ; aucun modèle officiel du film.',
     sources: ['avp2004'], locationIds: ['bouvetoya_pyramid']
   },
+  {
+    id: 'jungle_hunter_1987', entryType: 'hunt', category: 'cible', title: 'Jungle Hunter — Val Verde 1987',
+    summary: 'Chasseur original de Val Verde : bio-masque classique, canon à plasma d’épaule unique, acquisition tri-laser et protocole d’autodestruction.',
+    sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
+    canonNote: 'Le Jungle Hunter et ses armes iconiques proviennent du film originel Predator (1987) ; ce duel, le timing de visée et le compte à rebours d’autodestruction sont une adaptation de gameplay Apex Hunt.',
+    assetPolicy: 'Modèle procédural 1:1 et textures Yautja originales du jeu ; aucun modèle propriétaire officiel.',
+    sources: ['predator1987'], locationIds: ['jungle']
+  },
 ]);
 
 export const ALL_LORE_ENTRIES = Object.freeze([...LORE_CODEX_ENTRIES, ...HUNT_LOCATIONS, ...CURRENT_HUNTS]);

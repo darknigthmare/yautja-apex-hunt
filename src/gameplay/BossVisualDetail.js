@@ -14,6 +14,7 @@ const BOSS_TYPE_TO_ARCHETYPE = Object.freeze({
   kalisk: 'kalisk',
   cityHunter: 'city_hunter',
   gridAlien: 'grid_alien',
+  jungleHunter: 'jungle_hunter',
 });
 
 function freezeProfile(profile) {
@@ -605,6 +606,7 @@ const BUILDERS = Object.freeze({
   wolf: buildWolf,
   kalisk: buildKalisk,
   city_hunter: () => {},
+  jungle_hunter: () => {},
 });
 
 export function countBossVisualTriangles(root) {
@@ -697,6 +699,8 @@ export function syncBossVisualDetail(boss, bossType) {
     setFeatureVisibility(root, 'cleaner_canisters', boss.cleanerKitIntact !== false);
   } else if (archetype === 'city_hunter') {
     setFeatureVisibility(root, 'angular_biomask', boss.maskIntact !== false);
+  } else if (archetype === 'jungle_hunter') {
+    setFeatureVisibility(root, 'classic_1987_biomask', boss.maskIntact !== false);
   } else if (archetype === 'kalisk') {
     setFeatureVisibility(root, 'adaptive_carapace', boss.carapaceIntact !== false);
     setFeatureVisibility(root, 'regenerative_core', boss.coreExposed === true && boss.isDead !== true);

@@ -1177,6 +1177,9 @@ export class MothershipHub {
       wolfCleaner: () => new THREE.CylinderGeometry(1.42, 1.2, 2.75, 8),
       kalisk: () => new THREE.OctahedronGeometry(1.8, 1),
       upgradePredator: () => new THREE.DodecahedronGeometry(1.95, 1),
+      cityHunter: () => new THREE.CylinderGeometry(1.35, 1.45, 2.6, 8),
+      gridAlien: () => new THREE.ConeGeometry(1.75, 2.9, 8),
+      jungleHunter: () => new THREE.CylinderGeometry(1.3, 1.4, 2.8, 8),
     };
     const trophy = new THREE.Mesh(
       (geometryByType[definition.bossType] ?? (() => new THREE.IcosahedronGeometry(1.55, 1)))(),
@@ -1428,11 +1431,6 @@ export class MothershipHub {
     const shell = new THREE.Mesh(new THREE.BoxGeometry(2.5, 1.8, 2), this.createAlloyMaterial(0x353d43));
     shell.position.y = 0.9;
     crate.add(shell);
-    for (const x of [-1.08, 1.08]) {
-      const strap = new THREE.Mesh(new THREE.BoxGeometry(0.16, 2.02, 2.12), this.createAlloyMaterial(0x6b4a2d));
-      strap.position.set(x, 0.92, 0);
-      crate.add(strap);
-    }
     const latch = new THREE.Mesh(
       new THREE.BoxGeometry(0.68, 0.3, 0.12),
       this.createSignalMaterial(accentColor, 0.76),

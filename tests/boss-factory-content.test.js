@@ -23,7 +23,7 @@ const COMMON_FIELDS = [
   'colliderRadius',
 ];
 
-test('la factory construit les onze familles de boss avec une interface homogène', () => {
+test('la factory construit les douze familles de boss avec une interface homogène', () => {
   for (const bossType of [
     'megafauna',
     'xenoQueen',
@@ -36,6 +36,7 @@ test('la factory construit les onze familles de boss avec une interface homogèn
     'upgradePredator',
     'cityHunter',
     'gridAlien',
+    'jungleHunter',
   ]) {
     const scene = new THREE.Scene();
     const boss = createBoss(scene, { bossType });

@@ -123,7 +123,7 @@ test('les coursives, portes et colliders du grand plan restent praticables', () 
   const bounds = hub.getBounds();
   assert.equal(bounds.maxX - bounds.minX, 133);
   assert.equal(bounds.maxZ - bounds.minZ, 173);
-  assert.equal(hub.getColliders().length, 86);
+  assert.equal(hub.getColliders().length, 87);
 
   for (const point of [
     new THREE.Vector3(0, 0, -52),

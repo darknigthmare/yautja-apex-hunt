@@ -155,6 +155,20 @@ export const HUNT_DEFINITIONS = Object.freeze({
     recommendedBiome: 'bouvetoya_pyramid',
     hud: { part1: ['DÔME DE GRID:', 'headIntact', 'INTACT', 'ROMPU'], part2: ['QUEUE SEGMENTÉE:', 'tailIntact', 'INTACTE', 'SECTIONNÉE'] },
   },
+  jungle_hunter_1987: {
+    id: 'jungle_hunter_1987',
+    name: 'Jungle Hunter — Val Verde 1987',
+    bossType: 'jungleHunter',
+    colliderRadius: 5.2,
+    sourceTier: 'ORIGINAL',
+    basisTier: 'SCREEN',
+    continuity: 'Duel canonique inspiré de Predator (1987) au cœur de la jungle centraméricaine',
+    objective: 'Forcer la destruction du bio-masque classique, esquiver le verrou tri-laser et le plasma d’épaule, puis survivre au compte à rebours d’autodestruction.',
+    reward: 2800,
+    trophyColor: 0x8b6534,
+    recommendedBiome: 'jungle',
+    hud: { part1: ['BIO-MASQUE 1987:', 'maskIntact', 'INTACT', 'BRISÉ'], part2: ['AUTODESTRUCTION:', 'selfDestructTriggered', 'DÉCLENCHÉE', 'INACTIVE'] },
+  },
 });
 
 export const BIOME_DEFINITIONS = Object.freeze({
