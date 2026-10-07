@@ -150,6 +150,23 @@ export class JungleHunterBoss {
     this.trophyIntegrity = 100;
     this._disposed = false;
 
+    // Camouflage optique actif 1987
+    this.isCloaked = false;
+    this.recloakTimer = 0;
+    this.cloakMaterial = ShaderManager.createCloakMaterial();
+
+    // Trousse d'urgence Medicomp 1987
+    this.medicompUsed = false;
+    this.medicompActive = false;
+    this.medicompInterrupted = false;
+    this.medicompTimer = 0;
+    this.medicompDuration = 3.6;
+    this.medicompHealBudget = 420;
+    this.medicompHealed = 0;
+
+    // Ruse psychologique & murmures enregistrés
+    this.mimicWhisperTimer = 10.0;
+
     this.textures = {
       alloy: getRuntimeTexture(JUNGLE_HUNTER_TEXTURES.alloy, { repeat: [2, 2] }),
       leather: getRuntimeTexture(JUNGLE_HUNTER_TEXTURES.leather, { repeat: [3, 3] }),
@@ -171,6 +188,8 @@ export class JungleHunterBoss {
     this.wristComputerMesh = this.mesh.getObjectByName('jungleHunterWristComputer');
     this.wristRunesMesh = this.mesh.getObjectByName('jungleHunterWristHologlyphs');
     this.triLaserDot = this.mesh.getObjectByName('jungleHunterTriLaserEmitter');
+    this.medicompMesh = this.mesh.getObjectByName('jungleHunterMedicomp');
+    this.targetingBeamsMesh = this.mesh.getObjectByName('jungleHunterTargetingBeams');
 
     this.thermalMaterial = ShaderManager.createThermalMaterial(0xff451a, 0.96);
   }
@@ -416,6 +435,36 @@ export class JungleHunterBoss {
       });
     }
 
+    // Trousse médicale d'urgence Medicomp (1987 Chitta field surgery kit)
+    const medicomp = new THREE.Group();
+    medicomp.name = 'jungleHunterMedicomp';
+    medicomp.position.set(1.65, 4.2, -0.6);
+    addMesh(medicomp, new THREE.BoxGeometry(0.95, 1.1, 0.45, 2, 2, 1), armor);
+    addMesh(medicomp, new THREE.CylinderGeometry(0.18, 0.18, 0.75, 10), new THREE.MeshBasicMaterial({ color: 0x30e8ff }), {
+      position: [0.15, 0, 0.28],
+      visionExempt: true,
+    });
+    medicomp.visible = false;
+    group.add(medicomp);
+
+    // Faisceaux de ciblage tri-laser 1987 (3 rayons rouges émergeant du masque vers la proie)
+    const targetingBeams = new THREE.Group();
+    targetingBeams.name = 'jungleHunterTargetingBeams';
+    targetingBeams.position.set(-0.75, 9.2, 1.6);
+    for (let p = 0; p < 3; p++) {
+      const angle = (p * Math.PI * 2) / 3;
+      const beam = addMesh(targetingBeams, new THREE.CylinderGeometry(0.018, 0.032, 1, 6), redGlowMat, {
+        name: `jungleHunterTargetingBeam_${p}`,
+        position: [Math.cos(angle) * 0.12, Math.sin(angle) * 0.12, 0.5],
+        rotation: [Math.PI / 2, 0, 0],
+        visionExempt: true,
+      });
+      beam.castShadow = false;
+      beam.receiveShadow = false;
+    }
+    targetingBeams.visible = false;
+    group.add(targetingBeams);
+
     return group;
   }
 
@@ -451,6 +500,86 @@ export class JungleHunterBoss {
     return true;
   }
 
+  updateTargetingBeams(targetPosition) {
+    if (!this.targetingBeamsMesh || !targetPosition?.isVector3) return;
+    const origin = this.position.clone().add(new THREE.Vector3(-0.75, 9.2, 1.6));
+    const distance = Math.max(1, origin.distanceTo(targetPosition));
+    this.targetingBeamsMesh.lookAt(targetPosition);
+    this.targetingBeamsMesh.scale.set(1, 1, distance);
+  }
+
+  cloak() {
+    if (this._disposed || this.isDead || this.isCloaked) return false;
+    this.isCloaked = true;
+    overrideMaterials(this.visualDetail ?? this.mesh, this.cloakMaterial);
+    audioSynth.playCloakDistortion?.();
+    return true;
+  }
+
+  decloak() {
+    if (this._disposed || !this.isCloaked) return false;
+    this.isCloaked = false;
+    this.recloakTimer = 3.8;
+    restoreBaseMaterials(this.visualDetail ?? this.mesh);
+    audioSynth.playCloakDistortion?.();
+    return true;
+  }
+
+  beginMedicomp() {
+    if (this._disposed || this.isDead || this.isNetted || this.medicompUsed || this.health >= this.maxHealth || this.selfDestructTriggered) {
+      return false;
+    }
+    this.medicompUsed = true;
+    this.medicompActive = true;
+    this.medicompInterrupted = false;
+    this.medicompTimer = this.medicompDuration;
+    this.medicompHealed = 0;
+    this.aiState = 'medicomp';
+    this.activeAttackType = 'jungle_medicomp';
+    if (this.medicompMesh) this.medicompMesh.visible = true;
+    audioSynth.playMedicompUse?.();
+    return true;
+  }
+
+  interruptMedicomp(reason = 'impact') {
+    if (!this.medicompActive) return false;
+    this.medicompActive = false;
+    this.medicompInterrupted = true;
+    this.medicompTimer = 0;
+    this.aiState = reason === 'net' ? 'netted' : 'chase';
+    this.activeAttackType = null;
+    if (this.medicompMesh) this.medicompMesh.visible = false;
+    audioSynth.playMonsterRoar();
+    return true;
+  }
+
+  updateMedicomp(delta) {
+    if (!this.medicompActive) return 0;
+    const previousTimer = this.medicompTimer;
+    this.medicompTimer = Math.max(0, this.medicompTimer - delta);
+
+    let healed = 0;
+    if (previousTimer <= this.medicompDuration - 0.4) {
+      const remainingBudget = Math.max(0, this.medicompHealBudget - this.medicompHealed);
+      healed = Math.min(
+        remainingBudget,
+        this.maxHealth - this.health,
+        (this.medicompHealBudget / (this.medicompDuration - 0.4)) * delta,
+      );
+      this.health += Math.round(healed);
+      this.medicompHealed += Math.round(healed);
+    }
+
+    if (this.medicompTimer === 0 || this.medicompHealed >= this.medicompHealBudget || this.health >= this.maxHealth) {
+      this.medicompActive = false;
+      this.aiState = 'chase';
+      this.activeAttackType = null;
+      if (this.medicompMesh) this.medicompMesh.visible = false;
+      audioSynth.playMonsterRoar();
+    }
+    return healed;
+  }
+
   breakMask() {
     if (!this.maskIntact) return false;
     this.maskIntact = false;
@@ -458,6 +587,7 @@ export class JungleHunterBoss {
     this.laserLocked = false;
     if (this.maskMesh) this.maskMesh.visible = false;
     if (this.triLaserDot) this.triLaserDot.visible = false;
+    if (this.targetingBeamsMesh) this.targetingBeamsMesh.visible = false;
     audioSynth.playYautjaClick();
     return true;
   }
@@ -468,6 +598,9 @@ export class JungleHunterBoss {
     this.selfDestructTimer = this.selfDestructCountdown;
     this.aiState = 'self_destruct_countdown';
     this.wristRunesActive = true;
+    if (this.isCloaked) this.decloak();
+    if (this.medicompActive) this.interruptMedicomp('impact');
+    if (this.targetingBeamsMesh) this.targetingBeamsMesh.visible = false;
     if (this.wristRunesMesh) this.wristRunesMesh.visible = true;
 
     // Rire mimique culte 1987 de Billy
@@ -489,6 +622,14 @@ export class JungleHunterBoss {
     const maskPos = this.getMaskWorldPosition();
     const maskHit = this.maskIntact && impact.distanceTo(maskPos) <= MASK_HIT_RADIUS;
 
+    if (this.isCloaked) {
+      this.decloak();
+    }
+
+    if (this.medicompActive) {
+      this.interruptMedicomp('impact');
+    }
+
     if (maskHit) {
       this.maskIntegrity = Math.max(0, this.maskIntegrity - damage);
       if (this.maskIntegrity === 0) {
@@ -501,6 +642,10 @@ export class JungleHunterBoss {
     if (this.health <= this.maxHealth * 0.45 && !this.isEnraged) {
       this.isEnraged = true;
       audioSynth.playMonsterRoar();
+    }
+
+    if (this.health <= this.maxHealth * 0.35 && !this.medicompUsed && !this.selfDestructTriggered && this.health > 0) {
+      this.beginMedicomp();
     }
 
     if (this.health === 0 && !this.selfDestructTriggered) {
@@ -590,6 +735,12 @@ export class JungleHunterBoss {
     if (this.isDead) return;
 
     this.attackCooldown = Math.max(0, this.attackCooldown - frameDelta);
+    this.recloakTimer = Math.max(0, this.recloakTimer - frameDelta);
+
+    if (this.medicompActive) {
+      this.updateMedicomp(frameDelta);
+      return;
+    }
 
     if (this.isNetted) {
       this.netTimer = Math.max(0, this.netTimer - frameDelta);
@@ -606,6 +757,7 @@ export class JungleHunterBoss {
     const detectionRadius = isPlayerCloaked ? 32 : 150;
     if (distance > detectionRadius) {
       this.aiState = 'stalk';
+      if (!this.isCloaked && this.recloakTimer === 0) this.cloak();
       return;
     }
 
@@ -623,6 +775,35 @@ export class JungleHunterBoss {
       this.casterPivot.rotation.y = THREE.MathUtils.clamp(angleDifference, -0.65, 0.65);
     }
 
+    // Murmures mimiques périodiques (Predator 1987)
+    this.mimicWhisperTimer = Math.max(0, this.mimicWhisperTimer - frameDelta);
+    if (this.mimicWhisperTimer === 0 && distance > 14 && distance <= 90) {
+      this.mimicWhisperTimer = 14 + Math.random() * 8;
+      const whisper = Math.random() < 0.5 ? 'over_here' : 'turn_around';
+      audioSynth.playMimicryLure(whisper);
+    }
+
+    // Système de ciblage tri-laser actif (compte à rebours avant tir plasma)
+    if (this.laserLocked) {
+      this.laserLockTimer = Math.max(0, this.laserLockTimer - frameDelta);
+      this.aiState = 'targeting';
+      this.activeAttackType = 'jungle_targeting';
+      if (this.targetingBeamsMesh) {
+        this.targetingBeamsMesh.visible = true;
+        this.updateTargetingBeams(playerPosition);
+      }
+      if (this.laserLockTimer === 0) {
+        this.aiState = 'plasmacaster';
+        this.activeAttackType = null;
+        this.firePlasmacaster(playerPosition);
+        this.laserLocked = false;
+        if (this.targetingBeamsMesh) this.targetingBeamsMesh.visible = false;
+        this.attackCooldown = this.isEnraged ? 1.6 : 2.4;
+        this.decloak();
+      }
+      return;
+    }
+
     this.aiState = 'chase';
 
     // Système de combat : Tri-laser lock -> Plasmacaster / Wristblades
@@ -631,23 +812,35 @@ export class JungleHunterBoss {
       if (distance <= 8.5) {
         // Mêlée : doubles lames de poignet allongées
         this.aiState = 'melee';
+        this.activeAttackType = 'jungle_wristblades';
         this.attackImpactReady = true;
         this.attackCooldown = this.isEnraged ? 1.0 : 1.45;
+        this.decloak();
         audioSynth.playWristbladeSlash();
       } else if (distance <= 110) {
         // Distance : acquisition tri-laser puis tir de canon à plasma
-        if (!this.laserLocked && this.maskIntact) {
+        if (this.maskIntact) {
           this.laserLocked = true;
-          this.laserLockTimer = 0.55;
+          this.laserLockTimer = 0.65;
+          this.activeAttackType = 'jungle_targeting';
+          if (this.targetingBeamsMesh) {
+            this.targetingBeamsMesh.visible = true;
+            this.updateTargetingBeams(playerPosition);
+          }
           audioSynth.playTriLaserLock();
           audioSynth.playPlasmacasterCharge();
         } else {
           this.aiState = 'plasmacaster';
           this.firePlasmacaster(playerPosition);
-          this.laserLocked = false;
-          this.attackCooldown = this.isEnraged ? 1.7 : 2.5;
+          this.attackCooldown = this.isEnraged ? 1.8 : 2.6;
+          this.decloak();
         }
       }
+    }
+
+    // Camouflage actif lors des déplacements à distance
+    if (!this.isCloaked && this.recloakTimer === 0 && distance > 24 && !this.laserLocked) {
+      this.cloak();
     }
 
     if (this.aiState === 'chase' && distance > 7.0) {
@@ -665,12 +858,15 @@ export class JungleHunterBoss {
   }
 
   setVisionMode(mode) {
-    if (this._disposed || !this.mesh) return;
+    if (this._disposed || !this.mesh) return false;
     if (mode === 'thermal') {
       overrideMaterials(this.visualDetail ?? this.mesh, this.thermalMaterial);
+    } else if (this.isCloaked && this.cloakMaterial) {
+      overrideMaterials(this.visualDetail ?? this.mesh, this.cloakMaterial);
     } else {
       restoreBaseMaterials(this.visualDetail ?? this.mesh);
     }
+    return true;
   }
 
   dispose() {
@@ -679,6 +875,7 @@ export class JungleHunterBoss {
     this.projectiles = [];
     restoreBaseMaterials(this.mesh);
     this.thermalMaterial?.dispose?.();
+    this.cloakMaterial?.dispose?.();
     Object.values(this.textures).forEach((texture) => texture?.dispose?.());
     disposeObject3D(this.mesh);
   }

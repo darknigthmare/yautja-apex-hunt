@@ -31,6 +31,8 @@ test('JungleHunterBoss respecte le contrat de boss, de silhouette 1:1 et de sous
   const spineTrophy = boss.mesh.getObjectByName('jungleHunterSpineTrophy');
   const wristComputer = boss.mesh.getObjectByName('jungleHunterWristComputer');
   const triLaser = boss.mesh.getObjectByName('jungleHunterTriLaserEmitter');
+  const medicomp = boss.mesh.getObjectByName('jungleHunterMedicomp');
+  const targetingBeams = boss.mesh.getObjectByName('jungleHunterTargetingBeams');
 
   assert.ok(maskMesh, 'Le bio-masque classique 1987 doit exister');
   assert.ok(revealedFace, 'Le visage mandibulaire sous le masque doit exister');
@@ -39,11 +41,31 @@ test('JungleHunterBoss respecte le contrat de boss, de silhouette 1:1 et de sous
   assert.ok(spineTrophy, 'La bandoulière de trophées avec colonne vertébrale doit exister');
   assert.ok(wristComputer, 'L’ordinateur de poignet avec compte à rebours doit exister');
   assert.ok(triLaser, 'L’émetteur tri-laser triangulaire doit exister');
+  assert.ok(medicomp, 'Le kit d’urgence medicomp doit exister');
+  assert.ok(targetingBeams, 'Les faisceaux de ciblage tri-laser doivent exister');
+
+  // Test du camouflage optique actif et vision modes
+  assert.equal(boss.isCloaked, false);
+  assert.equal(boss.cloak(), true);
+  assert.equal(boss.isCloaked, true);
+  assert.equal(boss.setVisionMode('thermal'), true);
+  assert.equal(boss.setVisionMode('normal'), true);
+  assert.equal(boss.decloak(), true);
+  assert.equal(boss.isCloaked, false);
+
+  // Test des soins d'urgence Medicomp 1987
+  boss.health = 1600;
+  assert.equal(boss.beginMedicomp(), true);
+  assert.equal(boss.medicompActive, true);
+  assert.equal(boss.aiState, 'medicomp');
+  assert.equal(boss.interruptMedicomp('impact'), true);
+  assert.equal(boss.medicompActive, false);
 
   // Test de rupture du masque
   boss.breakMask();
   assert.equal(boss.maskIntact, false);
   assert.equal(maskMesh.visible, false);
+  assert.equal(targetingBeams.visible, false);
 
   // Test du compte à rebours d'autodestruction et déclenchement du rire de Billy
   boss.takeDamage(boss.maxHealth * 2);
@@ -58,6 +80,7 @@ test('JungleHunterBoss respecte le contrat de boss, de silhouette 1:1 et de sous
   assert.equal(boss.isDead, true);
 
   boss.dispose();
+  assert.equal(boss.setVisionMode('thermal'), false);
 });
 
 test('film_predator_1987 est passé à playable avec couverture complète de la chasse', () => {
@@ -71,4 +94,7 @@ test('AudioSynthesizer expose les méthodes audio 1987 authentiques', () => {
   assert.equal(typeof audioSynth.playBillyLaughMimic, 'function');
   assert.equal(typeof audioSynth.playTriLaserLock, 'function');
   assert.equal(typeof audioSynth.playPlasmacasterCharge, 'function');
+  assert.equal(typeof audioSynth.playMedicompUse, 'function');
+  assert.equal(typeof audioSynth.playCloakDistortion, 'function');
+  assert.doesNotThrow(() => audioSynth.playMimicryLure('turn_around'));
 });

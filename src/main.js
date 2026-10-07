@@ -127,6 +127,9 @@ const ENEMY_ATTACK_PROFILES = Object.freeze({
   grid_pounce: { damage: 52, range: 13.5, cooldown: 1.9, telegraphed: true },
   grid_tail_sweep: { damage: 42, range: 17, cooldown: 1.65, telegraphed: true },
   grid_acid_volley: { damage: 0, range: 68, cooldown: 1, telegraphed: true, projectileOnly: true },
+  jungle_wristblades: { damage: 45, range: 8.8, cooldown: 1.45, telegraphed: true },
+  jungle_targeting: { damage: 0, range: 110, cooldown: 0.65, telegraphed: true },
+  jungle_medicomp: { damage: 0, range: 150, cooldown: 3.6, telegraphed: true },
 });
 const ENEMY_ATTACK_TELEGRAPHS = Object.freeze({
   attack_tail: 'BALAYAGE DE QUEUE DÉTECTÉ — ESQUIVEZ !',
@@ -141,6 +144,9 @@ const ENEMY_ATTACK_TELEGRAPHS = Object.freeze({
   grid_pounce: 'BOND DE GRID — QUITTEZ SON AXE !',
   grid_tail_sweep: 'QUEUE SEGMENTÉE DE GRID — ESQUIVEZ LE BALAYAGE !',
   grid_acid_volley: 'VOLÉE ACIDE DE GRID — CHANGEZ DE COULOIR !',
+  jungle_wristblades: 'LAMES ÉTENDUES DU JUNGLE HUNTER — SORTEZ DU CORPS-À-CORPS !',
+  jungle_targeting: 'VERROUILLAGE TRI-LASER DU JUNGLE HUNTER — CHERCHEZ UN COUVERT !',
+  jungle_medicomp: 'LE JUNGLE HUNTER SE SOIGNE AU MÉDICOMP — INTERROMPEZ-LE !',
 });
 
 
@@ -3804,6 +3810,12 @@ export class Game {
       && ['kalisk_charge', 'kalisk_impale'].includes(this.activeBoss.activeAttackType);
     const isCityCombistick = this.currentHuntType === 'city_hunter'
       && this.activeBoss.activeAttackType === 'combistick_sweep';
+    const isJungleWristblades = this.currentHuntType === 'jungle_hunter_1987'
+      && (this.activeBoss.aiState === 'melee' || this.activeBoss.activeAttackType === 'jungle_wristblades');
+    const isJungleTargeting = this.currentHuntType === 'jungle_hunter_1987'
+      && (this.activeBoss.aiState === 'targeting' || this.activeBoss.activeAttackType === 'jungle_targeting');
+    const isJungleMedicomp = this.currentHuntType === 'jungle_hunter_1987'
+      && (this.activeBoss.aiState === 'medicomp' || this.activeBoss.activeAttackType === 'jungle_medicomp');
     const isUpgradeLeap = this.currentHuntType === 'upgrade_predator'
       && ['leap_crush', 'leap_impact'].includes(this.activeBoss.aiState);
     const isUpgradePredatorCharge = this.currentHuntType === 'upgrade_predator'
@@ -3815,8 +3827,11 @@ export class Game {
       : isUpgradeLeap ? 'upgrade_leap'
       : isWolfWhip ? 'wolf_whip'
       : isKaliskAttack ? this.activeBoss.activeAttackType
-        : isCityCombistick ? 'city_combistick'
-        : chargeImpactReady ? 'charge' : this.activeBoss.aiState;
+      : isCityCombistick ? 'city_combistick'
+      : isJungleWristblades ? 'jungle_wristblades'
+      : isJungleTargeting ? 'jungle_targeting'
+      : isJungleMedicomp ? 'jungle_medicomp'
+      : chargeImpactReady ? 'charge' : this.activeBoss.aiState;
     const attackProfile = ENEMY_ATTACK_PROFILES[attackState];
     if ((attackProfile?.telegraphed || isSuperPredatorCharge || isFeralSpearAttack || isUpgradePredatorCharge) && this.activeBoss.attackTelegraphAnnounced === false) {
       const message = isSuperPredatorCharge
@@ -3853,6 +3868,18 @@ export class Game {
       if (attackState === 'charge') this.goliathChargeWindow = 0;
       this.spawnBloodSpatterVFX(playerPos, 0xffff00, 15);
       if (attackProfile.corrosion) this.player.applyAcidCorrosion();
+    }
+
+    if (this.activeBoss?.selfDestructDetonated && !this.activeBoss?.selfDestructBlastProcessed) {
+      this.activeBoss.selfDestructBlastProcessed = true;
+      this.spawnPlasmaShockwaveVFX(this.activeBoss.position);
+      if (playerBossDistance <= 38.0) {
+        const falloff = 1 - (playerBossDistance / 38.0);
+        const blastDamage = Math.round(95 * falloff);
+        this.player.takeDamage(blastDamage);
+        this.spawnBloodSpatterVFX(playerPos, 0xffff00, 25);
+        this.hud.showLogMessage(`ONDE DE CHOC D'AUTODESTRUCTION ! -${blastDamage} SANTÉ`, 2500);
+      }
     }
   }
 
@@ -3908,7 +3935,13 @@ export class Game {
       ));
       const nearbyPointOfInterest = this.environment?.getNearbyPointOfInterest?.(this.player.position);
       const availablePointOfInterest = nearbyPointOfInterest?.scanned ? null : nearbyPointOfInterest;
-      if (this.activeBoss.isDead && distToBoss < 14.0 && !this.trophyHarvested) {
+      if (this.activeBoss?.selfDestructTriggered && !this.activeBoss?.selfDestructDetonated) {
+        this.hud.showActionPrompt(`FUYEZ LE RAYON DE DÉTONATION ! (${this.activeBoss.selfDestructTimer.toFixed(1)}s)`);
+      } else if (this.activeBoss?.medicompActive) {
+        this.hud.showActionPrompt('LE JUNGLE HUNTER SE SOIGNE — TIREZ POUR INTERROMPRE !');
+      } else if (this.activeBoss?.laserLocked) {
+        this.hud.showActionPrompt('VERROUILLAGE TRI-LASER EN COURS — ESQUIVEZ !');
+      } else if (this.activeBoss.isDead && distToBoss < 14.0 && !this.trophyHarvested) {
         this.hud.showActionPrompt('RÉCOLTER LE TROPHÉE YAUTJA [E]');
       } else if (nearbyCache) {
         this.hud.showActionPrompt(
