@@ -384,18 +384,53 @@ class AudioSynthesizer {
   playTrophyHarvest() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(220, now);
-    osc.frequency.setValueAtTime(330, now + 0.2);
-    osc.frequency.setValueAtTime(440, now + 0.4);
-    gain.gain.setValueAtTime(0.3, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
-    osc.connect(gain);
-    gain.connect(this.ctx.destination);
-    osc.start(now);
-    osc.stop(now + 1.2);
+
+    // 1. Visceral bone-crunch and cervical vertebra snap (filtered noise burst)
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.45);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.5;
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1400, now);
+    filter.frequency.exponentialRampToValueAtTime(180, now + 0.4);
+    const noiseGain = this.ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.45, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.42);
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(this.ctx.destination);
+    noise.start(now);
+
+    // 2. Triumphal Yautja vocal bellow (ascending harmonic power roar)
+    const roarOsc = this.ctx.createOscillator();
+    const roarGain = this.ctx.createGain();
+    roarOsc.type = 'sawtooth';
+    roarOsc.frequency.setValueAtTime(95, now + 0.22);
+    roarOsc.frequency.linearRampToValueAtTime(260, now + 0.65);
+    roarOsc.frequency.exponentialRampToValueAtTime(55, now + 1.8);
+    roarGain.gain.setValueAtTime(0.01, now + 0.22);
+    roarGain.gain.linearRampToValueAtTime(0.5, now + 0.65);
+    roarGain.gain.exponentialRampToValueAtTime(0.005, now + 1.8);
+    roarOsc.connect(roarGain);
+    roarGain.connect(this.ctx.destination);
+    roarOsc.start(now + 0.22);
+    roarOsc.stop(now + 1.82);
+
+    // 3. Sub-bass vibration resonance
+    const subOsc = this.ctx.createOscillator();
+    const subGain = this.ctx.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(130, now + 0.22);
+    subOsc.frequency.exponentialRampToValueAtTime(28, now + 1.1);
+    subGain.gain.setValueAtTime(0.6, now + 0.22);
+    subGain.gain.exponentialRampToValueAtTime(0.01, now + 1.1);
+    subOsc.connect(subGain);
+    subGain.connect(this.ctx.destination);
+    subOsc.start(now + 0.22);
+    subOsc.stop(now + 1.12);
   }
 
   playBeep() {

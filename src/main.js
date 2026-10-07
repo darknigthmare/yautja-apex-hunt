@@ -2277,6 +2277,7 @@ export class Game {
   }
 
   spawnBloodSpatterVFX(pos, colorHex, count = 20) {
+    if (!this.scene?.add || !Array.isArray(this.vfxParticles) || !pos?.isVector3) return;
     const geo = new THREE.BufferGeometry();
     const positions = new Float32Array(count * 3);
     const velocities = [];
@@ -2302,6 +2303,7 @@ export class Game {
   }
 
   spawnPlasmaShockwaveVFX(pos) {
+    if (!this.scene?.add || !Array.isArray(this.vfxParticles) || !pos?.isVector3) return;
     const ringGeo = new THREE.RingGeometry(0.5, 1.2, 16);
     const ringMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, side: THREE.DoubleSide, transparent: true, opacity: 0.95 });
     const ring = new THREE.Mesh(ringGeo, ringMat);
@@ -3450,6 +3452,8 @@ export class Game {
 
       this.saveProgress();
 
+      const harvestPoint = this.activeBoss.position.clone().add(new THREE.Vector3(0, 3.5, 0));
+      this.spawnBloodSpatterVFX(harvestPoint, this.getTargetBloodColor(this.activeBoss), 35);
       audioSynth.playTrophyHarvest();
       const directiveMessage = directiveCompleted
         ? ` · ${directive.shortLabel} ACCOMPLIE${bonus > 0 ? ` (+${bonus})` : ''}`

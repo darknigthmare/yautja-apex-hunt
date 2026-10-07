@@ -3160,14 +3160,18 @@ export class YautjaPlayer {
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
       const p = this.projectiles[i];
       if (p.type === 'shuriken') p.mesh.rotation.z += delta * 15;
-      if (p.type === 'disc' && p.lifetime < 1.8) {
-        const returnDir = this.position.clone().add(new THREE.Vector3(0, 3, 0)).sub(p.mesh.position).normalize();
-        p.dir.lerp(returnDir, delta * 5.0);
-        if (p.mesh.position.distanceTo(this.position) < 3.0) {
-          this.energy = Math.min(this.maxEnergy, this.energy + 15);
-          disposeObject3D(p.mesh);
-          this.projectiles.splice(i, 1);
-          continue;
+      if (p.type === 'disc') {
+        p.mesh.rotation.z += delta * 24;
+        if (p.lifetime < 1.8) {
+          const returnDir = this.position.clone().add(new THREE.Vector3(0, 3, 0)).sub(p.mesh.position).normalize();
+          p.dir.lerp(returnDir, delta * 5.0);
+          if (p.mesh.position.distanceTo(this.position) < 3.0) {
+            this.energy = Math.min(this.maxEnergy, this.energy + 15);
+            audioSynth.playYautjaClick?.();
+            disposeObject3D(p.mesh);
+            this.projectiles.splice(i, 1);
+            continue;
+          }
         }
       }
       p.mesh.position.addScaledVector(p.dir, p.speed * delta);
