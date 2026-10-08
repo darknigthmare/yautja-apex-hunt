@@ -329,6 +329,61 @@ class AudioSynthesizer {
     osc.stop(now + 0.2);
   }
 
+  playNetgunLaunch() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Canonical Predator 2 (1990) Netgun pneumatic launch & tightening cable whir:
+    // Pneumatic pop followed by high-tension wire stretch chirp
+    const popOsc = this.ctx.createOscillator();
+    const popGain = this.ctx.createGain();
+    popOsc.type = 'sine';
+    popOsc.frequency.setValueAtTime(320, now);
+    popOsc.frequency.exponentialRampToValueAtTime(65, now + 0.12);
+    popGain.gain.setValueAtTime(0.45, now);
+    popGain.gain.exponentialRampToValueAtTime(0.005, now + 0.12);
+    popOsc.connect(popGain);
+    popGain.connect(this.ctx.destination);
+    popOsc.start(now);
+    popOsc.stop(now + 0.13);
+
+    const wireOsc = this.ctx.createOscillator();
+    const wireGain = this.ctx.createGain();
+    wireOsc.type = 'triangle';
+    wireOsc.frequency.setValueAtTime(1100, now + 0.04);
+    wireOsc.frequency.exponentialRampToValueAtTime(2800, now + 0.22);
+    wireGain.gain.setValueAtTime(0.01, now + 0.04);
+    wireGain.gain.linearRampToValueAtTime(0.3, now + 0.1);
+    wireGain.gain.exponentialRampToValueAtTime(0.005, now + 0.22);
+    wireOsc.connect(wireGain);
+    wireGain.connect(this.ctx.destination);
+    wireOsc.start(now + 0.04);
+    wireOsc.stop(now + 0.23);
+  }
+
+  playSmartDiscWhir() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Predator 2 Smart Disc gyroscopic spin and metallic razor sweep
+    const discOsc = this.ctx.createOscillator();
+    const discGain = this.ctx.createGain();
+    discOsc.type = 'sawtooth';
+    discOsc.frequency.setValueAtTime(1800, now);
+    discOsc.frequency.linearRampToValueAtTime(950, now + 0.18);
+    discGain.gain.setValueAtTime(0.35, now);
+    discGain.gain.exponentialRampToValueAtTime(0.005, now + 0.2);
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(2200, now);
+    filter.Q.setValueAtTime(4.0, now);
+
+    discOsc.connect(filter);
+    filter.connect(discGain);
+    discGain.connect(this.ctx.destination);
+    discOsc.start(now);
+    discOsc.stop(now + 0.21);
+  }
+
   playMedicompHeal() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;

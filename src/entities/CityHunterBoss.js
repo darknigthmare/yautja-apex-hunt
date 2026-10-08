@@ -699,7 +699,7 @@ export class CityHunterBoss {
     this.projectiles.push(projectile);
     this.scene.add(mesh);
     if (this.discHolsterMesh) this.discHolsterMesh.visible = false;
-    audioSynth.playSpearThrow();
+    audioSynth.playSmartDiscWhir();
     return projectile;
   }
 
@@ -752,7 +752,7 @@ export class CityHunterBoss {
     };
     this.projectiles.push(projectile);
     this.scene.add(mesh);
-    audioSynth.playSpearThrow();
+    audioSynth.playNetgunLaunch();
     return projectile;
   }
 
