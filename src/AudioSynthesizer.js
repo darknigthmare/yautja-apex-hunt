@@ -297,6 +297,69 @@ class AudioSynthesizer {
     noise.start(now);
   }
 
+  playXenomorphHiss() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Canonical H.R. Giger / Alien biomechanical predatory hiss:
+    // Harsh high-frequency resonant airflow with predatory serpentine rasp
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.7);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.6;
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(3600, now);
+    filter.frequency.exponentialRampToValueAtTime(1400, now + 0.65);
+    filter.Q.setValueAtTime(3.8, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.01, now);
+    gain.gain.linearRampToValueAtTime(0.42, now + 0.12);
+    gain.gain.exponentialRampToValueAtTime(0.005, now + 0.68);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+  }
+
+  playInnerJawSnap() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Canonical Pharyngeal inner jaw pneumatic extension and lethal snap:
+    // High-pressure piston burst followed by sharp chitinous clamp
+    const pistonOsc = this.ctx.createOscillator();
+    const pistonGain = this.ctx.createGain();
+    pistonOsc.type = 'sawtooth';
+    pistonOsc.frequency.setValueAtTime(450, now);
+    pistonOsc.frequency.exponentialRampToValueAtTime(90, now + 0.08);
+    pistonGain.gain.setValueAtTime(0.4, now);
+    pistonGain.gain.exponentialRampToValueAtTime(0.01, now + 0.09);
+    pistonOsc.connect(pistonGain);
+    pistonGain.connect(this.ctx.destination);
+    pistonOsc.start(now);
+    pistonOsc.stop(now + 0.095);
+
+    const snapBuffer = this.ctx.createBuffer(1, Math.floor(this.ctx.sampleRate * 0.12), this.ctx.sampleRate);
+    const snapData = snapBuffer.getChannelData(0);
+    for (let i = 0; i < snapData.length; i++) snapData[i] = (Math.random() * 2 - 1) * 0.5;
+    const snapNoise = this.ctx.createBufferSource();
+    snapNoise.buffer = snapBuffer;
+    const snapFilter = this.ctx.createBiquadFilter();
+    snapFilter.type = 'highpass';
+    snapFilter.frequency.setValueAtTime(2400, now + 0.03);
+    const snapGain = this.ctx.createGain();
+    snapGain.gain.setValueAtTime(0.5, now + 0.03);
+    snapGain.gain.exponentialRampToValueAtTime(0.005, now + 0.12);
+    snapNoise.connect(snapFilter);
+    snapFilter.connect(snapGain);
+    snapGain.connect(this.ctx.destination);
+    snapNoise.start(now + 0.03);
+  }
+
   playCanopyLeap() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;

@@ -426,7 +426,7 @@ export class GridAlienBoss {
       this.cancelAttack();
       this.clearOffense();
       restoreBaseMaterials(this.mesh);
-      audioSynth.playMonsterRoar();
+      audioSynth.playXenomorphHiss();
     } else {
       audioSynth.playAcidSizzle();
     }
@@ -660,14 +660,15 @@ export class GridAlienBoss {
           this.aiState = 'acid_spray';
           this.attackStageTimer = 0.16;
           this.spawnAcidVolley(this.attackTarget, this.isEnraged ? 5 : 3);
+          audioSynth.playXenomorphHiss();
         } else if (this.activeAttackType === 'grid_pounce') {
           this.aiState = 'attack_jaw';
           this.attackStageTimer = 0.34;
-          audioSynth.playMonsterRoar();
+          audioSynth.playXenomorphHiss();
         } else {
           this.aiState = 'attack_jaw';
           this.attackStageTimer = 0.14;
-          audioSynth.playMonsterRoar();
+          audioSynth.playInnerJawSnap();
         }
       }
       return true;
