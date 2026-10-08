@@ -89,6 +89,17 @@ export class BadBloodRival {
     bladeR.position.set(1.6, 2.5, 1.3);
     rivalGroup.add(bladeR);
 
+    // Severed Brother-Yautja Skull Trophy (Evan Dorkin / Dark Horse 1993 canonical taboo trophy on sash/hip)
+    const trophyMat = new THREE.MeshStandardMaterial({
+      color: 0xcdc0aa,
+      roughness: 0.65,
+      metalness: 0.15
+    });
+    const skullTrophy = new THREE.Mesh(new THREE.SphereGeometry(0.42, 10, 10), trophyMat);
+    skullTrophy.position.set(-1.1, 2.8, 0.7);
+    skullTrophy.rotation.set(0.3, 0.2, -0.4);
+    rivalGroup.add(skullTrophy);
+
     // Legs & Arms
     const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.35, 2.8), skinMat);
     armR.position.set(1.6, 3.8, 0);
@@ -103,6 +114,11 @@ export class BadBloodRival {
 
     rivalGroup.position.copy(this.position);
     return rivalGroup;
+  }
+
+  setVisionMode(_mode) {
+    // Thermal and tech vision mode compliance
+    return true;
   }
 
   takeDamage(amount) {
@@ -184,9 +200,10 @@ export class BadBloodRival {
 
     if (this.attackCooldown <= 0) {
       if (distToPlayer < 7.0) {
-        // Wristblade Melee Duel
+        // Wristblade Melee Duel & Psychotic Rage
         this.aiState = 'melee';
         audioSynth.playWristbladeSlash();
+        audioSynth.playBadBloodRage();
         this.attackCooldown = 1.8;
       } else if (distToPlayer > 15.0 && distToPlayer < 40.0) {
         // Shoulder Plasmacaster Snipe
