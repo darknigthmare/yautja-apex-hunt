@@ -323,7 +323,7 @@ export class FeralPredatorBoss {
     this.shieldDeployed = false;
     this.shieldDuration = 0;
     if (this.shieldMesh) this.shieldMesh.visible = false;
-    audioSynth.playMonsterRoar();
+    audioSynth.playFeralRoar();
     return true;
   }
 
@@ -361,7 +361,7 @@ export class FeralPredatorBoss {
     if (!this.isEnraged && this.health <= this.maxHealth * 0.45) {
       this.isEnraged = true;
       this.attackCooldown = Math.min(this.attackCooldown, 0.3);
-      audioSynth.playMonsterRoar();
+      audioSynth.playFeralRoar();
     }
 
     if (this.health === 0) {
@@ -376,7 +376,7 @@ export class FeralPredatorBoss {
       this.projectiles.forEach(({ mesh }) => disposeObject3D(mesh));
       this.projectiles = [];
       restoreBaseMaterials(this.mesh);
-      audioSynth.playMonsterRoar();
+      audioSynth.playFeralRoar();
     }
 
     return {

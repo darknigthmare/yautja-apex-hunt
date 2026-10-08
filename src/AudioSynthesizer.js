@@ -421,6 +421,46 @@ class AudioSynthesizer {
     subOsc.stop(now + 1.22);
   }
 
+  playFeralRoar() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Canonical Prey (2022) Feral Predator primal beast roar:
+    // Raw savage guttural rasp with high-resonance nasal formant screech
+    const raspOsc = this.ctx.createOscillator();
+    const raspGain = this.ctx.createGain();
+    raspOsc.type = 'sawtooth';
+    raspOsc.frequency.setValueAtTime(140, now);
+    raspOsc.frequency.linearRampToValueAtTime(290, now + 0.35);
+    raspOsc.frequency.exponentialRampToValueAtTime(65, now + 1.5);
+    raspGain.gain.setValueAtTime(0.01, now);
+    raspGain.gain.linearRampToValueAtTime(0.48, now + 0.25);
+    raspGain.gain.exponentialRampToValueAtTime(0.005, now + 1.5);
+
+    const raspFilter = this.ctx.createBiquadFilter();
+    raspFilter.type = 'bandpass';
+    raspFilter.frequency.setValueAtTime(850, now);
+    raspFilter.Q.setValueAtTime(2.2, now);
+
+    raspOsc.connect(raspFilter);
+    raspFilter.connect(raspGain);
+    raspGain.connect(this.ctx.destination);
+    raspOsc.start(now);
+    raspOsc.stop(now + 1.52);
+
+    // Primal bone-shield impact reverberation
+    const boneOsc = this.ctx.createOscillator();
+    const boneGain = this.ctx.createGain();
+    boneOsc.type = 'triangle';
+    boneOsc.frequency.setValueAtTime(210, now);
+    boneOsc.frequency.exponentialRampToValueAtTime(50, now + 0.9);
+    boneGain.gain.setValueAtTime(0.35, now);
+    boneGain.gain.exponentialRampToValueAtTime(0.005, now + 0.9);
+    boneOsc.connect(boneGain);
+    boneGain.connect(this.ctx.destination);
+    boneOsc.start(now);
+    boneOsc.stop(now + 0.92);
+  }
+
   playTrophyHarvest() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;
