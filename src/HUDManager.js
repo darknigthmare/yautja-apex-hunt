@@ -670,4 +670,21 @@ export class HUDManager {
       this.setClassState(this.logBanner, 'hidden', true);
     }, duration);
   }
+
+  showSelfDestructCountdownAlert(secondsRemaining) {
+    const sec = Math.max(0, Math.ceil(Number(secondsRemaining) || 0));
+    const alertMsg = `⚠️ ALERTE AUTODESTRUCTION : ${sec} S AVANT DÉTONATION THERMONUCLÉAIRE`;
+    this.showLogMessage(alertMsg, 1500);
+    if (this.targetScannedName) {
+      this.setText(this.targetScannedName, `SÉQUENCE D’AUTODESTRUCTION — DÉTONATION DANS ${sec} S`);
+    }
+    return alertMsg;
+  }
+
+  showThermalDistortionAlert(active = true) {
+    const text = active ? 'ATTENTION : PERTURBATION THERMIQUE CANOPÉE DÉTECTÉE' : 'SIGNAL THERMIQUE STABILISÉ';
+    this.showLogMessage(text, 2000);
+    return text;
+  }
 }
+

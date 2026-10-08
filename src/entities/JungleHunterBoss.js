@@ -549,7 +549,7 @@ export class JungleHunterBoss {
     this.aiState = reason === 'net' ? 'netted' : 'chase';
     this.activeAttackType = null;
     if (this.medicompMesh) this.medicompMesh.visible = false;
-    audioSynth.playMonsterRoar();
+    audioSynth.playJungleHunterRoar();
     return true;
   }
 
@@ -575,7 +575,7 @@ export class JungleHunterBoss {
       this.aiState = 'chase';
       this.activeAttackType = null;
       if (this.medicompMesh) this.medicompMesh.visible = false;
-      audioSynth.playMonsterRoar();
+      audioSynth.playJungleHunterRoar();
     }
     return healed;
   }
@@ -641,7 +641,7 @@ export class JungleHunterBoss {
 
     if (this.health <= this.maxHealth * 0.45 && !this.isEnraged) {
       this.isEnraged = true;
-      audioSynth.playMonsterRoar();
+      audioSynth.playJungleHunterRoar();
     }
 
     if (this.health <= this.maxHealth * 0.35 && !this.medicompUsed && !this.selfDestructTriggered && this.health > 0) {

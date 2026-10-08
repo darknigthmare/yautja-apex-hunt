@@ -238,6 +238,25 @@ const directiveDefinitions = [
       wave(57, 'xeno_facehugger'),
     ],
   },
+  {
+    id: 'val_verde_1987_incursion',
+    title: 'Incursion de Val Verde — 1987',
+    shortLabel: 'VAL VERDE',
+    description: 'Pister l’équipe d’extraction à travers la canopée, déjouer les postes d’observation et survivre jusqu’au compte à rebours final.',
+    provenance: 'SCREEN_ADAPTATION',
+    recommendedBiomeId: 'jungle',
+    rewardMultiplier: 1.5,
+    objectives: [
+      objective('jungle_scout', 'Éliminer le pisteur de l’escouade centraméricaine'),
+      objective('jungle_gunner', 'Neutraliser l’appui feu lourd dans la clairière'),
+      objective('jungle_trapper', 'Désamorcer le spécialiste des pièges et câbles'),
+    ],
+    schedule: [
+      wave(10, 'jungle_scout'),
+      wave(32, 'jungle_gunner'),
+      wave(58, 'jungle_trapper'),
+    ],
+  },
 ];
 
 export const HUNT_DIRECTIVES = Object.freeze(Object.fromEntries(

@@ -499,6 +499,46 @@ class AudioSynthesizer {
     osc.stop(now + 1.6);
   }
 
+  playJungleHunterRoar() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Canonical Predator (1987) Jungle Hunter iconic roar (Kevin Peter Hall / Peter Cullen):
+    // Dual throat roar with rich mid-range vocal flutter and deep chest cavity resonance
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(115, now);
+    osc.frequency.linearRampToValueAtTime(265, now + 0.45);
+    osc.frequency.exponentialRampToValueAtTime(52, now + 1.75);
+    gain.gain.setValueAtTime(0.01, now);
+    gain.gain.linearRampToValueAtTime(0.58, now + 0.35);
+    gain.gain.exponentialRampToValueAtTime(0.005, now + 1.75);
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(1250, now);
+    filter.Q.setValueAtTime(2.2, now);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 1.78);
+
+    // Deep sub-bass guttural vibration
+    const subOsc = this.ctx.createOscillator();
+    const subGain = this.ctx.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(95, now);
+    subOsc.frequency.exponentialRampToValueAtTime(30, now + 1.25);
+    subGain.gain.setValueAtTime(0.55, now);
+    subGain.gain.exponentialRampToValueAtTime(0.005, now + 1.25);
+    subOsc.connect(subGain);
+    subGain.connect(this.ctx.destination);
+    subOsc.start(now);
+    subOsc.stop(now + 1.28);
+  }
+
   playBerserkerRoar() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;

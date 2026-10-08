@@ -63,8 +63,9 @@ export const MEDIA_COVERAGE_CATALOG = freezeCatalog([
     [
       { type: 'hunt', id: 'jungle_hunter_1987', label: 'Jungle Hunter, bio-masque classique, tri-laser, plasma d’épaule et autodestruction' },
       { type: 'contract', id: 'jungle_hunt', label: 'Jungle centraméricaine, pièges et affrontement de l’escouade' },
+      { type: 'directive', id: 'val_verde_1987_incursion', label: 'Directive Incursion de Val Verde : éclaireur, mitrailleur et piégeur' },
     ],
-    'playable', 'Adaptation jouable intégrale : duel Jungle Hunter 1987, canon à plasma unique, verrou tri-laser, masque classique et séquence d’autodestruction avec rire mimique.'),
+    'playable', 'Adaptation jouable intégrale : duel Jungle Hunter 1987, canon à plasma unique, verrou tri-laser, masque classique, directive Val Verde et séquence d’autodestruction avec rire mimique.'),
   work('film_predator_2', 'Predator 2', 1990, 'Film live action', 'SCREEN', 'Écran principal',
     'https://www.20thcenturystudios.com/movies/predator-2',
     [

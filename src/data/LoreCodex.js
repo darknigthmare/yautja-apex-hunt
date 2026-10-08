@@ -106,6 +106,18 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     summary: 'La chasse rituelle de Xénomorphes existe dans AVP, sans définir automatiquement toute la culture Yautja.',
     body: 'Predator 2 montre un crâne xénomorphe et AVP une épreuve alimentée par des œufs. « Kiande amedha », Ryushi et les rites détaillés viennent surtout de l’EU.',
     sourceTier: 'AVP_SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['predator2', 'avp2004', 'avpOriginalComics', 'avpPreyOmnibus']
+  },
+  {
+    id: 'culture-val-verde-incursion', entryType: 'codex', category: 'culture', title: 'Incursion de Val Verde (1987)',
+    summary: 'La première traque moderne documentée sur Terre oppose le Jungle Hunter à une équipe de sauvetage d’élite.',
+    body: 'Le film montre une élimination méthodique isolant chaque membre de l’escouade : éclaireurs, tireurs lourds et piégeurs sont neutralisés un à un avant le duel final à mains nues.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['predator1987', 'predatorArchives']
+  },
+  {
+    id: 'technologie-vocalisation-mimique-1987', entryType: 'codex', category: 'technologie', title: 'Vocalisations et synthèse mimique',
+    summary: 'Le Jungle Hunter capture et reproduit les fréquences vocales de ses proies pour désorienter les survivants.',
+    body: 'Peter Cullen et Kevin Peter Hall ont conçu des modulations de gorge et cliquetis distincts, combinés aux enregistrements du biomasque pour attirer les cibles isolées ou signer le rire d’autodestruction.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['predator1987']
   }
 ]);
 
