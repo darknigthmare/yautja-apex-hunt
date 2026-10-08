@@ -2865,6 +2865,7 @@ export class Game {
 
     this.activeBoss = createBoss(this.scene, huntDefinition);
     this.configureBossTerritory();
+    this.targetSpotted = false;
     const ecologyCount = this.spawnBiomeEcology();
     this.eventDirector.start({ huntId: this.currentHuntType, biomeId: resolvedPlanet, directiveId: directive.id });
     this.pendingDirectiveWaves = [];
@@ -2931,6 +2932,7 @@ export class Game {
     this.bossMigrationHealthPhase = 0;
     this.bossRelocating = false;
     this.bossEngaged = false;
+    this.targetSpotted = false;
     this.bossMigrationForced = false;
     this.goliathChargeWindow = 0;
     this.goliathChargeLatched = false;
@@ -3909,22 +3911,65 @@ export class Game {
 
   updateHUD() {
     this.hud.updateVitals(this.player);
-    this.hud.updateBossStatus(this.activeBoss, this.currentHuntType);
 
     if (this.activeBoss) {
       if (this.activeBoss.isEnraged) audioSynth.updateAdaptiveBGM('boss_enraged');
       else audioSynth.updateAdaptiveBGM('combat');
 
-      const targetPos = this.activeBoss.getAimPoint?.()
-        ?? this.activeBoss.position.clone().add(new THREE.Vector3(0, 4.0, 0));
       const distToBoss = this.player.position.distanceTo(this.activeBoss.position);
 
-      targetPos.project(this.camera);
-      const sx = (targetPos.x * 0.5 + 0.5) * this.width;
-      const sy = (-(targetPos.y * 0.5) + 0.5) * this.height;
+      if (!this.targetSpotted) {
+        let acquired = false;
+        if (this.bossEngaged) {
+          acquired = true;
+        } else if (this.activeBoss.health < this.activeBoss.maxHealth) {
+          acquired = true;
+        } else if (distToBoss <= 22) {
+          acquired = true;
+        } else {
+          const camDir = new THREE.Vector3();
+          this.camera.getWorldDirection(camDir);
+          const toBoss = this.activeBoss.position.clone().sub(this.camera.position).normalize();
+          const dot = camDir.dot(toBoss);
+          const inArc = dot > 0.45;
+          if (inArc) {
+            const visionMode = this.player.activeVisionMode;
+            const scopeMult = this.isScopeZooming ? 1.6 : 1.0;
+            if (visionMode === 'thermal' && distToBoss <= 110 * scopeMult) {
+              acquired = true;
+            } else if (visionMode === 'tech' && distToBoss <= 130 * scopeMult) {
+              acquired = true;
+            } else if (distToBoss <= 45 * scopeMult) {
+              acquired = true;
+            }
+          }
+        }
 
-      if (targetPos.z < 1.0) {
-        this.hud.updateTriLaserPosition({ x: sx, y: sy }, distToBoss, this.player.activeVisionMode === 'thermal');
+        if (acquired) {
+          this.targetSpotted = true;
+          audioSynth.playBioMaskLock?.();
+          this.hud.showLogMessage('BIO-MASQUE : CIBLE IDENTIFIÉE ET VERROUILLÉE !', 2200);
+        }
+      } else if (this.bossRelocating && distToBoss > 140) {
+        this.targetSpotted = false;
+        this.hud.showLogMessage('SIGNAL PERDU — PISTEZ LA NOUVELLE POSITION DE LA PROIE', 2200);
+      }
+
+      this.hud.updateBossStatus(this.activeBoss, this.currentHuntType, Boolean(this.targetSpotted));
+
+      if (this.targetSpotted) {
+        const targetPos = this.activeBoss.getAimPoint?.()
+          ?? this.activeBoss.position.clone().add(new THREE.Vector3(0, 4.0, 0));
+
+        targetPos.project(this.camera);
+        const sx = (targetPos.x * 0.5 + 0.5) * this.width;
+        const sy = (-(targetPos.y * 0.5) + 0.5) * this.height;
+
+        if (targetPos.z < 1.0) {
+          this.hud.updateTriLaserPosition({ x: sx, y: sy }, distToBoss, this.player.activeVisionMode === 'thermal');
+        } else {
+          this.hud.updateTriLaserPosition(null);
+        }
       } else {
         this.hud.updateTriLaserPosition(null);
       }

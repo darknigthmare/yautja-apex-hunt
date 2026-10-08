@@ -237,9 +237,9 @@ function addFeatureMesh(parent, geometry, material, featureTag, {
 }
 
 function addFoundation(root, profile, materials) {
-  const torsoGeometry = new THREE.SphereGeometry(1, 48, 32);
-  const headGeometry = new THREE.SphereGeometry(1, 40, 28);
-  const limbGeometry = new THREE.SphereGeometry(1, 32, 20);
+  const torsoGeometry = new THREE.SphereGeometry(1, 56, 40);
+  const headGeometry = new THREE.SphereGeometry(1, 48, 36);
+  const limbGeometry = new THREE.SphereGeometry(1, 38, 26);
   const { torso, head, limbs } = profile.foundation;
 
   addFeatureMesh(root, torsoGeometry, materials.primary, 'high_definition_anatomy', torso);
@@ -263,7 +263,7 @@ function addDreadFan(root, material, featureTag, {
       new THREE.Vector3(origin[0] + x * 1.18, origin[1] - length * 0.48, origin[2] - 0.65),
       new THREE.Vector3(origin[0] + x * 1.28, origin[1] - length, origin[2] - 0.2),
     );
-    addFeatureMesh(root, new THREE.TubeGeometry(curve, 18, 0.12, 8, false), material, featureTag);
+    addFeatureMesh(root, new THREE.TubeGeometry(curve, 24, 0.12, 10, false), material, featureTag);
   }
 }
 

@@ -456,3 +456,310 @@ body.reduced-motion .gadget-status.active strong {
     width: 100%;
   }
 }
+
+/* ==========================================================================
+   DIEGETIC MODERN VIDEO GAME UI — YAUTJA GAUNTLET & HOLOGRAM OVERHAUL
+   ========================================================================== */
+
+/* Diegetic Modal Frame */
+.modal-box {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(38, 16, 18, 0.94), rgba(7, 11, 18, 0.98) 70%),
+    repeating-linear-gradient(0deg, rgba(0, 240, 255, 0.02) 0px, rgba(0, 240, 255, 0.02) 1px, transparent 1px, transparent 4px);
+  border: 2px solid rgba(255, 42, 20, 0.75);
+  box-shadow:
+    0 0 35px rgba(255, 34, 0, 0.22),
+    inset 0 0 45px rgba(0, 0, 0, 0.88),
+    0 18px 48px rgba(0, 0, 0, 0.85);
+  clip-path: polygon(0 14px, 14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px));
+  position: relative;
+}
+
+.modal-box::before {
+  content: "TERMINAL DE CHASSE YAUTJA // CONNEXION DU BIO-MASQUE";
+  position: absolute;
+  top: 6px;
+  right: 18px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: rgba(0, 240, 255, 0.45);
+  pointer-events: none;
+}
+
+/* Modern Diegetic Tabs */
+.tab-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+  padding-bottom: 8px;
+}
+
+.tab-btn {
+  background: linear-gradient(180deg, rgba(16, 26, 40, 0.85), rgba(7, 13, 22, 0.95));
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  color: #a4d2e8;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  padding: 8px 18px;
+  clip-path: polygon(0 6px, 6px 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.tab-btn:hover {
+  background: linear-gradient(180deg, rgba(28, 44, 68, 0.9), rgba(12, 22, 36, 0.95));
+  border-color: #00f0ff;
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.tab-btn.active {
+  background: linear-gradient(180deg, rgba(160, 32, 20, 0.95), rgba(90, 15, 8, 0.98));
+  border-color: #ff5533;
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(255, 50, 20, 0.45), inset 0 1px 0 rgba(255, 180, 160, 0.4);
+}
+
+.tab-btn.active::after {
+  content: "";
+  position: absolute;
+  bottom: -9px;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: #ff5533;
+  box-shadow: 0 0 8px #ff2200;
+}
+
+/* Modern Illustrated Mission Cards */
+.mission-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.mission-card {
+  background: linear-gradient(165deg, rgba(14, 21, 31, 0.97), rgba(6, 10, 17, 0.98));
+  border: 1px solid rgba(0, 240, 255, 0.22);
+  border-radius: 4px;
+  clip-path: polygon(0 8px, 8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px));
+  padding: 0 0 12px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), inset 0 0 14px rgba(0, 240, 255, 0.03);
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 60, 20, 0.85);
+  box-shadow: 0 8px 26px rgba(255, 34, 0, 0.3), inset 0 0 20px rgba(255, 40, 10, 0.08);
+}
+
+.mission-card.selected-contract {
+  border-color: var(--yautja-gold);
+  box-shadow: 0 0 24px rgba(255, 186, 65, 0.4), inset 0 0 22px rgba(255, 186, 65, 0.1);
+}
+
+.mission-card-media {
+  height: 80px;
+  width: 100%;
+  background: radial-gradient(ellipse at 50% 60%, rgba(0, 240, 255, 0.12), rgba(4, 8, 14, 0.85) 75%);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-card-media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.25) 0px, rgba(0, 0, 0, 0.25) 1px, transparent 1px, transparent 3px);
+  pointer-events: none;
+}
+
+.mission-icon {
+  width: 96px;
+  height: 56px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.mission-card:hover .mission-icon {
+  transform: scale(1.08);
+}
+
+.mission-media-tag {
+  position: absolute;
+  bottom: 4px;
+  right: 6px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 2px 5px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #c9e2ef;
+}
+
+.mission-card-header-info {
+  padding: 8px 10px 2px 10px;
+}
+
+.mission-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.threat-badge {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 2px 5px;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.threat-apex { background: rgba(255, 68, 0, 0.22); color: #ff6633; border: 1px solid rgba(255, 68, 0, 0.5); }
+.threat-queen { background: rgba(0, 255, 136, 0.2); color: #55ff99; border: 1px solid rgba(0, 255, 136, 0.5); }
+.threat-renegade { background: rgba(255, 34, 51, 0.22); color: #ff4455; border: 1px solid rgba(255, 34, 51, 0.5); }
+.threat-hybrid { background: rgba(255, 204, 0, 0.2); color: #ffdd33; border: 1px solid rgba(255, 204, 0, 0.5); }
+.threat-berserker { background: rgba(255, 34, 0, 0.26); color: #ff4422; border: 1px solid rgba(255, 34, 0, 0.55); }
+.threat-feral { background: rgba(215, 185, 110, 0.22); color: #ffe1a0; border: 1px solid rgba(215, 185, 110, 0.5); }
+.threat-wolf { background: rgba(0, 240, 255, 0.2); color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.5); }
+.threat-kalisk { background: rgba(191, 54, 255, 0.22); color: #df70ff; border: 1px solid rgba(191, 54, 255, 0.5); }
+.threat-upgrade { background: rgba(255, 34, 0, 0.25); color: #ff4422; border: 1px solid rgba(255, 34, 0, 0.6); }
+.threat-city { background: rgba(0, 229, 255, 0.22); color: #33eeff; border: 1px solid rgba(0, 229, 255, 0.5); }
+.threat-grid { background: rgba(119, 255, 170, 0.22); color: #88ffbb; border: 1px solid rgba(119, 255, 170, 0.5); }
+.threat-jungle { background: rgba(204, 181, 128, 0.22); color: #eedd99; border: 1px solid rgba(204, 181, 128, 0.5); }
+
+.sector-badge {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #8bb2c9;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.mission-card h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  color: var(--yautja-gold);
+  margin: 3px 0 3px 0;
+  text-align: left;
+  line-height: 1.25;
+}
+
+.mission-card p {
+  font-size: 10px;
+  color: #adbcc7;
+  padding: 0 10px;
+  margin: 0 0 6px 0;
+  text-align: left;
+  line-height: 1.35;
+}
+
+.mission-card-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 0 10px;
+  margin-bottom: 8px;
+}
+
+.spec-tag {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  padding: 1px 4px;
+  background: rgba(0, 240, 255, 0.07);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  color: #9cd0e6;
+  border-radius: 2px;
+}
+
+.reward-tag {
+  background: rgba(255, 186, 65, 0.14);
+  border-color: rgba(255, 186, 65, 0.45);
+  color: #ffd880;
+}
+
+.btn-launch-hunt {
+  margin: 0 10px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 8px 10px;
+  background: linear-gradient(180deg, #aa2410, #661005);
+  border: 1px solid #ff4422;
+  color: #ffffff;
+  clip-path: polygon(0 5px, 5px 0, calc(100% - 5px) 0, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 0 calc(100% - 5px));
+  box-shadow: 0 0 10px rgba(255, 34, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-launch-hunt:hover {
+  background: linear-gradient(180deg, #cc2c12, #881608);
+  border-color: #ff6644;
+  box-shadow: 0 0 18px rgba(255, 60, 20, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Controls Grid Tactical Keycaps */
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  text-align: left;
+  margin-bottom: 18px;
+  background: rgba(4, 9, 16, 0.82);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.controls-grid > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #c7d8e6;
+  background: rgba(12, 20, 32, 0.5);
+  padding: 5px 8px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.controls-grid strong {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  color: #55eeff;
+  letter-spacing: 0.04em;
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  padding: 2px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+}

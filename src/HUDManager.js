@@ -511,12 +511,26 @@ export class HUDManager {
     });
   }
 
-  updateBossStatus(boss, huntType) {
+  updateBossStatus(boss, huntType, isSpotted = true) {
     if (!boss) return;
     this.setClassState(this.bossCard, 'hidden', false);
-    this.updateMeter(this.bossHpBar, null, this.bossHpMeter, boss.health, boss.maxHealth);
 
     const definition = HUNT_DEFINITIONS[huntType] ?? HUNT_DEFINITIONS.goliath;
+
+    if (!isSpotted) {
+      this.setText(this.bossDisplayName, 'SIGNAL NON VERROUILLÉ');
+      this.setText(this.targetScannedName, 'PISTAGE ACTIF — SUIVEZ LES TRACES ET BRUITS DE LA PROIE');
+      this.setStyle(this.bossHpBar, 'width', '0%');
+      this.setText(this.hornStatus, 'NON ANALYSÉ');
+      this.setText(this.tailStatus, 'NON ANALYSÉ');
+      this.setClassState(this.hornStatus, 'part-destroyed', false);
+      this.setClassState(this.hornStatus, 'part-intact', false);
+      this.setClassState(this.tailStatus, 'part-destroyed', false);
+      this.setClassState(this.tailStatus, 'part-intact', false);
+      return;
+    }
+
+    this.updateMeter(this.bossHpBar, null, this.bossHpMeter, boss.health, boss.maxHealth);
     this.setText(this.bossDisplayName, definition.name.toUpperCase());
 
     const renderPart = (part, labelElement, statusElement) => {

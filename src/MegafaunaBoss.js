@@ -61,14 +61,14 @@ export class MegafaunaBoss {
     const coreMat = new THREE.MeshBasicMaterial({ color: 0xff3300 });
     const hornMat = new THREE.MeshStandardMaterial({ color: 0xccb580, roughness: 0.3 });
 
-    const bodyGeo = new THREE.BoxGeometry(6, 4.5, 10);
+    const bodyGeo = new THREE.BoxGeometry(6, 4.5, 10, 4, 3, 5);
     const body = new THREE.Mesh(bodyGeo, bodyMat);
     body.position.y = 4.5;
     body.castShadow = true;
     bossGroup.add(body);
 
     for (let i = 0; i < 5; i++) {
-      const plateGeo = new THREE.ConeGeometry(1.5, 3, 4);
+      const plateGeo = new THREE.ConeGeometry(1.5, 3, 16, 2);
       const plate = new THREE.Mesh(plateGeo, bodyMat);
       plate.rotation.x = -Math.PI / 4;
       plate.position.set(0, 7.5, -3.5 + i * 1.8);
@@ -76,7 +76,7 @@ export class MegafaunaBoss {
       bossGroup.add(plate);
     }
 
-    const coreGeo = new THREE.SphereGeometry(1.4, 16, 16);
+    const coreGeo = new THREE.SphereGeometry(1.4, 32, 24);
     const core = new THREE.Mesh(coreGeo, coreMat);
     core.name = 'coreMesh';
     core.position.set(0, 3.2, 3.5);
@@ -86,13 +86,13 @@ export class MegafaunaBoss {
     coreLight.position.set(0, 3.2, 3.5);
     bossGroup.add(coreLight);
 
-    const headGeo = new THREE.BoxGeometry(3.5, 3.2, 4.5);
+    const headGeo = new THREE.BoxGeometry(3.5, 3.2, 4.5, 3, 3, 3);
     const head = new THREE.Mesh(headGeo, bodyMat);
     head.position.set(0, 5.5, 6.5);
     head.castShadow = true;
     bossGroup.add(head);
 
-    const hornGeo = new THREE.ConeGeometry(0.8, 4.5, 8);
+    const hornGeo = new THREE.ConeGeometry(0.8, 4.5, 24, 4);
     const horn = new THREE.Mesh(hornGeo, hornMat);
     horn.name = 'hornMesh';
     horn.rotation.x = Math.PI / 3;
@@ -101,14 +101,14 @@ export class MegafaunaBoss {
     bossGroup.add(horn);
 
     const eyeMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const eyeR = new THREE.Mesh(new THREE.SphereGeometry(0.35), eyeMat);
+    const eyeR = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 12), eyeMat);
     eyeR.position.set(1.2, 6.0, 8.5);
-    const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.35), eyeMat);
+    const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 12), eyeMat);
     eyeL.position.set(-1.2, 6.0, 8.5);
     bossGroup.add(eyeR);
     bossGroup.add(eyeL);
 
-    const legGeo = new THREE.CylinderGeometry(1.0, 1.2, 5.0);
+    const legGeo = new THREE.CylinderGeometry(1.0, 1.2, 5.0, 24, 4);
     const legPositions = [
       [3.2, 2.5, 3.5], [-3.2, 2.5, 3.5],
       [3.2, 2.5, -3.5], [-3.2, 2.5, -3.5]
@@ -124,14 +124,14 @@ export class MegafaunaBoss {
     tailGroup.name = 'tailMesh';
 
     for (let i = 0; i < 4; i++) {
-      const segGeo = new THREE.CylinderGeometry(0.8 - i * 0.15, 1.0 - i * 0.15, 2.8);
+      const segGeo = new THREE.CylinderGeometry(0.8 - i * 0.15, 1.0 - i * 0.15, 2.8, 24, 4);
       const seg = new THREE.Mesh(segGeo, bodyMat);
       seg.rotation.x = -Math.PI / 3;
       seg.position.set(0, 4.0 - i * 0.6, -6.0 - i * 2.2);
       seg.castShadow = true;
       tailGroup.add(seg);
     }
-    const clubGeo = new THREE.OctahedronGeometry(1.6);
+    const clubGeo = new THREE.OctahedronGeometry(1.6, 2);
     const club = new THREE.Mesh(clubGeo, bodyMat);
     club.position.set(0, 1.5, -14.5);
     tailGroup.add(club);

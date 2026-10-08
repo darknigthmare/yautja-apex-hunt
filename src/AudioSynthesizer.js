@@ -779,6 +779,10 @@ class AudioSynthesizer {
     }
   }
 
+  playBioMaskLock() {
+    this.playTriLaserLock();
+  }
+
   playPlasmacasterCharge() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;
