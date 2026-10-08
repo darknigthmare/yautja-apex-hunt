@@ -579,6 +579,80 @@ class AudioSynthesizer {
     boneOsc.stop(now + 0.92);
   }
 
+  playUpgradeAssassinRoar() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Canonical The Predator (2018) 11-foot genetically hybridized Assassin Predator roar:
+    // Massive guttural roar with extreme sub-bass rumble and distorted vocal resonance
+    const roarOsc = this.ctx.createOscillator();
+    const roarGain = this.ctx.createGain();
+    roarOsc.type = 'sawtooth';
+    roarOsc.frequency.setValueAtTime(65, now);
+    roarOsc.frequency.linearRampToValueAtTime(175, now + 0.45);
+    roarOsc.frequency.exponentialRampToValueAtTime(32, now + 2.1);
+    roarGain.gain.setValueAtTime(0.01, now);
+    roarGain.gain.linearRampToValueAtTime(0.62, now + 0.35);
+    roarGain.gain.exponentialRampToValueAtTime(0.005, now + 2.1);
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1100, now);
+    filter.frequency.exponentialRampToValueAtTime(220, now + 2.1);
+
+    roarOsc.connect(filter);
+    filter.connect(roarGain);
+    roarGain.connect(this.ctx.destination);
+    roarOsc.start(now);
+    roarOsc.stop(now + 2.12);
+
+    const subOsc = this.ctx.createOscillator();
+    const subGain = this.ctx.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(80, now);
+    subOsc.frequency.exponentialRampToValueAtTime(24, now + 1.6);
+    subGain.gain.setValueAtTime(0.65, now);
+    subGain.gain.exponentialRampToValueAtTime(0.005, now + 1.6);
+    subOsc.connect(subGain);
+    subGain.connect(this.ctx.destination);
+    subOsc.start(now);
+    subOsc.stop(now + 1.62);
+  }
+
+  playLeapImpactShockwave() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Massive kinetic slam shockwave when 11-foot Assassin Predator lands from leap
+    const impactOsc = this.ctx.createOscillator();
+    const impactGain = this.ctx.createGain();
+    impactOsc.type = 'sine';
+    impactOsc.frequency.setValueAtTime(130, now);
+    impactOsc.frequency.exponentialRampToValueAtTime(20, now + 0.7);
+    impactGain.gain.setValueAtTime(0.8, now);
+    impactGain.gain.exponentialRampToValueAtTime(0.005, now + 0.7);
+    impactOsc.connect(impactGain);
+    impactGain.connect(this.ctx.destination);
+    impactOsc.start(now);
+    impactOsc.stop(now + 0.72);
+
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.35);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.45;
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(450, now);
+    filter.frequency.exponentialRampToValueAtTime(80, now + 0.35);
+    const noiseGain = this.ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.5, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.005, now + 0.35);
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(this.ctx.destination);
+    noise.start(now);
+  }
+
   playTrophyHarvest() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;

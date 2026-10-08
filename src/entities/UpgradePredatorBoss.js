@@ -169,7 +169,7 @@ export class UpgradePredatorBoss extends SuperPredatorBoss {
     if (this.bioArmorRoot) this.bioArmorRoot.visible = false;
     if (this.exposedTissueRoot) this.exposedTissueRoot.visible = true;
     this.attackCooldown = Math.min(this.attackCooldown, 0.55);
-    audioSynth.playMonsterRoar();
+    audioSynth.playUpgradeAssassinRoar();
     return true;
   }
 
@@ -279,6 +279,7 @@ export class UpgradePredatorBoss extends SuperPredatorBoss {
         this.attackImpactReady = true;
         this.attackImpactConsumed = false;
         this.attackCooldown = this.isEnraged ? 1 : 1.35;
+        audioSynth.playLeapImpactShockwave();
       }
       return;
     }
