@@ -2754,6 +2754,9 @@ export class Game {
       this.hud.hideActionPrompt();
       return null;
     }
+    const currentZone = this.hub.getZoneAt?.(this.player.position);
+    this.hud.updateHubZoneInfo?.(currentZone);
+
     const station = this.hub.getNearbyStation(this.player.position);
     if (station) this.hud.showActionPrompt(station.prompt);
     else this.hud.hideActionPrompt();

@@ -590,11 +590,20 @@ export class HUDManager {
     this.setClassState(this.levelEventHud, 'hidden', true);
   }
 
-  showHubTarget() {
+  showHubTarget(zoneLabel = 'VAISSEAU-MÈRE YAUTJA — SALLE DES TROPHÉES') {
     this.setClassState(this.bossCard, 'hidden', true);
     this.setClassState(this.directiveHud, 'hidden', true);
     this.hideLevelEventObjective();
-    this.setText(this.targetScannedName, 'VAISSEAU-MÈRE YAUTJA — SALLE DES TROPHÉES');
+    this.setText(this.targetScannedName, zoneLabel);
+  }
+
+  updateHubZoneInfo(zone) {
+    if (!zone) {
+      this.setText(this.targetScannedName, 'VAISSEAU-MÈRE YAUTJA — TRANSIT');
+      return;
+    }
+    const label = `VAISSEAU-MÈRE YAUTJA — ${zone.label.toUpperCase()}`;
+    this.setText(this.targetScannedName, label);
   }
 
   setVisionModeUI(mode) {
