@@ -235,26 +235,26 @@ export class CityHunterBoss {
     // Les surfaces maîtresses emploient un maillage plus dense que les petits
     // accessoires : leur courbure reste ainsi nette en gros plan sans multiplier
     // les objets ni cacher de géométrie de remplissage.
-    addMesh(group, new THREE.CapsuleGeometry(1.9, 4.45, 10, 20), skin, {
+    addMesh(group, new THREE.CapsuleGeometry(1.9, 4.45, 24, 48), skin, {
       name: 'cityHunterTorso',
       position: [0, 5.35, 0],
       scale: [1.13, 1, 0.77],
     });
-    addMesh(group, new THREE.BoxGeometry(4.05, 2.65, 2.05, 3, 2, 2), armor, {
+    addMesh(group, new THREE.BoxGeometry(4.05, 2.65, 2.05, 8, 6, 6), armor, {
       name: 'cityHunterChestArmor',
       position: [-0.08, 6.35, 0.05],
       rotation: [-0.06, -0.04, 0.015],
     });
     for (let plate = 0; plate < 4; plate += 1) {
-      addMesh(group, new THREE.BoxGeometry(3.45 - plate * 0.18, 0.38, 2.28, 2, 1, 2), darkArmor, {
+      addMesh(group, new THREE.BoxGeometry(3.45 - plate * 0.18, 0.38, 2.28, 6, 3, 6), darkArmor, {
         position: [0, 5.72 - plate * 0.48, 0.16 + plate * 0.035],
         rotation: [-0.04, 0, plate % 2 === 0 ? 0.018 : -0.018],
       });
     }
-    addMesh(group, new THREE.CylinderGeometry(0.72, 0.95, 1.35, 11), skin, {
+    addMesh(group, new THREE.CylinderGeometry(0.72, 0.95, 1.35, 28, 4), skin, {
       position: [0, 8.12, 0],
     });
-    addMesh(group, new THREE.SphereGeometry(1.08, 24, 18), skin, {
+    addMesh(group, new THREE.SphereGeometry(1.08, 48, 36), skin, {
       name: 'cityHunterRevealedFace',
       position: [0, 9.18, 0.18],
       scale: [1.02, 1.12, 0.87],
@@ -265,31 +265,31 @@ export class CityHunterBoss {
     const mask = new THREE.Group();
     mask.name = 'cityHunterAngularMask';
     mask.position.copy(MASK_OFFSET);
-    addMesh(mask, new THREE.DodecahedronGeometry(1.12, 2), maskAlloy, {
+    addMesh(mask, new THREE.DodecahedronGeometry(1.12, 3), maskAlloy, {
       scale: [1.08, 1.02, 0.57],
     });
-    addMesh(mask, new THREE.BoxGeometry(2.32, 0.35, 0.58, 3, 1, 2), darkArmor, {
+    addMesh(mask, new THREE.BoxGeometry(2.32, 0.35, 0.58, 6, 3, 4), darkArmor, {
       position: [0, 0.42, 0.44],
       rotation: [-0.08, 0, -0.025],
     });
     for (const side of [-1, 1]) {
-      addMesh(mask, new THREE.ConeGeometry(0.56, 1.55, 5), maskAlloy, {
+      addMesh(mask, new THREE.ConeGeometry(0.56, 1.55, 14), maskAlloy, {
         position: [side * 0.64, -0.58, 0.38],
         rotation: [0.06, 0, side * 0.26],
         scale: [0.72, 1, 0.52],
       });
-      addMesh(mask, new THREE.BoxGeometry(0.58, 0.18, 0.32), darkArmor, {
+      addMesh(mask, new THREE.BoxGeometry(0.58, 0.18, 0.32, 3, 2, 2), darkArmor, {
         position: [side * 0.44, -0.35, 0.68],
         rotation: [0, 0, side * 0.16],
       });
     }
     for (let vent = -2; vent <= 2; vent += 1) {
-      addMesh(mask, new THREE.BoxGeometry(0.12, 0.62 - Math.abs(vent) * 0.06, 0.16), darkArmor, {
+      addMesh(mask, new THREE.BoxGeometry(0.12, 0.62 - Math.abs(vent) * 0.06, 0.16, 2, 2, 2), darkArmor, {
         position: [vent * 0.18, -0.55, 0.73],
         rotation: [0, 0, vent * 0.025],
       });
     }
-    addMesh(mask, new THREE.SphereGeometry(0.125, 10, 8), spectralGlow, {
+    addMesh(mask, new THREE.SphereGeometry(0.125, 20, 16), spectralGlow, {
       name: 'cityHunterSpectralEmitter',
       position: [0.39, 0.3, 0.72],
       castShadow: false,
@@ -302,11 +302,11 @@ export class CityHunterBoss {
     rebreather.name = 'cityHunterRebreather';
     rebreather.position.set(0, 8.25, 0.58);
     for (const side of [-1, 1]) {
-      addMesh(rebreather, new THREE.CylinderGeometry(0.19, 0.23, 1.06, 12), darkArmor, {
+      addMesh(rebreather, new THREE.CylinderGeometry(0.19, 0.23, 1.06, 24, 3), darkArmor, {
         position: [side * 0.8, -0.02, 0],
         rotation: [0.2, 0, side * 0.12],
       });
-      addMesh(rebreather, new THREE.TorusGeometry(0.42, 0.07, 8, 24, Math.PI * 1.25), armor, {
+      addMesh(rebreather, new THREE.TorusGeometry(0.42, 0.07, 16, 48, Math.PI * 1.25), armor, {
         position: [side * 0.5, -0.32, -0.25],
         rotation: [Math.PI / 2, side * 0.25, side > 0 ? 0.2 : Math.PI - 0.2],
       });
@@ -318,13 +318,13 @@ export class CityHunterBoss {
     for (let index = 0; index < 18; index += 1) {
       const angle = THREE.MathUtils.lerp(-1.45, 1.45, index / 17);
       const length = 3.75 + (index % 4) * 0.24;
-      const dread = addMesh(group, new THREE.CylinderGeometry(0.105, 0.18, length, 10), leather, {
+      const dread = addMesh(group, new THREE.CylinderGeometry(0.105, 0.18, length, 24, 4), leather, {
         name: `cityHunterPredlock${index + 1}`,
         position: [Math.sin(angle) * 1.12, 8.0 - Math.abs(angle) * 0.23, -0.68 - Math.cos(angle) * 0.18],
         rotation: [0.52 + Math.abs(angle) * 0.08, 0, -angle * 0.28],
       });
       if (index % 2 === 0) {
-        addMesh(dread, new THREE.TorusGeometry(0.17, 0.042, 8, 16), armor, {
+        addMesh(dread, new THREE.TorusGeometry(0.17, 0.042, 16, 28), armor, {
           position: [0, -length * 0.29, 0],
           rotation: [Math.PI / 2, 0, 0],
         });
@@ -333,25 +333,25 @@ export class CityHunterBoss {
 
     // Membres et armures segmentées.
     for (const side of [-1, 1]) {
-      addMesh(group, new THREE.SphereGeometry(1.02, 20, 16), side < 0 ? armor : darkArmor, {
+      addMesh(group, new THREE.SphereGeometry(1.02, 38, 28), side < 0 ? armor : darkArmor, {
         position: [side * 2.48, 6.92, 0],
         scale: [1.25, 0.72, 1.05],
       });
-      addMesh(group, new THREE.CylinderGeometry(0.48, 0.61, 3.25, 14), skin, {
+      addMesh(group, new THREE.CylinderGeometry(0.48, 0.61, 3.25, 28, 4), skin, {
         position: [side * 2.57, 5.08, 0.08],
         rotation: [0.04, 0, side * 0.08],
       });
-      addMesh(group, new THREE.BoxGeometry(1.02, 1.2, 1.38, 2, 2, 2), darkArmor, {
+      addMesh(group, new THREE.BoxGeometry(1.02, 1.2, 1.38, 4, 4, 4), darkArmor, {
         position: [side * 2.62, 3.72, 0.42],
       });
-      addMesh(group, new THREE.CylinderGeometry(0.67, 0.84, 4.0, 16), skin, {
+      addMesh(group, new THREE.CylinderGeometry(0.67, 0.84, 4.0, 32, 5), skin, {
         position: [side * 1.02, 2.08, 0],
         rotation: [0, 0, side * 0.045],
       });
-      addMesh(group, new THREE.BoxGeometry(1.42, 1.9, 1.76, 2, 2, 2), side < 0 ? darkArmor : armor, {
+      addMesh(group, new THREE.BoxGeometry(1.42, 1.9, 1.76, 4, 4, 4), side < 0 ? darkArmor : armor, {
         position: [side * 1.02, 2.62, 0.12],
       });
-      addMesh(group, new THREE.BoxGeometry(1.52, 0.64, 2.62, 2, 1, 2), darkArmor, {
+      addMesh(group, new THREE.BoxGeometry(1.52, 0.64, 2.62, 4, 3, 5), darkArmor, {
         position: [side * 1.02, 0.34, 0.55],
       });
     }
@@ -361,11 +361,11 @@ export class CityHunterBoss {
     disc.name = 'cityHunterSmartDiscHolster';
     disc.position.set(2.08, 4.12, -0.35);
     disc.rotation.set(0.12, 0.15, Math.PI / 2);
-    addMesh(disc, new THREE.CylinderGeometry(0.93, 0.93, 0.18, 24), blade);
-    addMesh(disc, new THREE.CylinderGeometry(0.32, 0.32, 0.24, 24), darkArmor);
+    addMesh(disc, new THREE.CylinderGeometry(0.93, 0.93, 0.18, 48), blade);
+    addMesh(disc, new THREE.CylinderGeometry(0.32, 0.32, 0.24, 36), darkArmor);
     for (let tooth = 0; tooth < 8; tooth += 1) {
       const angle = (tooth / 8) * Math.PI * 2;
-      addMesh(disc, new THREE.ConeGeometry(0.12, 0.42, 6), blade, {
+      addMesh(disc, new THREE.ConeGeometry(0.12, 0.42, 12), blade, {
         position: [Math.cos(angle) * 1.05, 0, Math.sin(angle) * 1.05],
         rotation: [0, -angle, Math.PI / 2],
       });
@@ -376,9 +376,9 @@ export class CityHunterBoss {
     const netgun = new THREE.Group();
     netgun.name = 'cityHunterNetgun';
     netgun.position.set(-2.7, 3.78, 0.78);
-    addMesh(netgun, new THREE.BoxGeometry(0.96, 0.72, 1.92, 2, 2, 3), darkArmor);
+    addMesh(netgun, new THREE.BoxGeometry(0.96, 0.72, 1.92, 4, 3, 5), darkArmor);
     for (const x of [-0.24, 0, 0.24]) {
-      addMesh(netgun, new THREE.CylinderGeometry(0.09, 0.13, 1.25, 12), armor, {
+      addMesh(netgun, new THREE.CylinderGeometry(0.09, 0.13, 1.25, 24, 2), armor, {
         position: [x, 0.1, 1.25],
         rotation: [Math.PI / 2, 0, 0],
       });
@@ -390,15 +390,15 @@ export class CityHunterBoss {
     const medicomp = new THREE.Group();
     medicomp.name = 'cityHunterMedicomp';
     medicomp.position.set(-1.5, 4.02, 1.04);
-    addMesh(medicomp, new THREE.BoxGeometry(1.22, 1.05, 0.5, 2, 2, 1), darkArmor);
-    addMesh(medicomp, new THREE.CylinderGeometry(0.28, 0.28, 0.2, 18), medicompGlow, {
+    addMesh(medicomp, new THREE.BoxGeometry(1.22, 1.05, 0.5, 4, 3, 2), darkArmor);
+    addMesh(medicomp, new THREE.CylinderGeometry(0.28, 0.28, 0.2, 32), medicompGlow, {
       name: 'cityHunterMedicompDial',
       position: [0.2, 0.13, 0.34],
       rotation: [Math.PI / 2, 0, 0],
       castShadow: false,
       visionExempt: true,
     });
-    addMesh(medicomp, new THREE.CylinderGeometry(0.1, 0.14, 0.92, 8), blade, {
+    addMesh(medicomp, new THREE.CylinderGeometry(0.1, 0.14, 0.92, 18), blade, {
       name: 'cityHunterMedicompInjector',
       position: [-0.34, -0.08, 0.38],
       rotation: [0.12, 0, 0.18],
@@ -411,9 +411,9 @@ export class CityHunterBoss {
     combistick.name = 'cityHunterCombistick';
     combistick.position.set(1.35, 5.05, -1.25);
     combistick.rotation.set(-0.14, 0.18, -0.32);
-    addMesh(combistick, new THREE.CylinderGeometry(0.1, 0.12, 6.1, 14), darkArmor);
-    addMesh(combistick, new THREE.ConeGeometry(0.32, 1.12, 12), blade, { position: [0, 3.58, 0] });
-    addMesh(combistick, new THREE.ConeGeometry(0.25, 0.82, 12), blade, {
+    addMesh(combistick, new THREE.CylinderGeometry(0.1, 0.12, 6.1, 28, 5), darkArmor);
+    addMesh(combistick, new THREE.ConeGeometry(0.32, 1.12, 24), blade, { position: [0, 3.58, 0] });
+    addMesh(combistick, new THREE.ConeGeometry(0.25, 0.82, 24), blade, {
       position: [0, -3.42, 0],
       rotation: [0, 0, Math.PI],
     });
@@ -425,7 +425,7 @@ export class CityHunterBoss {
     trophyRack.position.set(0.5, 4.35, -1.15);
     for (const [index, side] of [-1, 1].entries()) {
       const skullPosition = new THREE.Vector3(side * 0.58, -index * 0.42, 0);
-      addMesh(trophyRack, new THREE.SphereGeometry(0.35 - index * 0.04, 16, 12), trophyBone, {
+      addMesh(trophyRack, new THREE.SphereGeometry(0.35 - index * 0.04, 32, 24), trophyBone, {
         position: skullPosition.toArray(),
         scale: [0.8, 1, 0.72],
       });

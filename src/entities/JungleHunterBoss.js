@@ -244,21 +244,21 @@ export class JungleHunterBoss {
     const redGlowMat = new THREE.MeshBasicMaterial({ color: 0xff1818 });
 
     // Tronc élancé 1:1 Stan Winston Kevin Peter Hall
-    addMesh(group, new THREE.CapsuleGeometry(1.85, 4.35, 12, 24), skin, {
+    addMesh(group, new THREE.CapsuleGeometry(1.85, 4.35, 24, 48), skin, {
       name: 'jungleHunterTorso',
       position: [0, 5.3, 0],
       scale: [1.14, 1.0, 0.78],
     });
 
     // Filet de chasse en cuir (netting suit) sur le torse
-    addMesh(group, new THREE.CapsuleGeometry(1.9, 4.25, 8, 16), leatherNet, {
+    addMesh(group, new THREE.CapsuleGeometry(1.9, 4.25, 18, 36), leatherNet, {
       name: 'jungleHunterLeatherNetSuit',
       position: [0, 5.3, 0],
       scale: [1.16, 1.0, 0.8],
     });
 
     // Plastron d'armure asymétrique classique 1987
-    addMesh(group, new THREE.BoxGeometry(3.9, 2.5, 2.1, 4, 3, 3), armor, {
+    addMesh(group, new THREE.BoxGeometry(3.9, 2.5, 2.1, 8, 6, 6), armor, {
       name: 'jungleHunterChestArmor',
       position: [-0.05, 6.35, 0.06],
       rotation: [-0.05, 0, 0],
@@ -268,26 +268,26 @@ export class JungleHunterBoss {
     const bandolier = new THREE.Group();
     bandolier.name = 'jungleHunterSpineTrophy';
     for (let i = 0; i < 7; i++) {
-      addMesh(bandolier, new THREE.CylinderGeometry(0.24, 0.28, 0.42, 8), boneMat, {
+      addMesh(bandolier, new THREE.CylinderGeometry(0.24, 0.28, 0.42, 20, 3), boneMat, {
         position: [-1.2 + (i * 0.4), 6.7 - (i * 0.38), 0.95 - (i * 0.12)],
         rotation: [0.35, 0, -0.65],
       });
     }
     // Crâne trophée suspendu à la hanche droite
-    addMesh(bandolier, new THREE.SphereGeometry(0.65, 12, 10), boneMat, {
+    addMesh(bandolier, new THREE.SphereGeometry(0.65, 28, 22), boneMat, {
       position: [1.85, 4.1, 0.3],
       scale: [0.85, 1.15, 1.0],
     });
     group.add(bandolier);
 
     // Unité sac à dos d'alimentation (backpack power unit)
-    addMesh(group, new THREE.BoxGeometry(2.35, 3.1, 1.35, 3, 3, 2), armor, {
+    addMesh(group, new THREE.BoxGeometry(2.35, 3.1, 1.35, 6, 6, 4), armor, {
       name: 'jungleHunterBackpackPowerUnit',
       position: [0, 6.1, -1.25],
     });
 
     // Tête et cou
-    addMesh(group, new THREE.CylinderGeometry(0.85, 1.05, 1.85, 12), skin, {
+    addMesh(group, new THREE.CylinderGeometry(0.85, 1.05, 1.85, 28, 4), skin, {
       position: [0, 7.8, 0.1],
       rotation: [0.08, 0, 0],
     });
@@ -296,15 +296,15 @@ export class JungleHunterBoss {
     const revealedFace = new THREE.Group();
     revealedFace.name = 'jungleHunterRevealedFace';
     revealedFace.position.set(0, 8.85, 0.82);
-    addMesh(revealedFace, new THREE.SphereGeometry(1.05, 16, 14), skin, {
+    addMesh(revealedFace, new THREE.SphereGeometry(1.05, 44, 36), skin, {
       scale: [1.02, 1.15, 0.95],
     });
     for (const side of [-1, 1]) {
-      addMesh(revealedFace, new THREE.ConeGeometry(0.22, 0.85, 8), boneMat, {
+      addMesh(revealedFace, new THREE.ConeGeometry(0.22, 0.85, 20, 4), boneMat, {
         position: [side * 0.65, -0.45, 0.65],
         rotation: [0.55, 0, side * 0.45],
       });
-      addMesh(revealedFace, new THREE.ConeGeometry(0.18, 0.65, 8), boneMat, {
+      addMesh(revealedFace, new THREE.ConeGeometry(0.18, 0.65, 20, 4), boneMat, {
         position: [side * 0.55, 0.25, 0.72],
         rotation: [-0.4, 0, side * 0.35],
       });
@@ -315,11 +315,11 @@ export class JungleHunterBoss {
     const classicMask = new THREE.Group();
     classicMask.name = 'jungleHunterClassicMask';
     classicMask.position.set(0, 8.85, 0.82);
-    addMesh(classicMask, new THREE.SphereGeometry(1.18, 20, 18), maskMat, {
+    addMesh(classicMask, new THREE.SphereGeometry(1.18, 48, 38), maskMat, {
       scale: [0.98, 1.25, 0.98],
     });
     // Visière incurvée classique
-    addMesh(classicMask, new THREE.BoxGeometry(1.35, 0.32, 0.28, 4, 2, 2), armor, {
+    addMesh(classicMask, new THREE.BoxGeometry(1.35, 0.32, 0.28, 8, 4, 4), armor, {
       position: [0, 0.16, 0.95],
       rotation: [-0.08, 0, 0],
     });
@@ -328,7 +328,7 @@ export class JungleHunterBoss {
     triLaserGroup.name = 'jungleHunterTriLaserEmitter';
     for (let p = 0; p < 3; p++) {
       const angle = (p * Math.PI * 2) / 3;
-      addMesh(triLaserGroup, new THREE.SphereGeometry(0.065, 8, 8), redGlowMat, {
+      addMesh(triLaserGroup, new THREE.SphereGeometry(0.065, 16, 12), redGlowMat, {
         position: [-0.75 + Math.cos(angle) * 0.12, 0.35 + Math.sin(angle) * 0.12, 0.78],
         visionExempt: true,
       });
@@ -339,12 +339,12 @@ export class JungleHunterBoss {
     // Dreadlocks Yautja 1987 avec bagues en alliage
     for (let i = 0; i < 28; i++) {
       const angle = THREE.MathUtils.lerp(-1.75, 1.75, i / 27);
-      const dread = addMesh(group, new THREE.CylinderGeometry(0.12, 0.22, 4.4, 8), dreadMat, {
+      const dread = addMesh(group, new THREE.CylinderGeometry(0.12, 0.22, 4.4, 20, 4), dreadMat, {
         position: [Math.sin(angle) * 1.15, 8.1 - Math.abs(angle) * 0.24, -0.65 - Math.cos(angle) * 0.45],
         rotation: [0.46 + Math.abs(angle) * 0.15, 0, -angle * 0.32],
       });
       if (i % 3 === 0) {
-        addMesh(dread, new THREE.TorusGeometry(0.18, 0.05, 6, 10), armor, {
+        addMesh(dread, new THREE.TorusGeometry(0.18, 0.05, 14, 24), armor, {
           position: [0, -1.1, 0],
           rotation: [Math.PI / 2, 0, 0],
         });
@@ -358,15 +358,15 @@ export class JungleHunterBoss {
     casterPivot.position.set(-1.85, 7.6, -0.45);
     const casterMesh = new THREE.Group();
     casterMesh.name = 'jungleHunterSinglePlasmacaster';
-    addMesh(casterMesh, new THREE.CylinderGeometry(0.24, 0.32, 2.3, 10), armor, {
+    addMesh(casterMesh, new THREE.CylinderGeometry(0.24, 0.32, 2.3, 24, 4), armor, {
       position: [0, 0.5, 0.8],
       rotation: [Math.PI / 2, 0, 0],
     });
-    addMesh(casterMesh, new THREE.SphereGeometry(0.28, 10, 8), armor, {
+    addMesh(casterMesh, new THREE.SphereGeometry(0.28, 24, 18), armor, {
       position: [0, 0, 0],
     });
     // Buse plasma émettrice
-    addMesh(casterMesh, new THREE.CylinderGeometry(0.2, 0.26, 0.45, 10), redGlowMat, {
+    addMesh(casterMesh, new THREE.CylinderGeometry(0.2, 0.26, 0.45, 20, 3), redGlowMat, {
       position: [0, 0.5, 1.95],
       rotation: [Math.PI / 2, 0, 0],
       visionExempt: true,
@@ -375,18 +375,18 @@ export class JungleHunterBoss {
     group.add(casterPivot);
 
     // Bras gauche et gantelet avec ordinateur de poignet (wrist computer)
-    addMesh(group, new THREE.CylinderGeometry(0.55, 0.7, 3.4, 10), skin, {
+    addMesh(group, new THREE.CylinderGeometry(0.55, 0.7, 3.4, 24, 4), skin, {
       position: [-2.65, 5.25, 0.12],
       rotation: [0.08, 0, 0.14],
     });
     const wristComputer = new THREE.Group();
     wristComputer.name = 'jungleHunterWristComputer';
     wristComputer.position.set(-2.85, 3.65, 0.35);
-    addMesh(wristComputer, new THREE.BoxGeometry(1.25, 1.45, 1.35, 3, 3, 2), armor, {
+    addMesh(wristComputer, new THREE.BoxGeometry(1.25, 1.45, 1.35, 6, 6, 4), armor, {
       name: 'jungleHunterWristGauntlet',
     });
     // Clapet de l'ordinateur de poignet
-    addMesh(wristComputer, new THREE.BoxGeometry(0.95, 0.18, 0.85), armor, {
+    addMesh(wristComputer, new THREE.BoxGeometry(0.95, 0.18, 0.85, 4, 2, 4), armor, {
       position: [0, 0.75, 0],
       rotation: [0, 0, -0.25],
     });
@@ -401,17 +401,17 @@ export class JungleHunterBoss {
     group.add(wristComputer);
 
     // Bras droit avec les doubles lames de poignet allongées (extended wristblades 1987)
-    addMesh(group, new THREE.CylinderGeometry(0.55, 0.7, 3.4, 10), skin, {
+    addMesh(group, new THREE.CylinderGeometry(0.55, 0.7, 3.4, 24, 4), skin, {
       position: [2.65, 5.25, 0.12],
       rotation: [0.08, 0, -0.14],
     });
-    const rightGauntlet = addMesh(group, new THREE.BoxGeometry(1.2, 1.4, 1.3, 3, 3, 2), armor, {
+    const rightGauntlet = addMesh(group, new THREE.BoxGeometry(1.2, 1.4, 1.3, 6, 6, 4), armor, {
       position: [2.85, 3.65, 0.35],
     });
     const blades = new THREE.Group();
     blades.name = 'jungleHunterWristblades';
     for (const offset of [-0.22, 0.22]) {
-      addMesh(blades, new THREE.BoxGeometry(0.12, 0.14, 4.2), bladeMat, {
+      addMesh(blades, new THREE.BoxGeometry(0.12, 0.14, 4.2, 2, 2, 8), bladeMat, {
         position: [2.85 + offset, 3.4, 2.5],
         rotation: [-0.05, 0, 0],
       });
@@ -420,17 +420,17 @@ export class JungleHunterBoss {
 
     // Jambes et jambières métalliques
     for (const side of [-1, 1]) {
-      addMesh(group, new THREE.CylinderGeometry(0.75, 0.92, 4.2, 10), skin, {
+      addMesh(group, new THREE.CylinderGeometry(0.75, 0.92, 4.2, 24, 4), skin, {
         position: [side * 1.25, 2.15, 0],
         rotation: [0, 0, side * 0.04],
       });
-      addMesh(group, new THREE.CylinderGeometry(0.78, 0.95, 4.1, 8), leatherNet, {
+      addMesh(group, new THREE.CylinderGeometry(0.78, 0.95, 4.1, 20, 4), leatherNet, {
         position: [side * 1.25, 2.15, 0],
       });
-      addMesh(group, new THREE.BoxGeometry(1.65, 2.3, 1.9), armor, {
+      addMesh(group, new THREE.BoxGeometry(1.65, 2.3, 1.9, 4, 6, 4), armor, {
         position: [side * 1.25, 2.45, 0.1],
       });
-      addMesh(group, new THREE.BoxGeometry(1.6, 0.65, 2.8), armor, {
+      addMesh(group, new THREE.BoxGeometry(1.6, 0.65, 2.8, 4, 3, 6), armor, {
         position: [side * 1.25, 0.35, 0.45],
       });
     }

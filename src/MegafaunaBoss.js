@@ -131,7 +131,7 @@ export class MegafaunaBoss {
       seg.castShadow = true;
       tailGroup.add(seg);
     }
-    const clubGeo = new THREE.OctahedronGeometry(1.6, 2);
+    const clubGeo = new THREE.OctahedronGeometry(1.6, 3);
     const club = new THREE.Mesh(clubGeo, bodyMat);
     club.position.set(0, 1.5, -14.5);
     tailGroup.add(club);
