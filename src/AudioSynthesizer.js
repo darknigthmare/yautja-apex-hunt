@@ -381,6 +381,46 @@ class AudioSynthesizer {
     osc.stop(now + 1.6);
   }
 
+  playBerserkerRoar() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Canonical Predators (2010) Mr. Black / Berserker guttural bellow:
+    // Heavy dual-oscillator throat roar with subterranean sub-bass rumble
+    const throatOsc = this.ctx.createOscillator();
+    const throatGain = this.ctx.createGain();
+    throatOsc.type = 'sawtooth';
+    throatOsc.frequency.setValueAtTime(85, now);
+    throatOsc.frequency.linearRampToValueAtTime(210, now + 0.4);
+    throatOsc.frequency.exponentialRampToValueAtTime(45, now + 1.8);
+    throatGain.gain.setValueAtTime(0.01, now);
+    throatGain.gain.linearRampToValueAtTime(0.55, now + 0.35);
+    throatGain.gain.exponentialRampToValueAtTime(0.005, now + 1.8);
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1600, now);
+    filter.frequency.exponentialRampToValueAtTime(350, now + 1.8);
+
+    throatOsc.connect(filter);
+    filter.connect(throatGain);
+    throatGain.connect(this.ctx.destination);
+    throatOsc.start(now);
+    throatOsc.stop(now + 1.82);
+
+    // Deep sub-bass chest rumble
+    const subOsc = this.ctx.createOscillator();
+    const subGain = this.ctx.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(110, now);
+    subOsc.frequency.exponentialRampToValueAtTime(32, now + 1.2);
+    subGain.gain.setValueAtTime(0.5, now);
+    subGain.gain.exponentialRampToValueAtTime(0.005, now + 1.2);
+    subOsc.connect(subGain);
+    subGain.connect(this.ctx.destination);
+    subOsc.start(now);
+    subOsc.stop(now + 1.22);
+  }
+
   playTrophyHarvest() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;

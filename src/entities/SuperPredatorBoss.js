@@ -315,7 +315,7 @@ export class SuperPredatorBoss {
     if (!this.isEnraged && this.health <= this.maxHealth * 0.5) {
       this.isEnraged = true;
       this.attackCooldown = Math.min(this.attackCooldown, 0.35);
-      audioSynth.playMonsterRoar();
+      audioSynth.playBerserkerRoar();
     }
 
     if (this.health === 0) {
@@ -326,7 +326,7 @@ export class SuperPredatorBoss {
       this.projectiles.forEach(({ mesh }) => disposeObject3D(mesh));
       this.projectiles = [];
       restoreBaseMaterials(this.mesh);
-      audioSynth.playMonsterRoar();
+      audioSynth.playBerserkerRoar();
     }
   }
 
