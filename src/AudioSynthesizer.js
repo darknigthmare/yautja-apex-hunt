@@ -618,6 +618,70 @@ class AudioSynthesizer {
     subOsc.stop(now + 1.62);
   }
 
+  playCityHunterRoar() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Canonical Predator 2 (1990) City Hunter aggressive urban roar:
+    // Kevin Peter Hall / Steve Wang raspy commanding war cry with high metallic resonance
+    const roarOsc = this.ctx.createOscillator();
+    const roarGain = this.ctx.createGain();
+    roarOsc.type = 'sawtooth';
+    roarOsc.frequency.setValueAtTime(165, now);
+    roarOsc.frequency.linearRampToValueAtTime(340, now + 0.32);
+    roarOsc.frequency.exponentialRampToValueAtTime(75, now + 1.6);
+    roarGain.gain.setValueAtTime(0.01, now);
+    roarGain.gain.linearRampToValueAtTime(0.55, now + 0.28);
+    roarGain.gain.exponentialRampToValueAtTime(0.005, now + 1.6);
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(1450, now);
+    filter.Q.setValueAtTime(2.8, now);
+
+    roarOsc.connect(filter);
+    filter.connect(roarGain);
+    roarGain.connect(this.ctx.destination);
+    roarOsc.start(now);
+    roarOsc.stop(now + 1.62);
+
+    // Deep metallic undertone
+    const metalOsc = this.ctx.createOscillator();
+    const metalGain = this.ctx.createGain();
+    metalOsc.type = 'triangle';
+    metalOsc.frequency.setValueAtTime(125, now);
+    metalOsc.frequency.exponentialRampToValueAtTime(38, now + 1.1);
+    metalGain.gain.setValueAtTime(0.4, now);
+    metalGain.gain.exponentialRampToValueAtTime(0.005, now + 1.1);
+    metalOsc.connect(metalGain);
+    metalGain.connect(this.ctx.destination);
+    metalOsc.start(now);
+    metalOsc.stop(now + 1.12);
+  }
+
+  playCombistickThrust() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    // Heavy metallic telescoping whoosh and blade slice
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(520, now);
+    osc.frequency.exponentialRampToValueAtTime(110, now + 0.22);
+    gain.gain.setValueAtTime(0.01, now);
+    gain.gain.linearRampToValueAtTime(0.38, now + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(350, now);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.25);
+  }
+
   playLeapImpactShockwave() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;

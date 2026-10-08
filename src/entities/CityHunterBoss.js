@@ -547,7 +547,7 @@ export class CityHunterBoss {
     this.activeAttackType = 'medicomp_heal';
     this.attackCooldown = Math.max(this.attackCooldown, 1.25);
     if (this.medicompMesh) this.medicompMesh.visible = true;
-    audioSynth.playYautjaClick();
+    audioSynth.playMedicompHeal();
     return true;
   }
 
@@ -605,7 +605,7 @@ export class CityHunterBoss {
     if (!this.isEnraged && this.health <= this.maxHealth * 0.48) {
       this.isEnraged = true;
       this.attackCooldown = Math.min(this.attackCooldown, 0.3);
-      audioSynth.playMonsterRoar();
+      audioSynth.playCityHunterRoar();
     }
 
     if (this.health === 0) {
@@ -619,7 +619,7 @@ export class CityHunterBoss {
       if (this.medicompMesh) this.medicompMesh.visible = false;
       this.clearProjectiles();
       restoreBaseMaterials(this.mesh);
-      audioSynth.playMonsterRoar();
+      audioSynth.playCityHunterRoar();
     }
 
     return {
@@ -863,7 +863,7 @@ export class CityHunterBoss {
     this.attackImpactReady = false;
     this.attackImpactConsumed = false;
     this.attackCooldown = this.isEnraged ? 1.05 : 1.5;
-    audioSynth.playWristbladeSlash();
+    audioSynth.playCombistickThrust();
     return true;
   }
 
