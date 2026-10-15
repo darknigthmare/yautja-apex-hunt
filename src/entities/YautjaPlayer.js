@@ -1715,7 +1715,9 @@ export class YautjaPlayer {
     this.wristbladeRangeMultiplier = variant?.modifiers.rangeMultiplier ?? 1;
     this.wristbladeCooldownMultiplier = variant?.modifiers.cooldownMultiplier ?? 1;
     this.wristbladeVisualLengthScale = variant?.modifiers.rangeMultiplier ?? 1;
+    this.wristShieldAbsorbBonus = variant?.modifiers.wristShieldAbsorbBonus ?? 0;
     const tripleBladeVariant = variant?.id === 'variant_chopper_extended_wristblades';
+    const feralShieldVariant = variant?.id === 'variant_feral_bone_shield';
     this.wristbladeRestPositionZ = tripleBladeVariant ? 1.52 : variant ? 1.42 : 1.3;
     this.wristbladeAttackPositionZ = tripleBladeVariant ? 2.48 : variant ? 2.08 : 1.8;
     for (const blade of [this.wristbladeRight, this.wristbladeLeft]) {
@@ -1731,10 +1733,13 @@ export class YautjaPlayer {
           ? 'triple_extended'
           : variant?.id === 'variant_wolf_power_glove'
             ? 'double_power_reinforced'
-            : 'double_standard';
+            : feralShieldVariant
+              ? 'feral_shield_edge'
+              : 'double_standard';
       });
       blade.userData.visibleBladeCount = tripleBladeVariant ? 3 : 2;
       blade.userData.powerGloveReinforced = variant?.id === 'variant_wolf_power_glove';
+      blade.userData.feralShieldEdge = feralShieldVariant;
     }
     return variant;
   }
@@ -2770,7 +2775,8 @@ export class YautjaPlayer {
     const incoming = Math.max(0, Number(amount) || 0);
     let absorbed = 0;
     if (this.wristShieldActive && this.wristShieldIntegrity > 0) {
-      absorbed = Math.min(this.wristShieldIntegrity, incoming * 0.68);
+      const absorbRatio = Math.min(0.9, 0.68 + (this.wristShieldAbsorbBonus ?? 0));
+      absorbed = Math.min(this.wristShieldIntegrity, incoming * absorbRatio);
       this.wristShieldIntegrity = Math.max(0, this.wristShieldIntegrity - absorbed);
       if (this.wristShieldIntegrity === 0) this.deactivateWristShield();
     }

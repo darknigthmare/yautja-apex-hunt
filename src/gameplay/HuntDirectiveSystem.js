@@ -257,6 +257,25 @@ const directiveDefinitions = [
       wave(58, 'jungle_trapper'),
     ],
   },
+  {
+    id: 'great_plains_1719_hunt',
+    title: 'Grandes Plaines — Nation comanche, 1719',
+    shortLabel: 'PLAINES 1719',
+    description: 'Gravir l’échelle des proies des Grandes Plaines : éprouver le grizzli puis briser le camp des trappeurs français avant leurs pièges à mâchoires.',
+    provenance: 'SCREEN_ADAPTATION',
+    recommendedBiomeId: 'jungle',
+    rewardMultiplier: 1.45,
+    objectives: [
+      objective('grizzly_territorial', 'Vaincre le grizzli au sommet de l’arbre'),
+      objective('jungle_scout', 'Neutraliser l’éclaireur du camp de trappeurs'),
+      objective('jungle_trapper', 'Neutraliser le trappeur aux pièges à mâchoires'),
+    ],
+    schedule: [
+      wave(10, 'grizzly_territorial'),
+      wave(34, 'jungle_scout'),
+      wave(60, 'jungle_trapper'),
+    ],
+  },
 ];
 
 export const HUNT_DIRECTIVES = Object.freeze(Object.fromEntries(

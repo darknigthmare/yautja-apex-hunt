@@ -118,6 +118,18 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     summary: 'Le Jungle Hunter capture et reproduit les fréquences vocales de ses proies pour désorienter les survivants.',
     body: 'Peter Cullen et Kevin Peter Hall ont conçu des modulations de gorge et cliquetis distincts, combinés aux enregistrements du biomasque pour attirer les cibles isolées ou signer le rire d’autodestruction.',
     sourceTier: 'SCREEN', isOriginal: false, sources: ['predator1987']
+  },
+  {
+    id: 'technologie-bouclier-osseux-feral', entryType: 'codex', category: 'technologie', title: 'Bouclier segmenté du Feral',
+    summary: 'Le Feral porte au bras gauche un bouclier rétractable qui se déploie en segments et sert aussi d’arme de frappe.',
+    body: 'Prey montre le bouclier encaissant balles de mousquet et flèches avant de se replier contre l’avant-bras. Apex Hunt en dérive une intégrité limitée à l’arc frontal ; cette valeur chiffrée est une adaptation de gameplay.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['prey2022']
+  },
+  {
+    id: 'culture-rituel-prey-1719', entryType: 'codex', category: 'culture', title: 'Grandes Plaines, 1719',
+    summary: 'Sur le territoire comanche, le Feral gravit une échelle de proies : serpent, loup, ours, puis humains armés.',
+    body: 'Le film oppose Naru, ses compagnons comanches et un camp de trappeurs français au chasseur. Il épargne les cibles qu’il ne juge pas menaçantes, un comportement que le Codex distingue de l’honneur codifié de l’EU.',
+    sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['prey2022']
   }
 ]);
 

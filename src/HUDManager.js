@@ -686,5 +686,22 @@ export class HUDManager {
     this.showLogMessage(text, 2000);
     return text;
   }
+
+  // Relevé du biomasque lorsqu'un bouclier adverse (ex. Feral, Prey 2022)
+  // encaisse un impact. Accepte le résultat de takeDamage() du boss.
+  showShieldDeflectionBadge({ absorbed = 0, shieldBroken = false, integrity = null, maxIntegrity = null } = {}) {
+    let text;
+    if (shieldBroken) {
+      text = 'BOUCLIER ADVERSE BRISÉ — ARC FRONTAL EXPOSÉ';
+    } else {
+      const ratio = Number.isFinite(integrity) && Number.isFinite(maxIntegrity) && maxIntegrity > 0
+        ? Math.round((Math.max(0, integrity) / maxIntegrity) * 100)
+        : null;
+      text = `IMPACT DÉVIÉ PAR BOUCLIER — ${Math.round(Math.max(0, absorbed))} ABSORBÉ`
+        + (ratio === null ? '' : ` · INTÉGRITÉ ${ratio}%`);
+    }
+    this.showLogMessage(text, 1600);
+    return text;
+  }
 }
 

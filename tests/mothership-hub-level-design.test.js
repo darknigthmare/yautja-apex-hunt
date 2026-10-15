@@ -73,7 +73,7 @@ test('la forge, le hangar et les trophées possèdent des props identifiables', 
   const weaponRack = hub.group.getObjectByName('forge-weapon-rack');
   assert.deepEqual(
     weaponRack.userData.weaponSilhouettes,
-    ['combistick', 'smart-disc', 'plasma-caster', 'wrist-blades'],
+    ['combistick', 'smart-disc', 'plasma-caster', 'wrist-blades', 'feral-shield'],
   );
   assert.ok(hub.group.getObjectByName('hangar-scout'));
   assert.ok(hub.group.getObjectByName('hangar-shuttle'));

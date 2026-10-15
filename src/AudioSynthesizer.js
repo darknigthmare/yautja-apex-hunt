@@ -971,6 +971,83 @@ class AudioSynthesizer {
     osc.stop(now + 0.56);
   }
 
+  // Prey (2022) — déploiement du bouclier segmenté du Feral :
+  // série de claquements mécaniques rapides (plaques qui s'emboîtent).
+  playFeralShieldDeploy() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    for (let i = 0; i < 5; i += 1) {
+      const t = now + i * 0.035;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(1800 - i * 180, t);
+      osc.frequency.exponentialRampToValueAtTime(320, t + 0.03);
+      gain.gain.setValueAtTime(0.12, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.045);
+    }
+  }
+
+  // Prey (2022) — impact absorbé par le bouclier : choc sourd osseux
+  // suivi d'un tintement métallique résonant (alliage yautja).
+  playFeralShieldDeflect() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    const thud = this.ctx.createOscillator();
+    const thudGain = this.ctx.createGain();
+    thud.type = 'triangle';
+    thud.frequency.setValueAtTime(180, now);
+    thud.frequency.exponentialRampToValueAtTime(45, now + 0.18);
+    thudGain.gain.setValueAtTime(0.42, now);
+    thudGain.gain.exponentialRampToValueAtTime(0.002, now + 0.2);
+    thud.connect(thudGain);
+    thudGain.connect(this.ctx.destination);
+    thud.start(now);
+    thud.stop(now + 0.21);
+
+    const ring = this.ctx.createOscillator();
+    const ringGain = this.ctx.createGain();
+    const ringFilter = this.ctx.createBiquadFilter();
+    ring.type = 'sine';
+    ring.frequency.setValueAtTime(2350, now);
+    ring.frequency.linearRampToValueAtTime(2210, now + 0.6);
+    ringFilter.type = 'bandpass';
+    ringFilter.frequency.setValueAtTime(2300, now);
+    ringFilter.Q.setValueAtTime(12, now);
+    ringGain.gain.setValueAtTime(0.16, now);
+    ringGain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+    ring.connect(ringFilter);
+    ringFilter.connect(ringGain);
+    ringGain.connect(this.ctx.destination);
+    ring.start(now);
+    ring.stop(now + 0.66);
+  }
+
+  // Prey (2022) — salve du lanceur de traits : trois départs secs et sifflants.
+  playFeralCrossboltVolley() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    for (let i = 0; i < 3; i += 1) {
+      const t = now + i * 0.06;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(950, t);
+      osc.frequency.exponentialRampToValueAtTime(140, t + 0.12);
+      gain.gain.setValueAtTime(0.18, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.13);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.14);
+    }
+  }
+
   startAmbientJungle() {
     if (!this.ctx) return;
     const windOsc = this.ctx.createOscillator();

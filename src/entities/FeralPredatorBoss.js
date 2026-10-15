@@ -83,6 +83,7 @@ export class FeralPredatorBoss {
     this.shieldDuration = 0;
     this.shieldCooldown = 0;
     this.shieldBroken = false;
+    this.shieldDeflectionCount = 0;
 
     this.position = new THREE.Vector3(0, 0, -50);
     this.moveSpeed = 14;
@@ -301,7 +302,7 @@ export class FeralPredatorBoss {
     this.attackImpactReady = false;
     this.attackImpactConsumed = false;
     if (this.shieldMesh) this.shieldMesh.visible = true;
-    audioSynth.playYautjaClick();
+    audioSynth.playFeralShieldDeploy();
     return true;
   }
 
@@ -354,7 +355,10 @@ export class FeralPredatorBoss {
       this.shieldIntegrity = Math.max(0, this.shieldIntegrity - absorbed);
       damage -= absorbed;
       if (this.shieldIntegrity === 0) this.breakShield();
-      else audioSynth.playYautjaClick();
+      else {
+        this.shieldDeflectionCount += 1;
+        audioSynth.playFeralShieldDeflect();
+      }
     }
 
     this.health = Math.max(0, this.health - damage);
@@ -448,7 +452,7 @@ export class FeralPredatorBoss {
       shots.push(shot);
     }
 
-    audioSynth.playSpearThrow();
+    audioSynth.playFeralCrossboltVolley();
     return shots;
   }
 

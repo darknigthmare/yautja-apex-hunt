@@ -59,6 +59,7 @@ export const ARMOR_FINISHES = Object.freeze([
   Object.freeze({ id: 'finish_city_burnished', name: 'Alliage urbain bruni', metalness: 0.86, roughness: 0.5, emissiveIntensity: 0.03, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predator2']), implementationOriginal: true }),
   Object.freeze({ id: 'finish_avp_frosted_alloy', name: 'Alliage rituel givré', metalness: 0.84, roughness: 0.66, emissiveIntensity: 0.025, sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), implementationOriginal: true }),
   Object.freeze({ id: 'finish_cleaner_acid_resistant', name: 'Alliage Cleaner anti-acide', metalness: 0.72, roughness: 0.74, emissiveIntensity: 0.045, sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), implementationOriginal: true }),
+  Object.freeze({ id: 'finish_feral_bone_carved', name: 'Os gravé des Grandes Plaines', metalness: 0.18, roughness: 0.82, emissiveIntensity: 0, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['prey2022']), implementationOriginal: true }),
 ]);
 
 export const WARPAINT_PATTERNS = Object.freeze([
@@ -182,6 +183,13 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     id: 'variant_wolf_power_glove', armorPresetId: 'wolf_avpr', baseWeaponId: 'wristblades', name: 'Gantelet de puissance de Wolf',
     sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), behavior: 'melee_fast',
     modifiers: Object.freeze({ damageMultiplier: 1.18, cooldownMultiplier: 1.08, energyCostMultiplier: 1, rangeMultiplier: 1.12 }),
+  }),
+  // Prey (2022) : le Feral frappe avec le bord de son bouclier segmenté monté
+  // sur l'avant-bras gauche. Coup plus lourd, plus lent et à portée réduite.
+  Object.freeze({
+    id: 'variant_feral_bone_shield', armorPresetId: 'feral_2022', baseWeaponId: 'wristblades', name: 'Bouclier-gantelet du Feral',
+    sourceTier: 'SCREEN', sources: Object.freeze(['prey2022']), behavior: 'melee_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.22, cooldownMultiplier: 1.15, energyCostMultiplier: 1, rangeMultiplier: 0.92, wristShieldAbsorbBonus: 0.12 }),
   }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);

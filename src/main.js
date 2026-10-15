@@ -2114,6 +2114,7 @@ export class Game {
 
     const scaledDamage = Math.round(strike.damage * (this.player.meleeDamageMultiplier ?? 1));
     const outcome = target.takeDamage(scaledDamage, this.player.position);
+    this.reportShieldDeflection(target, outcome);
     this.spawnBloodSpatterVFX(targetPos, this.getTargetBloodColor(target), isDeathFromAbove ? 30 : 15);
     this.player.addHonor(strike.honor);
     if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target);
@@ -2121,6 +2122,19 @@ export class Game {
     if (isDeathFromAbove) {
       this.hud.showLogMessage('ATTAQUE EN PIQUÉ EXÉCUTÉE! +' + scaledDamage + ' DÉGÂTS!');
     }
+  }
+
+  // Bouclier segmenté du Feral (Prey 2022) : n'affiche le relevé que si
+  // l'impact a réellement été absorbé, ou au moment exact de la rupture.
+  reportShieldDeflection(target, outcome) {
+    if (!outcome || !(Number(outcome.absorbed) > 0)) return null;
+    if (typeof this.hud?.showShieldDeflectionBadge !== 'function') return null;
+    return this.hud.showShieldDeflectionBadge({
+      absorbed: outcome.absorbed,
+      shieldBroken: Boolean(outcome.shieldBroken),
+      integrity: target?.shieldIntegrity,
+      maxIntegrity: target?.maxShieldIntegrity,
+    });
   }
 
   resolveFacehuggerQTE(success) {
@@ -3685,6 +3699,7 @@ export class Game {
         this.applyPlayerBlastDamage(projectile, impact);
       } else {
         const outcome = target.takeDamage(projectile.damage, impact);
+        this.reportShieldDeflection(target, outcome);
         this.spawnBloodSpatterVFX(impact, this.getTargetBloodColor(target), 20);
         this.player.addHonor(target === this.activeBoss ? 100 : 35);
         if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target);

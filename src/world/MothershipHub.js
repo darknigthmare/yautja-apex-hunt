@@ -1504,8 +1504,64 @@ export class MothershipHub {
     }
     rack.add(wristBlades);
 
+    // Prey (2022) : bouclier segmenté du Feral, présenté déployé en éventail sur
+    // son brassard. Rangée basse, entre la combistick et le canon à plasma.
+    if (!this.materialCache.has('bone:feral-shield')) {
+      this.materialCache.set('bone:feral-shield', new THREE.MeshStandardMaterial({
+        color: 0xcdbb8e,
+        map: this.alloyTexture,
+        roughness: 0.78,
+        metalness: 0.16,
+      }));
+    }
+    const boneMaterial = this.materialCache.get('bone:feral-shield');
+    // Brassard + plaques fusionnés en une seule géométrie : un seul draw call
+    // pour respecter le budget de rendu du hub.
+    const segmentCount = 7;
+    const fanSpan = Math.PI * 0.92;
+    const parts = [];
+    const bake = (geometry, rotation, offset) => {
+      const baked = geometry.index ? geometry.toNonIndexed() : geometry;
+      if (baked !== geometry) geometry.dispose();
+      baked.applyMatrix4(new THREE.Matrix4().compose(
+        new THREE.Vector3(...offset),
+        new THREE.Quaternion().setFromEuler(new THREE.Euler(...rotation)),
+        new THREE.Vector3(1, 1, 1),
+      ));
+      parts.push(baked);
+    };
+    bake(new THREE.CylinderGeometry(0.2, 0.24, 1.1, 10), [Math.PI / 2, 0, 0], [0, 0, 0]);
+    for (let index = 0; index < segmentCount; index += 1) {
+      bake(
+        new THREE.CylinderGeometry(0.78, 0.78, 0.05, 6, 1, false, 0, (fanSpan / segmentCount) * 1.18),
+        [-(Math.PI / 2 - fanSpan / 2 + (index * fanSpan) / segmentCount), 0, Math.PI / 2],
+        [-0.06 - (index % 2) * 0.035, 0, 0],
+      );
+    }
+    const merged = new THREE.BufferGeometry();
+    for (const attribute of ['position', 'normal', 'uv']) {
+      const itemSize = parts[0].getAttribute(attribute).itemSize;
+      const total = parts.reduce((sum, part) => sum + part.getAttribute(attribute).array.length, 0);
+      const array = new Float32Array(total);
+      let cursor = 0;
+      for (const part of parts) {
+        array.set(part.getAttribute(attribute).array, cursor);
+        cursor += part.getAttribute(attribute).array.length;
+      }
+      merged.setAttribute(attribute, new THREE.BufferAttribute(array, itemSize));
+    }
+    parts.forEach((part) => part.dispose());
+    merged.computeBoundingSphere();
+    const feralShield = new THREE.Mesh(merged, boneMaterial);
+    feralShield.name = 'rack-feral-shield';
+    feralShield.position.set(-0.62, 1.3, -1.35);
+    feralShield.userData.segmentCount = segmentCount;
+    feralShield.userData.sourceTier = 'SCREEN';
+    feralShield.userData.sources = ['prey2022'];
+    rack.add(feralShield);
+
     this.registerProp(rack, HUB_ZONES.FORGE, 'weapon-display', {
-      weaponSilhouettes: ['combistick', 'smart-disc', 'plasma-caster', 'wrist-blades'],
+      weaponSilhouettes: ['combistick', 'smart-disc', 'plasma-caster', 'wrist-blades', 'feral-shield'],
     });
     parent.add(rack);
     return rack;
