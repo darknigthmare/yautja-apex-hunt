@@ -1498,6 +1498,15 @@ export class MothershipHub {
     };
   }
 
+  getArmoryCalibrationDetails() {
+    return {
+      forgeActive: true,
+      collimatorCalibrated: true,
+      honingStoneReady: true,
+      calibrationProfiles: ['wristblade_molecular_honing', 'plasma_collimator_focus', 'smart_disc_gyro_balancing', 'rebreather_catalytic_filter'],
+    };
+  }
+
   createConsole(parent, position, rotationY, signalColor, id, zone) {
     const consoleGroup = new THREE.Group();
     consoleGroup.name = id;
