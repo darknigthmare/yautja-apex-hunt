@@ -3472,12 +3472,274 @@ class AudioSynthesizer {
     filter.frequency.value = 2800;
     const gain = this.ctx.createGain();
     gain.gain.setValueAtTime(0.32, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
     noise.connect(filter);
     filter.connect(gain);
     gain.connect(this.ctx.destination);
     noise.start(now);
     noise.stop(now + 0.35);
+  }
+
+  // Rame de Métro Stroboscopique (Predator 2) — Bourdonnement électrique 60Hz des néons
+  playSubwayFluorescentHum() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(60, now);
+    osc.frequency.linearRampToValueAtTime(120, now + 0.35);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  // Rame de Métro — Claquement de relais et clignotement stroboscopique
+  playStrobeFlickerClick() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(1800, now);
+    osc.frequency.exponentialRampToValueAtTime(320, now + 0.05);
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.07);
+  }
+
+  // Masque d'Os Feral (Prey 2022) — Clic résonant d'alignement crânien
+  playBoneMaskClickChirp() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(940, now);
+    osc.frequency.exponentialRampToValueAtTime(240, now + 0.09);
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }
+
+  // Masque d'Os Détaché — Porteuse laser décalée et sifflement d'alerte
+  playMaskDetachedWhistle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(2800, now);
+    osc.frequency.linearRampToValueAtTime(3400, now + 0.2);
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Plante Neurotoxique (Predators 2010) — Éclatement de cosse à spores
+  playNeurotoxinPodBurst() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(280, now);
+    osc.frequency.exponentialRampToValueAtTime(65, now + 0.12);
+    gain.gain.setValueAtTime(0.5, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.15);
+  }
+
+  // Plante Neurotoxique — Sifflement de dispersion du gaz paralysant
+  playParalyticHiss() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const bufferSize = this.ctx.sampleRate * 0.4;
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.22;
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.value = 1650;
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+    noise.stop(now + 0.4);
+  }
+
+  // Prédalien (AVP:R) — Sifflement guttural de l'ovipositeur
+  playPredalienOvipositorHiss() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.linearRampToValueAtTime(110, now + 0.3);
+    gain.gain.setValueAtTime(0.45, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.35);
+  }
+
+  // Prédalien — Crissement aigu de multi-chestbursters
+  playMultiBursterSqueal() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1400, now);
+    osc.frequency.linearRampToValueAtTime(2600, now + 0.15);
+    osc.frequency.exponentialRampToValueAtTime(800, now + 0.28);
+    gain.gain.setValueAtTime(0.5, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.32);
+  }
+
+  // Camouflage de Boue (Predator 1987) — Éclaboussure de glaise fraîche
+  playMudWallowSquelch() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.exponentialRampToValueAtTime(45, now + 0.16);
+    gain.gain.setValueAtTime(0.45, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  }
+
+  // Camouflage de Boue — Craquèlement thermique de la glaise sèche
+  playMudDryingCrackle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(1200, now);
+    osc.frequency.exponentialRampToValueAtTime(280, now + 0.06);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.1);
+  }
+
+  // Sifflet de Meute (The Predator 2018) — Impulsion ultrasonique aiguë
+  playHoundWhistleHighPitch() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(4600, now);
+    osc.frequency.linearRampToValueAtTime(5200, now + 0.18);
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.25);
+  }
+
+  // Meute de Molosses — Aboiement guttural d'encerclement
+  playHoundFlankBark() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(210, now);
+    osc.frequency.exponentialRampToValueAtTime(75, now + 0.18);
+    gain.gain.setValueAtTime(0.55, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.22);
+  }
+
+  // Dague Cérémoniale (AVP 2004) — Dégainement vif du mollet
+  playCeremonialDaggerDraw() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1600, now);
+    osc.frequency.linearRampToValueAtTime(2400, now + 0.08);
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }
+
+  // Dague Cérémoniale — Coupe nette d'articulation de chitine
+  playChitinSeverChop() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(450, now);
+    osc.frequency.exponentialRampToValueAtTime(90, now + 0.11);
+    gain.gain.setValueAtTime(0.6, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.15);
+  }
+
+  // Drone Falcon (Predators 2010) — Bip télémétrique d'atterrissage sur perchoir
+  playFalconPerchChirp() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(2100, now);
+    osc.frequency.linearRampToValueAtTime(2800, now + 0.06);
+    osc.frequency.exponentialRampToValueAtTime(1400, now + 0.14);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.18);
   }
 
   startAmbientJungle() {
