@@ -703,5 +703,21 @@ export class HUDManager {
     this.showLogMessage(text, 1600);
     return text;
   }
+
+  // Predator 2 (1990) — Relevé du biomasque lors de la dépressurisation / cycle du rebreather
+  showRebreatherVentAlert(engaged = true) {
+    const text = engaged
+      ? 'ATTENTION : REBREATHER MULTISPECTRAL ENGAGÉ — FILTRATION ATMOSPHÉRIQUE ACTIVE'
+      : 'REBREATHER MULTISPECTRAL STABILISÉ — PRESSION NORMALE';
+    this.showLogMessage(text, 1800);
+    return text;
+  }
+
+  // Predators (2010) — Télémétrie d'armement lourd : détection de la salve rotative
+  showRotaryPlasmaAlert(burstCount = 3) {
+    const text = `⚠️ ALERTE TÉLÉMÉTRIQUE : CANON ROTATIF EN SURCADENCE — RAFALE DE ${burstCount} CHARGES`;
+    this.showLogMessage(text, 1700);
+    return text;
+  }
 }
 

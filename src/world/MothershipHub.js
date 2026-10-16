@@ -1314,6 +1314,85 @@ export class MothershipHub {
       display.add(uplight);
       vault.add(display);
     });
+
+    // Relique sacrée du clan : le pistolet à silex de Raphael Adolini (1715)
+    // Conservé sous cloche de stase énergétique dorée au centre du sanctuaire.
+    const reliquary = new THREE.Group();
+    reliquary.name = 'vault-reliquary-adolini-1715';
+    reliquary.position.set(0, 0, -25.5);
+
+    // Cloche de champ de stase ambrée
+    const stasisField = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.35, 1.35, 2.4, 12, 1, true),
+      this.createSignalMaterial(0xffaa22, 0.42),
+    );
+    stasisField.name = 'adolini-stasis-field';
+    stasisField.position.y = 4.4;
+    reliquary.add(stasisField);
+
+    // Géométrie fusionnée du piédestal et du pistolet à silex de 1715 (1 seul draw call)
+    const gunParts = [];
+    const bakeGun = (geo, rot, pos) => {
+      const b = geo.index ? geo.toNonIndexed() : geo;
+      if (b !== geo) geo.dispose();
+      b.applyMatrix4(new THREE.Matrix4().compose(
+        new THREE.Vector3(...pos),
+        new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot)),
+        new THREE.Vector3(1, 1, 1),
+      ));
+      gunParts.push(b);
+    };
+    // Piédestal d'alliage lourd
+    bakeGun(new THREE.CylinderGeometry(1.65, 2.1, 3.2, 8), [0, 0, 0], [0, 1.6, 0]);
+    // Fût et crosse courbe en bois
+    bakeGun(new THREE.BoxGeometry(0.22, 0.35, 1.4), [0.15, 0, 0], [0, 4.3, 0]);
+    bakeGun(new THREE.CylinderGeometry(0.12, 0.18, 0.75, 7), [0.85, 0, 0], [0, 3.95, -0.45]);
+    // Canon octogonal en acier
+    bakeGun(new THREE.CylinderGeometry(0.09, 0.11, 1.55, 8), [Math.PI / 2, 0, 0], [0, 4.48, 0.55]);
+    // Chien et bassinet à silex
+    bakeGun(new THREE.BoxGeometry(0.14, 0.28, 0.32), [0, 0, 0], [0.11, 4.52, 0.05]);
+    // Plaque gravée dorée "1715 - Raphael Adolini"
+    bakeGun(new THREE.BoxGeometry(0.48, 0.14, 0.82), [0, 0, 0], [0, 3.22, 0]);
+
+    const gunMerged = new THREE.BufferGeometry();
+    for (const attr of ['position', 'normal', 'uv']) {
+      const itemSize = gunParts[0].getAttribute(attr).itemSize;
+      const totalLen = gunParts.reduce((sum, p) => sum + p.getAttribute(attr).array.length, 0);
+      const arr = new Float32Array(totalLen);
+      let offset = 0;
+      for (const p of gunParts) {
+        arr.set(p.getAttribute(attr).array, offset);
+        offset += p.getAttribute(attr).array.length;
+      }
+      gunMerged.setAttribute(attr, new THREE.BufferAttribute(arr, itemSize));
+    }
+    gunParts.forEach((p) => p.dispose());
+    gunMerged.computeBoundingSphere();
+
+    if (!this.materialCache.has('relic:adolini-alloy')) {
+      this.materialCache.set('relic:adolini-alloy', new THREE.MeshStandardMaterial({
+        color: 0xc49a45,
+        map: this.alloyTexture,
+        roughness: 0.38,
+        metalness: 0.82,
+        emissive: 0x553311,
+        emissiveIntensity: 0.25,
+      }));
+    }
+    const gunMaterial = this.materialCache.get('relic:adolini-alloy');
+    const flintlockMesh = new THREE.Mesh(gunMerged, gunMaterial);
+    flintlockMesh.name = 'adolini-1715-flintlock-mesh';
+    reliquary.add(flintlockMesh);
+
+    reliquary.userData.relicId = 'adolini_1715_pistol';
+    reliquary.userData.provenance = 'SCREEN';
+    reliquary.userData.sources = ['predator2', 'prey2022'];
+    this.registerProp(reliquary, HUB_ZONES.VAULT, 'hunt-trophy', {
+      relicId: 'adolini_1715_pistol',
+      label: 'Pistolet à silex Raphael Adolini 1715',
+    });
+    vault.add(reliquary);
+
     this.registerProp(vault, HUB_ZONES.VAULT, 'trophy-gallery');
     this.group.add(vault);
   }
@@ -1450,11 +1529,16 @@ export class MothershipHub {
     back.position.y = 3.4;
     rack.add(back);
     const weaponMaterial = this.createAlloyMaterial(0x69737a);
-    for (const y of [0.6, 3.4, 6.2]) {
-      const rail = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.18, 8), this.createAlloyMaterial(0x7a4b35));
-      rail.position.set(-0.15, y, 0);
-      rack.add(rail);
-    }
+    const railGeometry = new THREE.BoxGeometry(0.8, 0.18, 8);
+    const rails = new THREE.InstancedMesh(railGeometry, this.createAlloyMaterial(0x7a4b35), 3);
+    const railTransform = new THREE.Object3D();
+    [0.6, 3.4, 6.2].forEach((y, i) => {
+      railTransform.position.set(-0.15, y, 0);
+      railTransform.updateMatrix();
+      rails.setMatrixAt(i, railTransform.matrix);
+    });
+    rails.instanceMatrix.needsUpdate = true;
+    rack.add(rails);
 
     const combistick = new THREE.Group();
     combistick.name = 'rack-combistick';

@@ -316,6 +316,7 @@ export class SuperPredatorBoss {
       this.isEnraged = true;
       this.attackCooldown = Math.min(this.attackCooldown, 0.35);
       audioSynth.playBerserkerRoar();
+      audioSynth.playTrackerWhistle();
     }
 
     if (this.health === 0) {
@@ -366,7 +367,7 @@ export class SuperPredatorBoss {
     };
     this.projectiles.push(shot);
     this.scene.add(projectile);
-    audioSynth.playPlasmacasterBlast();
+    audioSynth.playBerserkerGatlingBurst();
     return shot;
   }
 

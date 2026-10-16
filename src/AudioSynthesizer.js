@@ -579,6 +579,133 @@ class AudioSynthesizer {
     subOsc.stop(now + 1.22);
   }
 
+  // Predator 2 (1990) — Rebreather multispectral du City Hunter :
+  // cycle d'aspiration pneumatique et décompression de valve thoracique.
+  playCityHunterBreather() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    // Aspiration filtrée
+    const breathOsc = this.ctx.createOscillator();
+    const breathGain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+    breathOsc.type = 'sawtooth';
+    breathOsc.frequency.setValueAtTime(160, now);
+    breathOsc.frequency.linearRampToValueAtTime(260, now + 0.18);
+    breathOsc.frequency.exponentialRampToValueAtTime(80, now + 0.55);
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(650, now);
+    filter.frequency.linearRampToValueAtTime(1150, now + 0.18);
+    filter.frequency.exponentialRampToValueAtTime(420, now + 0.55);
+    filter.Q.setValueAtTime(4.2, now);
+
+    breathGain.gain.setValueAtTime(0.01, now);
+    breathGain.gain.linearRampToValueAtTime(0.28, now + 0.16);
+    breathGain.gain.exponentialRampToValueAtTime(0.002, now + 0.55);
+
+    breathOsc.connect(filter);
+    filter.connect(breathGain);
+    breathGain.connect(this.ctx.destination);
+    breathOsc.start(now);
+    breathOsc.stop(now + 0.56);
+
+    // Clic de décompression de valve
+    const clickOsc = this.ctx.createOscillator();
+    const clickGain = this.ctx.createGain();
+    clickOsc.type = 'triangle';
+    clickOsc.frequency.setValueAtTime(1850, now + 0.18);
+    clickOsc.frequency.exponentialRampToValueAtTime(320, now + 0.26);
+    clickGain.gain.setValueAtTime(0.01, now + 0.18);
+    clickGain.gain.linearRampToValueAtTime(0.18, now + 0.2);
+    clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.27);
+    clickOsc.connect(clickGain);
+    clickGain.connect(this.ctx.destination);
+    clickOsc.start(now + 0.18);
+    clickOsc.stop(now + 0.28);
+  }
+
+  // Predators (2010) — Salve Gatling rotative du plasmacaster de Mr. Black (Berserker) :
+  // rotation moteur accélérée puis trois décharges de plasma lourd cadencées.
+  playBerserkerGatlingBurst() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    // Vrombissement de rotation mécanique du barillet
+    const motorOsc = this.ctx.createOscillator();
+    const motorGain = this.ctx.createGain();
+    motorOsc.type = 'triangle';
+    motorOsc.frequency.setValueAtTime(180, now);
+    motorOsc.frequency.linearRampToValueAtTime(460, now + 0.12);
+    motorOsc.frequency.exponentialRampToValueAtTime(90, now + 0.42);
+    motorGain.gain.setValueAtTime(0.01, now);
+    motorGain.gain.linearRampToValueAtTime(0.22, now + 0.08);
+    motorGain.gain.exponentialRampToValueAtTime(0.001, now + 0.44);
+    motorOsc.connect(motorGain);
+    motorGain.connect(this.ctx.destination);
+    motorOsc.start(now);
+    motorOsc.stop(now + 0.45);
+
+    // Salve de 3 impulsions lourdes en rafale rapide
+    for (let index = 0; index < 3; index += 1) {
+      const shotTime = now + 0.06 + (index * 0.075);
+      const shotOsc = this.ctx.createOscillator();
+      const shotGain = this.ctx.createGain();
+      const shotFilter = this.ctx.createBiquadFilter();
+
+      shotOsc.type = 'sawtooth';
+      shotOsc.frequency.setValueAtTime(540 - (index * 40), shotTime);
+      shotOsc.frequency.exponentialRampToValueAtTime(65, shotTime + 0.12);
+
+      shotFilter.type = 'lowpass';
+      shotFilter.frequency.setValueAtTime(2200, shotTime);
+      shotFilter.frequency.exponentialRampToValueAtTime(280, shotTime + 0.12);
+
+      shotGain.gain.setValueAtTime(0.01, shotTime);
+      shotGain.gain.linearRampToValueAtTime(0.35, shotTime + 0.02);
+      shotGain.gain.exponentialRampToValueAtTime(0.002, shotTime + 0.14);
+
+      shotOsc.connect(shotFilter);
+      shotFilter.connect(shotGain);
+      shotGain.connect(this.ctx.destination);
+      shotOsc.start(shotTime);
+      shotOsc.stop(shotTime + 0.15);
+    }
+  }
+
+  // Predators (2010) — Sifflet ultrasonique de rappel du Tracker Predator :
+  // commande stridente à modulation sinusoïdale guidant la meute de Hell-Hounds.
+  playTrackerWhistle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const lfo = this.ctx.createOscillator();
+    const lfoGain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(2100, now);
+    osc.frequency.linearRampToValueAtTime(3200, now + 0.18);
+    osc.frequency.exponentialRampToValueAtTime(1650, now + 0.42);
+
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(19, now);
+    lfoGain.gain.setValueAtTime(95, now);
+    lfo.connect(osc.frequency);
+
+    gain.gain.setValueAtTime(0.01, now);
+    gain.gain.linearRampToValueAtTime(0.24, now + 0.08);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.44);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    lfo.start(now);
+    osc.start(now);
+    lfo.stop(now + 0.45);
+    osc.stop(now + 0.45);
+  }
+
   playFeralRoar() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;

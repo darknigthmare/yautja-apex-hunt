@@ -157,6 +157,7 @@ export class CityHunterBoss {
     this.medicompDuration = 4.2;
     this.medicompHealBudget = 390;
     this.medicompHealed = 0;
+    this.rebreatherEngaged = false;
 
     this._disposed = false;
     this.textures = {
@@ -514,9 +515,10 @@ export class CityHunterBoss {
     this.maskIntegrity = 0;
     this.multispectralLock = false;
     this.cloakTrackingConfidence = 0;
+    this.rebreatherEngaged = true;
     if (this.maskMesh) this.maskMesh.visible = false;
     if (this.revealedFaceMesh) this.revealedFaceMesh.scale.set(1.09, 1.12, 0.9);
-    audioSynth.playYautjaClick();
+    audioSynth.playCityHunterBreather();
     return true;
   }
 

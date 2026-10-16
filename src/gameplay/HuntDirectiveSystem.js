@@ -276,6 +276,25 @@ const directiveDefinitions = [
       wave(60, 'jungle_trapper'),
     ],
   },
+  {
+    id: 'game_preserve_trio_trial',
+    title: 'Guerre des clans — Planète-réserve, 2010',
+    shortLabel: 'RÉSERVE 2010',
+    description: 'Affronter la battue coordonnée des Super Predators : briser la meute des Hell-Hounds, abattre le pisteur River Ghost et défier le premier cercle des molosses de chasse.',
+    provenance: 'SCREEN_ADAPTATION',
+    recommendedBiomeId: 'jungle',
+    rewardMultiplier: 1.6,
+    objectives: [
+      objective('hell_hound_alpha', 'Abattre l’Alpha Hell-Hound menant la battue'),
+      objective('river_ghost', 'Traquer et neutraliser le River Ghost en fuite'),
+      objective('hunting_hound', 'Purifier le premier cercle de molosses de chasse'),
+    ],
+    schedule: [
+      wave(8, 'hell_hound_alpha'),
+      wave(28, 'river_ghost'),
+      wave(52, 'hunting_hound'),
+    ],
+  },
 ];
 
 export const HUNT_DIRECTIVES = Object.freeze(Object.fromEntries(

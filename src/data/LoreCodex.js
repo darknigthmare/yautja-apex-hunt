@@ -130,6 +130,18 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     summary: 'Sur le territoire comanche, le Feral gravit une échelle de proies : serpent, loup, ours, puis humains armés.',
     body: 'Le film oppose Naru, ses compagnons comanches et un camp de trappeurs français au chasseur. Il épargne les cibles qu’il ne juge pas menaçantes, un comportement que le Codex distingue de l’honneur codifié de l’EU.',
     sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['prey2022']
+  },
+  {
+    id: 'relique-pistolet-adolini-1715', entryType: 'codex', category: 'technologie', title: 'Pistolet à silex de Raphael Adolini (1715)',
+    summary: 'Arme à feu humaine remise par l’Elder Greyback à Mike Harrigan en 1997, gravée « Raphael Adolini 1715 ».',
+    body: 'Présenté à la fin de Predator 2 (1990), ce pistolet atteste la présence séculaire des Yautja sur Terre. Prey (2022) en retrace l’origine en 1719 lorsque Naru le reçoit du navigateur et traducteur blessé Raphael Adolini. Dans Apex Hunt, la relique repose sous champ de stase au centre du sanctuaire des trophées.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['predator2', 'prey2022']
+  },
+  {
+    id: 'culture-guerre-des-clans-super-predators', entryType: 'codex', category: 'culture', title: 'Guerre des clans et Super Predators (2010)',
+    summary: 'Conflit fratricide et vendetta sanglante opposant les sous-espèces Yautja sur la planète-réserve.',
+    body: 'Predators (2010) met en scène la rupture avec le code rituel : le Berserker (Mr. Black), le Falconer et le Tracker capturent et torturent un Classic Predator sans duel loyal. Leurs tactiques reposent sur des battues mécaniques, des drones et des meutes de Hell-Hounds modifiés.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['predators2010']
   }
 ]);
 
