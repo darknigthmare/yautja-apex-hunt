@@ -4020,6 +4020,275 @@ class AudioSynthesizer {
     osc.stop(now + 0.32);
   }
 
+  // Alpha Xénomorphe (Comics Marvel) — Rugissement d'Apex bio-résonant
+  playAlphaXenoRoar() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(95, now);
+    osc.frequency.linearRampToValueAtTime(180, now + 0.35);
+    osc.frequency.exponentialRampToValueAtTime(40, now + 1.4);
+    gain.gain.setValueAtTime(0.7, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.45);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 1.5);
+  }
+
+  // Alpha Xénomorphe — Échappement de brume acide par les conduits dorsaux
+  playAlphaAcidVentHiss() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const bufferSize = this.ctx.sampleRate * 0.45;
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.3;
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(2200, now);
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+    noise.stop(now + 0.45);
+  }
+
+  // Swarmlets (Comics Marvel) — Trotinements ultra-rapides de griffes
+  playSwarmletScuttle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1400, now);
+    osc.frequency.exponentialRampToValueAtTime(420, now + 0.08);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.1);
+  }
+
+  // Swarmlets — Claquement de morsure fébrile
+  playSwarmletBiteChirp() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(210, now + 0.06);
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.08);
+  }
+
+  // Spitter Xénomorphe (Comics Marvel) — Régurgitation pneumatique de globe acide
+  playSpitterAcidGlobeLaunch() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.linearRampToValueAtTime(680, now + 0.12);
+    gain.gain.setValueAtTime(0.48, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.18);
+  }
+
+  // Spitter Xénomorphe — Éclatement et grésillement d'acide au sol
+  playSpitterAcidSplatImpact() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(450, now);
+    osc.frequency.exponentialRampToValueAtTime(80, now + 0.14);
+    gain.gain.setValueAtTime(0.5, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.18);
+  }
+
+  // Crusher Xénomorphe (Comics Marvel) — Galop lourd quadrupède
+  playCrusherHeavyGallop() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(90, now);
+    osc.frequency.exponentialRampToValueAtTime(28, now + 0.22);
+    gain.gain.setValueAtTime(0.65, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Crusher Xénomorphe — Impact d'éperonnage du bouclier crânien
+  playCrusherRamImpact() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(260, now);
+    osc.frequency.exponentialRampToValueAtTime(35, now + 0.35);
+    gain.gain.setValueAtTime(0.75, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  // Toile de Résine de Ruche — Décollement adhésif gluant
+  playResinWebStickSnap() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(750, now);
+    osc.frequency.exponentialRampToValueAtTime(140, now + 0.11);
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.15);
+  }
+
+  // Brouilleur Phéromonal Yautja — Impulsion de dispersion biochimique
+  playScramblerBeaconPulse() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1600, now);
+    osc.frequency.linearRampToValueAtTime(450, now + 0.22);
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Meute Confuse — Hurlement de désorientation et cannibalisme
+  playSwarmFrenzyHiss() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(620, now);
+    osc.frequency.linearRampToValueAtTime(1100, now + 0.15);
+    osc.frequency.exponentialRampToValueAtTime(250, now + 0.35);
+    gain.gain.setValueAtTime(0.5, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  // Xénomorphe à Tentacules (Comics Marvel) — Fouettement de vrille spinale
+  playTendrilLashWhip() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(980, now);
+    osc.frequency.exponentialRampToValueAtTime(160, now + 0.12);
+    gain.gain.setValueAtTime(0.48, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.16);
+  }
+
+  // Xénomorphe à Tentacules — Étranglement et strangulation
+  playTendrilConstrictChoke() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(220, now);
+    osc.frequency.exponentialRampToValueAtTime(60, now + 0.28);
+    gain.gain.setValueAtTime(0.45, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.32);
+  }
+
+  // Geyser d'Acide — Éruption thermique sous pression
+  playAcidGeyserEruption() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const bufferSize = this.ctx.sampleRate * 0.42;
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.32;
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(1800, now);
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.42, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+    noise.stop(now + 0.42);
+  }
+
+  // Cri Synaptique de l'Alpha — Onde IEM télépathique perturbant les casques
+  playAlphaSynapticEMP() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(3200, now);
+    osc.frequency.exponentialRampToValueAtTime(180, now + 0.32);
+    gain.gain.setValueAtTime(0.6, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.38);
+  }
+
   startAmbientJungle() {
     if (!this.ctx) return;
     const windOsc = this.ctx.createOscillator();
