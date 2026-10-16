@@ -61,6 +61,7 @@ export const ARMOR_FINISHES = Object.freeze([
   Object.freeze({ id: 'finish_cleaner_acid_resistant', name: 'Alliage Cleaner anti-acide', metalness: 0.72, roughness: 0.74, emissiveIntensity: 0.045, sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), implementationOriginal: true }),
   Object.freeze({ id: 'finish_feral_bone_carved', name: 'Os gravé des Grandes Plaines', metalness: 0.18, roughness: 0.82, emissiveIntensity: 0, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['prey2022']), implementationOriginal: true }),
   Object.freeze({ id: 'finish_super_predator_crimson', name: 'Écailles et laque cramoisie Super Predator', metalness: 0.65, roughness: 0.42, emissiveIntensity: 0.05, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predators2010']), implementationOriginal: true }),
+  Object.freeze({ id: 'finish_celtic_battle_aged', name: 'Alliage rituel de Celtic', metalness: 0.88, roughness: 0.52, emissiveIntensity: 0.03, sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), implementationOriginal: true }),
 ]);
 
 export const WARPAINT_PATTERNS = Object.freeze([
@@ -203,6 +204,18 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     id: 'variant_city_hunter_speargun_dart', armorPresetId: 'city_1990', baseWeaponId: 'speargun', name: 'Fléchette perforante de Los Angeles',
     sourceTier: 'SCREEN', sources: Object.freeze(['predator2']), behavior: 'precision_spear_penetrating',
     modifiers: Object.freeze({ damageMultiplier: 1.25, cooldownMultiplier: 0.95, energyCostMultiplier: 0.9, projectileSpeedMultiplier: 1.3 }),
+  }),
+  // Alien vs. Predator (2004) : lance-filet lourd de Celtic avec câble de rétractation cérémoniel renforcé
+  Object.freeze({
+    id: 'variant_celtic_heavy_netgun', armorPresetId: 'celtic_avp', baseWeaponId: 'netgun', name: 'Lance-filet lourd de Celtic',
+    sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), behavior: 'crowd_control_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.2, cooldownMultiplier: 1.1, energyCostMultiplier: 1.05, rangeMultiplier: 1.15, snareDurationMultiplier: 1.25 }),
+  }),
+  // Aliens vs. Predator: Requiem (2007) : fouet d’épines de Wolf façonné dans la queue tranchante d'un Xénomorphe
+  Object.freeze({
+    id: 'variant_wolf_segmented_whip', armorPresetId: 'wolf_avpr', baseWeaponId: 'whip_thorns', name: 'Fouet d’épines xénomorphes de Wolf',
+    sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), behavior: 'melee_control',
+    modifiers: Object.freeze({ damageMultiplier: 1.26, cooldownMultiplier: 0.95, energyCostMultiplier: 1, rangeMultiplier: 1.22 }),
   }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);

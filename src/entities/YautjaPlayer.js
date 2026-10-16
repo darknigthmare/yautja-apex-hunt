@@ -2063,7 +2063,11 @@ export class YautjaPlayer {
     shuriken.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir);
     this.projectiles.push({ mesh: shuriken, dir, speed: 92, type: 'shuriken', damage: 62, lifetime: 3 });
     this.scene.add(shuriken);
-    audioSynth.playSpearThrow();
+    if (typeof audioSynth.playShurikenThrow === 'function') {
+      audioSynth.playShurikenThrow();
+    } else {
+      audioSynth.playSpearThrow();
+    }
     return true;
   }
 

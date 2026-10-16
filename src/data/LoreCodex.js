@@ -142,6 +142,18 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     summary: 'Conflit fratricide et vendetta sanglante opposant les sous-espèces Yautja sur la planète-réserve.',
     body: 'Predators (2010) met en scène la rupture avec le code rituel : le Berserker (Mr. Black), le Falconer et le Tracker capturent et torturent un Classic Predator sans duel loyal. Leurs tactiques reposent sur des battues mécaniques, des drones et des meutes de Hell-Hounds modifiés.',
     sourceTier: 'SCREEN', isOriginal: false, sources: ['predators2010']
+  },
+  {
+    id: 'technologie-agent-dissolvant-cleaner', entryType: 'codex', category: 'technologie', title: 'Agent dissolvant moléculaire (Cleaner)',
+    summary: 'Fluide bleu hautement réactif utilisé par les vétérans Cleaners pour effacer toute trace d’infestation xénomorphe.',
+    body: 'Introduit dans Aliens vs. Predator: Requiem (2007), ce réactif corrosif liquéfie la matière organique en quelques secondes sans laisser de résidus biologiques ou d’ADN extraterrestre. Il est déployé par seringue ou pulvérisation de zone.',
+    sourceTier: 'AVP_SCREEN', isOriginal: false, sources: ['avpRequiem2007']
+  },
+  {
+    id: 'culture-rite-du-sang-bouvetoya', entryType: 'codex', category: 'culture', title: 'Rite d’initiation de Bouvetøya (2004)',
+    summary: 'Régiment d’épreuve millénaire où de jeunes initiés Yautja affrontent la progéniture de la Reine sous la glace antarctique.',
+    body: 'Alien vs. Predator (2004) révèle que l’humanité vénérait les Yautja comme des dieux et fournissait des sacrifices pour nourrir la ruche pyramidale. Les trois initiés (Scar, Celtic, Chopper) devaient récupérer leurs plasmacasters et marquer leur front et leur biomasque du sang corrosif acide des Xénomorphes pour devenir Sang-Mêlé (Blooded).',
+    sourceTier: 'AVP_SCREEN', isOriginal: false, sources: ['avp2004']
   }
 ]);
 

@@ -295,6 +295,25 @@ const directiveDefinitions = [
       wave(52, 'hunting_hound'),
     ],
   },
+  {
+    id: 'bouvetoya_surface_infiltration',
+    title: 'Infiltration de la station baleinière — Bouvetøya 2004',
+    shortLabel: 'BOUVETØYA 2004',
+    description: 'Infiltrer la station de surface abandonnée dans le blizzard antarctique : neutraliser les mercenaires armés de Weyland, intercepter les premiers Drones et éliminer les Coureurs avant d’atteindre le puits de la pyramide.',
+    provenance: 'AVP_SCREEN_ADAPTATION',
+    recommendedBiomeId: 'bouvetoya_pyramid',
+    rewardMultiplier: 1.55,
+    objectives: [
+      objective('weyland_expedition_guard', 'Neutraliser le mercenaire de la station baleinière'),
+      objective('xeno_drone', 'Abattre le premier drone xénomorphe de la surface'),
+      objective('xeno_runner', 'Intercepter le coureur xénomorphe émergeant de la glace'),
+    ],
+    schedule: [
+      wave(8, 'weyland_expedition_guard'),
+      wave(30, 'xeno_drone'),
+      wave(56, 'xeno_runner'),
+    ],
+  },
 ];
 
 export const HUNT_DIRECTIVES = Object.freeze(Object.fromEntries(

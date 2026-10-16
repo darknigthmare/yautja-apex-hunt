@@ -706,6 +706,149 @@ class AudioSynthesizer {
     osc.stop(now + 0.45);
   }
 
+  // Alien vs. Predator (2004) — Shuriken rétractable cérémoniel à 6 lames :
+  // déploiement centrifuge métallique rapide suivi d'une rotation gyroscopique tranchante.
+  playShurikenThrow() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    // Clic mécanique sec d'extension centrifuge des 6 lames
+    const snapOsc = this.ctx.createOscillator();
+    const snapGain = this.ctx.createGain();
+    snapOsc.type = 'square';
+    snapOsc.frequency.setValueAtTime(1750, now);
+    snapOsc.frequency.exponentialRampToValueAtTime(320, now + 0.05);
+    snapGain.gain.setValueAtTime(0.01, now);
+    snapGain.gain.linearRampToValueAtTime(0.25, now + 0.01);
+    snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+    snapOsc.connect(snapGain);
+    snapGain.connect(this.ctx.destination);
+    snapOsc.start(now);
+    snapOsc.stop(now + 0.065);
+
+    // Vrombissement gyroscopique tranchant modulé par la vitesse de rotation
+    const spinOsc = this.ctx.createOscillator();
+    const spinGain = this.ctx.createGain();
+    const spinFilter = this.ctx.createBiquadFilter();
+    const spinLfo = this.ctx.createOscillator();
+    const spinLfoGain = this.ctx.createGain();
+
+    spinOsc.type = 'sawtooth';
+    spinOsc.frequency.setValueAtTime(340, now);
+    spinOsc.frequency.linearRampToValueAtTime(780, now + 0.14);
+    spinOsc.frequency.exponentialRampToValueAtTime(220, now + 0.48);
+
+    spinFilter.type = 'bandpass';
+    spinFilter.frequency.setValueAtTime(950, now);
+    spinFilter.frequency.linearRampToValueAtTime(1600, now + 0.16);
+    spinFilter.frequency.exponentialRampToValueAtTime(450, now + 0.48);
+    spinFilter.Q.setValueAtTime(5.5, now);
+
+    spinLfo.type = 'sine';
+    spinLfo.frequency.setValueAtTime(28, now); // 28 tours / seconde
+    spinLfoGain.gain.setValueAtTime(80, now);
+    spinLfo.connect(spinOsc.frequency);
+
+    spinGain.gain.setValueAtTime(0.01, now);
+    spinGain.gain.linearRampToValueAtTime(0.3, now + 0.04);
+    spinGain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+
+    spinOsc.connect(spinFilter);
+    spinFilter.connect(spinGain);
+    spinGain.connect(this.ctx.destination);
+
+    spinLfo.start(now);
+    spinOsc.start(now);
+    spinLfo.stop(now + 0.49);
+    spinOsc.stop(now + 0.49);
+  }
+
+  // Aliens vs. Predator: Requiem (2007) — Fluide dissolvant moléculaire de Wolf :
+  // ébullition chimique corrosive immédiate et effervescence de vaporisation des tissus.
+  playCleanerDissolve() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    // Grésillement chimique acide haute fréquence
+    const hissOsc = this.ctx.createOscillator();
+    const hissGain = this.ctx.createGain();
+    const hissFilter = this.ctx.createBiquadFilter();
+    hissOsc.type = 'sawtooth';
+    hissOsc.frequency.setValueAtTime(1200, now);
+    hissOsc.frequency.exponentialRampToValueAtTime(2600, now + 0.25);
+    hissOsc.frequency.exponentialRampToValueAtTime(400, now + 0.65);
+
+    hissFilter.type = 'bandpass';
+    hissFilter.frequency.setValueAtTime(2200, now);
+    hissFilter.Q.setValueAtTime(6.0, now);
+
+    hissGain.gain.setValueAtTime(0.01, now);
+    hissGain.gain.linearRampToValueAtTime(0.32, now + 0.05);
+    hissGain.gain.exponentialRampToValueAtTime(0.002, now + 0.65);
+
+    hissOsc.connect(hissFilter);
+    hissFilter.connect(hissGain);
+    hissGain.connect(this.ctx.destination);
+    hissOsc.start(now);
+    hissOsc.stop(now + 0.66);
+
+    // Ébullition / bulles acides à basse fréquence
+    const boilOsc = this.ctx.createOscillator();
+    const boilGain = this.ctx.createGain();
+    boilOsc.type = 'triangle';
+    boilOsc.frequency.setValueAtTime(210, now);
+    boilOsc.frequency.exponentialRampToValueAtTime(95, now + 0.4);
+    boilGain.gain.setValueAtTime(0.01, now);
+    boilGain.gain.linearRampToValueAtTime(0.24, now + 0.04);
+    boilGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+    boilOsc.connect(boilGain);
+    boilGain.connect(this.ctx.destination);
+    boilOsc.start(now);
+    boilOsc.stop(now + 0.46);
+  }
+
+  // Aliens vs. Predator: Requiem (2007) — Déploiement et bourdonnement des mines laser de Wolf :
+  // tonalité aiguë d'armement capacitor suivie d'une pulsation électromagnétique continue.
+  playLaserGridHum() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    // Sifflement d'armement capacitif montant
+    const armOsc = this.ctx.createOscillator();
+    const armGain = this.ctx.createGain();
+    armOsc.type = 'sine';
+    armOsc.frequency.setValueAtTime(900, now);
+    armOsc.frequency.exponentialRampToValueAtTime(2800, now + 0.12);
+    armGain.gain.setValueAtTime(0.01, now);
+    armGain.gain.linearRampToValueAtTime(0.22, now + 0.06);
+    armGain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+    armOsc.connect(armGain);
+    armGain.connect(this.ctx.destination);
+    armOsc.start(now);
+    armOsc.stop(now + 0.15);
+
+    // Bourdonnement laser électromagnétique rasoir
+    const humOsc = this.ctx.createOscillator();
+    const humGain = this.ctx.createGain();
+    const humFilter = this.ctx.createBiquadFilter();
+    humOsc.type = 'sawtooth';
+    humOsc.frequency.setValueAtTime(145, now + 0.08);
+
+    humFilter.type = 'lowpass';
+    humFilter.frequency.setValueAtTime(750, now + 0.08);
+
+    humGain.gain.setValueAtTime(0.001, now);
+    humGain.gain.setValueAtTime(0.01, now + 0.08);
+    humGain.gain.linearRampToValueAtTime(0.18, now + 0.14);
+    humGain.gain.exponentialRampToValueAtTime(0.001, now + 0.52);
+
+    humOsc.connect(humFilter);
+    humFilter.connect(humGain);
+    humGain.connect(this.ctx.destination);
+    humOsc.start(now + 0.08);
+    humOsc.stop(now + 0.53);
+  }
+
   playFeralRoar() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;

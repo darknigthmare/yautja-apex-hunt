@@ -1045,6 +1045,79 @@ export class MothershipHub {
     medbay.add(scanner);
     this.animatedProps.push({ mesh: scanner, speed: 0.34 });
 
+    // Relique / arsenal d'intervention Cleaner : la mallette de confinement de Wolf (AVP:R 2007)
+    // Présentée sur un piédestal d'alliage avec cylindre de stase bleuté.
+    const cleanerCase = new THREE.Group();
+    cleanerCase.name = 'cleaner-medbay-specimen-case';
+    cleanerCase.position.set(49, 0, -32.5);
+
+    const stasisDome = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.2, 1.2, 2.2, 12, 1, true),
+      this.createSignalMaterial(0x33ccff, 0.38),
+    );
+    stasisDome.name = 'cleaner-case-stasis-field';
+    stasisDome.position.y = 3.6;
+    cleanerCase.add(stasisDome);
+
+    // Géométrie fusionnée du piédestal et de la mallette d'intervention (1 seul draw call)
+    const caseParts = [];
+    const bakeCase = (geo, rot, pos) => {
+      const b = geo.index ? geo.toNonIndexed() : geo;
+      if (b !== geo) geo.dispose();
+      b.applyMatrix4(new THREE.Matrix4().compose(
+        new THREE.Vector3(...pos),
+        new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot)),
+        new THREE.Vector3(1, 1, 1),
+      ));
+      caseParts.push(b);
+    };
+    bakeCase(new THREE.CylinderGeometry(1.4, 1.7, 2.5, 8), [0, 0, 0], [0, 1.25, 0]);
+    bakeCase(new THREE.BoxGeometry(1.6, 0.45, 1.05), [0, 0, 0], [0, 3.25, 0]);
+    bakeCase(new THREE.TorusGeometry(0.24, 0.05, 6, 12, Math.PI), [0, 0, 0], [0, 3.5, 0.52]);
+    bakeCase(new THREE.CylinderGeometry(0.12, 0.12, 0.65, 8), [0, 0, 0], [-0.48, 3.55, 0]);
+    bakeCase(new THREE.CylinderGeometry(0.12, 0.12, 0.65, 8), [0, 0, 0], [0.48, 3.55, 0]);
+    bakeCase(new THREE.BoxGeometry(0.2, 0.12, 0.08), [0, 0, 0], [-0.45, 3.25, 0.54]);
+    bakeCase(new THREE.BoxGeometry(0.2, 0.12, 0.08), [0, 0, 0], [0.45, 3.25, 0.54]);
+
+    const caseMerged = new THREE.BufferGeometry();
+    for (const attr of ['position', 'normal', 'uv']) {
+      const itemSize = caseParts[0].getAttribute(attr).itemSize;
+      const totalLen = caseParts.reduce((sum, p) => sum + p.getAttribute(attr).array.length, 0);
+      const arr = new Float32Array(totalLen);
+      let offset = 0;
+      for (const p of caseParts) {
+        arr.set(p.getAttribute(attr).array, offset);
+        offset += p.getAttribute(attr).array.length;
+      }
+      caseMerged.setAttribute(attr, new THREE.BufferAttribute(arr, itemSize));
+    }
+    caseParts.forEach((p) => p.dispose());
+    caseMerged.computeBoundingSphere();
+
+    if (!this.materialCache.has('relic:cleaner-case-alloy')) {
+      this.materialCache.set('relic:cleaner-case-alloy', new THREE.MeshStandardMaterial({
+        color: 0x2e4249,
+        map: this.alloyTexture,
+        roughness: 0.32,
+        metalness: 0.88,
+        emissive: 0x0f2d35,
+        emissiveIntensity: 0.2,
+      }));
+    }
+    const caseMaterial = this.materialCache.get('relic:cleaner-case-alloy');
+    const caseMesh = new THREE.Mesh(caseMerged, caseMaterial);
+    caseMesh.name = 'wolf-cleaner-case-mesh';
+    cleanerCase.add(caseMesh);
+
+    cleanerCase.userData.relicId = 'wolf_cleaner_case';
+    cleanerCase.userData.provenance = 'AVP_SCREEN';
+    cleanerCase.userData.sources = ['avpRequiem2007'];
+    this.registerProp(cleanerCase, 'cleaner-medbay', 'cleaner-case', {
+      relicId: 'wolf_cleaner_case',
+      label: 'Mallette d’intervention Cleaner de Wolf',
+    });
+    medbay.add(cleanerCase);
+
     const medbayLight = new THREE.PointLight(0x65ffa0, 2.5, 34, 1.5);
     medbayLight.name = 'cleaner-lab-light';
     medbayLight.position.set(50, 10, -24);
@@ -1544,12 +1617,16 @@ export class MothershipHub {
     combistick.name = 'rack-combistick';
     combistick.position.set(-0.55, 3.25, -2.8);
     combistick.add(new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 4.9, 8), weaponMaterial));
-    for (const direction of [-1, 1]) {
-      const tip = new THREE.Mesh(new THREE.ConeGeometry(0.28, 0.9, 6), weaponMaterial);
-      tip.position.y = direction * 2.85;
-      tip.rotation.z = direction < 0 ? Math.PI : 0;
-      combistick.add(tip);
-    }
+    const combistickTips = new THREE.InstancedMesh(new THREE.ConeGeometry(0.28, 0.9, 6), weaponMaterial, 2);
+    const tipTransform = new THREE.Object3D();
+    [-1, 1].forEach((direction, i) => {
+      tipTransform.position.set(0, direction * 2.85, 0);
+      tipTransform.rotation.set(0, 0, direction < 0 ? Math.PI : 0);
+      tipTransform.updateMatrix();
+      combistickTips.setMatrixAt(i, tipTransform.matrix);
+    });
+    combistickTips.instanceMatrix.needsUpdate = true;
+    combistick.add(combistickTips);
     rack.add(combistick);
 
     const disc = new THREE.Mesh(new THREE.TorusGeometry(0.82, 0.17, 6, 18), weaponMaterial);
@@ -1557,12 +1634,17 @@ export class MothershipHub {
     disc.position.set(-0.58, 4.5, -0.7);
     disc.rotation.y = Math.PI / 2;
     rack.add(disc);
-    for (const side of [-1, 1]) {
-      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.18, 0.72), weaponMaterial);
-      blade.position.set(-0.58, 4.5, -0.7 + (side * 1.02));
-      blade.rotation.x = side * 0.45;
-      rack.add(blade);
-    }
+    const discBladeGeometry = new THREE.BoxGeometry(0.2, 0.18, 0.72);
+    const discBladesMesh = new THREE.InstancedMesh(discBladeGeometry, weaponMaterial, 2);
+    const discBladeTransform = new THREE.Object3D();
+    [-1, 1].forEach((side, i) => {
+      discBladeTransform.position.set(-0.58, 4.5, -0.7 + (side * 1.02));
+      discBladeTransform.rotation.set(side * 0.45, 0, 0);
+      discBladeTransform.updateMatrix();
+      discBladesMesh.setMatrixAt(i, discBladeTransform.matrix);
+    });
+    discBladesMesh.instanceMatrix.needsUpdate = true;
+    rack.add(discBladesMesh);
 
     const caster = new THREE.Group();
     caster.name = 'rack-plasma-caster';
@@ -1580,12 +1662,17 @@ export class MothershipHub {
     const wristBlades = new THREE.Group();
     wristBlades.name = 'rack-wrist-blades';
     wristBlades.position.set(-0.58, 3.1, 3.2);
-    for (const offset of [-0.22, 0.22]) {
-      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.12, 3.4, 0.16), weaponMaterial);
-      blade.position.z = offset;
-      blade.rotation.z = -0.12;
-      wristBlades.add(blade);
-    }
+    const wristBladeGeometry = new THREE.BoxGeometry(0.12, 3.4, 0.16);
+    const wristBladesMesh = new THREE.InstancedMesh(wristBladeGeometry, weaponMaterial, 2);
+    const wristBladeTransform = new THREE.Object3D();
+    [-0.22, 0.22].forEach((offset, i) => {
+      wristBladeTransform.position.set(0, 0, offset);
+      wristBladeTransform.rotation.set(0, 0, -0.12);
+      wristBladeTransform.updateMatrix();
+      wristBladesMesh.setMatrixAt(i, wristBladeTransform.matrix);
+    });
+    wristBladesMesh.instanceMatrix.needsUpdate = true;
+    wristBlades.add(wristBladesMesh);
     rack.add(wristBlades);
 
     // Prey (2022) : bouclier segmenté du Feral, présenté déployé en éventail sur

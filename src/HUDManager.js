@@ -719,5 +719,21 @@ export class HUDManager {
     this.showLogMessage(text, 1700);
     return text;
   }
+
+  // Alien vs. Predator (2004) — Télémétrie trajectoire shuriken à six lames
+  showShurikenLockAlert(bladeCount = 6) {
+    const text = `DISQUE SHURIKEN ENGAGÉ — DÉPLOIEMENT GYROSCOPIQUE DE ${bladeCount} LAMES`;
+    this.showLogMessage(text, 1700);
+    return text;
+  }
+
+  // Aliens vs. Predator: Requiem (2007) — Détection d'agent dissolvant corrosif Wolf
+  showDissolvingAgentAlert(active = true) {
+    const text = active
+      ? '⚠️ ALERTE TOXICITÉ : FLUIDE DISSOLVANT CLEANER DÉTECTÉ — VAPORISATION MOLÉCULAIRE'
+      : 'FLUIDE DISSOLVANT NEUTRALISÉ — DISPERSION MOLÉCULAIRE COMPLÈTE';
+    this.showLogMessage(text, 1800);
+    return text;
+  }
 }
 

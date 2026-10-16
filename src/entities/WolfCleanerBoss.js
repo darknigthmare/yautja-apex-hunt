@@ -601,7 +601,11 @@ export class WolfCleanerBoss {
       pulsePhase: 0,
     };
     this.cleanerZones.push(zone);
-    audioSynth.playAcidSizzle();
+    if (typeof audioSynth.playCleanerDissolve === 'function') {
+      audioSynth.playCleanerDissolve();
+    } else {
+      audioSynth.playAcidSizzle();
+    }
     return zone;
   }
 
@@ -638,7 +642,11 @@ export class WolfCleanerBoss {
       pulsePhase: 0,
     };
     this.cleanerZones.push(zone);
-    audioSynth.playYautjaClick();
+    if (typeof audioSynth.playLaserGridHum === 'function') {
+      audioSynth.playLaserGridHum();
+    } else {
+      audioSynth.playYautjaClick();
+    }
     return zone;
   }
 
