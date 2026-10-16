@@ -735,5 +735,28 @@ export class HUDManager {
     this.showLogMessage(text, 1800);
     return text;
   }
+
+  // Predator 1987 / Predator 2 — Télémétrie diégétique d'intervention Medicomp
+  showMedicompTreatmentAlert(treatmentName = 'SOIN', amountHealed = 0) {
+    const text = amountHealed > 0
+      ? `SOIN DE TERRAIN APPLIQUÉ : ${treatmentName.toUpperCase()} — +${Math.round(amountHealed)} PV RESTAURÉS`
+      : `INTERVENTION MEDICOMP : ${treatmentName.toUpperCase()} ENGAGÉE`;
+    this.showLogMessage(text, 2200);
+    return text;
+  }
+
+  // AVP:R (2007) — Alerte de neutralisation acide xénomorphe par réactif Cleaner
+  showAcidPurgedAlert() {
+    const text = 'BIO-NEUTRALISANT CLEANER ACTIF — CONTAMINATION ACIDE PURGÉE';
+    this.showLogMessage(text, 2200);
+    return text;
+  }
+
+  // Predator 2 (1990) — Traitement d'hémorragie par cautérisation et agrafes
+  showHemorrhageTreatedAlert() {
+    const text = 'HÉMORRAGIE ARTÉRIELLE ENDIGUÉE — AGRAFES ET CAUTÉRISATION ACTIVES';
+    this.showLogMessage(text, 2000);
+    return text;
+  }
 }
 

@@ -36,6 +36,7 @@ test('les douze directives et leurs collections imbriquées sont immuables', () 
     'great_plains_1719_hunt',
     'game_preserve_trio_trial',
     'bouvetoya_surface_infiltration',
+    'field_medicomp_triage_1990',
   ]);
   assert.ok(Object.isFrozen(HUNT_DIRECTIVES));
 

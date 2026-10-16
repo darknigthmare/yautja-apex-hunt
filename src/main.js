@@ -21,6 +21,8 @@ import { audioSynth } from './AudioSynthesizer.js';
 import { saveManager } from './engine/SaveManager.js';
 import { DEFAULT_SETTINGS, HUNT_DEFINITIONS, resolveHuntBiome } from './data/GameConfig.js';
 import { ALL_LORE_ENTRIES, LORE_SOURCE_TIERS, LORE_SOURCES } from './data/LoreCodex.js';
+import { MedbayInventoryOverlay } from './ui/MedbayInventoryOverlay.js';
+import { refillMedbayInventory } from './gameplay/YautjaMedbaySystem.js';
 import { resolveMeleeStrike } from './gameplay/combatRules.js';
 import { applyPointOfInterestEffect } from './gameplay/PointOfInterestEffects.js';
 import {
@@ -2821,10 +2823,24 @@ export class Game {
     } else if (station.interactionType === 'cleaner_lab') {
       this.player.health = this.player.maxHealth;
       this.player.energy = this.player.maxEnergy;
+      this.player.stamina = this.player.maxStamina;
       this.player.isAcidCorroded = false;
       this.player.acidTimer = 0;
+      this.player.isBleeding = false;
+      if (this.player.medbayInventory) {
+        refillMedbayInventory(this.player.medbayInventory);
+      }
       this.hud.updateVitals(this.player);
-      this.hud.showLogMessage('LABORATOIRE CLEANER — CONTAMINATION PURGÉE, MEDICOMP ET SOLVANTS CONTRÔLÉS', 3400);
+      this.hud.showLogMessage('BAIE MÉDICALE DU CROISEUR — STÉRILISATION ET RÉSERVES MEDICOMP RECHARGÉES', 3400);
+      if (!this.medbayOverlay) {
+        this.medbayOverlay = new MedbayInventoryOverlay({
+          player: this.player,
+          inventoryState: this.player.medbayInventory,
+          onAction: () => this.hud.updateVitals(this.player),
+        });
+        this.medbayOverlay.mount();
+      }
+      this.medbayOverlay.open(this.player, { ...this.player.medbayInventory, isMothership: true });
     } else if (station.interactionType === 'core') {
       this.player.energy = this.player.maxEnergy;
       this.hud.updateVitals(this.player);
@@ -3014,6 +3030,24 @@ export class Game {
     if ((e.code === 'Escape' || e.code === 'KeyP') && !e.repeat && this.isHuntFlowActive()) {
       e.preventDefault();
       this.togglePause();
+      return;
+    }
+
+    if (e.code === 'KeyM' && !e.repeat) {
+      e.preventDefault?.();
+      if (!this.medbayOverlay) {
+        this.medbayOverlay = new MedbayInventoryOverlay({
+          player: this.player,
+          inventoryState: this.player.medbayInventory,
+          onAction: () => this.hud.updateVitals(this.player),
+        });
+        this.medbayOverlay.mount();
+      }
+      const isMothership = this.gameState === 'HUB';
+      this.medbayOverlay.toggle(this.player, {
+        ...this.player.medbayInventory,
+        isMothership,
+      });
       return;
     }
 

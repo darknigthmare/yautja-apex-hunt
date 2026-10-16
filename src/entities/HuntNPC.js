@@ -415,6 +415,7 @@ export const HUNT_NPC_TYPE_ALIASES = Object.freeze({
   cartel_enforcer: 'urban_cartel_enforcer',
   subway_hunter: 'subway_armed_hunter',
   owlf_commando: 'owlf_cryo_commando',
+  owlf_cryo_agent: 'owlf_cryo_commando',
   cryo_commando: 'owlf_cryo_commando',
   expedition_guard: 'weyland_expedition_guard',
   weyland_guard: 'weyland_expedition_guard',

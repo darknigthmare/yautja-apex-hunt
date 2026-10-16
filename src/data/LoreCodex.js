@@ -154,6 +154,18 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     summary: 'Régiment d’épreuve millénaire où de jeunes initiés Yautja affrontent la progéniture de la Reine sous la glace antarctique.',
     body: 'Alien vs. Predator (2004) révèle que l’humanité vénérait les Yautja comme des dieux et fournissait des sacrifices pour nourrir la ruche pyramidale. Les trois initiés (Scar, Celtic, Chopper) devaient récupérer leurs plasmacasters et marquer leur front et leur biomasque du sang corrosif acide des Xénomorphes pour devenir Sang-Mêlé (Blooded).',
     sourceTier: 'AVP_SCREEN', isOriginal: false, sources: ['avp2004']
+  },
+  {
+    id: 'technologie-medicomp-chirurgie-terrain', entryType: 'codex', category: 'technologie', title: 'Medicomp et chirurgie de terrain Yautja',
+    summary: 'Trousse médicale hermétique et étagée contenant pinces d’extraction, brûleur plasma, agrafeuse dermique et gel coagulant bleu.',
+    body: 'Documenté dans Predator (1987) et Predator 2 (1990), le Medicomp permet au chasseur d’opérer des auto-interventions d’extrême urgence en plein territoire hostile. Le City Hunter extrait les plombs à la pince, cautérise les chairs au plasma et applique la pâte bleue de coagulation accélérée.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['predator1987', 'predator2']
+  },
+  {
+    id: 'science-laboratoire-medical-cleaner', entryType: 'codex', category: 'technologie', title: 'Bio-ingénierie et neutralisation cellulaire Cleaner',
+    summary: 'Installations de confinement et de purification biologique utilisées par les vétérans Cleaners sur leurs croiseurs.',
+    body: 'Aliens vs. Predator: Requiem (2007) montre l’arsenal médical et chimique de Wolf : fioles alcalines anti-acide, seringues de prélèvement d’ADN et tables chirurgicales de décontamination. Apex Hunt intègre ce laboratoire dans le compartiment médical du vaisseau-mère.',
+    sourceTier: 'AVP_SCREEN', isOriginal: false, sources: ['avpRequiem2007']
   }
 ]);
 

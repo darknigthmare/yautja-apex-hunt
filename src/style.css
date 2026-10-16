@@ -300,3 +300,272 @@ button { background: linear-gradient(180deg, #ff2200, #aa0000); border: 1px soli
 button:hover { transform: scale(1.04); }
 
 .hidden { display: none !important; }
+
+/* ==========================================================================
+   YAUTJA MEDBAY // MEDICOMP DIÉGÉTIQUE DÉTACHABLE
+   ========================================================================== */
+.yautja-medbay-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.medbay-window {
+  pointer-events: auto;
+  width: 900px;
+  max-width: 95vw;
+  background: rgba(10, 16, 22, 0.94);
+  border: 1px solid rgba(0, 240, 255, 0.5);
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.25), inset 0 0 25px rgba(0, 40, 60, 0.5);
+  border-radius: 8px;
+  color: #c9e2ea;
+  font-family: 'Rajdhani', sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.medbay-header {
+  background: linear-gradient(90deg, rgba(16, 32, 44, 0.95), rgba(8, 16, 24, 0.95));
+  border-bottom: 1px solid rgba(0, 240, 255, 0.4);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+.medbay-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.medbay-glyph {
+  color: #ffaa00;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.medbay-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #00f0ff;
+  letter-spacing: 1px;
+}
+
+.medbay-mode-tag {
+  background: rgba(0, 240, 255, 0.15);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  color: #6ef1ff;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.medbay-close-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 70, 70, 0.5);
+  color: #ff6060;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.medbay-close-btn:hover {
+  background: rgba(255, 50, 50, 0.3);
+  transform: none;
+}
+
+.medbay-body {
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  gap: 16px;
+  padding: 16px;
+  max-height: 72vh;
+  overflow-y: auto;
+}
+
+.medbay-panel-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  color: #ffaa00;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 170, 0, 0.3);
+  padding-bottom: 4px;
+}
+
+.medbay-diag-panel {
+  background: rgba(6, 12, 18, 0.7);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.medbay-vitals-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+.vital-label { width: 75px; color: #8cb6c6; }
+.vital-val { width: 70px; text-align: right; color: #fff; font-weight: bold; }
+.vital-bar-wrap {
+  flex: 1;
+  height: 8px;
+  background: rgba(20, 30, 40, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.vital-bar-fill { height: 100%; transition: width 0.3s ease; }
+.vital-hp { background: linear-gradient(90deg, #ff3333, #00ff88); }
+.vital-stamina { background: linear-gradient(90deg, #ffaa00, #ffee55); }
+.vital-energy { background: linear-gradient(90deg, #0099ff, #00ffff); }
+
+.medbay-status-badge {
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 6px;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+.status-normal { background: rgba(0, 255, 136, 0.15); color: #00ff88; border: 1px solid #00ff88; }
+.status-warning { background: rgba(255, 170, 0, 0.2); color: #ffaa00; border: 1px solid #ffaa00; }
+.status-critical { background: rgba(255, 30, 30, 0.25); color: #ff4444; border: 1px solid #ff4444; animation: pulse 1s infinite; }
+
+.medbay-wireframe-panel {
+  background: rgba(6, 12, 18, 0.7);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.medbay-silhouette {
+  position: relative;
+  width: 140px;
+  height: 180px;
+  margin: 0 auto;
+  border: 1px dashed rgba(0, 240, 255, 0.3);
+  border-radius: 6px;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.05) 0%, transparent 70%);
+}
+
+.silhouette-node {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(0, 240, 255, 0.3);
+  border: 1px solid #00f0ff;
+  transition: all 0.3s;
+}
+.node-head { top: 12px; left: 61px; }
+.node-torso { top: 50px; left: 57px; width: 26px; height: 38px; border-radius: 6px; }
+.node-arm-l { top: 52px; left: 24px; }
+.node-arm-r { top: 52px; left: 98px; }
+.node-legs { top: 110px; left: 52px; width: 36px; height: 50px; border-radius: 6px; }
+
+.node-injured { background: rgba(255, 50, 50, 0.6) !important; border-color: #ff3333 !important; animation: pulse 1s infinite; }
+.node-corroded { background: rgba(100, 255, 50, 0.6) !important; border-color: #66ff33 !important; animation: pulse 0.7s infinite; }
+
+.medbay-items-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.medbay-item-card {
+  background: rgba(12, 22, 32, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 6px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.medbay-item-card.item-ready:hover {
+  border-color: #00f0ff;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+}
+.medbay-item-card.item-disabled {
+  opacity: 0.55;
+  filter: grayscale(0.4);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.item-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  color: #ffcc00;
+  font-weight: 700;
+}
+.item-charges {
+  font-size: 10px;
+  color: #00f0ff;
+}
+.item-lore {
+  font-size: 11px;
+  color: #9ab4c0;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+
+.medbay-action-btn {
+  width: 100%;
+  font-size: 11px;
+  padding: 6px 10px;
+}
+
+.medbay-log-panel {
+  background: rgba(6, 12, 18, 0.8);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+.medbay-log-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  color: #ffaa00;
+  margin-bottom: 4px;
+}
+.medbay-log-content {
+  font-size: 11px;
+  color: #8cb6c6;
+  font-family: monospace;
+  min-height: 38px;
+}
+
+.medbay-footer {
+  background: rgba(8, 16, 24, 0.95);
+  border-top: 1px solid rgba(0, 240, 255, 0.3);
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: #799ca9;
+}
+.medbay-refill-btn {
+  font-size: 10px;
+  padding: 5px 12px;
+  background: linear-gradient(180deg, #00a2ff, #0055aa);
+  border-color: #40c0ff;
+}
+

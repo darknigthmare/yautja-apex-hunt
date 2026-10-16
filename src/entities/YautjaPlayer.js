@@ -22,6 +22,11 @@ import {
   getPaletteEntry,
   sanitizeCustomization,
 } from '../data/RuntimeEquipment.js';
+import {
+  createMedbayInventoryState,
+  applyMedbayItem,
+  updateMedbayCooldowns,
+} from '../gameplay/YautjaMedbaySystem.js';
 
 
 const MIMICRY_LURE_TYPES = Object.freeze(['over_here', 'radio', 'yautja_clicks']);
@@ -272,6 +277,8 @@ export class YautjaPlayer {
     this.currentPerchNode = null;
     this.isAcidCorroded = false;
     this.acidTimer = 0;
+    this.isBleeding = false;
+    this.medbayInventory = createMedbayInventoryState({ isMothership: false });
     this.roarUsed = false;
     this.wristShieldActive = false;
     this.wristShieldTimer = 0;
@@ -2080,6 +2087,14 @@ export class YautjaPlayer {
     return true;
   }
 
+  // Baie médicale Yautja & Medicomp 1:1
+  applyMedicalTreatment(itemId) {
+    if (!this.medbayInventory) {
+      this.medbayInventory = createMedbayInventoryState({ isMothership: false });
+    }
+    return applyMedbayItem(this, itemId, this.medbayInventory, audioSynth);
+  }
+
   triggerVoiceMimicry(lureType = null) {
     const selectedLure = lureType ?? MIMICRY_LURE_TYPES[this.mimicryLureIndex % MIMICRY_LURE_TYPES.length];
     this.mimicryLureIndex = (this.mimicryLureIndex + 1) % MIMICRY_LURE_TYPES.length;
@@ -3115,6 +3130,13 @@ export class YautjaPlayer {
       this.acidTimer -= delta;
       this.takeDamage(delta * 4.0);
       if (this.acidTimer <= 0) this.isAcidCorroded = false;
+    }
+
+    if (this.medbayInventory) {
+      updateMedbayCooldowns(this.medbayInventory, delta);
+    }
+    if (this.isBleeding) {
+      this.takeDamage(delta * 1.5);
     }
 
     if (this.isCloaked) {

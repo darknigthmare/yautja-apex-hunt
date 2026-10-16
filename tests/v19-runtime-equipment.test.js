@@ -24,7 +24,7 @@ const idsAreUnique = (entries) => new Set(entries.map(({ id }) => id)).size === 
 test('les nouvelles classes et apparences restent data-driven et conservent les défauts historiques', () => {
   assert.equal(HUNTER_CLASSES.length, 10);
   assert.equal(DREAD_STYLES.length, 10);
-  assert.equal(ARMOR_FINISHES.length, 14);
+  assert.equal(ARMOR_FINISHES.length, 15);
   assert.equal(WARPAINT_PATTERNS.length, 11);
   [HUNTER_CLASSES, DREAD_STYLES, ARMOR_FINISHES, WARPAINT_PATTERNS].forEach((entries) => {
     assert.equal(idsAreUnique(entries), true);

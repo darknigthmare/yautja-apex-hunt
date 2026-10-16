@@ -849,6 +849,136 @@ class AudioSynthesizer {
     humOsc.stop(now + 0.53);
   }
 
+  // Lore Yautja (1987, 1990) — Ouverture du kit médical / Baie Medbay :
+  // déverrouillage mécanique étagé et dépressurisation pneumatique stérile.
+  playMedicompOpen() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    // Double clic mécanique métallique
+    for (let i = 0; i < 2; i += 1) {
+      const clickTime = now + i * 0.07;
+      const clickOsc = this.ctx.createOscillator();
+      const clickGain = this.ctx.createGain();
+      clickOsc.type = 'triangle';
+      clickOsc.frequency.setValueAtTime(2400 - i * 400, clickTime);
+      clickOsc.frequency.exponentialRampToValueAtTime(450, clickTime + 0.04);
+      clickGain.gain.setValueAtTime(0.01, clickTime);
+      clickGain.gain.linearRampToValueAtTime(0.25, clickTime + 0.01);
+      clickGain.gain.exponentialRampToValueAtTime(0.001, clickTime + 0.045);
+      clickOsc.connect(clickGain);
+      clickGain.connect(this.ctx.destination);
+      clickOsc.start(clickTime);
+      clickOsc.stop(clickTime + 0.05);
+    }
+
+    // Souffle pneumatique de dépressurisation des compartiments stériles
+    const hissOsc = this.ctx.createOscillator();
+    const hissGain = this.ctx.createGain();
+    const hissFilter = this.ctx.createBiquadFilter();
+    hissOsc.type = 'sawtooth';
+    hissOsc.frequency.setValueAtTime(800, now + 0.12);
+    hissOsc.frequency.exponentialRampToValueAtTime(180, now + 0.45);
+    hissFilter.type = 'bandpass';
+    hissFilter.frequency.setValueAtTime(1400, now + 0.12);
+    hissFilter.Q.setValueAtTime(3.2, now + 0.12);
+    hissGain.gain.setValueAtTime(0.01, now + 0.12);
+    hissGain.gain.linearRampToValueAtTime(0.2, now + 0.18);
+    hissGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+    hissOsc.connect(hissFilter);
+    hissFilter.connect(hissGain);
+    hissGain.connect(this.ctx.destination);
+    hissOsc.start(now + 0.12);
+    hissOsc.stop(now + 0.46);
+  }
+
+  // Predator 2 (1990) — Brûleur thermique de cautérisation au plasma :
+  // sifflement de torche plasma à haute intensité et grésillement de chair cautérisée.
+  playCauterizerSizzle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    const torchOsc = this.ctx.createOscillator();
+    const torchGain = this.ctx.createGain();
+    const torchFilter = this.ctx.createBiquadFilter();
+    torchOsc.type = 'sawtooth';
+    torchOsc.frequency.setValueAtTime(620, now);
+    torchOsc.frequency.linearRampToValueAtTime(1800, now + 0.15);
+    torchOsc.frequency.exponentialRampToValueAtTime(380, now + 0.65);
+
+    torchFilter.type = 'bandpass';
+    torchFilter.frequency.setValueAtTime(2600, now);
+    torchFilter.Q.setValueAtTime(4.8, now);
+
+    torchGain.gain.setValueAtTime(0.01, now);
+    torchGain.gain.linearRampToValueAtTime(0.38, now + 0.08);
+    torchGain.gain.exponentialRampToValueAtTime(0.002, now + 0.65);
+
+    torchOsc.connect(torchFilter);
+    torchFilter.connect(torchGain);
+    torchGain.connect(this.ctx.destination);
+    torchOsc.start(now);
+    torchOsc.stop(now + 0.66);
+  }
+
+  // Predator 1987 / Predator 2 — Agrafeuse dermique et pinces chirurgicales :
+  // claquement sec métallique d'agrafage refermant les tissus.
+  playStaplerSnap() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    const snapOsc = this.ctx.createOscillator();
+    const snapGain = this.ctx.createGain();
+    snapOsc.type = 'square';
+    snapOsc.frequency.setValueAtTime(3200, now);
+    snapOsc.frequency.exponentialRampToValueAtTime(220, now + 0.06);
+
+    snapGain.gain.setValueAtTime(0.01, now);
+    snapGain.gain.linearRampToValueAtTime(0.35, now + 0.008);
+    snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+
+    snapOsc.connect(snapGain);
+    snapGain.connect(this.ctx.destination);
+    snapOsc.start(now);
+    snapOsc.stop(now + 0.075);
+  }
+
+  // Lore Yautja — Injecteur pneumatique d'adrénaline et neuro-stimulants :
+  // propulsion sous pression avec clic d'armement et jet sous-cutané.
+  playStimInjectorHiss() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    const clickOsc = this.ctx.createOscillator();
+    const clickGain = this.ctx.createGain();
+    clickOsc.type = 'sine';
+    clickOsc.frequency.setValueAtTime(2100, now);
+    clickOsc.frequency.exponentialRampToValueAtTime(400, now + 0.03);
+    clickGain.gain.setValueAtTime(0.2, now);
+    clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+    clickOsc.connect(clickGain);
+    clickGain.connect(this.ctx.destination);
+    clickOsc.start(now);
+    clickOsc.stop(now + 0.04);
+
+    const jetOsc = this.ctx.createOscillator();
+    const jetGain = this.ctx.createGain();
+    const jetFilter = this.ctx.createBiquadFilter();
+    jetOsc.type = 'sawtooth';
+    jetOsc.frequency.setValueAtTime(1200, now + 0.03);
+    jetOsc.frequency.exponentialRampToValueAtTime(250, now + 0.28);
+    jetFilter.type = 'lowpass';
+    jetFilter.frequency.setValueAtTime(1900, now + 0.03);
+    jetGain.gain.setValueAtTime(0.01, now + 0.03);
+    jetGain.gain.linearRampToValueAtTime(0.25, now + 0.06);
+    jetGain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+    jetOsc.connect(jetFilter);
+    jetFilter.connect(jetGain);
+    jetGain.connect(this.ctx.destination);
+    jetOsc.start(now + 0.03);
+    jetOsc.stop(now + 0.29);
+  }
+
   playFeralRoar() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;

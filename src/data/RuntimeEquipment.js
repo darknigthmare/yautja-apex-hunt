@@ -62,6 +62,7 @@ export const ARMOR_FINISHES = Object.freeze([
   Object.freeze({ id: 'finish_feral_bone_carved', name: 'Os gravé des Grandes Plaines', metalness: 0.18, roughness: 0.82, emissiveIntensity: 0, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['prey2022']), implementationOriginal: true }),
   Object.freeze({ id: 'finish_super_predator_crimson', name: 'Écailles et laque cramoisie Super Predator', metalness: 0.65, roughness: 0.42, emissiveIntensity: 0.05, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predators2010']), implementationOriginal: true }),
   Object.freeze({ id: 'finish_celtic_battle_aged', name: 'Alliage rituel de Celtic', metalness: 0.88, roughness: 0.52, emissiveIntensity: 0.03, sourceTier: 'ORIGINAL', basisTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), implementationOriginal: true }),
+  Object.freeze({ id: 'finish_medicomp_burnished_bronze', name: 'Bronze patiné du Medicomp 1990', metalness: 0.78, roughness: 0.44, emissiveIntensity: 0.04, sourceTier: 'ORIGINAL', basisTier: 'SCREEN', sources: Object.freeze(['predator2']), implementationOriginal: true }),
 ]);
 
 export const WARPAINT_PATTERNS = Object.freeze([
@@ -216,6 +217,18 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     id: 'variant_wolf_segmented_whip', armorPresetId: 'wolf_avpr', baseWeaponId: 'whip_thorns', name: 'Fouet d’épines xénomorphes de Wolf',
     sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), behavior: 'melee_control',
     modifiers: Object.freeze({ damageMultiplier: 1.26, cooldownMultiplier: 0.95, energyCostMultiplier: 1, rangeMultiplier: 1.22 }),
+  }),
+  // Predator 2 (1990) : Trousse chirurgicale d'urgence du City Hunter (suture rapide et cautérisation avancée)
+  Object.freeze({
+    id: 'variant_city_hunter_surgical_kit', armorPresetId: 'city_1990', baseWeaponId: 'medicomp', name: 'Kit chirurgical du City Hunter',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predator2']), behavior: 'rapid_surgical_triage',
+    modifiers: Object.freeze({ healingEfficiencyMultiplier: 1.25, sutureSpeedMultiplier: 1.3, energyCostMultiplier: 0.85 }),
+  }),
+  // Aliens vs. Predator: Requiem (2007) : Bio-neutralisant de Wolf dissolvant et purifiant l'acide xénomorphe
+  Object.freeze({
+    id: 'variant_wolf_cleaner_antidote', armorPresetId: 'wolf_avpr', baseWeaponId: 'medicomp', name: 'Bio-neutralisant Cleaner de Wolf',
+    sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), behavior: 'corrosive_antidote_cleanse',
+    modifiers: Object.freeze({ acidPurgeBonus: 1.5, immunityDurationSeconds: 4, energyCostMultiplier: 0.9 }),
   }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);

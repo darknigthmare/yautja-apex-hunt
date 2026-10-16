@@ -314,6 +314,25 @@ const directiveDefinitions = [
       wave(56, 'xeno_runner'),
     ],
   },
+  {
+    id: 'field_medicomp_triage_1990',
+    title: 'Protocole d’urgence médicale — Los Angeles 1997',
+    shortLabel: 'TRIAGE 1997',
+    description: 'Surmonter l’embuscade conjointe des tireurs du cartel et des commandos OWLF sous une canicule accablante : stabiliser ses traumatismes au Medicomp et réguler ses constantes sous le feu continu.',
+    provenance: 'SCREEN_ADAPTATION',
+    recommendedBiomeId: 'los_angeles_1997',
+    rewardMultiplier: 1.65,
+    objectives: [
+      objective('urban_cartel_enforcer', 'Neutraliser l’homme de main lourd du cartel'),
+      objective('owlf_cryo_commando', 'Neutraliser le commando cryogénique OWLF'),
+      objective('xeno_runner', 'Éliminer le traqueur corrosif embusqué'),
+    ],
+    schedule: [
+      wave(9, 'urban_cartel_enforcer'),
+      wave(32, 'owlf_cryo_commando'),
+      wave(58, 'xeno_runner'),
+    ],
+  },
 ];
 
 export const HUNT_DIRECTIVES = Object.freeze(Object.fromEntries(
