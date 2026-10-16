@@ -2786,6 +2786,9 @@ export class YautjaPlayer {
     if (this.isSelfDestructing || this.isDead || this.selfDestructComplete) return false;
     this.isSelfDestructing = true;
     this.selfDestructTimer = 4.0;
+    if (typeof audioSynth?.playSelfDestructCoverOpen === 'function') {
+      audioSynth.playSelfDestructCoverOpen();
+    }
     return true;
   }
 
@@ -3142,16 +3145,43 @@ export class YautjaPlayer {
     if (this.isCloaked) {
       this.energy -= delta * 12.0;
       if (this.energy <= 0) this.toggleCloak();
+
+      // Predator (1987) — Court-circuit du camouflage optique en eau profonde / immersion
+      if (this.position.y <= 0.4 && !this.hasAntiAcidCloak && this.customization?.armorFinishId !== 'finish_cleaner_acid_resistant') {
+        this.waterDisruptionTimer = (this.waterDisruptionTimer || 0) + delta;
+        if (this.waterDisruptionTimer >= 2.0) {
+          this.toggleCloak();
+          this.waterDisruptionTimer = 0;
+          if (typeof audioSynth?.playCloakShortCircuit === 'function') {
+            audioSynth.playCloakShortCircuit();
+          }
+        }
+      } else {
+        this.waterDisruptionTimer = 0;
+      }
     }
 
     if (this.isSelfDestructing) {
+      const prevSecond = Math.floor(this.selfDestructTimer);
       this.selfDestructTimer -= delta;
+      const currentSecond = Math.floor(this.selfDestructTimer);
+
+      if (prevSecond !== currentSecond && this.selfDestructTimer > 0) {
+        if (typeof audioSynth?.playSelfDestructAscendingHum === 'function') {
+          audioSynth.playSelfDestructAscendingHum(this.selfDestructTimer / 4.0);
+        }
+      }
+
       if (this.selfDestructTimer <= 0) {
         this.isSelfDestructing = false;
         this.selfDestructComplete = true;
         this.isDead = true;
         this.health = 0;
-        audioSynth.playExplosion();
+        if (typeof audioSynth?.playSelfDestructDetonation === 'function') {
+          audioSynth.playSelfDestructDetonation();
+        } else {
+          audioSynth.playExplosion();
+        }
       }
     }
 

@@ -758,5 +758,35 @@ export class HUDManager {
     this.showLogMessage(text, 2000);
     return text;
   }
+
+  // Predator 1987 / Predator 2 — Diffusion d'imitation vocale par le biomasque
+  showMimicryActiveAlert(profileName = 'LEURRE VOCAL') {
+    const text = `ÉMISSION DU BIOMASQUE : IMITATION VOCALE [${profileName.toUpperCase()}] DIFFUSÉE`;
+    this.showLogMessage(text, 2200);
+    return text;
+  }
+
+  // Predator 1987 — Verrouillage balistique tri-laser convergé
+  showTriLaserLockedAlert(distance = null) {
+    const distText = Number.isFinite(distance) ? ` (${distance.toFixed(1)}M)` : '';
+    const text = `🎯 VERROUILLAGE TRI-LASER CONVERGÉ${distText} — TIR CRITIQUE GARANTI`;
+    this.showLogMessage(text, 1800);
+    return text;
+  }
+
+  // AVP (2004) — Émancipation au rang de Guerrier Marqué (Blooded)
+  showBloodedRankAlert(rankTitle = 'GUERRIER MARQUÉ') {
+    const text = `⚡ RITE DU SANG ACCOMPLI : RANG DE ${rankTitle.toUpperCase()} CONFÉRÉ`;
+    this.showLogMessage(text, 2800);
+    return text;
+  }
+
+  // Predator 2 (1990) — Récupération magnétique du Smart Disc
+  showSmartDiscRetrievedAlert() {
+    const text = 'DISQUE INTELLIGENT CAPTÉ EN VOL — CHARGES CINÉTIQUES RÉINITIALISÉES';
+    this.showLogMessage(text, 1600);
+    return text;
+  }
 }
+
 

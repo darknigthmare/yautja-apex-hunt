@@ -1466,8 +1466,36 @@ export class MothershipHub {
     });
     vault.add(reliquary);
 
+    // Conseil des Anciens (Predator 2 & AVP) — Stèle d'Honneur et dais cérémoniel
+    const elderStela = new THREE.Group();
+    elderStela.name = 'vault-elder-council-stela';
+    elderStela.userData = {
+      role: 'elder_council_stela',
+      label: 'Stèle d’Honneur du Conseil des Anciens (Greyback 1715)',
+      clanLeader: 'Greyback',
+      relicId: 'adolini_1715_pistol',
+      provenance: 'SCREEN',
+      sources: ['predator2', 'avp2004'],
+    };
+    this.registerProp(elderStela, HUB_ZONES.VAULT, 'hunt-trophy', {
+      stelaId: 'elder_council_lineage',
+      label: 'Stèle d’Honneur du Conseil des Anciens',
+    });
+    vault.add(elderStela);
+
     this.registerProp(vault, HUB_ZONES.VAULT, 'trophy-gallery');
     this.group.add(vault);
+  }
+
+  getElderCouncilInspection() {
+    return {
+      clan: 'Clan des Chasseurs de la Nébuleuse (Greyback)',
+      elderRank: 'Greyback · Maître de la Nef',
+      relic: 'Pistolet à silex Raphael Adolini 1715',
+      codeStatus: 'HONNEUR PRÉSERVÉ',
+      ceremonialDaisActive: true,
+      consecrationCount: this.trophyDisplays ? this.trophyDisplays.size : 0,
+    };
   }
 
   createConsole(parent, position, rotationY, signalColor, id, zone) {

@@ -166,6 +166,24 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     summary: 'Installations de confinement et de purification biologique utilisées par les vétérans Cleaners sur leurs croiseurs.',
     body: 'Aliens vs. Predator: Requiem (2007) montre l’arsenal médical et chimique de Wolf : fioles alcalines anti-acide, seringues de prélèvement d’ADN et tables chirurgicales de décontamination. Apex Hunt intègre ce laboratoire dans le compartiment médical du vaisseau-mère.',
     sourceTier: 'AVP_SCREEN', isOriginal: false, sources: ['avpRequiem2007']
+  },
+  {
+    id: 'culture-rituel-marquage-sang', entryType: 'codex', category: 'culture', title: 'Le rite du sang et la marque d’acide (Blooded Rite)',
+    summary: 'Rite de passage sacré où l’initié marque son masque du sang acide d’un Xénomorphe vaincu.',
+    body: 'Présenté dans Alien vs. Predator (2004), ce rituel confère au Jeune Sang le rang honorifique de Guerrier Marqué (Blooded Warrior / Oram-gai). Scar grave le glyphe de son clan sur son bio-masque et son os frontal à l’aide d’un doigt trempé dans l’acide d’un Facehugger mort.',
+    sourceTier: 'AVP_SCREEN', isOriginal: false, sources: ['avp2004']
+  },
+  {
+    id: 'technologie-dispositif-autodestruction', entryType: 'codex', category: 'technologie', title: 'Dispositif d’autodestruction du gantelet Yautja',
+    summary: 'Protocole de micro-fusion thermonucléaire scellant l’honneur du chasseur et anéantissant sa technologie.',
+    body: 'Séquence emblématique de Predator (1987) et d’AVP (2004). Commandé depuis le clavier numérique du poignet, le décompte en glyphes Yautja ascendants s’accompagne d’un signal sonore sinistre. La détonation vaporise tout dans un rayon de plusieurs dizaines de mètres pour empêcher qu’une technologie extraterrestre ne tombe aux mains d’espèces indignes.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['predator1987', 'avp2004']
+  },
+  {
+    id: 'technologie-viseur-trilaser', entryType: 'codex', category: 'technologie', title: 'Système de ciblage tri-laser et visée convergente',
+    summary: 'Signature optique projetant trois faisceaux laser rouges convergents couplés à l’asservissement du canon à plasma.',
+    body: 'Apparu dès Predator (1987) et reconduit dans Predator 2 (1990), le triangle de visée rouge se projette depuis la tempe du biomasque sur la proie. En se resserrant, les trois points calculent la distance télémétrique et verrouillent la trajectoire balistique pour garantir un impact critique.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['predator1987', 'predator2']
   }
 ]);
 

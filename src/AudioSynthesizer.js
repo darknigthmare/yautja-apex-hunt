@@ -1448,6 +1448,315 @@ class AudioSynthesizer {
     }
   }
 
+  // Predator (1987) — Rire spectral et dérangeant de Billy mimé par le Jungle Hunter
+  playMimicryBillyLaugh() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    for (let i = 0; i < 5; i += 1) {
+      const t = now + i * 0.12;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const filter = this.ctx.createBiquadFilter();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(420 - i * 15, t);
+      osc.frequency.exponentialRampToValueAtTime(260 - i * 10, t + 0.08);
+
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(950, t);
+      filter.Q.setValueAtTime(4.2, t);
+
+      gain.gain.setValueAtTime(0.22, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(t);
+      osc.stop(t + 0.1);
+    }
+  }
+
+  // Predator 2 (1990) — "Want some candy?" distordu par le haut-parleur du biomasque
+  playMimicryWantSomeCandy() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const syllables = [380, 460, 310, 240];
+    syllables.forEach((freq, index) => {
+      const t = now + index * 0.14;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const filter = this.ctx.createBiquadFilter();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, t);
+      osc.frequency.linearRampToValueAtTime(freq * 0.88, t + 0.11);
+
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1400, t);
+      filter.Q.setValueAtTime(3.0, t);
+
+      gain.gain.setValueAtTime(0.24, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(t);
+      osc.stop(t + 0.13);
+    });
+  }
+
+  // Predator (1987) — Murmure d'outre-tombe "Anytime..."
+  playMimicryAnytime() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(160, now);
+    osc.frequency.exponentialRampToValueAtTime(95, now + 0.7);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(520, now);
+    filter.Q.setValueAtTime(2.5, now);
+
+    gain.gain.setValueAtTime(0.26, now);
+    gain.gain.exponentialRampToValueAtTime(0.002, now + 0.72);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.75);
+  }
+
+  // Biomasque — Bip digital d'acquisition / enregistrement vocal
+  playMimicryRecordBeep() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    for (let i = 0; i < 2; i += 1) {
+      const t = now + i * 0.07;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1650 + i * 320, t);
+      gain.gain.setValueAtTime(0.12, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.055);
+    }
+  }
+
+  // Viseur tri-laser — Tonalité de verrouillage balistique convergé (3 points unis)
+  playTriLaserConvergedTone() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1850, now);
+    osc.frequency.exponentialRampToValueAtTime(2400, now + 0.16);
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.005, now + 0.18);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.19);
+  }
+
+  // Gantelet Yautja — Déclic d'ouverture du capot d'autodestruction
+  playSelfDestructCoverOpen() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(820, now);
+    osc.frequency.exponentialRampToValueAtTime(180, now + 0.08);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.095);
+  }
+
+  // Gantelet Yautja — Sifflement électronique ascendant des glyphes qui défilent
+  playSelfDestructAscendingHum(remainingRatio = 1.0) {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const factor = Math.max(0.1, Math.min(1.0, remainingRatio));
+    const baseFreq = 300 + (1.0 - factor) * 900;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(baseFreq, now);
+    osc.frequency.linearRampToValueAtTime(baseFreq + 120, now + 0.15);
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.005, now + 0.16);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.17);
+  }
+
+  // Gantelet Yautja — Détonation thermonucléaire tactique de micro-fusion
+  playSelfDestructDetonation() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    // Onde de choc sub-bass
+    const subOsc = this.ctx.createOscillator();
+    const subGain = this.ctx.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(140, now);
+    subOsc.frequency.exponentialRampToValueAtTime(18, now + 1.8);
+    subGain.gain.setValueAtTime(0.85, now);
+    subGain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+    subOsc.connect(subGain);
+    subGain.connect(this.ctx.destination);
+    subOsc.start(now);
+    subOsc.stop(now + 1.85);
+
+    // Décharge de plasma
+    const bufferSize = Math.floor(this.ctx.sampleRate * 1.4);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i += 1) data[i] = (Math.random() * 2 - 1) * 0.9;
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(3200, now);
+    filter.frequency.exponentialRampToValueAtTime(80, now + 1.4);
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.65, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+  }
+
+  // Rituel de taxidermie Yautja — Gravure au plasma du glyphe de clan sur le crâne
+  playBoneCarvingEtch() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    for (let i = 0; i < 3; i += 1) {
+      const t = now + i * 0.05;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(2600 + (i % 2) * 450, t);
+      osc.frequency.linearRampToValueAtTime(1900, t + 0.04);
+      gain.gain.setValueAtTime(0.14, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.045);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.048);
+    }
+  }
+
+  // Rituel de taxidermie — Bouillonnement dissolvant du bain de solvant Cleaner
+  playSolventBoil() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    for (let i = 0; i < 4; i += 1) {
+      const t = now + i * 0.08;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(320 + i * 110, t);
+      osc.frequency.exponentialRampToValueAtTime(140, t + 0.07);
+      gain.gain.setValueAtTime(0.18, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.075);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.08);
+    }
+  }
+
+  // Smart Disc (1990) — Bourdonnement gyroscopique de la lame en vol
+  playSmartDiscFlightHum() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(740, now);
+    osc.frequency.linearRampToValueAtTime(860, now + 0.25);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.32);
+  }
+
+  // Smart Disc — Tranchage net à haute vélocité
+  playSmartDiscSlice() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1450, now);
+    osc.frequency.exponentialRampToValueAtTime(220, now + 0.12);
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.002, now + 0.13);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.14);
+  }
+
+  // Smart Disc — Rétraction et réception magnétique dans le gantelet
+  playSmartDiscCatch() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(540, now);
+    osc.frequency.exponentialRampToValueAtTime(160, now + 0.1);
+    gain.gain.setValueAtTime(0.32, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }
+
+  // Camouflage — Court-circuit électrique sous l'eau / pluie battante
+  playCloakShortCircuit() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    for (let i = 0; i < 3; i += 1) {
+      const t = now + i * 0.06;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(1200 + (Math.random() * 600 - 300), t);
+      osc.frequency.exponentialRampToValueAtTime(80, t + 0.05);
+      gain.gain.setValueAtTime(0.24, t);
+      gain.gain.exponentialRampToValueAtTime(0.002, t + 0.055);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.06);
+    }
+  }
+
   startAmbientJungle() {
     if (!this.ctx) return;
     const windOsc = this.ctx.createOscillator();
