@@ -7524,6 +7524,266 @@ class AudioSynthesizer {
     osc.stop(now + 0.32);
   }
 
+  // --- v144 : Canon Rotatif Plasma, Gantelet Cinétique, Marquage Acide Scar & Pont Volcanique 1:1 ---
+
+  // Canon d'Épaule Rotatif Plasma — Mise en rotation des barillets magnétiques (AVP 2010 / Elder)
+  playRotaryPlasmaGatlingSpinUp() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(160, now);
+    osc.frequency.exponentialRampToValueAtTime(920, now + 0.24);
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  }
+
+  // Salve de Suppression Plasma — Rafale cadencée de projectiles ionisés
+  playRotaryPlasmaVolleyBarrage() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    for (let i = 0; i < 3; i++) {
+      const t = now + i * 0.06;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(840 - i * 90, t);
+      osc.frequency.exponentialRampToValueAtTime(180, t + 0.05);
+      gain.gain.setValueAtTime(0.32, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.055);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.06);
+    }
+  }
+
+  // Gantelet de Choc Cinétique — Déflagration sismique d'impact (The Predator 2018)
+  playKineticGauntletShockwaveSlam() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(240, now);
+    osc.frequency.exponentialRampToValueAtTime(34, now + 0.32);
+    gain.gain.setValueAtTime(0.58, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  // Fracas de Bouclier Blindé — Pulvérisation des barricades et boucliers balistiques
+  playRiotShieldShatterCrunch() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(510, now);
+    osc.frequency.exponentialRampToValueAtTime(75, now + 0.22);
+    gain.gain.setValueAtTime(0.46, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Marquage Rituel de Sang Acide — Grésillement de gravure sur masque et front (AVP 2004 Scar)
+  playAcidBloodClanMarkSizzle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1680, now);
+    osc.frequency.exponentialRampToValueAtTime(420, now + 0.28);
+    gain.gain.setValueAtTime(0.36, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.34);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.36);
+  }
+
+  // Chant d'Honneur Blooded — Résonance grave de consécration guerrière Yautja
+  playBloodedWarriorHonorChant() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(95, now);
+    osc.frequency.linearRampToValueAtTime(145, now + 0.35);
+    gain.gain.setValueAtTime(0.42, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.45);
+  }
+
+  // Pont Suspendu de Cordes — Rupture sous tension des câbles de chanvre (Predators 2010 / AVP)
+  playRopeBridgeCableSnapTwang() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(980, now);
+    osc.frequency.exponentialRampToValueAtTime(140, now + 0.18);
+    gain.gain.setValueAtTime(0.44, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.24);
+  }
+
+  // Gouffre Volcanique — Engouffrement et incinération dans le magma
+  playVolcanicLavaPlungeRoar() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(210, now);
+    osc.frequency.exponentialRampToValueAtTime(42, now + 0.38);
+    gain.gain.setValueAtTime(0.52, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.44);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.46);
+  }
+
+  // Capsule de Stase Cryogénique — Dépressurisation azotée et ouverture (The Predator 2018)
+  playCryogenicStasisPodHissOpen() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1950, now);
+    osc.frequency.exponentialRampToValueAtTime(360, now + 0.26);
+    gain.gain.setValueAtTime(0.33, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.32);
+  }
+
+  // Arbalète Boltgun du Feral — Décoche mécanique guidée par laser (Prey 2022)
+  playFeralBoltgunLaserGuidedTwang() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1420, now);
+    osc.frequency.exponentialRampToValueAtTime(390, now + 0.14);
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  }
+
+  // Impact de Carreau Guidé — Perforation crantée en pleine tête
+  playGuidedBoltFleshImpaleThwack() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(480, now);
+    osc.frequency.exponentialRampToValueAtTime(88, now + 0.16);
+    gain.gain.setValueAtTime(0.45, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.22);
+  }
+
+  // Centrale Électrique de Gunnison — Explosion de transformateur haute tension (AVP:R 2007)
+  playPowerPlantTransformerArcBoom() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(620, now);
+    osc.frequency.exponentialRampToValueAtTime(45, now + 0.36);
+    gain.gain.setValueAtTime(0.56, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.45);
+  }
+
+  // Défense d'Ivoire du Tracker — Sifflement ultrasonique de rappel de meute (Predators 2010)
+  playTrackerTuskUltrasonicWhistle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(2600, now);
+    osc.frequency.exponentialRampToValueAtTime(3800, now + 0.22);
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Puits d'Ascenseur de l'Hôpital — Cisaillement des câbles porteurs (AVP:R 2007)
+  playElevatorCableSeverSnap() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(1750, now);
+    osc.frequency.exponentialRampToValueAtTime(260, now + 0.15);
+    gain.gain.setValueAtTime(0.42, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.19);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.21);
+  }
+
+  // Écrasement de Cabine d'Ascenseur — Impact lourd au fond de la cage
+  playElevatorCarBottomCrashBoom() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(280, now);
+    osc.frequency.exponentialRampToValueAtTime(32, now + 0.44);
+    gain.gain.setValueAtTime(0.6, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.52);
+  }
+
   startAmbientJungle() {
     if (!this.ctx) return;
     const windOsc = this.ctx.createOscillator();
