@@ -589,3 +589,44 @@ button:hover { transform: scale(1.04); }
   border-color: #40c0ff;
 }
 
+
+/* =========================================================================
+   v154 — Audit Testeur Humain QA #1 : Accessibilité Daltonisme, Contraste & Anti-Troncature HUD
+   ========================================================================= */
+.cb-deuteranopia {
+  --hud-threat-color: #ff9900;
+  --hud-ally-color: #00b4ff;
+  --hud-hazard-acid-color: #ffe600;
+}
+
+.cb-protanopia {
+  --hud-threat-color: #ffb700;
+  --hud-ally-color: #00ccff;
+  --hud-hazard-acid-color: #e6ff00;
+}
+
+.cb-tritanopia {
+  --hud-threat-color: #ff3366;
+  --hud-ally-color: #00e5a3;
+  --hud-hazard-acid-color: #ff9933;
+}
+
+.hud-threat-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  font-weight: 700;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.95);
+}
+
+#directive-hud,
+.directive-objective-line,
+.weapon-slot {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}

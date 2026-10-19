@@ -10188,6 +10188,293 @@ class AudioSynthesizer {
     osc.start(now);
     osc.stop(now + 0.24);
   }
+
+  // =========================================================================
+  // v154 — Audit Testeur Humain QA #2 : Spatialisation Stéréo Panoramique & Audio Ducking
+  // =========================================================================
+  computeStereoPanFromAngle(relativeAngleRad = 0) {
+    const raw = Math.sin(Number(relativeAngleRad) || 0);
+    return Number(Math.max(-1, Math.min(1, raw)).toFixed(3));
+  }
+
+  triggerCriticalAudioDucking(durationMs = 800, duckRatio = 0.25) {
+    const clampedRatio = Math.max(0.05, Math.min(1.0, Number(duckRatio) || 0.25));
+    const safeDurationSec = Math.max(0.1, Math.min(5.0, (Number(durationMs) || 800) / 1000));
+    this.activeDuckingState = {
+      active: true,
+      duckRatio: clampedRatio,
+      durationSec: safeDurationSec
+    };
+
+    if (this.ctx && this.bgmGain && this.bgmGain.gain) {
+      const now = this.ctx.currentTime;
+      const baseGain = 0.08;
+      this.bgmGain.gain.setValueAtTime(baseGain * clampedRatio, now);
+      this.bgmGain.gain.linearRampToValueAtTime(baseGain, now + safeDurationSec);
+    }
+
+    return { ...this.activeDuckingState };
+  }
+
+  // =========================================================================
+  // v154 — 15 Nouveaux SFX Procéduraux Lore 1:1 & Audits Testeurs Humains QA
+  // =========================================================================
+
+  // Chantier 1 — Verrouillage métallique des sangles d'autel sacrificiel (AVP 2004)
+  playSacrificialAltarShackleClampLock() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(190, now);
+    osc.frequency.exponentialRampToValueAtTime(75, now + 0.16);
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  }
+
+  // Chantier 1 — Remontée mécanique sur rail des ovomorphs vers la chambre rituelle (AVP 2004)
+  playOvomorphConveyorAscentRattle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(95, now);
+    osc.frequency.linearRampToValueAtTime(145, now + 0.28);
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.34);
+  }
+
+  // Chantier 2 — Balayage télémétrique du camion frigorifique OWLF de Peter Keyes (Predator 2)
+  playKeyesSurveillanceTruckTelemetrySweep() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(920, now);
+    osc.frequency.exponentialRampToValueAtTime(1480, now + 0.15);
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.19);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.21);
+  }
+
+  // Chantier 2 — Court-circuit de la console vidéo OWLF sabotée par le City Hunter (Predator 2)
+  playOwlfMobileCommandFeedStaticShort() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(640, now);
+    osc.frequency.exponentialRampToValueAtTime(110, now + 0.22);
+    gain.gain.setValueAtTime(0.32, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.27);
+  }
+
+  // Chantier 3 — Rupture de la liane de détente et sifflement du balancier en rondins de Dutch (Predator 1987)
+  playValVerdeLogPendulumWhoosh() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(160, now);
+    osc.frequency.exponentialRampToValueAtTime(52, now + 0.34);
+    gain.gain.setValueAtTime(0.42, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  // Chantier 3 — Impact fracassant du contrepoids massif contre la paroi du canyon (Predator 1987)
+  playCounterweightLogBoneCrushThud() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(115, now);
+    osc.frequency.exponentialRampToValueAtTime(34, now + 0.28);
+    gain.gain.setValueAtTime(0.48, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.34);
+  }
+
+  // Chantier 4 — Scintillement bio-luminescent d'une trace de sang vert sur les feuilles (Prey 2022)
+  playLuminescentBloodTrailPulseShimmer() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(660, now);
+    osc.frequency.exponentialRampToValueAtTime(990, now + 0.16);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.22);
+  }
+
+  // Chantier 4 — Effet hypothermique de la fleur Orange Totsiyaa masquant la chaleur corporelle (Prey 2022)
+  playOrangeTotsiyaaHypothermicCoolChime() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(780, now);
+    osc.frequency.exponentialRampToValueAtTime(390, now + 0.24);
+    gain.gain.setValueAtTime(0.24, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  }
+
+  // Chantier 5 — Grésillement des néons de secours de l'hôpital de Gunnison (AVP: Requiem 2007)
+  playGunnisonWardEmergencyLampFlickerBuzz() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(120, now);
+    osc.frequency.setValueAtTime(60, now + 0.08);
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  }
+
+  // Chantier 5 — Éclaboussure grésillante de fiole bleue dissolvante de Wolf (AVP: Requiem 2007)
+  playWolfDissolvingVialCorrosiveHiss() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(840, now);
+    osc.frequency.exponentialRampToValueAtTime(260, now + 0.24);
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  }
+
+  // Audit Testeur Humain QA #1 — Bip de validation du profil daltonien haute visibilité
+  playColorblindContrastProfileLockTone() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(540, now);
+    osc.frequency.exponentialRampToValueAtTime(810, now + 0.12);
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.17);
+  }
+
+  // Audit Testeur Humain QA #2 — Impulsion d'atténuation Audio Ducking pour indice sonore vital
+  playCriticalAudioDuckingSidechainPulse() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.exponentialRampToValueAtTime(90, now + 0.1);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.14);
+  }
+
+  // Audit Testeur Humain QA #3 — Distorsion vocale du leurre Mimicry avec bio-masque fissuré
+  playCrackedMaskMimicryGlitchWarble() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(420, now);
+    osc.frequency.linearRampToValueAtTime(190, now + 0.18);
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.24);
+  }
+
+  // Audit Testeur Humain QA #4 — Déclenchement d'action mise en file d'attente (Input Buffer + Coyote Time)
+  playInputBufferQueuedActionSnap() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(480, now);
+    osc.frequency.exponentialRampToValueAtTime(760, now + 0.09);
+    gain.gain.setValueAtTime(0.24, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.13);
+  }
+
+  // Audit Testeur Humain QA #5 — Sirène de pré-alerte de fermeture de herse de pierre & ouverture de conduit de secours
+  playStoneBulkheadAntiCrushWarningRumble() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(88, now);
+    osc.frequency.exponentialRampToValueAtTime(44, now + 0.3);
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.34);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.36);
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();
+
