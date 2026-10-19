@@ -84,19 +84,20 @@ export function spawnAcidSprayCone(state, origin, dirX, dirZ, audio = audioSynth
 
   const sprayCount = 4;
   for (let i = 0; i < sprayCount; i++) {
-    const angleOffset = (Math.random() - 0.5) * ACID_TAIL_CONSTANTS.ACID_SPRAY_CONE_ANGLE;
+    const isPrimaryJet = i === 0;
+    const angleOffset = isPrimaryJet ? 0 : (Math.random() - 0.5) * ACID_TAIL_CONSTANTS.ACID_SPRAY_CONE_ANGLE;
     const cos = Math.cos(angleOffset);
     const sin = Math.sin(angleOffset);
     const sprayDirX = dirX * cos - dirZ * sin;
     const sprayDirZ = dirX * sin + dirZ * cos;
-    const dist = 1.5 + Math.random() * (ACID_TAIL_CONSTANTS.ACID_SPRAY_RANGE - 1.5);
+    const dist = isPrimaryJet ? 2.5 : 1.5 + Math.random() * (ACID_TAIL_CONSTANTS.ACID_SPRAY_RANGE - 1.5);
 
     const pool = {
-      id: `acid_pool_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
+      id: `acid_pool_${Date.now()}_${i}_${Math.random().toString(36).substr(2, 4)}`,
       x: origin.x + sprayDirX * dist,
       y: origin.y || 0,
       z: origin.z + sprayDirZ * dist,
-      radius: 1.2 + Math.random() * 0.6,
+      radius: isPrimaryJet ? 1.6 : 1.2 + Math.random() * 0.6,
       remainingTime: ACID_TAIL_CONSTANTS.ACID_POOL_DURATION,
     };
     state.acidPools.push(pool);

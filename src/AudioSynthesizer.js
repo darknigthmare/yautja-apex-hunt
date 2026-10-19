@@ -9589,8 +9589,298 @@ class AudioSynthesizer {
     osc.stop(now + 0.2);
   }
 
+  // =========================================================================
+  // AUDIT QA #2 (v152) : Sanitizer Web Audio & Protection Anti-Fuite Oscillateur
+  // =========================================================================
+
+  sanitizeAudioParam(value, min = 0.001, max = 20000, fallback = 440) {
+    const num = Number(value);
+    if (!Number.isFinite(num)) return fallback;
+    return Math.min(max, Math.max(min, num));
+  }
+
+  // =========================================================================
+  // CHANTIER 10 (v152) : 15 Nouvelles Méthodes Web Audio Procédurales (1:1 Lore)
+  // =========================================================================
+
+  // Forage Thermique Orbital — Rugissement du rayon plasma du vaisseau-mère (AVP 2004)
+  playMothershipOrbitalIceBoreBeamRoar() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(this.sanitizeAudioParam(180, 20, 2000, 180), now);
+    osc.frequency.exponentialRampToValueAtTime(42, now + 0.55);
+    gain.gain.setValueAtTime(0.56, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.62);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.65);
+  }
+
+  // Tunnel de Glace à 30° — Sifflement de vapeur géothermique sur la banquise (AVP 2004)
+  playIceTunnelThermalSteamVentHiss() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(980, now);
+    osc.frequency.exponentialRampToValueAtTime(240, now + 0.36);
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.42);
+  }
+
+  // Lance en Queue de Xénomorphe — Découpe de chitine par Scar pour Lex Woods (AVP 2004)
+  playXenomorphChitinSpearCraftSlash() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(720, now);
+    osc.frequency.exponentialRampToValueAtTime(190, now + 0.2);
+    gain.gain.setValueAtTime(0.42, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.26);
+  }
+
+  // Bouclier Crânien Xénomorphe — Parade immunisée contre le jet d'acide (AVP 2004)
+  playXenoHeadShieldAcidDeflectSizzle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(1140, now);
+    osc.frequency.exponentialRampToValueAtTime(320, now + 0.26);
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.32);
+  }
+
+  // Capsule de Largage Orbital — Sifflement atmosphérique haute vitesse (Predators 2010)
+  playOrbitalDropPodAtmosphericWhistle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1450, now);
+    osc.frequency.exponentialRampToValueAtTime(280, now + 0.42);
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.46);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.48);
+  }
+
+  // Parachute Barométrique — Claquement sec de la voilure au-dessus de la canopée (Predators 2010)
+  playDropPodParachuteCanopyDeploySnap() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(380, now);
+    osc.frequency.exponentialRampToValueAtTime(75, now + 0.22);
+    gain.gain.setValueAtTime(0.48, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Piscine de Gunnison — Réfraction sous-marine du viseur tri-laser (AVP:R 2007)
+  playMunicipalPoolUnderwaterLaserRefractHum() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(310, now);
+    osc.frequency.exponentialRampToValueAtTime(140, now + 0.28);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.34);
+  }
+
+  // Embuscade Aquatique Xénomorphe — Jaillissement hors du bassin olympique (AVP:R 2007)
+  playAquaticXenomorphPoolBreachSplash() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(460, now);
+    osc.frequency.exponentialRampToValueAtTime(85, now + 0.3);
+    gain.gain.setValueAtTime(0.46, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.37);
+  }
+
+  // Lame Réversible de Celtic — Cliquetis mécanique d'inversion du poignet (AVP 2004)
+  playCelticReversibleWristbladeFlipClick() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(920, now);
+    osc.frequency.exponentialRampToValueAtTime(360, now + 0.14);
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  }
+
+  // Chokeslam de Celtic contre Pilier — Fracas de colonne en pierre brisée (AVP 2004)
+  playCelticPillarChokeslamStoneSmash() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(145, now);
+    osc.frequency.exponentialRampToValueAtTime(28, now + 0.42);
+    gain.gain.setValueAtTime(0.56, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.5);
+  }
+
+  // Calibration Diégétique du Bio-Masque — Bip cristallin d'assainissement HUD (Audit QA #4)
+  playBioMaskDiegeticGlyphCalibrationBeep() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1640, now);
+    osc.frequency.exponentialRampToValueAtTime(2080, now + 0.12);
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.18);
+  }
+
+  // Auditeur Spatial Level Design — Tonalité de recalage de spawn sécurisé (Audit QA #5)
+  playSpatialQaColliderWarningChime() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(1320, now + 0.15);
+    gain.gain.setValueAtTime(0.26, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.19);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.21);
+  }
+
+  // Épée-Canne de King Willie — Dégainement métallique dans la ruelle brumeuse (Predator 2)
+  playKingWillieSwordCaneUnsheatheShink() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1180, now);
+    osc.frequency.exponentialRampToValueAtTime(1920, now + 0.22);
+    gain.gain.setValueAtTime(0.36, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Évasion du Fugitive Predator — Bris des sangles de stase du labo Stargazer (The Predator 2018)
+  playStargazerCryoPodRestraintShatter() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(340, now);
+    osc.frequency.exponentialRampToValueAtTime(48, now + 0.34);
+    gain.gain.setValueAtTime(0.52, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  // Alarme de Confinement Stargazer — Sirène stridente d'évasion en laboratoire (The Predator 2018)
+  playLabContainmentBreachKlaxonSiren() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(680, now);
+    osc.frequency.exponentialRampToValueAtTime(420, now + 0.32);
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.36);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.38);
+  }
+
+  stopAmbientJungle() {
+    if (this.ambientJungleOsc) {
+      try {
+        this.ambientJungleOsc.stop();
+        this.ambientJungleOsc.disconnect();
+      } catch (_) {
+        // Ignorer si déjà arrêté
+      }
+      this.ambientJungleOsc = null;
+    }
+    if (this.ambientJungleGain) {
+      try {
+        this.ambientJungleGain.disconnect();
+      } catch (_) {
+        // Ignorer
+      }
+      this.ambientJungleGain = null;
+    }
+  }
+
   startAmbientJungle() {
     if (!this.ctx) return;
+    this.stopAmbientJungle();
     const windOsc = this.ctx.createOscillator();
     const windGain = this.ctx.createGain();
     windOsc.type = 'sine';
@@ -9599,6 +9889,8 @@ class AudioSynthesizer {
     windOsc.connect(windGain);
     windGain.connect(this.ctx.destination);
     windOsc.start();
+    this.ambientJungleOsc = windOsc;
+    this.ambientJungleGain = windGain;
   }
 }
 
