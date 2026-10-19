@@ -105,6 +105,22 @@ html, body { width: 100%; height: 100%; overflow: hidden; background-color: #030
 .prompt-text { font-size: 15px; font-weight: 700; }
 
 #log-banner { position: absolute; bottom: 115px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.85); border: 1px solid var(--yautja-gold); color: var(--yautja-gold); padding: 8px 20px; border-radius: 4px; font-size: 14px; max-width: min(92vw, 760px); text-align: center; }
+#log-banner.banner-critical { border-color: var(--yautja-red); color: #ffffff; background: rgba(55, 5, 5, 0.94); box-shadow: 0 0 18px rgba(255, 17, 0, 0.65); }
+
+.gadget-status[aria-disabled="true"],
+.gadget-status.cooldown {
+  opacity: 0.48;
+  filter: grayscale(0.55);
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 /* Modals & Armory Tabs */
 #controls-modal, #mission-modal, #endgame-modal {

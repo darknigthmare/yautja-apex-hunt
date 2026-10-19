@@ -128,6 +128,7 @@ class AudioSynthesizer {
   // Dynamic Adaptive BGM
   startAdaptiveBGM() {
     if (!this.ctx) return;
+    this.stopAdaptiveBGM();
     this.bgmOsc = this.ctx.createOscillator();
     this.bgmGain = this.ctx.createGain();
 
@@ -9891,6 +9892,301 @@ class AudioSynthesizer {
     windOsc.start();
     this.ambientJungleOsc = windOsc;
     this.ambientJungleGain = windGain;
+  }
+
+  // =========================================================================
+  // AUDIT TESTEUR HUMAIN QA #2 (v153) : Anti-Saturation SFX & BGM Cleanup
+  // =========================================================================
+
+  stopAdaptiveBGM() {
+    if (this.bgmOsc) {
+      try {
+        this.bgmOsc.stop();
+        this.bgmOsc.disconnect();
+      } catch (_) {
+        // Ignorer si déjà arrêté
+      }
+      this.bgmOsc = null;
+    }
+    if (this.bgmGain) {
+      try {
+        this.bgmGain.disconnect();
+      } catch (_) {
+        // Ignorer
+      }
+      this.bgmGain = null;
+    }
+  }
+
+  canTriggerSfx(sfxKey = 'default', minIntervalMs = 35, nowTimestampMs = Date.now()) {
+    if (!this._sfxLastTriggerMap) {
+      this._sfxLastTriggerMap = new Map();
+    }
+    const lastTime = this._sfxLastTriggerMap.get(sfxKey) ?? -Infinity;
+    if (nowTimestampMs - lastTime < minIntervalMs) {
+      return false;
+    }
+    this._sfxLastTriggerMap.set(sfxKey, nowTimestampMs);
+    return true;
+  }
+
+  // =========================================================================
+  // CHANTIER 10 (v153) : 15 Nouvelles Méthodes Web Audio Procédurales (1:1 Lore)
+  // =========================================================================
+
+  // Ascenseur de Service de LA — Rupture des câbles d'acier aux Wristblades (Predator 2)
+  playElevatorHoistCableSeverSnap() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(980, now);
+    osc.frequency.exponentialRampToValueAtTime(160, now + 0.22);
+    gain.gain.setValueAtTime(0.46, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Chute Libre de la Cabine — Impact lourd au fond de la cage d'ascenseur (Predator 2)
+  playServiceElevatorCabFreefallCrash() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(195, now);
+    osc.frequency.exponentialRampToValueAtTime(28, now + 0.48);
+    gain.gain.setValueAtTime(0.56, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.54);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.56);
+  }
+
+  // Gantelet de Scar dans la Pyramide — Onde de condensation bleue pré-implosion (AVP 2004)
+  playScarWristbandBlueCondensationWave() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(640, now);
+    osc.frequency.exponentialRampToValueAtTime(95, now + 0.42);
+    gain.gain.setValueAtTime(0.42, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.5);
+  }
+
+  // Implosion du Nid de la Reine — Effondrement cataclysmique sous la banquise (AVP 2004)
+  playPyramidQueenNestTacticalImplosion() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(135, now);
+    osc.frequency.exponentialRampToValueAtTime(22, now + 0.65);
+    gain.gain.setValueAtTime(0.6, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.72);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.75);
+  }
+
+  // Cercle d'Honneur de la Lost Tribe — Décamouflage simultané des 10 Anciens (Predator 2)
+  playLostTribeHonorCircleDecloakHum() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(210, now);
+    osc.frequency.exponentialRampToValueAtTime(760, now + 0.34);
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.42);
+  }
+
+  // Armure Cérémonielle de Greyback — Pas solennel du Clan Leader (Predator 2)
+  playGreybackGoldenArmorCeremonialStep() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(125, now);
+    osc.frequency.exponentialRampToValueAtTime(48, now + 0.2);
+    gain.gain.setValueAtTime(0.36, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.26);
+  }
+
+  // Fosse à Pieux de Bambou — Rupture du treillis végétal de Val Verde (Predator 1987)
+  playValVerdeBambooPunjiPitSnap() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(420, now);
+    osc.frequency.exponentialRampToValueAtTime(92, now + 0.2);
+    gain.gain.setValueAtTime(0.42, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.26);
+  }
+
+  // Salve de Mousquets à Silex — Détonation de poudre noire des trappeurs français (Prey 2022)
+  playFrenchVoyageurMusketVolleyBoom() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(280, now);
+    osc.frequency.exponentialRampToValueAtTime(44, now + 0.36);
+    gain.gain.setValueAtTime(0.52, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.44);
+  }
+
+  // Rechargement à la Baguette — Cliquetis métallique de bourrage du mousquet (Prey 2022)
+  playBlackPowderRamrodReloadClink() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1340, now);
+    osc.frequency.exponentialRampToValueAtTime(620, now + 0.14);
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  }
+
+  // Audit Testeur Humain QA #1 — Bip d'alerte prioritaire de bannière critique
+  playHumanQaPriorityAlertBannerBeep() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1560, now);
+    osc.frequency.exponentialRampToValueAtTime(1960, now + 0.12);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.18);
+  }
+
+  // Audit Testeur Humain QA #2 — Clic doux d'atténuation du limiteur anti-saturation SFX
+  playHumanQaSfxLimiterAttenuationClick() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(840, now);
+    osc.frequency.exponentialRampToValueAtTime(420, now + 0.08);
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }
+
+  // Audit Testeur Humain QA #3 — Court-circuit diégétique du camouflage au contact de l'eau
+  playDiegeticImmersionSubmergedCloakShort() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(760, now);
+    osc.frequency.exponentialRampToValueAtTime(140, now + 0.22);
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Audit Testeur Humain QA #4 — Impulsion de secours du condensateur anti-softlock
+  playAntiSoftlockEmergencyCapacitorPulse() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(280, now);
+    osc.frequency.exponentialRampToValueAtTime(880, now + 0.2);
+    gain.gain.setValueAtTime(0.32, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.26);
+  }
+
+  // Audit Testeur Humain QA #4 — Résonance de fenêtre d'immunité anti-stunlock (Grace Window)
+  playStaggerGraceShieldResonanceHum() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(340, now);
+    osc.frequency.exponentialRampToValueAtTime(520, now + 0.18);
+    gain.gain.setValueAtTime(0.26, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.24);
+  }
+
+  // Audit Testeur Humain QA #5 — Recalage fluide Unstuck vers l'ancrage de navigation sûr
+  playLevelFlowUnstuckAnchorTeleportWhoosh() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(240, now);
+    osc.frequency.exponentialRampToValueAtTime(720, now + 0.18);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.24);
   }
 }
 
