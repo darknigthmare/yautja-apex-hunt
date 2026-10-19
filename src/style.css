@@ -630,3 +630,40 @@ button:hover { transform: scale(1.04); }
   overflow-wrap: anywhere;
   word-break: break-word;
 }
+
+/* =========================================================================
+   v155 — Audit Testeur Humain QA #1 : Ergonomie Ultra-Wide 21:9, Badges Raccourcis & Anti-Spam Toast
+   ========================================================================= */
+@media (min-aspect-ratio: 21/9) {
+  #ui-layer {
+    max-width: 1720px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+  }
+}
+
+.keybind-hint {
+  display: inline-block;
+  min-width: 20px;
+  padding: 1px 5px;
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: #00f0ff;
+  background: rgba(4, 14, 24, 0.92);
+  border: 1px solid rgba(0, 240, 255, 0.65);
+  border-radius: 3px;
+  box-shadow: 0 0 6px rgba(0, 240, 255, 0.25);
+}
+
+.toast-stack-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #051018;
+  background: #00f0ff;
+  border-radius: 10px;
+}

@@ -10474,7 +10474,284 @@ class AudioSynthesizer {
     osc.start(now);
     osc.stop(now + 0.36);
   }
+
+  // =========================================================================
+  // v155 — Audit Testeur Humain QA #2 : Occlusion Acoustique Passe-Bas & Anti-Écrêtage Master Bus
+  // =========================================================================
+  computeOcclusionLowpassFrequency(occlusionRatio = 0, submerged = false) {
+    if (submerged) return 380;
+    const clamped = Math.max(0, Math.min(1, Number(occlusionRatio) || 0));
+    if (clamped === 0) return 20000;
+    return Math.round(20000 * Math.pow(650 / 20000, clamped));
+  }
+
+  clampMasterPeakGain(requestedGain = 0.4, activeVoicesCount = 1) {
+    const safeVoices = Math.max(1, Number(activeVoicesCount) || 1);
+    const attenuation = 1 / Math.sqrt(safeVoices);
+    const scaled = (Number(requestedGain) || 0.4) * attenuation;
+    return Number(Math.max(0.001, Math.min(0.88, scaled)).toFixed(3));
+  }
+
+  // =========================================================================
+  // v155 — 15 Nouveaux SFX Procéduraux Lore 1:1 & Audits Testeurs Humains QA
+  // =========================================================================
+
+  // Chantier 1 — Cliquetis métallique de la chaîne glacée du château d'eau sur le cou de la Reine (AVP 2004)
+  playBouvetoyaFrozenChainWinchratchet() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(240, now);
+    osc.frequency.exponentialRampToValueAtTime(95, now + 0.18);
+    gain.gain.setValueAtTime(0.34, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.24);
+  }
+
+  // Chantier 1 — Effondrement du château d'eau et plongeon de la Reine dans l'abîme antarctique (AVP 2004)
+  playWaterTowerCliffCollapsePlunge() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(140, now);
+    osc.frequency.exponentialRampToValueAtTime(28, now + 0.42);
+    gain.gain.setValueAtTime(0.46, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.46);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.48);
+  }
+
+  // Chantier 2 — Ouverture pneumatique du râtelier d'armes secret du vaisseau du City Hunter (Predator 2)
+  playScoutShipArmoryRackPneumaticSlide() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.linearRampToValueAtTime(640, now + 0.22);
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Chantier 2 — Verrouillage magnétique des dards de Speargun et du Smart Disc de rechange (Predator 2)
+  playYautjaWeaponRackLockClack() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(520, now);
+    osc.frequency.exponentialRampToValueAtTime(180, now + 0.12);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.17);
+  }
+
+  // Chantier 3 — Claquement de mandibules et dard du Scorpion Rouge extraterrestre (Predators 2010)
+  playRedScorpionChitinmandibleClick() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1150, now);
+    osc.frequency.exponentialRampToValueAtTime(310, now + 0.09);
+    gain.gain.setValueAtTime(0.24, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.13);
+  }
+
+  // Chantier 3 — Résonance d'acier du Katana ancien de Hanzo contre la lame du Falconer (Predators 2010)
+  playTallGrassKatanaWristbladeClashRing() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1680, now);
+    osc.frequency.exponentialRampToValueAtTime(840, now + 0.32);
+    gain.gain.setValueAtTime(0.36, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.36);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.38);
+  }
+
+  // Chantier 4 — Étincelles de court-circuit du camouflage sous la cascade de Val Verde (Predator 1987)
+  playValVerdeWaterfallCurtainCloakSpark() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(740, now);
+    osc.frequency.exponentialRampToValueAtTime(160, now + 0.24);
+    gain.gain.setValueAtTime(0.32, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  }
+
+  // Chantier 5 — Verrouillage étanche du sas thermique de la foreuse de Ronald Noland (Predators 2010)
+  playNolandBoilerAirlockSealThump() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(135, now);
+    osc.frequency.exponentialRampToValueAtTime(48, now + 0.22);
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Chantier 5 — Brèche explosive du Tracker Predator à l'entrée du repaire de Noland (Predators 2010)
+  playTrackerHideoutPlasmaBreachBlast() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(210, now);
+    osc.frequency.exponentialRampToValueAtTime(38, now + 0.34);
+    gain.gain.setValueAtTime(0.45, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  // Audit Testeur Humain QA #1 — Carillon discret de consolidation de compteur Toast (x2, x3...)
+  playToastConsolidationStackChime() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(620, now);
+    osc.frequency.exponentialRampToValueAtTime(930, now + 0.1);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.15);
+  }
+
+  // Audit Testeur Humain QA #2 — Résonance sourde d'occlusion acoustique à travers la pierre
+  playAcousticWallOcclusionMuffleTone() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(220, now);
+    osc.frequency.exponentialRampToValueAtTime(110, now + 0.16);
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.22);
+  }
+
+  // Audit Testeur Humain QA #3 — Impulsion de dégivrage thermique de la visière du bio-masque en blizzard
+  playBioMaskVisorThermalDefrostHiss() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(440, now + 0.2);
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.26);
+  }
+
+  // Audit Testeur Humain QA #4 — Bip IFF de mise en veille sécurisée de sa propre mine laser Yautja
+  playLaserTrapIffOwnerStandbyChirp() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1040, now);
+    osc.frequency.exponentialRampToValueAtTime(780, now + 0.08);
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }
+
+  // Audit Testeur Humain QA #4 — Résonance de parade parfaite élargie (180 ms)
+  playGenerousParryWindowPerfectClang() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(960, now);
+    osc.frequency.exponentialRampToValueAtTime(1440, now + 0.14);
+    gain.gain.setValueAtTime(0.32, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  }
+
+  // Audit Testeur Humain QA #5 — Rappel d'urgence Kill-Z vers la corniche valide la plus proche
+  playKillZSafetyLedgeRecoveryWhoosh() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(310, now);
+    osc.frequency.exponentialRampToValueAtTime(890, now + 0.2);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.26);
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();
+
 
