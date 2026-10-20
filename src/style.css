@@ -667,3 +667,36 @@ button:hover { transform: scale(1.04); }
   background: #00f0ff;
   border-radius: 10px;
 }
+
+/* =========================================================================
+   v156 — Audit Testeur Humain QA #1 : Arc Directionnel de Menace 360° & Invite POI Haute Visibilité
+   ========================================================================= */
+.peripheral-threat-arc {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 180px;
+  height: 180px;
+  margin-top: -90px;
+  margin-left: -90px;
+  border-top: 4px solid rgba(255, 42, 42, 0.92);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px rgba(255, 42, 42, 0.8));
+  z-index: 45;
+}
+
+.poi-interaction-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #e8faff;
+  background: rgba(4, 12, 20, 0.94);
+  border: 1px solid rgba(0, 240, 255, 0.85);
+  border-radius: 999px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+}

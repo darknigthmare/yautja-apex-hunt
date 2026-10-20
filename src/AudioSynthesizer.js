@@ -10750,8 +10750,285 @@ class AudioSynthesizer {
     osc.start(now);
     osc.stop(now + 0.26);
   }
+
+  // =========================================================================
+  // v156 — Audit Testeur Humain QA #2 : Atténuation de Distance & Micro-Pitch Anti-Effet Mitraillette
+  // =========================================================================
+  computeDistanceAttenuationGain(baseGain = 0.5, distanceMeters = 5, refDistanceMeters = 5, rolloffFactor = 1.0) {
+    const safeDist = Math.max(refDistanceMeters, Number(distanceMeters) || refDistanceMeters);
+    const attenuation = refDistanceMeters / (refDistanceMeters + rolloffFactor * (safeDist - refDistanceMeters));
+    const result = (Number(baseGain) || 0.5) * attenuation;
+    return Number(Math.max(0.005, Math.min(0.95, result)).toFixed(3));
+  }
+
+  computeMicroPitchJitter(baseFrequencyHz = 440, jitterFraction = 0.04, deterministicSeed = 0.5) {
+    const normalizedSeed = Math.max(0, Math.min(1, Number(deterministicSeed) ?? 0.5));
+    const offset = (normalizedSeed * 2 - 1) * (Number(jitterFraction) || 0.04);
+    return Number((baseFrequencyHz * (1 + offset)).toFixed(2));
+  }
+
+  // =========================================================================
+  // v156 — 15 Nouveaux SFX Procéduraux Lore 1:1 & Audits Testeurs Humains QA
+  // =========================================================================
+
+  // Chantier 1 — Déverrouillage du bio-masque de Wolf sous l'averse du toit de l'hôpital (AVP: Requiem 2007)
+  playWolfRooftopUnmaskingGauntletClick() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(680, now);
+    osc.frequency.exponentialRampToValueAtTime(210, now + 0.16);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.22);
+  }
+
+  // Chantier 1 — Rugissement d'empalement mutuel entre Wolf et le Predalien (AVP: Requiem 2007)
+  playPredalienRooftopMutualImpaleRoar() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(280, now);
+    osc.frequency.exponentialRampToValueAtTime(62, now + 0.36);
+    gain.gain.setValueAtTime(0.42, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.42);
+  }
+
+  // Chantier 1 — Onde de choc de la frappe tactique du F-22 sur Gunnison (AVP: Requiem 2007)
+  playGunnisonF22TacticalStrikeShockwave() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(125, now);
+    osc.frequency.exponentialRampToValueAtTime(24, now + 0.48);
+    gain.gain.setValueAtTime(0.48, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.52);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.54);
+  }
+
+  // Chantier 2 — Sifflet biomécanique du Tracker Predator rappelant les Hell-Hounds (Predators 2010)
+  playTrackerBoneyardHoundWhistleCall() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1420, now);
+    osc.frequency.linearRampToValueAtTime(1980, now + 0.14);
+    osc.frequency.exponentialRampToValueAtTime(920, now + 0.3);
+    gain.gain.setValueAtTime(0.26, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.34);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.36);
+  }
+
+  // Chantier 2 — Salve lourde du canon plasma rotatif du Tracker dans le cimetière d'os (Predators 2010)
+  playBoneyardRotaryPlasmaSalvoBoom() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(260, now);
+    osc.frequency.exponentialRampToValueAtTime(48, now + 0.28);
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.34);
+  }
+
+  // Chantier 3 — Grincement de chaîne et balancement de carcasse congelée à l'impact (Predator 2)
+  playFrozenCarcassMeatHookChainSwing() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(340, now);
+    osc.frequency.exponentialRampToValueAtTime(130, now + 0.22);
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Chantier 4 — Succion lourde de la tourbière mouvante des Grandes Plaines (Prey 2022)
+  playQuicksandBogSuctionSinkGurgle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(105, now);
+    osc.frequency.exponentialRampToValueAtTime(42, now + 0.26);
+    gain.gain.setValueAtTime(0.32, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.32);
+  }
+
+  // Chantier 4 — Verrouillage tri-laser du masque piégé et sifflement du carreau guidé (Prey 2022)
+  playPreyBioMaskTriadSelfHomingBoltStrike() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1280, now);
+    osc.frequency.exponentialRampToValueAtTime(290, now + 0.2);
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.26);
+  }
+
+  // Chantier 5 — Froissement de buissons nocturnes et verrouillage silencieux sur Mac (Predator 1987)
+  playValVerdeNightBrushBoarDecoyRustle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.exponentialRampToValueAtTime(75, now + 0.18);
+    gain.gain.setValueAtTime(0.24, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.24);
+  }
+
+  // Audit Testeur Humain QA #1 — Impulsion directionnelle de l'arc de menace périphérique 360°
+  playPeripheralThreatArcWarningPing() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(760, now);
+    osc.frequency.exponentialRampToValueAtTime(520, now + 0.1);
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.15);
+  }
+
+  // Audit Testeur Humain QA #2 — Impulsion de calibration micro-pitch anti-effet mitraillette
+  playMicroPitchAntiMachineGunCalibrationTick() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(610, now);
+    osc.frequency.exponentialRampToValueAtTime(430, now + 0.07);
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.11);
+  }
+
+  // Audit Testeur Humain QA #3 — Alerte épigraphique du gantelet signalant une fuite de sang vert luminescent
+  playWristGauntletLuminescentBloodLeakBeep() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(890, now);
+    osc.frequency.setValueAtTime(640, now + 0.07);
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.18);
+  }
+
+  // Audit Testeur Humain QA #4 — Pas d'engagement magnétique doux des Wristblades (Soft Melee Lock-On)
+  playSoftMeleeMagnetismLungeWhoosh() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(290, now);
+    osc.frequency.exponentialRampToValueAtTime(580, now + 0.11);
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.16);
+  }
+
+  // Audit Testeur Humain QA #4 — Bouclier d'hyper-armure pendant l'arrachage de trophée (Execution Shield)
+  playTrophyExecutionHyperArmorPulse() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(195, now);
+    osc.frequency.exponentialRampToValueAtTime(410, now + 0.22);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Audit Testeur Humain QA #5 — Recalage fluide du bras caméra anti-clipping mural
+  playCameraSpringArmAntiClipSlide() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(360, now);
+    osc.frequency.exponentialRampToValueAtTime(540, now + 0.09);
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.14);
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();
+
 
 
