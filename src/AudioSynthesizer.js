@@ -14248,6 +14248,378 @@ class AudioSynthesizer {
     osc.stop(now + 0.38);
   }
 
+
+  // ==========================================
+  // v166 - ACID CORROSION & LOG PENDULUM ACOUSTICS EXTENSIONS
+  // ==========================================
+
+  computeAcidBloodCorrosionCavitationAcoustics(acidVolumeMl = 50, surfaceMaterial = 'STEEL') {
+    const corrosionRateMmPs = surfaceMaterial === 'STEEL' ? 0.85 : 1.45;
+    const exothermicTempC = Math.round(550 + (acidVolumeMl / 100) * 150);
+    const effervescencePeakHz = Math.round(5200 + acidVolumeMl * 20);
+    const acousticSizzleDecibels = +(62.0 + 10 * Math.log10(Math.max(1, acidVolumeMl))).toFixed(1);
+
+    return {
+      acidVolumeMl,
+      surfaceMaterial,
+      corrosionRateMmPs,
+      exothermicTempC,
+      effervescencePeakHz,
+      acousticSizzleDecibels,
+      structuralBreachHazard: acidVolumeMl > 30
+    };
+  }
+
+  computeLogPendulumKineticImpactAcoustics(logMassKg = 850, dropHeightM = 6.0) {
+    const g = 9.81;
+    const impactVelocityMps = +(Math.sqrt(2 * g * dropHeightM)).toFixed(2);
+    const impactKineticEnergyJoules = Math.round(logMassKg * g * dropHeightM);
+    const groundThudDecibels = Math.round(98 + 10 * Math.log10(Math.max(1, impactKineticEnergyJoules / 10000)));
+    const groundVibrationRadiusM = +(Math.sqrt(impactKineticEnergyJoules) * 0.18).toFixed(1);
+
+    return {
+      logMassKg,
+      dropHeightM,
+      impactVelocityMps,
+      impactKineticEnergyJoules,
+      groundThudDecibels,
+      groundVibrationRadiusM
+    };
+  }
+
+  playSlaughterhouseMeatCarcassSlap() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(220, now);
+    osc.frequency.exponentialRampToValueAtTime(45, now + 0.14);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(380, now);
+
+    gain.gain.setValueAtTime(0.45, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.2);
+  }
+
+  playNitrogenSprayerFrostHiss() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(3400, now);
+    osc.frequency.linearRampToValueAtTime(2100, now + 0.3);
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(2600, now);
+
+    gain.gain.setValueAtTime(0.32, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.38);
+  }
+
+  playBioMaskSpectrumCycleClick() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1650, now);
+    osc.frequency.setValueAtTime(2850, now + 0.04);
+
+    gain.gain.setValueAtTime(0.24, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.1);
+  }
+
+  playPyramidRunicSarcophagusUnlock() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(140, now);
+    osc.frequency.linearRampToValueAtTime(380, now + 0.2);
+
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.32);
+  }
+
+  playAcidBloodRitualBrandSizzle() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(4800, now);
+    osc.frequency.linearRampToValueAtTime(1200, now + 0.35);
+
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(2200, now);
+
+    gain.gain.setValueAtTime(0.36, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.44);
+  }
+
+  playBisonStampedeTremorRumble() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(28, now);
+    osc.frequency.linearRampToValueAtTime(36, now + 0.2);
+    osc.frequency.linearRampToValueAtTime(24, now + 0.4);
+
+    gain.gain.setValueAtTime(0.45, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.48);
+  }
+
+  playTripleBarbedArrowWhoosh() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(780, now);
+    osc.frequency.exponentialRampToValueAtTime(160, now + 0.09);
+
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.14);
+  }
+
+  playOrbitalCargoBayDecompressionRoar() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(85, now);
+    osc.frequency.linearRampToValueAtTime(190, now + 0.25);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(320, now);
+
+    gain.gain.setValueAtTime(0.55, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.55);
+  }
+
+  playSupersonicSlipstreamBuffet() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(42, now);
+    osc.frequency.linearRampToValueAtTime(68, now + 0.15);
+    osc.frequency.linearRampToValueAtTime(35, now + 0.35);
+
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.44);
+  }
+
+  playHeavyLogDeadfallDropWhoosh() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.linearRampToValueAtTime(75, now + 0.3);
+
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.38);
+  }
+
+  playTimberLogCrushingImpactThud() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(75, now);
+    osc.frequency.exponentialRampToValueAtTime(18, now + 0.4);
+
+    gain.gain.setValueAtTime(0.65, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.55);
+  }
+
+  playSmartDiscPredictiveArcBeep() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1420, now);
+    osc.frequency.setValueAtTime(1980, now + 0.05);
+
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }
+
+  playMedicompCauterizationSizzle() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(3600, now);
+    osc.frequency.linearRampToValueAtTime(800, now + 0.45);
+
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(1400, now);
+
+    gain.gain.setValueAtTime(0.42, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.55);
+  }
+
+  playGuardBreakRoundhouseKickWhoosh() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(190, now);
+    osc.frequency.linearRampToValueAtTime(480, now + 0.12);
+    osc.frequency.exponentialRampToValueAtTime(65, now + 0.25);
+
+    gain.gain.setValueAtTime(0.48, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.34);
+  }
+
+  playAcidDissolutionEffervescence() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(5400, now);
+    osc.frequency.linearRampToValueAtTime(3200, now + 0.3);
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(4200, now);
+
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.38);
+  }
+
 }
 
 export const audioSynth = new AudioSynthesizer();
