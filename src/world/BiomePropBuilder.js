@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { applySurfaceDetail } from '../utils/surfaceDetail.js';
+import { createBeveledSceneryBox, createTurnedSceneryCylinder, createWeatheredSceneryRock } from './SceneryGeometry.js';
 
 const BIOME_ACCENTS = Object.freeze({
   jungle: 0x5dffbd,
@@ -133,21 +135,43 @@ export class BiomePropBuilder {
   }
 
   geometry(key, factory) {
-    if (!this.geometryCache.has(key)) this.geometryCache.set(key, factory());
+    if (!this.geometryCache.has(key)) {
+      let geometry = factory();
+      const parameters = geometry.parameters;
+      if (geometry.type === 'BoxGeometry' && Math.min(parameters.width, parameters.height, parameters.depth) >= 0.25) {
+        const beveled = createBeveledSceneryBox(parameters.width, parameters.height, parameters.depth);
+        geometry.dispose();
+        geometry = beveled;
+      } else if (geometry.type === 'CylinderGeometry' && !parameters.openEnded
+        && Math.min(parameters.radiusTop, parameters.radiusBottom) >= 0.1 && parameters.height >= 2
+        && /canister|pod-body|tank|mast|shaft|fuselage|vent|post|rail/.test(key)) {
+        const turned = createTurnedSceneryCylinder(parameters.radiusTop, parameters.radiusBottom, parameters.height, parameters.radialSegments);
+        geometry.dispose();
+        geometry = turned;
+      }
+      this.geometryCache.set(key, geometry);
+    }
     return this.geometryCache.get(key);
   }
 
   material(path, options = {}) {
     const key = `${path}:${JSON.stringify(options)}`;
     if (!this.materialCache.has(key)) {
-      this.materialCache.set(key, this.createTexturedMaterial({
+      const material = this.createTexturedMaterial({
         color: textureColor(path),
         path,
         repeat: 2.5,
         roughness: 0.72,
         metalness: path.includes('frontier') || path.includes('bronze') || path.includes('alloy') ? 0.56 : 0.08,
         ...options,
-      }));
+      });
+      const kind = /ice/.test(path) ? 'ice'
+        : /hive|membrane|egg|spore/.test(path) ? 'resin'
+          : /bone/.test(path) ? 'bone'
+            : /bark/.test(path) ? 'wood'
+              : /panels|alloy|bronze|composite/.test(path) ? 'metal' : 'stone';
+      applySurfaceDetail(material, { kind, repeat: [2.5, 2.5], normalStrength: 0.5, roughnessStrength: 0.4 });
+      this.materialCache.set(key, material);
     }
     return this.materialCache.get(key);
   }
@@ -162,7 +186,7 @@ export class BiomePropBuilder {
         roughness: 0.28,
         metalness: 0.18,
       }),
-      dark: new THREE.MeshStandardMaterial({ color: 0x171b20, roughness: 0.64, metalness: 0.72 }),
+      dark: applySurfaceDetail(new THREE.MeshStandardMaterial({ color: 0x292f34, roughness: 0.64, metalness: 0.72 }), { kind: 'metal', repeat: [2, 2], normalStrength: 0.4, roughnessStrength: 0.45 }),
     };
     const loaded = Object.create(null);
     const lazyMaterial = (name, factory) => {
@@ -923,7 +947,7 @@ export class BiomePropBuilder {
         object.rotation.set(Math.PI / 2, -entry.angle + Math.PI / 4, 0);
         object.scale.set(...entry.wedgeScale);
       });
-      addInstances('cover-capstones', this.geometry('cover-capstone', () => new THREE.DodecahedronGeometry(1.45, 0)), surface, (object, index) => {
+      addInstances('cover-capstones', this.geometry('cover-capstone', () => createWeatheredSceneryRock(1.45, 2)), surface, (object, index) => {
         const entry = layout[index];
         object.position.set(entry.x, 4.1, entry.z);
         object.rotation.set(0.2, index * 0.4, 0.1);
@@ -949,7 +973,7 @@ export class BiomePropBuilder {
     let geometry = this.geometry('cluster-box', () => new THREE.BoxGeometry(3.2, 3.2, 3.2));
     let material = surface;
     if (['stone_line', 'bone_line'].includes(spec.type)) {
-      geometry = this.geometry('cluster-stone', () => new THREE.DodecahedronGeometry(2.1, 0));
+      geometry = this.geometry('cluster-stone', () => createWeatheredSceneryRock(2.1, 2));
       material = spec.type === 'bone_line' ? materials.bone : surface;
     } else if (['rib_corridor', 'totem_ring', 'bone_arch'].includes(spec.type)) {
       geometry = this.geometry('cluster-rib', () => new THREE.ConeGeometry(0.7, 8, 6));

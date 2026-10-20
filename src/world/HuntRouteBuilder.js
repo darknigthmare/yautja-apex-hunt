@@ -1,16 +1,36 @@
 import * as THREE from 'three';
+import { getRuntimeTexture } from '../utils/runtimeTextures.js';
+import { applySurfaceDetail } from '../utils/surfaceDetail.js';
+import { createSceneryCoverGeometry } from './SceneryGeometry.js';
 
 const ROUTE_STYLE = Object.freeze({
-  jungle: { route: 0x243c37, marker: 0x7de7d1, event: 0xffb347 },
-  hive_lv426: { route: 0x1c3026, marker: 0x8cff9d, event: 0xc7ff45 },
-  ryushi_desert: { route: 0x6f4c2d, marker: 0xffce7a, event: 0xff7138 },
-  yautja_prime: { route: 0x432522, marker: 0xff8f70, event: 0x76f6ff },
-  genna_deathworld: { route: 0x2f3823, marker: 0xcaff73, event: 0xff9454 },
-  stargazer_blacksite: { route: 0x394650, marker: 0x74d9ff, event: 0xffad55 },
-  los_angeles_1997: { route: 0x4b4140, marker: 0xffc77d, event: 0x8acbea },
-  bouvetoya_pyramid: { route: 0x303b42, marker: 0x8feaff, event: 0xc58a52 },
-  gunnison_outbreak: { route: 0x252c31, marker: 0xa8d9e8, event: 0xdbe666 },
+  jungle: { route: 0xa89b7a, marker: 0x91b49b, event: 0xcba568, texture: 'jungle-ground', surface: 'soil', cover: 'wood', accent: 'foliage' },
+  hive_lv426: { route: 0x81866b, marker: 0xa6b88a, event: 0xb0bf75, texture: 'hive-resin', surface: 'resin', cover: 'resin', accent: 'resin' },
+  ryushi_desert: { route: 0xc4ad83, marker: 0xc9ae7c, event: 0xc69b69, texture: 'ryushi-sand', surface: 'sand', cover: 'stone', accent: 'stone' },
+  yautja_prime: { route: 0x9f8873, marker: 0xc1a07a, event: 0x9cb6b3, texture: 'yautja-stone', surface: 'stone', cover: 'stone', accent: 'metal' },
+  genna_deathworld: { route: 0xa19e75, marker: 0xa7b77b, event: 0xc4a875, texture: 'genna-deathworld-ground', surface: 'soil', cover: 'wood', accent: 'foliage' },
+  stargazer_blacksite: { route: 0xa3abad, marker: 0x8aafb9, event: 0xc4a581, texture: 'stargazer-tactical-composite', surface: 'stone', cover: 'stone', accent: 'metal' },
+  los_angeles_1997: { route: 0xb3a99c, marker: 0xc4ad91, event: 0x96b5ba, texture: 'los-angeles-heatwave-urban', surface: 'stone', cover: 'stone', accent: 'metal' },
+  bouvetoya_pyramid: { route: 0xb8c4c6, marker: 0xa4bdc3, event: 0xba9a75, texture: 'bouvetoya-ice-rock', surface: 'ice', cover: 'ice', accent: 'ice' },
+  gunnison_outbreak: { route: 0xa4aaa8, marker: 0x9aafb7, event: 0xb4ba8d, texture: 'gunnison-rain-urban', surface: 'stone', cover: 'stone', accent: 'metal' },
 });
+
+function createRouteEdgeMask() {
+  const width = 64;
+  const pixels = new Uint8Array(width * 4);
+  for (let index = 0; index < width; index += 1) {
+    const edge = Math.min(index, width - index - 1) / (width * 0.2);
+    const alpha = THREE.MathUtils.smoothstep(edge, 0, 1);
+    pixels.set([255, Math.round(alpha * 255), 255, 255], index * 4);
+  }
+  const texture = new THREE.DataTexture(pixels, width, 1, THREE.RGBAFormat);
+  texture.wrapS = THREE.ClampToEdgeWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.magFilter = THREE.LinearFilter;
+  texture.minFilter = THREE.LinearFilter;
+  texture.needsUpdate = true;
+  return texture;
+}
 
 function vectorFromLayout(value) {
   return new THREE.Vector3(
@@ -65,9 +85,12 @@ function createRouteGeometry(route, sectorMap, sampleHeight) {
   const midpoint = start.clone().lerp(end, 0.5);
   const perpendicular = new THREE.Vector3(-(end.z - start.z), 0, end.x - start.x).normalize();
   const control = midpoint.addScaledVector(perpendicular, (Number(route.bend) || 0) * distance);
-  const segmentCount = Math.max(14, Math.min(30, Math.ceil(distance / 22)));
+  const segmentCount = Math.max(24, Math.min(140, Math.ceil(distance / 6)));
   const positions = [];
   const indices = [];
+  const uvs = [];
+  const colors = [];
+  const seed = [...String(route.id)].reduce((total, letter) => total + letter.charCodeAt(0), 0);
   const center = new THREE.Vector3();
   const ahead = new THREE.Vector3();
   const tangent = new THREE.Vector3();
@@ -86,13 +109,19 @@ function createRouteGeometry(route, sectorMap, sampleHeight) {
       tangent.copy(ahead).sub(center);
     }
     tangent.normalize();
-    side.set(-tangent.z, 0, tangent.x).multiplyScalar(routeWidth * 0.5);
+    // Les bords restent dans le gabarit réservé, avec des rives érodées
+    // plutôt que deux droites parfaites évoquant un ruban lumineux.
+    const wear = 0.88 + 0.08 * Math.sin(progress * distance * 0.19 + seed) + 0.035 * Math.sin(progress * distance * 0.47);
+    side.set(-tangent.z, 0, tangent.x).multiplyScalar(routeWidth * 0.5 * wear);
     // Chaque rive suit le relief : une altitude centrale enterrait le bord
     // amont et faisait flotter le bord aval des rubans sur les terrasses.
     for (const direction of [1, -1]) {
       const x = center.x + side.x * direction;
       const z = center.z + side.z * direction;
       positions.push(x, sampleHeight(x, z) + 0.11, z);
+      uvs.push(direction === 1 ? 0 : 1, progress * distance / 12);
+      const shade = 0.91 + 0.1 * Math.sin(x * 0.27 + z * 0.19) + 0.035 * Math.cos(z * 0.73 - x * 0.37);
+      colors.push(shade, shade, shade);
     }
     if (index < segmentCount) {
       const base = index * 2;
@@ -102,6 +131,8 @@ function createRouteGeometry(route, sectorMap, sampleHeight) {
 
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
   geometry.setIndex(indices);
   geometry.computeVertexNormals();
   geometry.computeBoundingSphere();
@@ -109,15 +140,16 @@ function createRouteGeometry(route, sectorMap, sampleHeight) {
   return geometry;
 }
 
-function createSectorInstances(layout, sampleHeight, style) {
+function createSectorInstances(layout, sampleHeight, style, navigationSegments) {
   const padGeometry = new THREE.CylinderGeometry(7, 8.5, 0.35, 16);
   const padMaterial = new THREE.MeshStandardMaterial({
     color: style.route,
-    emissive: style.marker,
-    emissiveIntensity: 0.12,
-    roughness: 0.84,
-    metalness: 0.12,
+    map: getRuntimeTexture(`/assets/textures/${style.texture}.webp`, { repeat: [2, 2] }),
+    emissiveIntensity: 0,
+    roughness: 0.97,
+    metalness: 0,
   });
+  applySurfaceDetail(padMaterial, { kind: style.surface, repeat: [2, 2], normalStrength: 0.25, roughnessStrength: 0.2 });
   const pads = new THREE.InstancedMesh(padGeometry, padMaterial, layout.sectors.length);
   pads.name = 'hunt-sector-ground-markers';
   pads.receiveShadow = true;
@@ -127,7 +159,7 @@ function createSectorInstances(layout, sampleHeight, style) {
   const beaconMaterial = new THREE.MeshStandardMaterial({
     color: style.marker,
     emissive: style.marker,
-    emissiveIntensity: 0.58,
+    emissiveIntensity: 0.2,
     roughness: 0.38,
     metalness: 0.62,
   });
@@ -147,7 +179,26 @@ function createSectorInstances(layout, sampleHeight, style) {
     transform.updateMatrix();
     pads.setMatrixAt(index, transform.matrix);
 
-    transform.position.set(x, ground + 3.5 * roleScale, z);
+    // Le mât ne doit pas traverser le chasseur au largage ni barrer un
+    // carrefour. Garder le repère en bordure des voies plutôt qu'au centre.
+    let beaconX = x + 16;
+    let beaconZ = z;
+    let clear = false;
+    for (let ring = 0; ring < 3 && !clear; ring += 1) {
+      const distance = 16 + ring * 8;
+      for (let step = 0; step < 16; step += 1) {
+        const angle = index * 1.618 + step * 2.399963229728653;
+        const candidateX = x + Math.cos(angle) * distance;
+        const candidateZ = z + Math.sin(angle) * distance;
+        if (Math.hypot(candidateX, candidateZ) > layout.playableRadius - 6) continue;
+        if (!navigationSegments.every((segment) => distanceToRouteSegment(candidateX, candidateZ, segment) > segment.halfWidth + 4)) continue;
+        beaconX = candidateX;
+        beaconZ = candidateZ;
+        clear = true;
+        break;
+      }
+    }
+    transform.position.set(beaconX, sampleHeight(beaconX, beaconZ) + 3.5 * roleScale, beaconZ);
     transform.scale.set(roleScale, roleScale, roleScale);
     transform.updateMatrix();
     beacons.setMatrixAt(index, transform.matrix);
@@ -200,30 +251,8 @@ function distanceToRouteSegment(x, z, segment) {
 }
 
 function createOuterCoverInstances(layout, sampleHeight, style, navigationSegments) {
-  const geometryByBiome = {
-    jungle: new THREE.CylinderGeometry(2.4, 4.8, 30, 10),
-    hive_lv426: new THREE.ConeGeometry(4.6, 30, 9),
-    ryushi_desert: new THREE.DodecahedronGeometry(7.5, 1),
-    yautja_prime: new THREE.BoxGeometry(7, 30, 7, 2, 6, 2),
-    genna_deathworld: new THREE.ConeGeometry(4.2, 27, 8),
-    stargazer_blacksite: new THREE.BoxGeometry(7, 20, 6),
-    los_angeles_1997: new THREE.BoxGeometry(8, 26, 7),
-    bouvetoya_pyramid: new THREE.CylinderGeometry(3.6, 5.2, 28, 6),
-    gunnison_outbreak: new THREE.BoxGeometry(5.5, 16, 3.4, 2, 4, 2),
-  };
-  const accentGeometryByBiome = {
-    jungle: new THREE.DodecahedronGeometry(9, 1),
-    hive_lv426: new THREE.TorusGeometry(4.8, 0.75, 8, 18),
-    ryushi_desert: new THREE.OctahedronGeometry(5.2, 1),
-    yautja_prime: new THREE.OctahedronGeometry(3.2, 1),
-    genna_deathworld: new THREE.SphereGeometry(4.8, 12, 8),
-    stargazer_blacksite: new THREE.CylinderGeometry(2.2, 2.2, 3.5, 8),
-    los_angeles_1997: new THREE.BoxGeometry(5.5, 2.6, 4.5),
-    bouvetoya_pyramid: new THREE.OctahedronGeometry(4.2, 1),
-    gunnison_outbreak: new THREE.CylinderGeometry(1.8, 2.6, 5.8, 8),
-  };
+  const { body: coverGeometry, accent: accentGeometry } = createSceneryCoverGeometry(layout.biomeId);
   const tallCover = layout.biomeId !== 'ryushi_desert';
-  const coverGeometry = geometryByBiome[layout.biomeId] ?? geometryByBiome.jungle;
   coverGeometry.computeBoundingBox();
   coverGeometry.computeBoundingSphere();
   const vertices = coverGeometry.getAttribute('position');
@@ -306,26 +335,33 @@ function createOuterCoverInstances(layout, sampleHeight, style, navigationSegmen
   }
 
   const coverMaterial = new THREE.MeshStandardMaterial({
-    color: style.route,
-    emissive: style.marker,
-    emissiveIntensity: 0.035,
-    roughness: 0.9,
-    metalness: ['yautja_prime', 'bouvetoya_pyramid'].includes(layout.biomeId) ? 0.26 : 0.04,
+    color: 0xffffff,
+    vertexColors: true,
+    roughness: style.cover === 'resin' ? 0.48 : 0.86,
+    metalness: layout.biomeId === 'yautja_prime' ? 0.24 : 0.02,
   });
   const accentMaterial = new THREE.MeshStandardMaterial({
-    color: style.marker,
-    emissive: style.marker,
-    emissiveIntensity: layout.biomeId === 'genna_deathworld' ? 0.36 : 0.08,
-    roughness: 0.72,
-    metalness: layout.biomeId === 'hive_lv426' ? 0.36 : 0.08,
+    color: 0xffffff,
+    vertexColors: true,
+    roughness: style.accent === 'metal' ? 0.57 : 0.82,
+    metalness: style.accent === 'metal' ? 0.62 : 0.03,
   });
+  if (style.cover === 'wood') coverMaterial.map = getRuntimeTexture('/assets/textures/jungle-bark.webp', { repeat: [2, 3] });
+  if (layout.biomeId === 'jungle') {
+    accentMaterial.map = getRuntimeTexture('/assets/textures/deathworld-alien-flora.webp');
+    accentMaterial.side = THREE.DoubleSide;
+    accentMaterial.roughness = 0.96;
+    accentMaterial.metalness = 0;
+  }
+  applySurfaceDetail(coverMaterial, { kind: style.cover, repeat: [2, 5], normalStrength: style.cover === 'stone' ? 0.3 : 0.6, roughnessStrength: 0.4 });
+  applySurfaceDetail(accentMaterial, { kind: style.accent, repeat: [2, 2], normalStrength: layout.biomeId === 'jungle' ? 0.3 : 0.45, roughnessStrength: 0.4 });
   const cover = new THREE.InstancedMesh(
     coverGeometry,
     coverMaterial,
     placements.length,
   );
   const accents = new THREE.InstancedMesh(
-    accentGeometryByBiome[layout.biomeId] ?? accentGeometryByBiome.jungle,
+    accentGeometry,
     accentMaterial,
     placements.length,
   );
@@ -335,6 +371,7 @@ function createOuterCoverInstances(layout, sampleHeight, style, navigationSegmen
   cover.receiveShadow = true;
   cover.userData.huntCoverBatch = true;
   accents.userData.huntCoverBatch = true;
+  accents.receiveShadow = true;
   const transform = new THREE.Object3D();
   const transformedBounds = new THREE.Box3();
   placements.forEach((placement, index) => {
@@ -356,11 +393,20 @@ function createOuterCoverInstances(layout, sampleHeight, style, navigationSegmen
     placement.topY = placement.ground + placement.coverHeight;
     transform.updateMatrix();
     cover.setMatrixAt(index, transform.matrix);
-    transform.position.y = placement.topY - 2 * placement.scale;
-    transform.scale.setScalar(placement.scale * (layout.biomeId === 'jungle' ? 1 : 0.72));
-    if (layout.biomeId === 'hive_lv426') transform.rotation.x = Math.PI / 2;
+    const accentScale = placement.scale * (['jungle', 'genna_deathworld'].includes(layout.biomeId) ? 1 : 0.72);
+    const rooftop = ['stargazer_blacksite', 'los_angeles_1997', 'gunnison_outbreak'].includes(layout.biomeId);
+    transform.position.y = rooftop
+      ? placement.topY - accentGeometry.boundingBox.min.y * accentScale
+      : placement.topY - 2 * placement.scale;
+    transform.scale.setScalar(accentScale);
     transform.updateMatrix();
     accents.setMatrixAt(index, transform.matrix);
+    transformedBounds.copy(accentGeometry.boundingBox).applyMatrix4(transform.matrix);
+    placement.topY = Math.max(placement.topY, transformedBounds.max.y);
+    placement.coverHeight = placement.topY - placement.ground;
+    const tint = new THREE.Color().setScalar(0.85 + ((index * 17) % 13) * 0.018);
+    cover.setColorAt(index, tint);
+    accents.setColorAt(index, tint);
   });
   for (const batch of [cover, accents]) {
     batch.instanceMatrix.setUsage(THREE.StaticDrawUsage);
@@ -406,14 +452,21 @@ export function buildHuntRouteNetwork(layout, sampleHeight = () => 0) {
   );
   const routeMaterial = new THREE.MeshStandardMaterial({
     color: style.route,
-    emissive: style.marker,
-    emissiveIntensity: 0.012,
-    roughness: 0.99,
+    map: getRuntimeTexture(`/assets/textures/${style.texture}.webp`),
+    emissiveIntensity: 0,
+    alphaMap: createRouteEdgeMask(),
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.92,
+    alphaTest: 0.06,
+    depthWrite: false,
+    roughness: 0.93,
     metalness: 0.01,
     polygonOffset: true,
     polygonOffsetFactor: -1,
     polygonOffsetUnits: -1,
   });
+  applySurfaceDetail(routeMaterial, { kind: style.surface, repeat: [1, 1], normalStrength: 0.55, roughnessStrength: 0.5 });
   let routeTriangles = 0;
   const navigationSegments = [];
   for (const route of layout.routes) {
@@ -440,7 +493,7 @@ export function buildHuntRouteNetwork(layout, sampleHeight = () => 0) {
     root.add(mesh);
   }
 
-  const sectorBatches = createSectorInstances(layout, sampleRouteHeight, style);
+  const sectorBatches = createSectorInstances(layout, sampleRouteHeight, style, navigationSegments);
   const eventBatch = createEventNodeInstances(layout, sampleRouteHeight, style);
   const outerCover = createOuterCoverInstances(layout, sampleRouteHeight, style, navigationSegments);
   root.add(...sectorBatches, eventBatch, ...outerCover.batches);

@@ -1,4 +1,5 @@
 import { DEFAULT_SETTINGS } from '../data/GameConfig.js';
+import { sanitizeGraphicsQuality } from '../render/graphicsQuality.js';
 import {
   DEFAULT_CUSTOMIZATION,
   PLAYABLE_WEAPONS,
@@ -28,6 +29,7 @@ export class SaveManager {
       audioEnabled: settings.audioEnabled !== false,
       reducedMotion: settings.reducedMotion === true,
       highContrast: settings.highContrast === true,
+      graphicsQuality: sanitizeGraphicsQuality(settings.graphicsQuality),
       hudScale: Number.isFinite(scale) ? Math.min(1.25, Math.max(0.85, scale)) : DEFAULT_SETTINGS.hudScale,
     };
   }

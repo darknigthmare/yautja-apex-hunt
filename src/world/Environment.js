@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { applySurfaceDetail } from '../utils/surfaceDetail.js';
 import { BIOME_DEFINITIONS } from '../data/GameConfig.js';
 import {
   getBiomeHuntLayout,
@@ -222,6 +224,58 @@ const DEATHWORLD_FLORA_BATCH_NAMES = Object.freeze({
   tendrils: 'genna-flora-tendrils',
 });
 
+function makeFrondGeometry() {
+  const positions = [];
+  const normals = [];
+  const uvs = [];
+  const indices = [];
+  const colours = [];
+  for (let segment = 0; segment <= 5; segment += 1) {
+    const t = segment / 5;
+    const width = Math.sin(t * Math.PI) * 0.48 + 0.012;
+    for (let side = -1; side <= 1; side += 1) {
+      positions.push(side * width, t, Math.sin(t * Math.PI) * 0.15 - Math.abs(side) * 0.045);
+      normals.push(0, 0, 1);
+      uvs.push((side + 1) * 0.5, t);
+      const shade = side === 0 ? 1 : 0.7 + t * 0.16;
+      colours.push(shade, shade, shade);
+    }
+    if (segment < 5) {
+      const base = segment * 3;
+      for (let side = 0; side < 2; side += 1) {
+        const a = base + side;
+        indices.push(a, a + 1, a + 3, a + 1, a + 4, a + 3);
+      }
+    }
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+  geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colours, 3));
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+  return geometry;
+}
+
+function makeTreeCanopyGeometry() {
+  const leaf = makeFrondGeometry();
+  const leaves = [];
+  const transform = new THREE.Object3D();
+  for (let index = 0; index < 32; index += 1) {
+    const angle = index * 2.399963229728653;
+    transform.position.set(Math.cos(angle) * 0.7, (index % 4) * 0.8, Math.sin(angle) * 0.7);
+    transform.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(Math.cos(angle), 0.24 + (index % 4) * 0.12, Math.sin(angle)).normalize());
+    transform.scale.set(2.2 + (index % 3) * 0.5, 9 + (index % 5), 1);
+    transform.updateMatrix();
+    leaves.push(leaf.clone().applyMatrix4(transform.matrix));
+  }
+  const geometry = mergeGeometries(leaves);
+  leaves.forEach((entry) => entry.dispose());
+  leaf.dispose();
+  return geometry;
+}
+
 function toWorldVector(value) {
   if (value?.isVector3) return value;
   if (Array.isArray(value) && value.length >= 3) {
@@ -366,6 +420,7 @@ export class Environment {
     this.propMetrics = { drawCallEstimate: 0, triangleEstimate: 0 };
     this.propFootprints = [];
     this.staticInstanceBatches = [];
+    this.groundCoverBatches = [];
     this.pyramidInteriorLights = [];
     this.pyramidShiftWalls = [];
     this.pyramidShiftState = null;
@@ -430,26 +485,91 @@ export class Environment {
   createAtmosphericSky(style) {
     const horizon = new THREE.Color(style.background).lerp(new THREE.Color(style.hemisphereSky), 0.08);
     const zenith = new THREE.Color(style.background).lerp(new THREE.Color(style.hemisphereSky), 0.18);
+    const cloudColor = new THREE.Color(style.hemisphereSky).multiplyScalar(0.24).lerp(horizon, 0.3);
+    let clouds = this.textureCache.get('procedural-atmosphere-clouds');
+    if (!clouds) {
+      const width = 256;
+      const height = 128;
+      const pixels = new Uint8Array(width * height * 4);
+      const cloudNoise = (u, v, columns, rows) => {
+        const x = u * columns;
+        const y = v * rows;
+        const ix = Math.floor(x);
+        const iy = Math.floor(y);
+        const sx = x - ix;
+        const sy = y - iy;
+        const tx = sx * sx * (3 - 2 * sx);
+        const ty = sy * sy * (3 - 2 * sy);
+        const sample = (a, b) => {
+          const value = Math.sin(((a + columns) % columns) * 127.1 + ((b + rows) % rows) * 311.7 + 19.3) * 43758.5453;
+          return value - Math.floor(value);
+        };
+        return THREE.MathUtils.lerp(
+          THREE.MathUtils.lerp(sample(ix, iy), sample(ix + 1, iy), tx),
+          THREE.MathUtils.lerp(sample(ix, iy + 1), sample(ix + 1, iy + 1), tx), ty,
+        );
+      };
+      for (let y = 0; y < height; y += 1) {
+        for (let x = 0; x < width; x += 1) {
+          const u = x / width;
+          const v = y / height;
+          const cloud = cloudNoise(u, v, 3, 6) * 0.58
+            + cloudNoise(u, v, 6, 12) * 0.28 + cloudNoise(u, v, 12, 24) * 0.14;
+          const index = (y * width + x) * 4;
+          pixels[index] = pixels[index + 1] = pixels[index + 2] = Math.round(THREE.MathUtils.clamp(cloud, 0, 1) * 255);
+          pixels[index + 3] = 255;
+        }
+      }
+      clouds = new THREE.DataTexture(pixels, width, height);
+      clouds.wrapS = clouds.wrapT = THREE.RepeatWrapping;
+      clouds.magFilter = THREE.LinearFilter;
+      clouds.minFilter = THREE.LinearMipmapLinearFilter;
+      clouds.generateMipmaps = true;
+      clouds.needsUpdate = true;
+      this.textureCache.set('procedural-atmosphere-clouds', clouds);
+    }
     const sky = new THREE.Mesh(
       new THREE.SphereGeometry(1500, 24, 12),
       new THREE.ShaderMaterial({
-        uniforms: { horizon: { value: horizon }, zenith: { value: zenith } },
+        uniforms: {
+          horizon: { value: horizon }, zenith: { value: zenith },
+          cloudColor: { value: cloudColor }, cloudMap: { value: clouds },
+          cloudStrength: { value: this.currentBiome === 'hive_lv426' ? 0 : this.currentBiome === 'ryushi_desert' ? 0.12 : 0.3 },
+          sunDirection: { value: KEY_LIGHT_FORWARD.clone() }, sunColor: { value: new THREE.Color(style.sun).multiplyScalar(0.22) },
+        },
         side: THREE.BackSide,
         depthWrite: false,
         toneMapped: false,
         vertexShader: `
           varying float elevation;
+          varying vec2 skyUv;
+          varying vec3 skyDirection;
           void main() {
             elevation = normalize(position).y;
+            skyUv = uv;
+            skyDirection = normalize(position);
             gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
           }
         `,
         fragmentShader: `
           uniform vec3 horizon;
           uniform vec3 zenith;
+          uniform vec3 cloudColor;
+          uniform sampler2D cloudMap;
+          uniform float cloudStrength;
+          uniform vec3 sunDirection;
+          uniform vec3 sunColor;
           varying float elevation;
+          varying vec2 skyUv;
+          varying vec3 skyDirection;
           void main() {
-            gl_FragColor = vec4(mix(horizon, zenith, smoothstep(0.0, 0.85, elevation)), 1.0);
+            vec3 sky = mix(horizon, zenith, smoothstep(0.0, 0.85, elevation));
+            float cloudField = texture2D(cloudMap, skyUv).r * 0.85
+              + texture2D(cloudMap, skyUv * vec2(2.0, 1.5)).r * 0.15;
+            float cloud = smoothstep(0.3, 0.8, cloudField) * cloudStrength * smoothstep(0.02, 0.35, elevation);
+            sky = mix(sky, cloudColor, cloud);
+            sky += sunColor * pow(max(0.0, dot(normalize(skyDirection), sunDirection)), 48.0);
+            gl_FragColor = vec4(sky, 1.0);
             #include <colorspace_fragment>
           }
         `,
@@ -497,7 +617,7 @@ export class Environment {
     emissive = 0x000000,
     emissiveIntensity = 0,
   }) {
-    return new THREE.MeshStandardMaterial({
+    const material = new THREE.MeshStandardMaterial({
       color,
       map: this.getTexture(path, repeat),
       roughness,
@@ -505,6 +625,14 @@ export class Environment {
       emissive,
       emissiveIntensity,
     });
+    const kind = /bark/i.test(path) ? 'wood'
+      : /hive|resin|membrane/i.test(path) ? 'resin'
+        : /sand/i.test(path) ? 'sand'
+          : /ice/i.test(path) ? 'ice'
+            : /bronze|alloy|composite|panel/i.test(path) ? 'metal'
+              : /ground/i.test(path) ? 'soil' : 'stone';
+    if (material.map) material.color.set(0xffffff).lerp(new THREE.Color(color), 0.25);
+    return applySurfaceDetail(material, { kind, repeat: [repeat * 2, repeat * 2], normalStrength: kind === 'metal' ? 0.35 : 0.7 });
   }
 
   clearBiome() {
@@ -538,6 +666,7 @@ export class Environment {
     this.propMetrics = { drawCallEstimate: 0, triangleEstimate: 0 };
     this.propFootprints = [];
     this.staticInstanceBatches = [];
+    this.groundCoverBatches = [];
     this.pyramidInteriorLights = [];
     this.pyramidShiftWalls = [];
     this.pyramidShiftState = null;
@@ -707,6 +836,7 @@ export class Environment {
     this.buildBiomeProps();
     this.setupPyramidShiftMechanism();
     this.completeHuntRouteColliderBudget();
+    this.createGroundCover();
     if (this.currentBiome === 'gunnison_outbreak') this.setWeatherEvent('rain');
     this.sunSphere.visible = this.biomeGroup.visible && !['hive_lv426', 'los_angeles_1997', 'gunnison_outbreak'].includes(this.currentBiome);
     this.setReducedMotion(this.reducedMotion);
@@ -1207,6 +1337,8 @@ export class Environment {
         (total, prop) => total + (prop.colliderParts?.length ?? 0), 0,
       ),
       staticInstanceBatchCount: this.staticInstanceBatches.length,
+      groundCoverBatchCount: this.groundCoverBatches.length,
+      groundCoverInstanceCount: this.groundCoverBatches.reduce((total, batch) => total + batch.count, 0),
       staticInstanceCount: this.staticInstanceBatches.reduce(
         (total, batch) => total + batch.count, 0,
       ),
@@ -1767,11 +1899,151 @@ export class Environment {
     // vision. Keep only a subtle tint, retaining the original untextured fallback.
     if (material.map) material.color.set(0xffffff).lerp(new THREE.Color(colorHex), 0.12);
     material.vertexColors = true;
+    const terrainKind = this.currentBiome === 'ryushi_desert' ? 'sand'
+      : this.currentBiome === 'hive_lv426' ? 'resin'
+        : this.currentBiome === 'bouvetoya_pyramid' ? 'ice'
+          : ['jungle', 'genna_deathworld'].includes(this.currentBiome) ? 'soil' : 'stone';
+    applySurfaceDetail(material, {
+      kind: terrainKind, repeat: [terrainSize / 16, terrainSize / 16],
+      normalStrength: terrainKind === 'sand' ? 0.24 : 0.32,
+      roughnessStrength: this.currentBiome === 'gunnison_outbreak' ? 0.3 : 0.1,
+    });
+    const wet = this.currentBiome === 'gunnison_outbreak';
+    material.onBeforeCompile = (shader) => {
+      shader.vertexShader = shader.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vTerrainWorld;')
+        .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\nvTerrainWorld = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+      shader.fragmentShader = shader.fragmentShader.replace('#include <common>', `#include <common>
+        varying vec3 vTerrainWorld;
+        float groundDetailFade() {
+          return 1.0 - smoothstep(16.0, 110.0, length(vTerrainWorld - cameraPosition));
+        }
+      `)
+        .replace('#include <map_fragment>', `
+          #ifdef USE_MAP
+            float nearDetail = groundDetailFade();
+            float textureSoftness = 1.1 + (1.0 - nearDetail) * 1.2;
+            vec4 macroAlbedo = texture2D(map, vMapUv, textureSoftness);
+            vec4 fineAlbedo = texture2D(map, vMapUv * 3.73 + vec2(0.37, 0.11), textureSoftness + 0.3);
+            float blend = nearDetail * (0.16 + sin(vTerrainWorld.x * 0.027 + sin(vTerrainWorld.z * 0.019)) * 0.04);
+            diffuseColor *= mix(macroAlbedo, fineAlbedo, blend);
+          #endif
+        `).replace('#include <normal_fragment_maps>', `
+          #include <normal_fragment_maps>
+          normal = normalize(mix(nonPerturbedNormal, normal, 0.1 + groundDetailFade() * 0.9));
+        `);
+      if (wet) shader.fragmentShader = shader.fragmentShader.replace('#include <roughnessmap_fragment>', `
+        #include <roughnessmap_fragment>
+        float dampPatch = smoothstep(0.2, 0.85, 0.5 + 0.5 * sin(vTerrainWorld.x * 0.09 + sin(vTerrainWorld.z * 0.045)));
+        roughnessFactor = mix(roughnessFactor, 0.2, dampPatch * 0.45);
+      `);
+    };
+    material.customProgramCacheKey = () => `layered-terrain-v2-${wet}`;
     const ground = new THREE.Mesh(geometry, material);
     ground.name = 'hunt-terrain-surface';
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     this.biomeGroup.add(ground);
+  }
+
+  createGroundCover() {
+    const foliageCounts = { jungle: 384, genna_deathworld: 360, ryushi_desert: 220, hive_lv426: 160, stargazer_blacksite: 260, los_angeles_1997: 128, gunnison_outbreak: 240 };
+    const foliageCount = foliageCounts[this.currentBiome] ?? 0;
+    const routeSegments = [];
+    this.routeRoot?.traverse((object) => {
+      if (!object.userData.huntRoute) return;
+      const vertices = object.geometry.attributes.position;
+      for (let index = 0; index < vertices.count - 2; index += 2) {
+        routeSegments.push({
+          x: (vertices.getX(index) + vertices.getX(index + 1)) * 0.5,
+          z: (vertices.getZ(index) + vertices.getZ(index + 1)) * 0.5,
+          endX: (vertices.getX(index + 2) + vertices.getX(index + 3)) * 0.5,
+          endZ: (vertices.getZ(index + 2) + vertices.getZ(index + 3)) * 0.5,
+          halfWidth: Math.hypot(vertices.getX(index) - vertices.getX(index + 1), vertices.getZ(index) - vertices.getZ(index + 1)) * 0.5,
+        });
+      }
+    });
+    const random = (value) => {
+      const result = Math.sin(value * 127.1 + 311.7) * 43758.5453;
+      return result - Math.floor(result);
+    };
+    const clear = (x, z) => {
+      if (this.huntLayout.sectors.some(({ center }) => Math.hypot(x - center[0], z - center[2]) < 17)) return false;
+      if (this.obstacleColliders.some((collider) => Math.hypot(x - collider.x, z - collider.z) < collider.radius + 2)) return false;
+      return routeSegments.every((segment) => {
+        const dx = segment.endX - segment.x;
+        const dz = segment.endZ - segment.z;
+        const progress = THREE.MathUtils.clamp(((x - segment.x) * dx + (z - segment.z) * dz) / Math.max(0.01, dx * dx + dz * dz), 0, 1);
+        return Math.hypot(x - segment.x - dx * progress, z - segment.z - dz * progress) > segment.halfWidth + 1.7;
+      });
+    };
+    const placements = [];
+    for (let index = 0; index < Math.max(256, foliageCount) * 6 && placements.length < Math.max(256, foliageCount); index += 1) {
+      let x;
+      let z;
+      if (index % 3 !== 0 && routeSegments.length) {
+        const segment = routeSegments[index % routeSegments.length];
+        const length = Math.max(1, Math.hypot(segment.endX - segment.x, segment.endZ - segment.z));
+        const side = index % 2 === 0 ? 1 : -1;
+        const offset = (segment.halfWidth + 3 + random(index + 43) * 13) * side;
+        x = (segment.x + segment.endX) * 0.5 - (segment.endZ - segment.z) / length * offset;
+        z = (segment.z + segment.endZ) * 0.5 + (segment.endX - segment.x) / length * offset;
+      } else {
+        const angle = random(index + 13) * Math.PI * 2;
+        const radius = Math.sqrt(random(index + 29)) * (this.playableRadius - 15);
+        x = Math.cos(angle) * radius;
+        z = Math.sin(angle) * radius;
+      }
+      if (Math.hypot(x, z) >= this.playableRadius - 8 || !clear(x, z)) continue;
+      placements.push(new THREE.Vector3(x, this.sampleHeight(x, z), z));
+    }
+    const transform = new THREE.Object3D();
+    const appendBatch = (batch) => {
+      batch.instanceMatrix.setUsage(THREE.StaticDrawUsage);
+      batch.instanceMatrix.needsUpdate = true;
+      batch.receiveShadow = true;
+      batch.computeBoundingBox();
+      batch.computeBoundingSphere();
+      this.biomeGroup.add(batch);
+      this.groundCoverBatches.push(batch);
+    };
+    if (foliageCount > 0) {
+      const kind = this.currentBiome === 'hive_lv426' ? 'resin' : 'foliage';
+      const material = applySurfaceDetail(new THREE.MeshStandardMaterial({
+        color: this.currentBiome === 'genna_deathworld' ? 0x658044 : this.currentBiome === 'ryushi_desert' ? 0x817247 : 0x486541,
+        roughness: 0.83, side: THREE.DoubleSide, vertexColors: true,
+      }), { kind, normalStrength: 0.45, repeat: [1, 2] });
+      const count = Math.min(foliageCount, placements.length);
+      const fronds = new THREE.InstancedMesh(makeFrondGeometry(), material, count * 6);
+      fronds.name = 'hunt-instanced-undergrowth';
+      for (let index = 0; index < count; index += 1) {
+        for (let leaf = 0; leaf < 6; leaf += 1) {
+          const angle = leaf / 6 * Math.PI * 2 + index * 1.618;
+          transform.position.copy(placements[index]);
+          transform.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(Math.cos(angle) * 0.65, 1, Math.sin(angle) * 0.65).normalize());
+          const height = this.currentBiome === 'ryushi_desert' ? 0.4 : 1.2;
+          transform.scale.set(0.4 + random(index + leaf) * 0.4, height * (0.7 + random(index + 87) * 0.7), 1);
+          transform.updateMatrix();
+          fronds.setMatrixAt(index * 6 + leaf, transform.matrix);
+          fronds.setColorAt(index * 6 + leaf, new THREE.Color().setScalar(0.7 + random(index + leaf + 101) * 0.4));
+        }
+      }
+      appendBatch(fronds);
+    }
+    const rockCount = Math.min(256, placements.length);
+    const rock = applySurfaceDetail(new THREE.MeshStandardMaterial({
+      color: this.currentBiome === 'bouvetoya_pyramid' ? 0x8da2ad : this.currentBiome === 'ryushi_desert' ? 0x786047 : 0x59605b,
+      roughness: this.currentBiome === 'gunnison_outbreak' ? 0.55 : 0.92,
+    }), { kind: this.currentBiome === 'bouvetoya_pyramid' ? 'ice' : 'stone', normalStrength: 0.8 });
+    const stones = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 0), rock, rockCount);
+    stones.name = 'hunt-instanced-ground-stones';
+    for (let index = 0; index < rockCount; index += 1) {
+      transform.position.copy(placements[index]);
+      transform.rotation.set(random(index) * 0.5, random(index + 7) * Math.PI * 2, 0);
+      transform.scale.set(0.3 + random(index + 19) * 0.6, 0.1 + random(index + 31) * 0.22, 0.3 + random(index + 59) * 0.5);
+      transform.updateMatrix();
+      stones.setMatrixAt(index, transform.matrix);
+    }
+    appendBatch(stones);
   }
 
   createAncientRuins() {
@@ -1833,9 +2105,11 @@ export class Environment {
       repeat: 5,
       roughness: 0.98,
     });
-    const foliage = new THREE.MeshStandardMaterial({ color: 0x064456, roughness: 0.5 });
+    const foliage = applySurfaceDetail(new THREE.MeshStandardMaterial({
+      color: 0x376a3c, roughness: 0.76, side: THREE.DoubleSide, vertexColors: true,
+    }), { kind: 'foliage', repeat: [1, 2], normalStrength: 0.5 });
     const trunks = new THREE.InstancedMesh(new THREE.CylinderGeometry(2.2, 4.5, 36, 9), trunk, 45);
-    const crowns = new THREE.InstancedMesh(new THREE.DodecahedronGeometry(14), foliage, 45);
+    const crowns = new THREE.InstancedMesh(makeTreeCanopyGeometry(), foliage, 45);
     trunks.name = STATIC_INSTANCE_BATCH_NAMES.jungleTrunks;
     crowns.name = STATIC_INSTANCE_BATCH_NAMES.jungleCrowns;
     trunks.castShadow = true;

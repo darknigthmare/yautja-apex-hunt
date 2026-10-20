@@ -83,8 +83,9 @@ test('Genna matérialise un monde mortel texturé, vivant et praticable', () => 
   assert.equal(snapshot.deathworldFloraInstanceCount, 168);
   assert.ok(snapshot.totalInstancedInstanceCount >= 168);
   assert.ok(snapshot.totalMeshInstanceCount >= 168);
+  assert.equal(snapshot.groundCoverBatchCount, 2, 'le sous-bois et les fragments de sol ont leurs propres lots');
   assert.ok(
-    snapshot.totalDrawCallEstimate <= snapshot.propDrawCallEstimate + snapshot.navigationDrawCallEstimate + 10,
+    snapshot.totalDrawCallEstimate <= snapshot.propDrawCallEstimate + snapshot.navigationDrawCallEstimate + 10 + snapshot.groundCoverBatchCount,
     'les 168 éléments de flore doivent rester contenus dans cinq appels instanciés',
   );
 });

@@ -1,5 +1,9 @@
 # Revue de correction et préparation de publication — 20 octobre 2026
 
+La passe graphique suivante, fondée sur `eb7b7f8`, est documentée dans [`GRAPHICS_REVIEW.md`](GRAPHICS_REVIEW.md) : héros, boss/PNJ, neuf biomes, croiseur, matières PBR et chaîne de rendu configurable. La suite atteint **971 tests réussis**, zéro échec et zéro test ignoré ; le build reste sans avertissement de taille. L'audit des dépendances de production signale zéro vulnérabilité. Les régressions ajoutées couvrent aussi les ressources GPU lors des changements de qualité et la restauration du renderer en cas d'erreur d'effet.
+
+Le smoke du build final a réussi le 20 octobre à 10:59 UTC : parcours mobile et ordinateur, rotations tactiles, réglage graphique par l'interface, pause/soins/abandon, douze contrats et neuf biomes rendus, démarrage sans stockage local. Zéro erreur JavaScript/console et zéro ressource réseau en échec sur les contextes de jeu ; le contexte sans stockage accepte les avertissements de persistance attendus. Il s'agit de rendus de contrats et de parcours ciblés, pas de douze parties intégrales.
+
 Cette passe porte sur le jeu existant, avec cinq agents QA travaillant en parallèle. Aucun testeur humain n'a été recruté ou simulé comme une personne réelle. Les contrôles automatisés et les observations dans Chromium sont distingués ci-dessous. La base inclut les ajouts de `master` jusqu'à `2bff6d1`.
 
 ## Corrections

@@ -917,3 +917,21 @@ body.reduced-motion .gadget-status.active strong {
 
 /* A sized flex row avoids premature wrapping when the HUD scale is increased. */
 #weapon-selector { width: 100%; }
+/* Keep the normal vision image clear while retaining the bio-mask treatment. */
+body:has(#vision-overlay.vision-normal) #scanline-overlay { opacity: 0.22; }
+.setting-graphics { grid-column: 1 / -1; }
+.setting-graphics select {
+  background: #121d28;
+  border: 1px solid #5d8592;
+  border-radius: 4px;
+  color: #e8f6ff;
+  font: inherit;
+  min-height: 44px;
+  padding: 8px;
+  max-width: 48%;
+}
+.setting-graphics select:focus-visible { outline: 2px solid #71e9fa; outline-offset: 3px; }
+@media (max-width: 480px) {
+  .setting-graphics { align-items: stretch; flex-direction: column; }
+  .setting-graphics select { max-width: 100%; width: 100%; }
+}

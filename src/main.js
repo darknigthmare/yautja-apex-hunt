@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { GraphicsRenderer } from './render/GraphicsRenderer.js';
+import { sanitizeGraphicsQuality } from './render/graphicsQuality.js';
 import { Environment } from './world/Environment.js';
 import { YautjaPlayer } from './entities/YautjaPlayer.js';
 import { HuntNPC, resolveHuntNpcType } from './entities/HuntNPC.js';
@@ -171,6 +173,7 @@ export class Game {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.graphics = new GraphicsRenderer(this.renderer, this.scene, this.camera);
 
     this.clock = new THREE.Clock();
 
@@ -814,6 +817,7 @@ export class Game {
       audioEnabled: this.settings.audioEnabled !== false,
       reducedMotion: this.settings.reducedMotion === true,
       highContrast: this.settings.highContrast === true,
+      graphicsQuality: sanitizeGraphicsQuality(this.settings.graphicsQuality),
       hudScale: Number.isFinite(hudScale) ? Math.min(1.25, Math.max(0.85, hudScale)) : DEFAULT_SETTINGS.hudScale,
     };
 
@@ -823,6 +827,8 @@ export class Game {
     this.environment.setReducedMotion(this.settings.reducedMotion);
     this.eventDirector?.setReducedMotion?.(this.settings.reducedMotion);
     audioSynth.setMuted(!this.settings.audioEnabled);
+    this.graphics?.setQuality(this.settings.graphicsQuality);
+    this.renderDirty = true;
     this.syncSettingsControls();
 
     if (persist) this.saveProgress();
@@ -844,6 +850,8 @@ export class Game {
 
     const hudScaleInput = document.getElementById('setting-hud-scale');
     if (hudScaleInput) hudScaleInput.value = String(this.settings.hudScale);
+    const graphicsInput = document.getElementById('setting-graphics-quality');
+    if (graphicsInput) graphicsInput.value = this.settings.graphicsQuality;
   }
 
   setupSettingsHooks() {
@@ -859,6 +867,10 @@ export class Game {
     bindToggle('setting-audio', 'audioEnabled');
     bindToggle('setting-reduced-motion', 'reducedMotion');
     bindToggle('setting-high-contrast', 'highContrast');
+    document.getElementById('setting-graphics-quality')?.addEventListener('change', event => {
+      this.settings.graphicsQuality = event.target.value;
+      this.applySettings(true);
+    });
 
     const hudScaleInput = document.getElementById('setting-hud-scale');
     if (hudScaleInput) {
@@ -4184,6 +4196,7 @@ export class Game {
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(this.width, this.height, false);
+    this.graphics?.resize(this.width, this.height);
     this.renderDirty = true;
   }
 
@@ -4195,7 +4208,8 @@ export class Game {
     // Deux images/seconde suffisent pour les ressources asynchrones derrière
     // un écran statique ; une invalidation de taille reste immédiate.
     if (!active && this.hasRendered && !this.renderDirty && this.idleRenderElapsed < 0.5) return false;
-    this.renderer.render(this.scene, this.camera);
+    if (this.graphics) this.graphics.render(this.player?.activeVisionMode ?? 'normal');
+    else this.renderer.render(this.scene, this.camera);
     this.hasRendered = true;
     this.renderDirty = false;
     this.idleRenderElapsed = 0;

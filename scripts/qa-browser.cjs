@@ -31,6 +31,7 @@ const { chromium } = require('playwright');
       const page = await context.newPage();
       page.setDefaultTimeout(60000);
       page.on('pageerror', (error) => browserErrors.push({ label, error: error.message }));
+      page.on('console', message => { if (message.type() === 'error') browserErrors.push({ label, error: message.text() }); });
       page.on('requestfailed', (request) => failedResources.push({ label, error: request.failure()?.errorText, url: request.url() }));
       page.on('response', (response) => { if (response.status() >= 400) failedResources.push({ label, status: response.status(), url: response.url() }); });
       console.log(`[QA] ${label}: démarrage`);
@@ -53,6 +54,10 @@ const { chromium } = require('playwright');
       await page.locator('#mission-modal:not(.hidden)').waitFor();
       if (!mobile) {
         await page.locator('#tab-btn-options').click();
+        await page.locator('#setting-graphics-quality').selectOption('performance');
+        assert.equal(await page.evaluate(() => window.__YAUTJA_APEX_HUNT__.graphics.quality), 'performance');
+        await page.locator('#setting-graphics-quality').selectOption('high');
+        assert.equal(await page.evaluate(() => window.__YAUTJA_APEX_HUNT__.graphics.quality), 'high');
         await page.locator('#setting-hud-scale').focus();
         await page.locator('#setting-hud-scale').press('End');
         assert.equal(await page.evaluate(() => window.__YAUTJA_APEX_HUNT__.settings.hudScale), 1.25);
@@ -167,7 +172,7 @@ const { chromium } = require('playwright');
             // Render the real scene with the same camera/update path as the game loop.
             game.environment.update(1 / 60, game.player.activeVisionMode, { player: game.player });
             game.updateCamera(1 / 60);
-            game.renderer.render(game.scene, game.camera);
+            game.graphics.render(game.player.activeVisionMode);
             return { id: game.currentHuntType, biome: game.currentPlanet, boss: !!game.activeBoss,
               position: game.player.position.toArray(), calls: game.renderer.info.render.calls,
               triangles: game.renderer.info.render.triangles, fatal: !document.getElementById('fatal-error').classList.contains('hidden') };
@@ -188,6 +193,10 @@ const { chromium } = require('playwright');
         });
         assert.equal(overlap, false, 'gadgets et actions tactiles ne doivent pas se chevaucher');
       }
+      assert.equal(await page.evaluate(() => window.__YAUTJA_APEX_HUNT__.player.activeVisionMode), 'normal');
+      if (mobile) await page.locator('#btn-touch-hunt-vision').tap();
+      else await page.keyboard.press('KeyV');
+      assert.equal(await page.evaluate(() => window.__YAUTJA_APEX_HUNT__.player.activeVisionMode), 'thermal');
       await page.screenshot({ path: path.join(artifacts, `${label}-hunt-thermal.png`) });
       if (mobile) {
         await page.locator('#btn-touch-hunt-vision').tap();

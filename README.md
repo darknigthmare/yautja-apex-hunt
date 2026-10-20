@@ -34,6 +34,8 @@ peut être reproduit après le build avec `npm run test:browser` ; définir
 
 ## Boucle de jeu
 
+La passe graphique du 20 octobre 2026 enrichit les modèles, les neuf biomes et le croiseur, ajoute des matières PBR et une chaîne de rendu avec reflets et occlusion de contact. Quatre niveaux de qualité et un mode automatique sont disponibles dans les options. Les mesures, commandes de comparaison et limites sont détaillées dans [`GRAPHICS_REVIEW.md`](GRAPHICS_REVIEW.md).
+
 - croiseur de 138 × 184 × 38 m, onze compartiments, treize portes/coursives, dix perchoirs et dix stations : pont, navigation, cryostase, pods d’évasion, laboratoire Cleaner/infirmerie, hangar, armurerie, noyau, forge/trophées et sas arrière ;
 - préparation obligatoire avant chaque contrat : systèmes de base permanents, slots mêlée/secondaire/distance/gadgets/soutien, capacité propre à chacune des dix classes, restrictions de déblocage, incompatibilités, recommandations et douze presets persistants ;
 - le HUD, les raccourcis, les attaques et les assemblages 3D portés sont filtrés par le paquetage actif ; les wristblades, le biomask et le camouflage optique restent le noyau du chasseur ;

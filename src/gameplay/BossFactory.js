@@ -15,6 +15,7 @@ import {
   applyBossVisualDetail,
   disposeBossVisualDetail,
   syncBossVisualDetail,
+  finishBossSurfaces,
 } from './BossVisualDetail.js';
 
 export const BOSS_CONSTRUCTORS = Object.freeze({
@@ -70,6 +71,7 @@ function installVisualDetail(boss, bossType) {
     throw new TypeError(`Le boss ${String(bossType)} ne fournit pas un contrat visualDetail natif valide.`);
   }
   boss.visualDetail = visualDetail;
+  finishBossSurfaces(boss.mesh, bossType);
 
   // Les nouveaux meshes sont ajoutés après le constructeur : on capture donc
   // leur matière de référence avant toute vision thermique ou occultation.

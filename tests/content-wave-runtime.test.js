@@ -51,7 +51,8 @@ test('la forge applique cinq canaux distincts et reconstruit réellement le masq
 
   assert.equal(player.customization.maskId, customization.maskId);
   assert.notEqual(player.maskMesh.geometry, previousGeometry);
-  assert.equal(player.maskMesh.geometry.type, 'DodecahedronGeometry');
+  assert.equal(player.maskMesh.geometry.userData.authoredSurface, 'sculpted_biomask');
+  assert.equal(player.maskMesh.geometry.userData.maskProfile, 'bone');
   assert.equal(player.maskLens.material.color.getHex(), entry(MASK_VARIANTS, customization.maskId).lensColor);
   assertChannelColor(player, 'skin', entry(SKIN_PALETTES, customization.skinColorId).hex);
   assertChannelColor(player, 'dread', entry(DREAD_PALETTES, customization.dreadColorId).hex);
@@ -66,7 +67,7 @@ test('changer de masque sous camouflage ne révèle aucun ornement et restaure l
   player.cloakMaterial.addEventListener('dispose', () => { cloakDisposeEvents += 1; });
 
   player.applyCustomization({ maskId: 'mask_tracker_2010' });
-  assert.equal(player.maskDetailGroup.children.length, 2);
+  assert.equal(player.maskDetailGroup.children.length, 4);
   player.toggleCloak();
   player.applyCustomization({
     maskId: 'mask_apex_ancestral',
@@ -78,7 +79,7 @@ test('changer de masque sous camouflage ne révèle aucun ornement et restaure l
   player.mesh.traverse((child) => {
     if (child.isMesh) assert.equal(child.material, player.cloakMaterial);
   });
-  assert.equal(player.maskDetailGroup.children.length, 1);
+  assert.equal(player.maskDetailGroup.children.length, 3);
   assert.equal(cloakDisposeEvents, 0);
 
   player.toggleCloak();

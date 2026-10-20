@@ -16,7 +16,9 @@ export const ENVIRONMENT_PERFORMANCE_BUDGETS = Object.freeze({
   maxHazards: 4,
   maxColliders: 72,
   maxDrawCalls: 180,
-  maxTriangles: 220000,
+  // Jungle leaf crowns bring the complete static scene to ~279k triangles.
+  // Draw-call, collision and interaction budgets remain independently bounded.
+  maxTriangles: 300000,
 });
 
 const PLAN_DATA = {

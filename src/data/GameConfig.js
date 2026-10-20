@@ -2,6 +2,7 @@ export const DEFAULT_SETTINGS = Object.freeze({
   audioEnabled: true,
   reducedMotion: false,
   highContrast: false,
+  graphicsQuality: 'auto',
   hudScale: 1,
 });
 

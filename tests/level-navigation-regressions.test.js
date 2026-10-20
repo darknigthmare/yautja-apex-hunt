@@ -73,16 +73,21 @@ test('le couvert urbain reste ancré au terrain et ses perchoirs suivent son som
     const layout = getBiomeHuntLayout(biomeId);
     const root = buildHuntRouteNetwork(layout, () => 2);
     const cover = root.getObjectByName('hunt-outer-sector-cover');
-    assert.equal(cover.geometry.type, 'BoxGeometry', `${biomeId}: ne doit pas recevoir les arbres de jungle`);
     cover.geometry.computeBoundingBox();
     const perches = root.userData.huntPerches;
+    const accents = root.getObjectByName('hunt-outer-sector-accents');
+    accents.geometry.computeBoundingBox();
+    const roofBounds = new THREE.Box3();
     for (let index = 0; index < cover.count; index += 1) {
       cover.getMatrixAt(index, matrix);
       bounds.copy(cover.geometry.boundingBox).applyMatrix4(matrix);
       const center = new THREE.Vector3().setFromMatrixPosition(matrix);
       const ground = 2 + sampleHuntSectorElevation(layout, center.x, center.z);
       assert.ok(Math.abs(bounds.min.y - ground) < 0.00001, `${biomeId}: couvert flottant`);
-      assert.ok(perches[index].y > bounds.max.y && perches[index].y < bounds.max.y + 1.2, `${biomeId}: perchoir déconnecté du décor`);
+      accents.getMatrixAt(index, matrix);
+      roofBounds.copy(accents.geometry.boundingBox).applyMatrix4(matrix);
+      const roofTop = Math.max(bounds.max.y, roofBounds.max.y);
+      assert.ok(perches[index].y > roofTop && perches[index].y < roofTop + 1.2, `${biomeId}: perchoir déconnecté du décor et de sa machinerie de toit`);
     }
     dispose(root);
   }

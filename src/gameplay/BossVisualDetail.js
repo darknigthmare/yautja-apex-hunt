@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { disposeObject3D } from '../utils/materialState.js';
 import { getRuntimeTexture } from '../utils/runtimeTextures.js';
+import { addCharacterInstances, sculptBossAnatomy } from '../utils/characterDetail.js';
+import { applySurfaceDetail } from '../utils/surfaceDetail.js';
 
 const BOSS_TYPE_TO_ARCHETYPE = Object.freeze({
   megafauna: 'goliath',
@@ -212,6 +214,39 @@ function makeMaterials(profile) {
   };
 }
 
+function replaceLegacyOrganicBlocks(boss, bossType) {
+  if (bossType !== 'megafauna' && bossType !== 'xenoQueen') return;
+  const queen = bossType === 'xenoQueen';
+  const bodyMaterials = new Set();
+  for (const node of boss.mesh.children) {
+    const geometry = node.geometry;
+    if (!node.isMesh || !geometry) continue;
+    const p = geometry.parameters;
+    if (geometry.type === 'BoxGeometry' && p.width >= 2 && p.height >= 2) {
+      const region = node.position.z > 4 ? 'head' : 'torso';
+      const replacement = sculptBossAnatomy(region, false);
+      replacement.scale(p.width * 0.51, p.height * 0.52, p.depth * 0.55);
+      node.geometry = replacement;
+      node.name ||= `${queen ? 'queen' : 'goliath'}Anatomical${region}`;
+      node.userData.replacesLegacyBlock = true;
+      geometry.dispose();
+      bodyMaterials.add(node.material);
+    } else if (!queen && geometry.type === 'CylinderGeometry' && p.height === 5) {
+      const replacement = sculptBossAnatomy('limb', false);
+      replacement.scale(1.18, 2.5, 1.26);
+      node.geometry = replacement;
+      geometry.dispose();
+    }
+  }
+  // These maps already contain dark pigment. The old almost-black tint
+  // multiplied that albedo a second time and erased its scale detail.
+  bodyMaterials.forEach(material => {
+    material.color.setHex(queen ? 0x758087 : 0xa7b1ae);
+    material.metalness = queen ? 0.56 : 0.16;
+    material.roughness = queen ? 0.28 : 0.7;
+  });
+}
+
 let featureSerial = 0;
 
 function addFeatureMesh(parent, geometry, material, featureTag, {
@@ -236,15 +271,70 @@ function addFeatureMesh(parent, geometry, material, featureTag, {
   return mesh;
 }
 
-function addFoundation(root, profile, materials) {
-  const torsoGeometry = new THREE.SphereGeometry(1, 96, 68);
-  const headGeometry = new THREE.SphereGeometry(1, 84, 60);
-  const limbGeometry = new THREE.SphereGeometry(1, 64, 44);
+function addFoundation(root, profile, materials, humanoid) {
+  const torsoGeometry = sculptBossAnatomy('torso', humanoid);
+  const headGeometry = sculptBossAnatomy('head', humanoid);
+  const limbGeometry = sculptBossAnatomy('limb', humanoid);
   const { torso, head, limbs } = profile.foundation;
 
   addFeatureMesh(root, torsoGeometry, materials.primary, 'high_definition_anatomy', torso);
   addFeatureMesh(root, headGeometry, materials.primary, 'high_definition_anatomy', head);
   limbs.forEach((limb) => addFeatureMesh(root, limbGeometry, materials.primary, 'high_definition_anatomy', limb));
+}
+
+function addAnatomicalSurfaceDetails(root, profile, materials, humanoid) {
+  const { torso } = profile.foundation;
+  const plates = [];
+  if (humanoid) {
+    for (const side of [-1, 1]) {
+      plates.push({ position: [side * torso.scale[0] * 0.54, torso.position[1] + torso.scale[1] * 0.36, torso.scale[2] * 0.83],
+        scale: [torso.scale[0] * 0.5, torso.scale[1] * 0.27, torso.scale[2] * 0.17], rotation: [0, side * 0.16, side * -0.12] });
+    }
+    for (let row = 0; row < 5; row++) plates.push({
+      position: [0, torso.position[1] + torso.scale[1] * (0.05 - row * 0.18), torso.scale[2] * (0.93 - row * 0.035)],
+      scale: [torso.scale[0] * (0.72 - row * 0.045), torso.scale[1] * 0.11, torso.scale[2] * 0.14],
+    });
+  } else {
+    // Staggered scutes wrap around the rib cage; the centre ridge remains the
+    // archetype's existing crown/dorsal fan rather than a generic extra horn.
+    for (const side of [-1, 1]) for (let row = 0; row < 7; row++) plates.push({
+      position: [side * torso.scale[0] * 0.76, torso.position[1] + torso.scale[1] * 0.43, torso.position[2] + (row - 3) * torso.scale[2] * 0.24],
+      scale: [torso.scale[0] * 0.28, torso.scale[1] * 0.15, torso.scale[2] * 0.17],
+      rotation: [0, side * 0.12, side * -0.55],
+    });
+  }
+  const plateBatch = addCharacterInstances(root, 'boss:overlapping-anatomical-plates', new THREE.SphereGeometry(1, 20, 12), materials.accent, plates, 'anatomical_surface_detail');
+  plateBatch.userData.bossVisualDetail = true;
+  const fasteners = [];
+  for (const plate of plates) for (const side of [-1, 1]) fasteners.push({
+    position: [plate.position[0] + side * plate.scale[0] * 0.55, plate.position[1] + plate.scale[1] * 0.35, plate.position[2] + plate.scale[2] * 0.72],
+    scale: [0.045, 0.045, 0.025],
+  });
+  const seamBatch = addCharacterInstances(root, humanoid ? 'boss:armor-fasteners' : 'boss:keratin-nodules', new THREE.SphereGeometry(1, 8, 6), materials.bone, fasteners, 'anatomical_surface_detail');
+  seamBatch.userData.bossVisualDetail = true;
+}
+
+export function finishBossSurfaces(root, bossType) {
+  const materials = new Set();
+  root.traverse(node => {
+    for (const source of [node.material, node.userData.baseMaterial]) {
+      if (source) (Array.isArray(source) ? source : [source]).forEach(material => materials.add(material));
+    }
+  });
+  const alien = ['predalien', 'gridAlien', 'xenoQueen'].includes(bossType);
+  const beast = bossType === 'megafauna' || bossType === 'kalisk';
+  materials.forEach(material => {
+    if (!material.isMeshStandardMaterial
+      || (material.emissive?.getHex() !== 0 && material.emissiveIntensity > 0.6)) return;
+    const color = material.color.getHSL({});
+    const kind = color.l > 0.48 && material.metalness < 0.4 ? 'bone'
+      : alien ? (material.roughness > 0.66 ? 'skin' : 'resin')
+        : beast ? (material.metalness > 0.4 ? 'resin' : 'skin')
+          : material.metalness > 0.4 ? 'metal'
+            : material.roughness > 0.8 ? 'fabric' : 'skin';
+    applySurfaceDetail(material, { kind, repeat: [4, 4], normalStrength: kind === 'skin' ? 0.35 : 0.48, roughnessStrength: 0.4 });
+  });
+  root.userData.surfaceFinishMaterials = materials.size;
 }
 
 function addDreadFan(root, material, featureTag, {
@@ -310,6 +400,26 @@ function buildGoliath(root, materials, features) {
       scale: [1.25, 0.78, 1.6],
     });
   }
+  addFeatureMesh(root, new THREE.SphereGeometry(1, 32, 20), materials.primary, features[0], {
+    name: 'goliathLowerJaw', position: [0, 4.78, 6.95], scale: [1.42, 0.4, 2.3],
+  });
+  const brow = [-1, 1].map(side => ({ position: [side * 1.08, 6.37, 8.05], scale: [0.7, 0.24, 0.5], rotation: [0, 0, side * -0.16] }));
+  const browBatch = addCharacterInstances(root, 'goliath:orbital-bone-ridges', new THREE.SphereGeometry(1, 16, 10), materials.accent, brow, features[0]);
+  browBatch.userData.bossVisualDetail = true;
+  const teeth = [];
+  for (const side of [-1, 1]) for (let index = 0; index < 5; index++) teeth.push({
+    position: [side * (0.8 + index * 0.07), 5.03, 6.3 + index * 0.45], scale: [0.1, 0.36, 0.12], rotation: [0, 0, Math.PI],
+  });
+  const teethBatch = addCharacterInstances(root, 'goliath:interlocking-teeth', new THREE.ConeGeometry(1, 1, 10, 2), materials.bone, teeth, features[0]);
+  teethBatch.userData.bossVisualDetail = true;
+  const feet = [], claws = [];
+  for (const side of [-1, 1]) for (const z of [-3.5, 3.5]) {
+    feet.push({ position: [side * 3.2, 0.32, z + 0.2], scale: [1.12, 0.4, 1.35] });
+    for (let toe = -1; toe <= 1; toe++) claws.push({ position: [side * 3.2 + toe * 0.5, 0.22, z + 1.25], scale: [0.16, 0.9, 0.2], rotation: [Math.PI / 2, 0, 0] });
+  }
+  const footBatch = addCharacterInstances(root, 'goliath:weight-bearing-feet', new THREE.SphereGeometry(1, 16, 10), materials.primary, feet, features[0]);
+  const clawBatch = addCharacterInstances(root, 'goliath:grounded-claws', new THREE.ConeGeometry(1, 1, 10, 2), materials.bone, claws, features[0]);
+  footBatch.userData.bossVisualDetail = clawBatch.userData.bossVisualDetail = true;
 }
 
 function buildQueen(root, materials, features) {
@@ -614,7 +724,8 @@ export function countBossVisualTriangles(root) {
   root?.traverse((object) => {
     if (!object.isMesh || !object.geometry) return;
     const { index, attributes } = object.geometry;
-    triangles += index ? index.count / 3 : (attributes.position?.count ?? 0) / 3;
+    triangles += (index ? index.count / 3 : (attributes.position?.count ?? 0) / 3)
+      * (object.isInstancedMesh ? object.count : 1);
   });
   return Math.round(triangles);
 }
@@ -637,6 +748,7 @@ export function applyBossVisualDetail(boss, bossType) {
 
   const existing = boss.mesh.getObjectByName(`bossVisualDetail:${archetype}`);
   if (existing) return existing;
+  replaceLegacyOrganicBlocks(boss, bossType);
 
   const root = new THREE.Group();
   root.name = `bossVisualDetail:${archetype}`;
@@ -646,9 +758,25 @@ export function applyBossVisualDetail(boss, bossType) {
   root.userData.featureTags = [...profile.features];
   root.userData.runtimeTexturePaths = [...profile.texturePaths];
 
-  const materials = makeMaterials(profile);
-  addFoundation(root, profile, materials);
-  BUILDERS[archetype](root, materials, profile.features);
+  if (bossType === 'gridAlien') {
+    // Grid already owns an articulated dome, inner jaw, scars and tail. Reuse
+    // those meshes in the common detail interface instead of hiding them under
+    // a second static body/head/tail. Object references used by its rig survive.
+    [...boss.mesh.children].forEach(child => root.add(child));
+    root.userData.nativeRigOnly = true;
+  } else {
+    const materials = makeMaterials(profile);
+    if (archetype === 'goliath' || archetype === 'queen') {
+      materials.primary.color.setHex(archetype === 'goliath' ? 0xa7b1ae : 0x758087);
+      materials.accent.color.setHex(archetype === 'goliath' ? 0x97a5a4 : 0x899799);
+      materials.primary.metalness = archetype === 'goliath' ? 0.16 : 0.56;
+    }
+    const humanoid = !['goliath', 'queen', 'kalisk', 'predalien'].includes(archetype);
+    if (archetype !== 'goliath' && archetype !== 'queen') addFoundation(root, profile, materials, humanoid);
+    BUILDERS[archetype](root, materials, profile.features);
+    addAnatomicalSurfaceDetails(root, profile, materials, humanoid);
+  }
+  finishBossSurfaces(root, bossType);
   root.userData.triangleCount = countBossVisualTriangles(root);
 
   boss.mesh.add(root);

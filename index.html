@@ -793,6 +793,16 @@
           <p>Les réglages sont sauvegardés sur cet appareil.</p>
         </div>
         <div class="settings-grid">
+          <label class="setting-card setting-graphics" for="setting-graphics-quality">
+            <span><strong>Qualité graphique</strong><small>Ultra privilégie les détails d’image. Réduisez la qualité si le jeu ralentit.</small></span>
+            <select id="setting-graphics-quality">
+              <option value="auto">Automatique</option>
+              <option value="performance">Performance</option>
+              <option value="balanced">Équilibrée</option>
+              <option value="high">Élevée</option>
+              <option value="ultra">Ultra</option>
+            </select>
+          </label>
           <label class="setting-card" for="setting-audio">
             <span><strong>Audio synthétique</strong><small>Active les signaux et effets sonores.</small></span>
             <input id="setting-audio" type="checkbox" checked>

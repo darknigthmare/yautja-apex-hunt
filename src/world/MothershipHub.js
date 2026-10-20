@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { HUNT_DEFINITIONS } from '../data/GameConfig.js';
+import { applySurfaceDetail } from '../utils/surfaceDetail.js';
+import { createHubInstrumentTexture, createHubPanelGeometry } from '../utils/hubSurfaceDetail.js';
 
 const HUB_ZONES = Object.freeze({
   VAULT: 'trophy-vault',
@@ -180,6 +182,7 @@ export class MothershipHub {
     this.alloyTexture = null;
     this.trophyTexture = null;
     this.energyTexture = null;
+    this.instrumentTexture = null;
     this.vehicleDisplays = [];
     this.landmarks = new Map();
     this.compartmentLandmarks = new Map();
@@ -237,6 +240,7 @@ export class MothershipHub {
     this.createHangarExpansion();
     this.createUtilityNetwork();
     this.createNavigationBeacons();
+    this.createSurfaceArchitectureDetail();
     this.createGameplayLayout();
     this.scene.add(this.group);
   }
@@ -244,14 +248,14 @@ export class MothershipHub {
   createAlloyMaterial(color = 0x27303a) {
     const cacheKey = `alloy:${color}`;
     if (!this.materialCache.has(cacheKey)) {
-      this.materialCache.set(cacheKey, new THREE.MeshStandardMaterial({
+      this.materialCache.set(cacheKey, applySurfaceDetail(new THREE.MeshStandardMaterial({
         color,
         map: this.alloyTexture,
         emissive: color,
-        emissiveIntensity: 0.24,
-        roughness: 0.38,
-        metalness: 0.88,
-      }));
+        emissiveIntensity: 0.055,
+        roughness: 0.44,
+        metalness: 0.78,
+      }), { kind: 'metal', repeat: [4, 4], normalStrength: 0.32, roughnessStrength: 0.28 }));
     }
     return this.materialCache.get(cacheKey);
   }
@@ -272,6 +276,23 @@ export class MothershipHub {
       }));
     }
     return this.materialCache.get(cacheKey);
+  }
+
+  createInstrumentMaterial(color = SIGNAL_COLORS.navigation) {
+    const key = `instrument:${color}`;
+    if (!this.materialCache.has(key)) {
+      this.instrumentTexture ??= createHubInstrumentTexture();
+      this.materialCache.set(key, new THREE.MeshStandardMaterial({
+        color,
+        map: this.instrumentTexture,
+        emissive: color,
+        emissiveMap: this.instrumentTexture,
+        emissiveIntensity: 2.2,
+        roughness: 0.24,
+        metalness: 0.14,
+      }));
+    }
+    return this.materialCache.get(key);
   }
 
   registerProp(object, zone, role, details = {}) {
@@ -307,13 +328,14 @@ export class MothershipHub {
         side: THREE.BackSide,
       }),
     );
+    applySurfaceDetail(room.material, { kind: 'metal', repeat: [10, 10], normalStrength: 0.28, roughnessStrength: 0.35 });
     room.name = 'pressurized-hull';
     room.position.y = 19;
     this.group.add(room);
 
     // Sept cent soixante-huit plaques couvrent le croiseur en un seul draw call.
     const deckPlates = new THREE.InstancedMesh(
-      new THREE.BoxGeometry(5.3, 0.08, 5.3),
+      createHubPanelGeometry(5.3, 0.08, 5.3, 0.035),
       this.createAlloyMaterial(0x202a32),
       768,
     );
@@ -522,7 +544,7 @@ export class MothershipHub {
     this.createInstancedBatch(
       architecture,
       'compartment-bulkhead-instances',
-      new THREE.BoxGeometry(1, 1, 1),
+      createHubPanelGeometry(1, 1, 1, 0.08),
       this.createAlloyMaterial(0x222c35),
       bulkheadTransforms,
       'hub',
@@ -587,7 +609,7 @@ export class MothershipHub {
     this.createInstancedBatch(
       architecture,
       'pressure-door-frame-instances',
-      new THREE.BoxGeometry(1, 1, 1),
+      createHubPanelGeometry(1, 1, 1, 0.12),
       this.createAlloyMaterial(0x59636b),
       frameTransforms,
       'hub',
@@ -753,6 +775,83 @@ export class MothershipHub {
     this.group.add(architecture);
   }
 
+  createSurfaceArchitectureDetail() {
+    const details = new THREE.Group();
+    details.name = 'ship-surface-engineering';
+    const bolts = [];
+    const seams = [];
+    const panels = [];
+    const vents = [];
+    const jambs = [];
+    const displays = [];
+    for (let row = 0; row < 32; row += 1) {
+      for (let column = 0; column < 24; column += 1) {
+        const x = -63.25 + column * 5.5;
+        const z = -85.25 + row * 5.5;
+        for (const side of [-1, 1]) {
+          seams.push({ position: [x, 0.087, z + side * 2.25], scale: [3.8, 0.014, 0.045] });
+          for (const end of [-1, 1]) bolts.push({ position: [x + end * 2.18, 0.105, z + side * 2.18] });
+        }
+      }
+    }
+    for (const segment of BULKHEAD_SEGMENTS) {
+      const horizontal = segment.halfWidth > segment.halfDepth;
+      const length = 2 * (horizontal ? segment.halfWidth : segment.halfDepth);
+      const count = Math.max(1, Math.floor(length / 6));
+      const panelWidth = Math.min(4.8, length / count - 0.6);
+      for (let index = 0; index < count; index += 1) {
+        const along = -length / 2 + (index + 0.5) * length / count;
+        for (const side of [-1, 1]) {
+          const x = segment.x + (horizontal ? along : side * 0.72);
+          const z = segment.z + (horizontal ? side * 0.72 : along);
+          const yaw = horizontal ? 0 : Math.PI / 2;
+          panels.push({ position: [x, 3.5, z], rotation: [0, yaw, 0], scale: [panelWidth, 4.1, 0.16] });
+          for (const dx of [-1, 1]) for (const dy of [-1, 1]) {
+            bolts.push({
+              position: [x + (horizontal ? dx * panelWidth * 0.42 : side * 0.12), 3.5 + dy * 1.65, z + (horizontal ? side * 0.12 : dx * panelWidth * 0.42)],
+              rotation: horizontal ? [Math.PI / 2, 0, 0] : [0, 0, Math.PI / 2],
+              scale: [1.3, 1, 1.3],
+            });
+          }
+          for (let slat = 0; slat < 6; slat += 1) {
+            vents.push({
+              position: [x + (horizontal ? 0 : side * 0.1), 2.75 + slat * 0.27, z + (horizontal ? side * 0.1 : 0)],
+              rotation: [0, yaw, 0], scale: [panelWidth * 0.6, 0.055, 0.045],
+            });
+          }
+        }
+      }
+    }
+    for (const door of PRESSURE_DOORS) {
+      const { x, z } = door.position;
+      const horizontal = door.axis === 'x';
+      for (const face of [-1, 1]) {
+        for (const side of [-1, 1]) jambs.push({
+          position: [x + (horizontal ? side * (door.width * 0.5 + 0.32) : face * 0.7), 3.15, z + (horizontal ? face * 0.7 : side * (door.width * 0.5 + 0.32))],
+          scale: horizontal ? [0.2, 6.0, 0.18] : [0.18, 6.0, 0.2],
+        });
+        jambs.push({
+          position: [x + (horizontal ? 0 : face * 0.7), 6.38, z + (horizontal ? face * 0.7 : 0)],
+          scale: horizontal ? [door.width + 1.35, 0.18, 0.18] : [0.18, 0.18, door.width + 1.35],
+        });
+        displays.push({
+          position: [x + (horizontal ? 0 : face * 0.82), 6.95, z + (horizontal ? face * 0.82 : 0)],
+          rotation: [0, horizontal ? 0 : Math.PI / 2, 0], scale: [2.1, 0.75, 0.08],
+        });
+      }
+    }
+    // These are skin details, not additional walls. Keeping them out of the
+    // camera's solid-geometry cache avoids thousands of tiny raycast entries.
+    const visual = { cameraOcclusion: false, visualOnly: true };
+    this.createInstancedBatch(details, 'deck-recessed-joints', new THREE.BoxGeometry(1, 1, 1), this.createAlloyMaterial(0x101b23), seams, 'hub', 'deck-panel-seams', visual);
+    this.createInstancedBatch(details, 'ship-captive-fasteners', new THREE.CylinderGeometry(0.075, 0.075, 0.035, 6), this.createAlloyMaterial(0x7b878d), bolts, 'hub', 'captive-fasteners', visual);
+    this.createInstancedBatch(details, 'bulkhead-service-panels', createHubPanelGeometry(1, 1, 1, 0.09), this.createAlloyMaterial(0x42515d), panels, 'hub', 'service-panels', visual);
+    this.createInstancedBatch(details, 'bulkhead-vent-louvers', new THREE.BoxGeometry(1, 1, 1), this.createAlloyMaterial(0x111c24), vents, 'hub', 'vent-louvers', visual);
+    this.createInstancedBatch(details, 'pressure-door-seal-trim', createHubPanelGeometry(1, 1, 1, 0.08), this.createAlloyMaterial(0x839198), jambs, 'hub', 'pressure-seal-trim', { ...visual, openClearance: 5.6 });
+    this.createInstancedBatch(details, 'pressure-door-system-displays', createHubPanelGeometry(1, 1, 1, 0.05), this.createInstrumentMaterial(0x59d9cc), displays, 'hub', 'pressure-status-displays', visual);
+    this.group.add(details);
+  }
+
   createBridgeCockpit() {
     const bridge = this.registerCompartmentLandmark(
       'bridge-cockpit',
@@ -829,12 +928,12 @@ export class MothershipHub {
     this.createInstancedBatch(
       bridge,
       'cockpit-holographic-panels',
-      new THREE.BoxGeometry(1, 1, 1),
-      this.createSignalMaterial(0x52eddd, 0.58),
+      createHubPanelGeometry(1, 1, 1, 0.08),
+      this.createInstrumentMaterial(0x52eddd),
       panelTransforms,
       'bridge-cockpit',
       'navigation-panels',
-      { consoleCount: 10 },
+      { consoleCount: 10, cameraOcclusion: false },
     );
 
     const hologram = new THREE.Group();
@@ -1512,13 +1611,14 @@ export class MothershipHub {
     consoleGroup.name = id;
     consoleGroup.position.copy(position);
     consoleGroup.rotation.y = rotationY;
-    const base = new THREE.Mesh(new THREE.BoxGeometry(2.2, 1.5, 1.5), this.createAlloyMaterial(0x252e37));
+    const base = new THREE.Mesh(createHubPanelGeometry(2.2, 1.5, 1.5, 0.14), this.createAlloyMaterial(0x252e37));
     base.position.y = 0.75;
     consoleGroup.add(base);
     const screen = new THREE.Mesh(
-      new THREE.BoxGeometry(1.75, 0.12, 1.02),
-      this.createSignalMaterial(signalColor, 0.82),
+      createHubPanelGeometry(1.75, 0.12, 1.02, 0.05),
+      this.createInstrumentMaterial(signalColor),
     );
+    screen.userData.cameraOcclusion = false;
     screen.position.set(0, 1.72, -0.08);
     screen.rotation.x = -0.48;
     consoleGroup.add(screen);
@@ -1550,20 +1650,16 @@ export class MothershipHub {
     const ringGeometry = new THREE.TorusGeometry(2.15, 0.08, 5, 24);
     const ringMatrixSource = new THREE.Object3D();
 
+    const pedestalTransforms = [];
     definitions.forEach((definition, index) => {
       const { x, z } = getMissionStationPosition(index, definitions.length);
+      pedestalTransforms.push({ position: [x, 0, z] });
       const color = colors[index % colors.length];
       const station = new THREE.Group();
       station.name = `mission-station-${definition.id}`;
       station.position.set(x, 0, z);
       station.userData.huntId = definition.id;
 
-      const pedestal = new THREE.Mesh(
-        new THREE.CylinderGeometry(2.35, 2.8, 3.5, 8),
-        this.createAlloyMaterial(0x27313c),
-      );
-      pedestal.position.y = 1.75;
-      station.add(pedestal);
 
       const rings = new THREE.InstancedMesh(ringGeometry, this.createSignalMaterial(color, 0.78), 3);
       [3.55, 6.5, 10.2].forEach((y, ringIndex) => {
@@ -1601,13 +1697,19 @@ export class MothershipHub {
       station.add(hologram);
       this.animatedProps.push({ mesh: hologram, speed: 1.5, huntId: definition.id });
 
-      const control = new THREE.Mesh(new THREE.BoxGeometry(1.75, 0.16, 0.9), this.createSignalMaterial(color, 0.84));
+      const control = new THREE.Mesh(createHubPanelGeometry(1.75, 0.16, 0.9, 0.06), this.createInstrumentMaterial(color));
+      control.userData.cameraOcclusion = false;
       control.position.set(0, 2.25, 2.05);
       control.rotation.x = -0.38;
       station.add(control);
       this.registerProp(station, HUB_ZONES.MISSIONS, 'mission-pedestal', { huntId: definition.id });
       missionNexus.add(station);
     });
+    this.createInstancedBatch(missionNexus, 'mission-pedestal-shells', new THREE.LatheGeometry([
+      new THREE.Vector2(0, 0), new THREE.Vector2(2.62, 0), new THREE.Vector2(2.8, 0.18),
+      new THREE.Vector2(2.44, 3.22), new THREE.Vector2(2.25, 3.5), new THREE.Vector2(0, 3.5),
+    ], 32), this.createAlloyMaterial(0x27313c), pedestalTransforms, HUB_ZONES.MISSIONS, 'mission-pedestal-shells');
+
     this.registerProp(missionNexus, HUB_ZONES.MISSIONS, 'mission-gallery', { stationCount: definitions.length });
     this.group.add(missionNexus);
   }
@@ -2167,8 +2269,10 @@ export class MothershipHub {
 
     const colliders = [];
     const definitions = Object.values(HUNT_DEFINITIONS);
+    const pedestalTransforms = [];
     definitions.forEach((definition, index) => {
       const { x, z } = getMissionStationPosition(index, definitions.length);
+      pedestalTransforms.push({ position: [x, 0, z] });
       colliders.push({
         id: 'mission-pedestal-' + definition.id,
         type: 'circle',
@@ -2447,7 +2551,7 @@ export class MothershipHub {
       const animated = new Set(this.animatedProps.map(({ mesh }) => mesh));
       const instance = new THREE.Matrix4();
       this.group.traverse((object) => {
-        if (!object.isMesh || !object.geometry?.getAttribute('position')) return;
+        if (!object.isMesh || object.userData.cameraOcclusion === false || !object.geometry?.getAttribute('position')) return;
         // Les hologrammes et trophées animés ne sont pas des murs de caméra.
         for (let parent = object; parent && parent !== this.group; parent = parent.parent) {
           if (animated.has(parent)) return;
@@ -2640,7 +2744,7 @@ export class MothershipHub {
     });
     materials.forEach((material) => {
       Object.values(material).forEach((value) => {
-        if (value?.isTexture) textures.add(value);
+        if (value?.isTexture && !value.userData.sessionShared) textures.add(value);
       });
       material.dispose();
     });
@@ -2659,5 +2763,6 @@ export class MothershipHub {
     this.alloyTexture = null;
     this.trophyTexture = null;
     this.energyTexture = null;
+    this.instrumentTexture = null;
   }
 }

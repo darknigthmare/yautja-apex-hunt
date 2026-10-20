@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { refineNpcVisual } from '../utils/characterDetail.js';
 
 export const HUNT_NPC_TEXTURES = Object.freeze({
   xeno_drone: '/assets/textures/xeno-carapace.webp',
@@ -547,7 +548,8 @@ function makeLowPolyNpcSilhouette(type, detailedGroup, profile) {
   // Les silhouettes les plus légères restent à deux meshes lorsque le modèle
   // détaillé compte dix draws ou moins. Cela garantit une économie d'au moins
   // 75 % jusque sur les archétypes historiquement les plus simples.
-  const meshBudget = countRenderableMeshes(detailedGroup) <= 10 ? 2 : 3;
+  const originalDraws = detailedGroup.userData.nearSurfaceDetail?.baseDraws ?? countRenderableMeshes(detailedGroup);
+  const meshBudget = originalDraws <= 10 ? 2 : 3;
   const height = THREE.MathUtils.clamp(size.y || 2, 0.55, 4.8);
   const width = THREE.MathUtils.clamp(size.x || 1, height * 0.18, height * 0.72);
   const depth = THREE.MathUtils.clamp(size.z || 1, height * 0.2, height * 1.15);
@@ -1679,6 +1681,7 @@ export class HuntNPC {
 
     const texture = loadSharedTexture(HUNT_NPC_TEXTURES[this.type]);
     this.mesh = meshFactories[this.type](texture);
+    refineNpcVisual(this.mesh, this.type, HUNT_NPC_LOD_PROFILES[this.type].family);
     this.detailedGroup = this.mesh;
     this.detailedGroup.userData.isHuntNpcDetailed = true;
     this.lodProfile = HUNT_NPC_LOD_PROFILES[this.type];

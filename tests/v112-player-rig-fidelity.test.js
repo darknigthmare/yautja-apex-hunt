@@ -33,8 +33,8 @@ test('le joueur hero expose un rig hiérarchique articulé et un budget polygona
 
   assert.equal(metrics.visualTier, 'hero_procedural');
   assert.equal(metrics.provenance, 'original_fan_made_procedural');
-  assert.ok(metrics.triangleCount >= 50_000, `seulement ${metrics.triangleCount} triangles`);
-  assert.ok(metrics.triangleCount <= 90_000, `budget hero dépassé: ${metrics.triangleCount}`);
+  assert.ok(metrics.triangleCount >= 120_000, `seulement ${metrics.triangleCount} triangles`);
+  assert.ok(metrics.triangleCount <= metrics.polygonBudget, `budget hero dépassé: ${metrics.triangleCount}`);
   assert.ok(metrics.meshCount >= 120);
   assert.ok(metrics.meshCount <= 220);
   assert.ok(metrics.activeTriangleCount >= 50_000);

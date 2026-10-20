@@ -1,9 +1,24 @@
 import * as THREE from 'three';
+import { TessellateModifier } from 'three/addons/modifiers/TessellateModifier.js';
+import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ShaderManager } from '../Shaders.js';
 import { audioSynth } from '../AudioSynthesizer.js';
 import { YautjaSkinsDatabase } from '../data/YautjaLoreDatabase.js';
 import { calculateHonorAward } from '../gameplay/combatRules.js';
 import { disposeObject3D } from '../utils/materialState.js';
+import { applySurfaceDetail } from '../utils/surfaceDetail.js';
+import {
+  createBiomaskSculpt,
+  createBodyNetSculpt,
+  createCraniumSculpt,
+  createHandSculpt,
+  createLimbSculpt,
+  createPredlockSculpt,
+  createTorsoSculpt,
+  sculptLoft,
+  mergeSculptParts,
+  taperedCurve,
+} from './HeroSculptGeometry.js';
 import {
   ARMOR_ACCENTS,
   ARMOR_PALETTES,
@@ -241,8 +256,8 @@ export class YautjaPlayer {
     this.wristbladeRangeMultiplier = 1;
     this.wristbladeCooldownMultiplier = 1;
     this.wristbladeVisualLengthScale = 1;
-    this.wristbladeRestPositionZ = 1.3;
-    this.wristbladeAttackPositionZ = 1.8;
+    this.wristbladeRestPositionZ = 0.35;
+    this.wristbladeAttackPositionZ = 0.65;
     this.honorRankIndex = 1;
     this.completedHunts = [];
     this.completedDirectiveIds = [];
@@ -269,7 +284,7 @@ export class YautjaPlayer {
     // State Flags
     this.isCloaked = false;
     this.isSubmerged = false;
-    this.activeVisionMode = 'thermal';
+    this.activeVisionMode = 'normal';
     this.selectedWeapon = 1;
     this.isAttacking = false;
     this.isHealing = false;
@@ -340,7 +355,7 @@ export class YautjaPlayer {
     const yautjaGroup = new THREE.Group();
     yautjaGroup.name = 'player:YautjaHero';
     yautjaGroup.userData.characterType = 'yautja_player';
-    yautjaGroup.userData.detailPass = 'v1.12_hierarchical_hero';
+    yautjaGroup.userData.detailPass = 'sculpted_hunter_surface_pass';
 
     const skinData = YautjaSkinsDatabase.find(s => s.id === this.currentSkinId) || YautjaSkinsDatabase[0];
 
@@ -365,6 +380,9 @@ export class YautjaPlayer {
       metalness: 0.95,
       roughness: 0.1,
     });
+    applySurfaceDetail(armorMat, { kind: 'metal', repeat: [2, 3], normalStrength: 0.22, roughnessStrength: 0.5 });
+    applySurfaceDetail(skinMat, { kind: 'skin', repeat: [3, 5], normalStrength: 0.38, roughnessStrength: 0.42 });
+    applySurfaceDetail(goldMat, { kind: 'metal', repeat: [3, 3], normalStrength: 0.14, roughnessStrength: 0.35 });
 
     this.rigRoot = new THREE.Group();
     this.rigRoot.name = 'joint:rig_root';
@@ -409,11 +427,11 @@ export class YautjaPlayer {
     this.torsoRig.position.y = 0.4;
     this.pelvisRig.add(this.torsoRig);
 
-    const torsoGeo = new THREE.CapsuleGeometry(0.94, 1.55, 12, 26);
+    const torsoGeo = createTorsoSculpt();
     const torso = this.tagPlayerMesh(new THREE.Mesh(torsoGeo, skinMat), 'skin', 'anatomy_torso');
     torso.name = 'anatomy:torso';
     torso.position.y = 0.74;
-    torso.scale.set(1.34, 1.05, 0.82);
+    torso.scale.set(1, 1, 1);
     this.torsoRig.add(torso);
     this.torsoBody = torso;
 
@@ -459,19 +477,17 @@ export class YautjaPlayer {
       this.torsoRig.add(rib);
     }
 
-    const netGeo = new THREE.CapsuleGeometry(0.97, 1.62, 8, 22);
+    const netGeo = createBodyNetSculpt();
     const netMat = new THREE.MeshStandardMaterial({
-      color: 0x574839,
-      map: this.leatherNetTexture,
+      color: 0x29271f,
       roughness: 0.82,
       metalness: 0.08,
-      transparent: true,
-      opacity: 0.62,
     });
+    applySurfaceDetail(netMat, { kind: 'fabric', repeat: [3, 8], normalStrength: 0.2, roughnessStrength: 0.3 });
     const net = new THREE.Mesh(netGeo, netMat);
     net.name = 'equipment:body_netting';
     net.position.y = 0.73;
-    net.scale.set(1.35, 1.05, 0.84);
+    net.scale.set(1.008, 1, 1.008);
     net.userData.detailRole = 'equipment_textured_body_net';
     this.torsoRig.add(net);
 
@@ -491,11 +507,12 @@ export class YautjaPlayer {
     const headGroup = new THREE.Group();
     headGroup.name = 'joint:head';
     headGroup.position.y = 0.62;
+    headGroup.scale.setScalar(0.82);
     neckRig.add(headGroup);
     this.headRig = headGroup;
-    const biologicalHead = new THREE.Mesh(new THREE.SphereGeometry(0.88, 32, 24), skinMat);
+    const biologicalHead = new THREE.Mesh(createCraniumSculpt(), skinMat);
     biologicalHead.name = 'anatomy:yautja_head';
-    biologicalHead.scale.set(0.95, 1.18, 1.05);
+    biologicalHead.scale.set(1, 1, 1);
     biologicalHead.position.set(0, 0.12, 0.02);
     biologicalHead.castShadow = true;
     biologicalHead.userData.appearanceChannel = 'skin';
@@ -540,6 +557,7 @@ export class YautjaPlayer {
       metalness: 0.95,
       roughness: 0.24,
     });
+    applySurfaceDetail(maskMat, { kind: 'metal', repeat: [2, 2], normalStrength: 0.16, roughnessStrength: 0.45 });
     this.maskMesh = new THREE.Mesh(this.createMaskGeometry(maskData), maskMat);
     this.maskMesh.name = 'equipment:biomask';
     this.maskMesh.position.set(0, 0.18, 0.38);
@@ -551,10 +569,16 @@ export class YautjaPlayer {
     this.maskDetailGroup.name = 'equipment:biomask_details';
     headGroup.add(this.maskDetailGroup);
 
-    const runePlateGeo = new THREE.BoxGeometry(0.5, 0.3, 0.1);
+    const runeParts = [
+      { geometry: new THREE.BoxGeometry(0.022, 0.22, 0.018), position: [-0.08, 0, 0] },
+      { geometry: new THREE.BoxGeometry(0.022, 0.18, 0.018), position: [0.035, 0.025, 0], rotation: [0, 0, -0.52] },
+      { geometry: new THREE.BoxGeometry(0.022, 0.14, 0.018), position: [0.08, -0.045, 0], rotation: [0, 0, 0.52] },
+    ];
+    const runePlateGeo = mergeSculptParts(runeParts);
+    runeParts.forEach(({ geometry }) => geometry.dispose());
     const runePlate = new THREE.Mesh(runePlateGeo, goldMat);
     runePlate.name = 'detail:biomask_rune_plate';
-    runePlate.position.set(0, 0.83, 1.15);
+    runePlate.position.set(0, 0.83, 0.99);
     headGroup.add(runePlate);
     runePlate.userData.appearanceChannel = 'accent';
     runePlate.userData.detailRole = 'equipment_biomask_rune_plate';
@@ -563,7 +587,7 @@ export class YautjaPlayer {
     triLaserLight.position.set(0.65, 0.33, 1.0);
     headGroup.add(triLaserLight);
 
-    const lensGeo = new THREE.SphereGeometry(0.12, 8, 8);
+    const lensGeo = new THREE.SphereGeometry(0.065, 12, 10);
     const lensMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
     const lens = new THREE.Mesh(lensGeo, lensMat);
     lens.name = 'equipment:biomask_targeting_lens';
@@ -572,14 +596,15 @@ export class YautjaPlayer {
     headGroup.add(lens);
     this.maskLens = lens;
 
-    const dreadMat = new THREE.MeshStandardMaterial({ color: dreadPalette?.hex ?? 0x0c0c0e, roughness: 0.8 });
+    const dreadMat = new THREE.MeshStandardMaterial({ color: dreadPalette?.hex ?? 0x0c0c0e, roughness: 0.72 });
+    applySurfaceDetail(dreadMat, { kind: 'skin', repeat: [2, 8], normalStrength: 0.35, roughnessStrength: 0.3 });
     const dreadBeadGeometry = new THREE.TorusGeometry(0.14, 0.035, 8, 16);
     const dreadBeadTransform = new THREE.Object3D();
     this.dreadGroups = [];
     for (let i = -5; i <= 5; i++) {
       const dreadGroup = new THREE.Group();
       dreadGroup.name = `joint:dread_${i + 5}`;
-      const dread = new THREE.Mesh(new THREE.CapsuleGeometry(0.105, 2.45, 7, 12), dreadMat);
+      const dread = new THREE.Mesh(createPredlockSculpt(i + 5), dreadMat);
       dread.name = `anatomy:dread_${i + 5}`;
       dread.position.y = -1.4;
       dread.userData.appearanceChannel = 'dread';
@@ -602,9 +627,9 @@ export class YautjaPlayer {
       beadSet.instanceMatrix.needsUpdate = true;
       dreadGroup.add(beadSet);
 
-      dreadGroup.rotation.z = i * 0.18;
-      dreadGroup.rotation.x = -0.4;
-      dreadGroup.position.set(i * 0.2, 0.02, -0.5);
+      dreadGroup.rotation.z = i * 0.085;
+      dreadGroup.rotation.x = 0.22;
+      dreadGroup.position.set(Math.sin(i * 0.23) * 0.73, 0.65, -Math.cos(i * 0.23) * 0.56);
       dreadGroup.userData.basePosition = dreadGroup.position.clone();
       dreadGroup.userData.baseRotation = dreadGroup.rotation.clone();
       dreadGroup.userData.animationBaseRotation = dreadGroup.rotation.clone();
@@ -620,6 +645,7 @@ export class YautjaPlayer {
     this.leftLegRig = this.createLegRig(-1, skinMat, armorMat, goldMat);
     this.rightLegRig = this.createLegRig(1, skinMat, armorMat, goldMat);
     this.pelvisRig.add(this.leftLegRig.hip, this.rightLegRig.hip);
+    this.addSculptedHeroEquipment(armorMat, skinMat, goldMat);
 
     this.plasmacasterMesh = this.createPlasmaCasterAssembly(armorMat, goldMat);
     this.plasmacasterMesh.position.set(0.08, 0.18, -0.22);
@@ -739,7 +765,7 @@ export class YautjaPlayer {
     shape.lineTo(-halfWidth * 0.9, halfHeight - cut * 0.45);
     shape.lineTo(-halfWidth, -halfHeight + cut);
     shape.closePath();
-    const geometry = new THREE.ExtrudeGeometry(shape, {
+    const sourceGeometry = new THREE.ExtrudeGeometry(shape, {
       depth,
       steps: 1,
       bevelEnabled: true,
@@ -747,9 +773,81 @@ export class YautjaPlayer {
       bevelSize: Math.min(0.055, depth * 0.3),
       bevelThickness: Math.min(0.045, depth * 0.25),
     });
+    let geometry = new TessellateModifier(Math.max(0.08, Math.min(width, height) * 0.26), 3).modify(sourceGeometry);
+    sourceGeometry.dispose();
     geometry.translate(0, 0, -depth * 0.5);
+    const positions = geometry.attributes.position;
+    for (let index = 0; index < positions.count; index++) {
+      const x = positions.getX(index), y = positions.getY(index);
+      const crown = Math.max(0, 1 - Math.pow(x / halfWidth, 2))
+        * Math.max(0, 1 - Math.pow(y / halfHeight, 2));
+      positions.setZ(index, positions.getZ(index) + crown * Math.min(width, height) * 0.16);
+    }
+    geometry.deleteAttribute('normal');
+    const welded = mergeVertices(geometry, 0.00001);
+    geometry.dispose();
+    geometry = welded;
     geometry.computeVertexNormals();
+    geometry.userData.authoredSurface = 'crowned_bevelled_armor';
     return geometry;
+  }
+
+  addSculptedHeroEquipment(armorMaterial, skinMaterial, accentMaterial) {
+    const addMerged = (parent, name, parts, material, channel, role) => {
+      const mesh = this.tagPlayerMesh(new THREE.Mesh(mergeSculptParts(parts), material), channel, role);
+      mesh.name = name;
+      mesh.userData.mergedPartCount = parts.length;
+      parts.forEach(({ geometry }) => geometry.dispose());
+      parent.add(mesh);
+      return mesh;
+    };
+    const boneMaterial = new THREE.MeshStandardMaterial({ color: 0xb9a484, roughness: 0.46, metalness: 0.12 });
+    applySurfaceDetail(boneMaterial, { kind: 'bone', repeat: [1, 3], normalStrength: 0.24, roughnessStrength: 0.3 });
+    const leatherMaterial = new THREE.MeshStandardMaterial({ color: 0x26251f, roughness: 0.8, metalness: 0.06 });
+    applySurfaceDetail(leatherMaterial, { kind: 'fabric', repeat: [2, 6], normalStrength: 0.27, roughnessStrength: 0.4 });
+    for (const [side, arm] of [[-1, this.leftArmRig], [1, this.rightArmRig]]) {
+      const suffix = side < 0 ? 'l' : 'r';
+      const hand = createHandSculpt(side);
+      const palm = this.tagPlayerMesh(new THREE.Mesh(hand.skin, skinMaterial), 'skin', 'anatomy_sculpted_hand');
+      palm.name = `anatomy:five_digit_hand_${suffix}`;
+      palm.userData.digitCount = 5;
+      palm.position.set(0, -0.16, 0.08);
+      arm.wrist.add(palm);
+      const claws = this.tagPlayerMesh(new THREE.Mesh(hand.claws, boneMaterial), 'bone', 'anatomy_curved_finger_claws');
+      claws.name = `anatomy:hand_claws_${suffix}`;
+      claws.position.copy(palm.position);
+      arm.wrist.add(claws);
+
+      const gauntletVents = [];
+      for (let vent = 0; vent < 6; vent++) {
+        gauntletVents.push({
+          geometry: this.createArmorPlateGeometry(0.31, 0.035, 0.035, 0.008),
+          position: [side * 0.37, -0.3 + vent * 0.115, 0.28],
+          rotation: [0, side * 0.8, 0],
+        });
+      }
+      addMerged(arm.gauntlet, `detail:gauntlet_vent_bank_${suffix}`, gauntletVents, leatherMaterial, 'leather', 'equipment_gauntlet_recessed_vents');
+    }
+    const backPlates = [];
+    for (let plate = 0; plate < 5; plate++) {
+      backPlates.push({
+        geometry: this.createArmorPlateGeometry(1.45 - plate * 0.13, 0.45, 0.14, 0.12),
+        position: [0, 1.29 - plate * 0.36, -0.66],
+        rotation: [0.08, Math.PI, 0],
+      });
+    }
+    addMerged(this.torsoRig, 'equipment:dorsal_segmented_harness', backPlates, armorMaterial, 'armor', 'equipment_dorsal_articulated_armor');
+    const harness = [];
+    for (const side of [-1, 1]) {
+      harness.push({ geometry: taperedCurve([[side * 0.8, 1.76, -0.45], [side * 1.03, 1.0, -0.76], [side * 0.71, -0.18, -0.56]], 0.082, { segments: 30, sides: 8, taper: 0.1 }) });
+      harness.push({ geometry: taperedCurve([[side * 1.16, 0.92, -0.24], [side * 1.28, 0.32, 0], [side * 0.84, -0.6, 0.47]], 0.065, { segments: 30, sides: 8, taper: 0.1 }) });
+    }
+    addMerged(this.torsoRig, 'equipment:leather_hunt_harness', harness, leatherMaterial, 'leather', 'equipment_load_bearing_harness');
+    const fasteners = [];
+    for (const side of [-1, 1]) for (let plate = 0; plate < 4; plate++) {
+      fasteners.push({ geometry: new THREE.CylinderGeometry(0.055, 0.06, 0.07, 10), position: [side * (0.58 - plate * 0.045), 1.27 - plate * 0.36, -0.82], rotation: [Math.PI / 2, 0, 0] });
+    }
+    addMerged(this.torsoRig, 'detail:dorsal_harness_fasteners', fasteners, accentMaterial, 'accent', 'equipment_dorsal_fasteners');
   }
 
   tagPlayerMesh(mesh, channel, detailRole) {
@@ -767,7 +865,7 @@ export class YautjaPlayer {
     shoulder.position.set(side * 1.5, 1.8, 0);
 
     const upperArm = this.tagPlayerMesh(
-      new THREE.Mesh(new THREE.CapsuleGeometry(0.39, 0.82, 10, 20), skinMaterial),
+      new THREE.Mesh(createLimbSculpt('upperArm'), skinMaterial),
       'skin',
       'anatomy_upper_arm',
     );
@@ -777,7 +875,7 @@ export class YautjaPlayer {
     shoulder.add(upperArm);
 
     const deltoid = this.tagPlayerMesh(
-      new THREE.Mesh(new THREE.SphereGeometry(0.52, 24, 16), skinMaterial),
+      new THREE.Mesh(createLimbSculpt('deltoid'), skinMaterial),
       'skin',
       'anatomy_deltoid',
     );
@@ -788,15 +886,15 @@ export class YautjaPlayer {
 
     const pauldron = this.tagPlayerMesh(
       new THREE.Mesh(
-        new THREE.SphereGeometry(0.69, 24, 16, 0, Math.PI * 2, 0, Math.PI * 0.54),
+        this.createArmorPlateGeometry(1.42, 1.18, 0.22, 0.22),
         armorMaterial,
       ),
       'armor',
       'equipment_articulated_pauldron',
     );
     pauldron.name = `equipment:pauldron_${suffix}`;
-    pauldron.position.set(side * 0.04, 0.05, -0.02);
-    pauldron.rotation.z = side * -0.22;
+    pauldron.position.set(side * 0.04, 0.35, -0.02);
+    pauldron.rotation.set(-Math.PI / 2, side * -0.22, 0);
     shoulder.add(pauldron);
 
     const ridgeGeometry = new THREE.TorusGeometry(0.5, 0.035, 8, 24, Math.PI);
@@ -825,7 +923,7 @@ export class YautjaPlayer {
     shoulder.add(elbow);
 
     const forearm = this.tagPlayerMesh(
-      new THREE.Mesh(new THREE.CapsuleGeometry(0.34, 0.74, 10, 20), skinMaterial),
+      new THREE.Mesh(createLimbSculpt('forearm'), skinMaterial),
       'skin',
       'anatomy_forearm',
     );
@@ -900,7 +998,7 @@ export class YautjaPlayer {
     hip.position.set(side * 0.7, 0, 0);
 
     const thigh = this.tagPlayerMesh(
-      new THREE.Mesh(new THREE.CapsuleGeometry(0.48, 0.86, 10, 20), skinMaterial),
+      new THREE.Mesh(createLimbSculpt('thigh'), skinMaterial),
       'skin',
       'anatomy_thigh',
     );
@@ -924,7 +1022,7 @@ export class YautjaPlayer {
     knee.position.y = -1.48;
     hip.add(knee);
     const kneeGuard = this.tagPlayerMesh(
-      new THREE.Mesh(new THREE.DodecahedronGeometry(0.39, 1), armorMaterial),
+      new THREE.Mesh(this.createArmorPlateGeometry(0.67, 0.69, 0.24, 0.2), armorMaterial),
       'armor',
       'equipment_knee_guard',
     );
@@ -934,7 +1032,7 @@ export class YautjaPlayer {
     knee.add(kneeGuard);
 
     const shin = this.tagPlayerMesh(
-      new THREE.Mesh(new THREE.CapsuleGeometry(0.38, 0.82, 10, 20), skinMaterial),
+      new THREE.Mesh(createLimbSculpt('shin'), skinMaterial),
       'skin',
       'anatomy_shin',
     );
@@ -964,7 +1062,7 @@ export class YautjaPlayer {
     ankle.position.y = -1.37;
     knee.add(ankle);
     const foot = this.tagPlayerMesh(
-      new THREE.Mesh(new THREE.CapsuleGeometry(0.38, 0.72, 8, 18), armorMaterial),
+      new THREE.Mesh(sculptLoft([[-0.67, 0.21, 0.15], [-0.43, 0.3, 0.24], [0.1, 0.38, 0.27], [0.49, 0.34, 0.2], [0.68, 0.18, 0.12]], { rings: 24, sides: 24 }), armorMaterial),
       'armor',
       'equipment_articulated_boot',
     );
@@ -1024,6 +1122,7 @@ export class YautjaPlayer {
       curveSegments: 8,
     });
     bladeGeometry.rotateX(Math.PI / 2);
+    bladeGeometry.scale(1, 1, 0.58);
     bladeGeometry.translate(0, 0.04, 0);
     bladeGeometry.computeVertexNormals();
 
@@ -1106,7 +1205,7 @@ export class YautjaPlayer {
     }
 
     const housing = this.tagPlayerMesh(
-      new THREE.Mesh(new THREE.CapsuleGeometry(0.29, 0.92, 10, 20), armorMaterial),
+      new THREE.Mesh(this.createArmorPlateGeometry(0.64, 1.25, 0.52, 0.2), armorMaterial),
       'armor',
       'equipment_caster_housing',
     );
@@ -1499,8 +1598,8 @@ export class YautjaPlayer {
       wristbladeAssemblies: 2,
       standardVisibleBladesPerWrist: 2,
       maximumBladesPerWrist: 3,
-      polygonBudget: 120000,
-      activePolygonBudget: 80000,
+      polygonBudget: 220000,
+      activePolygonBudget: 200000,
       activeDrawCallBudget: 180,
       namedPartCount: namedParts.length,
     };
@@ -1586,22 +1685,7 @@ export class YautjaPlayer {
     return group;
   }
   createMaskGeometry(maskData) {
-    const angularShapes = ['celtic', 'samurai', 'royal', 'guardian', 'warrior', 'armored'];
-    const boneShapes = ['bone', 'kok_viking', 'kwei', 'boar'];
-    const geometry = boneShapes.includes(maskData.shape)
-      ? new THREE.DodecahedronGeometry(0.92, 1)
-      : angularShapes.includes(maskData.shape)
-        ? new THREE.BoxGeometry(1.55, 2.05, 0.72, 2, 2, 1)
-        : ['aerial', 'scout'].includes(maskData.shape)
-          ? new THREE.CylinderGeometry(0.78, 1.02, 1.95, 8)
-        : new THREE.SphereGeometry(0.94, 20, 18);
-    const profile = maskData.geometry ?? {};
-    geometry.scale(
-      (profile.browWidth ?? 1) * (maskData.scale ?? 1),
-      (1.18 + (profile.crestHeight ?? 0.2) * 0.28) * (maskData.scale ?? 1),
-      (0.62 + (profile.jawLength ?? 1) * 0.18) * (maskData.scale ?? 1),
-    );
-    return geometry;
+    return createBiomaskSculpt(maskData);
   }
 
   rebuildMaskDetails(maskData) {
@@ -1615,9 +1699,37 @@ export class YautjaPlayer {
       metalness: 0.92,
       roughness: 0.3,
     });
+    applySurfaceDetail(detailMat, { kind: ['bone', 'kok_viking', 'kwei', 'boar'].includes(maskData.shape) ? 'bone' : 'metal', repeat: [2, 2], normalStrength: 0.17, roughnessStrength: 0.4 });
+    this.maskDetailGroup.position.copy(this.maskMesh.position);
+    const scale = maskData.scale ?? 1;
+    this.maskDetailGroup.scale.setScalar(scale);
+    const visorMaterial = new THREE.MeshStandardMaterial({ color: 0x060b0c, metalness: 0.62, roughness: 0.22 });
+    const visorParts = [], armorParts = [];
+    for (const side of [-1, 1]) {
+      const eye = new THREE.Shape();
+      eye.moveTo(side * 0.12, 0.18);
+      eye.lineTo(side * 0.23, 0.3);
+      eye.lineTo(side * 0.73, 0.24);
+      eye.lineTo(side * 0.67, 0.12);
+      eye.lineTo(side * 0.37, 0.075);
+      eye.closePath();
+      visorParts.push({ geometry: new THREE.ExtrudeGeometry(eye, { depth: 0.035, bevelEnabled: true, bevelSegments: 2, bevelSize: 0.018, bevelThickness: 0.012 }), position: [0, 0, 0.63] });
+      armorParts.push({ geometry: taperedCurve([[side * 0.12, 0.33, 0.75], [side * 0.39, 0.39, 0.71], [side * 0.75, 0.29, 0.59]], 0.052, { segments: 24, sides: 10, taper: 0.18 }) });
+      armorParts.push({ geometry: this.createArmorPlateGeometry(0.33, 0.66, 0.1, 0.11), position: [side * 0.58, -0.29, 0.66], rotation: [-0.13, side * 0.42, side * -0.32] });
+      for (let vent = 0; vent < 5; vent++) {
+        visorParts.push({ geometry: this.createArmorPlateGeometry(0.036, 0.19, 0.018, 0.012), position: [side * (0.18 + vent * 0.07), -0.64 + vent * 0.025, 0.68 - vent * 0.018], rotation: [0, side * 0.25, side * -0.18] });
+      }
+    }
+    armorParts.push({ geometry: this.createArmorPlateGeometry(0.25, 0.74, 0.12, 0.1), position: [0, -0.25, 0.81], rotation: [-0.12, 0, 0] });
+    const visor = this.tagPlayerMesh(new THREE.Mesh(mergeSculptParts(visorParts), visorMaterial), 'visor', 'equipment_biomask_recessed_visor_vents');
+    visor.name = 'equipment:biomask_visor_and_respiration_vents';
+    const contours = this.tagPlayerMesh(new THREE.Mesh(mergeSculptParts(armorParts), detailMat), 'mask', 'equipment_biomask_brow_cheek_contours');
+    contours.name = 'equipment:biomask_brow_cheeks_and_nasal_ridge';
+    [...visorParts, ...armorParts].forEach(({ geometry }) => geometry.dispose());
+    this.maskDetailGroup.add(visor, contours);
     const addTusk = (x, rotation) => {
       const tusk = new THREE.Mesh(new THREE.ConeGeometry(0.13, 0.75, 8), detailMat);
-      tusk.position.set(x, -0.27, 1.0);
+      tusk.position.set(x, -0.47, 0.64);
       tusk.rotation.z = rotation;
       tusk.userData.appearanceChannel = 'mask';
       this.maskDetailGroup.add(tusk);
@@ -1629,10 +1741,10 @@ export class YautjaPlayer {
     }
     if (['ritual', 'celtic', 'ancestral', 'exile', 'samurai', 'royal', 'aerial', 'fugitive', 'guardian', 'warrior', 'armored', 'stalker', 'scout'].includes(maskData.shape)) {
       const crest = new THREE.Mesh(
-        new THREE.BoxGeometry(maskData.shape === 'ancestral' ? 0.28 : 0.42, 0.85, 0.2),
+        this.createArmorPlateGeometry(maskData.shape === 'ancestral' ? 0.28 : 0.42, 0.85, 0.15, 0.12),
         detailMat,
       );
-      crest.position.set(0, 1.05, 0.72);
+      crest.position.set(0, 1.05, 0.4);
       crest.userData.appearanceChannel = 'mask';
       this.maskDetailGroup.add(crest);
     }
@@ -1727,8 +1839,8 @@ export class YautjaPlayer {
     this.wristShieldAbsorbBonus = variant?.modifiers.wristShieldAbsorbBonus ?? 0;
     const tripleBladeVariant = variant?.id === 'variant_chopper_extended_wristblades';
     const feralShieldVariant = variant?.id === 'variant_feral_bone_shield';
-    this.wristbladeRestPositionZ = tripleBladeVariant ? 1.52 : variant ? 1.42 : 1.3;
-    this.wristbladeAttackPositionZ = tripleBladeVariant ? 2.48 : variant ? 2.08 : 1.8;
+    this.wristbladeRestPositionZ = tripleBladeVariant ? 0.5 : variant ? 0.42 : 0.35;
+    this.wristbladeAttackPositionZ = tripleBladeVariant ? 1.05 : variant ? 0.82 : 0.65;
     for (const blade of [this.wristbladeRight, this.wristbladeLeft]) {
       if (!blade) continue;
       blade.scale.z = this.wristbladeVisualLengthScale;

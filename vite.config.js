@@ -6,8 +6,15 @@ export default defineConfig({
     chunkSizeWarningLimit: 550,
     rolldownOptions: {
       output: {
+        strictExecutionOrder: true,
         codeSplitting: {
           groups: [
+            {
+              name: 'graphics-effects',
+              test: /node_modules[\\/]three[\\/]examples[\\/]/,
+              priority: 21,
+              includeDependenciesRecursively: false,
+            },
             {
               name: 'three',
               test: /node_modules[\\/]three[\\/]/,
