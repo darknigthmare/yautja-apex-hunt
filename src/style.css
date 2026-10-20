@@ -1266,6 +1266,95 @@ button:hover { transform: scale(1.04); }
   opacity: 0.85;
 }
 
+/* ==========================================
+   v164 - BALLISTIC RETICLE & DIEGETIC BROWNOUT HUD
+   ========================================== */
+
+.ballistic-crosshair-hud {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140px;
+  height: 140px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.ballistic-crosshair-hud.active {
+  opacity: 1;
+}
+
+.range-distance-readout {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  font-weight: bold;
+  color: #ff3300;
+  text-shadow: 0 0 6px rgba(255, 51, 0, 0.85);
+  letter-spacing: 1px;
+}
+
+.ballistic-pip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: #ff3300;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #ff3300;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s linear;
+}
+
+.ballistic-drop-chevron {
+  position: absolute;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  background: rgba(255, 51, 0, 0.6);
+  transform: translateX(-50%);
+}
+
+.ballistic-drop-chevron.chevron-10m { top: 58%; width: 10px; }
+.ballistic-drop-chevron.chevron-30m { top: 68%; width: 16px; }
+.ballistic-drop-chevron.chevron-60m { top: 82%; width: 22px; }
+.ballistic-drop-chevron.chevron-100m { top: 98%; width: 28px; }
+
+/* Diégétique Plasma Battery Brownout */
+.hud-battery-brownout-active {
+  filter: brightness(0.72) contrast(1.15);
+  transition: filter 0.3s ease;
+}
+
+.hud-battery-brownout-active.visor-raster-glitch {
+  animation: visor-brownout-flicker 0.06s infinite alternate;
+}
+
+@keyframes visor-brownout-flicker {
+  0% { opacity: 0.15; filter: contrast(2.0) hue-rotate(45deg); }
+  50% { opacity: 0.85; filter: contrast(1.0); }
+  100% { opacity: 0.3; filter: brightness(0.4); }
+}
+
+.laser-beam-wavering {
+  animation: laser-galvano-jitter 0.08s infinite ease-in-out;
+}
+
+@keyframes laser-galvano-jitter {
+  0% { transform: rotate(0deg) translate(0px, 0px); }
+  25% { transform: rotate(1.2deg) translate(2px, -1px); }
+  50% { transform: rotate(-0.9deg) translate(-2px, 1px); }
+  75% { transform: rotate(1.5deg) translate(1px, 2px); }
+  100% { transform: rotate(0deg) translate(0px, 0px); }
+}
+
+
 
 
 
