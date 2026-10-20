@@ -1122,5 +1122,75 @@ button:hover { transform: scale(1.04); }
   transition: transform 0.2s linear;
 }
 
+/* v162 - Human QA & Gameplay UI/UX Additions */
+.thermal-glare-damping-filter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: rgba(0, 240, 255, 0.08);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.12s ease-out;
+}
+
+.thermal-glare-damping-filter.auto-gain-active {
+  opacity: 1;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.45) 0%, rgba(0, 240, 255, 0.15) 100%);
+}
+
+.plasma-coil-spark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 85% 75%, rgba(0, 240, 255, 0.35) 0%, transparent 45%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.plasma-coil-spark-overlay.spark-active {
+  opacity: 1;
+  animation: coil-arc-flicker 0.15s infinite alternate;
+}
+
+@keyframes coil-arc-flicker {
+  0% { opacity: 0.6; transform: scale(1.0); }
+  100% { opacity: 1.0; transform: scale(1.04); }
+}
+
+.slide-sweeper-indicator {
+  position: absolute;
+  bottom: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 20, 25, 0.9);
+  border: 1px solid #ffaa00;
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  color: #ffaa00;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.slide-sweeper-indicator.trip-ready {
+  opacity: 1;
+  box-shadow: 0 0 12px rgba(255, 170, 0, 0.6);
+  border-color: #ff3300;
+  color: #ffffff;
+}
+
+
 
 
