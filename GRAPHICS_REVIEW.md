@@ -1,5 +1,7 @@
 # Passe graphique — 20 octobre 2026
 
+Cette page décrit la première passe, publiée en `673e028`. La reprise suivante de l'anatomie, des UV et des matières du héros est documentée dans [`HERO_REALISM_REVIEW.md`](HERO_REALISM_REVIEW.md).
+
 Base de comparaison : `eb7b7f8`. Cinq agents ont travaillé en parallèle, avec tests automatisés et inspection de captures. Aucun testeur humain n'a été recruté.
 
 ## Changements visibles

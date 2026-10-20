@@ -58,7 +58,7 @@ test('le noyau exposé du Kalisk gagne la priorité sur le volume général du c
   boss.dispose();
 });
 
-test('quitter un preset texturé restaure une seule base par matériau partagé', () => {
+test('les presets préservent les surfaces anatomiques et restaurent la base des matériaux partagés', () => {
   const player = new YautjaPlayer(new THREE.Scene());
   const appearanceMeshes = [];
   player.mesh.traverse((child) => {
@@ -73,10 +73,15 @@ test('quitter un preset texturé restaure une seule base par matériau partagé'
   const lostTribeTexture = new THREE.Texture();
   player.lostTribeTexture = lostTribeTexture;
   player.applyPresetMaterialTexture('boar_lost_tribe');
-  materials.forEach((material) => assert.strictEqual(material.map, lostTribeTexture));
+  materials.forEach((material) => {
+    const expected = material.userData.heroSurface ? baseMaps.get(material) : lostTribeTexture;
+    // Compare identity without dumping multi-megabyte DataTextures on failure.
+    assert.equal(material.map === expected, true, `preset map: ${material.name || material.type}`);
+    assert.equal(material.userData.presetIdentity, 'boar_lost_tribe');
+  });
 
   player.applyPresetMaterialTexture('jungle_hunter_1987');
-  materials.forEach((material) => assert.strictEqual(material.map, baseMaps.get(material)));
+  materials.forEach((material) => assert.equal(material.map === baseMaps.get(material), true, 'base map restored'));
   materials.forEach((material) => assert.ok(
     Object.prototype.hasOwnProperty.call(material.userData, 'appearanceBaseMap'),
   ));

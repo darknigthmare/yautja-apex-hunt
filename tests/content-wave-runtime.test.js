@@ -24,7 +24,10 @@ function channelColors(player, channel) {
   const colors = [];
   player.mesh.traverse((child) => {
     if (child.isMesh && child.userData.appearanceChannel === channel) {
-      colors.push(child.material.color?.getHex());
+      // The first region carries the forge tint; lining, cut edges and outsole
+      // may keep their own physically distinct colours on a multi-material shell.
+      const outer = Array.isArray(child.material) ? child.material[0] : child.material;
+      colors.push(outer.color?.getHex());
     }
   });
   return colors;
@@ -34,6 +37,18 @@ function assertChannelColor(player, channel, expected) {
   const colors = channelColors(player, channel);
   assert.ok(colors.length > 0, `Canal d'apparence absent : ${channel}`);
   colors.forEach((color) => assert.equal(color, expected));
+}
+
+function assertMaskInserts(player) {
+  for (const name of [
+    'equipment:biomask_visor_and_respiration_vents',
+    'equipment:biomask_brow_cheeks_and_nasal_ridge',
+    'equipment:biomask_respiration_mesh',
+  ]) {
+    const insert = player.maskDetailGroup.getObjectByName(name);
+    assert.ok(insert?.isMesh, `Insert sculpté du masque absent : ${name}`);
+    assert.ok(insert.geometry.attributes.position.count > 0);
+  }
 }
 
 test('la forge applique cinq canaux distincts et reconstruit réellement le masque', () => {
@@ -67,7 +82,7 @@ test('changer de masque sous camouflage ne révèle aucun ornement et restaure l
   player.cloakMaterial.addEventListener('dispose', () => { cloakDisposeEvents += 1; });
 
   player.applyCustomization({ maskId: 'mask_tracker_2010' });
-  assert.equal(player.maskDetailGroup.children.length, 4);
+  assertMaskInserts(player);
   player.toggleCloak();
   player.applyCustomization({
     maskId: 'mask_apex_ancestral',
@@ -79,7 +94,7 @@ test('changer de masque sous camouflage ne révèle aucun ornement et restaure l
   player.mesh.traverse((child) => {
     if (child.isMesh) assert.equal(child.material, player.cloakMaterial);
   });
-  assert.equal(player.maskDetailGroup.children.length, 3);
+  assertMaskInserts(player);
   assert.equal(cloakDisposeEvents, 0);
 
   player.toggleCloak();

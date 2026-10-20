@@ -1,0 +1,249 @@
+{
+  "source": "authored anatomical lofts, Blender voxel union and high-to-low baking",
+  "coordinateSystem": "Y-up, facing +Z; game units",
+  "triangles": 49998,
+  "vertices": 24997,
+  "components": [
+    24997
+  ],
+  "voxelSize": 0.022,
+  "textures": {
+    "albedo": [
+      2048,
+      2048
+    ],
+    "normal": [
+      2048,
+      2048
+    ],
+    "ao": [
+      2048,
+      2048
+    ]
+  },
+  "boneNames": [
+    "joint:pelvis",
+    "joint:torso",
+    "joint:head",
+    "joint:shoulder_l",
+    "joint:elbow_l",
+    "joint:wrist_l",
+    "joint:shoulder_r",
+    "joint:elbow_r",
+    "joint:wrist_r",
+    "joint:hip_l",
+    "joint:knee_l",
+    "joint:ankle_l",
+    "joint:hip_r",
+    "joint:knee_r",
+    "joint:ankle_r"
+  ],
+  "restPositions": {
+    "joint:pelvis": [
+      0,
+      3.7,
+      0
+    ],
+    "joint:torso": [
+      0,
+      4,
+      0
+    ],
+    "joint:head": [
+      0,
+      6.6602,
+      0
+    ],
+    "joint:shoulder_l": [
+      -0.93,
+      5.95,
+      0
+    ],
+    "joint:elbow_l": [
+      -0.93,
+      4.48,
+      0
+    ],
+    "joint:wrist_l": [
+      -0.93,
+      3.38,
+      0
+    ],
+    "joint:shoulder_r": [
+      0.93,
+      5.95,
+      0
+    ],
+    "joint:elbow_r": [
+      0.93,
+      4.48,
+      0
+    ],
+    "joint:wrist_r": [
+      0.93,
+      3.38,
+      0
+    ],
+    "joint:hip_l": [
+      -0.48,
+      3.7,
+      0
+    ],
+    "joint:knee_l": [
+      -0.48,
+      1.91,
+      0
+    ],
+    "joint:ankle_l": [
+      -0.48,
+      0.3,
+      0
+    ],
+    "joint:hip_r": [
+      0.48,
+      3.7,
+      0
+    ],
+    "joint:knee_r": [
+      0.48,
+      1.91,
+      0
+    ],
+    "joint:ankle_r": [
+      0.48,
+      0.3,
+      0
+    ]
+  },
+  "noHeadHandsFeet": true,
+  "uvAtlas": {
+    "paddingPixels": 16.0,
+    "charts": {
+      "torso": {
+        "rect": [
+          0.02,
+          0.52,
+          0.46,
+          0.46
+        ],
+        "rawURange": [
+          5.306996433462885e-05,
+          1.4179292501335374
+        ],
+        "bounds": {
+          "min": [
+            0.027812499552965164,
+            0.5278124809265137
+          ],
+          "max": [
+            0.47218748927116394,
+            0.9708330035209656
+          ]
+        },
+        "triangles": 17203
+      },
+      "arm_l": {
+        "rect": [
+          0.52,
+          0.52,
+          0.21,
+          0.46
+        ],
+        "rawURange": [
+          0.0002904077167298902,
+          1.49058499021569
+        ],
+        "bounds": {
+          "min": [
+            0.5278124809265137,
+            0.5685436129570007
+          ],
+          "max": [
+            0.7221875190734863,
+            0.9721875190734863
+          ]
+        },
+        "triangles": 7841
+      },
+      "arm_r": {
+        "rect": [
+          0.77,
+          0.52,
+          0.21,
+          0.46
+        ],
+        "rawURange": [
+          3.7797824109508937e-06,
+          1.2185420453544822
+        ],
+        "bounds": {
+          "min": [
+            0.7778124809265137,
+            0.5657937526702881
+          ],
+          "max": [
+            0.9721875190734863,
+            0.9721875190734863
+          ]
+        },
+        "triangles": 7894
+      },
+      "leg_l": {
+        "rect": [
+          0.02,
+          0.02,
+          0.21,
+          0.46
+        ],
+        "rawURange": [
+          0.0014866700344974837,
+          1.366624113331389
+        ],
+        "bounds": {
+          "min": [
+            0.027812499552965164,
+            0.029087241739034653
+          ],
+          "max": [
+            0.22218750417232513,
+            0.4434390664100647
+          ]
+        },
+        "triangles": 8506
+      },
+      "leg_r": {
+        "rect": [
+          0.27,
+          0.02,
+          0.21,
+          0.46
+        ],
+        "rawURange": [
+          0.00048458956148988985,
+          1.1495444853503414
+        ],
+        "bounds": {
+          "min": [
+            0.27781251072883606,
+            0.0290859155356884
+          ],
+          "max": [
+            0.47218748927116394,
+            0.4426194131374359
+          ]
+        },
+        "triangles": 8554
+      }
+    },
+    "bounds": {
+      "min": [
+        0.027812499552965164,
+        0.0290859155356884
+      ],
+      "max": [
+        0.9721875190734863,
+        0.9721875190734863
+      ]
+    }
+  }
+}

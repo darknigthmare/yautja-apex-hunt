@@ -36,7 +36,9 @@ test('le joueur hero expose un rig hiérarchique articulé et un budget polygona
   assert.ok(metrics.triangleCount >= 120_000, `seulement ${metrics.triangleCount} triangles`);
   assert.ok(metrics.triangleCount <= metrics.polygonBudget, `budget hero dépassé: ${metrics.triangleCount}`);
   assert.ok(metrics.meshCount >= 120);
-  assert.ok(metrics.meshCount <= 220);
+  // The fitted shells include separate edge/lining/outsole regions and an
+  // optional organic body mesh; their measured total remains below this cap.
+  assert.ok(metrics.meshCount <= 260);
   assert.ok(metrics.activeTriangleCount >= 50_000);
   assert.ok(metrics.activeTriangleCount <= metrics.activePolygonBudget);
   assert.ok(metrics.activeMeshCount <= metrics.activeDrawCallBudget);
@@ -51,7 +53,12 @@ test('le joueur hero expose un rig hiérarchique articulé et un budget polygona
 test('les wristblades sont de vraies lames effilées sur rails avec profil double ou triple', () => {
   const player = makePlayer();
 
-  for (const assembly of [player.wristbladeLeft, player.wristbladeRight]) {
+  for (const [suffix, assembly, wrist] of [
+    ['l', player.wristbladeLeft, player.leftArmRig.wrist],
+    ['r', player.wristbladeRight, player.rightArmRig.wrist],
+  ]) {
+    assert.equal(assembly.parent.name, `socket:wristblade_${suffix}`);
+    assert.ok(assembly.parent.parent === wrist, `le socket ${suffix} doit suivre le poignet`);
     assert.equal(assembly.userData.equipmentRole, 'wristblades');
     assert.equal(assembly.userData.availableBladeCount, 3);
     assert.equal(assembly.userData.visibleBladeCount, 2);

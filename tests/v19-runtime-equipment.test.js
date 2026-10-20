@@ -125,10 +125,22 @@ test('une sélection v1.9 modifie réellement les statistiques et le modèle pro
     }
   });
   assert.ok(armorMaterials.length > 0);
+  const referenceFinish = ARMOR_FINISHES.find(({ id }) => id === DEFAULT_CUSTOMIZATION.armorFinishId);
+  const selectedFinish = ARMOR_FINISHES.find(({ id }) => id === result.armorFinishId);
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   armorMaterials.forEach((material) => {
-    assert.equal(material.metalness, 0.58);
-    assert.equal(material.roughness, 0.18);
+    const authored = material.userData.heroSurface;
+    const expectedMetalness = authored
+      ? clamp(selectedFinish.metalness * authored.metalness / referenceFinish.metalness, 0, 1)
+      : selectedFinish.metalness;
+    const expectedRoughness = authored
+      ? clamp(selectedFinish.roughness * authored.roughness / referenceFinish.roughness, 0.04, 1)
+      : selectedFinish.roughness;
+    assert.equal(material.metalness, expectedMetalness);
+    assert.equal(material.roughness, expectedRoughness);
   });
+  assert.ok(new Set(armorMaterials.map(material => material.roughness.toFixed(3))).size > 1,
+    'la finition ne doit pas uniformiser les réponses des différentes pièces');
 });
 
 test('le registre de gadgets couvre sept technologies jouables avec effets et raccourcis uniques', () => {

@@ -36,6 +36,8 @@ peut être reproduit après le build avec `npm run test:browser` ; définir
 
 La passe graphique du 20 octobre 2026 enrichit les modèles, les neuf biomes et le croiseur, ajoute des matières PBR et une chaîne de rendu avec reflets et occlusion de contact. Quatre niveaux de qualité et un mode automatique sont disponibles dans les options. Les mesures, commandes de comparaison et limites sont détaillées dans [`GRAPHICS_REVIEW.md`](GRAPHICS_REVIEW.md).
 
+La reprise du héros remplace les volumes corporels indépendants par une anatomie Blender continue et animée, avec textures 2K calculées depuis la sculpture, proportions adultes et armures ajustées. Les matières de chaque partie, les comparaisons et les contrôles sont décrits dans [`HERO_REALISM_REVIEW.md`](HERO_REALISM_REVIEW.md).
+
 - croiseur de 138 × 184 × 38 m, onze compartiments, treize portes/coursives, dix perchoirs et dix stations : pont, navigation, cryostase, pods d’évasion, laboratoire Cleaner/infirmerie, hangar, armurerie, noyau, forge/trophées et sas arrière ;
 - préparation obligatoire avant chaque contrat : systèmes de base permanents, slots mêlée/secondaire/distance/gadgets/soutien, capacité propre à chacune des dix classes, restrictions de déblocage, incompatibilités, recommandations et douze presets persistants ;
 - le HUD, les raccourcis, les attaques et les assemblages 3D portés sont filtrés par le paquetage actif ; les wristblades, le biomask et le camouflage optique restent le noyau du chasseur ;
@@ -54,7 +56,9 @@ La passe graphique du 20 octobre 2026 enrichit les modèles, les neuf biomes et 
 
 ## Direction artistique et assets
 
-Les trente-et-une textures de décor, props et créatures sous `public/assets/textures/`, totalisant 11 069 990 octets, sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La v1.12 ajoute `gunnison-rain-urban.webp`, matière 1254×1254 de 492 416 octets pour l’asphalte, le béton, les ruelles, la cour de service de l’hôpital et les accès aux égouts. Elle a été produite en nouvelle génération, sans image officielle fournie comme référence ; elle ne transfère ni ne revendique de droit sur les designs ou marques de la franchise. Le prompt exact, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
+Le héros ajoute une 32e matière WebP et un corps animé GLB de 7 450 900 octets, construit dans Blender avec trois bakes 2048² intégrés. La source ImageGen de peau mesure réellement 1254² ; les bakes 2K sont calculés depuis la sculpture et ses UV. Ce lot est décrit dans [`HERO_REALISM_REVIEW.md`](HERO_REALISM_REVIEW.md).
+
+Les trente-et-une textures historiques de décor, props et créatures sous `public/assets/textures/`, totalisant 11 069 990 octets, sont des créations originales générées avec le modèle ImageGen intégré OpenAI, puis converties en WebP. La v1.12 ajoute `gunnison-rain-urban.webp`, matière 1254×1254 de 492 416 octets pour l’asphalte, le béton, les ruelles, la cour de service de l’hôpital et les accès aux égouts. Elle a été produite en nouvelle génération, sans image officielle fournie comme référence ; elle ne transfère ni ne revendique de droit sur les designs ou marques de la franchise. Le prompt exact, la provenance et les poids sont consignés dans `ASSET_GENERATION_PROMPTS.md` et `ASSET_MANIFEST.md`.
 
 ## Passe v1.12 — Gunnison, animation et fidélité d’équipement
 

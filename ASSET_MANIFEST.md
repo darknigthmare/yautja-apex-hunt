@@ -1,10 +1,22 @@
 # Manifest des assets — Yautja: Apex Hunt
 
-**Date d'inventaire :** 28 août 2026
-**Périmètre :** textures OpenAI du chantier de professionnalisation, de la passe props et des vagues contenu 1.3–1.12.
-**Provenance commune :** modèle ImageGen intégré OpenAI, créations originales fan-made produites du 21 au 28 août 2026, sans image officielle fournie comme référence ni copie d'assets officiels. Les sources PNG conservées restent hors Git et ne sont pas déployées ; les WebP sont les fichiers runtime publics du livrable.
+**Inventaire initial :** 28 août 2026 ; ajout du héros le 20 octobre 2026.
+**Périmètre :** textures OpenAI des vagues contenu 1.3–1.12 et corps animé du héros.
+**Provenance des matières historiques :** modèle ImageGen intégré OpenAI, créations originales fan-made produites du 21 au 28 août 2026, sans image officielle fournie comme référence ni copie d'assets officiels. Les sources PNG conservées restent hors Git et ne sont pas déployées. Le nouveau lot et son GLB sont consignés ci-dessous.
 
 ## Registre
+
+### Ajout du 20 octobre 2026 — héros continu
+
+| Fichier runtime | Source / dimensions | Poids | Usage |
+| --- | --- | ---: | --- |
+| `public/assets/textures/yautja-skin-albedo-v2.webp` | ImageGen original, 1254×1254 | 655 318 octets | albedo du crâne et des mains, source du bake du corps |
+| `public/assets/models/hero-organic-body.glb` | Blender local, 49 998 triangles, 15 joints ; trois PNG 2048×2048 intégrés | 7 450 900 octets | surface anatomique continue animée, sans tête/mains/pieds |
+| `public/assets/models/hero-organic-body-metrics.json` | mesures de construction et charts UV | texte JSON | contrôle de provenance et reproduction |
+
+Le corps provient de lofts anatomiques, union voxel, sculpture haute définition et décimation ; ses normales et son occlusion sont calculées depuis cette sculpture. Les cinq charts possèdent une gouttière de seize pixels à 2048². Les PNG maîtres, bakes séparés, previews et mesures GPU sont des artefacts de travail hors du dossier public. Le GLB est le modèle livré ; aucun modèle Meshy n'est présent. Voir [`HERO_REALISM_REVIEW.md`](HERO_REALISM_REVIEW.md) et `scripts/build-hero-body.py`.
+
+Ce WebP porte l'inventaire de textures externes à **32 fichiers et 11 725 308 octets**. Les trois images embarquées dans le GLB s'ajoutent au poids du modèle et ne sont pas comptées comme WebP externes. Le registre historique ci-dessous conserve les résultats des vagues précédentes.
 
 | ID | Chemin public runtime | Dimensions | Poids | Usage prévu | État technique |
 | --- | --- | ---: | ---: | --- | --- |

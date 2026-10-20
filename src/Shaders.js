@@ -2,6 +2,38 @@ import * as THREE from 'three';
 
 // Shaders for Thermal Vision, Cloaking Camouflage, and Plasma Energy Effects
 
+// Let the renderer select rigid, instanced, morph-target or skeletal variants.
+// In particular, vision shaders must deform the same vertices AND normals as
+// the PBR material or a moving hunter snaps back to its bind pose when cloaked.
+function createEffectVertexShader({ shimmer = false } = {}) {
+  return `
+    #include <common>
+    #include <batching_pars_vertex>
+    #include <morphtarget_pars_vertex>
+    #include <skinning_pars_vertex>
+    varying vec3 vNormal;
+    varying vec3 vViewPosition;
+    ${shimmer ? 'uniform float uTime;' : ''}
+
+    void main() {
+      #include <batching_vertex>
+      #include <beginnormal_vertex>
+      #include <morphnormal_vertex>
+      #include <skinbase_vertex>
+      #include <skinnormal_vertex>
+      #include <defaultnormal_vertex>
+      vNormal = normalize(transformedNormal);
+
+      #include <begin_vertex>
+      #include <morphtarget_vertex>
+      #include <skinning_vertex>
+      ${shimmer ? 'transformed += normalize(objectNormal) * sin(position.y * 10.0 + uTime * 5.0) * 0.04;' : ''}
+      #include <project_vertex>
+      vViewPosition = -mvPosition.xyz;
+    }
+  `;
+}
+
 export class ShaderManager {
   // Creates Thermal Vision Shader Material for prey and environment objects
   static createThermalMaterial(baseColor, heatValue = 0.5) {
@@ -12,17 +44,7 @@ export class ShaderManager {
         uTime: { value: 0 },
         uBaseColor: { value: new THREE.Color(baseColor) }
       },
-      vertexShader: `
-        varying vec3 vNormal;
-        varying vec3 vViewPosition;
-        
-        void main() {
-          vNormal = normalize(normalMatrix * normal);
-          vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
-          vViewPosition = -viewPosition.xyz;
-          gl_Position = projectionMatrix * viewPosition;
-        }
-      `,
+      vertexShader: createEffectVertexShader(),
       fragmentShader: `
         uniform float uHeat;
         uniform float uTime;
@@ -64,19 +86,7 @@ export class ShaderManager {
       transparent: true,
       depthWrite: false,
       toneMapped: false,
-      vertexShader: `
-        varying vec3 vNormal;
-        varying vec3 vViewPosition;
-        uniform float uTime;
-
-        void main() {
-          vNormal = normalize(normalMatrix * normal);
-          vec3 displacedPos = position + normal * sin(position.y * 10.0 + uTime * 5.0) * 0.04;
-          vec4 mvPosition = modelViewMatrix * vec4(displacedPos, 1.0);
-          vViewPosition = -mvPosition.xyz;
-          gl_Position = projectionMatrix * mvPosition;
-        }
-      `,
+      vertexShader: createEffectVertexShader({ shimmer: true }),
       fragmentShader: `
         uniform float uTime;
         uniform float uOpacity;
@@ -107,13 +117,7 @@ export class ShaderManager {
       depthWrite: false,
       toneMapped: false,
       blending: THREE.AdditiveBlending,
-      vertexShader: `
-        varying vec3 vNormal;
-        void main() {
-          vNormal = normalize(normalMatrix * normal);
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
+      vertexShader: createEffectVertexShader(),
       fragmentShader: `
         uniform float uTime;
         varying vec3 vNormal;

@@ -1,5 +1,17 @@
 # Revue de correction et préparation de publication — 20 octobre 2026
 
+## Reprise du héros — base `673e028`
+
+La refonte de l'anatomie, des UV, des armures et des matières est détaillée dans [`HERO_REALISM_REVIEW.md`](HERO_REALISM_REVIEW.md). Le héros utilise maintenant un corps Blender continu animé, avec bakes 2K, crâne et mains sculptés et armures ajustées. Les équipements AVP/Wolf suivent les nouvelles articulations.
+
+Validation finale : **998 tests réussis**, zéro échec et zéro test ignoré ; build sans avertissement ; audit des dépendances de production à zéro vulnérabilité. Le smoke Chromium a réussi de 12:00:49 à 12:11:40 UTC : parcours ordinateur/mobile, rotations tactiles, soins/pause/abandon, stockage refusé et quatorze rendus couvrant les douze contrats et les neuf biomes. Zéro erreur JavaScript/console et zéro ressource en échec. Ces rendus ne constituent pas douze parties intégrales.
+
+Les **24 contrôles du vrai corps chargé** après démarrage et transitions confirment un SkinnedMesh de quinze joints, des sommets déformés finis, aucune erreur de matrice inverse de liaison et une distance maximale de 3,30 unités entre le centre de ses limites et la racine du joueur (seuil : dix). La construction SSR ne lance aucune requête du modèle.
+
+La comparaison utilise six photos réelles du héros de face, de dos et de profil, au corps et à la tête ; la caméra du corps garde la même distance. Les contrôles de qualité et les captures sont distincts des mesures de fluidité sur matériel physique. Aucun test humain ni niveau AAA n'est revendiqué. L'accès Vercel demeure non configuré dans l'environnement ; un push GitHub ne confirme pas un déploiement de production.
+
+## Historique des passes précédentes
+
 La passe graphique suivante, fondée sur `eb7b7f8`, est documentée dans [`GRAPHICS_REVIEW.md`](GRAPHICS_REVIEW.md) : héros, boss/PNJ, neuf biomes, croiseur, matières PBR et chaîne de rendu configurable. La suite atteint **971 tests réussis**, zéro échec et zéro test ignoré ; le build reste sans avertissement de taille. L'audit des dépendances de production signale zéro vulnérabilité. Les régressions ajoutées couvrent aussi les ressources GPU lors des changements de qualité et la restauration du renderer en cas d'erreur d'effet.
 
 Le smoke du build final a réussi le 20 octobre à 10:59 UTC : parcours mobile et ordinateur, rotations tactiles, réglage graphique par l'interface, pause/soins/abandon, douze contrats et neuf biomes rendus, démarrage sans stockage local. Zéro erreur JavaScript/console et zéro ressource réseau en échec sur les contextes de jeu ; le contexte sans stockage accepte les avertissements de persistance attendus. Il s'agit de rendus de contrats et de parcours ciblés, pas de douze parties intégrales.

@@ -22,8 +22,8 @@ test('les volumes anatomiques, mains, filet et masque portent des surfaces UV va
       assert.equal(position.count, normal.count);
       assert.equal(position.count, uv.count);
       assert.ok([...position.array, ...normal.array, ...uv.array].every(Number.isFinite));
-      assert.ok(mesh.material.normalMap?.isDataTexture);
-      assert.ok(mesh.material.roughnessMap?.isDataTexture);
+      assert.ok(mesh.material.normalMap?.isTexture);
+      assert.ok(mesh.material.roughnessMap?.isTexture);
     }
     assert.equal(player.dreadGroups.length, 11);
     for (const joint of player.dreadGroups) {

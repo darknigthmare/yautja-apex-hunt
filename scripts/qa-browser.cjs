@@ -4,6 +4,56 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { chromium } = require('playwright');
 
+// Evaluated in the browser after loading and every player teleport. Refresh the
+// same SkinnedMesh hooks as a render before inspecting the fully deformed body.
+async function inspectOrganicBody({ label, phase }) {
+  const game = window.__YAUTJA_APEX_HUNT__;
+  const player = game.player;
+  const fail = message => { throw new Error(`${label}/${phase}: ${message}`); };
+  if (!player.heroBodyReady || typeof player.heroBodyReady.then !== 'function') fail('heroBodyReady Promise absente');
+  const body = await player.heroBodyReady;
+  if (!body?.isSkinnedMesh || player.mesh.userData.organicBodyLoaded !== true) {
+    fail(`corps organique non chargé : ${player.mesh.userData.organicBodyLoadError || 'SkinnedMesh ou indicateur absent'}`);
+  }
+  if (player.mesh.getObjectByName('anatomy:organic_body') !== body) fail('corps organique détaché du joueur');
+  if (body.bindMode !== 'attached' || !body.skeleton) fail('liaison du squelette incorrecte');
+  game.scene.updateMatrixWorld(true);
+  player.mesh.updateMatrixWorld(true);
+  body.skeleton.update();
+  const finite = values => Array.from(values).every(Number.isFinite);
+  const finiteVector = vector => Number.isFinite(vector.x) && Number.isFinite(vector.y) && Number.isFinite(vector.z);
+  if (![body.matrixWorld, body.bindMatrix, body.bindMatrixInverse].every(matrix => finite(matrix.elements))
+    || !finite(body.skeleton.boneMatrices)
+    || !body.skeleton.bones.every(bone => finite(bone.matrixWorld.elements))) fail('matrices du squelette non finies');
+  const expectedInverse = body.matrixWorld.clone().invert();
+  const bindInverseError = Math.max(...expectedInverse.elements.map((value, index) => Math.abs(value - body.bindMatrixInverse.elements[index])));
+  if (bindInverseError > 1e-7) fail(`bindMatrixInverse périmée : écart ${bindInverseError}`);
+  const positions = body.geometry.getAttribute('position');
+  if (!positions?.count) fail('surface organique vide');
+  const rootPosition = player.mesh.getWorldPosition(player.position.clone());
+  const vertex = player.position.clone();
+  let maxVertexDistanceFromRoot = 0;
+  for (let index = 0; index < positions.count; index++) {
+    body.getVertexPosition(index, vertex);
+    if (!finiteVector(vertex)) fail(`déformation locale non finie au sommet ${index}`);
+    vertex.applyMatrix4(body.matrixWorld);
+    if (!finiteVector(vertex)) fail(`déformation monde non finie au sommet ${index}`);
+    maxVertexDistanceFromRoot = Math.max(maxVertexDistanceFromRoot, vertex.distanceTo(rootPosition));
+  }
+  body.computeBoundingBox();
+  const bounds = body.boundingBox.clone().applyMatrix4(body.matrixWorld);
+  if (!finite([...bounds.min.toArray(), ...bounds.max.toArray()]) || bounds.isEmpty()) fail('AABB organique invalide');
+  const originDistance = bounds.getCenter(vertex).distanceTo(rootPosition);
+  if (originDistance >= 10) fail(`AABB organique décalée de ${originDistance} unités de la racine (limite < 10)`);
+  if (maxVertexDistanceFromRoot >= 10) fail(`sommet organique éloigné de ${maxVertexDistanceFromRoot} unités de la racine`);
+  return {
+    loaded: true, resolvedSkinnedMesh: true, rootPosition: rootPosition.toArray(),
+    finiteDeformationVertices: positions.count, boneCount: body.skeleton.bones.length,
+    bindInverseError, originDistance, maxVertexDistanceFromRoot,
+    worldBounds: { min: bounds.min.toArray(), max: bounds.max.toArray(), size: bounds.getSize(vertex).toArray() },
+  };
+}
+
 (async () => {
   const artifacts = process.env.QA_ARTIFACT_DIR || '/tmp/yautja-qa/final';
   fs.mkdirSync(artifacts, { recursive: true });
@@ -13,6 +63,11 @@ const { chromium } = require('playwright');
   const browserErrors = [];
   const failedResources = [];
   const outcomes = [];
+  const recordOrganicBody = async (page, label, phase) => {
+    const organicBody = await page.evaluate(inspectOrganicBody, { label, phase });
+    outcomes.push({ label, phase, organicBody });
+    return organicBody;
+  };
   let browser;
   try {
     let baseURL = process.env.QA_BASE_URL;
@@ -37,6 +92,7 @@ const { chromium } = require('playwright');
       console.log(`[QA] ${label}: démarrage`);
       await page.goto(baseURL, { waitUntil: 'domcontentloaded' });
       await page.waitForFunction(() => !!window.__YAUTJA_APEX_HUNT__);
+      await recordOrganicBody(page, label, 'startup');
       await page.evaluate(() => document.fonts.ready);
       assert.equal(await page.evaluate(() => document.fonts.check('700 14px Orbitron') && document.fonts.check('500 14px Rajdhani')), true, 'les polices locales doivent charger');
       await page.screenshot({ path: path.join(artifacts, `${label}-briefing.png`) });
@@ -65,6 +121,7 @@ const { chromium } = require('playwright');
       }
       await page.locator('#btn-explore-hub').click();
       assert.equal(await page.evaluate(() => window.__YAUTJA_APEX_HUNT__.isHubExploring), true);
+      await recordOrganicBody(page, label, 'hub-explore');
       if (mobile) {
         assert.equal(await page.evaluate(() => document.pointerLockElement), null, 'le hub tactile doit garder les boutons accessibles');
         const yawBefore = await page.evaluate(() => window.__YAUTJA_APEX_HUNT__.cameraYaw);
@@ -81,6 +138,7 @@ const { chromium } = require('playwright');
       await page.locator('.btn-launch-hunt[data-hunt="goliath"]').click();
       await page.locator('#btn-loadout-deploy').click();
       await page.waitForFunction(() => window.__YAUTJA_APEX_HUNT__.gameState === 'HUNT');
+      await recordOrganicBody(page, label, 'initial-hunt');
       if (mobile) assert.equal(await page.evaluate(() => document.pointerLockElement), null, 'la chasse tactile ne doit pas verrouiller la souris');
       if (!mobile) await page.evaluate(() => {
         document.exitPointerLock?.();
@@ -166,9 +224,12 @@ const { chromium } = require('playwright');
           if (!covered.has(biome)) contracts.push({ id: 'goliath', biome });
         }
         for (const contract of contracts) {
-          const result = await page.evaluate(async ({ id, biome }) => {
+          await page.evaluate(({ id, biome }) => {
+            window.__YAUTJA_APEX_HUNT__.startHunt(id, biome || 'jungle');
+          }, contract);
+          await recordOrganicBody(page, label, `contract:${contract.id}/${contract.biome}`);
+          const result = await page.evaluate(() => {
             const game = window.__YAUTJA_APEX_HUNT__;
-            game.startHunt(id, biome || 'jungle');
             // Render the real scene with the same camera/update path as the game loop.
             game.environment.update(1 / 60, game.player.activeVisionMode, { player: game.player });
             game.updateCamera(1 / 60);
@@ -176,7 +237,7 @@ const { chromium } = require('playwright');
             return { id: game.currentHuntType, biome: game.currentPlanet, boss: !!game.activeBoss,
               position: game.player.position.toArray(), calls: game.renderer.info.render.calls,
               triangles: game.renderer.info.render.triangles, fatal: !document.getElementById('fatal-error').classList.contains('hidden') };
-          }, contract);
+          });
           assert.equal(result.id, contract.id);
           assert.equal(result.boss, true);
           assert.equal(result.fatal, false);
@@ -211,6 +272,7 @@ const { chromium } = require('playwright');
       else await page.keyboard.press('KeyP');
       await page.locator('#btn-abandon-hunt').click();
       assert.equal(await page.evaluate(() => window.__YAUTJA_APEX_HUNT__.gameState), 'HUB');
+      await recordOrganicBody(page, label, 'return-hub');
       outcomes.push({ label, ui: 'briefing, hub, préparation, chasse, pause, medbay, abandon validés' });
       await context.close();
     }
@@ -225,6 +287,7 @@ const { chromium } = require('playwright');
     storagePage.on('response', response => { if (response.status() >= 400) failedResources.push({ label: 'storage-disabled', status: response.status(), url: response.url() }); });
     await storagePage.goto(baseURL, { waitUntil: 'domcontentloaded' });
     await storagePage.waitForFunction(() => !!window.__YAUTJA_APEX_HUNT__);
+    await recordOrganicBody(storagePage, 'storage-disabled', 'startup');
     assert.equal(await storagePage.evaluate(() => {
       const game = window.__YAUTJA_APEX_HUNT__;
       const saved = game.saveProgress();
@@ -235,6 +298,7 @@ const { chromium } = require('playwright');
     await storagePage.locator('.btn-launch-hunt[data-hunt="goliath"]').click();
     await storagePage.locator('#btn-loadout-deploy').click();
     assert.equal(await storagePage.evaluate(() => window.__YAUTJA_APEX_HUNT__.gameState), 'HUNT');
+    await recordOrganicBody(storagePage, 'storage-disabled', 'initial-hunt');
     outcomes.push({ label: 'storage-disabled', ui: 'démarrage, avertissement et déploiement en mémoire validés' });
     await storageContext.close();
     console.log('[QA] stockage refusé : jeu utilisable en mémoire');

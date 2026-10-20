@@ -264,4 +264,14 @@ Une génération doit être écartée si elle contient un mot, une signature, un
 
 ## Traçabilité
 
+### Peau du héros — 20 octobre 2026
+
+Nouvelle génération bitmap ImageGen originale, sans image de référence. Résumé du prompt de production : albedo de peau de créature humanoïde, surface orthographique sans lumière directionnelle ni ombres portées ; pigmentation ocre et brune irrégulière, petites écailles et pores organiques, variations fines adaptées à une matière de personnage. Aucun personnage complet, objet, texte, logo ou image officielle.
+
+Sortie réelle : PNG **1254×1254** conservé hors Git ; conversion de format en `public/assets/textures/yautja-skin-albedo-v2.webp`, **655 318 octets**. La génération n'est pas un modèle 3D et ne fournit pas de cartes de normales : celles du corps sont calculées dans Blender depuis la sculpture. Les cartes 2048² du GLB sont des bakes UV et ne changent pas la définition native de la source ImageGen.
+
+Le corps 3D est une construction locale originale : lofts anatomiques, union voxel, détails sculptés, décimation, UV, pondérations et bake via `scripts/build-hero-body.py`. Aucun modèle Meshy n'a été produit ou intégré pour ce lot.
+
+### Registre historique jusqu'à la v1.12
+
 Les sorties ImageGen originales sont des PNG maîtres locaux conservés comme sources de travail, mais non versionnés et non déployés. Les six matières de décor initiales, les trois matières de props, les quatre matières de la vague 1.4, les trois matières de la 1.5 et la matière `genna-sporeback-carapace` de la 1.8 restent en WebP 1024×1024 ; les six matières de la vague contenu 1.3, les quatre matières de level design 1.6, les deux matières Bouvetøya 1.11 et la matière Gunnison 1.12 sont encodées en WebP 1254×1254 après inspection visuelle ; `los-angeles-heatwave-urban.webp` est encodée en 1536×1536 pour la 1.10. Le manifest consigne les trente-et-un poids exacts, leur usage runtime et le niveau de contrôle effectivement obtenu. Ces créations originales n’accordent ni ne revendiquent de droit sur Predator, Alien, leurs personnages ou leurs designs officiels. Toute régénération future doit recevoir une date, un motif et une nouvelle entrée de changelog ; elle ne doit pas écraser silencieusement une source approuvée.
