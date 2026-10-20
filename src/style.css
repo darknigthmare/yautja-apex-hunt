@@ -1191,6 +1191,82 @@ button:hover { transform: scale(1.04); }
   color: #ffffff;
 }
 
+/* v163 - Human QA & Gameplay UI/UX Additions */
+.peripheral-threat-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 51, 0, 0.35);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.peripheral-threat-ring.active {
+  opacity: 1;
+}
+
+.threat-blip {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #ffaa00;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px rgba(255, 170, 0, 0.8);
+  transition: all 0.1s linear;
+}
+
+.threat-blip.critical {
+  background: #ff0033;
+  box-shadow: 0 0 12px rgba(255, 0, 51, 1);
+  animation: threat-pulse 0.3s infinite alternate;
+}
+
+@keyframes threat-pulse {
+  from { transform: translate(-50%, -50%) scale(1.0); }
+  to { transform: translate(-50%, -50%) scale(1.4); }
+}
+
+.visor-blood-splatter-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 35% 45%, rgba(160, 10, 10, 0.45) 0%, transparent 40%),
+              radial-gradient(circle at 75% 65%, rgba(130, 0, 0, 0.5) 0%, transparent 35%);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+}
+
+.visor-blood-splatter-overlay.splatter-active {
+  opacity: 0.95;
+}
+
+.heat-mirage-distortion-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  backdrop-filter: blur(1.5px);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.heat-mirage-distortion-overlay.active {
+  opacity: 0.85;
+}
+
+
 
 
 
