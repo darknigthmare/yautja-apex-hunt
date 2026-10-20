@@ -763,3 +763,70 @@ body.reduced-motion .gadget-status.active strong {
   border-radius: 3px;
   white-space: nowrap;
 }
+
+
+/* Keep layout overrides after the illustrated cards so narrow screens retain
+   their single-column briefing and readable navigation. */
+.controls-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.controls-grid > div { min-width: 0; flex-wrap: wrap; font-size: 13px; line-height: 1.4; }
+.controls-grid strong { font-size: 11px; white-space: normal; overflow-wrap: anywhere; }
+.mission-card h3 { font-size: 13px; line-height: 1.4; }
+.mission-card p { font-size: 13px; line-height: 1.45; }
+.threat-badge, .sector-badge, .spec-tag { font-size: 10px; line-height: 1.4; }
+.mission-card:focus-within { border-color: var(--focus-ring); }
+.btn-launch-hunt { margin-top: auto; }
+
+.yautja-medbay-overlay { background: rgba(3, 8, 13, 0.7); pointer-events: auto; }
+.medbay-window { max-height: calc(100dvh - 24px); }
+.medbay-body { min-height: 0; overscroll-behavior: contain; }
+.medbay-header, .medbay-footer { flex-shrink: 0; }
+.medbay-title-group { min-width: 0; flex-wrap: wrap; gap: 6px; }
+.medbay-header-actions { flex-shrink: 0; }
+.medbay-items-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.medbay-item-card, .medbay-left-col, .medbay-right-col { min-width: 0; }
+.item-header { flex-wrap: wrap; gap: 4px; }
+
+@media (max-width: 760px) {
+  .controls-grid { grid-template-columns: minmax(0, 1fr); padding: 10px; }
+  .controls-grid > div { gap: 6px; padding: 7px; }
+  .mission-cards-container { grid-template-columns: minmax(0, 1fr); }
+  .mission-modal-actions { align-items: stretch; flex-direction: column; gap: 10px; }
+  .mission-modal-actions .hub-explore-button { width: 100%; white-space: normal; }
+  .mission-modal-actions p { margin: 0; line-height: 1.5; }
+  .tab-row {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    scrollbar-color: var(--yautja-cyan) #090d14;
+    padding: 3px 3px 9px;
+  }
+  .tab-btn { flex: 0 0 auto; padding: 10px 14px; scroll-snap-align: start; }
+  .medbay-window { max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px); }
+  .medbay-header { padding: 10px; gap: 8px; }
+  .medbay-title { font-size: 11px; line-height: 1.4; }
+  .medbay-body { grid-template-columns: minmax(0, 1fr); max-height: none; padding: 10px; gap: 10px; }
+  .medbay-items-grid { grid-template-columns: minmax(0, 1fr); }
+  .medbay-footer { flex-wrap: wrap; gap: 8px; padding: 10px; line-height: 1.4; }
+  .medbay-refill-btn { width: 100%; }
+  .medbay-wireframe-panel { display: none; }
+}
+
+#btn-start-game { margin-top: 0; margin-bottom: 18px; max-width: 100%; white-space: normal; }
+
+.medbay-vitals-row .vital-label { flex: 0 0 82px; white-space: nowrap; font-size: 10px; }
+.medbay-vitals-row .vital-val { flex: 0 0 58px; white-space: nowrap; }
+.medbay-vitals-row .vital-bar-wrap { min-width: 0; }
+.medbay-item-card.item-disabled { opacity: 0.8; filter: none; }
+.medbay-item-availability { color: #a9cbd5; font-size: 11px; line-height: 1.4; margin: 4px 0 8px; }
+
+@media (max-width: 760px) {
+  #hud-container:has(.touch-hunt-controls:not(.hidden)) #gadget-rack {
+    bottom: max(268px, calc(env(safe-area-inset-bottom) + 268px));
+  }
+  #hud-container:has(.touch-hunt-controls:not(.hidden)) #log-banner {
+    bottom: max(330px, calc(env(safe-area-inset-bottom) + 330px));
+  }
+}

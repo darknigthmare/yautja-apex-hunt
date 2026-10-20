@@ -17,6 +17,8 @@ export function getRuntimeTexture(path, { repeat = [1, 1], colorSpace = THREE.SR
   texture.wrapT = THREE.RepeatWrapping;
   texture.repeat.set(repeat[0], repeat[1]);
   texture.colorSpace = colorSpace;
+  // Preserve detail on armour and props seen at grazing camera angles.
+  texture.anisotropy = 4;
   textureCache.set(cacheKey, texture);
   return texture;
 }

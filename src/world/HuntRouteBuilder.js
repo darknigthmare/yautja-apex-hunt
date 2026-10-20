@@ -6,6 +6,8 @@ const ROUTE_STYLE = Object.freeze({
   ryushi_desert: { route: 0x6f4c2d, marker: 0xffce7a, event: 0xff7138 },
   yautja_prime: { route: 0x432522, marker: 0xff8f70, event: 0x76f6ff },
   genna_deathworld: { route: 0x2f3823, marker: 0xcaff73, event: 0xff9454 },
+  stargazer_blacksite: { route: 0x394650, marker: 0x74d9ff, event: 0xffad55 },
+  los_angeles_1997: { route: 0x4b4140, marker: 0xffc77d, event: 0x8acbea },
   bouvetoya_pyramid: { route: 0x303b42, marker: 0x8feaff, event: 0xc58a52 },
   gunnison_outbreak: { route: 0x252c31, marker: 0xa8d9e8, event: 0xdbe666 },
 });
@@ -85,9 +87,13 @@ function createRouteGeometry(route, sectorMap, sampleHeight) {
     }
     tangent.normalize();
     side.set(-tangent.z, 0, tangent.x).multiplyScalar(routeWidth * 0.5);
-    const elevation = sampleHeight(center.x, center.z) + 0.11;
-    positions.push(center.x + side.x, elevation, center.z + side.z);
-    positions.push(center.x - side.x, elevation, center.z - side.z);
+    // Chaque rive suit le relief : une altitude centrale enterrait le bord
+    // amont et faisait flotter le bord aval des rubans sur les terrasses.
+    for (const direction of [1, -1]) {
+      const x = center.x + side.x * direction;
+      const z = center.z + side.z * direction;
+      positions.push(x, sampleHeight(x, z) + 0.11, z);
+    }
     if (index < segmentCount) {
       const base = index * 2;
       indices.push(base, base + 2, base + 1, base + 1, base + 2, base + 3);
@@ -141,7 +147,7 @@ function createSectorInstances(layout, sampleHeight, style) {
     transform.updateMatrix();
     pads.setMatrixAt(index, transform.matrix);
 
-    transform.position.set(x, ground + 3.5, z);
+    transform.position.set(x, ground + 3.5 * roleScale, z);
     transform.scale.set(roleScale, roleScale, roleScale);
     transform.updateMatrix();
     beacons.setMatrixAt(index, transform.matrix);
@@ -190,6 +196,8 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
     ryushi_desert: new THREE.DodecahedronGeometry(7.5, 1),
     yautja_prime: new THREE.BoxGeometry(7, 30, 7, 2, 6, 2),
     genna_deathworld: new THREE.ConeGeometry(4.2, 27, 8),
+    stargazer_blacksite: new THREE.BoxGeometry(7, 20, 6),
+    los_angeles_1997: new THREE.BoxGeometry(8, 26, 7),
     bouvetoya_pyramid: new THREE.CylinderGeometry(3.6, 5.2, 28, 6),
     gunnison_outbreak: new THREE.BoxGeometry(5.5, 16, 3.4, 2, 4, 2),
   };
@@ -199,6 +207,8 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
     ryushi_desert: new THREE.OctahedronGeometry(5.2, 1),
     yautja_prime: new THREE.OctahedronGeometry(3.2, 1),
     genna_deathworld: new THREE.SphereGeometry(4.8, 12, 8),
+    stargazer_blacksite: new THREE.CylinderGeometry(2.2, 2.2, 3.5, 8),
+    los_angeles_1997: new THREE.BoxGeometry(5.5, 2.6, 4.5),
     bouvetoya_pyramid: new THREE.OctahedronGeometry(4.2, 1),
     gunnison_outbreak: new THREE.CylinderGeometry(1.8, 2.6, 5.8, 8),
   };
@@ -281,9 +291,14 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
   accents.userData.huntCoverBatch = true;
   const transform = new THREE.Object3D();
   const tallCover = layout.biomeId !== 'ryushi_desert';
+  const industrialCover = ['stargazer_blacksite', 'los_angeles_1997', 'gunnison_outbreak'].includes(layout.biomeId);
+  cover.geometry.computeBoundingBox();
+  const coverRadius = industrialCover
+    ? Math.hypot(cover.geometry.boundingBox.max.x, cover.geometry.boundingBox.max.z)
+    : tallCover ? 4.5 : 7.5;
+  const transformedBounds = new THREE.Box3();
   placements.forEach((placement, index) => {
-    const baseHeight = tallCover ? 30 : 12;
-    transform.position.set(placement.x, placement.ground + baseHeight * placement.scale * 0.5, placement.z);
+    transform.position.set(placement.x, 0, placement.z);
     transform.rotation.set(
       layout.biomeId === 'ryushi_desert' ? placement.angle * 0.11 : 0,
       placement.angle,
@@ -293,8 +308,15 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
     );
     transform.scale.setScalar(placement.scale);
     transform.updateMatrix();
+    transformedBounds.copy(cover.geometry.boundingBox).applyMatrix4(transform.matrix);
+    // Le couvert industriel de Gunnison mesure 16 m, contre 30 m pour un
+    // arbre. Ancrer les volumes réels évite les façades flottantes.
+    transform.position.y = placement.ground - transformedBounds.min.y;
+    placement.coverHeight = transformedBounds.max.y - transformedBounds.min.y;
+    placement.topY = placement.ground + placement.coverHeight;
+    transform.updateMatrix();
     cover.setMatrixAt(index, transform.matrix);
-    transform.position.y = placement.ground + (tallCover ? 28 : 9) * placement.scale;
+    transform.position.y = placement.topY - 2 * placement.scale;
     transform.scale.setScalar(placement.scale * (layout.biomeId === 'jungle' ? 1 : 0.72));
     if (layout.biomeId === 'hive_lv426') transform.rotation.x = Math.PI / 2;
     transform.updateMatrix();
@@ -312,8 +334,8 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
     colliders: physicalPlacements.map((placement) => ({
       x: placement.x,
       z: placement.z,
-      radius: (tallCover ? 4.5 : 7.5) * placement.scale,
-      height: (tallCover ? 34 : 15) * placement.scale,
+      radius: coverRadius * placement.scale,
+      height: placement.coverHeight,
       baseY: placement.ground,
       blocksProjectiles: true,
       sourceId: placement.id,
@@ -323,7 +345,7 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
     perches: tallCover
       ? placements.map((placement) => new THREE.Vector3(
         placement.x,
-        placement.ground + 31 * placement.scale,
+        placement.topY + placement.scale,
         placement.z,
       ))
       : [],

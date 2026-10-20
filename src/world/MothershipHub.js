@@ -2349,7 +2349,14 @@ export class MothershipHub {
     };
 
     clampToBounds();
-    for (let iteration = 0; iteration < 4; iteration += 1) {
+    const originX = position.x;
+    const originZ = position.z;
+    const touchedColliders = new Set();
+    const overlaps = (x, z, collider) => collider.type === 'box'
+      ? Math.abs(x - collider.x) < collider.halfWidth + radius - 0.00001
+        && Math.abs(z - collider.z) < collider.halfDepth + radius - 0.00001
+      : Math.hypot(x - collider.x, z - collider.z) < collider.radius + radius - 0.00001;
+    for (let iteration = 0; iteration < 8; iteration += 1) {
       let resolvedCollision = false;
       for (const collider of this.colliders) {
         if (collider.type === 'box') {
@@ -2359,12 +2366,19 @@ export class MothershipHub {
           const offsetZ = position.z - collider.z;
           if (Math.abs(offsetX) >= expandedX || Math.abs(offsetZ) >= expandedZ) continue;
 
+          touchedColliders.add(collider);
           const pushX = expandedX - Math.abs(offsetX);
           const pushZ = expandedZ - Math.abs(offsetZ);
-          if (pushX <= pushZ) {
-            position.x = collider.x + (offsetX < 0 ? -expandedX : expandedX);
-          } else {
-            position.z = collider.z + (offsetZ < 0 ? -expandedZ : expandedZ);
+          const exitX = collider.x + (offsetX < 0 ? -expandedX : expandedX);
+          const exitZ = collider.z + (offsetZ < 0 ? -expandedZ : expandedZ);
+          const xFits = exitX >= this.bounds.minX + radius && exitX <= this.bounds.maxX - radius;
+          const zFits = exitZ >= this.bounds.minZ + radius && exitZ <= this.bounds.maxZ - radius;
+          // Ne pas repousser dans la coque : le clamp annulerait la correction
+          // à chaque frame et emprisonnerait le joueur contre la cloison.
+          if (xFits && (!zFits || pushX <= pushZ)) position.x = exitX;
+          else if (zFits) position.z = exitZ;
+          else {
+            position.x = collider.x - (offsetX < 0 ? -expandedX : expandedX);
           }
           resolvedCollision = true;
           continue;
@@ -2375,6 +2389,7 @@ export class MothershipHub {
         const minDistance = collider.radius + radius;
         const distanceSquared = (dx * dx) + (dz * dz);
         if (distanceSquared >= minDistance * minDistance) continue;
+        touchedColliders.add(collider);
         const distance = Math.sqrt(distanceSquared);
         const normalX = distance > 0.0001 ? dx / distance : 1;
         const normalZ = distance > 0.0001 ? dz / distance : 0;
@@ -2384,6 +2399,39 @@ export class MothershipHub {
       }
       clampToBounds();
       if (!resolvedCollision) break;
+    }
+    // Deux capsules rapprochées peuvent se renvoyer le joueur exactement
+    // sur leur axe commun. Chercher alors une sortie libre autour des seuls
+    // obstacles touchés, au lieu de répéter cette oscillation indéfiniment.
+    if (this.colliders.some((collider) => overlaps(position.x, position.z, collider))) {
+      let best = null;
+      let bestDistance = Infinity;
+      const consider = (x, z) => {
+        if (x < this.bounds.minX + radius || x > this.bounds.maxX - radius
+          || z < this.bounds.minZ + radius || z > this.bounds.maxZ - radius) return;
+        const distance = (x - originX) ** 2 + (z - originZ) ** 2;
+        if (distance >= bestDistance || this.colliders.some((collider) => overlaps(x, z, collider))) return;
+        best = { x, z };
+        bestDistance = distance;
+      };
+      for (const collider of touchedColliders) {
+        if (collider.type === 'box') {
+          const extentX = collider.halfWidth + radius + 0.001;
+          const extentZ = collider.halfDepth + radius + 0.001;
+          for (const side of [-1, 1]) {
+            consider(collider.x + side * extentX, originZ);
+            consider(originX, collider.z + side * extentZ);
+            for (const other of [-1, 1]) consider(collider.x + side * extentX, collider.z + other * extentZ);
+          }
+        } else {
+          const distance = collider.radius + radius + 0.001;
+          for (let index = 0; index < 32; index += 1) {
+            const angle = index * Math.PI / 16;
+            consider(collider.x + Math.cos(angle) * distance, collider.z + Math.sin(angle) * distance);
+          }
+        }
+      }
+      if (best) position.set(best.x, 0, best.z);
     }
     position.y = 0;
     return position;

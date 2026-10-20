@@ -182,6 +182,11 @@ const SHRINE_PROP_TYPES = new Set(['trophy_tree', 'royal_dais', 'blooding_dais',
 
 const MIN_ROUTE_COVER_COLLIDERS = 9;
 const MIN_GAMEPLAY_PROP_COLLIDERS = 12;
+const SHADOW_FOCUS_EXTENT = 96;
+const KEY_LIGHT_OFFSET = new THREE.Vector3(-180, 280, 220);
+const KEY_LIGHT_FORWARD = KEY_LIGHT_OFFSET.clone().normalize();
+const KEY_LIGHT_RIGHT = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), KEY_LIGHT_FORWARD).normalize();
+const KEY_LIGHT_UP = new THREE.Vector3().crossVectors(KEY_LIGHT_FORWARD, KEY_LIGHT_RIGHT).normalize();
 const STATIC_INSTANCE_BATCH_NAMES = Object.freeze({
   jungleTrunks: 'legacy-jungle-tree-trunks',
   jungleCrowns: 'legacy-jungle-tree-crowns',
@@ -395,6 +400,8 @@ export class Environment {
     this.mainLight.shadow.bias = -0.00025;
     this.mainLight.shadow.normalBias = 0.035;
     this.scene.add(this.mainLight);
+    this.scene.add(this.mainLight.target);
+    this.shadowFocus = new THREE.Vector3();
 
     this.sunSphere = new THREE.Mesh(
       new THREE.SphereGeometry(25, 24, 24),
@@ -402,6 +409,57 @@ export class Environment {
     );
     this.sunSphere.position.copy(this.mainLight.position);
     this.scene.add(this.sunSphere);
+  }
+
+  updateShadowFocus(position) {
+    if (!position || !Number.isFinite(position.x) || !Number.isFinite(position.y) || !Number.isFinite(position.z)) return;
+    // Spend the existing 2048² map on the nearby play space, rather than a
+    // kilometre-wide map. Snap in light space to avoid crawling shadow edges.
+    const texelSize = SHADOW_FOCUS_EXTENT * 2 / this.mainLight.shadow.mapSize.x;
+    const right = Math.round(KEY_LIGHT_RIGHT.dot(position) / texelSize) * texelSize;
+    const up = Math.round(KEY_LIGHT_UP.dot(position) / texelSize) * texelSize;
+    const depth = KEY_LIGHT_FORWARD.dot(position);
+    this.shadowFocus.copy(KEY_LIGHT_RIGHT).multiplyScalar(right)
+      .addScaledVector(KEY_LIGHT_UP, up)
+      .addScaledVector(KEY_LIGHT_FORWARD, depth);
+    this.mainLight.target.position.copy(this.shadowFocus);
+    this.mainLight.position.copy(this.shadowFocus).add(KEY_LIGHT_OFFSET);
+    this.sunSphere?.position.copy(this.mainLight.position);
+  }
+
+  createAtmosphericSky(style) {
+    const horizon = new THREE.Color(style.background).lerp(new THREE.Color(style.hemisphereSky), 0.08);
+    const zenith = new THREE.Color(style.background).lerp(new THREE.Color(style.hemisphereSky), 0.18);
+    const sky = new THREE.Mesh(
+      new THREE.SphereGeometry(1500, 24, 12),
+      new THREE.ShaderMaterial({
+        uniforms: { horizon: { value: horizon }, zenith: { value: zenith } },
+        side: THREE.BackSide,
+        depthWrite: false,
+        toneMapped: false,
+        vertexShader: `
+          varying float elevation;
+          void main() {
+            elevation = normalize(position).y;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 horizon;
+          uniform vec3 zenith;
+          varying float elevation;
+          void main() {
+            gl_FragColor = vec4(mix(horizon, zenith, smoothstep(0.0, 0.85, elevation)), 1.0);
+            #include <colorspace_fragment>
+          }
+        `,
+      }),
+    );
+    sky.name = 'hunt-atmospheric-sky';
+    sky.renderOrder = -10;
+    this.skyDome = sky;
+    this.biomeGroup.add(sky);
+    this.scene.fog.color.copy(horizon);
   }
 
   getTexture(path, repeat = 8) {
@@ -470,6 +528,7 @@ export class Environment {
       if (!materials.has(material)) material.dispose();
     });
     this.biomeGroup.clear();
+    this.skyDome = null;
     this.propBuilder = null;
     this.propRoot = null;
     this.environmentProps = [];
@@ -573,7 +632,7 @@ export class Environment {
     this.clearBiome();
     this.huntLayout = getBiomeHuntLayout(this.currentBiome);
     this.playableRadius = this.huntLayout.playableRadius;
-    const shadowExtent = this.playableRadius + 90;
+    const shadowExtent = SHADOW_FOCUS_EXTENT;
     this.mainLight.shadow.camera.left = -shadowExtent;
     this.mainLight.shadow.camera.right = shadowExtent;
     this.mainLight.shadow.camera.top = shadowExtent;
@@ -581,6 +640,7 @@ export class Environment {
     this.mainLight.shadow.camera.near = 8;
     this.mainLight.shadow.camera.far = 1600;
     this.mainLight.shadow.camera.updateProjectionMatrix();
+    this.updateShadowFocus(new THREE.Vector3(0, 0, 0));
     this.propFootprints = getBiomePropPlan(this.currentBiome).props
       .filter((prop) => Number(prop.colliderRadius) > 0)
       .map((prop) => ({
@@ -601,6 +661,7 @@ export class Environment {
     this.mainLight.color.setHex(style.key);
     this.mainLight.intensity = style.keyIntensity;
     this.sunSphere.material.color.setHex(style.sun);
+    this.createAtmosphericSky(style);
     this.createTerrain(style.ground);
     this.routeRoot = buildHuntRouteNetwork(this.huntLayout, (x, z) => this.sampleBaseHeight(x, z));
     this.routeMetrics = this.routeRoot.userData.huntLayoutMetrics;
@@ -2759,9 +2820,35 @@ export class Environment {
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     this.particles = new THREE.Points(
       geometry,
-      new THREE.PointsMaterial({ color: colorHex, size: 0.9, transparent: true, opacity: 0.7 }),
+      new THREE.PointsMaterial({
+        color: colorHex, size: 0.9, transparent: true, opacity: 0.7,
+        map: this.getParticleSprite(), depthWrite: false,
+      }),
     );
     this.biomeGroup.add(this.particles);
+  }
+
+  getParticleSprite() {
+    const key = 'procedural-soft-particle';
+    if (this.textureCache.has(key)) return this.textureCache.get(key);
+    // Tiny generated sprite: no image request, no square opaque corners and
+    // one shared allocation across all weather and ambient particle systems.
+    const size = 16;
+    const pixels = new Uint8Array(size * size * 4);
+    for (let y = 0; y < size; y += 1) {
+      for (let x = 0; x < size; x += 1) {
+        const radius = Math.hypot((x + 0.5) / size * 2 - 1, (y + 0.5) / size * 2 - 1);
+        const offset = (y * size + x) * 4;
+        pixels[offset] = pixels[offset + 1] = pixels[offset + 2] = 255;
+        pixels[offset + 3] = Math.round(Math.max(0, 1 - radius) ** 2 * 255);
+      }
+    }
+    const texture = new THREE.DataTexture(pixels, size, size);
+    texture.minFilter = THREE.LinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+    texture.needsUpdate = true;
+    this.textureCache.set(key, texture);
+    return texture;
   }
 
   createWeatherParticles({ color, count, size }) {
@@ -2773,7 +2860,10 @@ export class Environment {
       positions[i + 2] = (Math.random() - 0.5) * 500;
     }
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const material = new THREE.PointsMaterial({ color, size, transparent: true, opacity: 0.78 });
+    const material = new THREE.PointsMaterial({
+      color, size, transparent: true, opacity: 0.78,
+      map: this.getParticleSprite(), depthWrite: false,
+    });
     material.userData.environmentFullOpacity = material.opacity;
     const particles = new THREE.Points(
       geometry,
@@ -2855,6 +2945,8 @@ export class Environment {
       const style = BIOME_STYLE[this.currentBiome];
       this.scene.background = new THREE.Color(style.background);
       this.scene.fog = new THREE.FogExp2(style.background, style.fog);
+      const sky = this.biomeGroup.getObjectByName('hunt-atmospheric-sky');
+      if (sky) this.scene.fog.color.copy(sky.material.uniforms.horizon.value);
     } else {
       this.scene.background = new THREE.Color(0x030508);
       this.scene.fog = new THREE.FogExp2(0x030508, 0.0015);
@@ -2887,11 +2979,20 @@ export class Environment {
 
   update(delta, visionMode, { player = null, weatherEvent } = {}) {
     const frameDelta = Number.isFinite(delta) ? Math.max(0, delta) : 0;
+    this.updateShadowFocus(player?.position);
+    if (this.skyDome && player?.position) this.skyDome.position.copy(player.position);
     const requestedWeather = weatherEvent == null && this.currentBiome === 'gunnison_outbreak'
       ? 'rain'
       : weatherEvent;
     if (requestedWeather !== undefined && requestedWeather !== this.activeWeatherEvent) {
       this.setWeatherEvent(requestedWeather);
+    }
+    // Levels extend well beyond the original origin-centred 500 m cloud.
+    // Keep the same bounded particle budget visible throughout exploration.
+    if (player?.position) {
+      for (const particles of new Set([this.particles, this.rainParticles, this.sandParticles, this.thermalStormParticles])) {
+        particles?.position.copy(player.position);
+      }
     }
     this.updateThermalFootprints(frameDelta, visionMode);
     this.updateDynamicEventZones(frameDelta);
@@ -2937,6 +3038,7 @@ export class Environment {
     this.scene.remove(this.ambientLight);
     this.scene.remove(this.hemisphereLight);
     this.scene.remove(this.mainLight);
+    this.scene.remove(this.mainLight.target);
     this.scene.remove(this.sunSphere);
     this.sunSphere.geometry?.dispose();
     const sunMaterials = Array.isArray(this.sunSphere.material)

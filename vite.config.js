@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   build: {
-    // Three.js est isolé dans son propre chunk vendor ; les chunks applicatifs restent sous 400 kB.
+    // Séparer le joueur et les PNJ évite un unique bloc d'entités de près de 700 kB.
     chunkSizeWarningLimit: 550,
     rolldownOptions: {
       output: {
@@ -12,6 +12,16 @@ export default defineConfig({
               name: 'three',
               test: /node_modules[\\/]three[\\/]/,
               priority: 20,
+            },
+            {
+              name: 'game-player',
+              test: /src[\\/]entities[\\/]YautjaPlayer\.js$/,
+              priority: 18,
+            },
+            {
+              name: 'game-npcs',
+              test: /src[\\/]entities[\\/]HuntNPC\.js$/,
+              priority: 17,
             },
             {
               name: 'game-entities',

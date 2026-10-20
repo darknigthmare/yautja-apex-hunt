@@ -22,6 +22,7 @@ export class SaveManager {
   }
 
   sanitizeSettings(settings = {}) {
+    if (!settings || typeof settings !== 'object' || Array.isArray(settings)) settings = {};
     const scale = Number(settings.hudScale);
     return {
       audioEnabled: settings.audioEnabled !== false,

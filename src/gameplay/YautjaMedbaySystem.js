@@ -140,6 +140,27 @@ export function refillMedbayInventory(inventoryState) {
   return inventoryState;
 }
 
+// Une vue du laboratoire peut offrir des soins illimités, mais le kit qui
+// quitte le croiseur reste borné. Ne pas recharger les réserves déjà consommées.
+export function prepareFieldMedbayInventory(inventoryState) {
+  if (!inventoryState) return createMedbayInventoryState();
+  inventoryState.isMothership = false;
+  inventoryState.charges ??= {};
+  inventoryState.cooldowns ??= {};
+  const modifier = Number(inventoryState.chargesModifier);
+  const chargesModifier = Number.isFinite(modifier) && modifier > 0 ? modifier : 1;
+  for (const item of MEDBAY_ITEMS) {
+    const capacity = Math.max(1, Math.round(item.baseCharges * chargesModifier));
+    const charges = inventoryState.charges[item.id];
+    inventoryState.charges[item.id] = charges === Number.POSITIVE_INFINITY
+      ? capacity
+      : Math.min(capacity, Math.max(0, Math.floor(Number(charges) || 0)));
+    const cooldown = Number(inventoryState.cooldowns[item.id]);
+    inventoryState.cooldowns[item.id] = Number.isFinite(cooldown) ? Math.max(0, cooldown) : 0;
+  }
+  return inventoryState;
+}
+
 export function updateMedbayCooldowns(inventoryState, delta = 0) {
   if (!inventoryState?.cooldowns || delta <= 0) return;
   for (const key of Object.keys(inventoryState.cooldowns)) {
@@ -188,10 +209,13 @@ export function getMedbayDiagnostic(player) {
 export function canApplyMedbayItem(player, itemId, inventoryState) {
   const item = getMedbayItemById(itemId);
   if (!player || !item) return { allowed: false, reason: 'Équipement médical inconnu' };
+  if (player.isDead || player.isSelfDestructing || player.selfDestructComplete || player.health <= 0) {
+    return { allowed: false, reason: 'Traitement indisponible : constantes vitales interrompues' };
+  }
 
   if (inventoryState) {
     const charges = inventoryState.charges[itemId] ?? 0;
-    if (charges <= 0) return { allowed: false, reason: 'Réserve épuisée pour ce composant' };
+    if (!inventoryState.isMothership && charges <= 0) return { allowed: false, reason: 'Réserve épuisée pour ce composant' };
     const cooldown = inventoryState.cooldowns[itemId] ?? 0;
     if (cooldown > 0) return { allowed: false, reason: `Refroidissement en cours (${cooldown.toFixed(1)}s)` };
   }
@@ -200,12 +224,16 @@ export function canApplyMedbayItem(player, itemId, inventoryState) {
     return { allowed: false, reason: 'Endurance insuffisante pour endurer le choc de cautérisation' };
   }
 
-  // Vérification de pertinence médicale
+  // Conserver les charges lorsqu'aucun des effets du composant ne peut aider.
   const diag = getMedbayDiagnostic(player);
-  if (itemId === 'acid_neutralizer_vial' && !diag.hasAcid) {
-    if (player.health >= player.maxHealth) {
-      return { allowed: false, reason: 'Aucune contamination acide à neutraliser' };
-    }
+  const { effects } = item;
+  const hasBenefit = (effects.health && player.health < player.maxHealth)
+    || (effects.stamina && (player.stamina ?? 0) < (player.maxStamina ?? 100))
+    || (effects.energy && (player.energy ?? 0) < (player.maxEnergy ?? 100))
+    || (effects.removeAcid && diag.hasAcid)
+    || (effects.removeBleeding && diag.hasBleeding);
+  if (!hasBenefit) {
+    return { allowed: false, reason: 'Aucun soin nécessaire avec ce composant' };
   }
 
   return { allowed: true, item };
@@ -267,7 +295,7 @@ export function applyMedbayItem(player, itemId, inventoryState = null, audio = a
 
   // Consommation et cooldown
   if (inventoryState) {
-    if (inventoryState.charges[itemId] !== Number.POSITIVE_INFINITY) {
+    if (!inventoryState.isMothership && inventoryState.charges[itemId] !== Number.POSITIVE_INFINITY) {
       inventoryState.charges[itemId] = Math.max(0, inventoryState.charges[itemId] - 1);
     }
     inventoryState.cooldowns[itemId] = item.cooldown;

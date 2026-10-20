@@ -6,6 +6,7 @@ export class ShaderManager {
   // Creates Thermal Vision Shader Material for prey and environment objects
   static createThermalMaterial(baseColor, heatValue = 0.5) {
     return new THREE.ShaderMaterial({
+      toneMapped: false,
       uniforms: {
         uHeat: { value: heatValue },
         uTime: { value: 0 },
@@ -13,13 +14,13 @@ export class ShaderManager {
       },
       vertexShader: `
         varying vec3 vNormal;
-        varying vec3 vWorldPosition;
+        varying vec3 vViewPosition;
         
         void main() {
           vNormal = normalize(normalMatrix * normal);
-          vec4 worldPos = modelMatrix * vec4(position, 1.0);
-          vWorldPosition = worldPos.xyz;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
+          vViewPosition = -viewPosition.xyz;
+          gl_Position = projectionMatrix * viewPosition;
         }
       `,
       fragmentShader: `
@@ -27,7 +28,7 @@ export class ShaderManager {
         uniform float uTime;
         uniform vec3 uBaseColor;
         varying vec3 vNormal;
-        varying vec3 vWorldPosition;
+        varying vec3 vViewPosition;
 
         // Thermal rainbow ramp mapper: 0.0 (Cold Blue) -> 0.5 (Green/Yellow) -> 1.0 (Burning Red/White)
         vec3 getThermalColor(float h) {
@@ -39,13 +40,15 @@ export class ShaderManager {
         }
 
         void main() {
-          vec3 viewDir = normalize(cameraPosition - vWorldPosition);
-          float fresnel = pow(1.0 - max(dot(viewDir, vNormal), 0.0), 2.0);
+          // normalMatrix and the viewing direction must share view space.
+          vec3 viewDir = normalize(vViewPosition);
+          float fresnel = pow(1.0 - max(dot(viewDir, normalize(vNormal)), 0.0), 2.0);
           
           float dynamicHeat = clamp(uHeat + fresnel * 0.3, 0.0, 1.0);
           vec3 thermalCol = getThermalColor(dynamicHeat);
 
           gl_FragColor = vec4(thermalCol, 1.0);
+          #include <colorspace_fragment>
         }
       `
     });
@@ -60,6 +63,7 @@ export class ShaderManager {
       },
       transparent: true,
       depthWrite: false,
+      toneMapped: false,
       vertexShader: `
         varying vec3 vNormal;
         varying vec3 vViewPosition;
@@ -87,6 +91,7 @@ export class ShaderManager {
 
           vec3 shimmerColor = mix(vec3(0.0, 0.9, 1.0), vec3(0.8, 1.0, 0.9), sin(uTime * 10.0) * 0.5 + 0.5);
           gl_FragColor = vec4(shimmerColor, uOpacity + rim * 0.4);
+          #include <colorspace_fragment>
         }
       `
     });
@@ -99,6 +104,8 @@ export class ShaderManager {
         uTime: { value: 0 }
       },
       transparent: true,
+      depthWrite: false,
+      toneMapped: false,
       blending: THREE.AdditiveBlending,
       vertexShader: `
         varying vec3 vNormal;
@@ -120,6 +127,7 @@ export class ShaderManager {
           vec3 finalCol = mix(coreColor, rimColor, rim) * pulse * 2.0;
 
           gl_FragColor = vec4(finalCol, 0.9);
+          #include <colorspace_fragment>
         }
       `
     });

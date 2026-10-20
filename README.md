@@ -15,7 +15,7 @@ La baseline v1.12 avait franchi 365 tests, le build Vite, l’audit de productio
 Prérequis : Node.js 20.19+, 22.12+ ou 24.x ; Node 25+ n’est pas activé sans nouvelle validation de release.
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -26,6 +26,11 @@ npm test
 npm run build
 npm audit
 ```
+
+La revue du 20 octobre 2026 et ses limites sont documentées dans
+[`QA_RELEASE_REVIEW.md`](QA_RELEASE_REVIEW.md). Le parcours Chromium desktop/mobile
+peut être reproduit après le build avec `npm run test:browser` ; définir
+`CHROMIUM_PATH` si le navigateur système n'est pas `/usr/bin/chromium`.
 
 ## Boucle de jeu
 

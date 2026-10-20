@@ -3,6 +3,7 @@ import {
   getMedbayDiagnostic,
   applyMedbayItem,
   canApplyMedbayItem,
+  refillMedbayInventory,
 } from '../gameplay/YautjaMedbaySystem.js';
 import { audioSynth } from '../AudioSynthesizer.js';
 
@@ -18,6 +19,8 @@ export class MedbayInventoryOverlay {
     this.logMessages = [];
 
     this._onKeyDown = this._handleKeyDown.bind(this);
+    this._dragCleanup = null;
+    this.previousFocus = null;
   }
 
   mount(parent = globalThis.document?.body) {
@@ -44,6 +47,7 @@ export class MedbayInventoryOverlay {
     overlay.id = 'yautja-medbay-modal';
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-hidden', 'true');
     overlay.setAttribute('aria-label', 'Baie médicale Yautja et Medicomp');
 
     overlay.innerHTML = `
@@ -106,7 +110,7 @@ export class MedbayInventoryOverlay {
             </div>
             <div class="medbay-log-panel" id="medbay-log-panel">
               <div class="medbay-log-title">JOURNAL CHIRURGICAL :</div>
-              <div class="medbay-log-content" id="medbay-log-content">Prêt pour diagnostic d'intervention.</div>
+              <div class="medbay-log-content" id="medbay-log-content" role="status" aria-live="polite">Prêt pour diagnostic d'intervention.</div>
             </div>
           </div>
         </div>
@@ -135,12 +139,12 @@ export class MedbayInventoryOverlay {
 
     this.container.querySelector('#medbay-btn-refill')?.addEventListener('click', () => {
       if (this.inventoryState) {
-        for (const item of MEDBAY_ITEMS) {
-          this.inventoryState.charges[item.id] = this.inventoryState.isMothership
-            ? Number.POSITIVE_INFINITY
-            : item.baseCharges;
-          this.inventoryState.cooldowns[item.id] = 0;
-        }
+        // The hub view can offer free treatment without converting the shared
+        // portable kit into an infinite stock for the next hunt.
+        const fieldInventory = this.player?.medbayInventory ?? this.inventoryState;
+        refillMedbayInventory({ ...fieldInventory, isMothership: false });
+        this.inventoryState.charges = fieldInventory.charges;
+        this.inventoryState.cooldowns = fieldInventory.cooldowns;
         audioSynth.playMedicompOpen?.();
         this.addLog('Réserves médicales rechargées à 100 % au laboratoire du croiseur.');
         this.render();
@@ -162,41 +166,66 @@ export class MedbayInventoryOverlay {
     let initialLeft = 0;
     let initialTop = 0;
 
-    handle.style.cursor = 'grab';
-
-    handle.addEventListener('mousedown', (e) => {
-      if (e.target.closest('button')) return;
+    const onPointerDown = (event) => {
+      if (event.target.closest('button') || window.innerWidth <= 760) return;
       isDragging = true;
       handle.style.cursor = 'grabbing';
-      startX = e.clientX;
-      startY = e.clientY;
+      startX = event.clientX;
+      startY = event.clientY;
       const rect = win.getBoundingClientRect();
       initialLeft = rect.left;
       initialTop = rect.top;
-      e.preventDefault();
-    });
-
-    window.addEventListener('mousemove', (e) => {
+      handle.setPointerCapture?.(event.pointerId);
+      event.preventDefault();
+    };
+    const onPointerMove = (event) => {
       if (!isDragging) return;
-      const deltaX = e.clientX - startX;
-      const deltaY = e.clientY - startY;
+      const rect = win.getBoundingClientRect();
       win.style.position = 'fixed';
       win.style.margin = '0';
-      win.style.left = `${Math.max(10, Math.min(window.innerWidth - 100, initialLeft + deltaX))}px`;
-      win.style.top = `${Math.max(10, Math.min(window.innerHeight - 80, initialTop + deltaY))}px`;
+      win.style.left = `${Math.max(8, Math.min(window.innerWidth - rect.width - 8, initialLeft + event.clientX - startX))}px`;
+      win.style.top = `${Math.max(8, Math.min(window.innerHeight - rect.height - 8, initialTop + event.clientY - startY))}px`;
       win.style.transform = 'none';
-    });
-
-    window.addEventListener('mouseup', () => {
-      if (isDragging) {
-        isDragging = false;
-        handle.style.cursor = 'grab';
-      }
-    });
+    };
+    const stopDragging = () => {
+      isDragging = false;
+      handle.style.cursor = 'grab';
+    };
+    const resetPosition = () => {
+      stopDragging();
+      for (const property of ['position', 'margin', 'left', 'top', 'transform']) win.style.removeProperty(property);
+    };
+    handle.style.cursor = 'grab';
+    handle.addEventListener('pointerdown', onPointerDown);
+    handle.addEventListener('pointermove', onPointerMove);
+    handle.addEventListener('pointerup', stopDragging);
+    handle.addEventListener('pointercancel', stopDragging);
+    window.addEventListener('resize', resetPosition);
+    this._dragCleanup = () => {
+      handle.removeEventListener('pointerdown', onPointerDown);
+      handle.removeEventListener('pointermove', onPointerMove);
+      handle.removeEventListener('pointerup', stopDragging);
+      handle.removeEventListener('pointercancel', stopDragging);
+      window.removeEventListener('resize', resetPosition);
+    };
   }
 
   _handleKeyDown(event) {
     if (!this.isOpen) return;
+    // The medical window owns keyboard input while open. Keep movement and
+    // combat shortcuts from reaching the game underneath it.
+    event.stopPropagation?.();
+    if (event.key === 'Tab') {
+      const controls = [...(this.container?.querySelectorAll('button, input, select, [tabindex]') ?? [])]
+        .filter((element) => !element.disabled && element.tabIndex >= 0 && element.getClientRects().length > 0);
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      const active = typeof document !== 'undefined' ? document.activeElement : null;
+      if (controls.length && (!this.container.contains(active) || (event.shiftKey ? active === first : active === last))) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+      }
+    }
     if (event.key === 'Escape' || event.code === 'KeyM') {
       event.preventDefault();
       this.close();
@@ -209,23 +238,30 @@ export class MedbayInventoryOverlay {
 
     if (!this.container) this.mount();
 
+    if (!this.isOpen && typeof document !== 'undefined') this.previousFocus = document.activeElement;
     this.isOpen = true;
     this.container?.classList?.remove('hidden');
+    this.container?.setAttribute?.('aria-hidden', 'false');
     if (typeof window !== 'undefined') {
-      window.addEventListener('keydown', this._onKeyDown);
+      window.addEventListener('keydown', this._onKeyDown, true);
     }
 
     audioSynth.playMedicompOpen?.();
     this.render();
+    this.container?.querySelector?.('#medbay-btn-close')?.focus?.();
   }
 
   close() {
     if (!this.isOpen) return;
     this.isOpen = false;
     this.container?.classList?.add('hidden');
+    this.container?.setAttribute?.('aria-hidden', 'true');
     if (typeof window !== 'undefined') {
-      window.removeEventListener('keydown', this._onKeyDown);
+      window.removeEventListener('keydown', this._onKeyDown, true);
     }
+
+    if (this.previousFocus?.isConnected) this.previousFocus.focus?.();
+    this.previousFocus = null;
 
     if (typeof this.onClose === 'function') {
       this.onClose();
@@ -289,7 +325,9 @@ export class MedbayInventoryOverlay {
       grid.innerHTML = '';
       for (const item of MEDBAY_ITEMS) {
         const check = canApplyMedbayItem(this.player, item.id, this.inventoryState);
-        const charges = this.inventoryState?.charges[item.id];
+        const charges = this.inventoryState?.isMothership
+          ? Number.POSITIVE_INFINITY
+          : this.inventoryState?.charges[item.id];
         const chargesDisplay = charges === Number.POSITIVE_INFINITY ? 'ILLIMITÉ' : `${charges ?? 0}`;
         const cooldown = this.inventoryState?.cooldowns[item.id] ?? 0;
 
@@ -301,8 +339,9 @@ export class MedbayInventoryOverlay {
             <span class="item-charges">RÉSERVE : ${chargesDisplay}</span>
           </div>
           <div class="item-lore">${item.lore}</div>
+          ${check.allowed ? '' : `<p class="medbay-item-availability">${check.reason}</p>`}
           <div class="item-actions">
-            <button class="medbay-action-btn" data-item-id="${item.id}" ${check.allowed ? '' : 'disabled'}>
+            <button class="medbay-action-btn" aria-label="Appliquer : ${item.name}" data-item-id="${item.id}" ${check.allowed ? '' : 'disabled'}>
               ${cooldown > 0 ? `RECHARGE (${cooldown.toFixed(1)}s)` : 'APPLIQUER LE SOIN'}
             </button>
           </div>
@@ -343,8 +382,10 @@ export class MedbayInventoryOverlay {
 
   destroy() {
     if (typeof window !== 'undefined') {
-      window.removeEventListener('keydown', this._onKeyDown);
+      window.removeEventListener('keydown', this._onKeyDown, true);
     }
+    this._dragCleanup?.();
+    this._dragCleanup = null;
     if (this.container && this.container.parentNode) {
       this.container.parentNode.removeChild?.(this.container);
     }

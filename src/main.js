@@ -2155,7 +2155,8 @@ export class Game {
 
   requestPointerLockSafely() {
     if (
-      typeof this.container.requestPointerLock !== 'function'
+      (typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)')?.matches)
+      || typeof this.container.requestPointerLock !== 'function'
       || document.pointerLockElement === this.container
       || navigator.userActivation?.isActive === false
     ) return false;
@@ -2253,26 +2254,7 @@ export class Game {
       }
     });
 
-    window.addEventListener('mousedown', (e) => {
-      if (!this.isGameStarted || this.gameState !== 'HUNT' || this.isPaused) return;
-      audioSynth.init();
-
-      if (this.player.inQTE) {
-        if (e.button === 2 || e.button === 0) {
-          e.preventDefault();
-          this.resolveFacehuggerQTE(true);
-        }
-        return;
-      }
-
-      if (e.button === 2 && this.player.hasScopeZoom) {
-        e.preventDefault();
-        this.isScopeZooming = true;
-        return;
-      }
-
-      if (e.button === 0) this.performAttack();
-    });
+    window.addEventListener('mousedown', (e) => this.handleCombatMouseDown(e));
 
     window.addEventListener('mouseup', (e) => {
       if (e.button === 2) this.isScopeZooming = false;
@@ -2290,6 +2272,27 @@ export class Game {
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) pauseForBackground();
     });
+  }
+
+  handleCombatMouseDown(event) {
+    // Les clics du HUD sélectionnent une arme ou une action sans tirer celle en main.
+    if (event.target !== this.container
+      || !this.isGameStarted || this.gameState !== 'HUNT' || this.isPaused
+      || this.medbayOverlay?.isOpen) return;
+    audioSynth.init();
+    if (this.player.inQTE) {
+      if (event.button === 2 || event.button === 0) {
+        event.preventDefault();
+        this.resolveFacehuggerQTE(true);
+      }
+      return;
+    }
+    if (event.button === 2 && this.player.hasScopeZoom) {
+      event.preventDefault();
+      this.isScopeZooming = true;
+      return;
+    }
+    if (event.button === 0) this.performAttack();
   }
 
   spawnBloodSpatterVFX(pos, colorHex, count = 20) {
@@ -2656,6 +2659,10 @@ export class Game {
       event.preventDefault?.();
       this.onKeyDown({ code: 'KeyC', repeat: false, preventDefault() {} });
     });
+    document.getElementById('btn-touch-hunt-medbay')?.addEventListener('click', (event) => {
+      event.preventDefault?.();
+      this.onKeyDown({ code: 'KeyM', repeat: false, preventDefault() {} });
+    });
     document.getElementById('btn-touch-hunt-pause')?.addEventListener('click', (event) => {
       event.preventDefault?.();
       if (this.isHuntFlowActive()) this.togglePause();
@@ -2832,15 +2839,7 @@ export class Game {
       }
       this.hud.updateVitals(this.player);
       this.hud.showLogMessage('BAIE MÉDICALE DU CROISEUR — STÉRILISATION ET RÉSERVES MEDICOMP RECHARGÉES', 3400);
-      if (!this.medbayOverlay) {
-        this.medbayOverlay = new MedbayInventoryOverlay({
-          player: this.player,
-          inventoryState: this.player.medbayInventory,
-          onAction: () => this.hud.updateVitals(this.player),
-        });
-        this.medbayOverlay.mount();
-      }
-      this.medbayOverlay.open(this.player, { ...this.player.medbayInventory, isMothership: true });
+      this.openMedbay(true);
     } else if (station.interactionType === 'core') {
       this.player.energy = this.player.maxEnergy;
       this.hud.updateVitals(this.player);
@@ -3002,8 +3001,28 @@ export class Game {
     this.showMissionSelectionModal();
   }
 
+  openMedbay(isMothership = this.gameState === 'HUB') {
+    if (!this.medbayOverlay) {
+      this.medbayOverlay = new MedbayInventoryOverlay({
+        player: this.player,
+        inventoryState: this.player.medbayInventory,
+        onAction: () => this.hud.updateVitals(this.player),
+      });
+      this.medbayOverlay.mount();
+    }
+    this.resetKeyboardInput();
+    this.resetHubTouchInput();
+    this.resetHuntTouchInput();
+    this.gamepadAxes = { x: 0, z: 0 };
+    this.syncInputDirection();
+    this.isScopeZooming = false;
+    if (document.pointerLockElement) document.exitPointerLock();
+    this.medbayOverlay.open(this.player, { ...this.player.medbayInventory, isMothership });
+  }
+
   onKeyDown(e) {
     if (!this.isGameStarted) return;
+    if (this.medbayOverlay?.isOpen) return;
 
     if (this.gameState === 'HUB') {
       if ((e.code === 'Escape' || e.code === 'KeyP') && !e.repeat) {
@@ -3033,21 +3052,10 @@ export class Game {
       return;
     }
 
-    if (e.code === 'KeyM' && !e.repeat) {
+    if (e.code === 'KeyM' && !e.repeat && !this.isPaused
+      && this.gameState === 'HUNT' && !this.huntResultShown && !this.isPlayerCombatDisabled()) {
       e.preventDefault?.();
-      if (!this.medbayOverlay) {
-        this.medbayOverlay = new MedbayInventoryOverlay({
-          player: this.player,
-          inventoryState: this.player.medbayInventory,
-          onAction: () => this.hud.updateVitals(this.player),
-        });
-        this.medbayOverlay.mount();
-      }
-      const isMothership = this.gameState === 'HUB';
-      this.medbayOverlay.toggle(this.player, {
-        ...this.player.medbayInventory,
-        isMothership,
-      });
+      this.openMedbay(false);
       return;
     }
 
@@ -3267,6 +3275,7 @@ export class Game {
 
   getVisibleDialog() {
     if (typeof document === 'undefined') return null;
+    if (this.medbayOverlay?.isOpen) return this.medbayOverlay.container;
     return [...document.querySelectorAll('[role="dialog"], [role="alertdialog"]')]
       .find((dialog) => !dialog.classList.contains('hidden') && dialog.getAttribute('aria-hidden') !== 'true')
       ?? null;
@@ -3288,7 +3297,7 @@ export class Game {
     return true;
   }
 
-  updateGamepad() {
+  updateGamepad(frameDelta = 1 / 60) {
     const gamepads = typeof navigator !== 'undefined' && navigator.getGamepads
       ? navigator.getGamepads()
       : [];
@@ -3351,9 +3360,10 @@ export class Game {
 
     const cameraAxisX = Number(axes[2]) || 0;
     const cameraAxisY = Number(axes[3]) || 0;
-    if (Math.abs(cameraAxisX) > 0.15) this.cameraYaw -= cameraAxisX * 0.03;
+    const lookStep = 1.8 * THREE.MathUtils.clamp(frameDelta, 0, 0.1);
+    if (Math.abs(cameraAxisX) > 0.15) this.cameraYaw -= cameraAxisX * lookStep;
     if (Math.abs(cameraAxisY) > 0.15) {
-      this.cameraPitch -= cameraAxisY * 0.03;
+      this.cameraPitch -= cameraAxisY * lookStep;
       this.cameraPitch = Math.max(-0.6, Math.min(0.8, this.cameraPitch));
     }
 
@@ -4141,9 +4151,9 @@ export class Game {
     const frameDelta = Math.min(rawDelta, 0.1);
     const delta = frameDelta * this.timeScale;
 
-    if (this.isGameStarted) this.updateGamepad();
+    if (this.isGameStarted) this.updateGamepad(frameDelta);
 
-    if (this.isGameStarted && !this.isPaused) {
+    if (this.isGameStarted && !this.isPaused && !this.medbayOverlay?.isOpen) {
       this.updateShaderUniforms(delta);
       this.updateVFX(delta);
 

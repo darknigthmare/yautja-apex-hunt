@@ -26,6 +26,7 @@ import {
   createMedbayInventoryState,
   applyMedbayItem,
   updateMedbayCooldowns,
+  prepareFieldMedbayInventory,
 } from '../gameplay/YautjaMedbaySystem.js';
 
 
@@ -267,6 +268,7 @@ export class YautjaPlayer {
 
     // State Flags
     this.isCloaked = false;
+    this.isSubmerged = false;
     this.activeVisionMode = 'thermal';
     this.selectedWeapon = 1;
     this.isAttacking = false;
@@ -2114,9 +2116,11 @@ export class YautjaPlayer {
 
   toggleCloak() {
     if (!this.isCloaked && this.wristShieldActive) return false;
-    if (this.isAcidCorroded && !this.hasAntiAcidCloak) return false;
+    if (!this.isCloaked && (this.isDead || this.isSelfDestructing || this.energy <= 0)) return false;
+    if (!this.isCloaked && this.isAcidCorroded && !this.hasAntiAcidCloak) return false;
 
     this.isCloaked = !this.isCloaked;
+    this.waterDisruptionTimer = 0;
     audioSynth.playThermalSwitch();
 
     if (this.isCloaked) this.applyCloakMaterials();
@@ -2838,6 +2842,10 @@ export class YautjaPlayer {
 
     this.isAcidCorroded = false;
     if (this.isCloaked) this.toggleCloak();
+    this.isBleeding = false;
+    this.waterDisruptionTimer = 0;
+    this.isSubmerged = false;
+    this.medbayInventory = prepareFieldMedbayInventory(this.medbayInventory);
     this.health = this.maxHealth;
     this.energy = this.maxEnergy;
     this.stamina = this.maxStamina;
@@ -3143,11 +3151,12 @@ export class YautjaPlayer {
     }
 
     if (this.isCloaked) {
-      this.energy -= delta * 12.0;
+      this.energy = Math.max(0, this.energy - delta * 12.0);
       if (this.energy <= 0) this.toggleCloak();
 
-      // Predator (1987) — Court-circuit du camouflage optique en eau profonde / immersion
-      if (this.position.y <= 0.4 && !this.hasAntiAcidCloak && this.customization?.armorFinishId !== 'finish_cleaner_acid_resistant') {
+      // L'immersion est fournie par un volume d'eau, jamais par l'altitude :
+      // les sols secs des biomes peuvent se trouver sous le niveau y = 0.
+      if (this.isSubmerged === true && !this.hasAntiAcidCloak && this.customization?.armorFinishId !== 'finish_cleaner_acid_resistant') {
         this.waterDisruptionTimer = (this.waterDisruptionTimer || 0) + delta;
         if (this.waterDisruptionTimer >= 2.0) {
           this.toggleCloak();
