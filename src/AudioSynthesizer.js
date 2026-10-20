@@ -11026,9 +11026,305 @@ class AudioSynthesizer {
     osc.start(now);
     osc.stop(now + 0.14);
   }
+
+  // =========================================================================
+  // v157 — Audit Testeur Humain QA #2 : Réverbération Environnementale & Effet Doppler
+  // =========================================================================
+  computeEnvironmentalReverbParameters(environmentType = 'temple_stone', chamberVolumeM3 = 850) {
+    let decayTimeSec = 1.8;
+    let wetMixRatio = 0.35;
+
+    if (environmentType === 'temple_stone' || environmentType === 'pyramid_sarcophagus_chamber') {
+      decayTimeSec = Math.min(4.2, 1.2 + (chamberVolumeM3 / 1000) * 1.5);
+      wetMixRatio = 0.45;
+    } else if (environmentType === 'gorge_open_air') {
+      decayTimeSec = 0.6;
+      wetMixRatio = 0.15;
+    } else if (environmentType === 'subway_metal_tunnel') {
+      decayTimeSec = 2.4;
+      wetMixRatio = 0.4;
+    }
+
+    return {
+      decayTimeSec: Number(decayTimeSec.toFixed(2)),
+      wetMixRatio: Number(wetMixRatio.toFixed(2)),
+      preDelayMs: 25
+    };
+  }
+
+  computeDopplerProximityShift(projectileSpeedMps = 180, missDistanceMeters = 1.5) {
+    const speedOfSoundMps = 343;
+    const clampedSpeed = Math.min(speedOfSoundMps * 0.9, Math.max(10, projectileSpeedMps));
+    const approachFactor = 1 + (clampedSpeed / speedOfSoundMps);
+    const recedeFactor = 1 / (1 + (clampedSpeed / speedOfSoundMps));
+    const proximityGainFactor = Math.max(0.2, 1 - (missDistanceMeters / 15));
+
+    return {
+      approachPitchShiftMultiplier: Number(approachFactor.toFixed(3)),
+      recedePitchShiftMultiplier: Number(recedeFactor.toFixed(3)),
+      proximityGainFactor: Number(proximityGainFactor.toFixed(3))
+    };
+  }
+
+  // =========================================================================
+  // v157 — 15 Nouveaux SFX Procéduraux Lore 1:1 & Audits Testeurs Humains QA
+  // =========================================================================
+
+  // Chantier 1 — Rupture de câble d'acier sous la charge de l'Upgrade Predator (The Predator 2018)
+  playGorgeSuspensionBridgeCableSnap() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(380, now);
+    osc.frequency.exponentialRampToValueAtTime(75, now + 0.22);
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Chantier 1 — Ricochet et déviation de balles sur l'exosquelette dermique de l'Upgrade Predator (The Predator 2018)
+  playUpgradePredatorDermalArmorDeflect() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(1240, now);
+    osc.frequency.exponentialRampToValueAtTime(420, now + 0.08);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }
+
+  // Chantier 2 — Rotation lourde des anneaux calendaires aztèques de Bouvetøya (AVP 2004)
+  playAztecCalendarRingGearRotation() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(85, now);
+    osc.frequency.linearRampToValueAtTime(145, now + 0.32);
+    gain.gain.setValueAtTime(0.34, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.36);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.38);
+  }
+
+  // Chantier 2 — Glissement de la dalle de pierre du sarcophage royal Yautja (AVP 2004)
+  playPyramidSarcophagusStoneSlabSlide() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(110, now);
+    osc.frequency.exponentialRampToValueAtTime(45, now + 0.4);
+    gain.gain.setValueAtTime(0.42, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.44);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.46);
+  }
+
+  // Chantier 3 — Éclairs stroboscopiques et étincelles de fusillade dans la Blue Line (Predator 2)
+  playBlueLineSubwayStrobeGunfireSparks() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(820, now);
+    osc.frequency.exponentialRampToValueAtTime(180, now + 0.11);
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.16);
+  }
+
+  // Chantier 3 — Éventration hydraulique des portes coulissantes du métro (Predator 2)
+  playSubwayCarDoorHydraulicPry() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(260, now);
+    osc.frequency.linearRampToValueAtTime(95, now + 0.28);
+    gain.gain.setValueAtTime(0.32, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.34);
+  }
+
+  // Chantier 4 — Sifflement du collet de cuir équestre de Taabe en plein galop (Prey 2022)
+  playTaabeEquestrianNooseWhistle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1350, now);
+    osc.frequency.exponentialRampToValueAtTime(680, now + 0.22);
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  // Chantier 4 — Cisaillage du collet sous le bouclier extensible du Feral Predator (Prey 2022)
+  playDeadTreeCanyonLassoSnareSnap() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(450, now);
+    osc.frequency.exponentialRampToValueAtTime(120, now + 0.14);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.17);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.19);
+  }
+
+  // Chantier 5 — Application de glaise fluviale froide sur la peau (Predator 1987)
+  playMudCamouflageClaySlatherSquish() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(140, now);
+    osc.frequency.exponentialRampToValueAtTime(60, now + 0.25);
+    gain.gain.setValueAtTime(0.26, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  }
+
+  // Chantier 5 — Résonance thermique froide du camouflage à la boue (Predator 1987)
+  playDutchColdClayThermalConcealHum() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(210, now);
+    osc.frequency.linearRampToValueAtTime(160, now + 0.35);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  // Audit Testeur Humain QA #1 — Clic thermique de dispersion du réticule plasma
+  playPlasmaReticleThermalSpreadClick() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(750, now);
+    osc.frequency.exponentialRampToValueAtTime(320, now + 0.06);
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.1);
+  }
+
+  // Audit Testeur Humain QA #2 — Queue de réverbération acoustique de chambre de pierre
+  playTempleChamberAcousticReverbTail() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.exponentialRampToValueAtTime(70, now + 0.42);
+    gain.gain.setValueAtTime(0.24, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.46);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.48);
+  }
+
+  // Audit Testeur Humain QA #3 — Sifflement de saturation blanche de fusée au phosphore
+  playMagnesiumPhosphorFlareWhiteoutHiss() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(940, now);
+    osc.frequency.exponentialRampToValueAtTime(220, now + 0.3);
+    gain.gain.setValueAtTime(0.32, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.34);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.36);
+  }
+
+  // Audit Testeur Humain QA #4 — Clang métallique de contre-parade arrière aux serres
+  playRearAmbushParryTalonClang() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(840, now);
+    osc.frequency.exponentialRampToValueAtTime(1260, now + 0.12);
+    gain.gain.setValueAtTime(0.34, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.18);
+  }
+
+  // Audit Testeur Humain QA #5 — Craquement préventif de fibre de bois sur branche sous tension
+  playCanopyBoughStressCrackWarning() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(420, now);
+    osc.frequency.exponentialRampToValueAtTime(110, now + 0.15);
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  }
+
 }
 
 export const audioSynth = new AudioSynthesizer();
-
-
-

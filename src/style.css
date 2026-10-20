@@ -700,3 +700,55 @@ button:hover { transform: scale(1.04); }
   border-radius: 999px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
 }
+
+/* =========================================================================
+   v157 — Audit Testeur Humain QA #1 : Réticule Plasma Dynamique & Jauge Radiale de Condensateur
+   ========================================================================= */
+.plasma-reticle-circle {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: var(--reticle-spread, 44px);
+  height: var(--reticle-spread, 44px);
+  margin-top: calc(var(--reticle-spread, 44px) / -2);
+  margin-left: calc(var(--reticle-spread, 44px) / -2);
+  border: 1.5px dashed rgba(0, 240, 255, 0.75);
+  border-radius: 50%;
+  pointer-events: none;
+  transition: width 0.08s ease-out, height 0.08s ease-out;
+  z-index: 40;
+}
+
+.plasma-reticle-circle.overheated {
+  border-color: rgba(255, 42, 42, 0.95);
+  box-shadow: 0 0 12px rgba(255, 42, 42, 0.7);
+  animation: reticlePulse 0.25s infinite alternate;
+}
+
+@keyframes reticlePulse {
+  from { transform: scale(1.0); }
+  to { transform: scale(1.08); }
+}
+
+.capacitor-charge-bar {
+  display: flex;
+  gap: 3px;
+  margin-top: 4px;
+}
+
+.capacitor-segment {
+  flex: 1;
+  height: 6px;
+  background: rgba(0, 240, 255, 0.2);
+  border-radius: 2px;
+}
+
+.capacitor-segment.active {
+  background: #00f0ff;
+  box-shadow: 0 0 6px #00f0ff;
+}
+
+.capacitor-segment.overheat {
+  background: #ff2a2a;
+  box-shadow: 0 0 6px #ff2a2a;
+}
