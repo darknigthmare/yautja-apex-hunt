@@ -11325,6 +11325,298 @@ class AudioSynthesizer {
     osc.stop(now + 0.2);
   }
 
+
+  // =========================================================================
+  // v158 — Audit Testeur Humain QA #2 : Synthèse Granulaire & Distorsion Harmonique Plasma
+  // =========================================================================
+  computeGranularFoliageRustleParameters(travelSpeedMps = 4.0, vegetationDensity = 0.8) {
+    const safeSpeed = Math.max(0.5, Math.min(12.0, Number(travelSpeedMps) || 4.0));
+    const safeDensity = Math.max(0.1, Math.min(1.0, Number(vegetationDensity) || 0.8));
+    const grainDensityPerSec = Math.round(15 + safeSpeed * 12 * safeDensity);
+    const grainDurationMs = Number((18 + (1 - safeDensity) * 15).toFixed(1));
+    const foliageFilterCutoffHz = Math.round(2200 + safeSpeed * 350);
+
+    return {
+      grainDensityPerSec,
+      grainDurationMs,
+      foliageFilterCutoffHz,
+      rustleLoudnessGain: Number(Math.min(0.45, 0.12 + safeSpeed * 0.03 * safeDensity).toFixed(2))
+    };
+  }
+
+  computePlasmaOverdriveHarmonicDistortion(chargeRatio = 1.0, driveAmount = 0.6) {
+    const safeCharge = Math.max(0.0, Math.min(1.5, Number(chargeRatio) || 1.0));
+    const safeDrive = Math.max(0.1, Math.min(1.0, Number(driveAmount) || 0.6));
+    const harmonicWarmthGain = Number((safeCharge * safeDrive * 0.42).toFixed(3));
+    const saturationSoftClipThreshold = Number(Math.max(0.35, 1.0 - safeDrive * 0.4).toFixed(2));
+
+    return {
+      harmonicWarmthGain,
+      saturationSoftClipThreshold,
+      overdriveActive: safeCharge >= 0.75
+    };
+  }
+
+  // =========================================================================
+  // v158 — 15 Nouveaux SFX Procéduraux Lore 1:1 & Audits Testeurs Humains QA
+  // =========================================================================
+
+  // Chantier 1 — Bip de calage de la parabole radar de l'Observatoire (The Predator 2018)
+  playObservatoryDishAlignmentBeep() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1150, now);
+    osc.frequency.exponentialRampToValueAtTime(1720, now + 0.12);
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.17);
+  }
+
+  // Chantier 1 — Bourdonnement laser de la balise de rappel du Fugitive (The Predator 2018)
+  playFugitiveRecallBeaconLaserHum() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(440, now);
+    osc.frequency.linearRampToValueAtTime(880, now + 0.35);
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  // Chantier 2 — Grondement des pistons pneumatiques comprimant la galerie (AVP 2004)
+  playPneumaticPistonWallSqueezeRumble() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(95, now);
+    osc.frequency.exponentialRampToValueAtTime(42, now + 0.45);
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.5);
+  }
+
+  // Chantier 2 — Jaillissement violent des dalles piégées à pointes de pierre (AVP 2004)
+  playStoneSpikeFloorThrustClack() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.exponentialRampToValueAtTime(110, now + 0.14);
+    gain.gain.setValueAtTime(0.34, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.17);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.19);
+  }
+
+  // Chantier 3 — Sifflement de poulie sur tyrolienne d'évacuation d'El Scorpio (Predator 2)
+  playElScorpioPenthouseZipWireZing() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1250, now);
+    osc.frequency.linearRampToValueAtTime(850, now + 0.32);
+    gain.gain.setValueAtTime(0.24, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.37);
+  }
+
+  // Chantier 3 — Impact métallique lourd sur grille d'escalier de secours (Predator 2)
+  playRooftopEmergencyStairGrateThud() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(170, now);
+    osc.frequency.exponentialRampToValueAtTime(55, now + 0.22);
+    gain.gain.setValueAtTime(0.36, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.27);
+  }
+
+  // Chantier 4 — Claquement féroce de mâchoires crantées en acier de piège à loup (Prey 2022)
+  playBearTrapSteelJawSnappingCrash() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(840, now);
+    osc.frequency.exponentialRampToValueAtTime(95, now + 0.12);
+    gain.gain.setValueAtTime(0.42, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.17);
+  }
+
+  // Chantier 4 — Crépitement de braises du campement des trappeurs dans la nuit (Prey 2022)
+  playVoyageurCampfireEmbersCrackle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(620, now);
+    osc.frequency.exponentialRampToValueAtTime(240, now + 0.18);
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.22);
+  }
+
+  // Chantier 5 — Rupture des câbles électrifiés retenant Classic Predator au totem (Predators 2010)
+  playClassicTotemElectrifiedCableSnap() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(560, now);
+    osc.frequency.exponentialRampToValueAtTime(85, now + 0.24);
+    gain.gain.setValueAtTime(0.36, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  }
+
+  // Chantier 5 — Rugissement viscéral du duel de titans Classic vs Berserker (Predators 2010)
+  playBerserkerVsClassicClawDuelRoar() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(220, now);
+    osc.frequency.linearRampToValueAtTime(340, now + 0.25);
+    osc.frequency.exponentialRampToValueAtTime(65, now + 0.55);
+    gain.gain.setValueAtTime(0.48, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.58);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.6);
+  }
+
+  // Audit Testeur Humain QA #1 — Clic rotatif de segment du sélecteur radial d'armes
+  playWeaponWheelRadialSlotTick() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(980, now);
+    osc.frequency.exponentialRampToValueAtTime(620, now + 0.05);
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.08);
+  }
+
+  // Audit Testeur Humain QA #1 — Whoosh de ralenti temporel tactique (Bullet-Time)
+  playWeaponWheelBulletTimeWhoosh() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(260, now);
+    osc.frequency.exponentialRampToValueAtTime(75, now + 0.28);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.35);
+  }
+
+  // Audit Testeur Humain QA #3 — Grésillement d'arcs d'ions électrostatiques trahissant le camouflage
+  playElectrostaticIonDischargeSizzle() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1450, now);
+    osc.frequency.exponentialRampToValueAtTime(220, now + 0.16);
+    gain.gain.setValueAtTime(0.26, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.19);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.21);
+  }
+
+  // Audit Testeur Humain QA #4 — Déviation croisée des Wristblades brisant l'élan d'un coup de queue
+  playCrossBladesGuardBreakDeflectRing() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1620, now);
+    osc.frequency.exponentialRampToValueAtTime(820, now + 0.2);
+    gain.gain.setValueAtTime(0.34, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.23);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.25);
+  }
+
+  // Audit Testeur Humain QA #5 — Impulsion d'évitement fluide d'angle dièdre étroit
+  playDihedralCornerAntiJamNudgeHum() {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.exponentialRampToValueAtTime(540, now + 0.1);
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.15);
+  }
+
 }
 
 export const audioSynth = new AudioSynthesizer();

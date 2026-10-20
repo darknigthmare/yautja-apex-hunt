@@ -752,3 +752,57 @@ button:hover { transform: scale(1.04); }
   background: #ff2a2a;
   box-shadow: 0 0 6px #ff2a2a;
 }
+
+/* =========================================================================
+   v158 — Audit Testeur Humain QA #1 : Sélecteur Radial d'Arsenal & Ralenti Tactique
+   ========================================================================= */
+.weapon-wheel-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 280px;
+  height: 280px;
+  margin-top: -140px;
+  margin-left: -140px;
+  background: radial-gradient(circle, rgba(4, 18, 28, 0.95) 0%, rgba(2, 8, 14, 0.85) 75%);
+  border: 2px solid rgba(0, 240, 255, 0.85);
+  border-radius: 50%;
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 55;
+}
+
+.weapon-wheel-segment {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  color: #799ca9;
+  border-radius: 8px;
+  transition: all 0.12s ease-out;
+}
+
+.weapon-wheel-segment.selected {
+  color: #00f0ff;
+  background: rgba(0, 240, 255, 0.2);
+  border: 1px solid #00f0ff;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+  transform: scale(1.15);
+}
+
+.weapon-wheel-center-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffaa00;
+  text-align: center;
+  text-shadow: 0 0 6px rgba(255, 170, 0, 0.8);
+}
