@@ -919,3 +919,112 @@ button:hover { transform: scale(1.04); }
   100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
+/* v160 - Human QA & Gameplay UI/UX Additions */
+.plasma-lead-crosshair {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s ease-out;
+}
+
+.plasma-lead-crosshair .lead-dot {
+  width: 6px;
+  height: 6px;
+  background: #00f0ff;
+  border-radius: 50%;
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  box-shadow: 0 0 6px #00f0ff;
+}
+
+.plasma-lead-crosshair .lead-tri-bracket {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed rgba(0, 240, 255, 0.6);
+  border-radius: 50%;
+  transition: all 0.15s ease;
+}
+
+.plasma-lead-crosshair.lead-locked .lead-tri-bracket {
+  border-color: #ff3300;
+  border-style: solid;
+  border-width: 2px;
+  box-shadow: 0 0 10px rgba(255, 51, 0, 0.8);
+  animation: lead-pulse 0.4s infinite alternate;
+}
+
+@keyframes lead-pulse {
+  from { transform: scale(1.0); }
+  to { transform: scale(1.2); }
+}
+
+.mask-lens-crack-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 75% 25%, rgba(255, 255, 255, 0.25) 0%, transparent 60%);
+  mix-blend-mode: overlay;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.mask-lens-crack-overlay.active {
+  opacity: 0.85;
+}
+
+.acid-etch-corrosion {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 40px rgba(50, 255, 50, 0.4);
+  mix-blend-mode: color-dodge;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.acid-etch-corrosion.active {
+  opacity: 1;
+  animation: acid-sizzle 0.6s infinite alternate;
+}
+
+@keyframes acid-sizzle {
+  0% { box-shadow: inset 0 0 35px rgba(50, 255, 50, 0.35); }
+  100% { box-shadow: inset 0 0 55px rgba(100, 255, 0, 0.65); }
+}
+
+.ground-tech-recovery-indicator {
+  position: absolute;
+  bottom: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10, 15, 20, 0.85);
+  border: 1px solid #00f0ff;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  color: #00f0ff;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.ground-tech-recovery-indicator.active {
+  opacity: 1;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+}
+
+
