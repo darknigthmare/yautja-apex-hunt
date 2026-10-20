@@ -2437,6 +2437,79 @@ export class MothershipHub {
     return position;
   }
 
+  resolveCameraObstruction(anchor, cameraPosition, padding = 0.4) {
+    if (this.disposed || !anchor?.isVector3 || !cameraPosition?.isVector3) return null;
+    const distance = anchor.distanceTo(cameraPosition);
+    if (distance < 0.0001) return null;
+    if (!this.cameraOcclusion) {
+      this.group.updateMatrixWorld(true);
+      const entries = [];
+      const animated = new Set(this.animatedProps.map(({ mesh }) => mesh));
+      const instance = new THREE.Matrix4();
+      this.group.traverse((object) => {
+        if (!object.isMesh || !object.geometry?.getAttribute('position')) return;
+        // Les hologrammes et trophées animés ne sont pas des murs de caméra.
+        for (let parent = object; parent && parent !== this.group; parent = parent.parent) {
+          if (animated.has(parent)) return;
+        }
+        const materials = Array.isArray(object.material) ? object.material : [object.material];
+        if (!materials.some((material) => material && material.opacity >= 0.95 && !material.wireframe)) return;
+        object.geometry.computeBoundingBox();
+        const count = object.isInstancedMesh ? object.count : 1;
+        for (let index = 0; index < count; index += 1) {
+          const matrix = object.matrixWorld.clone();
+          if (object.isInstancedMesh) {
+            object.getMatrixAt(index, instance);
+            matrix.multiply(instance);
+          }
+          entries.push({
+            geometry: object.geometry,
+            material: object.material,
+            matrix,
+            bounds: object.geometry.boundingBox.clone().applyMatrix4(matrix),
+          });
+        }
+      });
+      this.cameraOcclusion = {
+        entries,
+        raycaster: new THREE.Raycaster(),
+        proxy: entries.length ? new THREE.Mesh(entries[0].geometry, entries[0].material) : null,
+        direction: new THREE.Vector3(),
+        boundsHit: new THREE.Vector3(),
+        intersections: [],
+      };
+    }
+    const cache = this.cameraOcclusion;
+    const raycaster = cache.raycaster;
+    cache.direction.copy(cameraPosition).sub(anchor).divideScalar(distance);
+    raycaster.set(anchor, cache.direction);
+    raycaster.near = 0;
+    raycaster.far = distance;
+    let nearest = distance;
+    let blocked = false;
+    for (const entry of cache.entries) {
+      const hit = raycaster.ray.intersectBox(entry.bounds, cache.boundsHit);
+      if (!hit || (!entry.bounds.containsPoint(anchor) && anchor.distanceToSquared(hit) > nearest * nearest)) continue;
+      const proxy = cache.proxy;
+      proxy.geometry = entry.geometry;
+      proxy.material = entry.material;
+      proxy.matrixWorld.copy(entry.matrix);
+      cache.intersections.length = 0;
+      proxy.raycast(raycaster, cache.intersections);
+      for (const intersection of cache.intersections) {
+        const material = Array.isArray(entry.material)
+          ? entry.material[intersection.face?.materialIndex ?? 0]
+          : entry.material;
+        if (!material || material.opacity < 0.95 || material.wireframe || intersection.distance >= nearest) continue;
+        nearest = intersection.distance;
+        blocked = true;
+      }
+    }
+    if (!blocked) return null;
+    const clearance = Math.max(0, Number(padding) || 0);
+    return anchor.clone().addScaledVector(cache.direction, Math.max(0, nearest - clearance));
+  }
+
   getNearbyStation(position, maxDistance = Infinity) {
     if (!position?.isVector3 || this.disposed) return null;
     const requestedLimit = Number.isFinite(maxDistance) ? Math.max(0, maxDistance) : Infinity;
@@ -2575,6 +2648,7 @@ export class MothershipHub {
     textures.forEach((texture) => texture.dispose());
 
     this.group.clear();
+    this.cameraOcclusion = null;
     this.animatedProps.length = 0;
     this.vehicleDisplays.length = 0;
     this.propRegistry.length = 0;

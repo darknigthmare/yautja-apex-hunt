@@ -42,3 +42,21 @@ Le smoke vérifie le briefing, l'exploration du hub, la préparation, le déploi
 La CLI Vercel a été essayée : elle est déconnectée, `VERCEL_TOKEN` n'est pas fourni et l'API Vercel est refusée par la politique réseau courante. Les exigences ont été enregistrées dans le brouillon de l'environnement : secret `VERCEL_TOKEN` destiné à `api.vercel.com`, accès à `api.vercel.com`, `vercel.com`, `*.vercel.app` et `api.github.com`. Aucun secret ne doit être envoyé dans le chat ou ajouté au dépôt.
 
 La publication Vercel doit être confirmée par un déploiement réussi et une vérification de l'URL de production. Un build local ou un envoi Git ne prouve pas cette publication.
+
+## Seconde passe — base `5d3303a`
+
+Cinq agents ont repris les cinq domaines sur la version publiée, avec de nouveaux scénarios et sans revendiquer de tests humains.
+
+| Domaine | Nouveaux défauts corrigés et améliorations | Validation ciblée |
+| --- | --- | --- |
+| Combat et paquetage | Démarrage bloqué par un refus de `localStorage`, paquetage scout par défaut au-dessus du budget, disque gratuit générant de l'énergie au retour, disque revenant expirant avant rattrapage | Cinq régressions, dont les dix classes et un vol complet du disque ; 31 contrôles ciblés réussis |
+| Interface | Gadgets exclus affichés malgré `hidden`, HUD hors écran en paysage et à 568×320, libellés d'armes tactiles absents, états accessibles incomplets | États HUD, chasse réelle, rotation et captures ; tests ciblés réussis |
+| Rendu | Textures de terrain assombries deux fois, échelle de répétition incohérente avec le monde, normale du contour plasma non normalisée | Captures normales comparables et régressions de matériau ; aucun triangle ni appel de rendu ajouté |
+| Level design | 39 couverts sur 138 empiétant sur les voies ; réserve du départ et des signaux interactifs ; caméra traversant les volumes du hub | Voies dégagées sur les neuf cartes, vrais volumes du hub, contrats runtime de spawn/POI ; budgets conservés |
+| Fiabilité et livraison | Rejets WebAudio déclenchant l'erreur fatale générale, polices hachées sans cache immutable | Quatre régressions audio et deux tests de livraison/cache réussis |
+
+L'intégration ajoute une caméra maintenue au-dessus du terrain et avant les obstacles, les glissements tactiles dans le hub, une taille de canvas indépendante des dimensions en pixels après rotation, le gel des effets de shader en mouvement réduit et un rendu des écrans statiques borné à deux images/seconde. Les onglets masqués ne soumettent plus de rendu ni ne reprennent la simulation par la manette. Ces comportements sont couverts par huit régressions caméra/rendu.
+
+La suite complète de cette seconde passe contient **951 tests réussis, zéro échec et zéro ignoré**. Le build réussit et l'audit npm indique zéro vulnérabilité. Les vérifications navigateur supplémentaires couvrent les glissements tactiles natifs, les rotations 844×390 → 568×320 → 390×844, le HUD 125% à 1280×720 et une session sans stockage local. Leur résultat final est enregistré dans les artefacts du smoke.
+
+La matrice finale de cette seconde passe est **réussie** : les trois formats tactiles, le HUD 125%, les douze contrats/neuf biomes et la session sans stockage fonctionnent sans erreur JavaScript ni échec réseau. Les résultats courants sont dans `/tmp/yautja-qa/final/results.json`, avec leurs horodatages de début et de fin ; les captures de rotation sont `touch-844x390.png`, `touch-568x320.png` et `touch-390x844.png`.

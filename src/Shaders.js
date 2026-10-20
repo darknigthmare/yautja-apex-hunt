@@ -123,7 +123,7 @@ export class ShaderManager {
           vec3 coreColor = vec3(0.1, 0.7, 1.0);
           vec3 rimColor = vec3(0.8, 0.1, 1.0);
 
-          float rim = pow(1.0 - max(dot(vec3(0.0, 0.0, 1.0), vNormal), 0.0), 2.0);
+          float rim = pow(1.0 - max(dot(vec3(0.0, 0.0, 1.0), normalize(vNormal)), 0.0), 2.0);
           vec3 finalCol = mix(coreColor, rimColor, rim) * pulse * 2.0;
 
           gl_FragColor = vec4(finalCol, 0.9);

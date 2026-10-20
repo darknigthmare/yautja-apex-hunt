@@ -189,7 +189,17 @@ function createEventNodeInstances(layout, sampleHeight, style) {
   return nodes;
 }
 
-function createOuterCoverInstances(layout, sampleHeight, style) {
+function distanceToRouteSegment(x, z, segment) {
+  const dx = segment.endX - segment.startX;
+  const dz = segment.endZ - segment.startZ;
+  const lengthSquared = dx * dx + dz * dz;
+  const progress = lengthSquared > 0
+    ? THREE.MathUtils.clamp(((x - segment.startX) * dx + (z - segment.startZ) * dz) / lengthSquared, 0, 1)
+    : 0;
+  return Math.hypot(x - segment.startX - dx * progress, z - segment.startZ - dz * progress);
+}
+
+function createOuterCoverInstances(layout, sampleHeight, style, navigationSegments) {
   const geometryByBiome = {
     jungle: new THREE.CylinderGeometry(2.4, 4.8, 30, 10),
     hive_lv426: new THREE.ConeGeometry(4.6, 30, 9),
@@ -212,25 +222,61 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
     bouvetoya_pyramid: new THREE.OctahedronGeometry(4.2, 1),
     gunnison_outbreak: new THREE.CylinderGeometry(1.8, 2.6, 5.8, 8),
   };
+  const tallCover = layout.biomeId !== 'ryushi_desert';
+  const coverGeometry = geometryByBiome[layout.biomeId] ?? geometryByBiome.jungle;
+  coverGeometry.computeBoundingBox();
+  coverGeometry.computeBoundingSphere();
+  const vertices = coverGeometry.getAttribute('position');
+  let coverRadius = 0;
+  for (let index = 0; index < vertices.count; index += 1) {
+    coverRadius = Math.max(coverRadius, Math.hypot(vertices.getX(index), vertices.getZ(index)));
+  }
+  if (['hive_lv426', 'genna_deathworld', 'bouvetoya_pyramid'].includes(layout.biomeId)) {
+    coverRadius += Math.max(Math.abs(coverGeometry.boundingBox.min.y), Math.abs(coverGeometry.boundingBox.max.y)) * Math.sin(0.13);
+  }
+  if (!tallCover) coverRadius = coverGeometry.boundingSphere.radius;
   const placements = [];
+  const reservedSignals = (layout.eventNodes ?? []).filter(({ eventType }) => (
+    eventType === 'cache_drop' || eventType === 'boss_trail'
+  ));
+  const isClearPlacement = (x, z, radius) => {
+    if (Math.hypot(x, z) > layout.playableRadius - 18) return false;
+    if (Math.hypot(x - layout.startCamp[0], z - layout.startCamp[2]) < radius + 20) return false;
+    if (reservedSignals.some(({ position }) => Math.hypot(x - position[0], z - position[2]) < radius + 8)) return false;
+    if (placements.some((placed) => Math.hypot(x - placed.x, z - placed.z) < radius + coverRadius * placed.scale + 2)) return false;
+    return navigationSegments.every((segment) => distanceToRouteSegment(x, z, segment) >= radius + segment.halfWidth + 2);
+  };
   layout.sectors.forEach((sector, sectorIndex) => {
     const [centerX, , centerZ] = sector.center;
     const coverCount = sector.role === 'camp' ? 3 : 5;
     for (let index = 0; index < coverCount; index += 1) {
-      const angle = sectorIndex * 1.37 + index * 2.399963229728653;
-      const distance = 28 + ((sectorIndex * 17 + index * 13) % 25);
-      const x = centerX + Math.cos(angle) * distance;
-      const z = centerZ + Math.sin(angle) * distance;
-      if (Math.hypot(x, z) > layout.playableRadius - 18) continue;
-      placements.push({
-        id: `${sector.id}-cover-${index + 1}`,
-        sectorId: sector.id,
-        x,
-        z,
-        ground: sampleHeight(x, z),
-        angle,
-        scale: 0.76 + ((sectorIndex + index) % 5) * 0.09,
-      });
+      const baseAngle = sectorIndex * 1.37 + index * 2.399963229728653;
+      const baseDistance = 28 + ((sectorIndex * 17 + index * 13) % 25);
+      const scale = 0.76 + ((sectorIndex + index) % 5) * 0.09;
+      let placement = null;
+      // Le couvert borde les voies et ménage le camp/les signaux interactifs.
+      // Des positions déterministes alternatives conservent le budget sans
+      // planter un bloc opaque en travers d'une branche de navigation.
+      for (let ring = 0; ring < 3 && !placement; ring += 1) {
+        const distance = baseDistance + ring * 12;
+        for (let attempt = 0; attempt < 16; attempt += 1) {
+          const angle = baseAngle + attempt * 2.399963229728653;
+          const x = centerX + Math.cos(angle) * distance;
+          const z = centerZ + Math.sin(angle) * distance;
+          if (!isClearPlacement(x, z, coverRadius * scale)) continue;
+          placement = {
+            id: `${sector.id}-cover-${index + 1}`,
+            sectorId: sector.id,
+            x,
+            z,
+            ground: sampleHeight(x, z),
+            angle,
+            scale,
+          };
+          break;
+        }
+      }
+      if (placement) placements.push(placement);
     }
   });
 
@@ -274,7 +320,7 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
     metalness: layout.biomeId === 'hive_lv426' ? 0.36 : 0.08,
   });
   const cover = new THREE.InstancedMesh(
-    geometryByBiome[layout.biomeId] ?? geometryByBiome.jungle,
+    coverGeometry,
     coverMaterial,
     placements.length,
   );
@@ -290,12 +336,6 @@ function createOuterCoverInstances(layout, sampleHeight, style) {
   cover.userData.huntCoverBatch = true;
   accents.userData.huntCoverBatch = true;
   const transform = new THREE.Object3D();
-  const tallCover = layout.biomeId !== 'ryushi_desert';
-  const industrialCover = ['stargazer_blacksite', 'los_angeles_1997', 'gunnison_outbreak'].includes(layout.biomeId);
-  cover.geometry.computeBoundingBox();
-  const coverRadius = industrialCover
-    ? Math.hypot(cover.geometry.boundingBox.max.x, cover.geometry.boundingBox.max.z)
-    : tallCover ? 4.5 : 7.5;
   const transformedBounds = new THREE.Box3();
   placements.forEach((placement, index) => {
     transform.position.set(placement.x, 0, placement.z);
@@ -375,9 +415,20 @@ export function buildHuntRouteNetwork(layout, sampleHeight = () => 0) {
     polygonOffsetUnits: -1,
   });
   let routeTriangles = 0;
+  const navigationSegments = [];
   for (const route of layout.routes) {
     if (!sectorMap.has(route.from) || !sectorMap.has(route.to)) continue;
     const geometry = createRouteGeometry(route, sectorMap, sampleRouteHeight);
+    const positions = geometry.getAttribute('position');
+    for (let index = 0; index < positions.count - 2; index += 2) {
+      navigationSegments.push({
+        startX: (positions.getX(index) + positions.getX(index + 1)) * 0.5,
+        startZ: (positions.getZ(index) + positions.getZ(index + 1)) * 0.5,
+        endX: (positions.getX(index + 2) + positions.getX(index + 3)) * 0.5,
+        endZ: (positions.getZ(index + 2) + positions.getZ(index + 3)) * 0.5,
+        halfWidth: Math.max(4, Number(route.width) || 8) * 0.5,
+      });
+    }
     const mesh = new THREE.Mesh(geometry, routeMaterial);
     mesh.name = `hunt-route:${route.id}`;
     mesh.receiveShadow = true;
@@ -391,7 +442,7 @@ export function buildHuntRouteNetwork(layout, sampleHeight = () => 0) {
 
   const sectorBatches = createSectorInstances(layout, sampleRouteHeight, style);
   const eventBatch = createEventNodeInstances(layout, sampleRouteHeight, style);
-  const outerCover = createOuterCoverInstances(layout, sampleRouteHeight, style);
+  const outerCover = createOuterCoverInstances(layout, sampleRouteHeight, style, navigationSegments);
   root.add(...sectorBatches, eventBatch, ...outerCover.batches);
   root.userData.huntCoverColliders = outerCover.colliders;
   root.userData.huntPerches = outerCover.perches;

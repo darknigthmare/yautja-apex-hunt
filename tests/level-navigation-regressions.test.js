@@ -87,3 +87,74 @@ test('le couvert urbain reste ancré au terrain et ses perchoirs suivent son som
     dispose(root);
   }
 });
+
+test('le couvert conserve les routes, le départ et les signaux de chasse dégagés dans les neuf cartes', () => {
+  const matrix = new THREE.Matrix4();
+  const center = new THREE.Vector3();
+  const vertex = new THREE.Vector3();
+  for (const biomeId of Object.keys(BIOME_HUNT_LAYOUTS)) {
+    const layout = getBiomeHuntLayout(biomeId);
+    const root = buildHuntRouteNetwork(layout);
+    const cover = root.getObjectByName('hunt-outer-sector-cover');
+    const sections = [];
+    for (const mesh of root.children.filter(({ userData }) => userData.huntRoute)) {
+      const positions = mesh.geometry.getAttribute('position');
+      const definition = layout.routes.find(({ id }) => id === mesh.userData.routeId);
+      for (let index = 0; index < positions.count - 2; index += 2) {
+        sections.push({
+          ax: (positions.getX(index) + positions.getX(index + 1)) * 0.5,
+          az: (positions.getZ(index) + positions.getZ(index + 1)) * 0.5,
+          bx: (positions.getX(index + 2) + positions.getX(index + 3)) * 0.5,
+          bz: (positions.getZ(index + 2) + positions.getZ(index + 3)) * 0.5,
+          halfWidth: definition.width * 0.5,
+        });
+      }
+    }
+    const vertices = cover.geometry.getAttribute('position');
+    for (let index = 0; index < cover.count; index += 1) {
+      cover.getMatrixAt(index, matrix);
+      center.setFromMatrixPosition(matrix);
+      let footprint = 0;
+      for (let vertexIndex = 0; vertexIndex < vertices.count; vertexIndex += 1) {
+        vertex.fromBufferAttribute(vertices, vertexIndex).applyMatrix4(matrix);
+        footprint = Math.max(footprint, Math.hypot(vertex.x - center.x, vertex.z - center.z));
+      }
+      for (const section of sections) {
+        const dx = section.bx - section.ax;
+        const dz = section.bz - section.az;
+        const progress = Math.max(0, Math.min(1, ((center.x - section.ax) * dx + (center.z - section.az) * dz) / (dx * dx + dz * dz)));
+        const clearance = Math.hypot(center.x - section.ax - dx * progress, center.z - section.az - dz * progress);
+        assert.ok(clearance >= footprint + section.halfWidth + 1.8 - 0.0001, `${biomeId}: silhouette en travers d'une voie`);
+      }
+      assert.ok(Math.hypot(center.x - layout.startCamp[0], center.z - layout.startCamp[2]) >= footprint + 20 - 0.0001);
+      for (const signal of layout.eventNodes.filter(({ eventType }) => ['cache_drop', 'boss_trail'].includes(eventType))) {
+        assert.ok(Math.hypot(center.x - signal.position[0], center.z - signal.position[2]) >= footprint + 8 - 0.0001, `${biomeId}: signal enfoui dans un couvert`);
+      }
+    }
+    assert.equal(root.userData.huntLayoutMetrics.physicalCoverSectorCount, layout.sectors.length, 'la navigation ne doit pas supprimer le couvert d’un secteur');
+    dispose(root);
+  }
+});
+
+test('la caméra du hub rencontre les volumes réels et laisse les portes ouvertes', () => {
+  const hub = new MothershipHub(new THREE.Scene());
+  const anchor = new THREE.Vector3(-30, 3, -48);
+  const desired = new THREE.Vector3(-30, 3, -56);
+  const desiredBefore = desired.clone();
+  const wall = hub.resolveCameraObstruction(anchor, desired, 0.4);
+  assert.ok(wall && wall.z > -51.4 && wall.z < -50.9, 'caméra maintenue avant la cloison de 1,2 m');
+  assert.deepEqual(desired.toArray(), desiredBefore.toArray(), 'ne pas modifier la caméra demandée');
+  assert.equal(hub.resolveCameraObstruction(new THREE.Vector3(0, 3, -48), new THREE.Vector3(0, 3, -56)), null, 'la porte est une ouverture réelle');
+  assert.equal(hub.resolveCameraObstruction(new THREE.Vector3(0, 3, 0), new THREE.Vector3(0, 4, 5)), null, 'le sol sous la caméra ne doit pas bloquer le bras');
+  const hull = hub.resolveCameraObstruction(new THREE.Vector3(64, 3, 75), new THREE.Vector3(72, 3, 75));
+  assert.ok(hull && hull.x < 69 && hull.x > 68, 'caméra conservée dans la coque');
+  const reactor = hub.resolveCameraObstruction(new THREE.Vector3(43, 8, 48), new THREE.Vector3(43, 8, 70));
+  assert.ok(reactor && reactor.z < 54 && reactor.z > 50, 'réacteur opaque rencontré à la vraie hauteur');
+  const cache = hub.cameraOcclusion;
+  assert.ok(cache.entries.length > 0);
+  hub.resolveCameraObstruction(anchor, desired);
+  assert.equal(hub.cameraOcclusion, cache, 'réutiliser le cache entre deux frames');
+  hub.dispose();
+  assert.equal(hub.cameraOcclusion, null);
+  assert.equal(hub.resolveCameraObstruction(anchor, desired), null);
+});

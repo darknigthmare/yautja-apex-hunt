@@ -68,3 +68,36 @@ test('weather remains around the hunter outside the original origin-centred clou
   environment.dispose();
   assert.ok(disposed, 'the shared particle texture must release on environment disposal');
 });
+
+test('authored terrain albedo retains its contrast instead of receiving a second dark tint', () => {
+  const originalDocument = globalThis.document;
+  const originalImage = globalThis.Image;
+  const originalLoad = THREE.TextureLoader.prototype.load;
+  // Provide an available image texture without needing browser networking.
+  globalThis.document = {};
+  globalThis.Image = class {};
+  THREE.TextureLoader.prototype.load = () => new THREE.Texture();
+  const environment = new Environment(new THREE.Scene());
+  try {
+    for (const biome of ['jungle', 'hive_lv426', 'gunnison_outbreak']) {
+      environment.setBiome(biome);
+      const ground = environment.biomeGroup.getObjectByName('hunt-terrain-surface');
+      assert.ok(ground.material.map, `${biome}: an authored albedo must be present`);
+      const tint = ground.material.color;
+      assert.ok(Math.min(tint.r, tint.g, tint.b) >= 0.85,
+        `${biome}: multiplying an already dark albedo by a dark colour destroys terrain detail`);
+      assert.equal(ground.geometry.index.count / 3, 128 * 128 * 2, 'surface detail must not increase geometry cost');
+      const colours = ground.geometry.attributes.color;
+      for (const value of colours.array) {
+        assert.ok(Number.isFinite(value) && value >= 0.72 && value <= 1, 'terrain variation must remain subtle and finite');
+      }
+    }
+  } finally {
+    environment.dispose();
+    THREE.TextureLoader.prototype.load = originalLoad;
+    if (originalDocument === undefined) delete globalThis.document;
+    else globalThis.document = originalDocument;
+    if (originalImage === undefined) delete globalThis.Image;
+    else globalThis.Image = originalImage;
+  }
+});

@@ -241,10 +241,7 @@ function freezeLoadout(loadout) {
 }
 
 export function createDefaultHuntLoadout(hunterClassId = 'class_hunter') {
-  return freezeLoadout({
-    hunterClassId: normalizeClassId(hunterClassId),
-    slots: cloneSlots(),
-  });
+  return repairRecommendation(DEFAULT_SLOTS, normalizeClassId(hunterClassId));
 }
 
 function legacySlots(value) {
@@ -727,11 +724,19 @@ export function activateHuntLoadoutPreset(state, presetId, options = {}) {
 
 export class HuntLoadoutSystem {
   constructor({
-    storage = globalThis.localStorage ?? null,
+    storage,
     storageKey = HUNT_LOADOUT_STORAGE_KEY,
     now = () => new Date().toISOString(),
   } = {}) {
-    this.storage = storage;
+    this.storageError = null;
+    try {
+      this.storage = storage === undefined ? globalThis.localStorage ?? null : storage;
+    } catch (error) {
+      // Certains navigateurs bloquent même l'accès à la propriété localStorage.
+      // Le paquetage reste utilisable en mémoire dans ce cas.
+      this.storage = null;
+      this.storageError = error;
+    }
     this.storageKey = storageKey;
     this.tempKey = `${storageKey}-tmp`;
     this.now = now;
@@ -739,9 +744,21 @@ export class HuntLoadoutSystem {
   }
 
   load(options = {}) {
-    if (!this.storage) return Object.freeze({ state: this.state, migrated: false, recovered: false, errors: Object.freeze([]) });
-    const main = this.storage.getItem(this.storageKey);
-    const temporary = this.storage.getItem(this.tempKey);
+    const unavailable = (error) => Object.freeze({
+      state: this.state,
+      migrated: false,
+      recovered: Boolean(error),
+      errors: Object.freeze(error ? ['Stockage local indisponible : paquetage conservé pour cette session.'] : []),
+    });
+    if (!this.storage) return unavailable(this.storageError);
+    let main;
+    let temporary;
+    try {
+      main = this.storage.getItem(this.storageKey);
+      temporary = this.storage.getItem(this.tempKey);
+    } catch (error) {
+      return unavailable(error);
+    }
     const temporaryResult = temporary
       ? deserializeHuntLoadoutState(temporary, { ...options, now: this.now })
       : null;

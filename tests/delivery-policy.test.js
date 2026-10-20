@@ -24,11 +24,17 @@ test('texture replacements are revalidated on a new deployment', () => {
   }
 });
 
-test('only content-hashed bundles receive immutable caching', () => {
-  for (const name of ['index-DC3LAalj.js', 'three-DKid6_SR.js', 'index-Dn1jXRWO.css']) {
+test('only content-hashed bundles and local fonts receive immutable caching', () => {
+  for (const name of [
+    'index-DC3LAalj.js',
+    'three-DKid6_SR.js',
+    'index-Dn1jXRWO.css',
+    'orbitron-latin-700-normal-4jsRXGGJ.woff2',
+    'rajdhani-latin-600-normal-Dx02qI2_.woff',
+  ]) {
     assert.match(responseHeaders(`/assets/${name}`).get('cache-control'), /max-age=31536000, immutable/);
   }
-  for (const pathname of ['/', '/index.html', '/assets/runtime.js', '/assets/brand.css']) {
+  for (const pathname of ['/', '/index.html', '/assets/runtime.js', '/assets/brand.css', '/assets/brand.woff2']) {
     assert.doesNotMatch(responseHeaders(pathname).get('cache-control') ?? '', /immutable/);
   }
 });

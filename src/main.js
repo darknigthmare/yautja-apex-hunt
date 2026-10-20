@@ -155,8 +155,9 @@ const ENEMY_ATTACK_TELEGRAPHS = Object.freeze({
 export class Game {
   constructor() {
     this.container = document.getElementById('game-canvas');
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
+    const viewport = this.getViewportSize();
+    this.width = viewport.width;
+    this.height = viewport.height;
 
     // Three.js Core
     this.scene = new THREE.Scene();
@@ -166,7 +167,7 @@ export class Game {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.08;
-    this.renderer.setSize(this.width, this.height);
+    this.renderer.setSize(this.width, this.height, false);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -742,14 +743,9 @@ export class Game {
   }
 
   updateShaderUniforms(delta) {
+    if (this.settings?.reducedMotion) return;
     const shaderMaterials = new Set();
-    this.scene.traverse((object) => {
-      let current = object;
-      while (current) {
-        if (!current.visible) return;
-        current = current.parent;
-      }
-
+    this.scene.traverseVisible((object) => {
       const materials = Array.isArray(object.material) ? object.material : [object.material];
       materials.filter(Boolean).forEach((material) => {
         if (material.isShaderMaterial && material.uniforms?.uTime) shaderMaterials.add(material);
@@ -2170,11 +2166,49 @@ export class Game {
     }
   }
 
+  canControlCamera() {
+    return this.isGameStarted && !this.isPaused && !this.medbayOverlay?.isOpen
+      && (this.gameState === 'HUNT' || (this.gameState === 'HUB' && this.isHubExploring));
+  }
+
+  handleTouchLookStart(event) {
+    if (event.pointerType !== 'touch' || !this.canControlCamera()
+      || (this.touchLookPointerId != null && this.touchLookPointerId !== event.pointerId)) return;
+    this.touchLookPointerId = event.pointerId;
+    this.touchLookPosition = { x: event.clientX, y: event.clientY };
+    try { this.container.setPointerCapture?.(event.pointerId); } catch { /* Capture facultative. */ }
+  }
+
+  handleTouchLookMove(event) {
+    if (event.pointerId !== this.touchLookPointerId || !this.touchLookPosition || !this.canControlCamera()) return;
+    this.cameraYaw -= (event.clientX - this.touchLookPosition.x) * 0.008;
+    this.cameraPitch = THREE.MathUtils.clamp(this.cameraPitch - (event.clientY - this.touchLookPosition.y) * 0.006, -0.6, 0.8);
+    this.touchLookPosition = { x: event.clientX, y: event.clientY };
+    event.preventDefault?.();
+  }
+
+  handleTouchLookEnd(event) {
+    if (event.pointerId !== this.touchLookPointerId) return;
+    this.touchLookPointerId = null;
+    this.touchLookPosition = null;
+  }
+
+  resetCameraTouchInput() {
+    const pointerId = this.touchLookPointerId;
+    this.touchLookPointerId = null;
+    this.touchLookPosition = null;
+    try {
+      if (pointerId != null && this.container?.hasPointerCapture?.(pointerId)) {
+        this.container.releasePointerCapture?.(pointerId);
+      }
+    } catch { /* Le système peut avoir déjà annulé le pointeur. */ }
+  }
+
   initEventListeners() {
     window.addEventListener('resize', () => this.onWindowResize());
 
     document.addEventListener('mousemove', (e) => {
-      if (!this.isPointerLocked || !this.isGameStarted || this.isPaused) return;
+      if (!this.isPointerLocked || !this.canControlCamera()) return;
       this.cameraYaw -= e.movementX * 0.0025;
       this.cameraPitch -= e.movementY * 0.0025;
       this.cameraPitch = Math.max(-0.6, Math.min(0.8, this.cameraPitch));
@@ -2203,32 +2237,10 @@ export class Game {
       if (message) message.textContent = 'Le contexte graphique répond de nouveau. Rechargez afin de restaurer toutes les ressources 3D dans un état vérifié.';
     });
 
-    this.container.addEventListener('pointerdown', (event) => {
-      if (event.pointerType !== 'touch' || this.gameState !== 'HUNT' || this.isPaused) return;
-      this.touchLookPointerId = event.pointerId;
-      this.touchLookPosition = { x: event.clientX, y: event.clientY };
-      try {
-        this.container.setPointerCapture?.(event.pointerId);
-      } catch {
-        // Le glissement tactile reste facultatif si la capture est refusée.
-      }
-    });
-    this.container.addEventListener('pointermove', (event) => {
-      if (event.pointerId !== this.touchLookPointerId || !this.touchLookPosition || this.isPaused) return;
-      const deltaX = event.clientX - this.touchLookPosition.x;
-      const deltaY = event.clientY - this.touchLookPosition.y;
-      this.cameraYaw -= deltaX * 0.008;
-      this.cameraPitch = THREE.MathUtils.clamp(this.cameraPitch - (deltaY * 0.006), -0.6, 0.8);
-      this.touchLookPosition = { x: event.clientX, y: event.clientY };
-      event.preventDefault?.();
-    });
-    const releaseTouchLook = (event) => {
-      if (event.pointerId !== this.touchLookPointerId) return;
-      this.touchLookPointerId = null;
-      this.touchLookPosition = null;
-    };
+    this.container.addEventListener('pointerdown', (event) => this.handleTouchLookStart(event));
+    this.container.addEventListener('pointermove', (event) => this.handleTouchLookMove(event));
     ['pointerup', 'pointercancel', 'lostpointercapture'].forEach((eventName) => {
-      this.container.addEventListener(eventName, releaseTouchLook);
+      this.container.addEventListener(eventName, (event) => this.handleTouchLookEnd(event));
     });
 
     window.addEventListener('keydown', (e) => this.onKeyDown(e));
@@ -2671,6 +2683,7 @@ export class Game {
   }
 
   resetHubTouchInput() {
+    this.resetCameraTouchInput();
     this.activeHubTouchDirections?.clear();
     this.touchInputDir ??= { x: 0, z: 0 };
     this.touchInputDir.x = 0;
@@ -2707,6 +2720,7 @@ export class Game {
   setPaused(paused) {
     if (!this.isGameStarted || !this.isHuntFlowActive() || this.huntResultShown) return;
     this.isPaused = Boolean(paused);
+    this.renderDirty = true;
     this.isScopeZooming = false;
     this.resetKeyboardInput();
     this.resetHuntTouchInput();
@@ -3222,6 +3236,7 @@ export class Game {
   }
 
   resetHuntTouchInput() {
+    this.resetCameraTouchInput();
     this.activeHuntTouchDirections?.clear();
     this.touchInputDir ??= { x: 0, z: 0 };
     this.touchInputDir.x = 0;
@@ -3968,7 +3983,26 @@ export class Game {
     const cy = this.player.position.y + cameraHeight + Math.sin(this.cameraPitch) * cameraDistance;
 
     this.camera.position.set(cx, cy, cz);
-    this.camera.lookAt(this.player.position.x, this.player.position.y + 4.0, this.player.position.z);
+    const anchor = this.player.position.clone().add(new THREE.Vector3(0, 4, 0));
+    const clampCameraToGround = () => {
+      const sampled = this.gameState === 'HUNT'
+        ? this.environment?.sampleHeight?.(this.camera.position.x, this.camera.position.z) : 0;
+      const ground = Number.isFinite(sampled) ? sampled : this.player.position.y;
+      this.camera.position.y = Math.max(this.camera.position.y, ground + 1);
+    };
+    clampCameraToGround();
+    if (this.gameState === 'HUNT') {
+      const impact = this.environment?.resolveProjectileCoverImpact?.(anchor, this.camera.position, 0.4);
+      if (impact?.point) {
+        const distance = anchor.distanceTo(impact.point);
+        this.camera.position.copy(anchor).lerp(impact.point, Math.max(0, (distance - 0.5) / Math.max(distance, 0.001)));
+      }
+    } else if (this.gameState === 'HUB') {
+      const safe = this.hub?.resolveCameraObstruction?.(anchor, this.camera.position, 0.4);
+      if (safe) this.camera.position.copy(safe);
+    }
+    clampCameraToGround();
+    this.camera.lookAt(anchor);
   }
 
   updateHUD() {
@@ -4136,12 +4170,36 @@ export class Game {
     if (document.pointerLockElement) document.exitPointerLock();
   }
 
+  getViewportSize() {
+    return {
+      width: Math.max(1, document.documentElement?.clientWidth || window.innerWidth || 1),
+      height: Math.max(1, document.documentElement?.clientHeight || window.innerHeight || 1),
+    };
+  }
+
   onWindowResize() {
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
+    const viewport = this.getViewportSize();
+    this.width = viewport.width;
+    this.height = viewport.height;
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(this.width, this.height);
+    this.renderer.setSize(this.width, this.height, false);
+    this.renderDirty = true;
+  }
+
+  renderSceneIfNeeded(frameDelta) {
+    this.idleRenderElapsed = (this.idleRenderElapsed ?? 0) + frameDelta;
+    if (typeof document !== 'undefined' && document.hidden) return false;
+    const active = this.isGameStarted && !this.isPaused && !this.medbayOverlay?.isOpen
+      && ['HUB', 'HUNT', 'VICTORY_PENDING'].includes(this.gameState);
+    // Deux images/seconde suffisent pour les ressources asynchrones derrière
+    // un écran statique ; une invalidation de taille reste immédiate.
+    if (!active && this.hasRendered && !this.renderDirty && this.idleRenderElapsed < 0.5) return false;
+    this.renderer.render(this.scene, this.camera);
+    this.hasRendered = true;
+    this.renderDirty = false;
+    this.idleRenderElapsed = 0;
+    return true;
   }
 
   animate() {
@@ -4150,10 +4208,11 @@ export class Game {
     const rawDelta = this.clock.getDelta();
     const frameDelta = Math.min(rawDelta, 0.1);
     const delta = frameDelta * this.timeScale;
+    const visible = typeof document === 'undefined' || !document.hidden;
 
-    if (this.isGameStarted) this.updateGamepad(frameDelta);
+    if (this.isGameStarted && visible) this.updateGamepad(frameDelta);
 
-    if (this.isGameStarted && !this.isPaused && !this.medbayOverlay?.isOpen) {
+    if (this.isGameStarted && visible && !this.isPaused && !this.medbayOverlay?.isOpen) {
       this.updateShaderUniforms(delta);
       this.updateVFX(delta);
 
@@ -4194,7 +4253,7 @@ export class Game {
       }
     }
 
-    this.renderer.render(this.scene, this.camera);
+    this.renderSceneIfNeeded(frameDelta);
   }
 }
 

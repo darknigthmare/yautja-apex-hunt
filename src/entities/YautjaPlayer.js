@@ -3234,15 +3234,17 @@ export class YautjaPlayer {
       if (p.type === 'disc') {
         p.mesh.rotation.z += delta * 24;
         if (p.lifetime < 1.8) {
-          const returnDir = this.position.clone().add(new THREE.Vector3(0, 3, 0)).sub(p.mesh.position).normalize();
-          p.dir.lerp(returnDir, delta * 5.0);
-          if (p.mesh.position.distanceTo(this.position) < 3.0) {
-            this.energy = Math.min(this.maxEnergy, this.energy + 15);
+          const catchPosition = this.position.clone().add(new THREE.Vector3(0, 3, 0));
+          const returnOffset = catchPosition.sub(p.mesh.position);
+          // Le guidage conserve la vitesse du disque et utilise le même point
+          // pour viser et rattraper. Anticiper le prochain pas évite de le dépasser.
+          if (returnOffset.length() <= Math.max(3, p.speed * delta)) {
             audioSynth.playYautjaClick?.();
             disposeObject3D(p.mesh);
             this.projectiles.splice(i, 1);
             continue;
           }
+          p.dir.copy(returnOffset).normalize();
         }
       }
       p.mesh.position.addScaledVector(p.dir, p.speed * delta);

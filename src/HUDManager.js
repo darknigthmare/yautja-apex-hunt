@@ -67,6 +67,7 @@ export class HUDManager {
     
     this.cloakCard = document.getElementById('cloak-status-card');
     this.cloakText = document.getElementById('cloak-state-text');
+    this.touchCloakButton = document.getElementById('btn-touch-hunt-cloak');
     this.canopyBadge = document.getElementById('canopy-badge');
     this.acidBadge = document.getElementById('acid-badge');
     this.gadgetStates = {
@@ -487,6 +488,10 @@ export class HUDManager {
     this.setClassState(this.gadgetStates?.shield?.parentElement, 'active', player.wristShieldActive === true);
     this.setClassState(this.gadgetStates?.drone?.parentElement, 'active', Boolean(player.scoutDrone));
     this.setClassState(this.gadgetStates?.decoy?.parentElement, 'active', Boolean(player.apexDecoy));
+    this.setAttribute(this.gadgetStates?.shield?.parentElement, 'aria-pressed', String(player.wristShieldActive === true));
+    this.setAttribute(this.gadgetStates?.drone?.parentElement, 'aria-pressed', String(Boolean(player.scoutDrone)));
+    this.setAttribute(this.gadgetStates?.decoy?.parentElement, 'aria-pressed', String(Boolean(player.apexDecoy)));
+    this.setAttribute(this.touchCloakButton, 'aria-pressed', String(Boolean(player.isCloaked)));
 
 
     if (player.isCloaked) {

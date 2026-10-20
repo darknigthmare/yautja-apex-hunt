@@ -18,7 +18,7 @@ class AudioSynthesizer {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       this.ctx = new AudioCtx();
       this.initialized = true;
-      if (this.muted) this.ctx.suspend();
+      if (this.muted) this.syncPlaybackState();
       this.startAmbientJungle();
       this.startAdaptiveBGM();
     } catch (e) {
@@ -28,9 +28,36 @@ class AudioSynthesizer {
 
   setMuted(muted) {
     this.muted = Boolean(muted);
-    if (!this.ctx) return;
-    if (this.muted) this.ctx.suspend();
-    else this.ctx.resume();
+    return this.syncPlaybackState();
+  }
+
+  syncPlaybackState() {
+    const context = this.ctx;
+    if (!context) return Promise.resolve(false);
+    const unavailable = (error) => {
+      // A browser/audio-device failure must not reach the game's global fatal
+      // rejection handler. Drop this context so later effects safely stay silent;
+      // a subsequent user gesture can initialize another one.
+      console.warn('Lecture audio indisponible ; le jeu continue sans son.', error);
+      if (this.ctx === context) {
+        this.ctx = null;
+        this.initialized = false;
+        this.bgmOsc = null;
+        this.bgmGain = null;
+      }
+      try {
+        Promise.resolve(context.close?.()).catch(() => {});
+      } catch {
+        // The browser may already have closed the failed context.
+      }
+      return false;
+    };
+    try {
+      const transition = this.muted ? context.suspend() : context.resume();
+      return Promise.resolve(transition).then(() => true, unavailable);
+    } catch (error) {
+      return Promise.resolve(unavailable(error));
+    }
   }
 
   // Yautja Victory Roar [R] (Chest Thumping Power Roar)

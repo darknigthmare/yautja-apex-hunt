@@ -1739,13 +1739,36 @@ export class Environment {
     }
     geometry.computeVertexNormals();
 
+    // Broad, deterministic ground variation breaks up repeated albedo without
+    // adding geometry or hiding navigable slopes behind random noisy patches.
+    const terrainColors = new Float32Array(positions.count * 3);
+    const normals = geometry.attributes.normal;
+    for (let i = 0; i < positions.count; i += 1) {
+      const x = positions.getX(i);
+      const z = -positions.getY(i);
+      const variation = 0.92
+        + Math.sin(x * 0.009 + Math.cos(z * 0.006)) * 0.035
+        + Math.cos(z * 0.012 - x * 0.004) * 0.025;
+      const slope = 1 - Math.max(0, normals.getZ(i));
+      const value = Math.max(0.72, variation - slope * 0.18);
+      terrainColors.fill(value, i * 3, i * 3 + 3);
+    }
+    geometry.setAttribute('color', new THREE.BufferAttribute(terrainColors, 3));
+
     const material = this.createTexturedMaterial({
       color: colorHex,
       path: biome.texture,
-      repeat: 18,
-      roughness: 0.92,
+      repeat: terrainSize / 40,
+      roughness: this.currentBiome === 'gunnison_outbreak' ? 0.52
+        : this.currentBiome === 'hive_lv426' ? 0.62 : 0.92,
     });
+    // The authored albedo already contains the biome's colour and dark soil.
+    // A second dark tint was crushing that texture to near black in normal
+    // vision. Keep only a subtle tint, retaining the original untextured fallback.
+    if (material.map) material.color.set(0xffffff).lerp(new THREE.Color(colorHex), 0.12);
+    material.vertexColors = true;
     const ground = new THREE.Mesh(geometry, material);
+    ground.name = 'hunt-terrain-surface';
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     this.biomeGroup.add(ground);
