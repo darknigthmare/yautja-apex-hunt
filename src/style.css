@@ -1870,3 +1870,58 @@ button:hover { transform: scale(1.04); }
   100% { transform: translateX(-50%) scale(1.03); filter: brightness(1.25); }
 }
 
+/* ==========================================================================
+   v172 - LEVEL DESIGN WALL-BANG HUD & MATERIAL PENETRATION BREACH INDICATOR
+   ========================================================================== */
+
+.wall-penetration-analysis-hud {
+  position: absolute;
+  top: 185px;
+  right: 25px;
+  background: rgba(20, 15, 30, 0.88);
+  border: 1px solid rgba(255, 0, 128, 0.5);
+  box-shadow: 0 0 10px rgba(255, 0, 128, 0.35);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: 'Orbitron', 'Courier New', monospace;
+  pointer-events: none;
+  z-index: 54;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wall-penetration-analysis-hud .material-density-readout {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ff0080;
+  text-shadow: 0 0 6px rgba(255, 0, 128, 0.8);
+}
+
+.wall-penetration-analysis-hud .wall-bang-vector-indicator {
+  font-size: 10px;
+  font-weight: 600;
+  color: #00ffcc;
+  text-shadow: 0 0 4px rgba(0, 255, 204, 0.7);
+}
+
+.wall-bang-breach-indicator {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(255, 17, 0, 0.6);
+  padding: 2px 8px;
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.wall-bang-breach-indicator .wall-density-tag {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  font-weight: bold;
+  color: #ff1100;
+  text-shadow: 0 0 4px rgba(255, 17, 0, 0.8);
+}
+
