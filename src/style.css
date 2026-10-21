@@ -2141,3 +2141,84 @@ button:hover { transform: scale(1.04); }
   color: #ff8888;
   text-align: center;
 }
+
+
+/* ============================================================================
+   v175: Predator 1 (1987) Circadian, Vocal Mimicry & Lens Mud Splatter Styling
+   ============================================================================ */
+
+.valverde-circadian-vocal-hud {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  width: 300px;
+  background: rgba(8, 20, 12, 0.9);
+  border: 1px solid rgba(0, 255, 136, 0.5);
+  box-shadow: 0 0 16px rgba(0, 255, 136, 0.25);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  color: #bbf8d8;
+  z-index: 110;
+  pointer-events: auto;
+  backdrop-filter: blur(4px);
+  user-select: none;
+}
+
+.valverde-circadian-vocal-hud .circadian-header {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #00ff88;
+  border-bottom: 1px solid rgba(0, 255, 136, 0.25);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.circadian-clock-dial {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  margin: 4px 0;
+  color: #81c784;
+}
+
+.vocal-mimicry-direction-puck {
+  margin: 6px 0;
+  padding: 4px 8px;
+  background: rgba(200, 100, 0, 0.2);
+  border: 1px solid #ff9800;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #ffb74d;
+}
+
+.valverde-lens-mud-splatter-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 95;
+  transition: opacity 0.4s ease;
+}
+
+.lens-splatter-status-indicator {
+  margin: 6px 0;
+  font-size: 10px;
+  color: #d7ccc8;
+}
+
+.submerged-reed-oxygen-gauge {
+  margin-top: 6px;
+  padding: 4px 8px;
+  background: rgba(0, 100, 180, 0.25);
+  border: 1px solid #00b0ff;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #80d8ff;
+}

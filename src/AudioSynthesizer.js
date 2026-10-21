@@ -17701,6 +17701,389 @@ class AudioSynthesizer {
     osc.stop(now + 1.2);
   }
 
+
+  // ============================================================================
+  // v175: Predator 1 (1987) Circadian, Vocal Mimicry, Lens Mud & Cauterization SFX
+  // ============================================================================
+
+  /**
+   * Computes acoustic propagation and high-frequency cricket/cicada resonance in nocturnal tropical jungle.
+   * @param {number} [ambientTempC=22.0]
+   * @param {number} [humidityPct=90.0]
+   * @param {number} [insectDensityPct=85.0]
+   * @returns {Object} Acoustic parameters
+   */
+  computeCircadianNocturnalJungleAcoustics(ambientTempC = 22.0, humidityPct = 90.0, insectDensityPct = 85.0) {
+    const cicadaCarrierFreqHz = Math.round(4800 + ambientTempC * 45);
+    const backgroundDuskNoiseDb = Math.min(65.0, Math.round(38.0 + (insectDensityPct / 100.0) * 22.0));
+    const speedOfSoundMps = Math.round((331.3 + 0.606 * ambientTempC) * 10) / 10;
+    const nightAirAbsorptionCoeff = Math.round((0.012 + (100.0 - humidityPct) * 0.0003) * 10000) / 10000;
+
+    return {
+      cicadaCarrierFreqHz,
+      backgroundDuskNoiseDb,
+      speedOfSoundMps,
+      nightAirAbsorptionCoeff,
+      thermalInversionEchoBoostDb: 3.2,
+      nocturnalClarityScore: 92
+    };
+  }
+
+  /**
+   * Computes acoustic dispersion and leaf damping of Yautja vocal mimicry broadcasts from high canopy branches.
+   * @param {string} [voiceClipId='MIMIC_OVER_HERE']
+   * @param {number} [speakerElevationM=18.0]
+   * @param {number} [foliageOcclusionDb=6.5]
+   * @returns {Object} Mimicry acoustic telemetry
+   */
+  computePredatorVocalMimicryAcoustics(voiceClipId = 'MIMIC_OVER_HERE', speakerElevationM = 18.0, foliageOcclusionDb = 6.5) {
+    const formant1Hz = 750;
+    const formant2Hz = 1650;
+    const bioMaskDigitalChirpFreqHz = 3850;
+    const elevationParallaxMs = Math.round((speakerElevationM / 343.0) * 1000 * 10) / 10;
+
+    return {
+      voiceClipId,
+      formant1Hz,
+      formant2Hz,
+      bioMaskDigitalChirpFreqHz,
+      elevationParallaxMs,
+      foliageOcclusionDb,
+      vocalResonanceQ: 4.8
+    };
+  }
+
+  playCicadasTropicalDuskChorus() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(5400, now);
+    osc.frequency.linearRampToValueAtTime(5600, now + 0.3);
+    osc.frequency.linearRampToValueAtTime(5300, now + 0.6);
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(5450, now);
+    filter.Q.setValueAtTime(8.0, now);
+
+    gain.gain.setValueAtTime(0.06, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.68);
+  }
+
+  playPredatorMimicryOverHere() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    // Emulates whispered Mac voice 'Over here...' with synthetic bio-mask filtering
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(280, now);
+    osc.frequency.linearRampToValueAtTime(340, now + 0.15);
+    osc.frequency.linearRampToValueAtTime(220, now + 0.35);
+    osc.frequency.linearRampToValueAtTime(310, now + 0.5);
+    osc.frequency.exponentialRampToValueAtTime(140, now + 0.75);
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(1200, now);
+    filter.Q.setValueAtTime(3.5, now);
+
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.78);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.8);
+  }
+
+  playPredatorMimicryTurnAround() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(360, now);
+    osc.frequency.linearRampToValueAtTime(420, now + 0.12);
+    osc.frequency.linearRampToValueAtTime(260, now + 0.3);
+    osc.frequency.exponentialRampToValueAtTime(180, now + 0.55);
+
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.62);
+  }
+
+  playPredatorMimicryAnytime() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(190, now);
+    osc.frequency.linearRampToValueAtTime(240, now + 0.1);
+    osc.frequency.linearRampToValueAtTime(160, now + 0.28);
+    osc.frequency.exponentialRampToValueAtTime(90, now + 0.5);
+
+    gain.gain.setValueAtTime(0.24, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.58);
+  }
+
+  playMudSplatterOnLensHit() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    // Squelchy viscous impact sound on the camera lens
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(280, now);
+    osc.frequency.exponentialRampToValueAtTime(55, now + 0.16);
+
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.22);
+  }
+
+  playMudDryingCrustCrack() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1850, now);
+    osc.frequency.exponentialRampToValueAtTime(420, now + 0.08);
+
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.14);
+  }
+
+  playHotBladeCauterizationSizzle() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    // High frequency flesh burning sizzle
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(3200, now);
+    osc.frequency.linearRampToValueAtTime(4100, now + 0.15);
+    osc.frequency.exponentialRampToValueAtTime(800, now + 0.45);
+
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.52);
+  }
+
+  playDutchPainGruntSuppress() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(125, now);
+    osc.frequency.linearRampToValueAtTime(165, now + 0.1);
+    osc.frequency.exponentialRampToValueAtTime(60, now + 0.35);
+
+    gain.gain.setValueAtTime(0.32, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  playVineSwingAirWhoosh() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.linearRampToValueAtTime(340, now + 0.25);
+    osc.frequency.exponentialRampToValueAtTime(95, now + 0.55);
+
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.62);
+  }
+
+  playVineReleaseBranchCatch() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(420, now);
+    osc.frequency.exponentialRampToValueAtTime(90, now + 0.14);
+
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.2);
+  }
+
+  playHollowReedSubmergedBubbles() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.linearRampToValueAtTime(480, now + 0.08);
+    osc.frequency.setValueAtTime(290, now + 0.1);
+    osc.frequency.linearRampToValueAtTime(450, now + 0.18);
+
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.25);
+  }
+
+  playReedSurfaceBreathingGasp() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(140, now);
+    osc.frequency.linearRampToValueAtTime(220, now + 0.15);
+    osc.frequency.exponentialRampToValueAtTime(80, now + 0.35);
+
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  playGlassifiedCraterSandCrunch() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1400, now);
+    osc.frequency.exponentialRampToValueAtTime(220, now + 0.11);
+
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.18);
+  }
+
+  playThermalHotspotRadiationHiss() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(850, now);
+    osc.frequency.linearRampToValueAtTime(1250, now + 0.25);
+    osc.frequency.exponentialRampToValueAtTime(400, now + 0.6);
+
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.68);
+  }
+
+  playNightWindCanopyChime() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(95, now);
+    osc.frequency.linearRampToValueAtTime(130, now + 0.4);
+    osc.frequency.exponentialRampToValueAtTime(55, now + 0.85);
+
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.95);
+  }
+
 }
 
 export const audioSynth = new AudioSynthesizer();
