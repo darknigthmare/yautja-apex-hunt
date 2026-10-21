@@ -2456,3 +2456,79 @@ button:hover { transform: scale(1.04); }
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
   text-align: center;
 }
+
+/* ==========================================================================
+   v179: MULTI-ERA PREDATOR CAMPAIGN HUD WIDGETS (P2, PREDATORS 2010, PREY 1719)
+   ========================================================================== */
+
+.predator-multi-era-hud-panel {
+  position: absolute;
+  top: 90px;
+  right: 20px;
+  width: 300px;
+  background: rgba(14, 18, 22, 0.9);
+  border: 1px solid rgba(255, 170, 0, 0.6);
+  box-shadow: 0 0 22px rgba(255, 140, 0, 0.35), inset 0 0 12px rgba(0, 0, 0, 0.85);
+  border-radius: 6px;
+  padding: 12px;
+  color: #ffb74d;
+  font-family: 'Consolas', monospace;
+  font-size: 11px;
+  z-index: 260;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+
+.netgun-wire-constriction-meter {
+  margin: 6px 0;
+  padding: 5px 8px;
+  background: rgba(45, 20, 10, 0.55);
+  border-left: 3px solid #ff7043;
+  font-size: 10px;
+  color: #ffab91;
+  text-shadow: 0 0 4px rgba(255, 112, 67, 0.6);
+}
+
+.speargun-pneumatic-pressure-gauge {
+  margin: 6px 0;
+  padding: 5px 8px;
+  background: rgba(20, 35, 45, 0.55);
+  border-left: 3px solid #29b6f6;
+  font-size: 10px;
+  color: #81d4fa;
+}
+
+.katana-duel-poise-bar {
+  margin: 6px 0;
+  padding: 5px 8px;
+  background: rgba(30, 40, 20, 0.55);
+  border-left: 3px solid #cddc39;
+  font-size: 10px;
+  color: #e6ee9c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quicksand-sink-depth-indicator {
+  margin: 6px 0;
+  padding: 5px 8px;
+  background: rgba(50, 40, 25, 0.55);
+  border-left: 3px solid #8d6e63;
+  font-size: 10px;
+  color: #d7ccc8;
+}
+
+.bone-shield-deflection-meter {
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: linear-gradient(135deg, rgba(50, 50, 50, 0.7), rgba(20, 20, 20, 0.9));
+  border: 1px solid #b0bec5;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1.2px;
+  color: #eceff1;
+  text-shadow: 0 0 8px rgba(236, 239, 241, 0.7);
+  text-align: center;
+}
