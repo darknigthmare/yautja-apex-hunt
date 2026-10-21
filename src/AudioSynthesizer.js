@@ -18876,6 +18876,380 @@ class AudioSynthesizer {
     osc.stop(now + 0.58);
   }
 
+
+  /**
+   * Computes cryogenic nitrogen spray thermal ablation acoustics in enclosed slaughterhouse meat lockers.
+   * @param {number} [flowRateKgS=12.0]
+   * @param {number} [nozzlePressureBar=24.0]
+   * @param {number} [chamberTempC=-196.0]
+   * @returns {Object} Cryogenic spray acoustic telemetry
+   */
+  computeNitrogenGasThermalAblationAcoustics(flowRateKgS = 12.0, nozzlePressureBar = 24.0, chamberTempC = -196.0) {
+    const cryoExpansionVelocityMps = Math.round(Math.sqrt(Math.max(1, Math.abs(chamberTempC))) * 22.5);
+    const cavitationHissFrequencyHz = Math.min(8000, Math.round(2400 + nozzlePressureBar * 45.0));
+    const splAtOneMeterDb = Math.min(125.0, Math.round(82.0 + flowRateKgS * 2.1));
+    const vaporizationPlumeDurationSec = 3.2;
+
+    return {
+      flowRateKgS,
+      nozzlePressureBar,
+      chamberTempC,
+      cryoExpansionVelocityMps,
+      cavitationHissFrequencyHz,
+      splAtOneMeterDb,
+      vaporizationPlumeDurationSec,
+      thermalShockIndex: 0.94
+    };
+  }
+
+  /**
+   * Computes subterranean mothership antigravity lift and cavern resonance acoustics.
+   * @param {number} [shipMassTonnes=1800.0]
+   * @param {number} [gravFieldIntensity=0.95]
+   * @param {number} [elevationAboveGroundM=15.0]
+   * @returns {Object} Mothership antigrav acoustic telemetry
+   */
+  computeMothershipAntigravLiftAcoustics(shipMassTonnes = 1800.0, gravFieldIntensity = 0.95, elevationAboveGroundM = 15.0) {
+    const infrasonicHoverFundamentalHz = Math.max(18.0, Math.round(38.0 - (shipMassTonnes / 100.0)));
+    const subterraneanCavernResonanceDb = Math.min(138.0, Math.round(95.0 + gravFieldIntensity * 28.0));
+    const antigravHumFrequencyHz = 118.0;
+    const tectonicFloorVibrationVelocityMmS = Math.round(elevationAboveGroundM * 1.8 * 10) / 10;
+
+    return {
+      shipMassTonnes,
+      gravFieldIntensity,
+      elevationAboveGroundM,
+      infrasonicHoverFundamentalHz,
+      subterraneanCavernResonanceDb,
+      antigravHumFrequencyHz,
+      tectonicFloorVibrationVelocityMmS
+    };
+  }
+
+  playNitrogenGasSprayHiss() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.45);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.7));
+    }
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(2800, now);
+    filter.frequency.linearRampToValueAtTime(3600, now + 0.4);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    noise.start(now);
+  }
+
+  playFrozenMeatCarcassImpactThud() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(95, now);
+    osc.frequency.exponentialRampToValueAtTime(32, now + 0.28);
+
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.32);
+  }
+
+  playSubwayTrackClickClackRhythm() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    [0, 0.08, 0.22, 0.30].forEach((delay) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(340, now + delay);
+      osc.frequency.exponentialRampToValueAtTime(120, now + delay + 0.04);
+
+      gain.gain.setValueAtTime(0.18, now + delay);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.05);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now + delay);
+      osc.stop(now + delay + 0.06);
+    });
+  }
+
+  playSubwayFlickeringFluorescentStrobe() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(120, now);
+    osc.frequency.setValueAtTime(240, now + 0.05);
+    osc.frequency.setValueAtTime(60, now + 0.12);
+
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.setValueAtTime(0.02, now + 0.06);
+    gain.gain.setValueAtTime(0.22, now + 0.14);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  playFetalHeartbeatBioScan() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    // 140 bpm = ~0.43s cycle (lub-dub)
+    [0, 0.12].forEach((delay, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(idx === 0 ? 85 : 110, now + delay);
+      osc.frequency.exponentialRampToValueAtTime(45, now + delay + 0.08);
+
+      gain.gain.setValueAtTime(0.35, now + delay);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.1);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now + delay);
+      osc.stop(now + delay + 0.12);
+    });
+  }
+
+  playKingWillieSwordDrawZing() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1850, now);
+    osc.frequency.linearRampToValueAtTime(3200, now + 0.18);
+    osc.frequency.exponentialRampToValueAtTime(950, now + 0.4);
+
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.48);
+  }
+
+  playKingWillieDecapitationCleanSlash() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1100, now);
+    osc.frequency.exponentialRampToValueAtTime(220, now + 0.18);
+
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.25);
+  }
+
+  playEasternColumbiaLightningThunderclap() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.exponentialRampToValueAtTime(35, now + 0.7);
+
+    gain.gain.setValueAtTime(0.45, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.9);
+  }
+
+  playCityHunterVictoryHowlRoar() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.linearRampToValueAtTime(680, now + 0.35);
+    osc.frequency.exponentialRampToValueAtTime(180, now + 0.75);
+
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.85);
+  }
+
+  playMedicompGlassMortarGrind() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(1420, now);
+    osc.frequency.setValueAtTime(980, now + 0.08);
+    osc.frequency.setValueAtTime(1650, now + 0.16);
+    osc.frequency.exponentialRampToValueAtTime(450, now + 0.3);
+
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.35);
+  }
+
+  playMedicompBluePasteBurnScream() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(420, now);
+    osc.frequency.linearRampToValueAtTime(890, now + 0.2);
+    osc.frequency.exponentialRampToValueAtTime(250, now + 0.55);
+
+    gain.gain.setValueAtTime(0.32, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.65);
+  }
+
+  playSmartDiscWallRicochetZip() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(2400, now);
+    osc.frequency.linearRampToValueAtTime(4800, now + 0.08);
+    osc.frequency.exponentialRampToValueAtTime(1200, now + 0.2);
+
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.25);
+  }
+
+  playLostTribeCloakRevealHum() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(220, now);
+    osc.frequency.linearRampToValueAtTime(540, now + 0.25);
+    osc.frequency.exponentialRampToValueAtTime(140, now + 0.6);
+
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.7);
+  }
+
+  playRaphaelAdoliniFlintlockCock() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    [0, 0.08].forEach((delay, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(idx === 0 ? 750 : 1250, now + delay);
+      osc.frequency.exponentialRampToValueAtTime(320, now + delay + 0.04);
+
+      gain.gain.setValueAtTime(0.24, now + delay);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.05);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now + delay);
+      osc.stop(now + delay + 0.06);
+    });
+  }
+
+  playYautjaSpaceshipSubterraneanTakeoffRumble() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(28, now);
+    osc.frequency.linearRampToValueAtTime(75, now + 0.5);
+    osc.frequency.exponentialRampToValueAtTime(32, now + 1.1);
+
+    gain.gain.setValueAtTime(0.42, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 1.25);
+  }
+
 }
 
 export const audioSynth = new AudioSynthesizer();
