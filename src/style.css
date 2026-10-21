@@ -2222,3 +2222,85 @@ button:hover { transform: scale(1.04); }
   font-size: 10px;
   color: #80d8ff;
 }
+
+
+/* ============================================================================
+   v176: Predator 1 (1987) Flash Flood, Mud Brawl & Tri-Laser Convergence Styling
+   ============================================================================ */
+
+.valverde-mud-brawl-hud-panel {
+  position: absolute;
+  bottom: 80px;
+  left: 24px;
+  width: 320px;
+  background: rgba(18, 28, 22, 0.92);
+  border: 1px solid rgba(255, 68, 68, 0.55);
+  box-shadow: 0 0 16px rgba(255, 68, 68, 0.25);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  color: #ffcccc;
+  z-index: 115;
+  pointer-events: auto;
+  backdrop-filter: blur(4px);
+  user-select: none;
+}
+
+.reflex-parry-timing-reticule {
+  margin: 6px 0;
+  padding: 4px 8px;
+  background: rgba(0, 180, 255, 0.25);
+  border: 1px solid #00e5ff;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #00e5ff;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.7);
+  text-align: center;
+}
+
+.flash-flood-surge-warning {
+  margin: 6px 0;
+  padding: 5px 8px;
+  background: rgba(0, 100, 200, 0.35);
+  border: 1px solid #2979ff;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #82b1ff;
+  animation: surge-blink 0.8s infinite alternate;
+}
+
+@keyframes surge-blink {
+  0% { opacity: 0.8; }
+  100% { opacity: 1; border-color: #00e5ff; }
+}
+
+.delayed-fuse-timer-gauge {
+  margin: 6px 0;
+  padding: 4px 8px;
+  background: rgba(180, 120, 0, 0.25);
+  border: 1px solid #ffd600;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #fff9c4;
+}
+
+.tri-laser-convergence-meter {
+  margin-top: 6px;
+  padding: 5px 8px;
+  background: rgba(220, 0, 40, 0.35);
+  border: 1px solid #ff1744;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #ff5252;
+  text-shadow: 0 0 10px rgba(255, 23, 68, 0.85);
+  text-align: center;
+  animation: tri-laser-pulse 0.4s infinite alternate;
+}
+
+@keyframes tri-laser-pulse {
+  0% { box-shadow: 0 0 4px rgba(255, 23, 68, 0.4); }
+  100% { box-shadow: 0 0 14px rgba(255, 23, 68, 0.95); }
+}
