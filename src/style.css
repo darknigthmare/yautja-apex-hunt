@@ -1738,3 +1738,56 @@ button:hover { transform: scale(1.04); }
   100% { transform: scale(1.05); filter: brightness(1.2); }
 }
 
+/* ==========================================================================
+   v170 - LEVEL DESIGN VERTICAL TOPOGRAPHY HUD & DESTRUCTIBLE COVER STRESS GAUGE
+   ========================================================================== */
+
+.vertical-topography-elevation-hud {
+  position: absolute;
+  top: 75px;
+  right: 25px;
+  background: rgba(10, 20, 25, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.5);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.35);
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-family: 'Orbitron', 'Courier New', monospace;
+  pointer-events: none;
+  z-index: 54;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vertical-topography-elevation-hud .altimeter-readout {
+  font-size: 13px;
+  font-weight: 700;
+  color: #00f0ff;
+  text-shadow: 0 0 6px rgba(0, 240, 255, 0.75);
+}
+
+.vertical-topography-elevation-hud .vantage-score-meter {
+  font-size: 11px;
+  font-weight: 600;
+  color: #00ff66;
+  text-shadow: 0 0 5px rgba(0, 255, 102, 0.7);
+}
+
+.destructible-cover-stress-gauge {
+  position: absolute;
+  width: 60px;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 183, 0, 0.6);
+  border-radius: 2px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 48;
+}
+
+.destructible-cover-stress-gauge .cover-health-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff1100 0%, #ffb700 50%, #00ff66 100%);
+  transition: width 0.15s ease-out;
+}
+
