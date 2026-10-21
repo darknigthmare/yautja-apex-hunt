@@ -2532,3 +2532,86 @@ button:hover { transform: scale(1.04); }
   text-shadow: 0 0 8px rgba(236, 239, 241, 0.7);
   text-align: center;
 }
+
+/* ==========================================================================
+   v180: PREDATORS (2010) GAME PRESERVE PLANET HUD WIDGETS
+   ========================================================================== */
+
+.predators2010-game-preserve-hud-panel {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  width: 300px;
+  background: rgba(18, 24, 16, 0.9);
+  border: 1px solid rgba(139, 195, 74, 0.65);
+  box-shadow: 0 0 22px rgba(104, 159, 56, 0.35), inset 0 0 12px rgba(0, 0, 0, 0.85);
+  border-radius: 6px;
+  padding: 12px;
+  color: #c5e1a5;
+  font-family: 'Consolas', monospace;
+  font-size: 11px;
+  z-index: 270;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+
+.skyfall-altimeter-gauge {
+  margin: 6px 0;
+  padding: 5px 8px;
+  background: rgba(30, 45, 60, 0.55);
+  border-left: 3px solid #00e5ff;
+  font-size: 10px;
+  color: #80deea;
+  text-shadow: 0 0 4px rgba(0, 229, 255, 0.6);
+}
+
+.celestial-moons-radar {
+  margin: 6px 0;
+  padding: 5px 8px;
+  background: rgba(40, 20, 50, 0.55);
+  border-left: 3px solid #ba68c8;
+  font-size: 10px;
+  color: #e1bee7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hellhound-pack-threat-meter {
+  margin: 6px 0;
+  padding: 5px 8px;
+  background: rgba(55, 20, 15, 0.55);
+  border-left: 3px solid #ff5722;
+  font-size: 10px;
+  color: #ff8a65;
+  animation: hellhound-alert 0.5s infinite alternate;
+}
+
+@keyframes hellhound-alert {
+  0% { border-left-color: #ff5722; }
+  100% { border-left-color: #d50000; }
+}
+
+.falcon-drone-stream-widget {
+  margin: 6px 0;
+  padding: 5px 8px;
+  background: rgba(15, 40, 30, 0.55);
+  border-left: 3px solid #00e676;
+  font-size: 10px;
+  color: #b9f6ca;
+  letter-spacing: 0.5px;
+}
+
+.drilling-hull-toxicity-indicator {
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: linear-gradient(135deg, rgba(60, 40, 10, 0.7), rgba(30, 20, 5, 0.9));
+  border: 1px solid #ffb300;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1.2px;
+  color: #ffe082;
+  text-shadow: 0 0 8px rgba(255, 179, 0, 0.7);
+  text-align: center;
+}
