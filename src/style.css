@@ -2304,3 +2304,71 @@ button:hover { transform: scale(1.04); }
   0% { box-shadow: 0 0 4px rgba(255, 23, 68, 0.4); }
   100% { box-shadow: 0 0 14px rgba(255, 23, 68, 0.95); }
 }
+
+
+/* ============================================================================
+   v177: Predator 1 (1987) Plasma Ballistics, Canopy Highway & Defeat Glyphs
+   ============================================================================ */
+
+.valverde-plasma-canopy-hud-panel {
+  position: absolute;
+  bottom: 160px;
+  right: 24px;
+  width: 320px;
+  background: rgba(10, 22, 18, 0.94);
+  border: 1px solid rgba(0, 229, 255, 0.6);
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.3);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  color: #b2ebf2;
+  z-index: 120;
+  pointer-events: auto;
+  backdrop-filter: blur(5px);
+  user-select: none;
+}
+
+.plasmacaster-heatsink-gauge {
+  margin: 6px 0;
+  padding: 4px 8px;
+  background: rgba(0, 80, 120, 0.35);
+  border-left: 3px solid #00e5ff;
+  font-size: 10px;
+}
+
+.canopy-highway-elevation-dial {
+  margin: 6px 0;
+  padding: 4px 8px;
+  background: rgba(20, 60, 30, 0.45);
+  border-left: 3px solid #69f0ae;
+  font-size: 10px;
+  color: #b9f6ca;
+}
+
+.yautja-glyph-countdown-display {
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: rgba(140, 0, 10, 0.45);
+  border: 1px solid #ff1744;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  color: #ff1744;
+  text-shadow: 0 0 10px rgba(255, 23, 68, 0.9);
+  text-align: center;
+  animation: glyph-flicker 0.35s infinite alternate;
+}
+
+@keyframes glyph-flicker {
+  0% { opacity: 0.75; box-shadow: 0 0 6px rgba(255, 23, 68, 0.5); }
+  100% { opacity: 1; box-shadow: 0 0 16px rgba(255, 23, 68, 1); }
+}
+
+.multispectral-spectrum-selector {
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #80deea;
+}
