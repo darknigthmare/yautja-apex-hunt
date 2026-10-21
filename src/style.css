@@ -1791,3 +1791,82 @@ button:hover { transform: scale(1.04); }
   transition: width 0.15s ease-out;
 }
 
+/* ==========================================================================
+   v171 - LEVEL DESIGN THERMAL AIRFLOW HUD & DYNAMIC TERRAIN STATE BADGE
+   ========================================================================== */
+
+.thermal-airflow-draft-hud {
+  position: absolute;
+  top: 130px;
+  right: 25px;
+  background: rgba(15, 25, 30, 0.85);
+  border: 1px solid rgba(0, 255, 150, 0.5);
+  box-shadow: 0 0 10px rgba(0, 255, 150, 0.3);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: 'Orbitron', 'Courier New', monospace;
+  pointer-events: none;
+  z-index: 54;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.thermal-airflow-draft-hud .airflow-vector-arrow {
+  font-size: 14px;
+  font-weight: 900;
+  color: #00ff96;
+  display: inline-block;
+  transition: transform 0.2s ease-out;
+  text-shadow: 0 0 6px rgba(0, 255, 150, 0.8);
+}
+
+.thermal-airflow-draft-hud .airflow-speed-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #e0f8ff;
+}
+
+.dynamic-terrain-state-badge {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 15, 20, 0.9);
+  border: 1px solid rgba(255, 200, 0, 0.6);
+  box-shadow: 0 0 8px rgba(255, 200, 0, 0.4);
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-family: 'Orbitron', 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: bold;
+  color: #ffc800;
+  pointer-events: none;
+  z-index: 50;
+  letter-spacing: 1px;
+}
+
+.dynamic-terrain-state-badge.state-mud_slurry {
+  border-color: #8b5a2b;
+  color: #d2a679;
+  box-shadow: 0 0 8px rgba(139, 90, 43, 0.5);
+}
+
+.dynamic-terrain-state-badge.state-open_water {
+  border-color: #00aaff;
+  color: #66ccff;
+  box-shadow: 0 0 8px rgba(0, 170, 255, 0.5);
+}
+
+.dynamic-terrain-state-badge.state-ignited_inferno {
+  border-color: #ff3300;
+  color: #ff6633;
+  box-shadow: 0 0 10px rgba(255, 51, 0, 0.8);
+  animation: terrain-fire-pulse 1.2s infinite alternate ease-in-out;
+}
+
+@keyframes terrain-fire-pulse {
+  0% { transform: translateX(-50%) scale(0.97); filter: brightness(0.9); }
+  100% { transform: translateX(-50%) scale(1.03); filter: brightness(1.25); }
+}
+
