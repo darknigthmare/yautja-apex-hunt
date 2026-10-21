@@ -1585,11 +1585,71 @@ button:hover { transform: scale(1.04); }
   to { filter: blur(2px) brightness(1.3); }
 }
 
+/* ==========================================
+   v168 - ACOUSTIC SENSOR PULSE & EXPLOSION SOOT OVERLAYS
+   ========================================== */
 
+.acoustic-sensor-pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0, 255, 204, 0.4);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
 
+.acoustic-sensor-pulse-ring.active {
+  opacity: 1;
+}
 
+.sound-wave-ripple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 255, 204, 0.8);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: acoustic-ripple-expand 1.8s infinite ease-out;
+}
 
+@keyframes acoustic-ripple-expand {
+  0% { width: 20px; height: 20px; opacity: 1; }
+  100% { width: 240px; height: 240px; opacity: 0; }
+}
 
+.decibel-intensity-meter {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  font-weight: bold;
+  color: #00ffcc;
+  text-shadow: 0 0 6px rgba(0, 255, 204, 0.8);
+}
 
+.visor-soot-deposit-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 40% 60%, rgba(20, 20, 20, 0.75) 0%, rgba(10, 10, 10, 0.45) 45%, transparent 75%),
+              radial-gradient(circle at 70% 30%, rgba(30, 25, 20, 0.65) 0%, transparent 50%);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
 
-
+.visor-soot-deposit-overlay.soot-active {
+  filter: contrast(1.2);
+}

@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
-import { chromium } from 'playwright';
+let chromium = null;
+try { ({ chromium } = await import('playwright')); } catch {}
 import * as THREE from 'three';
 import { ShaderManager } from '../src/Shaders.js';
 
@@ -30,10 +31,11 @@ test('vision materials let Three choose skeletal or rigid variants without shari
   }
 });
 
-const browserPath = process.env.CHROMIUM_PATH || (existsSync('/usr/bin/chromium') ? '/usr/bin/chromium' : chromium.executablePath());
+let browserPath = process.env.CHROMIUM_PATH || (existsSync('/usr/bin/chromium') ? '/usr/bin/chromium' : null);
+if (!browserPath && chromium) { try { browserPath = chromium.executablePath(); } catch {} }
 
 test('GPU vision renders match posed rigid references for Bone, Group and instanced transforms', {
-  skip: !existsSync(browserPath) && 'Chromium is required for the shader pixel regression',
+  skip: (!chromium || !browserPath || !existsSync(browserPath)) && 'Chromium is required for the shader pixel regression',
   timeout: 90_000,
 }, async () => {
   const html = `<!doctype html><meta charset="utf-8"><link rel="icon" href="data:,">
