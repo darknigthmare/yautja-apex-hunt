@@ -1925,3 +1925,136 @@ button:hover { transform: scale(1.04); }
   text-shadow: 0 0 4px rgba(255, 17, 0, 0.8);
 }
 
+
+
+/* ============================================================================
+   v173: Predator 1 (1987) Val Verde Rainforest Level Design HUD & Styling
+   ============================================================================ */
+
+.valverde-jungle-navigation-hud {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  width: 320px;
+  background: rgba(12, 24, 16, 0.88);
+  border: 1px solid rgba(80, 200, 120, 0.6);
+  box-shadow: 0 0 16px rgba(40, 160, 80, 0.35);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  color: #a4f0b7;
+  z-index: 100;
+  pointer-events: auto;
+  backdrop-filter: blur(4px);
+  user-select: none;
+}
+
+.valverde-jungle-navigation-hud .hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(80, 200, 120, 0.3);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #50e386;
+  text-transform: uppercase;
+}
+
+.thermal-blindspot-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  background: rgba(0, 120, 100, 0.35);
+  border: 1px solid #00f0b4;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #00f0b4;
+  text-shadow: 0 0 6px rgba(0, 240, 180, 0.6);
+  animation: thermal-pulse 2s infinite ease-in-out;
+}
+
+@keyframes thermal-pulse {
+  0%, 100% { opacity: 0.85; box-shadow: 0 0 4px rgba(0, 240, 180, 0.4); }
+  50% { opacity: 1; box-shadow: 0 0 12px rgba(0, 240, 180, 0.8); }
+}
+
+.canopy-density-meter {
+  margin: 6px 0;
+  font-size: 10px;
+}
+
+.canopy-density-meter .meter-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3px;
+  color: #8ce4a0;
+}
+
+.canopy-density-meter .meter-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(20, 40, 20, 0.8);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(80, 200, 120, 0.3);
+}
+
+.canopy-density-meter .meter-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2e7d32, #66bb6a);
+  transition: width 0.3s ease;
+}
+
+.thermal-mud-status-badge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  margin-top: 6px;
+  background: rgba(45, 35, 20, 0.7);
+  border: 1px solid #c9933b;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #f7d58b;
+}
+
+.thermal-mud-status-badge.flaking {
+  border-color: #e65100;
+  color: #ffb74d;
+  animation: flaking-flicker 1s infinite alternate;
+}
+
+@keyframes flaking-flicker {
+  0% { opacity: 0.8; }
+  100% { opacity: 1; border-color: #ff3d00; }
+}
+
+.deforestation-cover-gauge {
+  margin: 6px 0;
+  font-size: 10px;
+  color: #b0bec5;
+}
+
+.valverde-hazard-tripwire-alert {
+  margin-top: 8px;
+  padding: 5px 8px;
+  background: rgba(180, 20, 20, 0.35);
+  border: 1px solid #ff3333;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #ff6666;
+  text-shadow: 0 0 6px rgba(255, 50, 50, 0.7);
+  text-align: center;
+  animation: hazard-blink 0.8s infinite;
+}
+
+@keyframes hazard-blink {
+  0%, 100% { background: rgba(180, 20, 20, 0.2); }
+  50% { background: rgba(220, 20, 20, 0.55); }
+}
