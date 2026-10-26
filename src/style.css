@@ -2850,3 +2850,74 @@ button:hover { transform: scale(1.04); }
     border-left-color: #ff8a80;
   }
 }
+
+
+/* ==========================================================================
+   v184 PREDATORS (2010) MASTER TELEMETRY HUD & DEFEAT ALERTS
+   ========================================================================== */
+
+.predators2010-master-hud-panel {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 320px;
+  background: rgba(12, 18, 24, 0.9);
+  border: 1px solid #00e676;
+  box-shadow: 0 0 16px rgba(0, 230, 118, 0.35);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: 'Rajdhani', sans-serif;
+  color: #e8f5e9;
+  z-index: 999;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+
+.master-hud-header {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #69f0ae;
+  border-bottom: 1px solid rgba(105, 240, 174, 0.35);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  text-shadow: 0 0 6px rgba(105, 240, 174, 0.6);
+  text-align: center;
+}
+
+.master-hud-row {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
+  margin-bottom: 4px;
+  background: rgba(18, 35, 28, 0.55);
+  border-left: 3px solid #00e676;
+  border-radius: 2px;
+}
+
+.master-hud-row.yautja-defeat-alert {
+  border-left-color: #ff5252;
+  color: #ff8a80;
+  background: rgba(60, 15, 15, 0.65);
+  font-weight: bold;
+}
+
+.master-hud-row.yautja-defeat-alert.armed {
+  border-left-color: #ff1744;
+  color: #ffebee;
+  background: rgba(130, 18, 25, 0.9);
+  text-shadow: 0 0 8px #ff1744;
+  animation: master-defeat-pulse 0.28s infinite alternate;
+}
+
+@keyframes master-defeat-pulse {
+  0% {
+    box-shadow: 0 0 6px rgba(255, 23, 68, 0.5);
+    border-left-color: #ff1744;
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 23, 68, 1.0);
+    border-left-color: #ff8a80;
+  }
+}
