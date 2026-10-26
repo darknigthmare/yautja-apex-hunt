@@ -3134,3 +3134,71 @@ button:hover { transform: scale(1.04); }
     border-left-color: #ff8a80;
   }
 }
+
+/* --- v188 The Predator (2018) Ark Ship Hull & Climax HUD --- */
+.the-predator-2018-ark-hud-panel {
+  position: absolute;
+  top: 145px;
+  right: 25px;
+  width: 320px;
+  background: rgba(12, 18, 28, 0.92);
+  border: 1px solid #00e5ff;
+  border-left: 4px solid #00e5ff;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.45);
+  padding: 10px 14px;
+  font-family: 'Rajdhani', sans-serif;
+  color: #e0f7fa;
+  z-index: 100;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  border-radius: 4px;
+}
+
+.the-predator-ark-hud-header {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #00e5ff;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.7);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+  padding-bottom: 4px;
+}
+
+.the-predator-ark-row {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
+  margin-bottom: 4px;
+  background: rgba(10, 30, 45, 0.55);
+  border-left: 3px solid #00e5ff;
+  border-radius: 2px;
+}
+
+.the-predator-ark-row.yautja-defeat-ark {
+  border-left-color: #ff5252;
+  color: #ff8a80;
+  background: rgba(60, 15, 15, 0.65);
+  font-weight: bold;
+}
+
+.the-predator-ark-row.yautja-defeat-ark.armed {
+  border-left-color: #ff1744;
+  color: #ffebee;
+  background: rgba(140, 15, 25, 0.9);
+  text-shadow: 0 0 8px #ff1744;
+  animation: ark-defeat-pulse 0.25s infinite alternate;
+}
+
+@keyframes ark-defeat-pulse {
+  0% {
+    box-shadow: 0 0 6px rgba(255, 23, 68, 0.5);
+    border-left-color: #ff1744;
+  }
+  100% {
+    box-shadow: 0 0 24px rgba(255, 23, 68, 1.0);
+    border-left-color: #ff8a80;
+  }
+}
