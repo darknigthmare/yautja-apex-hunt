@@ -3338,3 +3338,71 @@ button:hover { transform: scale(1.04); }
     border-left-color: #ff8a80;
   }
 }
+
+/* --- v191 Prey (2022) 1719 Climax & Totokia HUD --- */
+.prey-1719-climax-hud-panel {
+  position: absolute;
+  top: 175px;
+  right: 25px;
+  width: 330px;
+  background: rgba(28, 18, 10, 0.94);
+  border: 1px solid #ff6f00;
+  border-left: 4px solid #ff6f00;
+  box-shadow: 0 0 16px rgba(255, 111, 0, 0.45);
+  padding: 10px 14px;
+  font-family: 'Rajdhani', sans-serif;
+  color: #fff3e0;
+  z-index: 100;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  border-radius: 4px;
+}
+
+.prey-1719-climax-hud-header {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #ff6f00;
+  text-shadow: 0 0 8px rgba(255, 111, 0, 0.7);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 111, 0, 0.3);
+  padding-bottom: 4px;
+}
+
+.prey-1719-climax-row {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
+  margin-bottom: 4px;
+  background: rgba(42, 22, 12, 0.55);
+  border-left: 3px solid #ff6f00;
+  border-radius: 2px;
+}
+
+.prey-1719-climax-row.yautja-defeat-climax {
+  border-left-color: #ff5252;
+  color: #ff8a80;
+  background: rgba(60, 15, 15, 0.65);
+  font-weight: bold;
+}
+
+.prey-1719-climax-row.yautja-defeat-climax.armed {
+  border-left-color: #ff1744;
+  color: #ffebee;
+  background: rgba(140, 15, 25, 0.9);
+  text-shadow: 0 0 8px #ff1744;
+  animation: prey-climax-defeat-pulse 0.25s infinite alternate;
+}
+
+@keyframes prey-climax-defeat-pulse {
+  0% {
+    box-shadow: 0 0 6px rgba(255, 23, 68, 0.5);
+    border-left-color: #ff1744;
+  }
+  100% {
+    box-shadow: 0 0 24px rgba(255, 23, 68, 1.0);
+    border-left-color: #ff8a80;
+  }
+}
