@@ -2779,3 +2779,74 @@ button:hover { transform: scale(1.04); }
   text-shadow: 0 0 8px rgba(207, 216, 220, 0.7);
   text-align: center;
 }
+
+
+/* ==========================================================================
+   v183 PREDATORS (2010) GAME PRESERVE & YAUTJA DEFEAT HUD
+   ========================================================================== */
+
+.predators2010-preserve-hud-panel {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 320px;
+  background: rgba(10, 15, 20, 0.88);
+  border: 1px solid #7c4dff;
+  box-shadow: 0 0 16px rgba(124, 77, 255, 0.35);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: 'Rajdhani', sans-serif;
+  color: #ede7f6;
+  z-index: 998;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+
+.preserve-hud-header {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #b388ff;
+  border-bottom: 1px solid rgba(179, 136, 255, 0.35);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  text-shadow: 0 0 6px rgba(179, 136, 255, 0.6);
+  text-align: center;
+}
+
+.preserve-hud-row {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
+  margin-bottom: 4px;
+  background: rgba(25, 18, 45, 0.55);
+  border-left: 3px solid #7c4dff;
+  border-radius: 2px;
+}
+
+.preserve-hud-row.yautja-defeat-warning {
+  border-left-color: #ff5252;
+  color: #ff8a80;
+  background: rgba(60, 15, 15, 0.6);
+  font-weight: bold;
+}
+
+.preserve-hud-row.yautja-defeat-warning.armed {
+  border-left-color: #ff1744;
+  color: #ffebee;
+  background: rgba(120, 20, 20, 0.85);
+  text-shadow: 0 0 8px #ff1744;
+  animation: yautja-overload-pulse 0.3s infinite alternate;
+}
+
+@keyframes yautja-overload-pulse {
+  0% {
+    box-shadow: 0 0 6px rgba(255, 23, 68, 0.5);
+    border-left-color: #ff1744;
+  }
+  100% {
+    box-shadow: 0 0 18px rgba(255, 23, 68, 0.95);
+    border-left-color: #ff8a80;
+  }
+}
