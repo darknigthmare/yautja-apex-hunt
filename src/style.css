@@ -3988,3 +3988,61 @@ button:hover { transform: scale(1.04); }
   text-shadow: 0 0 8px #ff1744;
   animation: badlands-defeat-pulse 0.25s infinite alternate;
 }
+
+/* ============================================================================
+   v201: Complete Predator Franchise (1987 -> 2025) Unified HUD Panel
+   ============================================================================ */
+.predator-franchise-v201-completion-hud-panel {
+  position: fixed;
+  top: 266px;
+  right: 18px;
+  width: 350px;
+  background: rgba(16, 12, 20, 0.93);
+  border: 1px solid rgba(255, 215, 64, 0.65);
+  box-shadow: 0 0 20px rgba(255, 215, 64, 0.3);
+  padding: 10px 14px;
+  font-family: 'Rajdhani', sans-serif;
+  color: #fffde7;
+  z-index: 100;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  border-radius: 4px;
+}
+
+.predator-franchise-v201-completion-header {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #ffd740;
+  text-shadow: 0 0 8px rgba(255, 215, 64, 0.75);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 215, 64, 0.4);
+  padding-bottom: 4px;
+}
+
+.predator-franchise-v201-completion-row {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
+  margin-bottom: 4px;
+  background: rgba(36, 30, 14, 0.58);
+  border-left: 3px solid #ffd740;
+  border-radius: 2px;
+}
+
+.predator-franchise-v201-completion-row.yautja-defeat-franchise {
+  border-left-color: #ff5252;
+  color: #ff8a80;
+  background: rgba(65, 14, 14, 0.65);
+  font-weight: bold;
+}
+
+.predator-franchise-v201-completion-row.yautja-defeat-franchise.armed {
+  border-left-color: #ff1744;
+  color: #ffebee;
+  background: rgba(145, 14, 24, 0.92);
+  text-shadow: 0 0 8px #ff1744;
+  animation: badlands-defeat-pulse 0.25s infinite alternate;
+}
