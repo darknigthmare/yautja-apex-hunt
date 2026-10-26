@@ -21768,6 +21768,343 @@ class AudioSynthesizer {
     osc.start(now);
     osc.stop(now + 0.85);
   }
+
+  // ==========================================
+  // v186 THE PREDATOR (2018) ACOUSTICS & SFX
+  // ==========================================
+
+  computeEscapePodCrashAtmosphericAcoustics(entrySpeedMs = 180.0, craterRadiusM = 14.0, airPressureKpa = 101.3) {
+    const sonicBoomOverpressureKpa = (entrySpeedMs / 343.0) * 1.8 * (airPressureKpa / 100.0);
+    const lowEndRumbleFrequencyHz = Math.max(25, 65 - craterRadiusM * 2.2);
+    const atmosphericDissipationDb = Math.min(138.0, 95.0 + (entrySpeedMs / 180.0) * 43.0);
+
+    return {
+      entrySpeedMs,
+      craterRadiusM,
+      sonicBoomOverpressureKpa: parseFloat(sonicBoomOverpressureKpa.toFixed(2)),
+      lowEndRumbleFrequencyHz: parseFloat(lowEndRumbleFrequencyHz.toFixed(1)),
+      atmosphericDissipationDb: parseFloat(atmosphericDissipationDb.toFixed(1))
+    };
+  }
+
+  computeUpgradeChitinBulletBounceAcoustics(bulletKineticEnergyJ = 3800.0, deflectionAngleDeg = 42.0, armorHardnessMohs = 8.5) {
+    const ricochetPingFrequencyHz = 2800.0 + (armorHardnessMohs / 10.0) * 1800.0;
+    const kineticEnergyDampingFactor = Math.cos((deflectionAngleDeg * Math.PI) / 180.0);
+    const audioClackDb = Math.min(115.0, 78.0 + (bulletKineticEnergyJ / 3800.0) * 32.0);
+
+    return {
+      bulletKineticEnergyJ,
+      deflectionAngleDeg,
+      ricochetPingFrequencyHz: parseFloat(ricochetPingFrequencyHz.toFixed(1)),
+      kineticEnergyDampingFactor: parseFloat(kineticEnergyDampingFactor.toFixed(3)),
+      audioClackDb: parseFloat(audioClackDb.toFixed(1))
+    };
+  }
+
+  playPodCanopyCrashRoarSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(140, now);
+    osc.frequency.exponentialRampToValueAtTime(24, now + 0.65);
+
+    gain.gain.setValueAtTime(0.65, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.75);
+  }
+
+  playSniperBulletArmorRicochetSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(3600, now);
+    osc.frequency.exponentialRampToValueAtTime(1800, now + 0.08);
+
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }
+
+  playSurgicalRestraintHydraulicSnapSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(850, now);
+    osc.frequency.exponentialRampToValueAtTime(120, now + 0.14);
+
+    gain.gain.setValueAtTime(0.48, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.18);
+  }
+
+  playHalonGasVentHissSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1200, now);
+    osc.frequency.linearRampToValueAtTime(750, now + 0.35);
+
+    gain.gain.setValueAtTime(0.28, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.42);
+  }
+
+  playTransportBusRoofSlashSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(2400, now);
+    osc.frequency.exponentialRampToValueAtTime(450, now + 0.2);
+
+    gain.gain.setValueAtTime(0.44, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.26);
+  }
+
+  playHybridHoundChargeRoarSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(220, now);
+    osc.frequency.linearRampToValueAtTime(580, now + 0.12);
+    osc.frequency.exponentialRampToValueAtTime(95, now + 0.4);
+
+    gain.gain.setValueAtTime(0.5, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.44);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.46);
+  }
+
+  playHoundCranialRicochetClackSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1800, now);
+    osc.frequency.exponentialRampToValueAtTime(350, now + 0.05);
+
+    gain.gain.setValueAtTime(0.36, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.08);
+  }
+
+  playUpgradeTitanHeavyFootstepSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(90, now);
+    osc.frequency.exponentialRampToValueAtTime(25, now + 0.32);
+
+    gain.gain.setValueAtTime(0.55, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.36);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.38);
+  }
+
+  playChitinArmorKineticBounceSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1400, now);
+    osc.frequency.exponentialRampToValueAtTime(280, now + 0.09);
+
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }
+
+  playShipForcefieldEnergyHumSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.linearRampToValueAtTime(240, now + 0.2);
+    osc.frequency.linearRampToValueAtTime(180, now + 0.4);
+
+    gain.gain.setValueAtTime(0.32, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.48);
+  }
+
+  playTurbineEngineDisruptionBoomSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.exponentialRampToValueAtTime(35, now + 0.55);
+
+    gain.gain.setValueAtTime(0.62, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.65);
+  }
+
+  playGauntletHologramLidPopSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1500, now);
+    osc.frequency.exponentialRampToValueAtTime(380, now + 0.07);
+
+    gain.gain.setValueAtTime(0.4, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.1);
+  }
+
+  playCrimsonCountdownBeepCadenceSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1050, now);
+    osc.frequency.linearRampToValueAtTime(1600, now + 0.04);
+    osc.frequency.linearRampToValueAtTime(850, now + 0.08);
+
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.11);
+  }
+
+  playDigitizedMockingLaughEchoSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    [340, 400, 310, 470, 250].forEach((freq, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.65, now + idx * 0.08 + 0.07);
+
+      gain.gain.setValueAtTime(0.37, now + idx * 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.075);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now + idx * 0.08);
+      osc.stop(now + idx * 0.08 + 0.085);
+    });
+  }
+
+  playMicroNuclearPlasmaCleansingBlastSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(175, now);
+    osc.frequency.exponentialRampToValueAtTime(18, now + 0.7);
+
+    gain.gain.setValueAtTime(0.68, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.75);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.8);
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();

@@ -2992,3 +2992,74 @@ button:hover { transform: scale(1.04); }
     border-left-color: #ff8a80;
   }
 }
+
+
+/* ==========================================================================
+   v186 THE PREDATOR (2018) STARGAZER HUD & DEFEAT ALERTS
+   ========================================================================== */
+
+.the-predator-2018-hud-panel {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 320px;
+  background: rgba(16, 22, 28, 0.92);
+  border: 1px solid #00e5ff;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.35);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: 'Rajdhani', sans-serif;
+  color: #e0f7fa;
+  z-index: 999;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+
+.the-predator-2018-hud-header {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #18ffff;
+  border-bottom: 1px solid rgba(24, 255, 255, 0.35);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  text-shadow: 0 0 6px rgba(24, 255, 255, 0.6);
+  text-align: center;
+}
+
+.the-predator-hud-row {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
+  margin-bottom: 4px;
+  background: rgba(10, 35, 45, 0.55);
+  border-left: 3px solid #00e5ff;
+  border-radius: 2px;
+}
+
+.the-predator-hud-row.yautja-defeat-stargazer {
+  border-left-color: #ff5252;
+  color: #ff8a80;
+  background: rgba(60, 15, 15, 0.65);
+  font-weight: bold;
+}
+
+.the-predator-hud-row.yautja-defeat-stargazer.armed {
+  border-left-color: #ff1744;
+  color: #ffebee;
+  background: rgba(140, 15, 25, 0.9);
+  text-shadow: 0 0 8px #ff1744;
+  animation: stargazer-defeat-pulse 0.25s infinite alternate;
+}
+
+@keyframes stargazer-defeat-pulse {
+  0% {
+    box-shadow: 0 0 6px rgba(255, 23, 68, 0.5);
+    border-left-color: #ff1744;
+  }
+  100% {
+    box-shadow: 0 0 22px rgba(255, 23, 68, 1.0);
+    border-left-color: #ff8a80;
+  }
+}
