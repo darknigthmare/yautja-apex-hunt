@@ -3474,3 +3474,71 @@ button:hover { transform: scale(1.04); }
     border-left-color: #ff8a80;
   }
 }
+
+/* --- v193 Prey (2022) 1719 Aspen Grove & River Barges HUD --- */
+.prey-1719-aspen-hud-panel {
+  position: absolute;
+  top: 190px;
+  right: 25px;
+  width: 340px;
+  background: rgba(26, 22, 14, 0.94);
+  border: 1px solid #ffb300;
+  border-left: 4px solid #ff8f00;
+  box-shadow: 0 0 16px rgba(255, 179, 0, 0.45);
+  padding: 10px 14px;
+  font-family: 'Rajdhani', sans-serif;
+  color: #fff8e1;
+  z-index: 100;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  border-radius: 4px;
+}
+
+.prey-1719-aspen-hud-header {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #ffb300;
+  text-shadow: 0 0 8px rgba(255, 179, 0, 0.7);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 179, 0, 0.3);
+  padding-bottom: 4px;
+}
+
+.prey-1719-aspen-row {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
+  margin-bottom: 4px;
+  background: rgba(45, 36, 20, 0.55);
+  border-left: 3px solid #ffb300;
+  border-radius: 2px;
+}
+
+.prey-1719-aspen-row.yautja-defeat-aspen {
+  border-left-color: #ff5252;
+  color: #ff8a80;
+  background: rgba(60, 15, 15, 0.65);
+  font-weight: bold;
+}
+
+.prey-1719-aspen-row.yautja-defeat-aspen.armed {
+  border-left-color: #ff1744;
+  color: #ffebee;
+  background: rgba(140, 15, 25, 0.9);
+  text-shadow: 0 0 8px #ff1744;
+  animation: prey-aspen-defeat-pulse 0.25s infinite alternate;
+}
+
+@keyframes prey-aspen-defeat-pulse {
+  0% {
+    box-shadow: 0 0 6px rgba(255, 23, 68, 0.5);
+    border-left-color: #ff1744;
+  }
+  100% {
+    box-shadow: 0 0 24px rgba(255, 23, 68, 1.0);
+    border-left-color: #ff8a80;
+  }
+}
