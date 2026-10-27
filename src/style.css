@@ -4158,3 +4158,57 @@ button:hover { transform: scale(1.04); }
   text-shadow: 0 0 8px #ff1744;
   animation: badlands-defeat-pulse 0.25s infinite alternate;
 }
+
+/* --- v204: PREDATOR FRANCHISE GRAND UNIFIED MASTER CANON HUD (1987-2025) --- */
+.predator-franchise-v204-grand-canon-hud-panel {
+  position: fixed;
+  top: 310px;
+  right: 16px;
+  width: 396px;
+  padding: 12px 14px;
+  background: linear-gradient(145deg, rgba(8, 22, 28, 0.95), rgba(28, 14, 8, 0.92));
+  border: 1px solid #76ff03;
+  border-radius: 6px;
+  box-shadow: 0 0 24px rgba(118, 255, 3, 0.42), inset 0 0 12px rgba(255, 145, 0, 0.22);
+  color: #f1f8e9;
+  font-family: 'Courier New', Courier, monospace;
+  z-index: 9998;
+  pointer-events: none;
+}
+
+.predator-franchise-v204-grand-canon-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #76ff03;
+  text-shadow: 0 0 8px rgba(118, 255, 3, 0.78);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(118, 255, 3, 0.42);
+  padding-bottom: 4px;
+}
+
+.predator-franchise-v204-grand-canon-row {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
+  margin-bottom: 4px;
+  background: rgba(18, 32, 20, 0.62);
+  border-left: 3px solid #76ff03;
+  border-radius: 2px;
+}
+
+.predator-franchise-v204-grand-canon-row.yautja-defeat-grand-canon {
+  border-left-color: #ff5252;
+  color: #ff8a80;
+  background: rgba(65, 14, 14, 0.65);
+  font-weight: bold;
+}
+
+.predator-franchise-v204-grand-canon-row.yautja-defeat-grand-canon.armed {
+  border-left-color: #ff1744;
+  color: #ffebee;
+  background: rgba(145, 14, 24, 0.92);
+  text-shadow: 0 0 8px #ff1744;
+  animation: badlands-defeat-pulse 0.25s infinite alternate;
+}
