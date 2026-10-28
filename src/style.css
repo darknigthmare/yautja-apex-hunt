@@ -5173,3 +5173,300 @@ button:hover { transform: scale(1.04); }
   margin: 0;
   padding-left: 14px;
 }
+
+/* ==========================================================================
+   v217 - Panthéon Éternel Apex de la Franchise Predator (1987-2025) HUD Panel
+   ========================================================================== */
+
+.predator-franchise-v217-eternal-apex-hud-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 375px;
+  background: linear-gradient(135deg, rgba(38, 22, 10, 0.95), rgba(18, 12, 28, 0.96));
+  border: 2px solid rgba(255, 215, 0, 0.9);
+  box-shadow: 0 0 26px rgba(255, 215, 0, 0.5), inset 0 0 16px rgba(255, 23, 68, 0.25);
+  border-radius: 8px;
+  color: #fff8e1;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 12px 14px;
+  z-index: 1217;
+  pointer-events: auto;
+  backdrop-filter: blur(8px);
+}
+
+.predator-franchise-v217-eternal-apex-hud-panel .eternal-apex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.5);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v217-eternal-apex-hud-panel .eternal-apex-header h3 {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: #ffd700;
+  text-shadow: 0 0 6px #ffa000;
+}
+
+.predator-franchise-v217-eternal-apex-hud-panel .eternal-honor-score {
+  font-size: 11px;
+  font-weight: bold;
+  color: #ff5252;
+  text-shadow: 0 0 8px #d50000;
+}
+
+.predator-franchise-v217-eternal-apex-hud-panel .eternal-sectors-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v217-eternal-apex-hud-panel .sector-badge {
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #90a4ae;
+  color: #cfd8dc;
+  transition: all 0.2s ease;
+}
+
+.predator-franchise-v217-eternal-apex-hud-panel .sector-badge.done {
+  background: rgba(255, 215, 0, 0.15);
+  border-left: 3px solid #ffd700;
+  color: #fffde7;
+  text-shadow: 0 0 5px #ffd700;
+}
+
+.predator-franchise-v217-eternal-apex-hud-panel .sector-badge.rule3.done {
+  background: rgba(255, 23, 68, 0.25);
+  border-left: 3px solid #ff1744;
+  color: #ffebee;
+  text-shadow: 0 0 8px #ff1744;
+}
+
+.predator-franchise-v217-eternal-apex-hud-panel .qa-playtesters-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 9px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(255, 215, 0, 0.08);
+  border-top: 1px dashed rgba(255, 215, 0, 0.35);
+  color: #ffe082;
+}
+
+.predator-franchise-v217-eternal-apex-hud-panel .qa-playtesters-summary h4 {
+  margin: 0 0 2px 0;
+  font-size: 10px;
+  color: #ffd700;
+}
+
+.predator-franchise-v217-eternal-apex-hud-panel .qa-playtesters-summary ul {
+  margin: 0;
+  padding-left: 14px;
+}
+
+/* ==========================================================================
+   v217 - Panthéon Suprême Apex de la Franchise Predator (1987-2025) HUD Panel
+   ========================================================================== */
+
+.predator-franchise-v217-supreme-apex-hud-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 375px;
+  background: linear-gradient(135deg, rgba(38, 22, 10, 0.95), rgba(18, 12, 28, 0.96));
+  border: 2px solid rgba(255, 215, 0, 0.9);
+  box-shadow: 0 0 26px rgba(255, 215, 0, 0.5), inset 0 0 16px rgba(255, 23, 68, 0.25);
+  border-radius: 8px;
+  color: #fff8e1;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 12px 14px;
+  z-index: 1217;
+  pointer-events: auto;
+  backdrop-filter: blur(8px);
+}
+
+.predator-franchise-v217-supreme-apex-hud-panel .supreme-apex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.5);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v217-supreme-apex-hud-panel .supreme-apex-header h3 {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: #ffd700;
+  text-shadow: 0 0 6px #ffa000;
+}
+
+.predator-franchise-v217-supreme-apex-hud-panel .supreme-honor-score {
+  font-size: 11px;
+  font-weight: bold;
+  color: #ff5252;
+  text-shadow: 0 0 8px #d50000;
+}
+
+.predator-franchise-v217-supreme-apex-hud-panel .supreme-sectors-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v217-supreme-apex-hud-panel .sector-badge {
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #90a4ae;
+  color: #cfd8dc;
+  transition: all 0.2s ease;
+}
+
+.predator-franchise-v217-supreme-apex-hud-panel .sector-badge.done {
+  background: rgba(255, 215, 0, 0.15);
+  border-left: 3px solid #ffd700;
+  color: #fffde7;
+  text-shadow: 0 0 5px #ffd700;
+}
+
+.predator-franchise-v217-supreme-apex-hud-panel .sector-badge.rule3.done {
+  background: rgba(255, 23, 68, 0.25);
+  border-left: 3px solid #ff1744;
+  color: #ffebee;
+  text-shadow: 0 0 8px #ff1744;
+}
+
+.predator-franchise-v217-supreme-apex-hud-panel .qa-playtesters-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 9px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(255, 215, 0, 0.08);
+  border-top: 1px dashed rgba(255, 215, 0, 0.35);
+  color: #ffe082;
+}
+
+.predator-franchise-v217-supreme-apex-hud-panel .qa-playtesters-summary h4 {
+  margin: 0 0 2px 0;
+  font-size: 10px;
+  color: #ffd700;
+}
+
+.predator-franchise-v217-supreme-apex-hud-panel .qa-playtesters-summary ul {
+  margin: 0;
+  padding-left: 14px;
+}
+
+/* ==========================================================================
+   v217 - Panthéon Titan Apex de la Franchise Predator (1987-2025) HUD Panel
+   ========================================================================== */
+
+.predator-franchise-v217-titan-apex-hud-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 375px;
+  background: linear-gradient(135deg, rgba(38, 22, 10, 0.95), rgba(18, 12, 28, 0.96));
+  border: 2px solid rgba(255, 215, 0, 0.9);
+  box-shadow: 0 0 26px rgba(255, 215, 0, 0.5), inset 0 0 16px rgba(255, 23, 68, 0.25);
+  border-radius: 8px;
+  color: #fff8e1;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 12px 14px;
+  z-index: 1217;
+  pointer-events: auto;
+  backdrop-filter: blur(8px);
+}
+
+.predator-franchise-v217-titan-apex-hud-panel .titan-apex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.5);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v217-titan-apex-hud-panel .titan-apex-header h3 {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: #ffd700;
+  text-shadow: 0 0 6px #ffa000;
+}
+
+.predator-franchise-v217-titan-apex-hud-panel .titan-honor-score {
+  font-size: 11px;
+  font-weight: bold;
+  color: #ff5252;
+  text-shadow: 0 0 8px #d50000;
+}
+
+.predator-franchise-v217-titan-apex-hud-panel .titan-sectors-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v217-titan-apex-hud-panel .sector-badge {
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #90a4ae;
+  color: #cfd8dc;
+  transition: all 0.2s ease;
+}
+
+.predator-franchise-v217-titan-apex-hud-panel .sector-badge.done {
+  background: rgba(255, 215, 0, 0.15);
+  border-left: 3px solid #ffd700;
+  color: #fffde7;
+  text-shadow: 0 0 5px #ffd700;
+}
+
+.predator-franchise-v217-titan-apex-hud-panel .sector-badge.rule3.done {
+  background: rgba(255, 23, 68, 0.25);
+  border-left: 3px solid #ff1744;
+  color: #ffebee;
+  text-shadow: 0 0 8px #ff1744;
+}
+
+.predator-franchise-v217-titan-apex-hud-panel .qa-playtesters-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 9px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(255, 215, 0, 0.08);
+  border-top: 1px dashed rgba(255, 215, 0, 0.35);
+  color: #ffe082;
+}
+
+.predator-franchise-v217-titan-apex-hud-panel .qa-playtesters-summary h4 {
+  margin: 0 0 2px 0;
+  font-size: 10px;
+  color: #ffd700;
+}
+
+.predator-franchise-v217-titan-apex-hud-panel .qa-playtesters-summary ul {
+  margin: 0;
+  padding-left: 14px;
+}
