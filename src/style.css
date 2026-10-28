@@ -4912,3 +4912,84 @@ button:hover { transform: scale(1.04); }
   border-top: 1px dashed rgba(213, 0, 249, 0.35);
   color: #e1bee7;
 }
+
+/* ==========================================================================
+   PREDATOR FRANCHISE: ASTRAL APEX PANTHEON (1987-2025) v214
+   ========================================================================== */
+
+.predator-franchise-v214-astral-apex-hud-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(14, 18, 32, 0.95), rgba(28, 38, 64, 0.9));
+  border: 1px solid #7c4dff;
+  box-shadow: 0 0 15px rgba(124, 77, 255, 0.35);
+  border-radius: 4px;
+  padding: 12px;
+  color: #ede7f6;
+  font-family: 'Share Tech Mono', monospace, sans-serif;
+}
+
+.predator-franchise-v214-astral-apex-hud-panel .astral-apex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(124, 77, 255, 0.4);
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+}
+
+.predator-franchise-v214-astral-apex-hud-panel .astral-apex-header h3 {
+  margin: 0;
+  font-size: 13px;
+  color: #7c4dff;
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px rgba(124, 77, 255, 0.6);
+}
+
+.predator-franchise-v214-astral-apex-hud-panel .honor-badge {
+  background: rgba(124, 77, 255, 0.2);
+  border: 1px solid #7c4dff;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-weight: bold;
+  font-size: 11px;
+  color: #b388ff;
+}
+
+.predator-franchise-v214-astral-apex-hud-panel .predator-franchise-v214-astral-apex-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
+  background: rgba(18, 24, 48, 0.62);
+  border-left: 3px solid #7c4dff;
+  border-radius: 2px;
+}
+
+.predator-franchise-v214-astral-apex-hud-panel .predator-franchise-v214-astral-apex-row.yautja-defeat-astral-apex {
+  border-left-color: #ff5252;
+  color: #ff8a80;
+  background: rgba(65, 14, 14, 0.65);
+  font-weight: bold;
+}
+
+.predator-franchise-v214-astral-apex-hud-panel .predator-franchise-v214-astral-apex-row.yautja-defeat-astral-apex.armed {
+  border-left-color: #ff1744;
+  color: #ffebee;
+  background: rgba(145, 14, 24, 0.92);
+  text-shadow: 0 0 8px #ff1744;
+  animation: badlands-defeat-pulse 0.25s infinite alternate;
+}
+
+.predator-franchise-v214-astral-apex-hud-panel .qa-playtesters-summary {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(124, 77, 255, 0.12);
+  border-top: 1px dashed rgba(124, 77, 255, 0.35);
+  color: #d1c4e9;
+}
