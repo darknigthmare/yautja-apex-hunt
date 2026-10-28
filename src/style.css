@@ -5074,3 +5074,102 @@ button:hover { transform: scale(1.04); }
   border-top: 1px dashed rgba(29, 233, 182, 0.35);
   color: #b2dfdb;
 }
+
+/* ==========================================================================
+   v216 - Panthéon Chrono Apex de la Franchise Predator (1987-2025) HUD Panel
+   ========================================================================== */
+
+.predator-franchise-v216-chrono-apex-hud-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 370px;
+  background: linear-gradient(135deg, rgba(35, 24, 12, 0.94), rgba(12, 18, 28, 0.96));
+  border: 2px solid rgba(255, 171, 0, 0.85);
+  box-shadow: 0 0 24px rgba(255, 171, 0, 0.45), inset 0 0 14px rgba(0, 229, 255, 0.25);
+  border-radius: 8px;
+  color: #ffecb3;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 12px 14px;
+  z-index: 1216;
+  pointer-events: auto;
+  backdrop-filter: blur(8px);
+}
+
+.predator-franchise-v216-chrono-apex-hud-panel .chrono-apex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 171, 0, 0.5);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v216-chrono-apex-hud-panel .chrono-apex-header h3 {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: #ffd54f;
+  text-shadow: 0 0 6px #ffab00;
+}
+
+.predator-franchise-v216-chrono-apex-hud-panel .chrono-honor-score {
+  font-size: 11px;
+  font-weight: bold;
+  color: #00e5ff;
+  text-shadow: 0 0 8px #00b0ff;
+}
+
+.predator-franchise-v216-chrono-apex-hud-panel .chrono-sectors-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v216-chrono-apex-hud-panel .sector-badge {
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #78909c;
+  color: #b0bec5;
+  transition: all 0.2s ease;
+}
+
+.predator-franchise-v216-chrono-apex-hud-panel .sector-badge.done {
+  background: rgba(255, 171, 0, 0.15);
+  border-left: 3px solid #ffd54f;
+  color: #fff8e1;
+  text-shadow: 0 0 5px #ffab00;
+}
+
+.predator-franchise-v216-chrono-apex-hud-panel .sector-badge.rule3.done {
+  background: rgba(255, 23, 68, 0.25);
+  border-left: 3px solid #ff1744;
+  color: #ffebee;
+  text-shadow: 0 0 8px #ff1744;
+}
+
+.predator-franchise-v216-chrono-apex-hud-panel .qa-playtesters-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 9px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(255, 171, 0, 0.08);
+  border-top: 1px dashed rgba(255, 171, 0, 0.35);
+  color: #ffe082;
+}
+
+.predator-franchise-v216-chrono-apex-hud-panel .qa-playtesters-summary h4 {
+  margin: 0 0 2px 0;
+  font-size: 10px;
+  color: #ffd54f;
+}
+
+.predator-franchise-v216-chrono-apex-hud-panel .qa-playtesters-summary ul {
+  margin: 0;
+  padding-left: 14px;
+}
