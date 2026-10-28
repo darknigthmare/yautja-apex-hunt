@@ -4468,3 +4468,97 @@ button:hover { transform: scale(1.04); }
   text-shadow: 0 0 8px #ff1744;
   animation: badlands-defeat-pulse 0.25s infinite alternate;
 }
+
+/* ==========================================================================
+   v209 - Predator Franchise Supreme Apex Pantheon (1987-2025)
+   ========================================================================== */
+
+.predator-franchise-v209-supreme-apex-hud-panel {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 440px;
+  background: rgba(12, 8, 20, 0.94);
+  border: 1px solid #d500f9;
+  box-shadow: 0 0 20px rgba(213, 0, 249, 0.38);
+  font-family: 'Share Tech Mono', monospace;
+  color: #f3e5f5;
+  padding: 12px;
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.predator-franchise-v209-supreme-apex-hud-panel .supreme-apex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(213, 0, 249, 0.45);
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+}
+
+.predator-franchise-v209-supreme-apex-hud-panel .supreme-apex-header h3 {
+  font-size: 11px;
+  margin: 0;
+  color: #d500f9;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.predator-franchise-v209-supreme-apex-hud-panel .supreme-apex-honor-badge {
+  font-size: 11px;
+  font-weight: bold;
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.16);
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 215, 0, 0.45);
+}
+
+.predator-franchise-v209-supreme-apex-hud-panel .supreme-apex-qa-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v209-supreme-apex-hud-panel .qa-playtester-card {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  padding: 3px 6px;
+  background: rgba(213, 0, 249, 0.08);
+  border-left: 2px solid #d500f9;
+}
+
+.predator-franchise-v209-supreme-apex-hud-panel .qa-playtester-card.passed .qa-status {
+  color: #00e676;
+}
+
+.predator-franchise-v209-supreme-apex-hud-panel .predator-franchise-v209-supreme-apex-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(18, 38, 24, 0.62);
+  border-left: 3px solid #00e676;
+  border-radius: 2px;
+}
+
+.predator-franchise-v209-supreme-apex-hud-panel .predator-franchise-v209-supreme-apex-row.yautja-defeat-supreme-apex {
+  border-left-color: #ff5252;
+  color: #ff8a80;
+  background: rgba(65, 14, 14, 0.65);
+  font-weight: bold;
+}
+
+.predator-franchise-v209-supreme-apex-hud-panel .predator-franchise-v209-supreme-apex-row.yautja-defeat-supreme-apex.armed {
+  border-left-color: #ff1744;
+  color: #ffebee;
+  background: rgba(145, 14, 24, 0.92);
+  text-shadow: 0 0 8px #ff1744;
+  animation: badlands-defeat-pulse 0.25s infinite alternate;
+}
