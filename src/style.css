@@ -4562,3 +4562,97 @@ button:hover { transform: scale(1.04); }
   text-shadow: 0 0 8px #ff1744;
   animation: badlands-defeat-pulse 0.25s infinite alternate;
 }
+
+/* ==========================================================================
+   v210 - Predator Franchise Suzerain Apex Pantheon (1987-2025)
+   ========================================================================== */
+
+.predator-franchise-v210-suzerain-apex-hud-panel {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 440px;
+  background: rgba(16, 10, 24, 0.94);
+  border: 1px solid #ffab00;
+  box-shadow: 0 0 20px rgba(255, 171, 0, 0.4);
+  font-family: 'Share Tech Mono', monospace;
+  color: #fff8e1;
+  padding: 12px;
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.predator-franchise-v210-suzerain-apex-hud-panel .suzerain-apex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 171, 0, 0.45);
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+}
+
+.predator-franchise-v210-suzerain-apex-hud-panel .suzerain-apex-header h3 {
+  font-size: 11px;
+  margin: 0;
+  color: #ffab00;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.predator-franchise-v210-suzerain-apex-hud-panel .suzerain-apex-honor-badge {
+  font-size: 11px;
+  font-weight: bold;
+  color: #00e676;
+  background: rgba(0, 230, 118, 0.16);
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 230, 118, 0.45);
+}
+
+.predator-franchise-v210-suzerain-apex-hud-panel .suzerain-apex-qa-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v210-suzerain-apex-hud-panel .qa-playtester-card {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  padding: 3px 6px;
+  background: rgba(255, 171, 0, 0.08);
+  border-left: 2px solid #ffab00;
+}
+
+.predator-franchise-v210-suzerain-apex-hud-panel .qa-playtester-card.passed .qa-status {
+  color: #00e676;
+}
+
+.predator-franchise-v210-suzerain-apex-hud-panel .predator-franchise-v210-suzerain-apex-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(18, 38, 24, 0.62);
+  border-left: 3px solid #00e676;
+  border-radius: 2px;
+}
+
+.predator-franchise-v210-suzerain-apex-hud-panel .predator-franchise-v210-suzerain-apex-row.yautja-defeat-suzerain-apex {
+  border-left-color: #ff5252;
+  color: #ff8a80;
+  background: rgba(65, 14, 14, 0.65);
+  font-weight: bold;
+}
+
+.predator-franchise-v210-suzerain-apex-hud-panel .predator-franchise-v210-suzerain-apex-row.yautja-defeat-suzerain-apex.armed {
+  border-left-color: #ff1744;
+  color: #ffebee;
+  background: rgba(145, 14, 24, 0.92);
+  text-shadow: 0 0 8px #ff1744;
+  animation: badlands-defeat-pulse 0.25s infinite alternate;
+}
