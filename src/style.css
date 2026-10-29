@@ -5753,3 +5753,95 @@ button:hover { transform: scale(1.04); }
   border-top: 1px dashed rgba(124, 77, 255, 0.4);
   color: #d1c4e9;
 }
+
+/* ==========================================================================
+   v221 - PREDATOR FRANCHISE PANTHÉON CÉLESTE APEX (1987-2025) HUD DIRECTOR
+   ========================================================================== */
+.predator-franchise-v221-celeste-apex-hud-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 330px;
+  background: rgba(4, 20, 32, 0.94);
+  border: 1px solid #00e5ff;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.4), inset 0 0 10px rgba(0, 176, 255, 0.25);
+  border-radius: 6px;
+  padding: 12px;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  color: #e0f7fa;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+
+.predator-franchise-v221-celeste-apex-hud-panel .celeste-apex-hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.45);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v221-celeste-apex-hud-panel .celeste-glyph-badge {
+  font-size: 11px;
+  color: #80d8ff;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px #00e5ff;
+}
+
+.predator-franchise-v221-celeste-apex-hud-panel .celeste-apex-hud-header h3 {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: #b2ebf2;
+  text-shadow: 0 0 6px #00e5ff;
+}
+
+.predator-franchise-v221-celeste-apex-hud-panel .celeste-honor-pill {
+  font-size: 10px;
+  font-weight: bold;
+  background: rgba(0, 229, 255, 0.25);
+  border: 1px solid #00e5ff;
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: #80d8ff;
+  text-shadow: 0 0 6px #0091ea;
+}
+
+.predator-franchise-v221-celeste-apex-hud-panel .celeste-apex-hud-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v221-celeste-apex-hud-panel .celeste-sector-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #00838f;
+  color: #b0bec5;
+  transition: all 0.2s ease;
+}
+
+.predator-franchise-v221-celeste-apex-hud-panel .celeste-sector-row.completed {
+  background: rgba(0, 229, 255, 0.2);
+  border-left: 3px solid #00e5ff;
+  color: #e0f7fa;
+  text-shadow: 0 0 5px #80d8ff;
+}
+
+.predator-franchise-v221-celeste-apex-hud-panel .celeste-apex-hud-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(0, 229, 255, 0.1);
+  border-top: 1px dashed rgba(0, 229, 255, 0.4);
+  color: #b2ebf2;
+}
