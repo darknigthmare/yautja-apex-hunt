@@ -5470,3 +5470,102 @@ button:hover { transform: scale(1.04); }
   margin: 0;
   padding-left: 14px;
 }
+
+/* ==========================================================================
+   v218 - Panthéon Stellaire Apex de la Franchise Predator (1987-2025) HUD Panel
+   ========================================================================== */
+
+.predator-franchise-v218-stellaire-apex-hud-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 380px;
+  background: linear-gradient(135deg, rgba(8, 20, 36, 0.95), rgba(18, 12, 38, 0.96));
+  border: 2px solid rgba(0, 229, 255, 0.9);
+  box-shadow: 0 0 28px rgba(0, 229, 255, 0.45), inset 0 0 16px rgba(255, 215, 0, 0.25);
+  border-radius: 8px;
+  color: #e0f7fa;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 12px 14px;
+  z-index: 1218;
+  pointer-events: auto;
+  backdrop-filter: blur(8px);
+}
+
+.predator-franchise-v218-stellaire-apex-hud-panel .stellaire-apex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.5);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v218-stellaire-apex-hud-panel .stellaire-apex-header h3 {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: #80deea;
+  text-shadow: 0 0 6px #00e5ff;
+}
+
+.predator-franchise-v218-stellaire-apex-hud-panel .stellaire-honor-score {
+  font-size: 11px;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 0 0 8px #ffab00;
+}
+
+.predator-franchise-v218-stellaire-apex-hud-panel .stellaire-sectors-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v218-stellaire-apex-hud-panel .sector-badge {
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #607d8b;
+  color: #b0bec5;
+  transition: all 0.2s ease;
+}
+
+.predator-franchise-v218-stellaire-apex-hud-panel .sector-badge.done {
+  background: rgba(0, 229, 255, 0.15);
+  border-left: 3px solid #00e5ff;
+  color: #e0f7fa;
+  text-shadow: 0 0 5px #00e5ff;
+}
+
+.predator-franchise-v218-stellaire-apex-hud-panel .sector-badge.rule3.done {
+  background: rgba(255, 23, 68, 0.25);
+  border-left: 3px solid #ff1744;
+  color: #ffebee;
+  text-shadow: 0 0 8px #ff1744;
+}
+
+.predator-franchise-v218-stellaire-apex-hud-panel .qa-playtesters-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 9px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(0, 229, 255, 0.08);
+  border-top: 1px dashed rgba(0, 229, 255, 0.35);
+  color: #b2ebf2;
+}
+
+.predator-franchise-v218-stellaire-apex-hud-panel .qa-playtesters-summary h4 {
+  margin: 0 0 2px 0;
+  font-size: 10px;
+  color: #80deea;
+}
+
+.predator-franchise-v218-stellaire-apex-hud-panel .qa-playtesters-summary ul {
+  margin: 0;
+  padding-left: 14px;
+}

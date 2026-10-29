@@ -12,3 +12,5 @@ art_sources/openai-masters/*.png
 # Codex patch/reject scratch files must never enter the repository.
 .codex-*.patch
 *.rej
+
+scratch/
