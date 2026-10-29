@@ -6495,3 +6495,98 @@ button:hover { transform: scale(1.04); }
   border-top: 1px dashed rgba(255, 109, 0, 0.4);
   color: #ffe0b2;
 }
+
+
+/* ==========================================================================
+   v229: Panthéon Éternel Suprême Apex (1987-2025) HUD Styles
+   Theme: Deep Obsidian & Electric Crimson Plasma
+   ========================================================================== */
+
+.predator-franchise-v229-eternel-supreme-apex-hud-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 360px;
+  background: linear-gradient(135deg, rgba(18, 0, 3, 0.95), rgba(38, 0, 7, 0.92));
+  border: 1px solid #ff1744;
+  box-shadow: 0 0 20px rgba(255, 23, 68, 0.35), inset 0 0 15px rgba(213, 0, 0, 0.15);
+  border-radius: 6px;
+  color: #ffebee;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 12px;
+  z-index: 1000;
+  pointer-events: auto;
+  user-select: none;
+  backdrop-filter: blur(6px);
+}
+
+.predator-franchise-v229-eternel-supreme-apex-hud-panel .eternel-supreme-apex-hud-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 23, 68, 0.4);
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v229-eternel-supreme-apex-hud-panel .eternel-glyph-badge {
+  color: #ff5252;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px #ff1744;
+}
+
+.predator-franchise-v229-eternel-supreme-apex-hud-panel h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  text-shadow: 0 0 8px #ff1744;
+}
+
+.predator-franchise-v229-eternel-supreme-apex-hud-panel .eternel-honor-pill {
+  background: rgba(255, 23, 68, 0.15);
+  border: 1px solid #ff1744;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #ff8a80;
+  font-weight: bold;
+}
+
+.predator-franchise-v229-eternel-supreme-apex-hud-panel .eternel-supreme-apex-hud-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.predator-franchise-v229-eternel-supreme-apex-hud-panel .eternel-sector-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #880e4f;
+  color: #cfd8dc;
+  transition: all 0.2s ease;
+}
+
+.predator-franchise-v229-eternel-supreme-apex-hud-panel .eternel-sector-row.completed {
+  background: rgba(255, 23, 68, 0.2);
+  border-left: 3px solid #ff1744;
+  color: #ffffff;
+  text-shadow: 0 0 5px #ff5252;
+}
+
+.predator-franchise-v229-eternel-supreme-apex-hud-panel .eternel-supreme-apex-hud-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(255, 23, 68, 0.1);
+  border-top: 1px dashed rgba(255, 23, 68, 0.4);
+  color: #ffcdd2;
+}

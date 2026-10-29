@@ -33507,6 +33507,272 @@ class AudioSynthesizer {
     osc.start(now);
     osc.stop(now + 0.75);
   }
+
+  computeEternelMaskDepressurizationAcoustics({ depressurizationHissBars = 4.2, mandibleSpanCm = 24 } = {}) {
+    const bars = Math.max(0.5, Number(depressurizationHissBars) || 0.5);
+    const span = Math.max(5, Number(mandibleSpanCm) || 5);
+    const pneumaticHissWhistleHz = Math.round(1800 + (bars * 220));
+    const mandibleSnarlDecibels = Math.round(75 + (span * 1.5));
+    return {
+      depressurizationHissBars: bars,
+      mandibleSpanCm: span,
+      pneumaticHissWhistleHz,
+      mandibleSnarlDecibels
+    };
+  }
+
+  computeEternelLaserHomingAcoustics({ lockAcquisitionTimeMs = 280, vectorCurvatureDegrees = 48 } = {}) {
+    const time = Math.max(50, Number(lockAcquisitionTimeMs) || 50);
+    const deg = Math.max(5, Number(vectorCurvatureDegrees) || 5);
+    const targetingBeepToneHz = Math.round(1200 + (time * 1.2));
+    const homingThrusterWhistleDb = Math.round(64 + (deg * 0.45));
+    return {
+      lockAcquisitionTimeMs: time,
+      vectorCurvatureDegrees: deg,
+      targetingBeepToneHz,
+      homingThrusterWhistleDb
+    };
+  }
+
+  playPredator1987EternelMaskPneumaticHissSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(2200, now);
+    osc.frequency.exponentialRampToValueAtTime(450, now + 0.35);
+    gain.gain.setValueAtTime(0.85, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.45);
+  }
+
+  playPredator1987EternelPrimalMandibleRoarSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(140, now);
+    osc.frequency.exponentialRampToValueAtTime(55, now + 0.65);
+    gain.gain.setValueAtTime(0.95, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.75);
+  }
+
+  playPredator21990EternelPenthouseGlassBreachSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1850, now);
+    osc.frequency.exponentialRampToValueAtTime(80, now + 0.35);
+    gain.gain.setValueAtTime(0.9, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.45);
+  }
+
+  playPredator21990EternelFlayedGirderSuspensionSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(290, now);
+    osc.frequency.exponentialRampToValueAtTime(75, now + 0.5);
+    gain.gain.setValueAtTime(0.8, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.6);
+  }
+
+  playAvp2004EternelChopperTailImpalementSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(720, now);
+    osc.frequency.exponentialRampToValueAtTime(110, now + 0.32);
+    gain.gain.setValueAtTime(0.9, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.36);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  playAvp2004EternelCelticStairwayBalustradeShatterSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(380, now);
+    osc.frequency.exponentialRampToValueAtTime(45, now + 0.55);
+    gain.gain.setValueAtTime(0.95, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.65);
+  }
+
+  playAvpRequiem2007EternelMortuarySolventCleanseSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1450, now);
+    osc.frequency.exponentialRampToValueAtTime(320, now + 0.4);
+    gain.gain.setValueAtTime(0.75, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.5);
+  }
+
+  playAvpRequiem2007EternelHandheldPlasmaBurnerSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1120, now);
+    osc.frequency.exponentialRampToValueAtTime(160, now + 0.35);
+    gain.gain.setValueAtTime(0.9, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.45);
+  }
+
+  playPredators2010EternelHoundWhistlePincerSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(2600, now);
+    osc.frequency.exponentialRampToValueAtTime(1200, now + 0.28);
+    gain.gain.setValueAtTime(0.8, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.36);
+  }
+
+  playPredators2010EternelStargazerLabBreakoutSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(860, now);
+    osc.frequency.exponentialRampToValueAtTime(190, now + 0.45);
+    gain.gain.setValueAtTime(0.9, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.55);
+  }
+
+  playPrey2022EternelLaserGuidedBoltLaunchSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1550, now);
+    osc.frequency.exponentialRampToValueAtTime(280, now + 0.22);
+    gain.gain.setValueAtTime(0.85, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  }
+
+  playPrey2022EternelMidAirTomahawkCrushSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(680, now);
+    osc.frequency.exponentialRampToValueAtTime(120, now + 0.3);
+    gain.gain.setValueAtTime(0.9, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  playPredatorFranchiseEternelSupremeApexNuclearPurgeSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(510, now);
+    osc.frequency.exponentialRampToValueAtTime(0.18, now + 1.65);
+    gain.gain.setValueAtTime(0.99, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.7);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 1.75);
+  }
+
+  playPredatorFranchiseEternelSupremeVictoryAnthemSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(390, now);
+    osc.frequency.exponentialRampToValueAtTime(1170, now + 0.72);
+    gain.gain.setValueAtTime(0.85, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.78);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.82);
+  }
+
+  playPredatorFranchiseEternelSupremeSanctumAscentSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(560, now);
+    osc.frequency.exponentialRampToValueAtTime(2100, now + 0.68);
+    gain.gain.setValueAtTime(0.8, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.72);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.78);
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();
