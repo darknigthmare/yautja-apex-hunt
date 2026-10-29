@@ -6780,3 +6780,115 @@ button:hover { transform: scale(1.04); }
   border-top: 1px dashed rgba(0, 229, 255, 0.4);
   color: #b2ebf2;
 }
+
+
+/* =========================================================================
+ * Panthéon Zénith Suprême Apex (1987-2025) HUD - v232
+ * ========================================================================= */
+.predator-franchise-v232-zenith-supreme-apex-hud-panel {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(18, 14, 4, 0.94);
+  border: 1px solid #ffd700;
+  box-shadow: 0 0 24px rgba(255, 215, 0, 0.35), inset 0 0 14px rgba(255, 171, 0, 0.2);
+  border-radius: 6px;
+  padding: 12px 14px;
+  color: #fff8e1;
+  font-family: 'Rajdhani', sans-serif;
+  z-index: 1060;
+  backdrop-filter: blur(8px);
+}
+
+.predator-franchise-v232-zenith-supreme-apex-hud-panel .hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ffd700;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.predator-franchise-v232-zenith-supreme-apex-hud-panel .hud-header h3 {
+  margin: 0;
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+.predator-franchise-v232-zenith-supreme-apex-hud-panel .hud-status-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.predator-franchise-v232-zenith-supreme-apex-hud-panel .hud-status-badge.completed {
+  background: rgba(255, 215, 0, 0.25);
+  border: 1px solid #ffd700;
+  color: #ffe57f;
+  text-shadow: 0 0 6px #ffd700;
+}
+
+.predator-franchise-v232-zenith-supreme-apex-hud-panel .hud-status-badge.in-progress {
+  background: rgba(255, 109, 0, 0.25);
+  border: 1px solid #ff6d00;
+  color: #ffab40;
+}
+
+.predator-franchise-v232-zenith-supreme-apex-hud-panel .hud-telemetry {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+  background: rgba(255, 215, 0, 0.05);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 4px;
+  padding: 8px 10px;
+}
+
+.predator-franchise-v232-zenith-supreme-apex-hud-panel .hud-telemetry .telemetry-item {
+  font-size: 11px;
+  color: #ffecb3;
+}
+
+.predator-franchise-v232-zenith-supreme-apex-hud-panel .hud-telemetry .telemetry-item strong {
+  color: #ffd700;
+}
+
+.predator-franchise-v232-zenith-supreme-apex-hud-panel .hud-playtesters {
+  border-top: 1px dashed rgba(255, 215, 0, 0.3);
+  padding-top: 8px;
+}
+
+.predator-franchise-v232-zenith-supreme-apex-hud-panel .hud-playtesters h4 {
+  margin: 0 0 6px 0;
+  font-size: 11px;
+  font-family: 'Orbitron', monospace;
+  color: #ffab00;
+  letter-spacing: 0.8px;
+}
+
+.predator-franchise-v232-zenith-supreme-apex-hud-panel .hud-playtesters ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.predator-franchise-v232-zenith-supreme-apex-hud-panel .hud-playtesters li {
+  font-size: 10px;
+  background: rgba(255, 215, 0, 0.06);
+  padding: 3px 6px;
+  border-left: 2px solid #ffd700;
+}
