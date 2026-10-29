@@ -6213,3 +6213,95 @@ button:hover { transform: scale(1.04); }
   border-top: 1px dashed rgba(0, 229, 255, 0.4);
   color: #b2ebf2;
 }
+
+/* ==========================================================================
+   v226 Panthéon Transcendant Apex HUD Director Styles (1987-2025)
+   ========================================================================== */
+.predator-franchise-v226-transcendant-apex-hud-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 335px;
+  background: rgba(30, 4, 18, 0.94);
+  border: 1px solid #ff007f;
+  box-shadow: 0 0 16px rgba(255, 0, 127, 0.4), inset 0 0 10px rgba(244, 143, 177, 0.25);
+  border-radius: 6px;
+  padding: 12px;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  color: #fce4ec;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+
+.predator-franchise-v226-transcendant-apex-hud-panel .transcendant-apex-hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 0, 127, 0.45);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v226-transcendant-apex-hud-panel .transcendant-glyph-badge {
+  font-size: 11px;
+  color: #f48fb1;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px #ff007f;
+}
+
+.predator-franchise-v226-transcendant-apex-hud-panel .transcendant-apex-hud-header h3 {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: #f8bbd0;
+  text-shadow: 0 0 6px #ff007f;
+}
+
+.predator-franchise-v226-transcendant-apex-hud-panel .transcendant-honor-pill {
+  font-size: 10px;
+  font-weight: bold;
+  background: rgba(255, 0, 127, 0.25);
+  border: 1px solid #ff007f;
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: #fce4ec;
+  text-shadow: 0 0 6px #e91e63;
+}
+
+.predator-franchise-v226-transcendant-apex-hud-panel .transcendant-apex-hud-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v226-transcendant-apex-hud-panel .transcendant-sector-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #ad1457;
+  color: #cfd8dc;
+  transition: all 0.2s ease;
+}
+
+.predator-franchise-v226-transcendant-apex-hud-panel .transcendant-sector-row.completed {
+  background: rgba(255, 0, 127, 0.2);
+  border-left: 3px solid #ff007f;
+  color: #ffffff;
+  text-shadow: 0 0 5px #f48fb1;
+}
+
+.predator-franchise-v226-transcendant-apex-hud-panel .transcendant-apex-hud-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(255, 0, 127, 0.1);
+  border-top: 1px dashed rgba(255, 0, 127, 0.4);
+  color: #f8bbd0;
+}
