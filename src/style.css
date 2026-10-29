@@ -5661,3 +5661,95 @@ button:hover { transform: scale(1.04); }
   border-top: 1px dashed rgba(255, 179, 0, 0.35);
   color: #ffe082;
 }
+
+/* ==========================================================================
+   v220 - PREDATOR FRANCHISE PANTHÉON INFINI APEX (1987-2025) HUD DIRECTOR
+   ========================================================================== */
+.predator-franchise-v220-infini-apex-hud-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 330px;
+  background: rgba(10, 8, 25, 0.94);
+  border: 1px solid #7c4dff;
+  box-shadow: 0 0 16px rgba(124, 77, 255, 0.4), inset 0 0 10px rgba(179, 136, 255, 0.25);
+  border-radius: 6px;
+  padding: 12px;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  color: #ede7f6;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+
+.predator-franchise-v220-infini-apex-hud-panel .infini-apex-hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(124, 77, 255, 0.45);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v220-infini-apex-hud-panel .infini-glyph-badge {
+  font-size: 11px;
+  color: #b388ff;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px #7c4dff;
+}
+
+.predator-franchise-v220-infini-apex-hud-panel .infini-apex-hud-header h3 {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: #d1c4e9;
+  text-shadow: 0 0 6px #7c4dff;
+}
+
+.predator-franchise-v220-infini-apex-hud-panel .infini-honor-pill {
+  font-size: 10px;
+  font-weight: bold;
+  background: rgba(124, 77, 255, 0.25);
+  border: 1px solid #7c4dff;
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: #b388ff;
+  text-shadow: 0 0 6px #651fff;
+}
+
+.predator-franchise-v220-infini-apex-hud-panel .infini-apex-hud-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v220-infini-apex-hud-panel .infini-sector-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #512da8;
+  color: #b0bec5;
+  transition: all 0.2s ease;
+}
+
+.predator-franchise-v220-infini-apex-hud-panel .infini-sector-row.completed {
+  background: rgba(124, 77, 255, 0.2);
+  border-left: 3px solid #7c4dff;
+  color: #ede7f6;
+  text-shadow: 0 0 5px #b388ff;
+}
+
+.predator-franchise-v220-infini-apex-hud-panel .infini-apex-hud-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(124, 77, 255, 0.1);
+  border-top: 1px dashed rgba(124, 77, 255, 0.4);
+  color: #d1c4e9;
+}
