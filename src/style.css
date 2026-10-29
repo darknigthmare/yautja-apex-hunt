@@ -6400,3 +6400,98 @@ button:hover { transform: scale(1.04); }
   border-top: 1px dashed rgba(118, 255, 3, 0.4);
   color: #dcedc8;
 }
+
+
+/* ==========================================================================
+   v228: Panthéon Primordial Suprême Apex (1987-2025) HUD Styles
+   Theme: Ancient Blood-Iron & Molten Bronze Plasma
+   ========================================================================== */
+
+.predator-franchise-v228-primordial-supreme-apex-hud-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 360px;
+  background: linear-gradient(135deg, rgba(33, 10, 5, 0.95), rgba(62, 39, 35, 0.92));
+  border: 1px solid #ff6d00;
+  box-shadow: 0 0 20px rgba(255, 109, 0, 0.35), inset 0 0 15px rgba(255, 61, 0, 0.15);
+  border-radius: 6px;
+  color: #fbe9e7;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 12px;
+  z-index: 1000;
+  pointer-events: auto;
+  user-select: none;
+  backdrop-filter: blur(6px);
+}
+
+.predator-franchise-v228-primordial-supreme-apex-hud-panel .primordial-supreme-apex-hud-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 109, 0, 0.4);
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v228-primordial-supreme-apex-hud-panel .primordial-glyph-badge {
+  color: #ffab00;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px #ffd54f;
+}
+
+.predator-franchise-v228-primordial-supreme-apex-hud-panel h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  text-shadow: 0 0 8px #ff6d00;
+}
+
+.predator-franchise-v228-primordial-supreme-apex-hud-panel .primordial-honor-pill {
+  background: rgba(255, 109, 0, 0.15);
+  border: 1px solid #ff6d00;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #ffcc80;
+  font-weight: bold;
+}
+
+.predator-franchise-v228-primordial-supreme-apex-hud-panel .primordial-supreme-apex-hud-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.predator-franchise-v228-primordial-supreme-apex-hud-panel .primordial-sector-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #bf360c;
+  color: #cfd8dc;
+  transition: all 0.2s ease;
+}
+
+.predator-franchise-v228-primordial-supreme-apex-hud-panel .primordial-sector-row.completed {
+  background: rgba(255, 109, 0, 0.2);
+  border-left: 3px solid #ff6d00;
+  color: #ffffff;
+  text-shadow: 0 0 5px #ffab00;
+}
+
+.predator-franchise-v228-primordial-supreme-apex-hud-panel .primordial-supreme-apex-hud-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(255, 109, 0, 0.1);
+  border-top: 1px dashed rgba(255, 109, 0, 0.4);
+  color: #ffe0b2;
+}
