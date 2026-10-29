@@ -5569,3 +5569,95 @@ button:hover { transform: scale(1.04); }
   margin: 0;
   padding-left: 14px;
 }
+
+/* ==========================================================================
+   v219 - PREDATOR FRANCHISE PANTHÉON MYTHIQUE APEX (1987-2025) HUD DIRECTOR
+   ========================================================================== */
+.predator-franchise-v219-mythique-apex-hud-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 330px;
+  background: rgba(18, 14, 5, 0.92);
+  border: 1px solid #ffb300;
+  box-shadow: 0 0 16px rgba(255, 179, 0, 0.35), inset 0 0 10px rgba(255, 143, 0, 0.2);
+  border-radius: 6px;
+  padding: 12px;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  color: #fff8e1;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  pointer-events: auto;
+}
+
+.predator-franchise-v219-mythique-apex-hud-panel .mythique-apex-hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 179, 0, 0.4);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v219-mythique-apex-hud-panel .mythique-glyph-badge {
+  font-size: 11px;
+  color: #ffca28;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px #ffb300;
+}
+
+.predator-franchise-v219-mythique-apex-hud-panel .mythique-apex-hud-header h3 {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: #ffe082;
+  text-shadow: 0 0 6px #ffb300;
+}
+
+.predator-franchise-v219-mythique-apex-hud-panel .mythique-honor-pill {
+  font-size: 10px;
+  font-weight: bold;
+  background: rgba(255, 179, 0, 0.2);
+  border: 1px solid #ffb300;
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: #ffd54f;
+  text-shadow: 0 0 6px #ff8f00;
+}
+
+.predator-franchise-v219-mythique-apex-hud-panel .mythique-apex-hud-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v219-mythique-apex-hud-panel .mythique-sector-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #795548;
+  color: #b0bec5;
+  transition: all 0.2s ease;
+}
+
+.predator-franchise-v219-mythique-apex-hud-panel .mythique-sector-row.completed {
+  background: rgba(255, 179, 0, 0.15);
+  border-left: 3px solid #ffb300;
+  color: #fff9c4;
+  text-shadow: 0 0 5px #ffb300;
+}
+
+.predator-franchise-v219-mythique-apex-hud-panel .mythique-apex-hud-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(255, 179, 0, 0.08);
+  border-top: 1px dashed rgba(255, 179, 0, 0.35);
+  color: #ffe082;
+}
