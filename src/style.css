@@ -6029,3 +6029,95 @@ button:hover { transform: scale(1.04); }
   border-top: 1px dashed rgba(255, 179, 0, 0.4);
   color: #ffecb3;
 }
+
+/* ==========================================================================
+   v224 Panthéon Impérial Apex HUD Director Styles (1987-2025)
+   ========================================================================== */
+.predator-franchise-v224-imperial-apex-hud-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 335px;
+  background: rgba(24, 4, 32, 0.94);
+  border: 1px solid #d500f9;
+  box-shadow: 0 0 16px rgba(213, 0, 249, 0.4), inset 0 0 10px rgba(234, 128, 252, 0.25);
+  border-radius: 6px;
+  padding: 12px;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  color: #f3e5f5;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+
+.predator-franchise-v224-imperial-apex-hud-panel .imperial-apex-hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(213, 0, 249, 0.45);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v224-imperial-apex-hud-panel .imperial-glyph-badge {
+  font-size: 11px;
+  color: #ea80fc;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px #d500f9;
+}
+
+.predator-franchise-v224-imperial-apex-hud-panel .imperial-apex-hud-header h3 {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: #f8bbd0;
+  text-shadow: 0 0 6px #d500f9;
+}
+
+.predator-franchise-v224-imperial-apex-hud-panel .imperial-honor-pill {
+  font-size: 10px;
+  font-weight: bold;
+  background: rgba(213, 0, 249, 0.25);
+  border: 1px solid #d500f9;
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: #ffd700;
+  text-shadow: 0 0 6px #aa00ff;
+}
+
+.predator-franchise-v224-imperial-apex-hud-panel .imperial-apex-hud-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.predator-franchise-v224-imperial-apex-hud-panel .imperial-sector-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #7b1fa2;
+  color: #e1bee7;
+  transition: all 0.2s ease;
+}
+
+.predator-franchise-v224-imperial-apex-hud-panel .imperial-sector-row.completed {
+  background: rgba(213, 0, 249, 0.2);
+  border-left: 3px solid #d500f9;
+  color: #ffffff;
+  text-shadow: 0 0 5px #ea80fc;
+}
+
+.predator-franchise-v224-imperial-apex-hud-panel .imperial-apex-hud-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  padding: 4px 6px;
+  margin-top: 4px;
+  background: rgba(213, 0, 249, 0.1);
+  border-top: 1px dashed rgba(213, 0, 249, 0.4);
+  color: #f8bbd0;
+}
