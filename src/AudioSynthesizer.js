@@ -34039,6 +34039,272 @@ class AudioSynthesizer {
     osc.start(now);
     osc.stop(now + 0.8);
   }
+
+  computeAstralCanopyEchoAcoustics({ clickingEchoFrequencyHz = 840, foliageAcousticDampingDb = 18 } = {}) {
+    const freq = Math.max(100, Number(clickingEchoFrequencyHz) || 100);
+    const damp = Math.max(5, Number(foliageAcousticDampingDb) || 5);
+    const foliageFlutterToneHz = Math.round(freq * 0.65);
+    const canopyReverbDecibels = Math.round(52 + (damp * 1.8));
+    return {
+      clickingEchoFrequencyHz: freq,
+      foliageAcousticDampingDb: damp,
+      foliageFlutterToneHz,
+      canopyReverbDecibels
+    };
+  }
+
+  computeAstralSubSpaceBeaconAcoustics({ subSpaceTransmissionLightYears = 42, dropPodInsertionVelocityKmh = 28500 } = {}) {
+    const ly = Math.max(1, Number(subSpaceTransmissionLightYears) || 1);
+    const speed = Math.max(1000, Number(dropPodInsertionVelocityKmh) || 1000);
+    const beaconChirpFrequencyHz = Math.round(1600 + (ly * 14));
+    const reEntryShockwaveDb = Math.round(72 + (speed * 0.0008));
+    return {
+      subSpaceTransmissionLightYears: ly,
+      dropPodInsertionVelocityKmh: speed,
+      beaconChirpFrequencyHz,
+      reEntryShockwaveDb
+    };
+  }
+
+  playPredator1987AstralCeibaCanopyClickingSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1100, now);
+    osc.frequency.exponentialRampToValueAtTime(340, now + 0.2);
+    gain.gain.setValueAtTime(0.85, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  playPredator1987AstralSilentVerticalDragSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.exponentialRampToValueAtTime(60, now + 0.45);
+    gain.gain.setValueAtTime(0.9, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.55);
+  }
+
+  playPredator21990AstralMotherShipCavernHumSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(95, now);
+    osc.frequency.exponentialRampToValueAtTime(42, now + 0.65);
+    gain.gain.setValueAtTime(0.85, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.75);
+  }
+
+  playPredator21990AstralAdolini1715FlintlockPresentSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(640, now);
+    osc.frequency.exponentialRampToValueAtTime(180, now + 0.26);
+    gain.gain.setValueAtTime(0.8, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.35);
+  }
+
+  playAvp2004AstralAncientGodsChantSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(280, now);
+    osc.frequency.exponentialRampToValueAtTime(90, now + 0.75);
+    gain.gain.setValueAtTime(0.8, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.85);
+  }
+
+  playAvp2004AstralPyramidSummitPlasmaBarrageSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1450, now);
+    osc.frequency.exponentialRampToValueAtTime(180, now + 0.38);
+    gain.gain.setValueAtTime(0.95, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.45);
+  }
+
+  playAvpRequiem2007AstralSubSpaceBeaconPingSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(2400, now);
+    osc.frequency.exponentialRampToValueAtTime(780, now + 0.32);
+    gain.gain.setValueAtTime(0.85, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.36);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }
+
+  playAvpRequiem2007AstralCleanerDropPodLaunchSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(260, now);
+    osc.frequency.exponentialRampToValueAtTime(45, now + 0.8);
+    gain.gain.setValueAtTime(0.9, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.9);
+  }
+
+  playPredators2010AstralGauntletLockdownSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(580, now);
+    osc.frequency.exponentialRampToValueAtTime(140, now + 0.28);
+    gain.gain.setValueAtTime(0.85, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.36);
+  }
+
+  playPredators2010AstralDualClaymoreBlastSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1600, now);
+    osc.frequency.exponentialRampToValueAtTime(40, now + 0.6);
+    gain.gain.setValueAtTime(0.98, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.7);
+  }
+
+  playPrey2022AstralMudQuagmireTrapSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(160, now);
+    osc.frequency.exponentialRampToValueAtTime(65, now + 0.45);
+    gain.gain.setValueAtTime(0.75, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.55);
+  }
+
+  playPrey2022AstralReflectedHomingBoltImpactSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(1850, now);
+    osc.frequency.exponentialRampToValueAtTime(260, now + 0.24);
+    gain.gain.setValueAtTime(0.9, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.32);
+  }
+
+  playPredatorFranchiseAstralSupremeApexNuclearPurgeSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(550, now);
+    osc.frequency.exponentialRampToValueAtTime(0.12, now + 1.75);
+    gain.gain.setValueAtTime(0.99, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 1.85);
+  }
+
+  playPredatorFranchiseAstralSupremeVictoryAnthemSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(450, now);
+    osc.frequency.exponentialRampToValueAtTime(1350, now + 0.78);
+    gain.gain.setValueAtTime(0.85, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.82);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.88);
+  }
+
+  playPredatorFranchiseAstralSupremeSanctumAscentSFX() {
+    if (!this.ctx || this.muted) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(620, now);
+    osc.frequency.exponentialRampToValueAtTime(2400, now + 0.72);
+    gain.gain.setValueAtTime(0.8, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.76);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.82);
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();
