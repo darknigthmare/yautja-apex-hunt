@@ -7116,3 +7116,115 @@ button:hover { transform: scale(1.04); }
   padding: 3px 6px;
   border-left: 2px solid #ff1744;
 }
+
+
+/* =========================================================================
+ * Panthéon Divin Suprême Apex (1987-2025) HUD - v235
+ * ========================================================================= */
+.predator-franchise-v235-divin-supreme-apex-hud-panel {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(10, 18, 26, 0.94);
+  border: 1px solid #00b0ff;
+  box-shadow: 0 0 24px rgba(0, 176, 255, 0.4), inset 0 0 14px rgba(0, 145, 234, 0.25);
+  border-radius: 6px;
+  padding: 12px 14px;
+  color: #e1f5fe;
+  font-family: 'Rajdhani', sans-serif;
+  z-index: 1060;
+  backdrop-filter: blur(8px);
+}
+
+.predator-franchise-v235-divin-supreme-apex-hud-panel .hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #00b0ff;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.predator-franchise-v235-divin-supreme-apex-hud-panel .hud-header h3 {
+  margin: 0;
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  color: #80d8ff;
+  text-shadow: 0 0 10px rgba(0, 176, 255, 0.7);
+}
+
+.predator-franchise-v235-divin-supreme-apex-hud-panel .hud-status-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.predator-franchise-v235-divin-supreme-apex-hud-panel .hud-status-badge.completed {
+  background: rgba(0, 176, 255, 0.25);
+  border: 1px solid #00b0ff;
+  color: #b3e5fc;
+  text-shadow: 0 0 6px #00b0ff;
+}
+
+.predator-franchise-v235-divin-supreme-apex-hud-panel .hud-status-badge.in-progress {
+  background: rgba(255, 109, 0, 0.25);
+  border: 1px solid #ff6d00;
+  color: #ffab40;
+}
+
+.predator-franchise-v235-divin-supreme-apex-hud-panel .hud-telemetry {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+  background: rgba(0, 176, 255, 0.05);
+  border: 1px solid rgba(0, 176, 255, 0.2);
+  border-radius: 4px;
+  padding: 8px 10px;
+}
+
+.predator-franchise-v235-divin-supreme-apex-hud-panel .hud-telemetry .telemetry-item {
+  font-size: 11px;
+  color: #e1f5fe;
+}
+
+.predator-franchise-v235-divin-supreme-apex-hud-panel .hud-telemetry .telemetry-item strong {
+  color: #80d8ff;
+}
+
+.predator-franchise-v235-divin-supreme-apex-hud-panel .hud-playtesters {
+  border-top: 1px dashed rgba(0, 176, 255, 0.3);
+  padding-top: 8px;
+}
+
+.predator-franchise-v235-divin-supreme-apex-hud-panel .hud-playtesters h4 {
+  margin: 0 0 6px 0;
+  font-size: 11px;
+  font-family: 'Orbitron', monospace;
+  color: #80d8ff;
+  letter-spacing: 0.8px;
+}
+
+.predator-franchise-v235-divin-supreme-apex-hud-panel .hud-playtesters ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.predator-franchise-v235-divin-supreme-apex-hud-panel .hud-playtesters li {
+  font-size: 10px;
+  background: rgba(0, 176, 255, 0.06);
+  padding: 3px 6px;
+  border-left: 2px solid #00b0ff;
+}
