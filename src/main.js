@@ -63,6 +63,10 @@ import {
   getEngineerLogo,
   getXenomorphHiveLogo,
   getCrossoverLogo,
+  getHuntCardLogo,
+  getOWLFLogo,
+  getStargazerLogo,
+  renderFactionEmblem,
 } from './ui/CanonLogosAndEmblems.js';
 
 const DEFAULT_CAMERA_FOV = 65;
@@ -2583,9 +2587,9 @@ export class Game {
         } else if (activeMultiverseFilter === 'darkhorse') {
           filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('Dark Horse') && !c.universe.includes('DC Comics'));
         } else if (activeMultiverseFilter === 'scifi') {
-          filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('2000 AD') || c.universe.includes('Valiant') || c.id.includes('terminator'));
+          filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('2000 AD') || c.universe.includes('Valiant') || c.id.includes('terminator') || c.id.includes('robocop') || c.id.includes('mortal_kombat'));
         } else if (activeMultiverseFilter === 'pop') {
-          filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('Top Cow') || c.universe.includes('Archie') || c.universe.includes('Mutant Enemy'));
+          filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('Top Cow') || c.universe.includes('Archie') || c.universe.includes('Mutant Enemy') || c.id.includes('x_files') || c.id.includes('darkness'));
         }
 
         rosterContainer.innerHTML = filteredPrey.map((item) => {
@@ -2666,11 +2670,14 @@ export class Game {
         else if (prey.faction === PREY_FACTIONS.HUMAN_SYNTHETIC) factionClass = 'faction-human';
 
         return `
-          <article class="taxonomy-card">
+          <article class="taxonomy-card" data-prey-id="${prey.id}">
             <div class="taxonomy-card-header">
-              <div>
-                <h5 class="taxonomy-card-title">${prey.name}</h5>
-                <span class="taxonomy-card-source">${prey.originMedia}</span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div class="taxonomy-faction-icon" style="flex-shrink:0;">${renderFactionEmblem(prey.faction, 26)}</div>
+                <div>
+                  <h5 class="taxonomy-card-title">${prey.name}</h5>
+                  <span class="taxonomy-card-source">${prey.originMedia}</span>
+                </div>
               </div>
               <span class="spec-tag reward-tag">+${prey.baseHonor} PTS</span>
             </div>
@@ -2685,9 +2692,25 @@ export class Game {
             <div style="font-size:11px; color:#ffd54f;">
               <strong>Trophée :</strong> ${prey.trophy}
             </div>
+            <div class="taxonomy-actions" style="margin-top:10px;">
+              <button type="button" class="btn-simulate-prey" data-sim-id="${prey.id}">
+                SIMULER L'AFFRONTEMENT HOLO-TRAQUE
+              </button>
+            </div>
           </article>
         `;
       }).join('');
+
+      taxonomyGrid.querySelectorAll('.btn-simulate-prey').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const preyId = btn.getAttribute('data-sim-id');
+          const target = filteredPrey.find((p) => p.id === preyId);
+          if (target) {
+            audioSynth.playYautjaClick();
+            this.hud.showLogMessage(`SIMULATION HOLO-TRAQUE : ${target.name.toUpperCase()} (${target.scale} - ${target.sizeMeters}m) · +${target.baseHonor} HONNEUR`, 3800);
+          }
+        });
+      });
     };
 
     renderTaxonomyEncyclopedia('all');

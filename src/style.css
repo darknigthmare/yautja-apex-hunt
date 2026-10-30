@@ -8294,3 +8294,42 @@ button:hover { transform: scale(1.04); }
   transform: scale(1.12);
   filter: drop-shadow(0 0 16px rgba(255, 120, 40, 0.85));
 }
+
+.btn-simulate-prey {
+  width: 100%;
+  padding: 6px 10px;
+  background: rgba(255, 42, 20, 0.12);
+  border: 1px solid rgba(255, 85, 51, 0.45);
+  color: #ffccbc;
+  font-family: 'Orbitron', 'Rajdhani', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-simulate-prey:hover {
+  background: rgba(255, 42, 20, 0.3);
+  border-color: #ff5533;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.codex-emblem-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.taxonomy-faction-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+

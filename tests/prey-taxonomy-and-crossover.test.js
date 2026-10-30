@@ -22,6 +22,7 @@ import {
   getStargazerLogo,
   getHuntCardLogo,
   getCrossoverLogo,
+  renderFactionEmblem,
 } from '../src/ui/CanonLogosAndEmblems.js';
 
 test('Taxonomie des proies : Les 5 paliers d’échelle (Géant, Grande, Moyen, Petite, Minuscule) sont rigoureusement définis', () => {
@@ -70,8 +71,8 @@ test('Factions canoniques : Couverture complète Yautja, Ingénieurs, Ruche Xén
   assert.ok(factions.has(PREY_FACTIONS.XENOMORPH), 'Faction Xénomorphe couverte');
 });
 
-test('Multivers Crossover : Les 12 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
-  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 12, 'Exactement 12 proies crossover majeures documentées');
+test('Multivers Crossover : Les 16 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
+  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 16, 'Exactement 16 proies crossover majeures documentées');
 
   const expectedIds = [
     'crossover_batman',
@@ -86,6 +87,10 @@ test('Multivers Crossover : Les 12 proies d’exception officielles sont répert
     'crossover_the_mask',
     'crossover_buffy',
     'crossover_archie',
+    'crossover_the_darkness',
+    'crossover_robocop',
+    'crossover_mortal_kombat_kano',
+    'crossover_x_files_mulder',
   ];
   const ids = MULTIVERSE_CROSSOVER_PREY.map((c) => c.id);
   assert.deepEqual(ids, expectedIds);
@@ -113,11 +118,11 @@ test('Multivers Crossover : Les 12 proies d’exception officielles sont répert
   const tarzan = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_tarzan');
   assert.match(tarzan.originMedia, /Tarzan vs\. Predator/);
 
-  const magnus = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_magnus');
-  assert.match(magnus.originMedia, /Magnus, Robot Fighter/);
+  const darkness = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_the_darkness');
+  assert.match(darkness.originMedia, /Overkill/);
 
-  const theMask = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_the_mask');
-  assert.match(theMask.originMedia, /The Mask/);
+  const robocop = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_robocop');
+  assert.match(robocop.originMedia, /RoboCop versus The Terminator/);
 });
 
 test('Système de rotation temporelle : Cycle déterministe de 6 heures et compte à rebours précis', () => {
@@ -188,12 +193,12 @@ test('Logos et Emblèmes Canoniques 1:1 : Génération SVG vectorielle sans dép
   assert.match(stargazerSvg, /logo-stargazer/);
   assert.match(stargazerSvg, /STARGAZER/);
 
-  // 7. Crossover Logos (all 12)
+  // 7. Crossover Logos (all 16)
   for (const crossover of MULTIVERSE_CROSSOVER_PREY) {
     const badgeSvg = getCrossoverLogo(crossover.id, 64);
     assert.match(badgeSvg, /<svg/);
     assert.match(badgeSvg, /crossover-logo/);
-    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade|tarzan|magnus|grendel|the-mask|buffy|archie)/);
+    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade|tarzan|magnus|grendel|the-mask|buffy|archie|darkness|robocop|kano|xfiles)/);
   }
 
   // 8. 12 Hunt Card Logos
@@ -207,6 +212,16 @@ test('Logos et Emblèmes Canoniques 1:1 : Génération SVG vectorielle sans dép
     assert.match(huntSvg, /<svg/);
     assert.match(huntSvg, /canon-logo/);
   }
+
+  // 9. Universal Faction Emblems
+  const yEmblem = renderFactionEmblem('Yautja Prime', 40);
+  assert.match(yEmblem, /logo-yautja/);
+  const engEmblem = renderFactionEmblem('Ingénieurs', 40);
+  assert.match(engEmblem, /logo-engineer/);
+  const xenoEmblem = renderFactionEmblem('Ruche Xénomorphe', 40);
+  assert.match(xenoEmblem, /logo-xenomorph/);
+  const wyEmblem = renderFactionEmblem('Weyland-Yutani', 40);
+  assert.match(wyEmblem, /logo-weyland-yutani/);
 
   // Fallback
   const fallbackSvg = getCrossoverLogo('unknown_entity', 50);

@@ -28,6 +28,10 @@ export const CANON_FACTION_COLORS = Object.freeze({
   archieGold: '#fbc02d',
   owlfCyan: '#00e5ff',
   stargazerRed: '#ff1744',
+  theDarknessGreen: '#1b5e20',
+  robocopSteel: '#78909c',
+  kanoRed: '#b71c1c',
+  xfilesCyan: '#0288d1',
 });
 
 /**
@@ -396,6 +400,62 @@ export function getCrossoverLogo(crossoverId, size = 64) {
         </svg>
       `.trim();
 
+    case 'the_darkness':
+    case 'crossover_the_darkness':
+      // The Darkness Ancient Tendrils & Emerald Sigil (Top Cow / Dark Horse 1999)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-darkness" role="img" aria-label="Symbole du Darkness">
+          <circle cx="40" cy="40" r="36" fill="#050d06" stroke="#2e7d32" stroke-width="2.5" />
+          <path d="M20 60 Q26 30 40 18 Q54 30 60 60 Q40 46 20 60 Z" fill="#1b5e20" stroke="#76ff03" stroke-width="1.5" />
+          <path d="M24 38 Q14 26 22 14 Q32 20 28 32 Z" fill="#0a320c" stroke="#4caf50" stroke-width="1.2" />
+          <path d="M56 38 Q66 26 58 14 Q48 20 52 32 Z" fill="#0a320c" stroke="#4caf50" stroke-width="1.2" />
+          <circle cx="34" cy="30" r="2.5" fill="#eeff41" />
+          <circle cx="46" cy="30" r="2.5" fill="#eeff41" />
+        </svg>
+      `.trim();
+
+    case 'robocop':
+    case 'crossover_robocop':
+      // OCP Hexagon Badge & Titanium Red Visor (1993)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-robocop" role="img" aria-label="Insigne OCP RoboCop">
+          <polygon points="40,6 72,24 72,56 40,74 8,56 8,24" fill="#101820" stroke="#78909c" stroke-width="2.5" />
+          <polygon points="40,14 64,28 64,52 40,66 16,52 16,28" fill="#1e2936" stroke="#b0bec5" stroke-width="1.5" />
+          <rect x="20" y="34" width="40" height="10" rx="2" fill="#000000" stroke="#cfd8dc" stroke-width="1" />
+          <line x1="22" y1="39" x2="58" y2="39" stroke="#ff1744" stroke-width="2.5" stroke-linecap="round" />
+          <text x="40" y="27" font-family="'Orbitron', sans-serif" font-size="8" font-weight="900" fill="#90a4ae" text-anchor="middle">OCP</text>
+        </svg>
+      `.trim();
+
+    case 'mortal_kombat_kano':
+    case 'kano':
+    case 'crossover_mortal_kombat_kano':
+      // Mortal Kombat Dragon Sigil & Bionic Eye (2015)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-kano" role="img" aria-label="Oeil Bionique de Kano">
+          <circle cx="40" cy="40" r="36" fill="#1a0404" stroke="#d50000" stroke-width="2.5" />
+          <circle cx="40" cy="40" r="28" fill="#0d0d0d" stroke="#ff1744" stroke-width="1.2" />
+          <path d="M40 18 Q62 18 64 40 Q62 62 40 62 Z" fill="#37474f" stroke="#78909c" stroke-width="1.5" />
+          <circle cx="48" cy="40" r="8" fill="#ff1744" />
+          <circle cx="48" cy="40" r="3.5" fill="#ffffff" />
+          <line x1="48" y1="20" x2="48" y2="60" stroke="#ff5252" stroke-width="1" stroke-dasharray="2,2" />
+        </svg>
+      `.trim();
+
+    case 'x_files_mulder':
+    case 'mulder':
+    case 'crossover_x_files_mulder':
+      // FBI X-Files Silhouette & UFO Tractor Beam (1997)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-xfiles" role="img" aria-label="Dossier X-Files">
+          <polygon points="40,6 70,22 64,66 40,76 16,66 10,22" fill="#06121e" stroke="#0288d1" stroke-width="2.5" />
+          <polygon points="40,16 60,60 20,60" fill="#00e676" opacity="0.25" />
+          <ellipse cx="40" cy="18" rx="14" ry="4" fill="#0288d1" stroke="#81d4fa" stroke-width="1.2" />
+          <text x="40" y="44" font-family="'Orbitron', sans-serif" font-size="20" font-weight="900" fill="#ffffff" text-anchor="middle">X</text>
+          <text x="40" y="58" font-family="'Orbitron', sans-serif" font-size="6" font-weight="800" fill="#81d4fa" letter-spacing="1" text-anchor="middle">FBI</text>
+        </svg>
+      `.trim();
+
     default:
       return getYautjaClanLogo(size);
   }
@@ -533,4 +593,28 @@ export function getHuntCardLogo(huntId, size = 64) {
     default:
       return getYautjaClanLogo(size);
   }
+}
+
+/**
+ * Rendu universel de l'emblème de faction 1:1 pour n'importe quelle faction ou organisation.
+ */
+export function renderFactionEmblem(factionName, size = 48) {
+  if (!factionName) return getYautjaClanLogo(size);
+  const name = String(factionName).toLowerCase();
+  if (name.includes('engineer') || name.includes('ingénieur') || name.includes('architecte')) {
+    return getEngineerLogo(size);
+  }
+  if (name.includes('xeno') || name.includes('ruche')) {
+    return getXenomorphHiveLogo(size);
+  }
+  if (name.includes('weyland') || name.includes('uscm') || name.includes('marine') || name.includes('synthétique') || name.includes('human')) {
+    return getWeylandYutaniLogo(Math.round(size * 0.75));
+  }
+  if (name.includes('owlf')) {
+    return getOWLFLogo(size);
+  }
+  if (name.includes('stargazer')) {
+    return getStargazerLogo(size);
+  }
+  return getYautjaClanLogo(size);
 }
