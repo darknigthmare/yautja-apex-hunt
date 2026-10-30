@@ -456,6 +456,54 @@ export function getCrossoverLogo(crossoverId, size = 64) {
         </svg>
       `.trim();
 
+    case 'judge_anderson':
+    case 'anderson':
+    case 'crossover_judge_anderson':
+      // Judge Anderson Psi-Division Gold Star (1997)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-anderson" role="img" aria-label="Insigne Juge Anderson">
+          <circle cx="40" cy="40" r="36" fill="#1b002c" stroke="#ab47bc" stroke-width="2.5" />
+          <polygon points="40,10 48,28 68,28 52,40 58,60 40,48 22,60 28,40 12,28 32,28" fill="#ffd700" stroke="#b28900" stroke-width="1.5" />
+          <text x="40" y="44" font-family="'Orbitron', sans-serif" font-size="11" font-weight="900" fill="#4a148c" text-anchor="middle">PSI</text>
+        </svg>
+      `.trim();
+
+    case 'worlds_finest':
+    case 'crossover_worlds_finest':
+      // World's Finest Interlocking Bat & S-Shield (2007)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 70" width="${size * 1.3}" height="${size}" class="crossover-logo logo-worlds-finest" role="img" aria-label="Alliance World's Finest">
+          <polygon points="45,4 86,22 72,62 45,68 18,62 4,22" fill="#0d1b2a" stroke="#ffd700" stroke-width="2.5" />
+          <path d="M45 16 C38 16 30 20 20 20 C24 32 34 38 45 46 C56 38 66 32 70 20 C60 20 52 16 45 16 Z" fill="#ffd700" />
+          <path d="M45 28 L40 40 L50 40 Z" fill="#d32f2f" />
+        </svg>
+      `.trim();
+
+    case 't_infinity':
+    case 'crossover_t_infinity':
+      // Skynet T-Infinity Chrono-Liquid Endoskeleton (2000)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-t-infinity" role="img" aria-label="Skynet T-Infinity">
+          <circle cx="40" cy="40" r="36" fill="#080808" stroke="#d50000" stroke-width="2.5" />
+          <circle cx="40" cy="40" r="28" fill="none" stroke="#ff1744" stroke-width="1.5" stroke-dasharray="4,2" />
+          <path d="M26 40 C26 34 34 34 40 40 C46 46 54 46 54 40 C54 34 46 34 40 40 C34 46 26 46 26 40 Z" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+          <circle cx="40" cy="40" r="4" fill="#ff1744" />
+        </svg>
+      `.trim();
+
+    case 'machiko_noguchi':
+    case 'crossover_machiko_noguchi':
+      // Machiko Noguchi Blood-Marked Human Mask (1994)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-machiko" role="img" aria-label="Biomasque de Machiko Noguchi">
+          <polygon points="40,8 68,22 62,68 40,76 18,68 12,22" fill="#121820" stroke="#ff9800" stroke-width="2.5" />
+          <line x1="30" y1="26" x2="50" y2="26" stroke="#ff1744" stroke-width="3" stroke-linecap="round" />
+          <line x1="40" y1="20" x2="40" y2="44" stroke="#ff1744" stroke-width="3" stroke-linecap="round" />
+          <ellipse cx="30" cy="48" rx="6" ry="4" fill="#ff9800" />
+          <ellipse cx="50" cy="48" rx="6" ry="4" fill="#ff9800" />
+        </svg>
+      `.trim();
+
     default:
       return getYautjaClanLogo(size);
   }

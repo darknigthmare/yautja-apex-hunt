@@ -2533,8 +2533,30 @@ export class Game {
 
       document.getElementById('btn-launch-crossover')?.addEventListener('click', () => {
         audioSynth.playYautjaClick();
-        this.hud.showLogMessage(`ANOMALIE SPATIO-TEMPORELLE ENGAGÉE : ${p.name.toUpperCase()}`, 3500);
-        this.prepareHunt('jungle_hunter_1987', 'jungle');
+        this.activeCrossoverHunt = p;
+        this.activePreySimulation = null;
+        this.hud.showLogMessage(`ANOMALIE DU MULTIVERS ENGAGÉE : ${p.name.toUpperCase()} (+${p.honorReward} HONNEUR)`, 4500);
+
+        let arenaBiome = 'jungle';
+        let huntBoss = 'jungle_hunter_1987';
+        if (p.id.includes('batman') || p.id.includes('dredd') || p.id.includes('terminator') || p.id.includes('robocop') || p.id.includes('grendel') || p.id.includes('anderson')) {
+          arenaBiome = 'city';
+          huntBoss = 'city_hunter';
+        } else if (p.id.includes('superman') || p.id.includes('tarzan') || p.id.includes('worlds_finest')) {
+          arenaBiome = 'jungle';
+          huntBoss = 'feral_predator';
+        } else if (p.id.includes('witchblade') || p.id.includes('darkness') || p.id.includes('buffy')) {
+          arenaBiome = 'bouvetoya';
+          huntBoss = 'bad_blood';
+        } else if (p.id.includes('kano') || p.id.includes('the_mask') || p.id.includes('t_infinity')) {
+          arenaBiome = 'desert';
+          huntBoss = 'super_predator';
+        } else if (p.id.includes('machiko')) {
+          arenaBiome = 'desert';
+          huntBoss = 'wolf_cleaner';
+        }
+        this.prepareHunt(huntBoss, arenaBiome);
+        this.startHunt(huntBoss, arenaBiome);
       });
     };
 
@@ -2707,7 +2729,27 @@ export class Game {
           const target = filteredPrey.find((p) => p.id === preyId);
           if (target) {
             audioSynth.playYautjaClick();
-            this.hud.showLogMessage(`SIMULATION HOLO-TRAQUE : ${target.name.toUpperCase()} (${target.scale} - ${target.sizeMeters}m) · +${target.baseHonor} HONNEUR`, 3800);
+            this.activePreySimulation = target;
+            this.activeCrossoverHunt = null;
+            this.hud.showLogMessage(`LANCEMENT SIMULATION HOLO-TRAQUE : ${target.name.toUpperCase()} (${target.scale} - ${target.sizeMeters}m) · +${target.baseHonor} HONNEUR`, 4500);
+
+            let simBiome = 'jungle';
+            let simBoss = 'goliath';
+            if (target.scale === 'GEANT') {
+              simBoss = 'kalisk';
+              simBiome = 'desert';
+            } else if (target.scale === 'GRANDE') {
+              simBoss = target.faction.includes('Xenomorph') ? 'xeno_queen' : 'super_predator';
+              simBiome = 'bouvetoya';
+            } else if (target.scale === 'MOYEN') {
+              simBoss = target.faction.includes('Xenomorph') ? 'grid_alien' : 'wolf_cleaner';
+              simBiome = 'city';
+            } else {
+              simBoss = 'jungle_hunter_1987';
+              simBiome = 'jungle';
+            }
+            this.prepareHunt(simBoss, simBiome);
+            this.startHunt(simBoss, simBiome);
           }
         });
       });
@@ -3256,6 +3298,28 @@ export class Game {
       5500,
     );
 
+    if (this.activeCrossoverHunt) {
+      const p = this.activeCrossoverHunt;
+      const targetScanned = document.getElementById('target-scanned-name');
+      if (targetScanned) targetScanned.textContent = `ANOMALIE MULTIVERS : ${p.name.toUpperCase()} [${p.universe}]`;
+      const hudLogo = document.getElementById('hud-yautja-clan-logo');
+      if (hudLogo) hudLogo.innerHTML = getCrossoverLogo(p.id, 36);
+      this.hud.showLogMessage(
+        `FAILLE TEMPORELLE : ${p.name.toUpperCase()} · ${p.arena} · +${p.honorReward} HONNEUR`,
+        6500,
+      );
+    } else if (this.activePreySimulation) {
+      const target = this.activePreySimulation;
+      const targetScanned = document.getElementById('target-scanned-name');
+      if (targetScanned) targetScanned.textContent = `SIMULATION HOLO-TRAQUE : ${target.name.toUpperCase()} (${target.scale} - ${target.sizeMeters}m)`;
+      const hudLogo = document.getElementById('hud-yautja-clan-logo');
+      if (hudLogo) hudLogo.innerHTML = renderFactionEmblem(target.faction, 36);
+      this.hud.showLogMessage(
+        `SIMULATION DE CHASSE : ${target.name.toUpperCase()} · POINT FAIBLE : ${target.weakpoints[0].toUpperCase()}`,
+        6000,
+      );
+    }
+
     if (
       resolvedPlanet === 'hive_lv426'
       || resolvedPlanet === 'bouvetoya_pyramid'
@@ -3329,6 +3393,12 @@ export class Game {
   }
 
   returnToMothershipHub() {
+    this.activeCrossoverHunt = null;
+    this.activePreySimulation = null;
+    const hudLogo = document.getElementById('hud-yautja-clan-logo');
+    if (hudLogo) hudLogo.innerHTML = getYautjaClanLogo(36);
+    const targetScanned = document.getElementById('target-scanned-name');
+    if (targetScanned) targetScanned.textContent = "VAISSEAU MÈRE YAUTJA - SALLE DES TROPHÉES";
     this.cleanupHunt();
     this.gameState = 'HUB';
     this.isPaused = false;
@@ -4454,7 +4524,17 @@ export class Game {
 
     const huntDefinition = HUNT_DEFINITIONS[this.currentHuntType];
     const modal = document.getElementById('endgame-modal');
-    document.getElementById('endgame-title').textContent = "CHASSE ACCOMPLIE !";
+    if (this.activeCrossoverHunt) {
+      document.getElementById('endgame-title').textContent = `ANOMALIE VAINCUE : ${this.activeCrossoverHunt.name.toUpperCase()} !`;
+      document.getElementById('endgame-desc').textContent = `Trophée d'exception réclamé : ${this.activeCrossoverHunt.trophy}. L'anomalie du multivers est archivée au panthéon du clan.`;
+      this.player.honorScore += this.activeCrossoverHunt.honorReward;
+    } else if (this.activePreySimulation) {
+      document.getElementById('endgame-title').textContent = `SIMULATION ACCOMPLIE : ${this.activePreySimulation.name.toUpperCase()} !`;
+      document.getElementById('endgame-desc').textContent = `Spécimen ${this.activePreySimulation.scale} (${this.activePreySimulation.sizeMeters}m) maîtrisé. Trophée simulé : ${this.activePreySimulation.trophy}.`;
+      this.player.honorScore += this.activePreySimulation.baseHonor;
+    } else {
+      document.getElementById('endgame-title').textContent = "CHASSE ACCOMPLIE !";
+    }
     document.getElementById('endgame-desc').textContent = `${huntDefinition?.name ?? 'La proie'} rejoint la salle des trophées du clan.`;
     document.getElementById('final-honor-score').textContent = `${this.player.honorScore} PTS`;
     document.getElementById('final-yautja-rank').textContent = this.player.ranks[this.player.honorRankIndex];

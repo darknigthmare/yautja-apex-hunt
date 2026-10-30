@@ -43,7 +43,7 @@ test('Taxonomie des proies : Les 5 paliers d’échelle (Géant, Grande, Moyen, 
 });
 
 test('Catalogue canonique : Distribution exhaustive des proies à travers les factions et gabarits 1:1', () => {
-  assert.ok(CANON_PREY_CATALOG.length >= 40, `Le catalogue doit contenir au moins 40 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
+  assert.ok(CANON_PREY_CATALOG.length >= 60, `Le catalogue doit contenir au moins 60 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
 
   const scalesPresent = new Set(CANON_PREY_CATALOG.map((p) => p.scale));
   assert.ok(scalesPresent.has('GEANT'), 'Présence de proies géantes');
@@ -71,8 +71,8 @@ test('Factions canoniques : Couverture complète Yautja, Ingénieurs, Ruche Xén
   assert.ok(factions.has(PREY_FACTIONS.XENOMORPH), 'Faction Xénomorphe couverte');
 });
 
-test('Multivers Crossover : Les 16 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
-  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 16, 'Exactement 16 proies crossover majeures documentées');
+test('Multivers Crossover : Les 20 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
+  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 20, 'Exactement 20 proies crossover majeures documentées');
 
   const expectedIds = [
     'crossover_batman',
@@ -91,6 +91,10 @@ test('Multivers Crossover : Les 16 proies d’exception officielles sont répert
     'crossover_robocop',
     'crossover_mortal_kombat_kano',
     'crossover_x_files_mulder',
+    'crossover_judge_anderson',
+    'crossover_worlds_finest',
+    'crossover_t_infinity',
+    'crossover_machiko_noguchi',
   ];
   const ids = MULTIVERSE_CROSSOVER_PREY.map((c) => c.id);
   assert.deepEqual(ids, expectedIds);
@@ -193,12 +197,12 @@ test('Logos et Emblèmes Canoniques 1:1 : Génération SVG vectorielle sans dép
   assert.match(stargazerSvg, /logo-stargazer/);
   assert.match(stargazerSvg, /STARGAZER/);
 
-  // 7. Crossover Logos (all 16)
+  // 7. Crossover Logos (all 20)
   for (const crossover of MULTIVERSE_CROSSOVER_PREY) {
     const badgeSvg = getCrossoverLogo(crossover.id, 64);
     assert.match(badgeSvg, /<svg/);
     assert.match(badgeSvg, /crossover-logo/);
-    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade|tarzan|magnus|grendel|the-mask|buffy|archie|darkness|robocop|kano|xfiles)/);
+    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade|tarzan|magnus|grendel|the-mask|buffy|archie|darkness|robocop|kano|xfiles|anderson|worlds-finest|t-infinity|machiko)/);
   }
 
   // 8. 12 Hunt Card Logos
