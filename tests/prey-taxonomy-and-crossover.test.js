@@ -43,7 +43,7 @@ test('Taxonomie des proies : Les 5 paliers d’échelle (Géant, Grande, Moyen, 
 });
 
 test('Catalogue canonique : Distribution exhaustive des proies à travers les factions et gabarits 1:1', () => {
-  assert.ok(CANON_PREY_CATALOG.length >= 80, `Le catalogue doit contenir au moins 80 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
+  assert.ok(CANON_PREY_CATALOG.length >= 100, `Le catalogue doit contenir au moins 100 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
 
   const scalesPresent = new Set(CANON_PREY_CATALOG.map((p) => p.scale));
   assert.ok(scalesPresent.has('GEANT'), 'Présence de proies géantes');
@@ -71,8 +71,8 @@ test('Factions canoniques : Couverture complète Yautja, Ingénieurs, Ruche Xén
   assert.ok(factions.has(PREY_FACTIONS.XENOMORPH), 'Faction Xénomorphe couverte');
 });
 
-test('Multivers Crossover : Les 24 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
-  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 24, 'Exactement 24 proies crossover majeures documentées');
+test('Multivers Crossover : Les 30 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
+  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 30, 'Exactement 30 proies crossover majeures documentées');
 
   const expectedIds = [
     'crossover_batman',
@@ -99,6 +99,12 @@ test('Multivers Crossover : Les 24 proies d’exception officielles sont répert
     'crossover_wildcats_grifter',
     'crossover_jla_league',
     'crossover_bloodlines_darkness',
+    'crossover_wolverine',
+    'crossover_black_panther',
+    'crossover_spider_man',
+    'crossover_iron_man',
+    'crossover_captain_america',
+    'crossover_thor_asgard',
   ];
   const ids = MULTIVERSE_CROSSOVER_PREY.map((c) => c.id);
   assert.deepEqual(ids, expectedIds);
@@ -131,6 +137,11 @@ test('Multivers Crossover : Les 24 proies d’exception officielles sont répert
 
   const robocop = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_robocop');
   assert.match(robocop.originMedia, /RoboCop versus The Terminator/);
+
+  const wolverine = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_wolverine');
+  assert.match(wolverine.originMedia, /Predator vs\. Wolverine/);
+  assert.equal(wolverine.crossoverYear, 2023);
+  assert.equal(wolverine.universe, 'Marvel Comics');
 });
 
 test('Système de rotation temporelle : Cycle déterministe de 6 heures et compte à rebours précis', () => {
@@ -201,12 +212,12 @@ test('Logos et Emblèmes Canoniques 1:1 : Génération SVG vectorielle sans dép
   assert.match(stargazerSvg, /logo-stargazer/);
   assert.match(stargazerSvg, /STARGAZER/);
 
-  // 7. Crossover Logos (all 20)
+  // 7. Crossover Logos (all 30)
   for (const crossover of MULTIVERSE_CROSSOVER_PREY) {
     const badgeSvg = getCrossoverLogo(crossover.id, 64);
     assert.match(badgeSvg, /<svg/);
     assert.match(badgeSvg, /crossover-logo/);
-    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade|tarzan|magnus|grendel|the-mask|buffy|archie|darkness|robocop|kano|xfiles|anderson|worlds-finest|t-infinity|machiko|green-lantern|grifter|jla|bloodlines)/);
+    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade|tarzan|magnus|grendel|the-mask|buffy|archie|darkness|robocop|kano|xfiles|anderson|worlds-finest|t-infinity|machiko|green-lantern|grifter|jla|bloodlines|wolverine|black-panther|spider-man|iron-man|captain-america|thor)/);
   }
 
   // 8. 12 Hunt Card Logos

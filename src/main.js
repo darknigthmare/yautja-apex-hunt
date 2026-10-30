@@ -2607,8 +2607,10 @@ export class Game {
         let filteredPrey = MULTIVERSE_CROSSOVER_PREY;
         if (activeMultiverseFilter === 'dc') {
           filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('DC Comics'));
+        } else if (activeMultiverseFilter === 'marvel') {
+          filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('Marvel'));
         } else if (activeMultiverseFilter === 'darkhorse') {
-          filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('Dark Horse') && !c.universe.includes('DC Comics'));
+          filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('Dark Horse') && !c.universe.includes('DC Comics') && !c.universe.includes('Marvel'));
         } else if (activeMultiverseFilter === 'scifi') {
           filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('2000 AD') || c.universe.includes('Valiant') || c.id.includes('terminator') || c.id.includes('robocop') || c.id.includes('mortal_kombat'));
         } else if (activeMultiverseFilter === 'pop') {

@@ -560,6 +560,79 @@ export function getCrossoverLogo(crossoverId, size = 64) {
         </svg>
       `.trim();
 
+    case 'wolverine':
+    case 'crossover_wolverine':
+      // Wolverine Adamantium Claws Slash & Yellow Mask (2023)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-wolverine" role="img" aria-label="Griffes d'Adamantium de Wolverine">
+          <circle cx="40" cy="40" r="36" fill="#141414" stroke="#ffd700" stroke-width="2.5" />
+          <path d="M22 64 L30 18 M38 68 L40 14 M54 64 L50 18" stroke="#cfd8dc" stroke-width="3.5" stroke-linecap="round" />
+          <path d="M22 64 L30 18 M38 68 L40 14 M54 64 L50 18" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" />
+          <polygon points="40,24 50,42 30,42" fill="#ffd700" />
+        </svg>
+      `.trim();
+
+    case 'black_panther':
+    case 'crossover_black_panther':
+      // Black Panther Vibranium Mask & Kinetic Purple Glow (2024)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-black-panther" role="img" aria-label="Masque de la Panthère Noire">
+          <circle cx="40" cy="40" r="36" fill="#0d0414" stroke="#7b1fa2" stroke-width="2.5" />
+          <polygon points="40,10 64,24 58,66 40,74 22,66 16,24" fill="#1a1a24" stroke="#9c27b0" stroke-width="2" />
+          <ellipse cx="30" cy="38" rx="6" ry="4" fill="#ffffff" />
+          <ellipse cx="50" cy="38" rx="6" ry="4" fill="#ffffff" />
+          <path d="M40 44 L40 60 M30 52 L50 52" stroke="#e1bee7" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
+    case 'spider_man':
+    case 'crossover_spider_man':
+      // Spider-Man Webbed Mask & Spider Emblem (2024)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-spider-man" role="img" aria-label="Emblème de Spider-Man">
+          <circle cx="40" cy="40" r="36" fill="#b71c1c" stroke="#d32f2f" stroke-width="2.5" />
+          <ellipse cx="40" cy="40" rx="6" ry="10" fill="#000000" />
+          <path d="M36 34 L22 22 M44 34 L58 22 M34 40 L18 40 M46 40 L62 40 M36 46 L22 58 M44 46 L58 58" stroke="#000000" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
+    case 'iron_man':
+    case 'crossover_iron_man':
+      // Iron Man Model 70 Faceplate & Arc Reactor (2024)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-iron-man" role="img" aria-label="Armure d'Iron Man">
+          <polygon points="40,8 68,20 62,68 40,76 18,68 12,20" fill="#b71c1c" stroke="#ffd700" stroke-width="2.5" />
+          <polygon points="40,16 58,24 54,60 40,68 26,60 22,24" fill="#ffd700" stroke="#b28900" stroke-width="1.5" />
+          <line x1="28" y1="36" x2="38" y2="36" stroke="#00e5ff" stroke-width="3" stroke-linecap="round" />
+          <line x1="42" y1="36" x2="52" y2="36" stroke="#00e5ff" stroke-width="3" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
+    case 'captain_america':
+    case 'crossover_captain_america':
+      // Captain America Vibranium Star Shield (2024)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-captain-america" role="img" aria-label="Bouclier de Captain America">
+          <circle cx="40" cy="40" r="36" fill="#d32f2f" stroke="#b71c1c" stroke-width="2" />
+          <circle cx="40" cy="40" r="28" fill="#ffffff" />
+          <circle cx="40" cy="40" r="20" fill="#d32f2f" />
+          <circle cx="40" cy="40" r="13" fill="#1976d2" />
+          <polygon points="40,28 43,36 51,36 45,41 47,49 40,44 33,49 35,41 29,36 37,36" fill="#ffffff" />
+        </svg>
+      `.trim();
+
+    case 'thor_asgard':
+    case 'crossover_thor_asgard':
+      // Thor Odinson Mjolnir Uru Hammer & Lightning (2024)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-thor" role="img" aria-label="Mjolnir Marteau de Thor">
+          <circle cx="40" cy="40" r="36" fill="#081824" stroke="#00bcd4" stroke-width="2.5" />
+          <rect x="24" y="24" width="32" height="18" rx="2" fill="#cfd8dc" stroke="#455a64" stroke-width="2" />
+          <line x1="40" y1="42" x2="40" y2="66" stroke="#795548" stroke-width="4" stroke-linecap="round" />
+          <path d="M16 28 L24 34 M64 28 L56 34 M40 14 L40 24" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
     default:
       return getYautjaClanLogo(size);
   }
