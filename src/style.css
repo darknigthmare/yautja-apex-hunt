@@ -6892,3 +6892,115 @@ button:hover { transform: scale(1.04); }
   padding: 3px 6px;
   border-left: 2px solid #ffd700;
 }
+
+
+/* =========================================================================
+ * Panthéon Absolu Suprême Apex (1987-2025) HUD - v233
+ * ========================================================================= */
+.predator-franchise-v233-absolu-supreme-apex-hud-panel {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(14, 5, 20, 0.94);
+  border: 1px solid #d500f9;
+  box-shadow: 0 0 24px rgba(213, 0, 249, 0.35), inset 0 0 14px rgba(170, 0, 255, 0.2);
+  border-radius: 6px;
+  padding: 12px 14px;
+  color: #f3e5f5;
+  font-family: 'Rajdhani', sans-serif;
+  z-index: 1060;
+  backdrop-filter: blur(8px);
+}
+
+.predator-franchise-v233-absolu-supreme-apex-hud-panel .hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #d500f9;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.predator-franchise-v233-absolu-supreme-apex-hud-panel .hud-header h3 {
+  margin: 0;
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  color: #ea80fc;
+  text-shadow: 0 0 10px rgba(213, 0, 249, 0.6);
+}
+
+.predator-franchise-v233-absolu-supreme-apex-hud-panel .hud-status-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.predator-franchise-v233-absolu-supreme-apex-hud-panel .hud-status-badge.completed {
+  background: rgba(213, 0, 249, 0.25);
+  border: 1px solid #d500f9;
+  color: #f8bbd0;
+  text-shadow: 0 0 6px #d500f9;
+}
+
+.predator-franchise-v233-absolu-supreme-apex-hud-panel .hud-status-badge.in-progress {
+  background: rgba(255, 64, 129, 0.25);
+  border: 1px solid #ff4081;
+  color: #ff80ab;
+}
+
+.predator-franchise-v233-absolu-supreme-apex-hud-panel .hud-telemetry {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+  background: rgba(213, 0, 249, 0.05);
+  border: 1px solid rgba(213, 0, 249, 0.2);
+  border-radius: 4px;
+  padding: 8px 10px;
+}
+
+.predator-franchise-v233-absolu-supreme-apex-hud-panel .hud-telemetry .telemetry-item {
+  font-size: 11px;
+  color: #f3e5f5;
+}
+
+.predator-franchise-v233-absolu-supreme-apex-hud-panel .hud-telemetry .telemetry-item strong {
+  color: #ea80fc;
+}
+
+.predator-franchise-v233-absolu-supreme-apex-hud-panel .hud-playtesters {
+  border-top: 1px dashed rgba(213, 0, 249, 0.3);
+  padding-top: 8px;
+}
+
+.predator-franchise-v233-absolu-supreme-apex-hud-panel .hud-playtesters h4 {
+  margin: 0 0 6px 0;
+  font-size: 11px;
+  font-family: 'Orbitron', monospace;
+  color: #ea80fc;
+  letter-spacing: 0.8px;
+}
+
+.predator-franchise-v233-absolu-supreme-apex-hud-panel .hud-playtesters ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.predator-franchise-v233-absolu-supreme-apex-hud-panel .hud-playtesters li {
+  font-size: 10px;
+  background: rgba(213, 0, 249, 0.06);
+  padding: 3px 6px;
+  border-left: 2px solid #d500f9;
+}
