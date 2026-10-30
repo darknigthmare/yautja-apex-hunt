@@ -61,6 +61,7 @@
         <div class="honor-score" id="honor-score-display">1000 PTS</div>
       </div>
       <div class="hud-panel title-panel">
+        <div class="canon-logo-slot" id="hud-yautja-clan-logo" aria-hidden="true"></div>
         <h1 class="yautja-font">YAUTJA: APEX HUNT</h1>
         <div class="hud-subtext" id="target-scanned-name">VAISSEAU MÈRE YAUTJA - SALLE DES TROPHÉES</div>
       </div>
@@ -254,6 +255,7 @@
   <div id="mission-modal" class="hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="mission-title">
     <div class="modal-box mission-box modal-scroll" tabindex="-1">
       <p class="modal-eyebrow">VAISSEAU-MÈRE · CONSOLE DE CHASSE</p>
+      <div class="canon-logo-slot modal-header-logo" id="modal-yautja-clan-logo" aria-hidden="true"></div>
       <h2 id="mission-title">ARMURERIE & CONTRATS YAUTJA</h2>
       <p id="persistence-status" class="persistence-status hidden" role="alert" aria-live="assertive">SAUVEGARDE LOCALE INDISPONIBLE — les changements restent actifs uniquement pour cette session.</p>
 
@@ -269,6 +271,7 @@
 
       <div class="tab-row" role="tablist" aria-label="Sections du vaisseau-mère">
         <button id="tab-btn-missions" class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="tab-content-missions">CONTRATS</button>
+        <button id="tab-btn-multiverse" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-multiverse">ANOMALIES & CROSSOVERS</button>
         <button id="tab-btn-loadout" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-loadout">PRÉPARATION</button>
         <button id="tab-btn-armory" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-armory">ARMURERIE</button>
         <button id="tab-btn-codex" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-codex">CODEX</button>
@@ -309,8 +312,18 @@
           </div>
         </section>
 
+                <div class="scale-filter-bar" role="toolbar" aria-label="Filtrer les proies par gabarit">
+          <span class="scale-filter-title">CLASSIFICATION PAR TAILLE :</span>
+          <button type="button" class="scale-filter-pill active" data-scale-filter="all">TOUTES LES TAILLES</button>
+          <button type="button" class="scale-filter-pill" data-scale-filter="geant">GÉANTES (8m-30m)</button>
+          <button type="button" class="scale-filter-pill" data-scale-filter="grande">GRANDES (3m-8m)</button>
+          <button type="button" class="scale-filter-pill" data-scale-filter="moyen">MOYENNES (1.8m-3m)</button>
+          <button type="button" class="scale-filter-pill" data-scale-filter="petite">PETITES (0.5m-1.8m)</button>
+          <button type="button" class="scale-filter-pill" data-scale-filter="minuscule">MINUSCULES (&lt;0.5m)</button>
+        </div>
+
         <div class="mission-cards-container">
-          <article class="mission-card">
+          <article class="mission-card" data-scale="geant">
             <div class="mission-card-media media-goliath" aria-hidden="true">
               <svg class="mission-icon" viewBox="0 0 120 70" fill="none">
                 <path d="M15 55 L35 20 L60 38 L85 20 L105 55 Z" stroke="#ff5511" stroke-width="2" fill="rgba(255,60,0,0.18)"/>
@@ -329,6 +342,7 @@
             </div>
             <p>Mégafaune colossale blindée.</p>
             <div class="mission-card-specs">
+              <span class="spec-tag scale-tag scale-geant">GÉANT (12m)</span>
               <span class="spec-tag">CORNE FRONTALE</span>
               <span class="spec-tag">QUEUE ÉPINEUSE</span>
               <span class="spec-tag reward-tag">+1200 PTS</span>
@@ -336,7 +350,7 @@
             <button class="btn-launch-hunt" type="button" data-hunt="goliath">TRAQUER LE GOLIATH</button>
           </article>
 
-          <article class="mission-card">
+          <article class="mission-card" data-scale="grande">
             <div class="mission-card-media media-queen" aria-hidden="true">
               <svg class="mission-icon" viewBox="0 0 120 70" fill="none">
                 <path d="M60 10 L85 30 L95 24 L88 48 L60 60 L32 48 L25 24 L35 30 Z" stroke="#00ff88" stroke-width="2" fill="rgba(0,255,120,0.14)"/>
@@ -355,6 +369,7 @@
             </div>
             <p>Reine Alien avec sang acide.</p>
             <div class="mission-card-specs">
+              <span class="spec-tag scale-tag scale-grande">GRANDE (4.5m)</span>
               <span class="spec-tag">COURONNE ROYALE</span>
               <span class="spec-tag">BRAS SECONDAIRES</span>
               <span class="spec-tag reward-tag">+1400 PTS</span>
@@ -362,7 +377,7 @@
             <button class="btn-launch-hunt" type="button" data-hunt="xeno_queen">AFFRONTER LA REINE</button>
           </article>
 
-          <article class="mission-card">
+          <article class="mission-card" data-scale="moyen">
             <div class="mission-card-media media-bad-blood" aria-hidden="true">
               <svg class="mission-icon" viewBox="0 0 120 70" fill="none">
                 <path d="M40 15 L80 15 L88 38 L72 58 L48 58 L32 38 Z" stroke="#ff2233" stroke-width="2" fill="rgba(255,30,50,0.16)"/>
@@ -382,6 +397,7 @@
             </div>
             <p>Chasseur renégat. Duel d'invisibilité.</p>
             <div class="mission-card-specs">
+              <span class="spec-tag scale-tag scale-moyen">MOYEN (2.3m)</span>
               <span class="spec-tag">LAMES DÉLOYALES</span>
               <span class="spec-tag">CAMOUFLAGE ACTIF</span>
               <span class="spec-tag reward-tag">+1300 PTS</span>
@@ -389,7 +405,7 @@
             <button class="btn-launch-hunt" type="button" data-hunt="bad_blood">DÉFIER LE BAD BLOOD</button>
           </article>
 
-          <article class="mission-card">
+          <article class="mission-card" data-scale="grande">
             <div class="mission-card-media media-predalien" aria-hidden="true">
               <svg class="mission-icon" viewBox="0 0 120 70" fill="none">
                 <path d="M35 18 C50 6, 70 6, 85 18 C95 32, 90 54, 76 62 L44 62 C30 54, 25 32, 35 18 Z" stroke="#ffd000" stroke-width="2" fill="rgba(255,200,0,0.14)"/>
@@ -408,6 +424,7 @@
             </div>
             <p>Hybride létal issu de l'univers AVP.</p>
             <div class="mission-card-specs">
+              <span class="spec-tag scale-tag scale-grande">GRANDE (3.2m)</span>
               <span class="spec-tag">MANDIBULES HYBRIDES</span>
               <span class="spec-tag">DREADLOCKS XENO</span>
               <span class="spec-tag reward-tag">+1500 PTS</span>
@@ -415,7 +432,7 @@
             <button class="btn-launch-hunt" type="button" data-hunt="predalien">VAINCRE LE PREDALIEN</button>
           </article>
 
-          <article class="mission-card mission-card-featured">
+          <article class="mission-card mission-card-featured" data-scale="moyen">
             <div class="mission-card-media media-berserker" aria-hidden="true">
               <svg class="mission-icon" viewBox="0 0 120 70" fill="none">
                 <path d="M38 14 L82 14 L92 36 L74 60 L46 60 L28 36 Z" stroke="#ff3b20" stroke-width="2.5" fill="rgba(255,40,10,0.2)"/>
@@ -435,6 +452,7 @@
             </div>
             <p>Chef de la planète-réserve, bêtes de son groupe et plasma lourd.</p>
             <div class="mission-card-specs">
+              <span class="spec-tag scale-tag scale-moyen">MOYEN (2.45m)</span>
               <span class="spec-tag">MÂCHOIRE D'OS</span>
               <span class="spec-tag">CHIENS HELL-HOUNDS</span>
               <span class="spec-tag reward-tag">+1600 PTS</span>
@@ -442,7 +460,7 @@
             <button class="btn-launch-hunt" type="button" data-hunt="super_predator">DÉFIER LE BERSERKER</button>
           </article>
 
-          <article class="mission-card mission-card-feral">
+          <article class="mission-card mission-card-feral" data-scale="moyen">
             <div class="mission-card-media media-feral" aria-hidden="true">
               <svg class="mission-icon" viewBox="0 0 120 70" fill="none">
                 <path d="M35 15 L85 15 L90 42 L60 62 L30 42 Z" stroke="#e0c27b" stroke-width="2" fill="rgba(215,185,110,0.16)"/>
@@ -462,6 +480,7 @@
             </div>
             <p>Salves de traits, bouclier frontal destructible et charge à la lance.</p>
             <div class="mission-card-specs">
+              <span class="spec-tag scale-tag scale-moyen">MOYEN (2.25m)</span>
               <span class="spec-tag">BOUCLIER D'OS</span>
               <span class="spec-tag">LANCE TÉLESCOPIQUE</span>
               <span class="spec-tag reward-tag">+1500 PTS</span>
@@ -469,7 +488,7 @@
             <button class="btn-launch-hunt" type="button" data-hunt="feral_predator">AFFRONTER LE FERAL</button>
           </article>
 
-          <article class="mission-card mission-card-wolf">
+          <article class="mission-card mission-card-wolf" data-scale="moyen">
             <div class="mission-card-media media-wolf" aria-hidden="true">
               <svg class="mission-icon" viewBox="0 0 120 70" fill="none">
                 <path d="M40 16 L80 16 L86 40 L70 58 L50 58 L34 40 Z" stroke="#00f0ff" stroke-width="2" fill="rgba(0,240,255,0.14)"/>
@@ -489,6 +508,7 @@
             </div>
             <p>Plasma double, fouet segmenté, mallette destructible et agents de dissolution.</p>
             <div class="mission-card-specs">
+              <span class="spec-tag scale-tag scale-moyen">MOYEN (2.35m)</span>
               <span class="spec-tag">DOUBLE PLASMA</span>
               <span class="spec-tag">FOUET RAZOR</span>
               <span class="spec-tag reward-tag">+1700 PTS</span>
@@ -496,7 +516,7 @@
             <button class="btn-launch-hunt" type="button" data-hunt="wolf_cleaner">AFFRONTER WOLF</button>
           </article>
 
-          <article class="mission-card mission-card-kalisk">
+          <article class="mission-card mission-card-kalisk" data-scale="grande">
             <div class="mission-card-media media-kalisk" aria-hidden="true">
               <svg class="mission-icon" viewBox="0 0 120 70" fill="none">
                 <path d="M30 35 L60 12 L90 35 L60 58 Z" stroke="#bf36ff" stroke-width="2" fill="rgba(180,40,255,0.16)"/>
@@ -514,6 +534,7 @@
             </div>
             <p>Carapace adaptative, régénération interruptible, charge et noyau exposé.</p>
             <div class="mission-card-specs">
+              <span class="spec-tag scale-tag scale-grande">GRANDE (5.5m)</span>
               <span class="spec-tag">CARAPACE ADAPTATIVE</span>
               <span class="spec-tag">NOYAU ÉNERGÉTIQUE</span>
               <span class="spec-tag reward-tag">+1600 PTS</span>
@@ -521,7 +542,7 @@
             <button class="btn-launch-hunt" type="button" data-hunt="kalisk">TRAQUER LE KALISK</button>
           </article>
 
-          <article class="mission-card mission-card-upgrade">
+          <article class="mission-card mission-card-upgrade" data-scale="grande">
             <div class="mission-card-media media-upgrade" aria-hidden="true">
               <svg class="mission-icon" viewBox="0 0 120 70" fill="none">
                 <path d="M30 18 L90 18 L100 48 L78 64 L42 64 L20 48 Z" stroke="#ff2200" stroke-width="3" fill="rgba(255,30,0,0.22)"/>
@@ -539,6 +560,7 @@
             </div>
             <p>Bio-armure destructible, bonds d’écrasement et glandes adaptatives régénérantes.</p>
             <div class="mission-card-specs">
+              <span class="spec-tag scale-tag scale-grande">GRANDE (3.3m)</span>
               <span class="spec-tag">EXOSQUELETTE RENFORCÉ</span>
               <span class="spec-tag">ONDE DE CHOC</span>
               <span class="spec-tag reward-tag">+1800 PTS</span>
@@ -546,7 +568,7 @@
             <button class="btn-launch-hunt" type="button" data-hunt="upgrade_predator">TRAQUER L’ASSASSIN</button>
           </article>
 
-          <article class="mission-card mission-card-city">
+          <article class="mission-card mission-card-city" data-scale="moyen">
             <div class="mission-card-media media-city" aria-hidden="true">
               <svg class="mission-icon" viewBox="0 0 120 70" fill="none">
                 <circle cx="60" cy="35" r="24" stroke="#00e5ff" stroke-width="2" stroke-dasharray="6,4" fill="rgba(0,220,255,0.12)"/>
@@ -566,6 +588,7 @@
             </div>
             <p>Disque intelligent, lance-filet, vision multi-bande et Medicomp urbain dans les rues de Los Angeles.</p>
             <div class="mission-card-specs">
+              <span class="spec-tag scale-tag scale-moyen">MOYEN (2.25m)</span>
               <span class="spec-tag">DISQUE INTELLIGENT</span>
               <span class="spec-tag">LANCE-FILET</span>
               <span class="spec-tag reward-tag">+1500 PTS</span>
@@ -573,7 +596,7 @@
             <button class="btn-launch-hunt" type="button" data-hunt="city_hunter">DÉFIER LE CHASSEUR URBAIN</button>
           </article>
 
-          <article class="mission-card mission-card-grid">
+          <article class="mission-card mission-card-grid" data-scale="moyen">
             <div class="mission-card-media media-grid" aria-hidden="true">
               <svg class="mission-icon" viewBox="0 0 120 70" fill="none">
                 <path d="M35 18 C55 6, 85 8, 98 26 C105 38, 92 56, 75 60 L45 60 C32 54, 25 36, 35 18 Z" stroke="#77ffaa" stroke-width="2" fill="rgba(100,255,160,0.14)"/>
@@ -593,6 +616,7 @@
             </div>
             <p>Traque xénomorphe dans une pyramide mobile : cicatrices quadrillées, embuscades, queue et sang acide.</p>
             <div class="mission-card-specs">
+              <span class="spec-tag scale-tag scale-moyen">MOYEN (2.4m)</span>
               <span class="spec-tag">QUEUE EN HARPON</span>
               <span class="spec-tag">ASSAUT RAMPANT</span>
               <span class="spec-tag reward-tag">+1600 PTS</span>
@@ -600,7 +624,7 @@
             <button class="btn-launch-hunt" type="button" data-hunt="grid_alien">AFFRONTER GRID</button>
           </article>
 
-          <article class="mission-card mission-card-jungle-1987">
+          <article class="mission-card mission-card-jungle-1987" data-scale="moyen">
             <div class="mission-card-media media-jungle-1987" aria-hidden="true">
               <svg class="mission-icon" viewBox="0 0 120 70" fill="none">
                 <path d="M40 14 L80 14 L88 38 L72 60 L48 60 L32 38 Z" stroke="#c0b590" stroke-width="2.5" fill="rgba(190,175,135,0.16)"/>
@@ -621,6 +645,7 @@
             </div>
             <p>Le chasseur de 1987 : verrou tri-laser, canon à plasma d’épaule et compte à rebours d’autodestruction.</p>
             <div class="mission-card-specs">
+              <span class="spec-tag scale-tag scale-moyen">MOYEN (2.2m)</span>
               <span class="spec-tag">TRI-LASER STAN WINSTON</span>
               <span class="spec-tag">AUTODESTRUCTION</span>
               <span class="spec-tag reward-tag">+1700 PTS</span>
@@ -635,6 +660,53 @@
             <button id="btn-buy-tribeam" type="button">TIR TRI-FAISCEAU — APEX (500 PTS)</button>
             <button id="btn-buy-antiacid" type="button">CAMOUFLAGE ANTI-ACIDE — APEX (800 PTS)</button>
             <button id="btn-buy-scope" type="button">ZOOM THERMIQUE 4× — APEX (400 PTS)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Multiverse Crossovers & Exceptional Anomalies (Temporal Rotation) -->
+      <div id="tab-content-multiverse" class="hidden" role="tabpanel" aria-labelledby="tab-btn-multiverse">
+        <div class="section-heading multiverse-heading">
+          <div class="multiverse-heading-badge">
+            <span class="canon-logo-slot" id="multiverse-header-logo"></span>
+            <div>
+              <p class="section-kicker">FACTION MULTIVERS · ANOMALIES SPATIO-TEMPORELLES</p>
+              <h3>PROIES D’EXCEPTION & CROSSOVERS DU MULTIVERS</h3>
+            </div>
+          </div>
+          <p>Fidélité 1:1 aux rencontres officielles du lore Yautja dans les comics & récits Dark Horse, DC, Top Cow et cross-media. Les anomalies se manifestent selon une rotation temporelle stricte de 6 heures.</p>
+        </div>
+
+        <!-- Temporal Rotation Banner -->
+        <div class="multiverse-rotation-banner">
+          <div class="rotation-timer-box">
+            <span class="rotation-label">PROCHAINE ROTATION DANS</span>
+            <span id="crossover-countdown-timer" class="rotation-countdown">06:00:00</span>
+          </div>
+          <div class="rotation-status-box">
+            <span class="rotation-status-badge">FAILLE ACTIVE · CYCLE #<span id="crossover-cycle-id">1</span></span>
+            <span class="rotation-status-desc">Cible d’exception actuellement traçable dans le continuum</span>
+          </div>
+        </div>
+
+        <!-- Active Featured Crossover Card -->
+        <div id="multiverse-active-card-container">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Upcoming Anomalies Preview -->
+        <div class="upcoming-anomalies-section">
+          <h4>PROCHAINES ANOMALIES EN APPROCHE (ROTATION 6H)</h4>
+          <div id="upcoming-crossovers-grid" class="upcoming-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Full Multiverse Canon Catalog & Lore -->
+        <div class="multiverse-archive-section">
+          <h4>ARCHIVES DES PROIES DU MULTIVERS DOCUMENTÉES</h4>
+          <div id="multiverse-roster-grid" class="multiverse-roster-grid">
+            <!-- Populated by JS -->
           </div>
         </div>
       </div>

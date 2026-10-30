@@ -47,6 +47,23 @@ import {
   sanitizeHuntLoadout,
   validateHuntLoadout,
 } from './gameplay/HuntLoadoutSystem.js';
+import {
+  PREY_SCALE_TIERS,
+  PREY_FACTIONS,
+  CANON_PREY_CATALOG,
+  MULTIVERSE_CROSSOVER_PREY,
+  getMultiverseRotationState,
+  filterPreyByScale,
+} from './data/PreyTaxonomyAndCrossoverCatalog.js';
+import {
+  CANON_FACTION_COLORS,
+  getYautjaClanLogo,
+  getWeylandYutaniLogo,
+  getUSCMLogo,
+  getEngineerLogo,
+  getXenomorphHiveLogo,
+  getCrossoverLogo,
+} from './ui/CanonLogosAndEmblems.js';
 
 const DEFAULT_CAMERA_FOV = 65;
 const SCOPE_CAMERA_FOV = THREE.MathUtils.radToDeg(
@@ -2409,8 +2426,154 @@ export class Game {
     }
   }
 
+
+  setupTaxonomyAndMultiverse() {
+    // 1. Injected Canon Vector Logos
+    const hudLogo = document.getElementById('hud-yautja-clan-logo');
+    if (hudLogo) hudLogo.innerHTML = getYautjaClanLogo(36);
+
+    const modalLogo = document.getElementById('modal-yautja-clan-logo');
+    if (modalLogo) modalLogo.innerHTML = getYautjaClanLogo(44);
+
+    const multiverseLogo = document.getElementById('multiverse-header-logo');
+    if (multiverseLogo) multiverseLogo.innerHTML = getYautjaClanLogo(40);
+
+    // 2. 5-Tier Prey Taxonomy Filtering
+    const filterPills = document.querySelectorAll('.scale-filter-pill');
+    filterPills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        filterPills.forEach((p) => p.classList.remove('active'));
+        pill.classList.add('active');
+        const filterScale = pill.getAttribute('data-scale-filter');
+
+        const missionCards = document.querySelectorAll('.mission-card');
+        missionCards.forEach((card) => {
+          const cardScale = card.getAttribute('data-scale');
+          if (filterScale === 'all' || cardScale === filterScale) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        audioSynth.playYautjaClick();
+      });
+    });
+
+    // 3. Multiverse Crossover Temporal Rotation
+    const renderMultiverseUI = () => {
+      const state = getMultiverseRotationState();
+
+      // Countdown & Cycle ID
+      const countdownEl = document.getElementById('crossover-countdown-timer');
+      if (countdownEl) countdownEl.textContent = state.formattedCountdown;
+
+      const cycleIdEl = document.getElementById('crossover-cycle-id');
+      if (cycleIdEl) cycleIdEl.textContent = String(state.cycleIndex + 1);
+
+      // Active Target Card
+      const activeContainer = document.getElementById('multiverse-active-card-container');
+      if (activeContainer && (!activeContainer.dataset.renderedTarget || activeContainer.dataset.renderedTarget !== state.activePrey.id)) {
+        activeContainer.dataset.renderedTarget = state.activePrey.id;
+        const p = state.activePrey;
+        activeContainer.innerHTML = `
+          <div class="multiverse-active-card">
+            <div class="multiverse-active-visual">
+              ${getCrossoverLogo(p.id, 80)}
+              <span class="scale-tag scale-${p.scale.toLowerCase()}" style="margin-top:10px;">${p.scale} (${p.sizeMeters}m)</span>
+            </div>
+            <div class="multiverse-active-details">
+              <div class="multiverse-target-header">
+                <div>
+                  <h4 class="multiverse-target-title">${p.name}</h4>
+                  <div class="multiverse-target-meta">
+                    <span class="sector-badge">${p.universe}</span>
+                    <span class="threat-badge threat-renegade">CROSSOVER CANON</span>
+                    <span class="spec-tag reward-tag">+${p.honorReward} PTS</span>
+                  </div>
+                </div>
+              </div>
+              <p style="color:#cfd8dc; font-size:13px; line-height:1.4;">${p.description}</p>
+              <div class="multiverse-tactics-box">
+                <strong>TACTIQUE OBSERVÉE :</strong> ${p.tactics}
+              </div>
+              <div class="multiverse-weakpoints-row">
+                <span class="multiverse-weakpoints-label">POINTS FAIBLES :</span>
+                ${p.weakpoints.map(wp => `<span class="weakpoint-pill">${wp}</span>`).join(' ')}
+              </div>
+              <div style="font-size:11px; color:#90a4ae; margin-top:4px;">
+                <em>Source officielle : ${p.originMedia} (${p.crossoverYear}) · Arène : ${p.arena}</em>
+              </div>
+              <div class="crossover-actions">
+                <button id="btn-launch-crossover" class="btn-launch-crossover" type="button" data-crossover-id="${p.id}">
+                  TRAQUER L'ANOMALIE DU MULTIVERS
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('btn-launch-crossover')?.addEventListener('click', () => {
+          audioSynth.playYautjaClick();
+          this.hud.showLogMessage(`ANOMALIE SPATIO-TEMPORELLE ENGAGÉE : ${p.name.toUpperCase()}`, 3500);
+          this.prepareHunt('jungle_hunter_1987', 'jungle');
+        });
+      }
+
+      // Upcoming Grid
+      const upcomingContainer = document.getElementById('upcoming-crossovers-grid');
+      if (upcomingContainer && (!upcomingContainer.dataset.renderedCycle || upcomingContainer.dataset.renderedCycle !== String(state.cycleIndex))) {
+        upcomingContainer.dataset.renderedCycle = String(state.cycleIndex);
+        upcomingContainer.innerHTML = state.upcomingPrey.map((item, index) => {
+          const hoursOffset = (index + 1) * 6;
+          return `
+            <div class="upcoming-card">
+              <div style="flex-shrink:0;">${getCrossoverLogo(item.id, 44)}</div>
+              <div class="upcoming-info">
+                <h5>${item.name}</h5>
+                <span class="upcoming-timing">DANS ENVIRON +${hoursOffset}H · ${item.universe}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Multiverse Full Archive Roster
+      const rosterContainer = document.getElementById('multiverse-roster-grid');
+      if (rosterContainer && !rosterContainer.dataset.rendered) {
+        rosterContainer.dataset.rendered = 'true';
+        rosterContainer.innerHTML = MULTIVERSE_CROSSOVER_PREY.map((item) => `
+          <div class="multiverse-roster-card">
+            <div class="roster-card-header">
+              ${getCrossoverLogo(item.id, 40)}
+              <div>
+                <h5>${item.name}</h5>
+                <div class="roster-card-source">${item.originMedia}</div>
+              </div>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap; margin:4px 0;">
+              <span class="scale-tag scale-${item.scale.toLowerCase()}">${item.scale} (${item.sizeMeters}m)</span>
+              <span class="spec-tag reward-tag">+${item.honorReward} PTS</span>
+            </div>
+            <p style="font-size:12px; color:#b0bec5; margin:0;">${item.description}</p>
+            <div style="font-size:11px; color:#ffd54f;">
+              <strong>Trophée :</strong> ${item.trophy}
+            </div>
+          </div>
+        `).join('');
+      }
+    };
+
+    renderMultiverseUI();
+
+    if (this._multiverseInterval) clearInterval(this._multiverseInterval);
+    this._multiverseInterval = setInterval(() => {
+      renderMultiverseUI();
+    }, 1000);
+  }
+
   setupMissionTabs() {
-    const tabKeys = ['missions', 'loadout', 'armory', 'codex', 'options'];
+    const tabKeys = ['missions', 'multiverse', 'loadout', 'armory', 'codex', 'options'];
     const tabs = tabKeys.map((key) => ({
       key,
       button: document.getElementById(`tab-btn-${key}`),
@@ -2470,6 +2633,7 @@ export class Game {
     });
 
     this.setupMissionTabs();
+    this.setupTaxonomyAndMultiverse();
     this.setupHuntLoadoutControls();
     document.getElementById('btn-explore-hub')?.addEventListener('click', () => {
       this.enterHubExploration();
