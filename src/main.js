@@ -54,6 +54,9 @@ import {
   MULTIVERSE_CROSSOVER_PREY,
   getMultiverseRotationState,
   filterPreyByScale,
+  MONSTER_HUNTER_CROWNS,
+  determineMonsterHunterCrown,
+  ELEMENTAL_AFFINITIES,
 } from './data/PreyTaxonomyAndCrossoverCatalog.js';
 import {
   CANON_FACTION_COLORS,
@@ -2615,6 +2618,20 @@ export class Game {
           filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('2000 AD') || c.universe.includes('Valiant') || c.id.includes('terminator') || c.id.includes('robocop') || c.id.includes('mortal_kombat'));
         } else if (activeMultiverseFilter === 'pop') {
           filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('Top Cow') || c.universe.includes('Archie') || c.universe.includes('Mutant Enemy') || c.id.includes('x_files') || c.id.includes('darkness'));
+        } else if (activeMultiverseFilter === 'legends') {
+          filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c =>
+            c.universe.includes('Mortal Kombat') ||
+            c.universe.includes('Image') ||
+            c.universe.includes('Cinéma') ||
+            c.universe.includes('Lucasfilm') ||
+            c.universe.includes('Embassy') ||
+            c.id.includes('hellboy') ||
+            c.id.includes('conan') ||
+            c.id.includes('riddick') ||
+            c.id.includes('boba') ||
+            c.id.includes('spawn') ||
+            c.id.includes('plissken')
+          );
         }
 
         rosterContainer.innerHTML = filteredPrey.map((item) => {
@@ -3301,15 +3318,23 @@ export class Game {
       5500,
     );
 
+    // Monster Hunter Size Variation System (Couronne d'Or Géante / Miniature / Argent)
+    const activeTarget = this.activeCrossoverHunt || this.activePreySimulation;
+    this.currentHuntCrown = determineMonsterHunterCrown(activeTarget);
+
     if (this.activeCrossoverHunt) {
       const p = this.activeCrossoverHunt;
       const targetScanned = document.getElementById('target-scanned-name');
       if (targetScanned) targetScanned.textContent = `ANOMALIE MULTIVERS : ${p.name.toUpperCase()} [${p.universe}]`;
       const hudLogo = document.getElementById('hud-yautja-clan-logo');
       if (hudLogo) hudLogo.innerHTML = getCrossoverLogo(p.id, 36);
-      this.hud.setCustomTargetLabel(`ANOMALIE : ${p.name.toUpperCase()}`);
+      const crownSuffix = (this.currentHuntCrown && this.currentHuntCrown.id !== 'STANDARD') ? ` [${this.currentHuntCrown.icon} ${this.currentHuntCrown.label.toUpperCase()}]` : '';
+      this.hud.setCustomTargetLabel(`ANOMALIE : ${p.name.toUpperCase()}${crownSuffix}`);
       if (this.activeBoss?.mesh) {
-        this.activeBoss.maxHealth = Math.round((this.activeBoss.maxHealth || 1000) * 1.5);
+        const crownMult = this.currentHuntCrown?.sizeMultiplier ?? 1.0;
+        this.activeBoss.mesh.scale.set(crownMult, crownMult, crownMult);
+        const hpCrown = this.currentHuntCrown?.healthMultiplier ?? 1.0;
+        this.activeBoss.maxHealth = Math.round((this.activeBoss.maxHealth || 1000) * 1.5 * hpCrown);
         this.activeBoss.health = this.activeBoss.maxHealth;
       }
       this.hud.showLogMessage(
@@ -3322,7 +3347,8 @@ export class Game {
       if (targetScanned) targetScanned.textContent = `SIMULATION HOLO-TRAQUE : ${target.name.toUpperCase()} (${target.scale} - ${target.sizeMeters}m)`;
       const hudLogo = document.getElementById('hud-yautja-clan-logo');
       if (hudLogo) hudLogo.innerHTML = renderFactionEmblem(target.faction, 36);
-      this.hud.setCustomTargetLabel(`PROIE : ${target.name.toUpperCase()} (${target.scale})`);
+      const crownSuffix = (this.currentHuntCrown && this.currentHuntCrown.id !== 'STANDARD') ? ` [${this.currentHuntCrown.icon} ${this.currentHuntCrown.label.toUpperCase()}]` : '';
+      this.hud.setCustomTargetLabel(`PROIE : ${target.name.toUpperCase()} (${target.scale})${crownSuffix}`);
       if (this.activeBoss?.mesh) {
         let scaleFactor = 1.0;
         if (target.scale === 'GEANT') scaleFactor = 1.6;
@@ -3330,10 +3356,13 @@ export class Game {
         else if (target.scale === 'MOYEN') scaleFactor = 1.0;
         else if (target.scale === 'PETITE') scaleFactor = 0.65;
         else if (target.scale === 'MINUSCULE') scaleFactor = 0.35;
+        const crownMult = this.currentHuntCrown?.sizeMultiplier ?? 1.0;
+        scaleFactor *= crownMult;
         this.activeBoss.mesh.scale.set(scaleFactor, scaleFactor, scaleFactor);
         if (this.activeBoss.maxHealth) {
           const mult = PREY_SCALE_TIERS[target.scale]?.honorMultiplier ?? 1.0;
-          this.activeBoss.maxHealth = Math.round(this.activeBoss.maxHealth * mult);
+          const hpCrown = this.currentHuntCrown?.healthMultiplier ?? 1.0;
+          this.activeBoss.maxHealth = Math.round(this.activeBoss.maxHealth * mult * hpCrown);
           this.activeBoss.health = this.activeBoss.maxHealth;
         }
       }
@@ -3343,6 +3372,13 @@ export class Game {
       );
     } else {
       this.hud.setCustomTargetLabel(null);
+    }
+
+    if (this.currentHuntCrown && this.currentHuntCrown.id !== 'STANDARD') {
+      this.hud.showLogMessage(
+        `SPÉCIMEN D'EXCEPTION (${this.currentHuntCrown.icon}) : ${this.currentHuntCrown.label.toUpperCase()} · MULTIPLICATEUR D'HONNEUR ×${this.currentHuntCrown.honorBonusMultiplier}`,
+        6500,
+      );
     }
 
     if (
@@ -4550,17 +4586,25 @@ export class Game {
     const huntDefinition = HUNT_DEFINITIONS[this.currentHuntType];
     const modal = document.getElementById('endgame-modal');
     if (this.activeCrossoverHunt) {
-      document.getElementById('endgame-title').textContent = `ANOMALIE VAINCUE : ${this.activeCrossoverHunt.name.toUpperCase()} !`;
-      document.getElementById('endgame-desc').textContent = `Trophée d'exception réclamé : ${this.activeCrossoverHunt.trophy}. L'anomalie du multivers est archivée au panthéon du clan.`;
-      this.player.honorScore += this.activeCrossoverHunt.honorReward;
+      const crown = this.currentHuntCrown;
+      const crownSuffix = (crown && crown.id !== 'STANDARD') ? ` [${crown.icon} ${crown.label.toUpperCase()}]` : '';
+      const bonusMult = crown?.honorBonusMultiplier ?? 1.0;
+      const honorGain = Math.round(this.activeCrossoverHunt.honorReward * bonusMult);
+      document.getElementById('endgame-title').textContent = `ANOMALIE VAINCUE : ${this.activeCrossoverHunt.name.toUpperCase()}${crownSuffix} !`;
+      document.getElementById('endgame-desc').textContent = `Trophée d'exception réclamé : ${this.activeCrossoverHunt.trophy}. L'anomalie du multivers est archivée au panthéon du clan. (+${honorGain} PTS)`;
+      this.player.honorScore += honorGain;
     } else if (this.activePreySimulation) {
-      document.getElementById('endgame-title').textContent = `SIMULATION ACCOMPLIE : ${this.activePreySimulation.name.toUpperCase()} !`;
-      document.getElementById('endgame-desc').textContent = `Spécimen ${this.activePreySimulation.scale} (${this.activePreySimulation.sizeMeters}m) maîtrisé. Trophée simulé : ${this.activePreySimulation.trophy}.`;
-      this.player.honorScore += this.activePreySimulation.baseHonor;
+      const crown = this.currentHuntCrown;
+      const crownSuffix = (crown && crown.id !== 'STANDARD') ? ` [${crown.icon} ${crown.label.toUpperCase()}]` : '';
+      const bonusMult = crown?.honorBonusMultiplier ?? 1.0;
+      const honorGain = Math.round(this.activePreySimulation.baseHonor * bonusMult);
+      document.getElementById('endgame-title').textContent = `SIMULATION ACCOMPLIE : ${this.activePreySimulation.name.toUpperCase()}${crownSuffix} !`;
+      document.getElementById('endgame-desc').textContent = `Spécimen ${this.activePreySimulation.scale} (${this.activePreySimulation.sizeMeters}m) maîtrisé. Trophée simulé : ${this.activePreySimulation.trophy}. (+${honorGain} PTS)`;
+      this.player.honorScore += honorGain;
     } else {
       document.getElementById('endgame-title').textContent = "CHASSE ACCOMPLIE !";
+      document.getElementById('endgame-desc').textContent = `${huntDefinition?.name ?? 'La proie'} rejoint la salle des trophées du clan.`;
     }
-    document.getElementById('endgame-desc').textContent = `${huntDefinition?.name ?? 'La proie'} rejoint la salle des trophées du clan.`;
     document.getElementById('final-honor-score').textContent = `${this.player.honorScore} PTS`;
     document.getElementById('final-yautja-rank').textContent = this.player.ranks[this.player.honorRankIndex];
     this.updateDirectiveResultPanel(true);

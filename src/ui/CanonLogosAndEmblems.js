@@ -633,6 +633,147 @@ export function getCrossoverLogo(crossoverId, size = 64) {
         </svg>
       `.trim();
 
+    case 'scorpion_subzero':
+    case 'crossover_scorpion_subzero':
+      // Mortal Kombat Dragon, Shirai Ryu Flame & Lin Kuei Ice (2015)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-mk-kombat" role="img" aria-label="Sceau Mortal Kombat Glace et Feu">
+          <circle cx="40" cy="40" r="36" fill="#120c02" stroke="#ff9800" stroke-width="2.5" />
+          <path d="M40 8 A32 32 0 0 1 72 40" stroke="#00e5ff" stroke-width="3" fill="none" />
+          <path d="M40 72 A32 32 0 0 1 8 40" stroke="#ff5722" stroke-width="3" fill="none" />
+          <path d="M38 18 C30 18 24 24 26 34 C28 40 34 42 42 40 C48 38 52 42 50 48 C48 54 40 56 34 54 C30 52 28 48 24 48 C22 56 30 64 42 64 C56 64 64 52 62 38 C60 26 50 18 38 18 Z" fill="#ffd54f" />
+          <circle cx="48" cy="28" r="2.5" fill="#d32f2f" />
+        </svg>
+      `.trim();
+
+    case 'hellboy_anung':
+    case 'crossover_hellboy_anung':
+      // Hellboy Right Hand of Doom & Horn Stumps (1999)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-hellboy" role="img" aria-label="Main Droite de la Destruction de Hellboy">
+          <circle cx="40" cy="40" r="36" fill="#1a0606" stroke="#d32f2f" stroke-width="2.5" />
+          <rect x="26" y="24" width="28" height="34" rx="4" fill="#b71c1c" stroke="#5d4037" stroke-width="2" />
+          <line x1="33" y1="24" x2="33" y2="44" stroke="#7f0000" stroke-width="2" />
+          <line x1="40" y1="24" x2="40" y2="44" stroke="#7f0000" stroke-width="2" />
+          <line x1="47" y1="24" x2="47" y2="44" stroke="#7f0000" stroke-width="2" />
+          <circle cx="28" cy="18" r="5" fill="#4e342e" stroke="#8d6e63" stroke-width="1.5" />
+          <circle cx="52" cy="18" r="5" fill="#4e342e" stroke="#8d6e63" stroke-width="1.5" />
+        </svg>
+      `.trim();
+
+    case 'conan_cimmerian':
+    case 'crossover_conan_cimmerian':
+      // Conan Cimmerian Broadsword & Savage Skull Crossguard (2019)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-conan" role="img" aria-label="Glaive Cimmérien de Conan">
+          <circle cx="40" cy="40" r="36" fill="#1e1b18" stroke="#8d6e63" stroke-width="2.5" />
+          <polygon points="40,10 46,50 40,54 34,50" fill="#e0e0e0" stroke="#9e9e9e" stroke-width="1.5" />
+          <rect x="22" y="52" width="36" height="6" rx="2" fill="#5d4037" stroke="#3e2723" stroke-width="1.5" />
+          <rect x="37" y="58" width="6" height="14" fill="#8d6e63" />
+          <circle cx="40" cy="74" r="4" fill="#d7ccc8" stroke="#5d4037" stroke-width="1.5" />
+        </svg>
+      `.trim();
+
+    case 'deadpool_wilson':
+    case 'crossover_deadpool_wilson':
+      // Deadpool Split Mask & Crossed Katanas (2024)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-deadpool" role="img" aria-label="Masque de Deadpool">
+          <circle cx="40" cy="40" r="36" fill="#b71c1c" stroke="#d32f2f" stroke-width="2.5" />
+          <line x1="40" y1="4" x2="40" y2="76" stroke="#212121" stroke-width="3" />
+          <ellipse cx="28" cy="40" rx="9" ry="14" fill="#212121" />
+          <ellipse cx="52" cy="40" rx="9" ry="14" fill="#212121" />
+          <polygon points="26,36 32,40 26,44" fill="#ffffff" />
+          <polygon points="54,36 48,40 54,44" fill="#ffffff" />
+        </svg>
+      `.trim();
+
+    case 'judge_death':
+    case 'crossover_judge_death':
+      // Judge Death Portcullis Visor & Deadworld Grimace (1997)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-judge-death" role="img" aria-label="Casque du Juge Mort de Deadworld">
+          <circle cx="40" cy="40" r="36" fill="#0b1014" stroke="#546e7a" stroke-width="2.5" />
+          <polygon points="40,12 64,26 58,68 40,74 22,68 16,26" fill="#263238" stroke="#37474f" stroke-width="2" />
+          <line x1="28" y1="30" x2="52" y2="30" stroke="#cfd8dc" stroke-width="3" />
+          <line x1="28" y1="36" x2="52" y2="36" stroke="#cfd8dc" stroke-width="3" />
+          <line x1="32" y1="26" x2="32" y2="40" stroke="#cfd8dc" stroke-width="2" />
+          <line x1="40" y1="26" x2="40" y2="40" stroke="#cfd8dc" stroke-width="2" />
+          <line x1="48" y1="26" x2="48" y2="40" stroke="#cfd8dc" stroke-width="2" />
+          <path d="M30 52 Q40 62 50 52" stroke="#eceff1" stroke-width="3" fill="none" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
+    case 'spawn_simmons':
+    case 'crossover_spawn_simmons':
+      // Spawn Symbiote Eyes & Necro Chains (1996)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-spawn" role="img" aria-label="Masque Infernal de Spawn">
+          <circle cx="40" cy="40" r="36" fill="#0d140e" stroke="#00e676" stroke-width="2.5" />
+          <polygon points="40,12 66,32 56,70 40,76 24,70 14,32" fill="#1b241c" stroke="#2e7d32" stroke-width="2" />
+          <path d="M22 36 Q32 30 36 44 Q28 48 22 36 Z" fill="#ffffff" stroke="#00e676" stroke-width="1.5" />
+          <path d="M58 36 Q48 30 44 44 Q52 48 58 36 Z" fill="#ffffff" stroke="#00e676" stroke-width="1.5" />
+          <circle cx="40" cy="62" r="5" fill="#cfd8dc" stroke="#424242" stroke-width="1.5" />
+        </svg>
+      `.trim();
+
+    case 'riddick_furyan':
+    case 'crossover_riddick_furyan':
+      // Riddick Furyan Eyeshine Goggles & Dual Ulaks (2004)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-riddick" role="img" aria-label="Lunettes Furyan de Riddick">
+          <circle cx="40" cy="40" r="36" fill="#080808" stroke="#78909c" stroke-width="2.5" />
+          <ellipse cx="28" cy="38" rx="10" ry="8" fill="#1c252a" stroke="#80cbc4" stroke-width="2" />
+          <ellipse cx="52" cy="38" rx="10" ry="8" fill="#1c252a" stroke="#80cbc4" stroke-width="2" />
+          <circle cx="28" cy="38" r="4" fill="#e0f2f1" />
+          <circle cx="52" cy="38" r="4" fill="#e0f2f1" />
+          <line x1="38" y1="38" x2="42" y2="38" stroke="#37474f" stroke-width="3" />
+          <path d="M22 62 Q40 50 58 62" stroke="#b0bec5" stroke-width="3" fill="none" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
+    case 'mandalorian_boba':
+    case 'crossover_mandalorian_boba':
+      // Boba Fett Beskar Helmet T-Visor & Rangefinder (1997)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-boba-fett" role="img" aria-label="Casque Mandalorien de Boba Fett">
+          <circle cx="40" cy="40" r="36" fill="#182c1e" stroke="#388e3c" stroke-width="2.5" />
+          <path d="M22 24 L58 24 L54 62 L40 68 L26 62 Z" fill="#2e7d32" stroke="#b71c1c" stroke-width="2" />
+          <line x1="26" y1="36" x2="54" y2="36" stroke="#000000" stroke-width="4" />
+          <line x1="40" y1="36" x2="40" y2="58" stroke="#000000" stroke-width="4" />
+          <line x1="58" y1="20" x2="58" y2="34" stroke="#cfd8dc" stroke-width="2" />
+          <rect x="55" y="16" width="6" height="4" fill="#ffeb3b" />
+        </svg>
+      `.trim();
+
+    case 'snake_plissken':
+    case 'crossover_snake_plissken':
+      // Snake Plissken Eyepatch & Laser Reticle (1996)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-plissken" role="img" aria-label="Bandeau Oculaire de Snake Plissken">
+          <circle cx="40" cy="40" r="36" fill="#1c2226" stroke="#78909c" stroke-width="2.5" />
+          <polygon points="18,34 38,28 36,48 16,42" fill="#000000" stroke="#37474f" stroke-width="2" />
+          <circle cx="54" cy="38" r="9" fill="none" stroke="#ff1744" stroke-width="2" />
+          <line x1="54" y1="26" x2="54" y2="50" stroke="#ff1744" stroke-width="1.5" />
+          <line x1="42" y1="38" x2="66" y2="38" stroke="#ff1744" stroke-width="1.5" />
+          <circle cx="54" cy="38" r="2" fill="#ff1744" />
+        </svg>
+      `.trim();
+
+    case 'caryn_delacroix':
+    case 'crossover_caryn_delacroix':
+      // Caryn Delacroix & Big Mama Hybrid Mask (1993)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-caryn" role="img" aria-label="Masque Hybride de Caryn Delacroix">
+          <circle cx="40" cy="40" r="36" fill="#20061e" stroke="#e91e63" stroke-width="2.5" />
+          <polygon points="40,12 62,30 54,66 40,74 26,66 18,30" fill="#4a148c" stroke="#ec407a" stroke-width="2" />
+          <path d="M26 36 L36 40 M54 36 L44 40" stroke="#f48fb1" stroke-width="2.5" stroke-linecap="round" />
+          <polygon points="40,24 44,32 36,32" fill="#d81b60" />
+          <circle cx="40" cy="54" r="4" fill="#ffd54f" />
+        </svg>
+      `.trim();
+
+
     default:
       return getYautjaClanLogo(size);
   }

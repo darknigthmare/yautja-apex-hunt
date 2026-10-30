@@ -9,6 +9,9 @@ import {
   getMultiverseRotationState,
   filterPreyByScale,
   filterPreyByFaction,
+  MONSTER_HUNTER_CROWNS,
+  determineMonsterHunterCrown,
+  ELEMENTAL_AFFINITIES,
 } from '../src/data/PreyTaxonomyAndCrossoverCatalog.js';
 
 import {
@@ -43,7 +46,7 @@ test('Taxonomie des proies : Les 5 paliers d’échelle (Géant, Grande, Moyen, 
 });
 
 test('Catalogue canonique : Distribution exhaustive des proies à travers les factions et gabarits 1:1', () => {
-  assert.ok(CANON_PREY_CATALOG.length >= 100, `Le catalogue doit contenir au moins 100 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
+  assert.ok(CANON_PREY_CATALOG.length >= 125, `Le catalogue doit contenir au moins 100 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
 
   const scalesPresent = new Set(CANON_PREY_CATALOG.map((p) => p.scale));
   assert.ok(scalesPresent.has('GEANT'), 'Présence de proies géantes');
@@ -71,8 +74,8 @@ test('Factions canoniques : Couverture complète Yautja, Ingénieurs, Ruche Xén
   assert.ok(factions.has(PREY_FACTIONS.XENOMORPH), 'Faction Xénomorphe couverte');
 });
 
-test('Multivers Crossover : Les 30 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
-  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 30, 'Exactement 30 proies crossover majeures documentées');
+test('Multivers Crossover : Les 40 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
+  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 40, 'Exactement 40 proies crossover majeures documentées');
 
   const expectedIds = [
     'crossover_batman',
@@ -105,6 +108,16 @@ test('Multivers Crossover : Les 30 proies d’exception officielles sont répert
     'crossover_iron_man',
     'crossover_captain_america',
     'crossover_thor_asgard',
+    'crossover_scorpion_subzero',
+    'crossover_hellboy_anung',
+    'crossover_conan_cimmerian',
+    'crossover_deadpool_wilson',
+    'crossover_judge_death',
+    'crossover_spawn_simmons',
+    'crossover_riddick_furyan',
+    'crossover_mandalorian_boba',
+    'crossover_snake_plissken',
+    'crossover_caryn_delacroix',
   ];
   const ids = MULTIVERSE_CROSSOVER_PREY.map((c) => c.id);
   assert.deepEqual(ids, expectedIds);
@@ -142,6 +155,18 @@ test('Multivers Crossover : Les 30 proies d’exception officielles sont répert
   assert.match(wolverine.originMedia, /Predator vs\. Wolverine/);
   assert.equal(wolverine.crossoverYear, 2023);
   assert.equal(wolverine.universe, 'Marvel Comics');
+
+  const hellboy = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_hellboy_anung');
+  assert.match(hellboy.originMedia, /Hellboy \/ B\.P\.R\.D\./);
+  assert.equal(hellboy.scale, 'MOYEN');
+
+  const deadpool = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_deadpool_wilson');
+  assert.match(deadpool.originMedia, /Deadpool vs\. Predator/);
+  assert.equal(deadpool.crossoverYear, 2024);
+
+  const mk = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_scorpion_subzero');
+  assert.match(mk.originMedia, /Mortal Kombat X/);
+  assert.equal(mk.crossoverYear, 2015);
 });
 
 test('Système de rotation temporelle : Cycle déterministe de 6 heures et compte à rebours précis', () => {
@@ -212,12 +237,12 @@ test('Logos et Emblèmes Canoniques 1:1 : Génération SVG vectorielle sans dép
   assert.match(stargazerSvg, /logo-stargazer/);
   assert.match(stargazerSvg, /STARGAZER/);
 
-  // 7. Crossover Logos (all 30)
+  // 7. Crossover Logos (all 40)
   for (const crossover of MULTIVERSE_CROSSOVER_PREY) {
     const badgeSvg = getCrossoverLogo(crossover.id, 64);
     assert.match(badgeSvg, /<svg/);
     assert.match(badgeSvg, /crossover-logo/);
-    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade|tarzan|magnus|grendel|the-mask|buffy|archie|darkness|robocop|kano|xfiles|anderson|worlds-finest|t-infinity|machiko|green-lantern|grifter|jla|bloodlines|wolverine|black-panther|spider-man|iron-man|captain-america|thor)/);
+    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade|tarzan|magnus|grendel|the-mask|buffy|archie|darkness|robocop|kano|xfiles|anderson|worlds-finest|t-infinity|machiko|green-lantern|grifter|jla|bloodlines|wolverine|black-panther|spider-man|iron-man|captain-america|thor|mk-kombat|hellboy|conan|deadpool|judge-death|spawn|riddick|boba-fett|plissken|caryn)/);
   }
 
   // 8. 12 Hunt Card Logos
@@ -249,4 +274,45 @@ test('Logos et Emblèmes Canoniques 1:1 : Génération SVG vectorielle sans dép
   // Fallback
   const fallbackSvg = getCrossoverLogo('unknown_entity', 50);
   assert.match(fallbackSvg, /logo-yautja/);
+});
+
+
+test('Système Monster Hunter : Mécanique des Couronnes de taille d\'or et affinités élémentaires', () => {
+  const crowns = Object.keys(MONSTER_HUNTER_CROWNS);
+  assert.deepEqual(crowns, ['GIANT_GOLD_CROWN', 'MINI_GOLD_CROWN', 'SILVER_CROWN', 'STANDARD']);
+
+  // Couronne d'or géante
+  const giant = MONSTER_HUNTER_CROWNS.GIANT_GOLD_CROWN;
+  assert.equal(giant.sizeMultiplier, 1.30);
+  assert.equal(giant.honorBonusMultiplier, 1.50);
+  assert.equal(giant.icon, '👑');
+
+  // Couronne d'or miniature
+  const mini = MONSTER_HUNTER_CROWNS.MINI_GOLD_CROWN;
+  assert.equal(mini.sizeMultiplier, 0.72);
+  assert.equal(mini.honorBonusMultiplier, 1.35);
+
+  // Fonction de tirage
+  const rolledGiant = determineMonsterHunterCrown({}, 0.05);
+  assert.equal(rolledGiant.id, 'GIANT_GOLD_CROWN');
+
+  const rolledMini = determineMonsterHunterCrown({}, 0.12);
+  assert.equal(rolledMini.id, 'MINI_GOLD_CROWN');
+
+  const rolledSilver = determineMonsterHunterCrown({}, 0.25);
+  assert.equal(rolledSilver.id, 'SILVER_CROWN');
+
+  const rolledStandard = determineMonsterHunterCrown({}, 0.75);
+  assert.equal(rolledStandard.id, 'STANDARD');
+
+  // Affinités élémentaires
+  const elements = Object.keys(ELEMENTAL_AFFINITIES);
+  assert.deepEqual(elements, ['PLASMA', 'ACID', 'CRYO', 'FIRE', 'KINETIC']);
+  for (const elKey of elements) {
+    const el = ELEMENTAL_AFFINITIES[elKey];
+    assert.ok(el.id);
+    assert.ok(el.label);
+    assert.ok(el.color);
+    assert.ok(el.icon);
+  }
 });
