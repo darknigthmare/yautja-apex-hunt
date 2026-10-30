@@ -8518,3 +8518,10 @@ button:hover { transform: scale(1.04); }
   color: #78909c;
   cursor: not-allowed;
 }
+
+.universe-encounters{margin-top:12px}
+.universe-encounter-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-top:6px}
+.universe-encounter-card{display:flex;flex-direction:column;gap:4px;text-align:left;padding:8px;background:rgba(13,20,26,.88);border:1px solid rgba(120,144,156,.3);border-radius:6px;color:#cfd8dc;cursor:pointer}
+.universe-encounter-card:hover{border-color:#ffd54f}
+.universe-encounter-card small{font-size:11px;color:#b0bec5}
+.universe-encounter-card .encounter-trophy{color:#ffd54f}

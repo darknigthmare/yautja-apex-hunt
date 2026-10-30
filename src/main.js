@@ -75,6 +75,10 @@ import {
 import {
   YautjaTrophyCraftsmanshipForgeSystem,
 } from './gameplay/YautjaTrophyCraftsmanshipForgeSystem.js';
+import {
+  CROSSOVER_UNIVERSE_ENCOUNTERS,
+  getEncountersForCrossover,
+} from './data/CrossoverUniverseEncounters.js';
 
 const DEFAULT_CAMERA_FOV = 65;
 const SCOPE_CAMERA_FOV = THREE.MathUtils.radToDeg(
@@ -2502,6 +2506,7 @@ export class Game {
       if (!activeContainer) return;
       activeContainer.dataset.renderedTarget = targetPrey.id;
       const p = targetPrey;
+      const encounters = getEncountersForCrossover(p.parentId ?? p.id);
       activeContainer.innerHTML = `
         <div class="multiverse-active-card">
           <div class="multiverse-active-visual">
@@ -2535,9 +2540,39 @@ export class Game {
                 TRAQUER L'ANOMALIE : ${p.name.toUpperCase()}
               </button>
             </div>
+            ${encounters.length ? `
+            <div class="universe-encounters">
+              <span class="multiverse-weakpoints-label">RENCONTRES DE L'UNIVERS (5 GABARITS) :</span>
+              <div class="universe-encounter-grid">
+                ${encounters.map((e) => `
+                  <button type="button" class="universe-encounter-card" data-encounter-id="${e.id}">
+                    <span class="scale-tag scale-${e.scale.toLowerCase()}">${e.scale} (${e.sizeMeters}m)</span>
+                    <strong>${e.name}</strong>
+                    <small>${e.description}</small>
+                    <small class="encounter-trophy">Trophée : ${e.trophy} · +${e.honorReward} PTS</small>
+                  </button>`).join('')}
+              </div>
+            </div>` : ''}
           </div>
         </div>
       `;
+
+      activeContainer.querySelectorAll('[data-encounter-id]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const enc = CROSSOVER_UNIVERSE_ENCOUNTERS.find((e) => e.id === btn.getAttribute('data-encounter-id'));
+          if (!enc) return;
+          audioSynth.playYautjaClick();
+          this.activeCrossoverHunt = enc;
+          this.activePreySimulation = null;
+          this.hud.setCustomTargetLabel(null);
+          this.hud.showLogMessage(`RENCONTRE D'UNIVERS : ${enc.name.toUpperCase()} (${enc.scale} · ${enc.sizeMeters}m) · +${enc.honorReward} HONNEUR`, 4500);
+          const bossByScale = { GEANT: 'kalisk', GRANDE: 'bad_blood', MOYEN: 'super_predator', PETITE: 'feral_predator', MINUSCULE: 'jungle_hunter_1987' };
+          const huntBoss = bossByScale[enc.scale] ?? 'goliath';
+          const arenaBiome = enc.scale === 'GEANT' ? 'desert' : (enc.scale === 'GRANDE' ? 'bouvetoya' : 'jungle');
+          this.prepareHunt(huntBoss, arenaBiome);
+          this.startHunt(huntBoss, arenaBiome);
+        });
+      });
 
       document.getElementById('btn-launch-crossover')?.addEventListener('click', () => {
         audioSynth.playYautjaClick();
@@ -3450,14 +3485,18 @@ export class Game {
       const targetScanned = document.getElementById('target-scanned-name');
       if (targetScanned) targetScanned.textContent = `ANOMALIE MULTIVERS : ${p.name.toUpperCase()} [${p.universe}]`;
       const hudLogo = document.getElementById('hud-yautja-clan-logo');
-      if (hudLogo) hudLogo.innerHTML = getCrossoverLogo(p.id, 36);
+      if (hudLogo) hudLogo.innerHTML = getCrossoverLogo(p.parentId ?? p.id, 36);
       const crownSuffix = (this.currentHuntCrown && this.currentHuntCrown.id !== 'STANDARD') ? ` [${this.currentHuntCrown.icon} ${this.currentHuntCrown.label.toUpperCase()}]` : '';
       this.hud.setCustomTargetLabel(`ANOMALIE : ${p.name.toUpperCase()}${crownSuffix}`);
       if (this.activeBoss?.mesh) {
-        const crownMult = this.currentHuntCrown?.sizeMultiplier ?? 1.0;
+        const encScale = p.isUniverseEncounter
+          ? ({ GEANT: 1.6, GRANDE: 1.25, MOYEN: 1.0, PETITE: 0.65, MINUSCULE: 0.35 }[p.scale] ?? 1.0)
+          : 1.0;
+        const crownMult = (this.currentHuntCrown?.sizeMultiplier ?? 1.0) * encScale;
         this.activeBoss.mesh.scale.set(crownMult, crownMult, crownMult);
         const hpCrown = this.currentHuntCrown?.healthMultiplier ?? 1.0;
-        this.activeBoss.maxHealth = Math.round((this.activeBoss.maxHealth || 1000) * 1.5 * hpCrown);
+        const encHp = p.isUniverseEncounter ? (PREY_SCALE_TIERS[p.scale]?.honorMultiplier ?? 1.0) / 1.5 : 1.0;
+        this.activeBoss.maxHealth = Math.round((this.activeBoss.maxHealth || 1000) * 1.5 * hpCrown * encHp);
         this.activeBoss.health = this.activeBoss.maxHealth;
       }
       this.hud.showLogMessage(
