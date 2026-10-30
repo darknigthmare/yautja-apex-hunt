@@ -46,7 +46,7 @@ test('Taxonomie des proies : Les 5 paliers d’échelle (Géant, Grande, Moyen, 
 });
 
 test('Catalogue canonique : Distribution exhaustive des proies à travers les factions et gabarits 1:1', () => {
-  assert.ok(CANON_PREY_CATALOG.length >= 125, `Le catalogue doit contenir au moins 100 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
+  assert.ok(CANON_PREY_CATALOG.length >= 150, `Le catalogue doit contenir au moins 100 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
 
   const scalesPresent = new Set(CANON_PREY_CATALOG.map((p) => p.scale));
   assert.ok(scalesPresent.has('GEANT'), 'Présence de proies géantes');
@@ -74,8 +74,8 @@ test('Factions canoniques : Couverture complète Yautja, Ingénieurs, Ruche Xén
   assert.ok(factions.has(PREY_FACTIONS.XENOMORPH), 'Faction Xénomorphe couverte');
 });
 
-test('Multivers Crossover : Les 40 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
-  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 40, 'Exactement 40 proies crossover majeures documentées');
+test('Multivers Crossover : Les 50 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
+  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 50, 'Exactement 50 proies crossover majeures documentées');
 
   const expectedIds = [
     'crossover_batman',
@@ -118,6 +118,16 @@ test('Multivers Crossover : Les 40 proies d’exception officielles sont répert
     'crossover_mandalorian_boba',
     'crossover_snake_plissken',
     'crossover_caryn_delacroix',
+    'crossover_master_chief',
+    'crossover_doom_slayer',
+    'crossover_geralt_rivia',
+    'crossover_solid_snake',
+    'crossover_kratos_sparta',
+    'crossover_samus_aran',
+    'crossover_ghost_rider',
+    'crossover_isaac_clarke',
+    'crossover_lobo_czarnia',
+    'crossover_sarah_connor',
   ];
   const ids = MULTIVERSE_CROSSOVER_PREY.map((c) => c.id);
   assert.deepEqual(ids, expectedIds);
@@ -167,6 +177,18 @@ test('Multivers Crossover : Les 40 proies d’exception officielles sont répert
   const mk = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_scorpion_subzero');
   assert.match(mk.originMedia, /Mortal Kombat X/);
   assert.equal(mk.crossoverYear, 2015);
+
+  const chief = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_master_chief');
+  assert.match(chief.originMedia, /Halo Universe/);
+  assert.equal(chief.crossoverYear, 2001);
+
+  const slayer = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_doom_slayer');
+  assert.match(slayer.originMedia, /DOOM Universe/);
+  assert.equal(slayer.scale, 'MOYEN');
+
+  const kratos = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_kratos_sparta');
+  assert.match(kratos.originMedia, /God of War/);
+  assert.equal(kratos.honorReward, 6900);
 });
 
 test('Système de rotation temporelle : Cycle déterministe de 6 heures et compte à rebours précis', () => {
@@ -237,12 +259,12 @@ test('Logos et Emblèmes Canoniques 1:1 : Génération SVG vectorielle sans dép
   assert.match(stargazerSvg, /logo-stargazer/);
   assert.match(stargazerSvg, /STARGAZER/);
 
-  // 7. Crossover Logos (all 40)
+  // 7. Crossover Logos (all 50)
   for (const crossover of MULTIVERSE_CROSSOVER_PREY) {
     const badgeSvg = getCrossoverLogo(crossover.id, 64);
     assert.match(badgeSvg, /<svg/);
     assert.match(badgeSvg, /crossover-logo/);
-    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade|tarzan|magnus|grendel|the-mask|buffy|archie|darkness|robocop|kano|xfiles|anderson|worlds-finest|t-infinity|machiko|green-lantern|grifter|jla|bloodlines|wolverine|black-panther|spider-man|iron-man|captain-america|thor|mk-kombat|hellboy|conan|deadpool|judge-death|spawn|riddick|boba-fett|plissken|caryn)/);
+    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade|tarzan|magnus|grendel|the-mask|buffy|archie|darkness|robocop|kano|xfiles|anderson|worlds-finest|t-infinity|machiko|green-lantern|grifter|jla|bloodlines|wolverine|black-panther|spider-man|iron-man|captain-america|thor|mk-kombat|hellboy|conan|deadpool|judge-death|spawn|riddick|boba-fett|plissken|caryn|master-chief|doom-slayer|geralt|solid-snake|kratos|samus|ghost-rider|isaac-clarke|lobo|sarah-connor)/);
   }
 
   // 8. 12 Hunt Card Logos

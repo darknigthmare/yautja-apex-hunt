@@ -773,6 +773,140 @@ export function getCrossoverLogo(crossoverId, size = 64) {
         </svg>
       `.trim();
 
+    case 'master_chief':
+    case 'crossover_master_chief':
+      // Master Chief Spartan-117 Mjolnir Mark VI Helmet & Gold Visor (2001)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-master-chief" role="img" aria-label="Casque Spartan Mjolnir de Master Chief">
+          <circle cx="40" cy="40" r="36" fill="#132317" stroke="#2e7d32" stroke-width="2.5" />
+          <polygon points="40,14 62,24 58,66 40,74 22,66 18,24" fill="#2d4a34" stroke="#4caf50" stroke-width="2" />
+          <path d="M26 32 L54 32 L50 48 L40 54 L30 48 Z" fill="#ffb300" stroke="#ff8f00" stroke-width="2" />
+          <line x1="28" y1="38" x2="52" y2="38" stroke="#ffe082" stroke-width="1.5" />
+          <rect x="36" y="58" width="8" height="6" fill="#1b2a1e" stroke="#66bb6a" stroke-width="1" />
+        </svg>
+      `.trim();
+
+    case 'doom_slayer':
+    case 'crossover_doom_slayer':
+      // Doom Slayer Praetor Helmet & Mark of the Slayer (2016)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-doom-slayer" role="img" aria-label="Casque Praetor et Marque du Slayer">
+          <circle cx="40" cy="40" r="36" fill="#1a0a0a" stroke="#d50000" stroke-width="2.5" />
+          <polygon points="40,12 66,28 58,68 40,76 22,68 14,28" fill="#2e382b" stroke="#33691e" stroke-width="2" />
+          <path d="M28 34 L52 34 L48 48 L40 52 L32 48 Z" fill="#00e676" stroke="#00b0ff" stroke-width="1.5" />
+          <path d="M38 18 L42 18 L42 64 L38 64 M32 30 L48 30 M34 44 L46 44" stroke="#ff1744" stroke-width="2.5" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
+    case 'geralt_rivia':
+    case 'crossover_geralt_rivia':
+      // Geralt of Rivia Wolf Medallion & Crossed Silver Blades (2015)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-geralt" role="img" aria-label="Médaillon du Loup de Geralt de Riv">
+          <circle cx="40" cy="40" r="36" fill="#1b1c1d" stroke="#90a4ae" stroke-width="2.5" />
+          <polygon points="40,16 52,32 58,54 40,68 22,54 28,32" fill="#37474f" stroke="#cfd8dc" stroke-width="2" />
+          <polygon points="40,24 46,36 40,42 34,36" fill="#eceff1" />
+          <circle cx="34" cy="34" r="2.5" fill="#ffd600" />
+          <circle cx="46" cy="34" r="2.5" fill="#ffd600" />
+          <line x1="20" y1="60" x2="60" y2="20" stroke="#cfd8dc" stroke-width="2" stroke-linecap="round" />
+          <line x1="20" y1="20" x2="60" y2="60" stroke="#90a4ae" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
+    case 'solid_snake':
+    case 'crossover_solid_snake':
+      // Solid Snake Olive Bandana & Solid Eye Glowing Red (1998)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-solid-snake" role="img" aria-label="Bandana et Solid Eye de Solid Snake">
+          <circle cx="40" cy="40" r="36" fill="#192024" stroke="#546e7a" stroke-width="2.5" />
+          <rect x="20" y="24" width="40" height="10" rx="3" fill="#33691e" stroke="#558b2f" stroke-width="1.5" />
+          <path d="M58 28 L72 38 M60 32 L70 46" stroke="#33691e" stroke-width="3" stroke-linecap="round" />
+          <ellipse cx="32" cy="42" rx="7" ry="5" fill="#263238" stroke="#37474f" stroke-width="1.5" />
+          <ellipse cx="48" cy="42" rx="7" ry="5" fill="#b71c1c" stroke="#ff1744" stroke-width="2" />
+          <circle cx="48" cy="42" r="3" fill="#ffffff" />
+        </svg>
+      `.trim();
+
+    case 'kratos_sparta':
+    case 'crossover_kratos_sparta':
+      // Kratos Spartan War Tattoo & Blades of Chaos (2005)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-kratos" role="img" aria-label="Tatouage Spartiate et Lames du Chaos de Kratos">
+          <circle cx="40" cy="40" r="36" fill="#141414" stroke="#d50000" stroke-width="2.5" />
+          <circle cx="40" cy="40" r="28" fill="#cfd8dc" stroke="#90a4ae" stroke-width="1.5" />
+          <path d="M26 18 Q38 32 36 50 Q34 64 24 68" stroke="#d50000" stroke-width="5" fill="none" stroke-linecap="round" />
+          <polygon points="48,26 56,36 50,56 42,48" fill="#e65100" stroke="#ffab00" stroke-width="1.5" />
+        </svg>
+      `.trim();
+
+    case 'samus_aran':
+    case 'crossover_samus_aran':
+      // Samus Aran Varia Helmet & Emerald T-Visor (1986)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-samus" role="img" aria-label="Casque Varia de Samus Aran">
+          <circle cx="40" cy="40" r="36" fill="#1a0d05" stroke="#ff6d00" stroke-width="2.5" />
+          <polygon points="40,12 64,26 58,66 40,74 22,66 16,26" fill="#d84315" stroke="#ff6d00" stroke-width="2" />
+          <path d="M26 34 L54 34 L50 44 L40 56 L30 44 Z" fill="#00e676" stroke="#00b0ff" stroke-width="2" />
+          <line x1="28" y1="38" x2="52" y2="38" stroke="#b9f6ca" stroke-width="1.5" />
+        </svg>
+      `.trim();
+
+    case 'ghost_rider':
+    case 'crossover_ghost_rider':
+      // Ghost Rider Hellfire Skull & Blazing Chains (2024)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-ghost-rider" role="img" aria-label="Crâne Enflammé du Ghost Rider">
+          <circle cx="40" cy="40" r="36" fill="#140600" stroke="#ff9100" stroke-width="2.5" />
+          <path d="M24 24 Q40 8 56 24 Q68 40 54 62 Q40 76 26 62 Q12 40 24 24 Z" fill="#ff6d00" />
+          <path d="M30 28 Q40 16 50 28 Q58 42 48 58 Q40 68 32 58 Q22 42 30 28 Z" fill="#ffd600" />
+          <circle cx="40" cy="42" r="14" fill="#ffffff" />
+          <circle cx="35" cy="40" r="3.5" fill="#000000" />
+          <circle cx="45" cy="40" r="3.5" fill="#000000" />
+          <polygon points="40,44 42,48 38,48" fill="#000000" />
+          <line x1="34" y1="52" x2="46" y2="52" stroke="#000000" stroke-width="2" />
+        </svg>
+      `.trim();
+
+    case 'isaac_clarke':
+    case 'crossover_isaac_clarke':
+      // Isaac Clarke R.I.G. Suit Triple Cyan Visor Slits (2008)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-isaac-clarke" role="img" aria-label="Casque R.I.G. d'Isaac Clarke">
+          <circle cx="40" cy="40" r="36" fill="#0d1b22" stroke="#00e5ff" stroke-width="2.5" />
+          <polygon points="40,14 62,24 58,68 40,74 22,68 18,24" fill="#37474f" stroke="#546e7a" stroke-width="2" />
+          <line x1="28" y1="32" x2="52" y2="32" stroke="#00e5ff" stroke-width="3" stroke-linecap="round" />
+          <line x1="30" y1="38" x2="50" y2="38" stroke="#00e5ff" stroke-width="3" stroke-linecap="round" />
+          <line x1="34" y1="44" x2="46" y2="44" stroke="#00e5ff" stroke-width="3" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
+    case 'lobo_czarnia':
+    case 'crossover_lobo_czarnia':
+      // Lobo Czarnian Heavy Barbed Chain & Spiked Hook (1995)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-lobo" role="img" aria-label="Crochet Barbelé de Lobo">
+          <circle cx="40" cy="40" r="36" fill="#111111" stroke="#e0e0e0" stroke-width="2.5" />
+          <path d="M24 58 C16 42 22 24 38 22 C52 20 62 30 60 44 C58 54 48 58 40 54" stroke="#b0bec5" stroke-width="4" fill="none" stroke-linecap="round" />
+          <polygon points="20,54 24,66 12,62" fill="#e0e0e0" />
+          <circle cx="40" cy="38" r="4" fill="#ff1744" />
+        </svg>
+      `.trim();
+
+    case 'sarah_connor':
+    case 'crossover_sarah_connor':
+      // Sarah Connor Aviator Sunglasses & 50 BMG Heavy Bullet (2000)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-sarah-connor" role="img" aria-label="Lunettes et BMG de Sarah Connor">
+          <circle cx="40" cy="40" r="36" fill="#241e16" stroke="#8d6e63" stroke-width="2.5" />
+          <polygon points="20,32 38,30 36,46 22,44" fill="#000000" stroke="#cfd8dc" stroke-width="1.5" />
+          <polygon points="42,30 60,32 58,44 44,46" fill="#000000" stroke="#cfd8dc" stroke-width="1.5" />
+          <line x1="38" y1="32" x2="42" y2="32" stroke="#cfd8dc" stroke-width="2" />
+          <polygon points="40,54 43,62 37,62" fill="#ffd54f" stroke="#ffb300" stroke-width="1" />
+          <rect x="37" y="62" width="6" height="12" fill="#ffb300" />
+        </svg>
+      `.trim();
+
+
 
     default:
       return getYautjaClanLogo(size);
