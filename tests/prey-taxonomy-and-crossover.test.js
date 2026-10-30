@@ -18,6 +18,9 @@ import {
   getUSCMLogo,
   getEngineerLogo,
   getXenomorphHiveLogo,
+  getOWLFLogo,
+  getStargazerLogo,
+  getHuntCardLogo,
   getCrossoverLogo,
 } from '../src/ui/CanonLogosAndEmblems.js';
 
@@ -39,7 +42,7 @@ test('Taxonomie des proies : Les 5 paliers d’échelle (Géant, Grande, Moyen, 
 });
 
 test('Catalogue canonique : Distribution exhaustive des proies à travers les factions et gabarits 1:1', () => {
-  assert.ok(CANON_PREY_CATALOG.length >= 24, `Le catalogue doit contenir au moins 24 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
+  assert.ok(CANON_PREY_CATALOG.length >= 40, `Le catalogue doit contenir au moins 40 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
 
   const scalesPresent = new Set(CANON_PREY_CATALOG.map((p) => p.scale));
   assert.ok(scalesPresent.has('GEANT'), 'Présence de proies géantes');
@@ -67,8 +70,8 @@ test('Factions canoniques : Couverture complète Yautja, Ingénieurs, Ruche Xén
   assert.ok(factions.has(PREY_FACTIONS.XENOMORPH), 'Faction Xénomorphe couverte');
 });
 
-test('Multivers Crossover : Les 6 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
-  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 6, 'Exactement 6 proies crossover majeures documentées');
+test('Multivers Crossover : Les 12 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
+  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 12, 'Exactement 12 proies crossover majeures documentées');
 
   const expectedIds = [
     'crossover_batman',
@@ -77,6 +80,12 @@ test('Multivers Crossover : Les 6 proies d’exception officielles sont réperto
     'crossover_judge_dredd',
     'crossover_superman_red_sun',
     'crossover_witchblade',
+    'crossover_tarzan',
+    'crossover_magnus',
+    'crossover_grendel',
+    'crossover_the_mask',
+    'crossover_buffy',
+    'crossover_archie',
   ];
   const ids = MULTIVERSE_CROSSOVER_PREY.map((c) => c.id);
   assert.deepEqual(ids, expectedIds);
@@ -100,6 +109,15 @@ test('Multivers Crossover : Les 6 proies d’exception officielles sont réperto
   const superman = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_superman_red_sun');
   assert.match(superman.originMedia, /Superman vs\. Predator \(2000/);
   assert.equal(superman.scale, 'MOYEN');
+
+  const tarzan = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_tarzan');
+  assert.match(tarzan.originMedia, /Tarzan vs\. Predator/);
+
+  const magnus = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_magnus');
+  assert.match(magnus.originMedia, /Magnus, Robot Fighter/);
+
+  const theMask = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === 'crossover_the_mask');
+  assert.match(theMask.originMedia, /The Mask/);
 });
 
 test('Système de rotation temporelle : Cycle déterministe de 6 heures et compte à rebours précis', () => {
@@ -161,12 +179,33 @@ test('Logos et Emblèmes Canoniques 1:1 : Génération SVG vectorielle sans dép
   const xenoSvg = getXenomorphHiveLogo(72);
   assert.match(xenoSvg, /logo-xenomorph/);
 
-  // 6. Crossover Logos
+  // 6. OWLF & Stargazer Logos
+  const owlfSvg = getOWLFLogo(64);
+  assert.match(owlfSvg, /logo-owlf/);
+  assert.match(owlfSvg, /OWLF/);
+
+  const stargazerSvg = getStargazerLogo(64);
+  assert.match(stargazerSvg, /logo-stargazer/);
+  assert.match(stargazerSvg, /STARGAZER/);
+
+  // 7. Crossover Logos (all 12)
   for (const crossover of MULTIVERSE_CROSSOVER_PREY) {
     const badgeSvg = getCrossoverLogo(crossover.id, 64);
     assert.match(badgeSvg, /<svg/);
     assert.match(badgeSvg, /crossover-logo/);
-    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade)/);
+    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade|tarzan|magnus|grendel|the-mask|buffy|archie)/);
+  }
+
+  // 8. 12 Hunt Card Logos
+  const huntIds = [
+    'goliath', 'xeno_queen', 'bad_blood', 'predalien',
+    'super_predator', 'feral_predator', 'wolf_cleaner', 'kalisk',
+    'upgrade_predator', 'city_hunter', 'grid_alien', 'jungle_hunter_1987',
+  ];
+  for (const hId of huntIds) {
+    const huntSvg = getHuntCardLogo(hId, 50);
+    assert.match(huntSvg, /<svg/);
+    assert.match(huntSvg, /canon-logo/);
   }
 
   // Fallback

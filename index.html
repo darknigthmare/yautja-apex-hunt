@@ -705,7 +705,16 @@
         <!-- Full Multiverse Canon Catalog & Lore -->
         <div class="multiverse-archive-section">
           <h4>ARCHIVES DES PROIES DU MULTIVERS DOCUMENTÉES</h4>
-          <div id="multiverse-roster-grid" class="multiverse-roster-grid">
+                  <div class="scale-filter-bar multiverse-filter-bar" role="toolbar" aria-label="Filtrer les anomalies par univers">
+          <span class="scale-filter-title">UNIVERS D'ORIGINE :</span>
+          <button type="button" class="scale-filter-pill active" data-multiverse-filter="all">TOUTES LES ANOMALIES (12)</button>
+          <button type="button" class="scale-filter-pill" data-multiverse-filter="dc">DC COMICS</button>
+          <button type="button" class="scale-filter-pill" data-multiverse-filter="darkhorse">DARK HORSE</button>
+          <button type="button" class="scale-filter-pill" data-multiverse-filter="scifi">CYBER & 2000 AD</button>
+          <button type="button" class="scale-filter-pill" data-multiverse-filter="pop">MYSTIQUE & POP</button>
+        </div>
+
+        <div id="multiverse-roster-grid" class="multiverse-roster-grid">
             <!-- Populated by JS -->
           </div>
         </div>
@@ -853,6 +862,25 @@
           <p>Les badges de provenance distinguent les films, la branche AVP, les récits licenciés et les créations originales du jeu.</p>
         </div>
         <div id="codex-grid" class="codex-grid" aria-live="polite"></div>
+
+        <section class="canon-prey-taxonomy-section" aria-labelledby="taxonomy-vault-title">
+          <div class="section-heading compact-heading" style="margin-top:24px;">
+            <div>
+              <p class="section-kicker">TAXONOMIE OFFICIELLE · 5 PALIERS DE TAILLE</p>
+              <h3 id="taxonomy-vault-title">ENCYCLOPÉDIE DES PROIES CANONIQUES</h3>
+            </div>
+            <p>Classification métrique 1:1 de toutes les espèces et entités de l'univers Yautja, Ingénieurs et Ruche Xénomorphe.</p>
+          </div>
+          <div class="scale-filter-bar taxonomy-filter-bar" role="toolbar" aria-label="Filtrer l'encyclopédie par gabarit">
+            <button type="button" class="scale-filter-pill active" data-taxonomy-filter="all">TOUTES LES ESPÈCES</button>
+            <button type="button" class="scale-filter-pill" data-taxonomy-filter="geant">GÉANTES (8m-30m)</button>
+            <button type="button" class="scale-filter-pill" data-taxonomy-filter="grande">GRANDES (3m-8m)</button>
+            <button type="button" class="scale-filter-pill" data-taxonomy-filter="moyen">MOYENNES (1.8m-3m)</button>
+            <button type="button" class="scale-filter-pill" data-taxonomy-filter="petite">PETITES (0.5m-1.8m)</button>
+            <button type="button" class="scale-filter-pill" data-taxonomy-filter="minuscule">MINUSCULES (&lt;0.5m)</button>
+          </div>
+          <div id="canon-taxonomy-grid" class="content-catalog-grid"></div>
+        </section>
       </div>
 
       <!-- Tab 4: Accessibility & Experience Settings -->

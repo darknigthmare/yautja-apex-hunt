@@ -20,6 +20,14 @@ export const CANON_FACTION_COLORS = Object.freeze({
   dreddGold: '#ffd700',
   supermanBlue: '#0044cc',
   supermanRed: '#cc0000',
+  tarzanGreen: '#689f38',
+  magnusCyan: '#00b4d8',
+  grendelCrimson: '#d50000',
+  theMaskToxic: '#76ff03',
+  buffyMagenta: '#e91e63',
+  archieGold: '#fbc02d',
+  owlfCyan: '#00e5ff',
+  stargazerRed: '#ff1744',
 });
 
 /**
@@ -304,6 +312,7 @@ export function getCrossoverLogo(crossoverId, size = 64) {
       `.trim();
 
     case 'witchblade':
+    case 'crossover_witchblade':
       // Mystical Symbiotic Bio-Gauntlet Sigil (Overkill: Witchblade/Aliens/Predator)
       return `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-witchblade" role="img" aria-label="Sigil de la Witchblade">
@@ -313,6 +322,214 @@ export function getCrossoverLogo(crossoverId, size = 64) {
         </svg>
       `.trim();
 
+    case 'tarzan':
+    case 'crossover_tarzan':
+      // Tarzan at the Earth's Core (Pellucidar 1996)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-tarzan" role="img" aria-label="Sceau de Tarzan">
+          <circle cx="40" cy="40" r="36" fill="#141a0d" stroke="#689f38" stroke-width="2.5" />
+          <path d="M40 10 L48 34 L72 34 L52 48 L60 72 L40 56 L20 72 L28 48 L8 34 L32 34 Z" fill="#33691e" stroke="#8bc34a" stroke-width="1.2" opacity="0.6" />
+          <path d="M38 16 Q42 36 34 58 L40 64 L46 58 Q38 36 42 16 Z" fill="#f1f8e9" stroke="#33691e" stroke-width="1.5" />
+          <circle cx="40" cy="66" r="3" fill="#8bc34a" />
+        </svg>
+      `.trim();
+
+    case 'magnus':
+    case 'crossover_magnus':
+      // Magnus Robot Fighter 4000 A.D. (1992)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-magnus" role="img" aria-label="Symbole 1A de Magnus Robot Fighter">
+          <polygon points="40,8 70,24 70,56 40,72 10,56 10,24" fill="#0d1b2a" stroke="#00b4d8" stroke-width="2.5" />
+          <rect x="26" y="24" width="28" height="32" rx="4" fill="#1b263b" stroke="#00b4d8" stroke-width="1.8" />
+          <text x="40" y="46" font-family="'Orbitron', sans-serif" font-size="16" font-weight="900" fill="#90e0ef" text-anchor="middle">1A</text>
+        </svg>
+      `.trim();
+
+    case 'grendel':
+    case 'crossover_grendel':
+      // Grendel Hunter Rose Twin-Pronged Fork (1996)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-grendel" role="img" aria-label="Masque de Grendel">
+          <circle cx="40" cy="40" r="36" fill="#000000" stroke="#e0e0e0" stroke-width="2.5" />
+          <path d="M18 36 Q32 26 38 34 Q32 40 18 36 Z" fill="#ffffff" />
+          <path d="M62 36 Q48 26 42 34 Q48 40 62 36 Z" fill="#ffffff" />
+          <line x1="40" y1="12" x2="40" y2="68" stroke="#d50000" stroke-width="2" />
+          <path d="M30 18 L40 28 L50 18" fill="none" stroke="#d50000" stroke-width="2.5" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
+    case 'the_mask':
+    case 'crossover_the_mask':
+      // Loki's Norse Wood Mask (1999)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-the-mask" role="img" aria-label="Le Masque de Loki">
+          <ellipse cx="40" cy="40" rx="32" ry="36" fill="#1b5e20" stroke="#76ff03" stroke-width="2.5" />
+          <line x1="40" y1="10" x2="40" y2="70" stroke="#00e676" stroke-width="3" stroke-linecap="round" />
+          <line x1="20" y1="36" x2="60" y2="36" stroke="#00e676" stroke-width="3" stroke-linecap="round" />
+          <ellipse cx="28" cy="36" rx="8" ry="12" fill="#eeff41" stroke="#000" stroke-width="1.5" />
+          <ellipse cx="52" cy="36" rx="8" ry="12" fill="#eeff41" stroke="#000" stroke-width="1.5" />
+          <circle cx="28" cy="36" r="3.5" fill="#000" />
+          <circle cx="52" cy="36" r="3.5" fill="#000" />
+          <path d="M22 56 Q40 74 58 56 Z" fill="#ffffff" stroke="#000" stroke-width="1.5" />
+        </svg>
+      `.trim();
+
+    case 'buffy':
+    case 'crossover_buffy':
+      // Buffyverse Slayer Stake & Pentagram (1998)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-buffy" role="img" aria-label="Sceau de la Tueuse">
+          <circle cx="40" cy="40" r="36" fill="#210515" stroke="#e91e63" stroke-width="2.5" />
+          <polygon points="40,8 48,56 40,70 32,56" fill="#d7ccc8" stroke="#8d6e63" stroke-width="1.8" />
+          <circle cx="40" cy="40" r="8" fill="none" stroke="#ff4081" stroke-width="2" stroke-dasharray="3,2" />
+        </svg>
+      `.trim();
+
+    case 'archie':
+    case 'crossover_archie':
+      // Riverdale High Crest (Archie vs Predator 2015)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-archie" role="img" aria-label="Blason de Riverdale">
+          <polygon points="40,6 72,20 66,62 40,74 14,62 8,20" fill="#0d1b2a" stroke="#fbc02d" stroke-width="2.5" />
+          <rect x="22" y="24" width="36" height="36" rx="4" fill="#c2185b" stroke="#fbc02d" stroke-width="1.5" />
+          <text x="40" y="50" font-family="'Orbitron', sans-serif" font-size="22" font-weight="900" fill="#ffffff" text-anchor="middle">R</text>
+        </svg>
+      `.trim();
+
+    default:
+      return getYautjaClanLogo(size);
+  }
+}
+
+/**
+ * Insigne Officiel 1:1 de l'OWLF (Other World Life Forms Taskforce - Peter Keyes 1990).
+ */
+export function getOWLFLogo(size = 64) {
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-owlf" role="img" aria-label="Insigne OWLF Peter Keyes">
+      <defs>
+        <radialGradient id="owlf-radar-${size}" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.3" />
+          <stop offset="100%" stop-color="#0a192f" stop-opacity="0.9" />
+        </radialGradient>
+      </defs>
+      <circle cx="40" cy="40" r="36" fill="url(#owlf-radar-${size})" stroke="#00e5ff" stroke-width="2" />
+      <circle cx="40" cy="40" r="26" fill="none" stroke="#00e5ff" stroke-width="1" stroke-dasharray="4,3" />
+      <circle cx="40" cy="40" r="14" fill="none" stroke="#00e5ff" stroke-width="1" />
+      <line x1="40" y1="4" x2="40" y2="76" stroke="#00e5ff" stroke-width="1" />
+      <line x1="4" y1="40" x2="76" y2="40" stroke="#00e5ff" stroke-width="1" />
+      <rect x="18" y="32" width="44" height="16" rx="2" fill="#060c14" stroke="#00e5ff" stroke-width="1" />
+      <text x="40" y="44" font-family="'Orbitron', sans-serif" font-size="9" font-weight="900" fill="#ffffff" letter-spacing="2" text-anchor="middle">OWLF</text>
+    </svg>
+  `.trim();
+}
+
+/**
+ * Insigne Officiel 1:1 du Projet Stargazer (The Predator 2018).
+ */
+export function getStargazerLogo(size = 64) {
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-stargazer" role="img" aria-label="Insigne Projet Stargazer">
+      <defs>
+        <linearGradient id="stargazer-grad-${size}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ff1744" />
+          <stop offset="100%" stop-color="#880e4f" />
+        </linearGradient>
+      </defs>
+      <polygon points="40,6 74,68 6,68" fill="#0d1117" stroke="#ff1744" stroke-width="2" />
+      <polygon points="40,16 66,62 14,62" fill="url(#stargazer-grad-${size})" opacity="0.35" />
+      <circle cx="40" cy="44" r="8" fill="#ff1744" />
+      <path d="M30 30 Q40 40 50 30 M30 54 Q40 44 50 54" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" />
+      <text x="40" y="74" font-family="'Orbitron', sans-serif" font-size="6.5" font-weight="800" fill="#ff8a80" letter-spacing="1" text-anchor="middle">STARGAZER</text>
+    </svg>
+  `.trim();
+}
+
+/**
+ * Génère un emblème vectoriel canonique 1:1 adapté pour chacune des 12 chasses.
+ */
+export function getHuntCardLogo(huntId, size = 64) {
+  switch (huntId) {
+    case 'goliath':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60" width="${size * 1.5}" height="${size * 0.9}" class="canon-logo logo-hunt-goliath" role="img" aria-label="Goliath Xeno-Akumo">
+          <polygon points="50,4 88,20 74,56 50,52 26,56 12,20" fill="#140a04" stroke="#ff5511" stroke-width="2" />
+          <path d="M50 4 L50 38 M30 20 L50 38 L70 20" stroke="#ff8800" stroke-width="3" stroke-linecap="round" />
+          <circle cx="50" cy="38" r="5" fill="#ff2200" />
+        </svg>
+      `.trim();
+
+    case 'xeno_queen':
+      return getXenomorphHiveLogo(size);
+
+    case 'bad_blood':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-hunt-bad-blood" role="img" aria-label="Yautja Bad Blood">
+          <polygon points="40,8 68,22 62,68 40,76 18,68 12,22" fill="#160505" stroke="#ff1744" stroke-width="2.5" />
+          <line x1="18" y1="18" x2="62" y2="62" stroke="#d50000" stroke-width="4" stroke-linecap="round" />
+          <circle cx="34" cy="36" r="3.5" fill="#ff5252" />
+          <circle cx="48" cy="36" r="3.5" fill="#ff5252" />
+        </svg>
+      `.trim();
+
+    case 'predalien':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 70" width="${size * 1.3}" height="${size}" class="canon-logo logo-hunt-predalien" role="img" aria-label="Predalien Gunnison">
+          <path d="M25 18 C45 6, 65 6, 75 18 C85 32, 80 54, 66 62 L34 62 C20 54, 15 32, 25 18 Z" fill="#1f1800" stroke="#ffd000" stroke-width="2" />
+          <path d="M14 38 L30 44 M86 38 L70 44 M18 54 L34 50 M82 54 L66 50" stroke="#ffaa00" stroke-width="2.5" stroke-linecap="round" />
+          <circle cx="50" cy="36" r="6" fill="#ffff00" />
+        </svg>
+      `.trim();
+
+    case 'super_predator':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-hunt-berserker" role="img" aria-label="Berserker Super Predator">
+          <polygon points="40,8 72,24 64,68 40,76 16,68 8,24" fill="#180404" stroke="#ff3d00" stroke-width="2.5" />
+          <path d="M26 48 L40 60 L54 48" stroke="#ffffff" stroke-width="4" stroke-linecap="round" fill="none" />
+          <circle cx="50" cy="32" r="5" fill="#ff1744" />
+        </svg>
+      `.trim();
+
+    case 'feral_predator':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-hunt-feral" role="img" aria-label="Feral Predator 1719">
+          <polygon points="40,10 70,24 64,64 40,74 16,64 10,24" fill="#1a140a" stroke="#d7ccc8" stroke-width="2" />
+          <ellipse cx="40" cy="42" rx="16" ry="24" fill="#5d4037" stroke="#bcaaa4" stroke-width="2" />
+          <circle cx="34" cy="32" r="3" fill="#ffe082" />
+          <circle cx="46" cy="32" r="3" fill="#ffe082" />
+        </svg>
+      `.trim();
+
+    case 'wolf_cleaner':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-hunt-wolf" role="img" aria-label="Wolf Cleaner Elite">
+          <polygon points="40,8 70,22 66,66 40,76 14,66 10,22" fill="#081418" stroke="#00e5ff" stroke-width="2.5" />
+          <circle cx="32" cy="34" r="3.5" fill="#00e5ff" />
+          <circle cx="48" cy="34" r="3.5" fill="#00e5ff" />
+          <circle cx="68" cy="18" r="3" fill="#00e5ff" />
+          <circle cx="12" cy="18" r="3" fill="#00e5ff" />
+        </svg>
+      `.trim();
+
+    case 'kalisk':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-hunt-kalisk" role="img" aria-label="Kalisk Badlands">
+          <polygon points="40,8 72,28 62,68 40,76 18,68 8,28" fill="#120c1a" stroke="#e040fb" stroke-width="2.5" />
+          <polygon points="40,24 56,40 40,56 24,40" fill="#7b1fa2" stroke="#ea80fc" stroke-width="1.8" />
+          <circle cx="40" cy="40" r="5" fill="#ffffff" />
+        </svg>
+      `.trim();
+
+    case 'upgrade_predator':
+      return getStargazerLogo(size);
+
+    case 'city_hunter':
+      return getOWLFLogo(size);
+
+    case 'grid_alien':
+      return getEngineerLogo(size);
+
+    case 'jungle_hunter_1987':
     default:
       return getYautjaClanLogo(size);
   }

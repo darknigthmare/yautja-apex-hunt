@@ -2438,8 +2438,30 @@ export class Game {
     const multiverseLogo = document.getElementById('multiverse-header-logo');
     if (multiverseLogo) multiverseLogo.innerHTML = getYautjaClanLogo(40);
 
-    // 2. 5-Tier Prey Taxonomy Filtering
-    const filterPills = document.querySelectorAll('.scale-filter-pill');
+    // Inject 1:1 Vector Logos into the 12 Mission Cards
+    document.querySelectorAll('.mission-card').forEach((card) => {
+      const huntBtn = card.querySelector('[data-hunt]');
+      const huntId = huntBtn?.getAttribute('data-hunt');
+      const mediaContainer = card.querySelector('.mission-card-media');
+      if (huntId && mediaContainer && !mediaContainer.dataset.canonLogo) {
+        mediaContainer.dataset.canonLogo = 'true';
+        const tag = mediaContainer.querySelector('.mission-media-tag')?.outerHTML || '';
+        mediaContainer.innerHTML = `${getHuntCardLogo(huntId, 85)}${tag}`;
+      }
+    });
+
+    // Inject 1:1 Logos in Pause & Endgame modals
+    const pauseTitle = document.getElementById('pause-title');
+    if (pauseTitle && !pauseTitle.querySelector('.canon-logo')) {
+      pauseTitle.insertAdjacentHTML('beforebegin', `<div class="canon-logo-slot" style="margin-bottom:8px;">${getYautjaClanLogo(48)}</div>`);
+    }
+    const endgameTitle = document.getElementById('endgame-title');
+    if (endgameTitle && !endgameTitle.querySelector('.canon-logo')) {
+      endgameTitle.insertAdjacentHTML('beforebegin', `<div class="canon-logo-slot" style="margin-bottom:8px;">${getYautjaClanLogo(64)}</div>`);
+    }
+
+    // 2. 5-Tier Prey Taxonomy Filtering on Contracts
+    const filterPills = document.querySelectorAll('.scale-filter-pill[data-scale-filter]');
     filterPills.forEach((pill) => {
       pill.addEventListener('click', () => {
         filterPills.forEach((p) => p.classList.remove('active'));
@@ -2460,7 +2482,60 @@ export class Game {
       });
     });
 
-    // 3. Multiverse Crossover Temporal Rotation
+    // 3. Multiverse Crossover Temporal Rotation with Interactive Dossier
+    let customSelectedCrossoverId = null;
+
+    const renderActiveCard = (targetPrey) => {
+      const activeContainer = document.getElementById('multiverse-active-card-container');
+      if (!activeContainer) return;
+      activeContainer.dataset.renderedTarget = targetPrey.id;
+      const p = targetPrey;
+      activeContainer.innerHTML = `
+        <div class="multiverse-active-card">
+          <div class="multiverse-active-visual">
+            ${getCrossoverLogo(p.id, 80)}
+            <span class="scale-tag scale-${p.scale.toLowerCase()}" style="margin-top:10px;">${p.scale} (${p.sizeMeters}m)</span>
+          </div>
+          <div class="multiverse-active-details">
+            <div class="multiverse-target-header">
+              <div>
+                <h4 class="multiverse-target-title">${p.name}</h4>
+                <div class="multiverse-target-meta">
+                  <span class="sector-badge">${p.universe}</span>
+                  <span class="threat-badge threat-renegade">CROSSOVER CANON</span>
+                  <span class="spec-tag reward-tag">+${p.honorReward} PTS</span>
+                </div>
+              </div>
+            </div>
+            <p style="color:#cfd8dc; font-size:13px; line-height:1.4;">${p.description}</p>
+            <div class="multiverse-tactics-box">
+              <strong>TACTIQUE OBSERVÉE :</strong> ${p.tactics}
+            </div>
+            <div class="multiverse-weakpoints-row">
+              <span class="multiverse-weakpoints-label">POINTS FAIBLES :</span>
+              ${p.weakpoints.map(wp => `<span class="weakpoint-pill">${wp}</span>`).join(' ')}
+            </div>
+            <div style="font-size:11px; color:#90a4ae; margin-top:4px;">
+              <em>Source officielle : ${p.originMedia} (${p.crossoverYear}) · Arène : ${p.arena}</em>
+            </div>
+            <div class="crossover-actions">
+              <button id="btn-launch-crossover" class="btn-launch-crossover" type="button" data-crossover-id="${p.id}">
+                TRAQUER L'ANOMALIE : ${p.name.toUpperCase()}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('btn-launch-crossover')?.addEventListener('click', () => {
+        audioSynth.playYautjaClick();
+        this.hud.showLogMessage(`ANOMALIE SPATIO-TEMPORELLE ENGAGÉE : ${p.name.toUpperCase()}`, 3500);
+        this.prepareHunt('jungle_hunter_1987', 'jungle');
+      });
+    };
+
+    let activeMultiverseFilter = 'all';
+
     const renderMultiverseUI = () => {
       const state = getMultiverseRotationState();
 
@@ -2471,53 +2546,14 @@ export class Game {
       const cycleIdEl = document.getElementById('crossover-cycle-id');
       if (cycleIdEl) cycleIdEl.textContent = String(state.cycleIndex + 1);
 
-      // Active Target Card
-      const activeContainer = document.getElementById('multiverse-active-card-container');
-      if (activeContainer && (!activeContainer.dataset.renderedTarget || activeContainer.dataset.renderedTarget !== state.activePrey.id)) {
-        activeContainer.dataset.renderedTarget = state.activePrey.id;
-        const p = state.activePrey;
-        activeContainer.innerHTML = `
-          <div class="multiverse-active-card">
-            <div class="multiverse-active-visual">
-              ${getCrossoverLogo(p.id, 80)}
-              <span class="scale-tag scale-${p.scale.toLowerCase()}" style="margin-top:10px;">${p.scale} (${p.sizeMeters}m)</span>
-            </div>
-            <div class="multiverse-active-details">
-              <div class="multiverse-target-header">
-                <div>
-                  <h4 class="multiverse-target-title">${p.name}</h4>
-                  <div class="multiverse-target-meta">
-                    <span class="sector-badge">${p.universe}</span>
-                    <span class="threat-badge threat-renegade">CROSSOVER CANON</span>
-                    <span class="spec-tag reward-tag">+${p.honorReward} PTS</span>
-                  </div>
-                </div>
-              </div>
-              <p style="color:#cfd8dc; font-size:13px; line-height:1.4;">${p.description}</p>
-              <div class="multiverse-tactics-box">
-                <strong>TACTIQUE OBSERVÉE :</strong> ${p.tactics}
-              </div>
-              <div class="multiverse-weakpoints-row">
-                <span class="multiverse-weakpoints-label">POINTS FAIBLES :</span>
-                ${p.weakpoints.map(wp => `<span class="weakpoint-pill">${wp}</span>`).join(' ')}
-              </div>
-              <div style="font-size:11px; color:#90a4ae; margin-top:4px;">
-                <em>Source officielle : ${p.originMedia} (${p.crossoverYear}) · Arène : ${p.arena}</em>
-              </div>
-              <div class="crossover-actions">
-                <button id="btn-launch-crossover" class="btn-launch-crossover" type="button" data-crossover-id="${p.id}">
-                  TRAQUER L'ANOMALIE DU MULTIVERS
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
+      // Active Target: default to rotation active target, or user-selected dossier
+      const featuredTarget = customSelectedCrossoverId
+        ? MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === customSelectedCrossoverId) || state.activePrey
+        : state.activePrey;
 
-        document.getElementById('btn-launch-crossover')?.addEventListener('click', () => {
-          audioSynth.playYautjaClick();
-          this.hud.showLogMessage(`ANOMALIE SPATIO-TEMPORELLE ENGAGÉE : ${p.name.toUpperCase()}`, 3500);
-          this.prepareHunt('jungle_hunter_1987', 'jungle');
-        });
+      const activeContainer = document.getElementById('multiverse-active-card-container');
+      if (activeContainer && activeContainer.dataset.renderedTarget !== featuredTarget.id) {
+        renderActiveCard(featuredTarget);
       }
 
       // Upcoming Grid
@@ -2538,31 +2574,77 @@ export class Game {
         }).join('');
       }
 
-      // Multiverse Full Archive Roster
+      // Multiverse Full Archive Roster with Faction/Universe Filter
       const rosterContainer = document.getElementById('multiverse-roster-grid');
-      if (rosterContainer && !rosterContainer.dataset.rendered) {
-        rosterContainer.dataset.rendered = 'true';
-        rosterContainer.innerHTML = MULTIVERSE_CROSSOVER_PREY.map((item) => `
-          <div class="multiverse-roster-card">
-            <div class="roster-card-header">
-              ${getCrossoverLogo(item.id, 40)}
-              <div>
-                <h5>${item.name}</h5>
-                <div class="roster-card-source">${item.originMedia}</div>
+      if (rosterContainer) {
+        let filteredPrey = MULTIVERSE_CROSSOVER_PREY;
+        if (activeMultiverseFilter === 'dc') {
+          filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('DC Comics'));
+        } else if (activeMultiverseFilter === 'darkhorse') {
+          filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('Dark Horse') && !c.universe.includes('DC Comics'));
+        } else if (activeMultiverseFilter === 'scifi') {
+          filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('2000 AD') || c.universe.includes('Valiant') || c.id.includes('terminator'));
+        } else if (activeMultiverseFilter === 'pop') {
+          filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('Top Cow') || c.universe.includes('Archie') || c.universe.includes('Mutant Enemy'));
+        }
+
+        rosterContainer.innerHTML = filteredPrey.map((item) => {
+          const isSelected = (item.id === featuredTarget.id);
+          return `
+            <div class="multiverse-roster-card ${isSelected ? 'active-selected' : ''}" data-crossover-select="${item.id}" tabindex="0" role="button" aria-label="Consulter ${item.name}">
+              <div class="roster-card-header">
+                ${getCrossoverLogo(item.id, 40)}
+                <div>
+                  <h5>${item.name}</h5>
+                  <div class="roster-card-source">${item.originMedia}</div>
+                </div>
+              </div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap; margin:4px 0;">
+                <span class="scale-tag scale-${item.scale.toLowerCase()}">${item.scale} (${item.sizeMeters}m)</span>
+                <span class="spec-tag reward-tag">+${item.honorReward} PTS</span>
+              </div>
+              <p style="font-size:12px; color:#b0bec5; margin:0;">${item.description}</p>
+              <div style="font-size:11px; color:#ffd54f;">
+                <strong>Trophée :</strong> ${item.trophy}
               </div>
             </div>
-            <div style="display:flex; gap:6px; flex-wrap:wrap; margin:4px 0;">
-              <span class="scale-tag scale-${item.scale.toLowerCase()}">${item.scale} (${item.sizeMeters}m)</span>
-              <span class="spec-tag reward-tag">+${item.honorReward} PTS</span>
-            </div>
-            <p style="font-size:12px; color:#b0bec5; margin:0;">${item.description}</p>
-            <div style="font-size:11px; color:#ffd54f;">
-              <strong>Trophée :</strong> ${item.trophy}
-            </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
+
+        // Wire click & Enter to select target
+        rosterContainer.querySelectorAll('[data-crossover-select]').forEach(cardEl => {
+          const cId = cardEl.getAttribute('data-crossover-select');
+          const selectAnomaly = () => {
+            customSelectedCrossoverId = cId;
+            const target = MULTIVERSE_CROSSOVER_PREY.find(c => c.id === cId);
+            if (target) {
+              renderActiveCard(target);
+              rosterContainer.querySelectorAll('.multiverse-roster-card').forEach(c => c.classList.remove('active-selected'));
+              cardEl.classList.add('active-selected');
+              audioSynth.playYautjaClick();
+            }
+          };
+          cardEl.addEventListener('click', selectAnomaly);
+          cardEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              selectAnomaly();
+            }
+          });
+        });
       }
     };
+
+    // Wire Universe Filter Buttons
+    document.querySelectorAll('.scale-filter-pill[data-multiverse-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.scale-filter-pill[data-multiverse-filter]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeMultiverseFilter = btn.getAttribute('data-multiverse-filter');
+        renderMultiverseUI();
+        audioSynth.playYautjaClick();
+      });
+    });
 
     renderMultiverseUI();
 
@@ -2570,6 +2652,56 @@ export class Game {
     this._multiverseInterval = setInterval(() => {
       renderMultiverseUI();
     }, 1000);
+
+    // 4. Render Canon Prey Taxonomy Encyclopedia in Codex
+    const renderTaxonomyEncyclopedia = (filterScale = 'all') => {
+      const taxonomyGrid = document.getElementById('canon-taxonomy-grid');
+      if (!taxonomyGrid) return;
+
+      const filteredPrey = filterPreyByScale(filterScale);
+      taxonomyGrid.innerHTML = filteredPrey.map((prey) => {
+        let factionClass = 'faction-yautja';
+        if (prey.faction === PREY_FACTIONS.ENGINEER) factionClass = 'faction-engineer';
+        else if (prey.faction === PREY_FACTIONS.XENOMORPH) factionClass = 'faction-xenomorph';
+        else if (prey.faction === PREY_FACTIONS.HUMAN_SYNTHETIC) factionClass = 'faction-human';
+
+        return `
+          <article class="taxonomy-card">
+            <div class="taxonomy-card-header">
+              <div>
+                <h5 class="taxonomy-card-title">${prey.name}</h5>
+                <span class="taxonomy-card-source">${prey.originMedia}</span>
+              </div>
+              <span class="spec-tag reward-tag">+${prey.baseHonor} PTS</span>
+            </div>
+            <div class="taxonomy-meta-row">
+              <span class="scale-tag scale-${prey.scale.toLowerCase()}">${prey.scale} (${prey.sizeMeters}m)</span>
+              <span class="faction-badge ${factionClass}">${prey.faction}</span>
+            </div>
+            <p style="font-size:12px; color:#cfd8dc; margin:0; line-height:1.4;">${prey.description}</p>
+            <div style="font-size:11px; color:#ffab91;">
+              <strong>Points faibles :</strong> ${prey.weakpoints.join(', ')}
+            </div>
+            <div style="font-size:11px; color:#ffd54f;">
+              <strong>Trophée :</strong> ${prey.trophy}
+            </div>
+          </article>
+        `;
+      }).join('');
+    };
+
+    renderTaxonomyEncyclopedia('all');
+
+    // Wire Taxonomy Filter Buttons
+    document.querySelectorAll('.scale-filter-pill[data-taxonomy-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.scale-filter-pill[data-taxonomy-filter]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.getAttribute('data-taxonomy-filter');
+        renderTaxonomyEncyclopedia(filter);
+        audioSynth.playYautjaClick();
+      });
+    });
   }
 
   setupMissionTabs() {
