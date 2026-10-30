@@ -906,6 +906,126 @@ export function getCrossoverLogo(crossoverId, size = 64) {
         </svg>
       `.trim();
 
+    case 'blade_daywalker':
+    case 'crossover_blade_daywalker':
+      // Blade Titanium Sword & Ballistic Shades (2024)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-blade" role="img" aria-label="Sabre en Titane de Blade">
+          <circle cx="40" cy="40" r="36" fill="#140606" stroke="#b71c1c" stroke-width="2.5" />
+          <polygon points="40,8 43,46 40,50 37,46" fill="#eceff1" stroke="#90a4ae" stroke-width="1.5" />
+          <rect x="24" y="48" width="32" height="6" rx="2" fill="#212121" stroke="#d32f2f" stroke-width="1" />
+          <rect x="37" y="54" width="6" height="18" fill="#424242" />
+          <polygon points="22,34 36,32 34,42 20,44" fill="#000000" stroke="#d50000" stroke-width="1" />
+          <polygon points="44,32 58,34 60,44 46,42" fill="#000000" stroke="#d50000" stroke-width="1" />
+        </svg>
+      `.trim();
+
+    case 'dredd_incubus':
+    case 'crossover_dredd_incubus':
+      // Judge Dredd Lawgiver MK II & Gold Eagle Badge (1997)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-dredd-incubus" role="img" aria-label="Badge Doré du Juge Dredd">
+          <circle cx="40" cy="40" r="36" fill="#111812" stroke="#ffd600" stroke-width="2.5" />
+          <polygon points="40,12 62,28 56,66 40,74 24,66 18,28" fill="#1b5e20" stroke="#ffd600" stroke-width="2" />
+          <polygon points="40,20 48,30 40,36 32,30" fill="#ffd600" />
+          <line x1="28" y1="44" x2="52" y2="44" stroke="#d50000" stroke-width="3" />
+        </svg>
+      `.trim();
+
+    case 'robocop_prime':
+    case 'crossover_robocop_prime':
+      // RoboCop OCP Titanium Faceplate & Auto-9 (1993)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-robocop-prime" role="img" aria-label="Visière en Titane de RoboCop Prime">
+          <circle cx="40" cy="40" r="36" fill="#151b22" stroke="#90a4ae" stroke-width="2.5" />
+          <polygon points="40,14 62,24 58,68 40,74 22,68 18,24" fill="#37474f" stroke="#78909c" stroke-width="2" />
+          <rect x="22" y="32" width="36" height="8" rx="2" fill="#000000" stroke="#ff1744" stroke-width="1.5" />
+          <line x1="24" y1="36" x2="56" y2="36" stroke="#ff1744" stroke-width="2" />
+        </svg>
+      `.trim();
+
+    case 'vampirella_drakulon':
+    case 'crossover_vampirella_drakulon':
+      // Vampirella Gold Bat Brooch & Drakulon Fangs (2015)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-vampirella" role="img" aria-label="Chauve-Souris d'Or de Vampirella">
+          <circle cx="40" cy="40" r="36" fill="#1a000d" stroke="#c2185b" stroke-width="2.5" />
+          <path d="M40 32 Q54 18 64 26 Q58 42 40 54 Q22 42 16 26 Q26 18 40 32 Z" fill="#ffd700" stroke="#ffb300" stroke-width="1.5" />
+          <circle cx="40" cy="38" r="4" fill="#d50000" />
+        </svg>
+      `.trim();
+
+    case 'captain_nemo_nautilus':
+    case 'crossover_captain_nemo_nautilus':
+      // Captain Nemo Nautilus Compass & Marine Steel Scimitar (2002)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-nemo" role="img" aria-label="Compas Marin du Capitaine Nemo">
+          <circle cx="40" cy="40" r="36" fill="#001e1d" stroke="#00897b" stroke-width="2.5" />
+          <circle cx="40" cy="40" r="26" fill="none" stroke="#26a69a" stroke-width="1.5" stroke-dasharray="4,2" />
+          <polygon points="40,16 45,35 64,40 45,45 40,64 35,45 16,40 35,35" fill="#ffd54f" stroke="#ffb300" stroke-width="1" />
+        </svg>
+      `.trim();
+
+    case 'zealot_wildcats':
+    case 'crossover_zealot_wildcats':
+      // Zealot Kherubim Double Coda Kusarigama (1998)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-zealot" role="img" aria-label="Double Glaive Coda de Zealot">
+          <circle cx="40" cy="40" r="36" fill="#1f0714" stroke="#ad1457" stroke-width="2.5" />
+          <path d="M22 62 Q36 28 58 18 Q46 38 42 62 Z" fill="#e91e63" stroke="#f48fb1" stroke-width="1.5" />
+          <line x1="20" y1="64" x2="60" y2="16" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
+    case 'batman_beyond':
+    case 'crossover_batman_beyond':
+      // Batman Beyond Cyber Bat-Suit Red V-Insigne (1999)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-batman-beyond" role="img" aria-label="Insigne Néo-Gotham de Batman Beyond">
+          <circle cx="40" cy="40" r="36" fill="#0d0d0d" stroke="#d50000" stroke-width="2.5" />
+          <polygon points="40,28 52,14 66,22 48,56 40,70 32,56 14,22 28,14" fill="#d50000" stroke="#ff1744" stroke-width="1.5" />
+        </svg>
+      `.trim();
+
+    case 'darkness_jackie_ascendant':
+    case 'crossover_darkness_jackie_ascendant':
+      // Jackie Estacado Darkness Ascendant Demon Mask & Darkling Fangs (2001)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-darkness-ascendant" role="img" aria-label="Sceau Suprême du Darkness Ascendant">
+          <circle cx="40" cy="40" r="36" fill="#05140a" stroke="#00e676" stroke-width="2.5" />
+          <polygon points="40,10 64,26 56,68 40,76 24,68 16,26" fill="#1b2e1e" stroke="#00c853" stroke-width="2" />
+          <path d="M26 34 Q34 26 38 40 Q28 44 26 34 Z" fill="#00e676" />
+          <path d="M54 34 Q46 26 42 40 Q52 44 54 34 Z" fill="#00e676" />
+          <circle cx="40" cy="58" r="4" fill="#ffffff" />
+        </svg>
+      `.trim();
+
+    case 'terminator_t_infinity_prime':
+    case 'crossover_terminator_t_infinity_prime':
+      // Skynet T-Infinity Prime Liquid Metal Temporal Core (2000)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-t-infinity-prime" role="img" aria-label="Noyau Temporel du T-Infinity Prime">
+          <circle cx="40" cy="40" r="36" fill="#081827" stroke="#00b0ff" stroke-width="2.5" />
+          <ellipse cx="40" cy="40" rx="22" ry="12" fill="none" stroke="#00e5ff" stroke-width="2" transform="rotate(30 40 40)" />
+          <ellipse cx="40" cy="40" rx="22" ry="12" fill="none" stroke="#00e5ff" stroke-width="2" transform="rotate(-30 40 40)" />
+          <circle cx="40" cy="40" r="8" fill="#d50000" stroke="#ff1744" stroke-width="2" />
+        </svg>
+      `.trim();
+
+    case 'predator_killer_suit':
+    case 'crossover_predator_killer_suit':
+      // Predator Killer Gauntlet Suit Nanotech Deployment (2018)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-predator-killer" role="img" aria-label="Gantelet Nanotech Predator Killer">
+          <circle cx="40" cy="40" r="36" fill="#1e1806" stroke="#ffd600" stroke-width="2.5" />
+          <polygon points="40,12 60,26 54,64 40,72 26,64 20,26" fill="#3e2723" stroke="#ffd600" stroke-width="2" />
+          <line x1="28" y1="36" x2="38" y2="36" stroke="#00e5ff" stroke-width="2.5" stroke-linecap="round" />
+          <line x1="42" y1="36" x2="52" y2="36" stroke="#00e5ff" stroke-width="2.5" stroke-linecap="round" />
+          <polygon points="40,46 45,56 35,56" fill="#ffd600" />
+        </svg>
+      `.trim();
+
+
 
 
     default:
@@ -1105,4 +1225,94 @@ export function renderFactionEmblem(factionName, size = 48) {
     return getBorgiaIndustriesLogo(size);
   }
   return getYautjaClanLogo(size);
+}
+
+
+/**
+ * Générateur SVG Vectoriel 1:1 pour les Équipements Forgés à partir de Trophées.
+ */
+export function getCraftsmanshipItemSvg(recipeId, size = 56) {
+  switch (recipeId) {
+    case 'craft_shield_xeno_warrior':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-shield" role="img" aria-label="Bouclier Dôme Xénomorphe">
+          <circle cx="40" cy="40" r="36" fill="#0d140e" stroke="#2e7d32" stroke-width="2" />
+          <path d="M22 28 Q40 12 58 28 Q62 58 40 70 Q18 58 22 28 Z" fill="#1b2e1e" stroke="#76ff03" stroke-width="2.5" />
+          <ellipse cx="40" cy="38" rx="10" ry="14" fill="#0a120b" stroke="#76ff03" stroke-width="1.5" />
+          <line x1="32" y1="46" x2="48" y2="46" stroke="#aed581" stroke-width="2" />
+        </svg>
+      `.trim();
+
+    case 'craft_shield_xeno_queen':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-shield-royal" role="img" aria-label="Égide Royale de Reine">
+          <circle cx="40" cy="40" r="36" fill="#120c02" stroke="#ffd700" stroke-width="2.5" />
+          <polygon points="40,12 64,22 68,48 40,72 12,48 16,22" fill="#261b0a" stroke="#ffd700" stroke-width="2" />
+          <polygon points="40,20 54,26 56,44 40,62 24,44 26,26" fill="#ffd54f" stroke="#ffb300" stroke-width="1.5" />
+          <circle cx="40" cy="40" r="6" fill="#d50000" />
+        </svg>
+      `.trim();
+
+    case 'craft_weapon_tail_blade_glaive':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-weapon-glaive" role="img" aria-label="Combi-Glaive Queue Xéno">
+          <circle cx="40" cy="40" r="36" fill="#140606" stroke="#d32f2f" stroke-width="2" />
+          <line x1="20" y1="60" x2="52" y2="28" stroke="#78909c" stroke-width="4" stroke-linecap="round" />
+          <polygon points="52,28 66,14 62,24 72,16 58,34" fill="#cfd8dc" stroke="#ff1744" stroke-width="1.5" />
+          <line x1="24" y1="64" x2="16" y2="72" stroke="#ffb300" stroke-width="3" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
+    case 'craft_weapon_cleaner_spinal_whip':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-weapon-whip" role="img" aria-label="Fouet Rachidien Wolf">
+          <circle cx="40" cy="40" r="36" fill="#0d1b22" stroke="#00e5ff" stroke-width="2" />
+          <path d="M22 62 C34 44 28 32 44 26 C56 22 64 34 66 18" stroke="#90a4ae" stroke-width="3.5" fill="none" stroke-linecap="round" />
+          <circle cx="22" cy="62" r="4" fill="#00e5ff" />
+          <polygon points="66,18 72,14 68,22" fill="#00e5ff" />
+        </svg>
+      `.trim();
+
+    case 'craft_mask_xeno_jaw_berserker':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-mask-jaw" role="img" aria-label="Masque Mâchoire Xéno">
+          <circle cx="40" cy="40" r="36" fill="#1a110a" stroke="#e65100" stroke-width="2" />
+          <polygon points="40,12 60,24 54,58 40,68 26,58 20,24" fill="#2d1b11" stroke="#ff6d00" stroke-width="2" />
+          <path d="M28 52 Q40 64 52 52" stroke="#cfd8dc" stroke-width="3" fill="none" stroke-linecap="round" />
+          <line x1="34" y1="52" x2="34" y2="58" stroke="#ffffff" stroke-width="1.5" />
+          <line x1="40" y1="55" x2="40" y2="61" stroke="#ffffff" stroke-width="1.5" />
+          <line x1="46" y1="52" x2="46" y2="58" stroke="#ffffff" stroke-width="1.5" />
+        </svg>
+      `.trim();
+
+    case 'craft_armor_queen_carapace_cuirass':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-armor-queen" role="img" aria-label="Cuirasse Carapace Reine">
+          <circle cx="40" cy="40" r="36" fill="#0e171b" stroke="#00e5ff" stroke-width="2" />
+          <polygon points="40,16 62,28 56,66 40,74 24,66 18,28" fill="#1b2a30" stroke="#00e5ff" stroke-width="2" />
+          <line x1="28" y1="36" x2="52" y2="36" stroke="#76ff03" stroke-width="2.5" />
+          <line x1="30" y1="46" x2="50" y2="46" stroke="#76ff03" stroke-width="2.5" />
+          <line x1="34" y1="56" x2="46" y2="56" stroke="#76ff03" stroke-width="2.5" />
+        </svg>
+      `.trim();
+
+    case 'craft_banner_xeno_queen_crest':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-banner-queen" role="img" aria-label="Étendard Reine Xéno">
+          <circle cx="40" cy="40" r="36" fill="#1c0f06" stroke="#ff9100" stroke-width="2" />
+          <line x1="40" y1="12" x2="40" y2="72" stroke="#ffab00" stroke-width="3" stroke-linecap="round" />
+          <polygon points="40,16 66,28 40,40" fill="#b71c1c" stroke="#ff1744" stroke-width="1.5" />
+          <circle cx="40" cy="14" r="5" fill="#ffd700" />
+        </svg>
+      `.trim();
+
+    default:
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-default" role="img" aria-label="Équipement de Forge Yautja">
+          <circle cx="40" cy="40" r="36" fill="#14181a" stroke="#ffd700" stroke-width="2" />
+          <polygon points="40,14 64,28 56,68 40,74 24,68 16,28" fill="#263238" stroke="#ffd700" stroke-width="2" />
+          <circle cx="40" cy="42" r="8" fill="#ff6d00" />
+        </svg>
+      `.trim();
+  }
 }

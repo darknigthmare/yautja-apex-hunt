@@ -70,7 +70,11 @@ import {
   getOWLFLogo,
   getStargazerLogo,
   renderFactionEmblem,
+  getCraftsmanshipItemSvg,
 } from './ui/CanonLogosAndEmblems.js';
+import {
+  YautjaTrophyCraftsmanshipForgeSystem,
+} from './gameplay/YautjaTrophyCraftsmanshipForgeSystem.js';
 
 const DEFAULT_CAMERA_FOV = 65;
 const SCOPE_CAMERA_FOV = THREE.MathUtils.radToDeg(
@@ -225,6 +229,7 @@ export class Game {
     this.environment.setDiscoveredPoiIds(this.player.discoveredPoiIds);
     this.settings = { ...DEFAULT_SETTINGS, ...loadResult.settings };
     this.loadoutSystem = new HuntLoadoutSystem();
+    this.trophyCraftForge = new YautjaTrophyCraftsmanshipForgeSystem();
     const loadoutResult = this.loadoutSystem.load({
       hunterClassId: this.player.customization?.hunterClassId,
       unlockedWeaponIds: this.player.unlockedWeaponIds,
@@ -2789,8 +2794,116 @@ export class Game {
     });
   }
 
+
+  setupTrophyCraftsmanshipUI() {
+    const grid = document.getElementById('trophy-crafting-grid');
+    if (!grid) return;
+
+    let activeCraftFilter = 'all';
+
+    const renderCraftGrid = () => {
+      const recipes = this.trophyCraftForge.getRecipes(activeCraftFilter);
+      const playerHonor = this.player?.honorScore ?? 0;
+
+      grid.innerHTML = recipes.map((r) => {
+        const crafted = this.trophyCraftForge.isCrafted(r.id);
+        const equipped = this.trophyCraftForge.isEquipped(r.id);
+        const check = this.trophyCraftForge.canCraft(r.id, playerHonor);
+
+        let actionBtnHtml = '';
+        if (equipped) {
+          actionBtnHtml = `<button type="button" class="craft-action-btn btn-equipped" data-craft-action="unequip" data-recipe-id="${r.id}">DÉSÉQUIPER (ACTIF)</button>`;
+        } else if (crafted) {
+          actionBtnHtml = `<button type="button" class="craft-action-btn btn-ready-equip" data-craft-action="equip" data-recipe-id="${r.id}">ÉQUIPER POUR LA CHASSE</button>`;
+        } else if (check.canCraft) {
+          actionBtnHtml = `<button type="button" class="craft-action-btn btn-can-craft" data-craft-action="craft" data-recipe-id="${r.id}">FAÇONNER (${r.requiredHonor} HONNEUR)</button>`;
+        } else {
+          actionBtnHtml = `<button type="button" class="craft-action-btn btn-locked" disabled>REQUIS : ${r.requiredHonor} HONNEUR (${check.missingHonor || 0} MANQUANT)</button>`;
+        }
+
+        const perkValues = Object.entries(r.perks)
+          .map(([k, v]) => `<span class="spec-tag">${k}: +${typeof v === 'number' && v < 1 ? Math.round(v * 100) + '%' : v}</span>`)
+          .join(' ');
+
+        return `
+          <div class="craft-recipe-card ${crafted ? 'card-crafted' : ''} ${equipped ? 'card-equipped' : ''}" data-card-recipe="${r.id}">
+            <div class="craft-card-header">
+              <div class="craft-svg-box">
+                ${getCraftsmanshipItemSvg(r.id, 44)}
+              </div>
+              <div>
+                <h5>${r.name}</h5>
+                <span class="craft-origin-kicker">${r.originMedia}</span>
+              </div>
+            </div>
+            <div class="craft-trophy-badge">
+              <strong>Trophée requis :</strong> ${r.requiredTrophies.join(' + ')}
+            </div>
+            <p style="font-size:12px; color:#cfd8dc; margin:0; line-height:1.4;">${r.description}</p>
+            <div class="craft-perk-box">
+              <span class="craft-perk-title">Avantage Biomécanique :</span>
+              <p>${r.passiveBonus}</p>
+              <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+                ${perkValues}
+              </div>
+            </div>
+            <div class="craft-card-footer">
+              ${actionBtnHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      grid.querySelectorAll('[data-craft-action]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const action = btn.getAttribute('data-craft-action');
+          const recipeId = btn.getAttribute('data-recipe-id');
+          const currentHonor = this.player?.honorScore ?? 0;
+
+          if (action === 'craft') {
+            const res = this.trophyCraftForge.craftItem(recipeId, currentHonor);
+            if (res.success) {
+              audioSynth.playYautjaClick();
+              this.hud.showLogMessage(`ARTISANAT DU CLAN : ${res.recipe.name.toUpperCase()} FORGÉ AVEC SUCCÈS !`, 4500);
+              renderCraftGrid();
+            } else {
+              this.hud.showLogMessage(`FORGE IMPOSSIBLE : ${res.reason}`, 3000);
+            }
+          } else if (action === 'equip') {
+            const res = this.trophyCraftForge.equipItem(recipeId);
+            if (res.success) {
+              audioSynth.playYautjaClick();
+              this.hud.showLogMessage(`ÉQUIPEMENT ACTIF : ${res.equippedItem.name.toUpperCase()} ÉQUIPÉ POUR LA CHASSE`, 4000);
+              renderCraftGrid();
+            }
+          } else if (action === 'unequip') {
+            const res = this.trophyCraftForge.unequipItem(recipeId);
+            if (res.success) {
+              audioSynth.playYautjaClick();
+              this.hud.showLogMessage('ÉQUIPEMENT DÉSÉQUIPÉ', 3000);
+              renderCraftGrid();
+            }
+          }
+        });
+      });
+    };
+
+    document.querySelectorAll('.craft-filter-bar [data-craft-filter]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.craft-filter-bar [data-craft-filter]').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCraftFilter = btn.getAttribute('data-craft-filter');
+        renderCraftGrid();
+        audioSynth.playYautjaClick();
+      });
+    });
+
+    renderCraftGrid();
+    this.renderTrophyCraftGrid = renderCraftGrid;
+  }
+
   setupMissionTabs() {
-    const tabKeys = ['missions', 'multiverse', 'loadout', 'armory', 'codex', 'options'];
+    const tabKeys = ['missions', 'multiverse', 'crafting', 'loadout', 'armory', 'codex', 'options'];
     const tabs = tabKeys.map((key) => ({
       key,
       button: document.getElementById(`tab-btn-${key}`),
@@ -2851,6 +2964,7 @@ export class Game {
 
     this.setupMissionTabs();
     this.setupTaxonomyAndMultiverse();
+    this.setupTrophyCraftsmanshipUI();
     this.setupHuntLoadoutControls();
     document.getElementById('btn-explore-hub')?.addEventListener('click', () => {
       this.enterHubExploration();
@@ -3319,8 +3433,17 @@ export class Game {
     );
 
     // Monster Hunter Size Variation System (Couronne d'Or Géante / Miniature / Argent)
+    const craftedPerks = this.trophyCraftForge?.getActiveCraftedPerks?.() ?? {};
+    if (craftedPerks.acidImmunityRatio >= 1.0) {
+      this.player.hasAntiAcidCloak = true;
+    }
+    if (craftedPerks.bonusHealth > 0) {
+      this.player.maxHealth = Math.max(this.player.maxHealth, 100 + craftedPerks.bonusHealth);
+      this.player.health = this.player.maxHealth;
+    }
     const activeTarget = this.activeCrossoverHunt || this.activePreySimulation;
-    this.currentHuntCrown = determineMonsterHunterCrown(activeTarget);
+    const crownRoll = Math.max(0, Math.random() - (craftedPerks.goldCrownChanceBonus || 0));
+    this.currentHuntCrown = determineMonsterHunterCrown(activeTarget, crownRoll);
 
     if (this.activeCrossoverHunt) {
       const p = this.activeCrossoverHunt;

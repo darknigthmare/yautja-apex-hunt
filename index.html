@@ -272,6 +272,7 @@
       <div class="tab-row" role="tablist" aria-label="Sections du vaisseau-mère">
         <button id="tab-btn-missions" class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="tab-content-missions">CONTRATS</button>
         <button id="tab-btn-multiverse" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-multiverse">ANOMALIES & CROSSOVERS</button>
+        <button id="tab-btn-crafting" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-crafting">FORGE DES TROPHÉES</button>
         <button id="tab-btn-loadout" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-loadout">PRÉPARATION</button>
         <button id="tab-btn-armory" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-armory">ARMURERIE</button>
         <button id="tab-btn-codex" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-content-codex">CODEX</button>
@@ -707,7 +708,7 @@
           <h4>ARCHIVES DES PROIES DU MULTIVERS DOCUMENTÉES</h4>
                   <div class="scale-filter-bar multiverse-filter-bar" role="toolbar" aria-label="Filtrer les anomalies par univers">
           <span class="scale-filter-title">UNIVERS D'ORIGINE :</span>
-          <button type="button" class="scale-filter-pill active" data-multiverse-filter="all">TOUTES LES ANOMALIES (50)</button>
+          <button type="button" class="scale-filter-pill active" data-multiverse-filter="all">TOUTES LES ANOMALIES (60)</button>
           <button type="button" class="scale-filter-pill" data-multiverse-filter="dc">DC COMICS</button>
           <button type="button" class="scale-filter-pill" data-multiverse-filter="marvel">MARVEL UNIVERSE</button>
           <button type="button" class="scale-filter-pill" data-multiverse-filter="darkhorse">DARK HORSE</button>
@@ -719,6 +720,34 @@
         <div id="multiverse-roster-grid" class="multiverse-roster-grid">
             <!-- Populated by JS -->
           </div>
+        </div>
+      </div>
+
+      <!-- Tab Crafting: Yautja Trophy Craftsmanship & Bio-Forge -->
+      <div id="tab-content-crafting" class="hidden" role="tabpanel" aria-labelledby="tab-btn-crafting">
+        <div class="section-heading loadout-heading">
+          <div>
+            <p class="section-kicker">ATELIER DU VAISSEAU-MÈRE · BIO-FORGE ANCESTRALE</p>
+            <h3>FORGE DE TROPHÉES & ARTISANAT DU CLAN</h3>
+            <p class="crafting-subtitle">
+              Façonnez des boucliers céphaliques en dôme de xénomorphe (style Scar & Lex Woods), des hasts caudaux,
+              des bio-masques hybrides et des étendards de chasse ancestraux à partir de vos trophées de victoires.
+            </p>
+          </div>
+        </div>
+
+        <div class="scale-filter-bar craft-filter-bar" role="toolbar" aria-label="Filtrer l'artisanat par catégorie">
+          <span class="scale-filter-title">CATÉGORIE :</span>
+          <button type="button" class="scale-filter-pill active" data-craft-filter="all">TOUT L'ARTISANAT (20)</button>
+          <button type="button" class="scale-filter-pill" data-craft-filter="shields">BOUCLIERS D'OS (4)</button>
+          <button type="button" class="scale-filter-pill" data-craft-filter="weapons">ARMES CAUDALES (4)</button>
+          <button type="button" class="scale-filter-pill" data-craft-filter="masks">BIO-MASQUES (4)</button>
+          <button type="button" class="scale-filter-pill" data-craft-filter="armor">ARMURES & CHITINE (4)</button>
+          <button type="button" class="scale-filter-pill" data-craft-filter="banners">ÉTENDARDS & TOTEMS (4)</button>
+        </div>
+
+        <div id="trophy-crafting-grid" class="trophy-crafting-grid">
+          <!-- Populated by YautjaTrophyCraftsmanshipForgeSystem -->
         </div>
       </div>
 
