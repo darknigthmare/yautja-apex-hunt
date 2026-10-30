@@ -7409,3 +7409,72 @@ button:hover { transform: scale(1.04); }
   font-size: 11px;
   color: #80deea;
 }
+
+
+/* =========================================================================
+ * Panthéon Mythique Suprême Apex (1987-2025) HUD - v238
+ * ========================================================================= */
+.predator-franchise-v238-mythique-supreme-apex-hud-panel {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(22, 12, 28, 0.94);
+  border: 1px solid #e040fb;
+  box-shadow: 0 0 24px rgba(224, 64, 251, 0.4), inset 0 0 14px rgba(171, 71, 188, 0.25);
+  border-radius: 6px;
+  padding: 12px 14px;
+  color: #f3e5f5;
+  font-family: 'Rajdhani', sans-serif;
+  z-index: 1070;
+  backdrop-filter: blur(8px);
+}
+
+.predator-franchise-v238-mythique-supreme-apex-hud-panel .hud-mythique-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e040fb;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.predator-franchise-v238-mythique-supreme-apex-hud-panel .hud-mythique-header h3 {
+  margin: 0;
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  color: #ea80fc;
+  text-shadow: 0 0 10px rgba(224, 64, 251, 0.7);
+}
+
+.predator-franchise-v238-mythique-supreme-apex-hud-panel .hud-mythique-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  background: rgba(224, 64, 251, 0.25);
+  border: 1px solid #e040fb;
+  color: #f8bbd0;
+  text-shadow: 0 0 6px #e040fb;
+}
+
+.predator-franchise-v238-mythique-supreme-apex-hud-panel .hud-mythique-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.predator-franchise-v238-mythique-supreme-apex-hud-panel .hud-mythique-roster {
+  border-top: 1px solid rgba(224, 64, 251, 0.3);
+  padding-top: 8px;
+  font-size: 11px;
+  color: #ce93d8;
+}
