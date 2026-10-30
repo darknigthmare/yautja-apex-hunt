@@ -1,11 +1,15 @@
 import { MULTIVERSE_CROSSOVER_PREY, PREY_SCALE_TIERS } from './PreyTaxonomyAndCrossoverCatalog.js';
+import encountersA from './encounters/encountersA.js';
+import encountersB from './encounters/encountersB.js';
+import encountersC from './encounters/encountersC.js';
+import encountersD from './encounters/encountersD.js';
 
 /**
  * Rencontres propres à l'univers de chaque crossover, réparties sur les 5 gabarits
  * (GEANT / GRANDE / MOYEN / PETITE / MINUSCULE), comme pour les proies canon.
  * Tuple : [id, scale, sizeMeters, name, description, weakpoints[], trophy, honor, arena]
  */
-const RAW = {
+const BASE_RAW = {
   crossover_terminator_t800: [
     ['hk_aerial', 'GEANT', 9.0, 'Hunter-Killer Aérien HK-VTOL de Skynet', 'Gunship à rotors jumelés balayant les ruines de Los Angeles 2029 avec miniguns et projecteurs thermiques.', ['Rotors de queue', 'Réacteurs latéraux'], 'Turbine de Rotor HK-VTOL Calcinée', 7200, 'RUINES DE LOS ANGELES 2029 — CIEL DE GUERRE'],
     ['hk_tank', 'GRANDE', 4.5, 'Hunter-Killer Tank à Chenilles', 'Char autonome à tourelles plasma, pilier des offensives au sol de Skynet.', ['Joint de tourelle', 'Chenille arrière'], 'Tourelle Plasma HK-Tank Arrachée', 5400, 'TRANCHÉES DE LA RÉSISTANCE — NO MAN\'S LAND'],
@@ -91,6 +95,8 @@ const RAW = {
     ['lawmaster_drone', 'MINUSCULE', 0.3, 'Drone Médical Lawmaster', 'Mouchard volant de la brigade des Juges.', ['Hélice'], 'Puce de Drone de Lawmaster', 700, 'RUE D\'ASPHALTE'],
   ],
 };
+
+const RAW = { ...BASE_RAW, ...encountersA, ...encountersB, ...encountersC, ...encountersD };
 
 export function getUniverseEncounterScaleLabel(scale) {
   return PREY_SCALE_TIERS[scale]?.label ?? scale;

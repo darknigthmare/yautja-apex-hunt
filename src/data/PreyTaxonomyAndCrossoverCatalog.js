@@ -1,3 +1,4 @@
+import CANON_PREY_EXPANSION_V251 from './CanonPreyExpansionV251.js';
 /**
  * PreyTaxonomyAndCrossoverCatalog.js
  * 
@@ -2370,6 +2371,7 @@ export const CANON_PREY_CATALOG = Object.freeze([
     baseHonor: 920,
     threatStars: 1,
   },
+  ...CANON_PREY_EXPANSION_V251.map((p) => ({ ...p, faction: PREY_FACTIONS[p.faction] ?? p.faction })),
 ]);
 
 /**
