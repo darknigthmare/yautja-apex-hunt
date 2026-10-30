@@ -52,7 +52,7 @@ test('Taxonomie des proies : Les 5 paliers d’échelle (Géant, Grande, Moyen, 
 });
 
 test('Catalogue canonique : Distribution exhaustive des proies à travers les factions et gabarits 1:1', () => {
-  assert.ok(CANON_PREY_CATALOG.length >= 175, `Le catalogue doit contenir au moins 175 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
+  assert.ok(CANON_PREY_CATALOG.length >= 200, `Le catalogue doit contenir au moins 200 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
 
   const scalesPresent = new Set(CANON_PREY_CATALOG.map((p) => p.scale));
   assert.ok(scalesPresent.has('GEANT'), 'Présence de proies géantes');
@@ -356,15 +356,15 @@ test('Système Monster Hunter : Mécanique des Couronnes de taille d\'or et affi
 });
 
 
-test('Bio-Forge des Trophées : Les 20 recettes d\'artisanat yautja couvrent les 5 catégories avec fidélité 1:1', () => {
+test('Bio-Forge des Trophées : Les 40 recettes d\'artisanat yautja couvrent les 5 catégories avec fidélité 1:1', () => {
   const cats = Object.keys(TROPHY_CRAFT_CATEGORIES);
   assert.deepEqual(cats, ['SHIELDS', 'WEAPONS', 'MASKS', 'ARMOR', 'BANNERS']);
-  assert.equal(TROPHY_CRAFT_RECIPES.length, 20, 'Exactement 20 recettes d\'artisanat disponibles');
+  assert.equal(TROPHY_CRAFT_RECIPES.length, 40, 'Exactement 40 recettes d\'artisanat disponibles');
 
-  // Chaque catégorie a 4 recettes dédiées
+  // Chaque catégorie a 8 recettes dédiées
   for (const catKey of cats) {
     const catRecipes = TROPHY_CRAFT_RECIPES.filter((r) => r.category === TROPHY_CRAFT_CATEGORIES[catKey].id);
-    assert.equal(catRecipes.length, 4, `La catégorie ${catKey} doit comporter exactement 4 recettes`);
+    assert.equal(catRecipes.length, 8, `La catégorie ${catKey} doit comporter exactement 8 recettes`);
   }
 
   // Chaque recette possède des métadonnées exhaustives
@@ -386,20 +386,35 @@ test('Bio-Forge des Trophées : Les 20 recettes d\'artisanat yautja couvrent les
   const queenShield = TROPHY_CRAFT_RECIPES.find((r) => r.id === 'craft_shield_xeno_queen');
   assert.ok(queenShield, 'Égide de crête de Reine Xénomorphe présente');
 
+  const crusherShield = TROPHY_CRAFT_RECIPES.find((r) => r.id === 'craft_shield_xeno_crusher');
+  assert.ok(crusherShield, 'Pavois frontal en crâne de Crusher présent');
+
   const xenoSpear = TROPHY_CRAFT_RECIPES.find((r) => r.id === 'craft_weapon_tail_blade_glaive');
   assert.ok(xenoSpear, 'Combi-lance à pointe caudale xénomorphe présente');
 
   const whip = TROPHY_CRAFT_RECIPES.find((r) => r.id === 'craft_weapon_cleaner_spinal_whip');
   assert.ok(whip, 'Fouet spinal xénomorphe de Wolf (AVPR) présent');
 
+  const tomahawk = TROPHY_CRAFT_RECIPES.find((r) => r.id === 'craft_weapon_xeno_mandible_tomahawk');
+  assert.ok(tomahawk, 'Hache de chasse en mâchoire inférieure de xéno présente');
+
   const mrBlackMask = TROPHY_CRAFT_RECIPES.find((r) => r.id === 'craft_mask_xeno_jaw_berserker');
   assert.ok(mrBlackMask, 'Bio-masque à mâchoire xénomorphe (Mr. Black) présent');
+
+  const queenCrestMask = TROPHY_CRAFT_RECIPES.find((r) => r.id === 'craft_mask_xeno_crest_matriarch');
+  assert.ok(queenCrestMask, 'Bio-masque orné d\'une crête de Reine présent');
 
   const queenCuirass = TROPHY_CRAFT_RECIPES.find((r) => r.id === 'craft_armor_queen_carapace_cuirass');
   assert.ok(queenCuirass, 'Cuirasse en chitine de Reine présente');
 
+  const ribcageVest = TROPHY_CRAFT_RECIPES.find((r) => r.id === 'craft_armor_xeno_ribcage_vest');
+  assert.ok(ribcageVest, 'Plastron en cage thoracique de xéno présent');
+
   const clanStandard = TROPHY_CRAFT_RECIPES.find((r) => r.id === 'craft_banner_xeno_queen_crest');
   assert.ok(clanStandard, 'Étendard de crête de Reine du clan présent');
+
+  const hiveSpire = TROPHY_CRAFT_RECIPES.find((r) => r.id === 'craft_banner_hive_conquest_spire');
+  assert.ok(hiveSpire, 'Spire de conquête de ruche aux 10 crânes présente');
 });
 
 test('Artisanat SVG 1:1 : Chaque pièce d\'artisanat génère un visuel vectoriel dédié sans dépendance externe', () => {

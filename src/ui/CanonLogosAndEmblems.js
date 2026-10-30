@@ -1306,6 +1306,216 @@ export function getCraftsmanshipItemSvg(recipeId, size = 56) {
         </svg>
       `.trim();
 
+
+    case 'craft_shield_xeno_crusher':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-shield-crusher" role="img" aria-label="Pavois Crâne Crusher">
+          <circle cx="40" cy="40" r="36" fill="#17120a" stroke="#d7ccc8" stroke-width="2" />
+          <path d="M16 24 Q40 10 64 24 L68 56 Q40 76 12 56 Z" fill="#2d2218" stroke="#8d6e63" stroke-width="2.5" />
+          <line x1="40" y1="16" x2="40" y2="70" stroke="#bcaaa4" stroke-width="3" />
+          <polygon points="40,24 50,38 30,38" fill="#d7ccc8" stroke="#8d6e63" stroke-width="1.5" />
+        </svg>
+      `.trim();
+
+    case 'craft_shield_praetorian_crest':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-shield-praetorian" role="img" aria-label="Rondache Prétorien">
+          <circle cx="40" cy="40" r="36" fill="#0b130e" stroke="#00e676" stroke-width="2" />
+          <polygon points="40,14 62,24 68,48 54,68 26,68 12,48 18,24" fill="#1b2e22" stroke="#76ff03" stroke-width="2" />
+          <circle cx="40" cy="42" r="12" fill="#0d1f14" stroke="#00e676" stroke-width="2" />
+          <line x1="40" y1="30" x2="40" y2="54" stroke="#76ff03" stroke-width="2" />
+        </svg>
+      `.trim();
+
+    case 'craft_shield_skynet_hk_alloy':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-shield-hk" role="img" aria-label="Pavois Titane HK Skynet">
+          <circle cx="40" cy="40" r="36" fill="#101418" stroke="#78909c" stroke-width="2" />
+          <polygon points="20,18 60,18 66,62 40,74 14,62" fill="#263238" stroke="#b0bec5" stroke-width="2.5" />
+          <rect x="26" y="32" width="28" height="6" fill="#d50000" rx="2" />
+          <line x1="40" y1="42" x2="40" y2="66" stroke="#90a4ae" stroke-width="2" />
+        </svg>
+      `.trim();
+
+    case 'craft_shield_mgalekgolo_carapace':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-shield-mgalekgolo" role="img" aria-label="Égide Mgalekgolo Halo">
+          <circle cx="40" cy="40" r="36" fill="#07111a" stroke="#0288d1" stroke-width="2.5" />
+          <path d="M22 20 Q40 12 58 20 L64 60 Q40 74 16 60 Z" fill="#0d2b3e" stroke="#29b6f6" stroke-width="2" />
+          <ellipse cx="40" cy="42" rx="14" ry="18" fill="#081c28" stroke="#ff9100" stroke-width="2" />
+          <circle cx="40" cy="42" r="5" fill="#ff6d00" />
+        </svg>
+      `.trim();
+
+    case 'craft_weapon_xeno_mandible_tomahawk':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-weapon-tomahawk" role="img" aria-label="Hache Mâchoire Xéno">
+          <circle cx="40" cy="40" r="36" fill="#1a120c" stroke="#ff8f00" stroke-width="2" />
+          <line x1="22" y1="64" x2="52" y2="24" stroke="#8d6e63" stroke-width="4.5" stroke-linecap="round" />
+          <path d="M48 20 Q64 12 66 32 Q54 36 46 30 Z" fill="#cfd8dc" stroke="#ff6d00" stroke-width="2" />
+          <line x1="52" y1="26" x2="56" y2="30" stroke="#d50000" stroke-width="1.5" />
+        </svg>
+      `.trim();
+
+    case 'craft_weapon_runner_tail_scythe':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-weapon-runner" role="img" aria-label="Vouge Runner Fiorina">
+          <circle cx="40" cy="40" r="36" fill="#140a08" stroke="#ff3d00" stroke-width="2" />
+          <line x1="16" y1="68" x2="48" y2="28" stroke="#78909c" stroke-width="3.5" stroke-linecap="round" />
+          <path d="M48 28 Q64 12 68 36 Q56 34 46 32 Z" fill="#bf360c" stroke="#ff9e80" stroke-width="2" />
+          <polygon points="68,36 72,44 64,42" fill="#ff3d00" />
+        </svg>
+      `.trim();
+
+    case 'craft_weapon_acid_flail_vertebrae':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-weapon-flail" role="img" aria-label="Fléau Acide Xéno">
+          <circle cx="40" cy="40" r="36" fill="#0d140b" stroke="#76ff03" stroke-width="2" />
+          <line x1="20" y1="64" x2="38" y2="44" stroke="#78909c" stroke-width="3" stroke-linecap="round" />
+          <path d="M38 44 C44 38 48 34 56 26" stroke="#90a4ae" stroke-width="2" stroke-dasharray="3,3" fill="none" />
+          <circle cx="60" cy="22" r="9" fill="#1b5e20" stroke="#76ff03" stroke-width="2" />
+          <circle cx="60" cy="22" r="4" fill="#ccff90" />
+        </svg>
+      `.trim();
+
+    case 'craft_weapon_mgalekgolo_fuel_cannon':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-weapon-fuel-cannon" role="img" aria-label="Canon Combustible Mgalekgolo">
+          <circle cx="40" cy="40" r="36" fill="#061612" stroke="#00e676" stroke-width="2.5" />
+          <rect x="22" y="28" width="38" height="24" fill="#003322" stroke="#00e676" stroke-width="2" rx="4" />
+          <line x1="60" y1="36" x2="68" y2="36" stroke="#76ff03" stroke-width="4" stroke-linecap="round" />
+          <line x1="60" y1="44" x2="68" y2="44" stroke="#76ff03" stroke-width="4" stroke-linecap="round" />
+          <circle cx="34" cy="40" r="5" fill="#76ff03" />
+        </svg>
+      `.trim();
+
+    case 'craft_mask_xeno_crest_matriarch':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-mask-crest" role="img" aria-label="Bio-Masque Crête Reine">
+          <circle cx="40" cy="40" r="36" fill="#1a1106" stroke="#ffd700" stroke-width="2" />
+          <polygon points="40,10 64,22 56,58 40,68 24,58 16,22" fill="#2d1f0d" stroke="#ffb300" stroke-width="2" />
+          <polygon points="40,14 56,22 50,34 40,30 30,34 24,22" fill="#ffd54f" />
+          <circle cx="34" cy="42" r="2.5" fill="#00e5ff" />
+          <circle cx="46" cy="42" r="2.5" fill="#00e5ff" />
+        </svg>
+      `.trim();
+
+    case 'craft_mask_xeno_skull_dome':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-mask-dome" role="img" aria-label="Masque Dôme Big Chap">
+          <circle cx="40" cy="40" r="36" fill="#0a1014" stroke="#80deea" stroke-width="2" />
+          <ellipse cx="40" cy="38" rx="20" ry="24" fill="#12252e" stroke="#00acc1" stroke-width="2" />
+          <path d="M26 44 Q40 52 54 44" stroke="#4dd0e1" stroke-width="2.5" fill="none" />
+          <ellipse cx="40" cy="32" rx="10" ry="12" fill="#071318" opacity="0.6" />
+        </svg>
+      `.trim();
+
+    case 'craft_mask_crusher_bone_visor':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-mask-crusher" role="img" aria-label="Masque Visière Crusher">
+          <circle cx="40" cy="40" r="36" fill="#14100c" stroke="#a1887f" stroke-width="2" />
+          <polygon points="40,14 62,26 54,64 40,70 26,64 18,26" fill="#2e2118" stroke="#8d6e63" stroke-width="2" />
+          <rect x="28" y="38" width="24" height="4" fill="#ffab00" rx="1" />
+          <line x1="40" y1="18" x2="40" y2="34" stroke="#d7ccc8" stroke-width="2.5" />
+        </svg>
+      `.trim();
+
+    case 'craft_mask_cyber_ed209_optics':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-mask-ed209" role="img" aria-label="Visière ED-209">
+          <circle cx="40" cy="40" r="36" fill="#0e1318" stroke="#90a4ae" stroke-width="2" />
+          <rect x="20" y="24" width="40" height="34" fill="#263238" stroke="#b0bec5" stroke-width="2" rx="4" />
+          <rect x="26" y="36" width="28" height="6" fill="#d50000" rx="1" />
+          <circle cx="32" cy="48" r="2" fill="#00e5ff" />
+          <circle cx="48" cy="48" r="2" fill="#00e5ff" />
+        </svg>
+      `.trim();
+
+    case 'craft_armor_xeno_ribcage_vest':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-armor-ribcage" role="img" aria-label="Plastron Cage Thoracique">
+          <circle cx="40" cy="40" r="36" fill="#0a1410" stroke="#76ff03" stroke-width="2" />
+          <path d="M26 22 Q40 18 54 22 L50 64 Q40 70 30 64 Z" fill="#13261c" stroke="#00e676" stroke-width="2" />
+          <line x1="28" y1="30" x2="52" y2="30" stroke="#76ff03" stroke-width="2" />
+          <line x1="30" y1="40" x2="50" y2="40" stroke="#76ff03" stroke-width="2" />
+          <line x1="32" y1="50" x2="48" y2="50" stroke="#76ff03" stroke-width="2" />
+        </svg>
+      `.trim();
+
+    case 'craft_armor_praetorian_pauldrons':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-armor-pauldrons" role="img" aria-label="Épaulières Prétorien">
+          <circle cx="40" cy="40" r="36" fill="#0d1114" stroke="#00e5ff" stroke-width="2" />
+          <polygon points="14,32 36,20 38,54 20,62" fill="#18252c" stroke="#00e5ff" stroke-width="2" />
+          <polygon points="66,32 44,20 42,54 60,62" fill="#18252c" stroke="#00e5ff" stroke-width="2" />
+          <circle cx="40" cy="38" r="4" fill="#ffd700" />
+        </svg>
+      `.trim();
+
+    case 'craft_armor_tail_vertebrae_belt':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-armor-belt" role="img" aria-label="Ceinturon Vertèbres Xéno">
+          <circle cx="40" cy="40" r="36" fill="#16120c" stroke="#ffab00" stroke-width="2" />
+          <rect x="16" y="34" width="48" height="12" fill="#2d2216" stroke="#ffa000" stroke-width="2" rx="3" />
+          <circle cx="26" cy="40" r="3" fill="#cfd8dc" />
+          <circle cx="35" cy="40" r="3" fill="#cfd8dc" />
+          <circle cx="45" cy="40" r="3" fill="#cfd8dc" />
+          <circle cx="54" cy="40" r="3" fill="#cfd8dc" />
+        </svg>
+      `.trim();
+
+    case 'craft_armor_cyberdemon_cuirass':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-armor-cyberdemon" role="img" aria-label="Cuirasse Cyberdemon">
+          <circle cx="40" cy="40" r="36" fill="#1c0707" stroke="#ff1744" stroke-width="2.5" />
+          <polygon points="40,16 62,26 56,66 40,74 24,66 18,26" fill="#361010" stroke="#ff5252" stroke-width="2" />
+          <circle cx="40" cy="42" r="10" fill="#212121" stroke="#00e5ff" stroke-width="2" />
+          <circle cx="40" cy="42" r="4" fill="#00e5ff" />
+        </svg>
+      `.trim();
+
+    case 'craft_banner_hive_conquest_spire':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-banner-spire" role="img" aria-label="Spire Conquête Ruche">
+          <circle cx="40" cy="40" r="36" fill="#0f1912" stroke="#00e676" stroke-width="2" />
+          <line x1="40" y1="12" x2="40" y2="70" stroke="#81c784" stroke-width="3" stroke-linecap="round" />
+          <polygon points="40,16 58,26 40,36" fill="#2e7d32" stroke="#76ff03" stroke-width="1.5" />
+          <ellipse cx="40" cy="44" rx="6" ry="4" fill="#cfd8dc" />
+          <ellipse cx="40" cy="54" rx="6" ry="4" fill="#cfd8dc" />
+        </svg>
+      `.trim();
+
+    case 'craft_banner_tail_trophy_flag':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-banner-tail-flag" role="img" aria-label="Étendard Queues Xéno">
+          <circle cx="40" cy="40" r="36" fill="#140d1a" stroke="#ba68c8" stroke-width="2" />
+          <line x1="26" y1="14" x2="26" y2="70" stroke="#ab47bc" stroke-width="3" />
+          <path d="M26 18 Q46 22 58 32 Q46 42 26 46 Z" fill="#4a148c" stroke="#e1bee7" stroke-width="1.5" />
+          <line x1="38" y1="46" x2="38" y2="64" stroke="#ce93d8" stroke-width="2" />
+        </svg>
+      `.trim();
+
+    case 'craft_totem_matriarch_throne':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-totem-matriarch" role="img" aria-label="Trône Crâne Matriarche">
+          <circle cx="40" cy="40" r="36" fill="#1a1205" stroke="#ffd700" stroke-width="2.5" />
+          <polygon points="40,12 62,24 58,46 40,68 22,46 18,24" fill="#2e1f08" stroke="#ffb300" stroke-width="2" />
+          <circle cx="40" cy="38" r="8" fill="#ffd700" />
+          <line x1="26" y1="62" x2="54" y2="62" stroke="#ffab00" stroke-width="3" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
+    case 'craft_totem_multiverse_titans':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-totem-titans" role="img" aria-label="Pilier Titans Multivers">
+          <circle cx="40" cy="40" r="36" fill="#140a18" stroke="#e040fb" stroke-width="2.5" />
+          <rect x="30" y="16" width="20" height="52" fill="#240c2b" stroke="#ea80fc" stroke-width="2" rx="3" />
+          <circle cx="40" cy="28" r="5" fill="#ffd700" />
+          <circle cx="40" cy="42" r="5" fill="#00e5ff" />
+          <circle cx="40" cy="56" r="5" fill="#76ff03" />
+        </svg>
+      `.trim();
+
     default:
       return `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-default" role="img" aria-label="Équipement de Forge Yautja">
