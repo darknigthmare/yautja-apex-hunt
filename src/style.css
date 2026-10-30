@@ -7340,3 +7340,72 @@ button:hover { transform: scale(1.04); }
   padding: 3px 6px;
   border-left: 2px solid #ffab00;
 }
+
+
+/* =========================================================================
+ * Panthéon Inégalé Suprême Apex (1987-2025) HUD - v237
+ * ========================================================================= */
+.predator-franchise-v237-inegale-supreme-apex-hud-panel {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(14, 18, 24, 0.94);
+  border: 1px solid #00e5ff;
+  box-shadow: 0 0 24px rgba(0, 229, 255, 0.4), inset 0 0 14px rgba(0, 184, 212, 0.25);
+  border-radius: 6px;
+  padding: 12px 14px;
+  color: #e0f7fa;
+  font-family: 'Rajdhani', sans-serif;
+  z-index: 1065;
+  backdrop-filter: blur(8px);
+}
+
+.predator-franchise-v237-inegale-supreme-apex-hud-panel .hud-inegale-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #00e5ff;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.predator-franchise-v237-inegale-supreme-apex-hud-panel .hud-inegale-header h3 {
+  margin: 0;
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  color: #84ffff;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+}
+
+.predator-franchise-v237-inegale-supreme-apex-hud-panel .hud-inegale-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  background: rgba(0, 229, 255, 0.25);
+  border: 1px solid #00e5ff;
+  color: #b2ebf2;
+  text-shadow: 0 0 6px #00e5ff;
+}
+
+.predator-franchise-v237-inegale-supreme-apex-hud-panel .hud-inegale-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.predator-franchise-v237-inegale-supreme-apex-hud-panel .hud-inegale-roster {
+  border-top: 1px solid rgba(0, 229, 255, 0.3);
+  padding-top: 8px;
+  font-size: 11px;
+  color: #80deea;
+}
