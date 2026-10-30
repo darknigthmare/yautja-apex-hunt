@@ -640,9 +640,10 @@ export class HUDManager {
       const x = Math.round(clampToViewport(screenPos.x, viewportWidth) * 10) / 10;
       const y = Math.round(clampToViewport(screenPos.y, viewportHeight) * 10) / 10;
       const targetTransform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(var(--hud-scale))`;
+      const label = this.customTargetLabel ?? 'SIGNAL THERMIQUE';
       const distanceText = Number.isFinite(distance)
-        ? `${distance.toFixed(1)}m - SIGNAL THERMIQUE`
-        : 'DISTANCE INCONNUE - SIGNAL THERMIQUE';
+        ? `${distance.toFixed(1)}m - ${label}`
+        : `DISTANCE INCONNUE - ${label}`;
 
       this.setClassState(this.triLaser, 'hidden', false);
       this.setStyle(this.triLaser, 'transform', targetTransform);
@@ -655,6 +656,10 @@ export class HUDManager {
       this.setClassState(this.lockonBracket, 'hidden', true);
       this.setClassState(this.weakpointTag, 'hidden', true);
     }
+  }
+
+  setCustomTargetLabel(label = null) {
+    this.customTargetLabel = label;
   }
 
   showActionPrompt(text) {

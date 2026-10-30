@@ -32,6 +32,12 @@ export const CANON_FACTION_COLORS = Object.freeze({
   robocopSteel: '#78909c',
   kanoRed: '#b71c1c',
   xfilesCyan: '#0288d1',
+  greenLanternEmerald: '#00e676',
+  grifterRed: '#c62828',
+  jlaGold: '#ffd700',
+  bloodlinesCrimson: '#880e4f',
+  seegsonWhite: '#eceff1',
+  borgiaCyan: '#00e5ff',
 });
 
 /**
@@ -504,6 +510,56 @@ export function getCrossoverLogo(crossoverId, size = 64) {
         </svg>
       `.trim();
 
+    case 'green_lantern':
+    case 'crossover_green_lantern':
+      // Green Lantern Corps Lantern Battery Sigil (2000)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-green-lantern" role="img" aria-label="Lanterne d'Oa Green Lantern">
+          <circle cx="40" cy="40" r="36" fill="#041a0d" stroke="#00e676" stroke-width="2.5" />
+          <circle cx="40" cy="40" r="28" fill="#00e676" opacity="0.2" />
+          <circle cx="40" cy="40" r="14" fill="#041a0d" stroke="#00e676" stroke-width="2.5" />
+          <line x1="20" y1="24" x2="60" y2="24" stroke="#00e676" stroke-width="3.5" stroke-linecap="round" />
+          <line x1="20" y1="56" x2="60" y2="56" stroke="#00e676" stroke-width="3.5" stroke-linecap="round" />
+        </svg>
+      `.trim();
+
+    case 'wildcats_grifter':
+    case 'grifter':
+    case 'crossover_wildcats_grifter':
+      // Grifter WildC.A.T.s Red/Black Mask (1998)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-grifter" role="img" aria-label="Masque de Grifter">
+          <polygon points="40,6 68,22 62,68 40,76 18,68 12,22" fill="#b71c1c" stroke="#d32f2f" stroke-width="2.5" />
+          <polygon points="40,6 68,22 62,68 40,76" fill="#121212" />
+          <ellipse cx="28" cy="38" rx="8" ry="4" fill="#ffffff" stroke="#000" stroke-width="1" />
+          <ellipse cx="52" cy="38" rx="8" ry="4" fill="#ffffff" stroke="#000" stroke-width="1" />
+        </svg>
+      `.trim();
+
+    case 'jla_league':
+    case 'jla':
+    case 'crossover_jla_league':
+      // Justice League Watchtower Star Shield (2001)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-jla" role="img" aria-label="Bouclier JLA">
+          <polygon points="40,4 72,16 66,66 40,78 14,66 8,16" fill="#0d233a" stroke="#ffd700" stroke-width="2.5" />
+          <polygon points="40,16 46,30 62,30 48,40 54,54 40,44 26,54 32,40 18,30 34,30" fill="#ffd700" stroke="#b28900" stroke-width="1" />
+          <text x="40" y="66" font-family="'Orbitron', sans-serif" font-size="9" font-weight="900" fill="#ffffff" letter-spacing="1" text-anchor="middle">JLA</text>
+        </svg>
+      `.trim();
+
+    case 'bloodlines_darkness':
+    case 'crossover_bloodlines_darkness':
+      // Witchblade & Darkness Symbiosis (2001)
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="crossover-logo logo-bloodlines" role="img" aria-label="Alliance Bloodlines">
+          <circle cx="40" cy="40" r="36" fill="#140510" stroke="#880e4f" stroke-width="2.5" />
+          <path d="M24 56 Q40 16 56 56 Q40 44 24 56 Z" fill="#ad1457" stroke="#e91e63" stroke-width="1.5" />
+          <circle cx="40" cy="34" r="6" fill="#00e5ff" stroke="#ffffff" stroke-width="1.2" />
+          <circle cx="40" cy="50" r="5" fill="#76ff03" stroke="#ffffff" stroke-width="1.2" />
+        </svg>
+      `.trim();
+
     default:
       return getYautjaClanLogo(size);
   }
@@ -646,6 +702,36 @@ export function getHuntCardLogo(huntId, size = 64) {
 /**
  * Rendu universel de l'emblème de faction 1:1 pour n'importe quelle faction ou organisation.
  */
+/**
+ * Logo Officiel 1:1 Seegson Synthetics (Alien: Isolation 2014).
+ * Le chevron fléché 'S' stylisé en bleu cobalt et blanc industriel.
+ */
+export function getSeegsonLogo(size = 64) {
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-seegson" role="img" aria-label="Logo Seegson Synthetics">
+      <circle cx="40" cy="40" r="36" fill="#0f1923" stroke="#64b5f6" stroke-width="2" />
+      <path d="M22 26 L46 26 L58 38 L34 38 Z" fill="#64b5f6" />
+      <path d="M58 54 L34 54 L22 42 L46 42 Z" fill="#90caf9" />
+      <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="7" font-weight="900" fill="#ffffff" letter-spacing="1" text-anchor="middle">SEEGSON</text>
+    </svg>
+  `.trim();
+}
+
+/**
+ * Logo Officiel 1:1 Borgia Industries (Predator: Concrete Jungle 2005).
+ * Double hélice cybernétique et trident technologique New Way City.
+ */
+export function getBorgiaIndustriesLogo(size = 64) {
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-borgia" role="img" aria-label="Logo Borgia Industries">
+      <polygon points="40,8 70,24 70,56 40,72 10,56 10,24" fill="#06121e" stroke="#00e5ff" stroke-width="2" />
+      <path d="M30 24 L50 24 L40 40 Z" fill="#00e5ff" />
+      <path d="M30 56 L50 56 L40 40 Z" fill="#00b0ff" />
+      <text x="40" y="66" font-family="'Orbitron', sans-serif" font-size="6.5" font-weight="900" fill="#e0f7fa" letter-spacing="1" text-anchor="middle">BORGIA</text>
+    </svg>
+  `.trim();
+}
+
 export function renderFactionEmblem(factionName, size = 48) {
   if (!factionName) return getYautjaClanLogo(size);
   const name = String(factionName).toLowerCase();
@@ -663,6 +749,12 @@ export function renderFactionEmblem(factionName, size = 48) {
   }
   if (name.includes('stargazer')) {
     return getStargazerLogo(size);
+  }
+  if (name.includes('seegson')) {
+    return getSeegsonLogo(size);
+  }
+  if (name.includes('borgia')) {
+    return getBorgiaIndustriesLogo(size);
   }
   return getYautjaClanLogo(size);
 }

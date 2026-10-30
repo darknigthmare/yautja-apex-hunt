@@ -2535,6 +2535,7 @@ export class Game {
         audioSynth.playYautjaClick();
         this.activeCrossoverHunt = p;
         this.activePreySimulation = null;
+    this.hud.setCustomTargetLabel(null);
         this.hud.showLogMessage(`ANOMALIE DU MULTIVERS ENGAGÉE : ${p.name.toUpperCase()} (+${p.honorReward} HONNEUR)`, 4500);
 
         let arenaBiome = 'jungle';
@@ -3304,6 +3305,11 @@ export class Game {
       if (targetScanned) targetScanned.textContent = `ANOMALIE MULTIVERS : ${p.name.toUpperCase()} [${p.universe}]`;
       const hudLogo = document.getElementById('hud-yautja-clan-logo');
       if (hudLogo) hudLogo.innerHTML = getCrossoverLogo(p.id, 36);
+      this.hud.setCustomTargetLabel(`ANOMALIE : ${p.name.toUpperCase()}`);
+      if (this.activeBoss?.mesh) {
+        this.activeBoss.maxHealth = Math.round((this.activeBoss.maxHealth || 1000) * 1.5);
+        this.activeBoss.health = this.activeBoss.maxHealth;
+      }
       this.hud.showLogMessage(
         `FAILLE TEMPORELLE : ${p.name.toUpperCase()} · ${p.arena} · +${p.honorReward} HONNEUR`,
         6500,
@@ -3314,10 +3320,27 @@ export class Game {
       if (targetScanned) targetScanned.textContent = `SIMULATION HOLO-TRAQUE : ${target.name.toUpperCase()} (${target.scale} - ${target.sizeMeters}m)`;
       const hudLogo = document.getElementById('hud-yautja-clan-logo');
       if (hudLogo) hudLogo.innerHTML = renderFactionEmblem(target.faction, 36);
+      this.hud.setCustomTargetLabel(`PROIE : ${target.name.toUpperCase()} (${target.scale})`);
+      if (this.activeBoss?.mesh) {
+        let scaleFactor = 1.0;
+        if (target.scale === 'GEANT') scaleFactor = 1.6;
+        else if (target.scale === 'GRANDE') scaleFactor = 1.25;
+        else if (target.scale === 'MOYEN') scaleFactor = 1.0;
+        else if (target.scale === 'PETITE') scaleFactor = 0.65;
+        else if (target.scale === 'MINUSCULE') scaleFactor = 0.35;
+        this.activeBoss.mesh.scale.set(scaleFactor, scaleFactor, scaleFactor);
+        if (this.activeBoss.maxHealth) {
+          const mult = PREY_SCALE_TIERS[target.scale]?.honorMultiplier ?? 1.0;
+          this.activeBoss.maxHealth = Math.round(this.activeBoss.maxHealth * mult);
+          this.activeBoss.health = this.activeBoss.maxHealth;
+        }
+      }
       this.hud.showLogMessage(
         `SIMULATION DE CHASSE : ${target.name.toUpperCase()} · POINT FAIBLE : ${target.weakpoints[0].toUpperCase()}`,
         6000,
       );
+    } else {
+      this.hud.setCustomTargetLabel(null);
     }
 
     if (

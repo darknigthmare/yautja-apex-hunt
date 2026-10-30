@@ -43,7 +43,7 @@ test('Taxonomie des proies : Les 5 paliers d’échelle (Géant, Grande, Moyen, 
 });
 
 test('Catalogue canonique : Distribution exhaustive des proies à travers les factions et gabarits 1:1', () => {
-  assert.ok(CANON_PREY_CATALOG.length >= 60, `Le catalogue doit contenir au moins 60 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
+  assert.ok(CANON_PREY_CATALOG.length >= 80, `Le catalogue doit contenir au moins 80 proies canoniques, obtenu: ${CANON_PREY_CATALOG.length}`);
 
   const scalesPresent = new Set(CANON_PREY_CATALOG.map((p) => p.scale));
   assert.ok(scalesPresent.has('GEANT'), 'Présence de proies géantes');
@@ -71,8 +71,8 @@ test('Factions canoniques : Couverture complète Yautja, Ingénieurs, Ruche Xén
   assert.ok(factions.has(PREY_FACTIONS.XENOMORPH), 'Faction Xénomorphe couverte');
 });
 
-test('Multivers Crossover : Les 20 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
-  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 20, 'Exactement 20 proies crossover majeures documentées');
+test('Multivers Crossover : Les 24 proies d’exception officielles sont répertoriées avec fidélité 1:1', () => {
+  assert.equal(MULTIVERSE_CROSSOVER_PREY.length, 24, 'Exactement 24 proies crossover majeures documentées');
 
   const expectedIds = [
     'crossover_batman',
@@ -95,6 +95,10 @@ test('Multivers Crossover : Les 20 proies d’exception officielles sont répert
     'crossover_worlds_finest',
     'crossover_t_infinity',
     'crossover_machiko_noguchi',
+    'crossover_green_lantern',
+    'crossover_wildcats_grifter',
+    'crossover_jla_league',
+    'crossover_bloodlines_darkness',
   ];
   const ids = MULTIVERSE_CROSSOVER_PREY.map((c) => c.id);
   assert.deepEqual(ids, expectedIds);
@@ -202,7 +206,7 @@ test('Logos et Emblèmes Canoniques 1:1 : Génération SVG vectorielle sans dép
     const badgeSvg = getCrossoverLogo(crossover.id, 64);
     assert.match(badgeSvg, /<svg/);
     assert.match(badgeSvg, /crossover-logo/);
-    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade|tarzan|magnus|grendel|the-mask|buffy|archie|darkness|robocop|kano|xfiles|anderson|worlds-finest|t-infinity|machiko)/);
+    assert.match(badgeSvg, /logo-(batman|joker|terminator|dredd|superman|witchblade|tarzan|magnus|grendel|the-mask|buffy|archie|darkness|robocop|kano|xfiles|anderson|worlds-finest|t-infinity|machiko|green-lantern|grifter|jla|bloodlines)/);
   }
 
   // 8. 12 Hunt Card Logos
@@ -226,6 +230,10 @@ test('Logos et Emblèmes Canoniques 1:1 : Génération SVG vectorielle sans dép
   assert.match(xenoEmblem, /logo-xenomorph/);
   const wyEmblem = renderFactionEmblem('Weyland-Yutani', 40);
   assert.match(wyEmblem, /logo-weyland-yutani/);
+  const seegsonEmblem = renderFactionEmblem('Seegson Synthetics', 40);
+  assert.match(seegsonEmblem, /logo-seegson/);
+  const borgiaEmblem = renderFactionEmblem('Borgia Industries', 40);
+  assert.match(borgiaEmblem, /logo-borgia/);
 
   // Fallback
   const fallbackSvg = getCrossoverLogo('unknown_entity', 50);
