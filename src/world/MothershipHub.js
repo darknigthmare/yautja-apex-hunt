@@ -1352,6 +1352,9 @@ export class MothershipHub {
       cityHunter: () => new THREE.CylinderGeometry(1.35, 1.45, 2.6, 8),
       gridAlien: () => new THREE.ConeGeometry(1.75, 2.9, 8),
       jungleHunter: () => new THREE.CylinderGeometry(1.3, 1.4, 2.8, 8),
+      vydrach: () => new THREE.ConeGeometry(1.6, 3.2, 7),
+      rhynth: () => new THREE.BoxGeometry(2.2, 1.8, 2.8),
+      xenoKing: () => new THREE.DodecahedronGeometry(1.85, 1),
     };
     const trophy = new THREE.Mesh(
       (geometryByType[definition.bossType] ?? (() => new THREE.IcosahedronGeometry(1.55, 1)))(),
@@ -1361,7 +1364,7 @@ export class MothershipHub {
     trophy.userData.huntId = definition.id;
     trophy.userData.silhouetteVariant = definition.bossType;
 
-    const appendageCount = ['xenoQueen', 'kalisk'].includes(definition.bossType)
+    const appendageCount = ['xenoQueen', 'kalisk', 'xenoKing'].includes(definition.bossType)
       ? 4
       : ['wolfCleaner', 'superPredator', 'upgradePredator'].includes(definition.bossType) ? 3 : 2;
     for (let part = 0; part < appendageCount; part += 1) {
@@ -1415,38 +1418,54 @@ export class MothershipHub {
 
     const definitions = Object.values(HUNT_DEFINITIONS);
     const spacing = 56 / Math.max(1, definitions.length - 1);
+    const vaultPlaqueGeometry = new THREE.BoxGeometry(6.5, 7.4, 0.72);
+    const vaultPlaques = new THREE.InstancedMesh(vaultPlaqueGeometry, this.createAlloyMaterial(0x313b46), definitions.length);
+    vaultPlaques.name = 'vault-trophy-plaques';
+    const plaqueMatrix = new THREE.Matrix4();
+    const vaultUplightGeometry = new THREE.CylinderGeometry(0.7, 1, 0.25, 8);
+    const vaultUplights = new THREE.InstancedMesh(vaultUplightGeometry, this.createSignalMaterial(0xff7722, 0.65), definitions.length);
+    vaultUplights.name = 'vault-trophy-uplights';
+    const uplightMatrix = new THREE.Matrix4();
     const frameRailGeometry = new THREE.BoxGeometry(1, 1, 1);
     const vaultGlyphGeometry = new THREE.BoxGeometry(0.42, 0.12, 0.1);
     const staticTransform = new THREE.Object3D();
+    const evenFrameMaterial = this.createSignalMaterial(0xff4a22, 0.74);
+    const oddFrameMaterial = this.createSignalMaterial(0x8b43ff, 0.74);
+    const evenRailCount = Math.ceil(definitions.length / 2) * 4;
+    const oddRailCount = Math.floor(definitions.length / 2) * 4;
+    const evenFrameRails = new THREE.InstancedMesh(frameRailGeometry, evenFrameMaterial, evenRailCount);
+    const oddFrameRails = new THREE.InstancedMesh(frameRailGeometry, oddFrameMaterial, Math.max(1, oddRailCount));
+    evenFrameRails.name = 'vault-frame-rails-even';
+    oddFrameRails.name = 'vault-frame-rails-odd';
+    let evenRailIndex = 0;
+    let oddRailIndex = 0;
     definitions.forEach((definition, index) => {
       const x = (index - ((definitions.length - 1) / 2)) * spacing;
       const display = new THREE.Group();
       display.name = `vault-display-${definition.id}`;
       display.userData.huntId = definition.id;
 
-      const plaque = new THREE.Mesh(new THREE.BoxGeometry(6.5, 7.4, 0.72), this.createAlloyMaterial(0x313b46));
-      plaque.position.set(x, 13, -31.78);
-      display.add(plaque);
+      plaqueMatrix.setPosition(x, 13, -31.78);
+      vaultPlaques.setMatrixAt(index, plaqueMatrix);
 
-      const frameMaterial = this.createSignalMaterial(index % 2 === 0 ? 0xff4a22 : 0x8b43ff, 0.74);
-      const frameRails = new THREE.InstancedMesh(frameRailGeometry, frameMaterial, 4);
-      frameRails.name = `vault-frame-rails-${definition.id}`;
-      [-1, 1].forEach((side, railIndex) => {
+      const frameMaterial = index % 2 === 0 ? evenFrameMaterial : oddFrameMaterial;
+      const targetRails = index % 2 === 0 ? evenFrameRails : oddFrameRails;
+      [-1, 1].forEach((side) => {
         staticTransform.position.set(x + (side * 3.05), 13, -31.25);
         staticTransform.rotation.set(0, 0, 0);
         staticTransform.scale.set(0.13, 6.8, 0.16);
         staticTransform.updateMatrix();
-        frameRails.setMatrixAt(railIndex, staticTransform.matrix);
+        const rIdx = index % 2 === 0 ? evenRailIndex++ : oddRailIndex++;
+        targetRails.setMatrixAt(rIdx, staticTransform.matrix);
       });
-      [9.65, 16.35].forEach((y, railIndex) => {
+      [9.65, 16.35].forEach((y) => {
         staticTransform.position.set(x, y, -31.25);
         staticTransform.rotation.set(0, 0, 0);
         staticTransform.scale.set(6.2, 0.13, 0.16);
         staticTransform.updateMatrix();
-        frameRails.setMatrixAt(railIndex + 2, staticTransform.matrix);
+        const rIdx = index % 2 === 0 ? evenRailIndex++ : oddRailIndex++;
+        targetRails.setMatrixAt(rIdx, staticTransform.matrix);
       });
-      frameRails.instanceMatrix.needsUpdate = true;
-      display.add(frameRails);
 
       // Motif déterministe : lisible comme identifiant alien sans faux texte minuscule.
       const glyphCount = 2 + (index % 3);
@@ -1478,12 +1497,8 @@ export class MothershipHub {
       this.registerProp(trophy, HUB_ZONES.VAULT, 'hunt-trophy', { huntId: definition.id });
       this.trophyDisplays.set(definition.id, trophy);
 
-      const uplight = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.7, 1, 0.25, 8),
-        this.createSignalMaterial(definition.trophyColor ?? 0xddccaa, 0.65),
-      );
-      uplight.position.set(x, 9.45, -30.75);
-      display.add(uplight);
+      uplightMatrix.setPosition(x, 9.45, -30.75);
+      vaultUplights.setMatrixAt(index, uplightMatrix);
       vault.add(display);
     });
 
@@ -1563,6 +1578,14 @@ export class MothershipHub {
       relicId: 'adolini_1715_pistol',
       label: 'Pistolet à silex Raphael Adolini 1715',
     });
+    vaultPlaques.instanceMatrix.needsUpdate = true;
+    vaultUplights.instanceMatrix.needsUpdate = true;
+    vault.add(vaultUplights);
+    evenFrameRails.instanceMatrix.needsUpdate = true;
+    oddFrameRails.instanceMatrix.needsUpdate = true;
+    vault.add(evenFrameRails);
+    vault.add(oddFrameRails);
+    vault.add(vaultPlaques);
     vault.add(reliquary);
 
     // Conseil des Anciens (Predator 2 & AVP) — Stèle d'Honneur et dais cérémoniel
@@ -2269,8 +2292,9 @@ export class MothershipHub {
 
     const colliders = [];
     const definitions = Object.values(HUNT_DEFINITIONS);
+    const pedestalDefinitions = definitions.slice(0, 12);
     const pedestalTransforms = [];
-    definitions.forEach((definition, index) => {
+    pedestalDefinitions.forEach((definition, index) => {
       const { x, z } = getMissionStationPosition(index, definitions.length);
       pedestalTransforms.push({ position: [x, 0, z] });
       colliders.push({

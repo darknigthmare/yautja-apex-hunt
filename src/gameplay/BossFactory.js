@@ -10,6 +10,9 @@ import { CityHunterBoss } from '../entities/CityHunterBoss.js';
 import { GridAlienBoss } from '../entities/GridAlienBoss.js';
 import { JungleHunterBoss } from '../entities/JungleHunterBoss.js';
 import { XenomorphQueen } from '../entities/XenomorphQueen.js';
+import { VydrachBoss } from '../entities/VydrachBoss.js';
+import { RhynthBoss } from '../entities/RhynthBoss.js';
+import { XenomorphKingBoss } from '../entities/XenomorphKingBoss.js';
 import { captureBaseMaterials, overrideMaterials } from '../utils/materialState.js';
 import {
   applyBossVisualDetail,
@@ -31,6 +34,9 @@ export const BOSS_CONSTRUCTORS = Object.freeze({
   cityHunter: CityHunterBoss,
   gridAlien: GridAlienBoss,
   jungleHunter: JungleHunterBoss,
+  vydrach: VydrachBoss,
+  rhynth: RhynthBoss,
+  xenoKing: XenomorphKingBoss,
 });
 
 const DEFAULT_COLLIDER_RADII = Object.freeze({
@@ -41,11 +47,14 @@ const DEFAULT_COLLIDER_RADII = Object.freeze({
   superPredator: 5.5,
   feralPredator: 4.8,
   wolfCleaner: 5.15,
-  kalisk: 6.8,
+  kalisk: 7.4,
   upgradePredator: 6.4,
   cityHunter: 5.1,
   gridAlien: 5.8,
   jungleHunter: 5.2,
+  vydrach: 8.5,
+  rhynth: 7.8,
+  xenoKing: 8.0,
 });
 
 function normalizeBossInterface(boss, bossType) {

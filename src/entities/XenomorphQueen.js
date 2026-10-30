@@ -3,6 +3,7 @@ import { ShaderManager } from '../Shaders.js';
 import { audioSynth } from '../AudioSynthesizer.js';
 import { captureBaseMaterials, overrideMaterials, restoreBaseMaterials } from '../utils/materialState.js';
 import { getRuntimeTexture } from '../utils/runtimeTextures.js';
+import { forwardRayIntersectsSphere, resolveSegmentSphereImpact } from '../utils/projectileCollision.js';
 
 export class XenomorphQueen {
   constructor(scene) {
@@ -212,6 +213,46 @@ export class XenomorphQueen {
     } else {
       restoreBaseMaterials(this.mesh);
     }
+  }
+
+
+  resolveProjectileImpact(projectilePosition, projectileRadius = 1, previousPosition = projectilePosition) {
+    if (!projectilePosition?.isVector3 || this.isDead) return null;
+    const safeRadius = Math.max(0, Number(projectileRadius) || 0);
+    const start = previousPosition?.isVector3 ? previousPosition : projectilePosition;
+
+    // 1. Weakpoint: Core
+    const corePos = this.getInnerJawWorldPosition();
+    if (
+      resolveSegmentSphereImpact(start, projectilePosition, corePos, 3.4 + safeRadius)
+      || forwardRayIntersectsSphere(start, projectilePosition, corePos, 3.4 + safeRadius)
+    ) {
+      return corePos;
+    }
+
+    // 2. Crown Crest
+    const crownPos = this.getCrownWorldPosition();
+    if (
+      resolveSegmentSphereImpact(start, projectilePosition, crownPos, 3.8 + safeRadius)
+      || forwardRayIntersectsSphere(start, projectilePosition, crownPos, 3.8 + safeRadius)
+    ) {
+      return crownPos;
+    }
+
+    // 3. Tail
+    if (this.tailIntact) {
+      const tailPos = this.getTailWorldPosition();
+      if (
+        resolveSegmentSphereImpact(start, projectilePosition, tailPos, 4.5 + safeRadius)
+        || forwardRayIntersectsSphere(start, projectilePosition, tailPos, 4.5 + safeRadius)
+      ) {
+        return tailPos;
+      }
+    }
+
+    // 4. Main Body
+    const bodyCenter = this.getAimPoint();
+    return resolveSegmentSphereImpact(start, projectilePosition, bodyCenter, this.colliderRadius + safeRadius);
   }
 
   takeDamage(amount, hitPosition) {

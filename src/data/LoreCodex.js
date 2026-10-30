@@ -186,7 +186,6 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     sourceTier: 'SCREEN', isOriginal: false, sources: ['predator1987', 'predator2']
   }
 ]);
-
 // IDs match the values already used by the planet selector.
 export const HUNT_LOCATIONS = freezeEntries([
   {
@@ -336,6 +335,27 @@ export const CURRENT_HUNTS = freezeEntries([
     canonNote: 'Le Jungle Hunter et ses armes iconiques proviennent du film originel Predator (1987) ; ce duel, le timing de visée et le compte à rebours d’autodestruction sont une adaptation de gameplay Apex Hunt.',
     assetPolicy: 'Modèle procédural 1:1 et textures Yautja originales du jeu ; aucun modèle propriétaire officiel.',
     sources: ['predator1987'], locationIds: ['jungle']
+  },
+  {
+    id: 'vydrach_prime', entryType: 'hunt', category: 'cible', title: "Vy'drach — Léviathan Céleste de Yautja Prime",
+    summary: "Léviathan ailé mythique vénéré sur Yautja Prime, traqué au combi-stick lors du rite d'initiation suprême.",
+    sourceTier: 'ORIGINAL', basisTier: 'CANON_LORE', isOriginal: true,
+    canonNote: "Le Vy'drach fait partie de la mythologie et du canon officiel Yautja Prime.",
+    sources: ['yautjaPrimeLore'], locationIds: ['yautja_prime']
+  },
+  {
+    id: 'rhynth_titan', entryType: 'hunt', category: 'cible', title: 'Rhynth — Béhémoth Titanesque de Ryushi',
+    summary: "Herbivore colossal hexapode blindé indigène de Ryushi chassé par Dachande pour éprouver les jeunes guerriers.",
+    sourceTier: 'ORIGINAL', basisTier: 'CANON_LORE', isOriginal: true,
+    canonNote: "Le Rhynth est la mégafaune native centrale de Aliens vs. Predator: Prey (1994).",
+    sources: ['avpPrey1994'], locationIds: ['ryushi_desert']
+  },
+  {
+    id: 'xeno_king', entryType: 'hunt', category: 'cible', title: 'Roi Xénomorphe — Rogue Titan Colossal',
+    summary: "Abomination génétique géante issue d'expérimentations clandestines, surpuissant et armé d'une crête trident.",
+    sourceTier: 'ORIGINAL', basisTier: 'CANON_LORE', isOriginal: true,
+    canonNote: "Le Rogue Alien / King Xenomorph provient du récit Dark Horse Aliens: Rogue (1993).",
+    sources: ['aliensRogue1993'], locationIds: ['hive_lv426']
   },
 ]);
 

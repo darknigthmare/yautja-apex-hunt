@@ -3,6 +3,7 @@ import { ShaderManager } from '../Shaders.js';
 import { audioSynth } from '../AudioSynthesizer.js';
 import { captureBaseMaterials, overrideMaterials, restoreBaseMaterials } from '../utils/materialState.js';
 import { getRuntimeTexture } from '../utils/runtimeTextures.js';
+import { forwardRayIntersectsSphere, resolveSegmentSphereImpact } from '../utils/projectileCollision.js';
 
 export const VYDRACH_TEXTURES = Object.freeze({
   draconianScale: '/assets/textures/goliath-armored-hide.webp',
@@ -276,6 +277,46 @@ export class VydrachBoss {
     } else {
       restoreBaseMaterials(this.mesh);
     }
+  }
+
+
+  resolveProjectileImpact(projectilePosition, projectileRadius = 1, previousPosition = projectilePosition) {
+    if (!projectilePosition?.isVector3 || this.isDead) return null;
+    const safeRadius = Math.max(0, Number(projectileRadius) || 0);
+    const start = previousPosition?.isVector3 ? previousPosition : projectilePosition;
+
+    // 1. Core Weakpoint
+    const corePos = this.getCoreWorldPosition();
+    if (
+      resolveSegmentSphereImpact(start, projectilePosition, corePos, 4.0 + safeRadius)
+      || forwardRayIntersectsSphere(start, projectilePosition, corePos, 4.0 + safeRadius)
+    ) {
+      return corePos;
+    }
+
+    // 2. Horned Crest / Head
+    const crestPos = this.getCrestWorldPosition();
+    if (
+      resolveSegmentSphereImpact(start, projectilePosition, crestPos, 4.2 + safeRadius)
+      || forwardRayIntersectsSphere(start, projectilePosition, crestPos, 4.2 + safeRadius)
+    ) {
+      return crestPos;
+    }
+
+    // 3. Barbed Tail Stinger
+    if (this.tailIntact) {
+      const tailPos = this.getTailWorldPosition();
+      if (
+        resolveSegmentSphereImpact(start, projectilePosition, tailPos, 5.0 + safeRadius)
+        || forwardRayIntersectsSphere(start, projectilePosition, tailPos, 5.0 + safeRadius)
+      ) {
+        return tailPos;
+      }
+    }
+
+    // 4. Main Torso / Wings
+    const bodyCenter = this.getAimPoint();
+    return resolveSegmentSphereImpact(start, projectilePosition, bodyCenter, this.colliderRadius + safeRadius);
   }
 
   takeDamage(amount, hitPosition) {

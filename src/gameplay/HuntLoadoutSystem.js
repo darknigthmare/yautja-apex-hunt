@@ -188,6 +188,9 @@ const HUNT_RECOMMENDATIONS = Object.freeze({
   city_hunter: Object.freeze({ melee: 'combi_stick', secondary: 'netgun', ranged: 'speargun', gadgets: Object.freeze(['scout_drone', 'voice_mimic']), support: 'medicomp', reason: 'Configuration urbaine silencieuse avec contrôle des toits et des ruelles.' }),
   grid_alien: Object.freeze({ melee: 'combi_stick', secondary: 'smart_disc', ranged: 'yautja_bow', gadgets: Object.freeze(['shuriken', 'voice_mimic']), support: 'medicomp', reason: 'Mobilité rituelle et armes tranchantes pour la pyramide en mouvement.' }),
   jungle_hunter_1987: Object.freeze({ melee: 'combi_stick', secondary: 'smart_disc', ranged: 'speargun', gadgets: Object.freeze(['scout_drone', 'apex_decoy']), support: 'medicomp', reason: 'Équipement canonique furtif : tirs précis pour faire sauter le bio-masque avant la détonation.' }),
+  vydrach_prime: Object.freeze({ melee: 'combi_stick', secondary: 'smart_disc', ranged: 'yautja_bow', gadgets: Object.freeze(['scout_drone', 'voice_mimic']), support: 'medicomp', reason: 'Tirs de précision longue portée pour cisailler les ailes et esquiver les piqués célestes.' }),
+  rhynth_titan: Object.freeze({ melee: 'father_sword', secondary: 'plasma_mines', ranged: 'speargun', gadgets: Object.freeze(['scout_drone', 'voice_mimic']), support: 'medicomp', reason: 'Armes perforantes lourdes et mines pour briser la cuirasse dorsale et assommer la bête.' }),
+  xeno_king: Object.freeze({ melee: 'whip_thorns', secondary: 'netgun', ranged: 'plasmacaster_single', gadgets: Object.freeze(['shuriken', 'voice_mimic']), support: 'medicomp', reason: 'Dégâts de feu et contrôle à distance pour perforer la cage thoracique et esquiver le double dard caudal.' }),
 });
 
 const BIOME_RECOMMENDATIONS = Object.freeze({

@@ -315,4 +315,12 @@ export class MonsterHunterEcologySystem {
       monsterState: { ...this.monsterState }
     };
   }
+  dispose() {
+    this.clues.forEach((c) => {
+      if (c.mesh) this.scene.remove(c.mesh);
+    });
+    this.clues = [];
+    this.discoveredClueIds.clear();
+    this.targetMonster = null;
+  }
 }
