@@ -22,6 +22,17 @@ export class MegafaunaBoss {
     this.tailIntact = true;
     this.hornHealth = 200;
     this.tailHealth = 250;
+    this.coreExposed = false;
+
+    // Monster Hunter Vitals: Stamina, Exhaustion, Topple & Carve
+    this.maxStamina = 800;
+    this.stamina = 800;
+    this.isExhausted = false;
+    this.isToppled = false;
+    this.toppleTimer = 0;
+    this.isCarved = false;
+    this.severedTailSpawned = false;
+    this.severedTailMesh = null;
 
     // AI & Combat Variables
     this.position = new THREE.Vector3(0, 0, -40);
@@ -142,6 +153,57 @@ export class MegafaunaBoss {
     return bossGroup;
   }
 
+  getCoreWorldPosition() {
+    this.mesh.updateWorldMatrix(true, true);
+    return this.coreMesh?.getWorldPosition(new THREE.Vector3()) ?? this.mesh.localToWorld(new THREE.Vector3(0, 3.2, 3.5));
+  }
+
+  getHornWorldPosition() {
+    this.mesh.updateWorldMatrix(true, true);
+    return this.hornMesh?.getWorldPosition(new THREE.Vector3()) ?? this.mesh.localToWorld(new THREE.Vector3(0, 7.8, 7.5));
+  }
+
+  getTailWorldPosition() {
+    this.mesh.updateWorldMatrix(true, true);
+    return this.tailMesh?.getWorldPosition(new THREE.Vector3()) ?? this.mesh.localToWorld(new THREE.Vector3(0, 2.0, -10.0));
+  }
+
+  getAimPoint() {
+    if (this.coreExposed) return this.getCoreWorldPosition();
+    return this.mesh.localToWorld(new THREE.Vector3(0, 4.5, 0));
+  }
+
+  spawnSeveredTail() {
+    if (this.severedTailSpawned || !this.scene) return null;
+    this.severedTailSpawned = true;
+    const tailProp = new THREE.Group();
+    tailProp.name = 'severed_megafauna_tail_carveable';
+    const segGeo = new THREE.CylinderGeometry(0.7, 0.9, 3.2, 16);
+    const mat = new THREE.MeshStandardMaterial({ color: 0x1a1f28, roughness: 0.6, metalness: 0.4 });
+    const seg = new THREE.Mesh(segGeo, mat);
+    seg.rotation.x = Math.PI / 2;
+    tailProp.add(seg);
+    const club = new THREE.Mesh(new THREE.OctahedronGeometry(1.5, 2), mat);
+    club.position.set(0, 0, 2.2);
+    tailProp.add(club);
+    tailProp.position.copy(this.getTailWorldPosition());
+    tailProp.position.y = 0.5;
+    tailProp.userData.isCarveable = true;
+    tailProp.userData.carved = false;
+    tailProp.userData.trophyType = 'GOLIATH_SEVERED_TAIL_CLUB';
+    this.scene.add(tailProp);
+    this.severedTailMesh = tailProp;
+    return tailProp;
+  }
+
+  triggerTopple(durationSeconds = 7.0) {
+    if (this.isDead || this.isToppled) return;
+    this.isToppled = true;
+    this.toppleTimer = durationSeconds;
+    this.aiState = 'toppled';
+    audioSynth.playMonsterRoar();
+  }
+
   setVisionMode(mode) {
     if (mode === 'thermal') {
       overrideMaterials(this.mesh, this.thermalMaterial, (child) => child.name !== 'coreMesh');
@@ -154,14 +216,24 @@ export class MegafaunaBoss {
     if (this.isDead) return;
 
     let finalDamage = amount;
+    const impact = hitPosition?.isVector3 ? hitPosition : this.position;
 
-    const distanceToCore = hitPosition.distanceTo(this.mesh.position.clone().add(new THREE.Vector3(0, 3.2, 3.5)));
-    if (distanceToCore < 3.5) {
+    const legacyCore = this.mesh.position.clone().add(new THREE.Vector3(0, 3.2, 3.5));
+    const distanceToCore = Math.min(
+      impact.distanceTo(this.getCoreWorldPosition()),
+      impact.distanceTo(legacyCore)
+    );
+    if (distanceToCore < 3.8) {
       finalDamage *= 2.5;
+      this.coreExposed = true;
     }
 
-    const distanceToHead = hitPosition.distanceTo(this.mesh.position.clone().add(new THREE.Vector3(0, 7.8, 7.5)));
-    if (distanceToHead < 4.0 && this.hornIntact) {
+    const legacyHead = this.mesh.position.clone().add(new THREE.Vector3(0, 7.8, 7.5));
+    const distanceToHead = Math.min(
+      impact.distanceTo(this.getHornWorldPosition()),
+      impact.distanceTo(legacyHead)
+    );
+    if (distanceToHead < 4.2 && this.hornIntact) {
       this.hornHealth -= amount;
       if (this.hornHealth <= 0) {
         this.hornIntact = false;
@@ -170,12 +242,17 @@ export class MegafaunaBoss {
       }
     }
 
-    const distanceToTail = hitPosition.distanceTo(this.mesh.position.clone().add(new THREE.Vector3(0, 2.0, -10.0)));
-    if (distanceToTail < 5.0 && this.tailIntact) {
+    const legacyTail = this.mesh.position.clone().add(new THREE.Vector3(0, 2.0, -10.0));
+    const distanceToTail = Math.min(
+      impact.distanceTo(this.getTailWorldPosition()),
+      impact.distanceTo(legacyTail)
+    );
+    if (distanceToTail < 5.2 && this.tailIntact) {
       this.tailHealth -= amount;
       if (this.tailHealth <= 0) {
         this.tailIntact = false;
         if (this.tailMesh) this.tailMesh.visible = false;
+        this.spawnSeveredTail();
         audioSynth.playMonsterRoar();
       }
     }

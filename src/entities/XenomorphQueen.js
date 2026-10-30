@@ -23,6 +23,16 @@ export class XenomorphQueen {
     this.crownHealth = 280;
     this.tailHealth = 320;
 
+    // Monster Hunter Vitals: Stamina, Exhaustion, Topple & Carve
+    this.maxStamina = 950;
+    this.stamina = 950;
+    this.isExhausted = false;
+    this.isToppled = false;
+    this.toppleTimer = 0;
+    this.isCarved = false;
+    this.severedTailSpawned = false;
+    this.severedTailMesh = null;
+
     // Movement & AI
     this.position = new THREE.Vector3(0, 0, -45);
     this.moveSpeed = 12.0;
@@ -144,6 +154,58 @@ export class XenomorphQueen {
     return queenGroup;
   }
 
+  getCrownWorldPosition() {
+    this.mesh.updateWorldMatrix(true, true);
+    return this.crownMesh?.getWorldPosition(new THREE.Vector3()) ?? this.mesh.localToWorld(new THREE.Vector3(0, 10.5, 4.0));
+  }
+
+  getTailWorldPosition() {
+    this.mesh.updateWorldMatrix(true, true);
+    return this.tailMesh?.getWorldPosition(new THREE.Vector3()) ?? this.mesh.localToWorld(new THREE.Vector3(0, 2.0, -15.0));
+  }
+
+  getInnerJawWorldPosition() {
+    this.mesh.updateWorldMatrix(true, true);
+    return this.mesh.localToWorld(new THREE.Vector3(0, 7.8, 9.8));
+  }
+
+  getAimPoint() {
+    return this.mesh.localToWorld(new THREE.Vector3(0, 6.0, 0));
+  }
+
+  spawnSeveredTail() {
+    if (this.severedTailSpawned || !this.scene) return null;
+    this.severedTailSpawned = true;
+    const tailProp = new THREE.Group();
+    tailProp.name = 'severed_queen_tail_carveable';
+    const segGeo = new THREE.CylinderGeometry(0.5, 0.7, 4.0, 16);
+    const mat = new THREE.MeshStandardMaterial({ color: 0x0a0c10, roughness: 0.15, metalness: 0.9 });
+    const seg = new THREE.Mesh(segGeo, mat);
+    seg.rotation.x = Math.PI / 2;
+    tailProp.add(seg);
+    const stinger = new THREE.Mesh(new THREE.ConeGeometry(0.8, 2.8, 12), mat);
+    stinger.rotation.x = -Math.PI / 2;
+    stinger.position.set(0, 0, 3.0);
+    tailProp.add(stinger);
+    tailProp.position.copy(this.getTailWorldPosition());
+    tailProp.position.y = 0.5;
+    tailProp.userData.isCarveable = true;
+    tailProp.userData.carved = false;
+    tailProp.userData.trophyType = 'XENO_QUEEN_SEVERED_TAIL_STINGER';
+    this.scene.add(tailProp);
+    this.severedTailMesh = tailProp;
+    return tailProp;
+  }
+
+  triggerTopple(durationSeconds = 7.0) {
+    if (this.isDead || this.isToppled) return;
+    this.cancelTelegraphedAttack();
+    this.isToppled = true;
+    this.toppleTimer = durationSeconds;
+    this.aiState = 'toppled';
+    audioSynth.playMonsterRoar();
+  }
+
   setVisionMode(mode) {
     if (mode === 'thermal') {
       overrideMaterials(this.mesh, this.thermalMaterial);
@@ -158,8 +220,14 @@ export class XenomorphQueen {
     this.health = Math.max(0, this.health - amount);
     audioSynth.playAcidSizzle();
 
-    const distToHead = hitPosition.distanceTo(this.position.clone().add(new THREE.Vector3(0, 10.5, 4.0)));
-    if (distToHead < 4.5 && this.crownIntact) {
+    const impact = hitPosition?.isVector3 ? hitPosition : this.position;
+
+    const legacyHead = this.position.clone().add(new THREE.Vector3(0, 10.5, 4.0));
+    const distToHead = Math.min(
+      impact.distanceTo(this.getCrownWorldPosition()),
+      impact.distanceTo(legacyHead)
+    );
+    if (distToHead < 4.8 && this.crownIntact) {
       this.crownHealth -= amount;
       if (this.crownHealth <= 0) {
         this.crownIntact = false;
@@ -168,13 +236,18 @@ export class XenomorphQueen {
       }
     }
 
-    const distToTail = hitPosition.distanceTo(this.position.clone().add(new THREE.Vector3(0, 2.0, -15.0)));
-    if (distToTail < 5.5 && this.tailIntact) {
+    const legacyTail = this.position.clone().add(new THREE.Vector3(0, 2.0, -15.0));
+    const distToTail = Math.min(
+      impact.distanceTo(this.getTailWorldPosition()),
+      impact.distanceTo(legacyTail)
+    );
+    if (distToTail < 5.8 && this.tailIntact) {
       this.tailHealth -= amount;
       if (this.tailHealth <= 0) {
         this.tailIntact = false;
         if (this.tailMesh) this.tailMesh.visible = false;
         if (this.activeTelegraphedAttack === 'attack_tail') this.cancelTelegraphedAttack();
+        this.spawnSeveredTail();
         audioSynth.playMonsterRoar();
       }
     }

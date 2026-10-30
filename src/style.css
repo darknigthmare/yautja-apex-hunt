@@ -7547,3 +7547,238 @@ button:hover { transform: scale(1.04); }
   font-size: 11px;
   color: #80cbc4;
 }
+
+
+/* =========================================================================
+ * Monster Hunter Style Giant Prey HUD & Carving Overlay
+ * ========================================================================= */
+.monster-hunter-hud-panel {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 540px;
+  background: rgba(14, 18, 22, 0.92);
+  border: 1px solid #ff7700;
+  box-shadow: 0 0 20px rgba(255, 119, 0, 0.35), inset 0 0 10px rgba(255, 85, 0, 0.2);
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #fff3e0;
+  font-family: 'Rajdhani', sans-serif;
+  z-index: 1050;
+  backdrop-filter: blur(6px);
+  display: none;
+}
+
+.monster-hunter-hud-panel .mh-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.monster-hunter-hud-panel .mh-header h4 {
+  margin: 0;
+  font-family: 'Orbitron', monospace;
+  font-size: 15px;
+  color: #ffb74d;
+  letter-spacing: 1.2px;
+}
+
+.monster-hunter-hud-panel .mh-badge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.monster-hunter-hud-panel .mh-badge.normal {
+  background: rgba(76, 175, 80, 0.25);
+  border: 1px solid #4caf50;
+  color: #a5d6a7;
+}
+
+.monster-hunter-hud-panel .mh-badge.enraged {
+  background: rgba(244, 67, 54, 0.35);
+  border: 1px solid #f44336;
+  color: #ff8a80;
+  animation: pulse-rage 0.8s infinite alternate;
+}
+
+.monster-hunter-hud-panel .mh-badge.exhausted {
+  background: rgba(158, 158, 158, 0.3);
+  border: 1px solid #9e9e9e;
+  color: #e0e0e0;
+}
+
+.monster-hunter-hud-panel .mh-badge.toppled {
+  background: rgba(255, 235, 59, 0.35);
+  border: 1px solid #ffeb3b;
+  color: #fff59d;
+  animation: pulse-topple 0.5s infinite alternate;
+}
+
+@keyframes pulse-rage {
+  0% { box-shadow: 0 0 4px #f44336; }
+  100% { box-shadow: 0 0 16px #f44336; }
+}
+
+@keyframes pulse-topple {
+  0% { box-shadow: 0 0 4px #ffeb3b; }
+  100% { box-shadow: 0 0 14px #ffeb3b; }
+}
+
+.monster-hunter-hud-panel .mh-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.monster-hunter-hud-panel .mh-bar-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.monster-hunter-hud-panel .mh-bar-fill.hp {
+  height: 100%;
+  background: linear-gradient(90deg, #d32f2f, #ff5722);
+  transition: width 0.25s ease-out;
+}
+
+.monster-hunter-hud-panel .mh-bar-fill.stamina {
+  height: 100%;
+  background: linear-gradient(90deg, #ff9800, #ffeb3b);
+  transition: width 0.25s ease-out;
+}
+
+.monster-hunter-hud-panel .mh-parts {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  border-top: 1px solid rgba(255, 119, 0, 0.25);
+  padding-top: 6px;
+}
+
+.monster-hunter-hud-panel .mh-part.broken {
+  color: #ff5252;
+  font-weight: 700;
+}
+
+.monster-hunter-hud-panel .mh-part.intact {
+  color: #81c784;
+}
+
+.monster-hunter-hud-panel .mh-scout {
+  color: #4fc3f7;
+  font-weight: 600;
+}
+
+/* Prompt d'action dépeçage */
+.monster-hunter-carve-prompt {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1060;
+}
+
+.monster-hunter-carve-prompt .carve-prompt-box {
+  background: rgba(10, 14, 18, 0.95);
+  border: 2px solid #ffd54f;
+  box-shadow: 0 0 22px rgba(255, 213, 79, 0.5);
+  border-radius: 6px;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Rajdhani', sans-serif;
+  color: #fff8e1;
+}
+
+.monster-hunter-carve-prompt .key-indicator {
+  font-family: 'Orbitron', monospace;
+  font-size: 18px;
+  font-weight: 900;
+  color: #ffd54f;
+  background: rgba(255, 213, 79, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.monster-hunter-carve-prompt .action-text {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Bannière de Quête Réussie */
+.monster-hunter-quest-banner {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  background: rgba(14, 10, 18, 0.96);
+  border: 2px solid #d4af37;
+  box-shadow: 0 0 40px rgba(212, 175, 55, 0.6), inset 0 0 20px rgba(212, 175, 55, 0.3);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  z-index: 1080;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.monster-hunter-quest-banner h2 {
+  font-family: 'Orbitron', monospace;
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffd54f;
+  letter-spacing: 2px;
+  margin: 0 0 6px 0;
+  text-shadow: 0 0 14px rgba(255, 213, 79, 0.8);
+}
+
+.monster-hunter-quest-banner h3 {
+  font-size: 15px;
+  color: #ffecb3;
+  letter-spacing: 1.5px;
+  margin: 0 0 12px 0;
+}
+
+.monster-hunter-quest-banner .honor-gain {
+  font-size: 18px;
+  font-weight: 800;
+  color: #00e676;
+  margin: 0 0 16px 0;
+  text-shadow: 0 0 8px rgba(0, 230, 118, 0.6);
+}
+
+.monster-hunter-quest-banner .harvested-materials-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  text-align: left;
+}
+
+.monster-hunter-quest-banner .harvested-materials-list li {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.monster-hunter-quest-banner .rarity-legendary { color: #ff9100; font-weight: 800; }
+.monster-hunter-quest-banner .rarity-epic { color: #d500f9; font-weight: 800; }
+.monster-hunter-quest-banner .rarity-rare { color: #00e5ff; font-weight: 700; }
+.monster-hunter-quest-banner .rarity-uncommon { color: #76ff03; font-weight: 600; }
