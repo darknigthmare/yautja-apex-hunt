@@ -48,6 +48,8 @@ Les artefacts externes au dépôt accompagnent la livraison : comparaison avant/
 
 ## Publication Vercel
 
+Les corrections sont poussées sur GitHub `master` au commit `07c3e39`. Le statut Vercel attaché à ce commit est `failure` : **« Deployment rate limited — retry in 24 hours. »** L'alias officiel sert encore l'ancien bundle ; l'envoi Git n'est donc pas présenté comme une publication de production réussie. L'ajout d'un token ne supprime pas ce quota du fournisseur.
+
 L'environnement n'a pas de connexion au projet Vercel existant. La CLI 65.9.0 a néanmoins créé un déploiement anonyme temporaire déclaré `READY` par le service ; sa vérification HTTP est refusée par le proxy, car son domaine `*.tmp.now` n'est pas encore autorisé. Cette URL expire au bout d'une heure et ne remplace pas l'alias `yautja-apex-hunt.vercel.app`.
 
 Un brouillon de configuration cloud a été enregistré en conservant les domaines existants, avec l'ajout de `*.tmp.now` et d'une exigence de secret personnel `VERCEL_TOKEN` pour `api.vercel.com`. Aucun secret n'a été affiché ou ajouté au dépôt. Le brouillon doit être relu, enregistré puis publié dans les paramètres de l'environnement pour prendre effet ; son enregistrement ne change pas la session en cours et ne prouve pas un déploiement permanent. La livraison ne présente donc pas la production Vercel comme mise à jour sans contrôle supplémentaire de son contenu.
