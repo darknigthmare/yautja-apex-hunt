@@ -7,6 +7,8 @@ import { LORE_SOURCES, LORE_CODEX_ENTRIES, HUNT_LOCATIONS, CURRENT_HUNTS } from 
 import { MEDIA_COVERAGE_CATALOG } from '../src/data/MediaCoverageCatalog.js';
 import { CANON_PREY_CATALOG, MULTIVERSE_CROSSOVER_PREY } from '../src/data/PreyTaxonomyAndCrossoverCatalog.js';
 import * as expanded from '../src/data/YautjaExpandedContent.js';
+import { HUNTER_CLASSES, DREAD_STYLES, ARMOR_FINISHES, WARPAINT_PATTERNS, PLAYER_GADGETS, PLAYABLE_WEAPONS, WEAPON_TECH_VARIANTS, ARMOR_PRESET_WEAPON_VARIANTS } from '../src/data/RuntimeEquipment.js';
+import { PREY_FACTIONS } from '../src/data/PreyTaxonomyAndCrossoverCatalog.js';
 
 const YCOMMIT = "3cbe8861204c5fe7341b61cda61f806b596a7186";
 const FILE_SHA = Object.freeze({
@@ -17,10 +19,13 @@ const FILE_SHA = Object.freeze({
   "src/data/MediaCoverageCatalog.js": "d272a5c736058ada02519800df52ddc10250530e",
   "src/data/CanonPreyExpansionV251.js": "cb447f220b0e3ed0b7ad2f0b4fcd63286a6d6726",
   "src/data/PreyTaxonomyAndCrossoverCatalog.js": "ac307846bbfb1ce846ae5832da3f97873c81a564",
-  "src/data/PreyReferenceMetadata.js": "8352298311011570ac01ddbc19ee874bc387fc7b"
+  "src/data/PreyReferenceMetadata.js": "8352298311011570ac01ddbc19ee874bc387fc7b",
+  "src/data/RuntimeEquipment.js": "807a1c8bdbfa16c1fdbafbc39d00af6877e7e6f3"
 });
 const REPO = 'darknigthmare/yautja-apex-hunt';
 const expandedIds = new Set(Object.values(expanded).filter(Array.isArray).flat().map(e=>e.id));
+// These five sources are newly shipped from the shared Alien_base archive: do not re-import our own snapshot as local Apex research.
+const IMPORTED_ALIEN_BASE_SOURCE_IDS = new Set(['alien1979','alienIsolation2014','alienRomulus2024','prometheus2012','alienCovenant2017']);
 export function buildAlienBaseCandidateExport(){
  const specs = [
   ['skins',YautjaSkinsDatabase,'character','src/data/YautjaLoreDatabase.js'],
@@ -30,7 +35,18 @@ export function buildAlienBaseCandidateExport(){
   ['currentHunts',CURRENT_HUNTS,'character','src/data/LoreCodex.js'],
   ['media',MEDIA_COVERAGE_CATALOG,'media','src/data/MediaCoverageCatalog.js'],
   ['prey',CANON_PREY_CATALOG,'organism','src/data/PreyTaxonomyAndCrossoverCatalog.js'],
-  ['crossoverPrey',MULTIVERSE_CROSSOVER_PREY,'crossover','src/data/PreyTaxonomyAndCrossoverCatalog.js']
+  ['crossoverPrey',MULTIVERSE_CROSSOVER_PREY,'crossover','src/data/PreyTaxonomyAndCrossoverCatalog.js'],
+  // Runtime definitions are indexed by name/provenance only; never export balance values, modifiers or effects.
+  ['hunterClasses',HUNTER_CLASSES,'class','src/data/RuntimeEquipment.js'],
+  ['dreadStyles',DREAD_STYLES,'customization','src/data/RuntimeEquipment.js'],
+  ['armorFinishes',ARMOR_FINISHES,'customization','src/data/RuntimeEquipment.js'],
+  ['warpaints',WARPAINT_PATTERNS,'customization','src/data/RuntimeEquipment.js'],
+  ['gadgets',PLAYER_GADGETS,'equipment','src/data/RuntimeEquipment.js'],
+  ['playableWeapons',PLAYABLE_WEAPONS,'weapon','src/data/RuntimeEquipment.js'],
+  ['weaponTechVariants',WEAPON_TECH_VARIANTS,'weapon','src/data/RuntimeEquipment.js'],
+  ['armorWeaponVariants',ARMOR_PRESET_WEAPON_VARIANTS,'weapon','src/data/RuntimeEquipment.js'],
+  ['sources',Object.entries(LORE_SOURCES).filter(([id])=>!IMPORTED_ALIEN_BASE_SOURCE_IDS.has(id)).map(([id,s])=>({id,name:s.title,sourceTier:s.tier,sourceUrl:s.url})),'source','src/data/LoreCodex.js'],
+  ['factions',Object.entries(PREY_FACTIONS).map(([id,name])=>({id,name})),'faction','src/data/PreyTaxonomyAndCrossoverCatalog.js']
  ];
  const entries=[],counts={},ids=new Set();
  for(const [collection,list,kind,defaultPath] of specs){

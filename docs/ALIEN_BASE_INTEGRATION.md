@@ -6,7 +6,7 @@ Le dépôt privé `darknigthmare/alien_base` est la source de **noms, identités
 - `src/data/AlienBaseFederation.js` : résolution des IDs historiques par collection, dossiers du Codex et relations `inspired-by`.
 - 20 nouvelles notices **archive seule** consultables dans le Codex (Weyland-Yutani, USCM, synthétiques, Ripley/Bishop, M41A, M56, M240, M314, M577, UD-4L, P-5000, sites et biologie Alien).
 - 33 relations d'identité/technologies et 9 liens d'inspiration (les boss originaux ne deviennent jamais des incarnations écran identiques).
-- `scripts/export-alien-base-candidates.mjs` : 623 fiches locales à examiner, y compris crossovers, palettes, proies et adaptations. **RESEARCH_ONLY**, sans dégâts, DPS, dimensions simulées ni statistiques de jeu.
+- `scripts/export-alien-base-candidates.mjs` : 731 fiches locales à examiner, y compris crossovers, palettes, proies, adaptations, classes de chasse, armes équipables, gadgets, variantes, 21 sources et 5 familles de factions. **RESEARCH_ONLY**, sans dégâts, DPS, dimensions simulées ni statistiques de jeu.
 
 ## Vérification et mise à jour
 ```sh

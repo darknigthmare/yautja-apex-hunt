@@ -177,4 +177,4 @@ Projet de fan game non officiel. Predator, Alien, Yautja, Xenomorph et les marqu
 
 ## Alien_base — référentiel partagé
 
-Le Codex dispose de 20 archives documentaires Alien supplémentaires, référencées dans un snapshot public minimal de `alien_base`. Les 33 identités/technologies partagées restent reliées à leurs IDs locaux sans changer les sauvegardes; les 9 boss/variantes adaptés utilisent des relations `inspired-by` non identitaires. Un export de 623 candidats de recherche permet d'enrichir la base privée en sens inverse, sans importer de statistiques de gameplay. Voir [ALIEN_BASE_INTEGRATION.md](docs/ALIEN_BASE_INTEGRATION.md).
+Le Codex dispose de 20 archives documentaires Alien supplémentaires, référencées dans un snapshot public minimal de `alien_base`. Les 33 identités/technologies partagées restent reliées à leurs IDs locaux sans changer les sauvegardes; les 9 boss/variantes adaptés utilisent des relations `inspired-by` non identitaires. Un export de 731 candidats de recherche permet d'enrichir la base privée en sens inverse, sans importer de statistiques de gameplay. Voir [ALIEN_BASE_INTEGRATION.md](docs/ALIEN_BASE_INTEGRATION.md).
