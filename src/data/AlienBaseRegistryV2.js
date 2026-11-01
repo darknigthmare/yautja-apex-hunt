@@ -20,6 +20,21 @@ export const getAlienRegistryLinkForLegacySharedId = id => legacy.get(id) ?? nul
 export const getAlienRegistryForLegacySharedId = id => getAlienRegistryRecord(legacy.get(id)?.registryId);
 export const getAlienRegistryReviewReason = id => unresolved.get(id) ?? null;
 export const getAlienRegistryInspirationForLocal = (collection,localId) => relations.get(collection+'::'+localId) ?? null;
+export function getAlienRegistryResearchCodexEntries(){
+ return Object.freeze((registry.researchArchives ?? []).map(archive=>{
+  const record=getAlienRegistryRecord(archive.id);
+  if(!record||archive.fidelityVerified!==false||archive.archiveOnly!==true||archive.reviewRequired!==true)throw Error('Invalid research archive '+archive.id);
+  return Object.freeze({
+   id:'alien-base-research:'+record.id, canonicalRegistryId:record.id,
+   entryType:'codex',category:archive.category,title:record.name,
+   summary:archive.reviewNote,
+   body:'Fiche documentaire du registre commun : l’œuvre exacte, les propriétés biologiques, l’apparence 1:1 et la jouabilité demandent une vérification distincte. Aucune statistique de combat n’est importée.',
+   sources:Object.freeze([]),sourceTier:'RESEARCH',isOriginal:false,
+   runtimeStatus:'archive',researchOnly:true,archiveOnly:true,locationIds:Object.freeze([])
+  });
+ }));
+}
+
 export function assertAlienRegistryV2Integrity(){
  if(registry.schemaVersion!=='2.0.0'||registry.origin!=='darknigthmare/alien_base'||registry.scope!=='public-minimal-yautja-apex-hunt')throw Error('Bad registry scope');
  if(registry.evidence!=='project-identities-not-gameplay-or-1to1-visual-certification')throw Error('Bad provenance gate');
@@ -43,5 +58,11 @@ export function assertAlienRegistryV2Integrity(){
  }
  for(const a of registry.unresolvedLegacy)if(oldIds.has(a.legacySharedId)||!a.reason)throw Error('Unresolved legacy changed to identity');
  for(const a of registry.relations)if(!ids.has(a.basisId)||a.assertsIdentity!==false||a.fidelityVerified!==false)throw Error('Inspiration has identity claim');
- return {records:registry.records.length,groups:Object.keys(registry.groups).length,mapped:locals.size,legacyAliases:oldIds.size,unresolved:registry.unresolvedLegacy.length,relations:registry.relations.length};
+ const archives=new Set();
+ for(const a of registry.researchArchives??[]){
+  if(archives.has(a.id)||!ids.has(a.id)||a.reviewRequired!==true||a.archiveOnly!==true||a.fidelityVerified!==false)throw Error('Broken research archive');
+  archives.add(a.id);
+ }
+
+ return {records:registry.records.length,groups:Object.keys(registry.groups).length,mapped:locals.size,legacyAliases:oldIds.size,unresolved:registry.unresolvedLegacy.length,relations:registry.relations.length,researchArchives:archives.size};
 }

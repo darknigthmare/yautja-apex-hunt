@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {assertAlienRegistryV2Integrity,ALIEN_BASE_REGISTRY_V2,getAlienRegistryForLocal,getAlienRegistryForLegacySharedId,getAlienRegistryLinkForLegacySharedId,getAlienRegistryReviewReason,getAlienRegistryInspirationForLocal} from '../src/data/AlienBaseRegistryV2.js';
+import {getAlienRegistryResearchCodexEntries,assertAlienRegistryV2Integrity,ALIEN_BASE_REGISTRY_V2,getAlienRegistryForLocal,getAlienRegistryForLegacySharedId,getAlienRegistryLinkForLegacySharedId,getAlienRegistryReviewReason,getAlienRegistryInspirationForLocal} from '../src/data/AlienBaseRegistryV2.js';
 import {getAlienBaseArchiveCodexEntries,getAlienBaseIdentityForLocal,assertAlienBaseSnapshotIntegrity} from '../src/data/AlienBaseFederation.js';
 test('Le registre unifié public est minimal et conserve la compatibilité v1',()=>{
  const v2=assertAlienRegistryV2Integrity(),v1=assertAlienBaseSnapshotIntegrity();
@@ -29,4 +29,16 @@ test('Les 20 archives restent consultables, sans inventer les 4 équivalences ri
  const inspired=getAlienRegistryInspirationForLocal('YautjaContentCatalog.huntBosses','xeno_queen');
  assert.equal(inspired?.basisId,'bio.xenomorph.queen');
  assert.equal(inspired.assertsIdentity,false);
+});
+
+
+test('20 archives supplémentaires du registre unifié sont visibles sans devenir jouables', async()=>{
+ const archives=getAlienRegistryResearchCodexEntries();
+ assert.equal(archives.length,20);
+ assert.equal(assertAlienRegistryV2Integrity().researchArchives,20);
+ const {ALL_LORE_ENTRIES,ALIEN_BASE_RESEARCH_ARCHIVE_ENTRIES,LORE_SOURCE_TIERS}=await import('../src/data/LoreCodex.js');
+ assert.equal(ALIEN_BASE_RESEARCH_ARCHIVE_ENTRIES.length,20);
+ assert.ok(LORE_SOURCE_TIERS.RESEARCH);
+ assert.equal(new Set(ALL_LORE_ENTRIES.map(x=>x.id)).size,ALL_LORE_ENTRIES.length);
+ for(const a of archives){assert.equal(a.archiveOnly,true);assert.equal(a.researchOnly,true);assert.equal(a.sourceTier,'RESEARCH');assert.equal(a.runtimeStatus,'archive');}
 });

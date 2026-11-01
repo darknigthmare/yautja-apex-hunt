@@ -35,3 +35,8 @@ L'ancien espace `yautja:*` reste disponible uniquement pour la **compatibilité 
 - `node scripts/sync-alien-base-registry-v2.mjs --base ../alien_base` permet de comparer la version locale au nouveau registre. `--write` rafraîchit le JSON uniquement après revue humaine.
 
 Les sources écran restent des déclarations de provenance, jamais une certification visuelle 1:1 ni un déclencheur de spawn, d'équipement ou d'IA.
+
+
+## Enrichissement du Codex par les recherches du registre
+
+Ajout de **20 nouvelles archives documentaires** en statut `RESEARCH`, à côté des 20 archives historiques. Le lot comprend 14 formes xénomorphes distinctes (selon les catalogues projet, non confirmées comme castes universelles), 4 organismes synthétiques/automates et 2 équipements coloniaux. Chaque fiche reçoit un identifiant stable du registre, une mise en garde de provenance et un statut `archiveOnly`. Aucun boss, objet, spawn, loot ou paramètre de difficulté n'est créé par cet import.

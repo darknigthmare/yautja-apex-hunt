@@ -1050,7 +1050,7 @@ export class Game {
         card.append(sourceList);
       }
 
-      if (entry.sharedId) {
+      if (entry.sharedId || entry.canonicalRegistryId) {
         const provenance = document.createElement('small');
         provenance.className = 'codex-shared-reference';
         provenance.textContent = entry.canonicalRegistryId

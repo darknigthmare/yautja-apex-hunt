@@ -1,4 +1,5 @@
 import { getAlienBaseArchiveCodexEntries } from './AlienBaseFederation.js';
+import {getAlienRegistryResearchCodexEntries} from './AlienBaseRegistryV2.js';
 // Canon-conscious lore data for Yautja: Apex Hunt.
 // UI rule: always display the sourceTier badge with an entry.
 
@@ -8,7 +9,8 @@ export const LORE_SOURCE_TIERS = Object.freeze({
   LICENSED_SCREEN_DESIGN: Object.freeze({ id: 'LICENSED_SCREEN_DESIGN', label: 'DESIGN ÉCRAN DOCUMENTÉ SOUS LICENCE', shortLabel: 'DESIGN', color: '#8dd7c6', priority: 3 }),
   LICENSED_EU: Object.freeze({ id: 'LICENSED_EU', label: 'UNIVERS ÉTENDU SOUS LICENCE', shortLabel: 'EU', color: '#7aa2f7', priority: 4 }),
   MERCH_CONCEPT: Object.freeze({ id: 'MERCH_CONCEPT', label: 'CONCEPT DE COLLECTION SOUS LICENCE', shortLabel: 'MERCH', color: '#d6a75c', priority: 5 }),
-  ORIGINAL: Object.freeze({ id: 'ORIGINAL', label: 'CRÉATION APEX HUNT', shortLabel: 'ORIGINAL', color: '#ff7a8a', priority: 6 })
+  ORIGINAL: Object.freeze({ id: 'ORIGINAL', label: 'CRÉATION APEX HUNT', shortLabel: 'ORIGINAL', color: '#ff7a8a', priority: 6 }),
+  RESEARCH: Object.freeze({ id: 'RESEARCH', label: 'RECHERCHE INTER-JEUX À VÉRIFIER', shortLabel: 'RECH.', color: '#9baab6', priority: 7 })
 });
 
 export const LORE_SOURCES = Object.freeze({
@@ -366,7 +368,8 @@ export const CURRENT_HUNTS = freezeEntries([
 ]);
 
 export const ALIEN_BASE_ARCHIVE_ENTRIES = Object.freeze(getAlienBaseArchiveCodexEntries());
-export const ALL_LORE_ENTRIES = Object.freeze([...LORE_CODEX_ENTRIES, ...HUNT_LOCATIONS, ...CURRENT_HUNTS, ...ALIEN_BASE_ARCHIVE_ENTRIES]);
+export const ALIEN_BASE_RESEARCH_ARCHIVE_ENTRIES = Object.freeze(getAlienRegistryResearchCodexEntries());
+export const ALL_LORE_ENTRIES = Object.freeze([...LORE_CODEX_ENTRIES, ...HUNT_LOCATIONS, ...CURRENT_HUNTS, ...ALIEN_BASE_ARCHIVE_ENTRIES, ...ALIEN_BASE_RESEARCH_ARCHIVE_ENTRIES]);
 export const getLoreSourceTier = (tierId) => LORE_SOURCE_TIERS[tierId] ?? null;
 export const getLoreEntryById = (id) => ALL_LORE_ENTRIES.find((entry) => entry.id === id) ?? null;
 export const getLoreEntriesByCategory = (category) => ALL_LORE_ENTRIES.filter((entry) => entry.category === category);
@@ -377,5 +380,6 @@ export default Object.freeze({
   codex: LORE_CODEX_ENTRIES,
   locations: HUNT_LOCATIONS,
   hunts: CURRENT_HUNTS,
-  alienBaseArchives: ALIEN_BASE_ARCHIVE_ENTRIES
+  alienBaseArchives: ALIEN_BASE_ARCHIVE_ENTRIES,
+  alienBaseResearchArchives: ALIEN_BASE_RESEARCH_ARCHIVE_ENTRIES
 });

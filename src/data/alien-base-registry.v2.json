@@ -6,8 +6,43 @@
   "evidence": "project-identities-not-gameplay-or-1to1-visual-certification",
   "records": [
     {
+      "id": "bio.automaton.bombardier",
+      "name": "Bombardier",
+      "category": "organism"
+    },
+    {
+      "id": "bio.automaton.bulwark",
+      "name": "Bulwark",
+      "category": "organism"
+    },
+    {
+      "id": "bio.synthetic.combat-synthetic",
+      "name": "Combat Synthetic",
+      "category": "organism"
+    },
+    {
+      "id": "bio.synthetic.working-joe",
+      "name": "Working Joe",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.boiler",
+      "name": "Boiler",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.carrier",
+      "name": "Carrier",
+      "category": "organism"
+    },
+    {
       "id": "bio.xenomorph.chestburster",
       "name": "Chestburster",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.crusher",
+      "name": "Crusher",
       "category": "organism"
     },
     {
@@ -16,8 +51,23 @@
       "category": "organism"
     },
     {
+      "id": "bio.xenomorph.exploder",
+      "name": "Exploder",
+      "category": "organism"
+    },
+    {
       "id": "bio.xenomorph.facehugger",
       "name": "Facehugger",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.k-series-yellow-xenomorph",
+      "name": "K-Series Yellow Xenomorph",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.lurker",
+      "name": "Lurker",
       "category": "organism"
     },
     {
@@ -26,13 +76,53 @@
       "category": "organism"
     },
     {
+      "id": "bio.xenomorph.praetorian",
+      "name": "Prétorien",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.predalien",
+      "name": "Predalien",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.prowler",
+      "name": "Prowler",
+      "category": "organism"
+    },
+    {
       "id": "bio.xenomorph.queen",
       "name": "Reine Xénomorphe",
       "category": "organism"
     },
     {
+      "id": "bio.xenomorph.ravager",
+      "name": "Ravager",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.runner",
+      "name": "Runner",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.spitter",
+      "name": "Spitter",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.warden",
+      "name": "Warden",
+      "category": "organism"
+    },
+    {
       "id": "bio.xenomorph.warrior",
       "name": "Warrior",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.xenoborg",
+      "name": "Xenoborg",
       "category": "organism"
     },
     {
@@ -81,6 +171,11 @@
       "category": "equipment"
     },
     {
+      "id": "item.m41a2-pulse-rifle",
+      "name": "M41A2 Pulse Rifle",
+      "category": "equipment"
+    },
+    {
       "id": "item.m56-smartgun",
       "name": "M56 Smartgun",
       "category": "equipment"
@@ -88,6 +183,11 @@
     {
       "id": "item.motion-tracker",
       "name": "Motion Tracker",
+      "category": "equipment"
+    },
+    {
+      "id": "item.ua-571-c-sentry-gun",
+      "name": "UA 571-C Sentry Gun",
       "category": "equipment"
     },
     {
@@ -416,6 +516,168 @@
       }
     }
   },
+  "researchArchives": [
+    {
+      "id": "bio.xenomorph.praetorian",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.runner",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.crusher",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.spitter",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.boiler",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.predalien",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.xenoborg",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.ravager",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.carrier",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.prowler",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.lurker",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.k-series-yellow-xenomorph",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.exploder",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.warden",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.synthetic.working-joe",
+      "category": "culture",
+      "reviewNote": "Entité synthétique ou automate de catalogue : ne pas l'assimiler biologiquement à un Xénomorphe.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.synthetic.combat-synthetic",
+      "category": "culture",
+      "reviewNote": "Entité synthétique ou automate de catalogue : ne pas l'assimiler biologiquement à un Xénomorphe.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.automaton.bulwark",
+      "category": "culture",
+      "reviewNote": "Entité synthétique ou automate de catalogue : ne pas l'assimiler biologiquement à un Xénomorphe.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.automaton.bombardier",
+      "category": "culture",
+      "reviewNote": "Entité synthétique ou automate de catalogue : ne pas l'assimiler biologiquement à un Xénomorphe.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "item.ua-571-c-sentry-gun",
+      "category": "technologie",
+      "reviewNote": "Équipement colonial documenté comme référence de recherche, sans déblocage dans l'arsenal Yautja.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "item.m41a2-pulse-rifle",
+      "category": "technologie",
+      "reviewNote": "Équipement colonial documenté comme référence de recherche, sans déblocage dans l'arsenal Yautja.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    }
+  ],
   "legacyAliases": [
     {
       "legacySharedId": "yautja:jungle-hunter-1987",
