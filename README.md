@@ -186,3 +186,5 @@ La migration des 731 candidats vers les identifiants unifiés apporte **35 corre
 Le registre unifié ajoute également **20 dossiers de recherche consultables** au Codex, clairement différenciés des références visuelles certifiées et du gameplay jouable.
 
 La commande `scripts/diff-alien-base-candidates.mjs` prépare les futures mises à jour **jeu → base** comme des deltas de recherche avec SHA réel, sans modification ou suppression automatique.
+
+La galerie « Archives de franchise » affiche désormais réellement les dossiers technologie/véhicules/ennemis/événements/boss/alliés et les **29 œuvres** du registre commun, avec recherche et provenance, sans aucune activation automatique du gameplay.

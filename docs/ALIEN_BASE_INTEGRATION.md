@@ -51,3 +51,8 @@ node scripts/diff-alien-base-candidates.mjs --base ../alien_base --out /tmp/apex
 ```
 
 Le résultat n'est jamais appliqué automatiquement dans `alien_base`. Les suppressions ne sont pas exécutées, les changements non commités ne reçoivent pas de fausse provenance, les statistiques de gameplay restent exclues.
+
+## Catalogue de franchise désormais visible dans le jeu
+La section « Archives de franchise & contenu actif » de l'armurerie n'était pas raccordée au rendu dans le moteur. `src/ui/SharedReferenceVault.js` rend maintenant les 7 catalogues existants, avec recherche par texte, statut déclaré, compteur réel et liens de provenance. Le HTML est raccordé à l'initialisation du jeu sans changer les statistiques des armes ou les sauvegardes.
+
+Le nouvel export des **29 œuvres** est fourni par [Alien_base PR #22](https://github.com/darknigthmare/alien_base/pull/22), dérivée de la consolidation #21. `src/data/AlienBaseMediaV2.js` lit le snapshot autonome `alien-base-media.v2.json` et affiche `work.*` comme référence documentaire **à vérifier**, sans prétendre que toute adaptation du jeu est une reproduction 1:1. La source publique originale `sourceUrl` est conservée dans le catalogue déjà présent du jeu, pas dans le snapshot privé.

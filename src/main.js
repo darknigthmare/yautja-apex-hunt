@@ -23,6 +23,7 @@ import { audioSynth } from './AudioSynthesizer.js';
 import { saveManager } from './engine/SaveManager.js';
 import { DEFAULT_SETTINGS, HUNT_DEFINITIONS, resolveHuntBiome } from './data/GameConfig.js';
 import { ALL_LORE_ENTRIES, LORE_SOURCE_TIERS, LORE_SOURCES } from './data/LoreCodex.js';
+import {initializeSharedReferenceVault} from './ui/SharedReferenceVault.js';
 import { MedbayInventoryOverlay } from './ui/MedbayInventoryOverlay.js';
 import { refillMedbayInventory } from './gameplay/YautjaMedbaySystem.js';
 import { resolveMeleeStrike } from './gameplay/combatRules.js';
@@ -343,6 +344,7 @@ export class Game {
 
     this.applySettings(false);
     this.renderLoreCodex();
+    initializeSharedReferenceVault(document);
     this.renderDirectiveSelector();
     this.initEventListeners();
     this.setupUIButtons();

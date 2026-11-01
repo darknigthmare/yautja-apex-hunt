@@ -847,6 +847,22 @@
         </section>
 
         <section class="expanded-content-vault" aria-labelledby="content-vault-title">
+          <div class="reference-vault-controls" role="search" aria-label="Chercher dans les archives de franchise">
+            <label for="reference-vault-search">RECHERCHE DANS LES DOSSIERS
+              <input id="reference-vault-search" type="search" placeholder="Xénomorphe, clan, plasma, film..." autocomplete="off">
+            </label>
+            <label for="reference-vault-status">STATUT DE CONTENU
+              <select id="reference-vault-status">
+                <option value="all">Tous les statuts</option>
+                <option value="playable">Jouable déclaré</option>
+                <option value="encounter">Rencontre déclarée</option>
+                <option value="customization">Personnalisation</option>
+                <option value="archive">Archives non jouables</option>
+              </select>
+            </label>
+          </div>
+          <p id="reference-vault-empty" class="reference-vault-empty" hidden>Aucun dossier ne correspond à cette recherche.</p>
+
           <div class="section-heading compact-heading">
             <div>
               <p class="section-kicker">ARCHIVES ÉTENDUES · PROVENANCE BADGÉE</p>
