@@ -1053,7 +1053,9 @@ export class Game {
       if (entry.sharedId) {
         const provenance = document.createElement('small');
         provenance.className = 'codex-shared-reference';
-        provenance.textContent = 'ALIEN_BASE · ' + entry.sharedId + ' · ARCHIVE NON JOUABLE';
+        provenance.textContent = entry.canonicalRegistryId
+          ? 'REGISTRE ALIEN_BASE · ' + entry.canonicalRegistryId + ' · ARCHIVE NON JOUABLE'
+          : 'ALIEN_BASE · ' + entry.sharedId + ' · CORRESPONDANCE EN REVUE · ARCHIVE NON JOUABLE';
         card.append(provenance);
       }
 

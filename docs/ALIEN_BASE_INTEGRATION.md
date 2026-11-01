@@ -22,3 +22,16 @@ Dépendances PR : `alien_base` PR #3 puis PR #10 (branche dédiée), et cette PR
 
 ## Fidélité
 `SCREEN` et `LICENSED_EU` identifient le média revendiqué dans le jeu, pas une certification graphique 1:1. Les fiches `ORIGINAL`, crossovers, adaptations de boss et espèces fictives restent explicitement séparées de l'identité canonique. Aucun élément de recherche ne devient spawnable ou équipable sans implémentation et QA séparées.
+
+
+## Registre unifié v2 — source de vérité renouvelée
+
+L'ancien espace `yautja:*` reste disponible uniquement pour la **compatibilité du Codex et des sauvegardes** ; ne pas fusionner `alien_base` #10 sur #3. Le nouveau registre suit [Alien_base #17](https://github.com/darknigthmare/alien_base/pull/17), empilé sur #8 → #4.
+
+- `src/data/alien-base-registry.v2.json` : snapshot public minimal, jamais un accès direct au dépôt privé.
+- `src/data/AlienBaseRegistryV2.js` : 35 bindings explicites, 49 alias entre identifiants v1 et v2, 9 bases de boss **inspired-by** et 4 archives conservées à réviser (Bishop, P-5000, synthétiques, pathogène).
+- Le Codex garde **20 archives** existantes ; 16 portent un ID du registre commun et les 4 autres affichent « CORRESPONDANCE EN REVUE ».
+- Le vieux snapshot demeure temporairement, pour éviter tout changement de clé de sauvegarde ou de comportement existant, puis pourra être déprécié après fusion et QA.
+- `node scripts/sync-alien-base-registry-v2.mjs --base ../alien_base` permet de comparer la version locale au nouveau registre. `--write` rafraîchit le JSON uniquement après revue humaine.
+
+Les sources écran restent des déclarations de provenance, jamais une certification visuelle 1:1 ni un déclencheur de spawn, d'équipement ou d'IA.

@@ -1,4 +1,5 @@
 import snapshot from './alien-base-snapshot.v1.json' with { type: 'json' };
+import {getAlienRegistryForLegacySharedId,getAlienRegistryReviewReason} from './AlienBaseRegistryV2.js';
 
 // Never fetch alien_base (private) from a public web client or mutate save IDs.
 export const ALIEN_BASE_SNAPSHOT = Object.freeze(snapshot);
@@ -180,7 +181,7 @@ export function getAlienBaseArchiveCodexEntries(){
   if(!record||!note)throw Error('Missing shared archive '+sharedId);
   const [category,sourceTier,sources,summary]=note;
   return Object.freeze({
-   id:'alien-base:'+sharedId,sharedId,entryType:'codex',category,title:record.name,summary,
+   id:'alien-base:'+sharedId,sharedId,canonicalRegistryId:getAlienRegistryForLegacySharedId(sharedId)?.id??null,registryReviewReason:getAlienRegistryReviewReason(sharedId),entryType:'codex',category,title:record.name,summary,
    body:'Archive Alien_base consultable uniquement. Cette référence ne débloque ni rencontre, ni équipement, ni modèle 1:1 ; les statistiques restent propres au jeu.',
    sourceTier, sources:Object.freeze([...sources]),isOriginal:false,runtimeStatus:'archive',archiveOnly:true,locationIds:Object.freeze([])
   });
