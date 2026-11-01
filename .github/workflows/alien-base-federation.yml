@@ -17,6 +17,8 @@ on:
       - 'src/content-pass.css'
       - 'index.html'
       - 'tests/alien-base-media-vault.test.js'
+      - 'src/ui/CodexFilters.js'
+      - 'tests/alien-base-codex-filters.test.js'
       - '.github/workflows/alien-base-federation.yml'
   push:
     branches:
