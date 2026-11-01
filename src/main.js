@@ -24,6 +24,7 @@ import { saveManager } from './engine/SaveManager.js';
 import { DEFAULT_SETTINGS, HUNT_DEFINITIONS, resolveHuntBiome } from './data/GameConfig.js';
 import { ALL_LORE_ENTRIES, LORE_SOURCE_TIERS, LORE_SOURCES } from './data/LoreCodex.js';
 import {initializeSharedReferenceVault} from './ui/SharedReferenceVault.js';
+import {filterLoreEntries} from './ui/CodexFilters.js';
 import { MedbayInventoryOverlay } from './ui/MedbayInventoryOverlay.js';
 import { refillMedbayInventory } from './gameplay/YautjaMedbaySystem.js';
 import { resolveMeleeStrike } from './gameplay/combatRules.js';
@@ -344,6 +345,10 @@ export class Game {
 
     this.applySettings(false);
     this.renderLoreCodex();
+    for(const id of ['codex-search','codex-source-filter','codex-archives-only']){
+      const input=document.getElementById(id);
+      if(input?.addEventListener)input.addEventListener(id==='codex-search'?'input':'change',()=>this.renderLoreCodex());
+    }
     initializeSharedReferenceVault(document);
     this.renderDirectiveSelector();
     this.initEventListeners();
@@ -1002,7 +1007,14 @@ export class Game {
     const codexGrid = document.getElementById('codex-grid');
     if (!codexGrid) return;
 
-    const cards = ALL_LORE_ENTRIES.map((entry) => {
+    const visible=filterLoreEntries(ALL_LORE_ENTRIES,{
+      query:document.getElementById('codex-search')?.value??'',
+      sourceTier:document.getElementById('codex-source-filter')?.value??'all',
+      archivesOnly:document.getElementById('codex-archives-only')?.checked??false
+    });
+    const counter=document.getElementById('codex-filter-count');
+    if(counter)counter.textContent=visible.length+' / '+ALL_LORE_ENTRIES.length+' DOSSIERS';
+    const cards = visible.map((entry) => {
       const card = document.createElement('article');
       card.className = 'codex-card';
       card.dataset.category = entry.category;

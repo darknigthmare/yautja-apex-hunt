@@ -61,3 +61,6 @@ Le comparateur vérifie désormais **les empreintes Git blob réelles des fichie
 
 ### Correspondances inter-jeux Hunting Grounds
 Les apparences `alpha_yautja`, `samurai_yautja` et `viking_yautja` réutilisent les mêmes IDs documentaires de personnages que Yautja Hive Warriors et La Longue Chasse dans la PR Alien_base #24. Les titres d'œuvre sont cohérents, mais aucune texture, silhouette, arme ni animation n'est certifiée 1:1. Le total des liens locaux passe à **38**, les sujets à examiner à **693**, et le snapshot public v2 contient **75** noms de référence.
+
+### Recherche des archives au bio-masque
+Le Codex permet désormais de filtrer les dossiers par texte, provenance (écran, AVP, EU, création, recherche) et mode « archives uniquement ». Les **40 archives Alien_base** restent distinctes des chasses et des équipements. Les filtres agissent uniquement sur les fiches affichées ; ils ne modifient aucun état de jeu ou fichier de sauvegarde.

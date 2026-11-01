@@ -910,6 +910,28 @@
           </div>
           <p>Les badges de provenance distinguent les films, la branche AVP, les récits licenciés et les créations originales du jeu.</p>
         </div>
+        <div class="codex-reference-controls" role="search" aria-label="Filtrer le Codex et les références Alien_base">
+          <label for="codex-search">RECHERCHER UNE FICHE
+            <input id="codex-search" type="search" placeholder="Reine, Weyland, plasma, film, identifiant..." autocomplete="off">
+          </label>
+          <label for="codex-source-filter">PROVENANCE
+            <select id="codex-source-filter">
+              <option value="all">Toutes les provenances</option>
+              <option value="SCREEN">Films Predator / Alien</option>
+              <option value="AVP_SCREEN">Films AVP</option>
+              <option value="LICENSED_SCREEN_DESIGN">Designs sous licence</option>
+              <option value="LICENSED_EU">Univers étendu</option>
+              <option value="MERCH_CONCEPT">Produits et concepts</option>
+              <option value="ORIGINAL">Créations Apex Hunt</option>
+              <option value="RESEARCH">Recherches à vérifier</option>
+            </select>
+          </label>
+          <label class="codex-check-filter" for="codex-archives-only">
+            <input id="codex-archives-only" type="checkbox">
+            Archives uniquement
+          </label>
+          <output id="codex-filter-count" aria-live="polite">0 DOSSIERS</output>
+        </div>
         <div id="codex-grid" class="codex-grid" aria-live="polite"></div>
 
         <section class="canon-prey-taxonomy-section" aria-labelledby="taxonomy-vault-title">
