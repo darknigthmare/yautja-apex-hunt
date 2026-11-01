@@ -1,0 +1,36 @@
+name: Apex Hunt — Alien_base federation QA
+on:
+  pull_request:
+    paths:
+      - 'src/data/AlienBaseFederation.js'
+      - 'src/data/alien-base-snapshot.v1.json'
+      - 'src/data/LoreCodex.js'
+      - 'scripts/*alien-base*.mjs'
+      - 'tests/alien-base-integration.test.js'
+      - '.github/workflows/alien-base-federation.yml'
+  push:
+    branches:
+      - 'feat/alien-base-crossgame-apex-hunt-20261101'
+permissions:
+  contents: read
+jobs:
+  federation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Validate shared snapshot and research export
+        run: |
+          node --test tests/alien-base-integration.test.js
+          node scripts/sync-alien-base-snapshot.mjs
+          node scripts/export-alien-base-candidates.mjs --out /tmp/yautja-apex-intake.json
+      - name: Run game regression suite
+        run: npm test
+      - name: Build production client
+        run: npm run build
