@@ -188,3 +188,5 @@ Le registre unifié ajoute également **20 dossiers de recherche consultables** 
 La commande `scripts/diff-alien-base-candidates.mjs` prépare les futures mises à jour **jeu → base** comme des deltas de recherche avec SHA réel, sans modification ou suppression automatique.
 
 La galerie « Archives de franchise » affiche désormais réellement les dossiers technologie/véhicules/ennemis/événements/boss/alliés et les **29 œuvres** du registre commun, avec recherche et provenance, sans aucune activation automatique du gameplay.
+
+La passerelle commune passe à **75 notices** et **38 identifiants locaux** : Alpha, Samurai et Viking (Hunting Grounds) conservent leur forme de jeu, sans uniformisation des stats ni promesse d'apparence 1:1.

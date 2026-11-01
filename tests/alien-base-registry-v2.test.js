@@ -4,7 +4,7 @@ import {getAlienRegistryResearchCodexEntries,assertAlienRegistryV2Integrity,ALIE
 import {getAlienBaseArchiveCodexEntries,getAlienBaseIdentityForLocal,assertAlienBaseSnapshotIntegrity} from '../src/data/AlienBaseFederation.js';
 test('Le registre unifié public est minimal et conserve la compatibilité v1',()=>{
  const v2=assertAlienRegistryV2Integrity(),v1=assertAlienBaseSnapshotIntegrity();
- assert.equal(v2.mapped,35);assert.equal(v2.legacyAliases,49);assert.equal(v2.unresolved,4);assert.equal(v2.relations,9);
+ assert.equal(v2.mapped,38);assert.equal(v2.legacyAliases,49);assert.equal(v2.unresolved,4);assert.equal(v2.relations,9);
  assert.equal(v1.links,33);assert.equal(v1.archiveIds,20);
  assert.ok(ALIEN_BASE_REGISTRY_V2.records.every(x=>!Object.hasOwn(x,'description')&&!Object.hasOwn(x,'sourceRefs')));
 });
@@ -41,4 +41,18 @@ test('20 archives supplémentaires du registre unifié sont visibles sans deveni
  assert.ok(LORE_SOURCE_TIERS.RESEARCH);
  assert.equal(new Set(ALL_LORE_ENTRIES.map(x=>x.id)).size,ALL_LORE_ENTRIES.length);
  for(const a of archives){assert.equal(a.archiveOnly,true);assert.equal(a.researchOnly,true);assert.equal(a.sourceTier,'RESEARCH');assert.equal(a.runtimeStatus,'archive');}
+});
+
+
+test('Trois chasseurs Hunting Grounds réutilisent des identités multi-jeux sans migration de sauvegarde',()=>{
+ const pairs=[
+ ['alpha_yautja','character.yautja.alpha_predator'],
+ ['samurai_yautja','character.yautja.samurai_predator'],
+ ['viking_yautja','character.yautja.viking_predator']
+ ];
+ for(const [localId,sharedId] of pairs){
+  assert.equal(getAlienRegistryForLocal('YautjaSkinsDatabase',localId)?.id,sharedId);
+  assert.match(ALIEN_BASE_REGISTRY_V2.groups.skins[localId].qualifier,/no-visual-1to1-attestation/);
+ }
+ assert.equal(assertAlienRegistryV2Integrity().mapped,38);
 });

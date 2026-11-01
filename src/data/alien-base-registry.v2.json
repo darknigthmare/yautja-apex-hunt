@@ -131,6 +131,11 @@
       "category": "character"
     },
     {
+      "id": "character.yautja.alpha_predator",
+      "name": "ALPHA PREDATOR (HUNTING GROUNDS)",
+      "category": "character"
+    },
+    {
       "id": "character.yautja.city_hunter",
       "name": "CITY HUNTER (1990)",
       "category": "character"
@@ -143,6 +148,16 @@
     {
       "id": "character.yautja.jungle_hunter",
       "name": "JUNGLE HUNTER (1987)",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.samurai_predator",
+      "name": "SAMURAI PREDATOR (PHG DLC)",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.viking_predator",
+      "name": "VIKING PREDATOR (PHG DLC)",
       "category": "character"
     },
     {
@@ -435,6 +450,18 @@
       "kwei_badlands": {
         "id": "character.yautja.kwei_badlands_2025",
         "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "alpha_yautja": {
+        "id": "character.yautja.alpha_predator",
+        "qualifier": "same-licensed-game-character-identity-no-visual-1to1-attestation"
+      },
+      "samurai_yautja": {
+        "id": "character.yautja.samurai_predator",
+        "qualifier": "same-licensed-game-character-identity-no-visual-1to1-attestation"
+      },
+      "viking_yautja": {
+        "id": "character.yautja.viking_predator",
+        "qualifier": "same-licensed-game-character-identity-no-visual-1to1-attestation"
       }
     },
     "technology": {
