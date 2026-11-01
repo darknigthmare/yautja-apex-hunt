@@ -10,7 +10,7 @@ test('Apex research delta is empty against identical baseline',()=>{
 test('Changed record requires manual review and does not claim a dirty commit',()=>{
  const original=buildAlienBaseCandidateExport(),changed=structuredClone(original);
  changed.entries[0].name+=' (recherche)';
- const d=diffCandidateIntake(original,changed,{revision:'3cbe8861204c5fe7341b61cda61f806b596a7186',dirty:true,blobHash:()=> 'current-sha'});
+ const d=diffCandidateIntake(original,changed,{revision:'3cbe8861204c5fe7341b61cda61f806b596a7186',dirty:true,blobHash:()=> 'b'.repeat(40)});
  assert.equal(d.counts.changed,1);assert.equal(d.changes[0].proposed.reference.commit,null);
  assert.equal(d.changes[0].proposed.reviewStatus,'RESEARCH_ONLY_REVIEW_REQUIRED');
  assert.equal(d.policy.noAutomaticDeletion,true);
