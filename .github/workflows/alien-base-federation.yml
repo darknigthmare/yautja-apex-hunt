@@ -10,6 +10,7 @@ on:
       - 'scripts/*alien-base*.mjs'
       - 'tests/alien-base-integration.test.js'
       - 'tests/alien-base-registry-v2.test.js'
+      - 'tests/alien-base-delta.test.js'
       - '.github/workflows/alien-base-federation.yml'
   push:
     branches:

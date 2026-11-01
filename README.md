@@ -184,3 +184,5 @@ Le Codex dispose de 20 archives documentaires Alien supplémentaires, référenc
 La migration des 731 candidats vers les identifiants unifiés apporte **35 correspondances locales**, **49 alias hérités**, **9 relations de boss non identitaires** et **4 ambiguïtés conservées en revue**. Le Codex affiche les IDs du registre pour les 16 archives correspondantes et garde les quatre autres en attente, sans impact sur l'équilibrage. Voir [le dossier d'intégration](docs/ALIEN_BASE_INTEGRATION.md).
 
 Le registre unifié ajoute également **20 dossiers de recherche consultables** au Codex, clairement différenciés des références visuelles certifiées et du gameplay jouable.
+
+La commande `scripts/diff-alien-base-candidates.mjs` prépare les futures mises à jour **jeu → base** comme des deltas de recherche avec SHA réel, sans modification ou suppression automatique.

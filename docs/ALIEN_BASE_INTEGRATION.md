@@ -40,3 +40,14 @@ Les sources écran restent des déclarations de provenance, jamais une certifica
 ## Enrichissement du Codex par les recherches du registre
 
 Ajout de **20 nouvelles archives documentaires** en statut `RESEARCH`, à côté des 20 archives historiques. Le lot comprend 14 formes xénomorphes distinctes (selon les catalogues projet, non confirmées comme castes universelles), 4 organismes synthétiques/automates et 2 équipements coloniaux. Chaque fiche reçoit un identifiant stable du registre, une mise en garde de provenance et un statut `archiveOnly`. Aucun boss, objet, spawn, loot ou paramètre de difficulté n'est créé par cet import.
+
+## Synchronisation retour : comparaison de delta sans fausse provenance
+
+Le lot historique de 731 fiches est épinglé au commit original ; si les catalogues du jeu changent, il ne faut **pas** réutiliser silencieusement cet ancien commit/SHA. La commande ci-dessous compare la version actuelle aux candidats de la base, recalcule le vrai Git blob SHA des fichiers concernés et produit des ajouts/modifications/suppressions **à faire examiner**.
+
+```sh
+node scripts/diff-alien-base-candidates.mjs --base ../alien_base --out /tmp/apex-delta.json
+node scripts/diff-alien-base-candidates.mjs --base ../alien_base --out /tmp/apex-delta.json --check
+```
+
+Le résultat n'est jamais appliqué automatiquement dans `alien_base`. Les suppressions ne sont pas exécutées, les changements non commités ne reçoivent pas de fausse provenance, les statistiques de gameplay restent exclues.
