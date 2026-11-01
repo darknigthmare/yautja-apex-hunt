@@ -2394,7 +2394,7 @@ export class YautjaPlayer {
   }
 
   applyAcidCorrosion() {
-    if (this.hasAntiAcidCloak) return false;
+    if (this.hasAntiAcidCloak || this.craftedAcidResistanceRatio >= 1) return false;
     if (this.isCloaked) this.toggleCloak();
     this.isAcidCorroded = true;
     this.acidTimer = 5.0;
@@ -2504,7 +2504,7 @@ export class YautjaPlayer {
       this.isAttacking = true;
       audioSynth.playPlasmacasterBlast();
       this.firePlasmaBall(targetPos);
-      this.attackTimer = 0.6;
+      this.attackTimer = 0.6 * (this.craftedEquipmentPerks?.plasmaCooldownMultiplier ?? 1);
     }
     else if (this.selectedWeapon === 3) {
       this.isAttacking = true;
@@ -2574,7 +2574,7 @@ export class YautjaPlayer {
       this.isAttacking = true;
       audioSynth.playPlasmacasterBlast();
       this.fireWolfDualPlasma(targetPos);
-      this.attackTimer = 0.72;
+      this.attackTimer = 0.72 * (this.craftedEquipmentPerks?.plasmaCooldownMultiplier ?? 1);
     }
     else if (this.selectedWeapon === 12) {
       if (this.energy < 32) return;
@@ -2582,7 +2582,7 @@ export class YautjaPlayer {
       this.isAttacking = true;
       audioSynth.playPlasmacasterBlast();
       this.fireEyeOfRa(targetPos);
-      this.attackTimer = 0.9;
+      this.attackTimer = 0.9 * (this.craftedEquipmentPerks?.plasmaCooldownMultiplier ?? 1);
     }
     else if (this.selectedWeapon === 13) {
       if (this.stamina < 26) return;
@@ -3347,7 +3347,7 @@ export class YautjaPlayer {
     if (this.isDead) return;
     const hasMovementInput = inputDir.x !== 0 || inputDir.z !== 0;
     if (this.energy < this.maxEnergy) this.energy = Math.min(this.maxEnergy, this.energy + delta * this.energyRegen);
-    if (this.stamina < this.maxStamina && !(inputDir.isSprinting && hasMovementInput)) this.stamina = Math.min(this.maxStamina, this.stamina + delta * 25.0);
+    if (this.stamina < this.maxStamina && !(inputDir.isSprinting && hasMovementInput)) this.stamina = Math.min(this.maxStamina, this.stamina + delta * (this.staminaRegen ?? 25));
     this.wristShieldCooldown = Math.max(0, this.wristShieldCooldown - delta);
     this.scoutDroneCooldown = Math.max(0, this.scoutDroneCooldown - delta);
     this.shurikenCooldown = Math.max(0, this.shurikenCooldown - delta);
@@ -3409,9 +3409,14 @@ export class YautjaPlayer {
     }
 
     if (this.isAcidCorroded) {
-      this.acidTimer -= delta;
-      this.takeDamage(delta * 4.0);
-      if (this.acidTimer <= 0) this.isAcidCorroded = false;
+      if (this.craftedAcidResistanceRatio >= 1) {
+        this.isAcidCorroded = false;
+        this.acidTimer = 0;
+      } else {
+        this.acidTimer -= delta;
+        this.takeDamage(delta * 4.0, { type: 'acid' });
+        if (this.acidTimer <= 0) this.isAcidCorroded = false;
+      }
     }
 
     if (this.medbayInventory) {
@@ -3422,7 +3427,7 @@ export class YautjaPlayer {
     }
 
     if (this.isCloaked) {
-      this.energy = Math.max(0, this.energy - delta * 12.0);
+      this.energy = Math.max(0, this.energy - delta * (this.cloakEnergyDrain ?? 12));
       if (this.energy <= 0) this.toggleCloak();
 
       // L'immersion est fournie par un volume d'eau, jamais par l'altitude :
@@ -3472,7 +3477,7 @@ export class YautjaPlayer {
       isSprintingForAnimation = isSprinting;
       const statusMultiplier = this.getCombatMovementMultiplier();
       const speed = (isSprinting ? this.sprintSpeed : this.moveSpeed) * statusMultiplier;
-      if (isSprinting) this.stamina = Math.max(0, this.stamina - delta * 30.0);
+      if (isSprinting) this.stamina = Math.max(0, this.stamina - delta * (this.sprintStaminaCost ?? 30));
 
       if (hasMovementInput) {
         const moveVector = new THREE.Vector3(inputDir.x, 0, inputDir.z).normalize();

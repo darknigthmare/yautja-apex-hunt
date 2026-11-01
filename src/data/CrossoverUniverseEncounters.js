@@ -1,12 +1,13 @@
 import { MULTIVERSE_CROSSOVER_PREY, PREY_SCALE_TIERS } from './PreyTaxonomyAndCrossoverCatalog.js';
+import { normalizePreyReference } from './PreyReferenceMetadata.js';
 import encountersA from './encounters/encountersA.js';
 import encountersB from './encounters/encountersB.js';
 import encountersC from './encounters/encountersC.js';
 import encountersD from './encounters/encountersD.js';
 
 /**
- * Rencontres propres à l'univers de chaque crossover, réparties sur les 5 gabarits
- * (GEANT / GRANDE / MOYEN / PETITE / MINUSCULE), comme pour les proies canon.
+ * Cinq paliers de rencontre par univers. Le palier d'équilibrage (encounterTier)
+ * est distinct du gabarit physique (scale), calculé selon les mètres déclarés.
  * Tuple : [id, scale, sizeMeters, name, description, weakpoints[], trophy, honor, arena]
  */
 const BASE_RAW = {
@@ -106,7 +107,7 @@ export const CROSSOVER_UNIVERSE_ENCOUNTERS = Object.freeze(
   Object.entries(RAW).flatMap(([parentId, rows]) => {
     const parent = MULTIVERSE_CROSSOVER_PREY.find((c) => c.id === parentId);
     if (!parent) return [];
-    return rows.map(([key, scale, sizeMeters, name, description, weakpoints, trophy, honorReward, arena]) => ({
+    return rows.map(([key, scale, sizeMeters, name, description, weakpoints, trophy, honorReward, arena]) => normalizePreyReference({
       id: `${parentId}__${key}`,
       parentId,
       isUniverseEncounter: true,
@@ -124,7 +125,7 @@ export const CROSSOVER_UNIVERSE_ENCOUNTERS = Object.freeze(
       honorReward,
       rotationPeriodHours: parent.rotationPeriodHours,
       arena,
-    }));
+    }, { kind: 'universe_encounter' }));
   }),
 );
 

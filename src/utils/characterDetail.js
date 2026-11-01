@@ -123,19 +123,19 @@ function xenoDetails(root, type, material) {
   const ribs = [];
   for (let index = 0; index < 7; index++) {
     const taper = 1 - Math.abs(index - 2) * 0.07;
-    const bulk = type === 'xeno_warrior' ? 1.35 : ghost ? 0.75 : 1;
+    const bulk = type === 'xeno_warrior' ? 1.35 : ghost || type === 'xeno_drone' ? 0.75 : 1;
     ribs.push({ position: [0, (ghost ? 1.58 : 1.48) - index * 0.095, 0.01], scale: [0.43 * taper * bulk, 0.3, 0.4 * taper * bulk], rotation: [Math.PI / 2, 0, 0] });
   }
   const ridge = detailMaterial(plant ? 0x4a633b : ghost ? 0x647b60 : 0x344446, plant ? 'foliage' : 'resin', { roughness: 0.42, metalness: 0.18 });
   addCharacterInstances(root, `near-detail:${type}:thoracic-ribs`, new THREE.TorusGeometry(1, 0.09, 6, 20, Math.PI), ridge, ribs);
   const digits = [];
   for (const side of [-1, 1]) for (let finger = 0; finger < 3; finger++) {
-    digits.push({ position: [side * (0.68 + finger * 0.045), 0.74 + finger * 0.028, 0.24], scale: [0.025, 0.2 - finger * 0.025, 0.04], rotation: [0.4, 0, side * -0.42] });
+    digits.push({ position: [side * (type === 'xeno_drone' ? 0.43 + finger * 0.025 : 0.68 + finger * 0.045), 0.74 + finger * 0.028, type === 'xeno_drone' ? 0.14 : 0.24], scale: [0.025, 0.2 - finger * 0.025, 0.04], rotation: [0.4, 0, side * -0.42] });
   }
   addCharacterInstances(root, `near-detail:${type}:tapered-digits`, new THREE.ConeGeometry(1, 1, 10, 2), material, digits);
   if (!ghost) {
     const curve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0.5, -0.18), new THREE.Vector3(0, 0.63, -0.5));
-    const tubes = [-1, 1].flatMap(side => [0, 1].map(row => ({ position: [side * (0.18 + row * 0.12), 1.24, -0.21 - row * 0.07], scale: [1, 0.7 + row * 0.16, 1], rotation: [0, side * -0.2, side * 0.1] })));
+    const tubes = [-1, 1].flatMap(side => [0, 1].map(row => ({ position: [side * (0.18 + row * (type === 'xeno_drone' ? 0.08 : 0.12)), 1.24, type === 'xeno_drone' ? -0.14 - row * 0.04 : -0.21 - row * 0.07], scale: [1, 0.7 + row * 0.16, 1], rotation: [0, side * -0.2, side * 0.1] })));
     addCharacterInstances(root, `near-detail:${type}:dorsal-conduits`, new THREE.TubeGeometry(curve, 12, 0.043, 8, false), material, tubes);
   }
 }

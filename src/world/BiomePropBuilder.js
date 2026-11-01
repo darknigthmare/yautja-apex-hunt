@@ -256,7 +256,7 @@ export class BiomePropBuilder {
 
     if (spec.type === 'field_camp') {
       addMesh(group, box('camp-deck', [15, 0.7, 10]), surface, { position: [0, 0.35, 0], name: `${spec.id}-deck` });
-      addMesh(group, box('camp-canopy', [13.8, 0.45, 8.8]), surface, { position: [0, 6.2, 0], rotation: [0.08, 0, -0.05], name: `${spec.id}-canopy` });
+      addMesh(group, box('camp-canopy', [13.8, 0.45, 8.8]), surface, { position: [0, 6.2, 0], name: `${spec.id}-canopy` });
       addInstancedMesh(group, cylinder('camp-post', 0.16, 0.24, 6, 7), materials.dark,
         [[-6, -3.8], [6, -3.8], [-6, 3.8], [6, 3.8]].map(([x, z]) => ({ position: [x, 3.1, z] })),
         { name: `${spec.id}-canopy-posts` });

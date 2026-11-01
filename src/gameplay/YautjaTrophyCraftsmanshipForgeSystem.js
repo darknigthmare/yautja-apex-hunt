@@ -1,3 +1,8 @@
+import { HUNT_DEFINITIONS } from '../data/GameConfig.js';
+import { normalizeCraftRecipeReference, PHYSICAL_NPC_TROPHY_SOURCE_IDS } from './CraftRecipeReferences.js';
+
+const PHYSICAL_TROPHY_SOURCES = new Set([...Object.keys(HUNT_DEFINITIONS), ...PHYSICAL_NPC_TROPHY_SOURCE_IDS]);
+
 /**
  * YautjaTrophyCraftsmanshipForgeSystem.js
  * Méga-Extension de Forge & Artisanat de Trophées (Pseudo-Craftsmanship Yautja).
@@ -532,10 +537,8 @@ TROPHY_CRAFT_RECIPES.forEach((r) => {
 export class YautjaTrophyCraftsmanshipForgeSystem {
   constructor(storageKey = 'yautja_apex_trophy_craftsmanship_state') {
     this.storageKey = storageKey;
-    this.state = {
-      craftedItemIds: [],
-      equippedItemIds: [], // Peut équiper 1 item par catégorie
-    };
+    this.persistenceHandler = null;
+    this.state = normalizeForgeState();
     this.load();
   }
 
@@ -545,29 +548,56 @@ export class YautjaTrophyCraftsmanshipForgeSystem {
         const raw = localStorage.getItem(this.storageKey);
         if (raw) {
           const parsed = JSON.parse(raw);
-          this.state.craftedItemIds = Array.isArray(parsed.craftedItemIds) ? parsed.craftedItemIds : [];
-          this.state.equippedItemIds = Array.isArray(parsed.equippedItemIds) ? parsed.equippedItemIds : [];
+          this.state = normalizeForgeState(parsed);
         }
+        return true;
       }
     } catch {
       // Ignorer erreur de lecture en environnement restreint
     }
+    return false;
   }
 
   save() {
+    this.state = normalizeForgeState(this.state);
     try {
+      if (this.persistenceHandler) return this.persistenceHandler(this.exportState()) === true;
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem(this.storageKey, JSON.stringify(this.state));
+        return true;
       }
     } catch {
       // Ignorer erreur d'écriture en environnement restreint
     }
+    return false;
+  }
+
+  /** The integrated game saves currency and crafting in one progression payload. */
+  setPersistenceHandler(handler) {
+    this.persistenceHandler = typeof handler === 'function' ? handler : null;
+    return this;
+  }
+
+  exportState() {
+    this.state = normalizeForgeState(this.state);
+    return { ...this.state, craftedItemIds: [...this.state.craftedItemIds],
+      equippedItemIds: [...this.state.equippedItemIds],
+      trophyInventory: { ...this.state.trophyInventory }, holoCollection: { ...this.state.holoCollection } };
+  }
+
+  importState(snapshot) {
+    // Missing in an old v4 save: retain the migrated standalone forge key.
+    // Explicit empty/null state in a current save is authoritative, however.
+    if (snapshot === undefined) return false;
+    this.state = normalizeForgeState(snapshot);
+    return true;
   }
 
   getRecipes(categoryFilter = 'all') {
     if (!categoryFilter || categoryFilter === 'all') {
       return TROPHY_CRAFT_RECIPES;
     }
+    if (typeof categoryFilter !== 'string') return [];
     return TROPHY_CRAFT_RECIPES.filter((r) => r.category.toLowerCase() === categoryFilter.toLowerCase());
   }
 
@@ -584,19 +614,42 @@ export class YautjaTrophyCraftsmanshipForgeSystem {
   }
 
   canCraft(recipeId, playerHonorScore = 0) {
+    this.state = normalizeForgeState(this.state);
     const recipe = this.getRecipeById(recipeId);
     if (!recipe) return { canCraft: false, reason: 'unknown_recipe' };
-    if (this.isCrafted(recipeId)) return { canCraft: false, reason: 'already_crafted' };
-    if (playerHonorScore < recipe.requiredHonor) {
-      return { canCraft: false, reason: 'insufficient_honor', missingHonor: recipe.requiredHonor - playerHonorScore };
+    const reference = normalizeCraftRecipeReference(recipe);
+    const context = { recipe, reference, materialAvailability: reference.materialAvailability };
+    if (this.isCrafted(recipeId)) return { ...context, canCraft: false, reason: 'already_crafted' };
+    if (reference.materialAvailability !== 'physical_hunt') {
+      return { ...context, canCraft: false, reason: 'unavailable_material_source' };
     }
-    return { canCraft: true, recipe };
+    if (!Number.isFinite(playerHonorScore) || playerHonorScore < 0) {
+      return { ...context, canCraft: false, reason: 'invalid_honor' };
+    }
+    const required = reference.requiredTrophyCount ?? 1;
+    const owned = reference.trophySourceIds.reduce((sum, id) => sum + (this.state.trophyInventory[id] ?? 0), 0);
+    const missingTrophies = owned < required
+      ? [{ id: recipe.id, label: reference.canonicalMaterialLabel ?? recipe.requiredTrophies.join(' + '), required, owned }]
+      : [];
+    if (playerHonorScore < recipe.requiredHonor) {
+      return { ...context, canCraft: false, reason: 'insufficient_honor', missingHonor: recipe.requiredHonor - playerHonorScore, missingTrophies };
+    }
+    if (missingTrophies.length) return { ...context, canCraft: false, reason: 'missing_trophies', missingTrophies };
+    return { ...context, canCraft: true, missingHonor: 0, missingTrophies: [] };
   }
 
-  craftItem(recipeId, playerHonorScore = 0) {
+  craftItem(recipeId, playerHonorScore = 0, { persist = true } = {}) {
     const check = this.canCraft(recipeId, playerHonorScore);
-    if (!check.canCraft) return check;
+    if (!check.canCraft) return { ...check, success: false };
 
+    let remaining = check.reference.requiredTrophyCount ?? 1;
+    for (const sourceId of check.reference.trophySourceIds) {
+      const available = this.state.trophyInventory[sourceId] ?? 0;
+      const consumed = Math.min(available, remaining);
+      if (consumed) this.state.trophyInventory[sourceId] = available - consumed;
+      remaining -= consumed;
+      if (!remaining) break;
+    }
     this.state.craftedItemIds.push(recipeId);
     // Équipe automatiquement le premier item forgé dans sa catégorie
     const recipe = check.recipe;
@@ -608,12 +661,42 @@ export class YautjaTrophyCraftsmanshipForgeSystem {
       this.state.equippedItemIds.push(recipeId);
     }
 
-    this.save();
+    const persisted = persist ? this.save() : false;
     return {
       success: true,
       recipe,
       equipped: this.isEquipped(recipeId),
+      spentHonor: recipe.requiredHonor,
+      remainingHonor: playerHonorScore - recipe.requiredHonor,
+      persisted,
     };
+  }
+
+  /** Deduct spendable honor without lowering the lifetime rank progression. */
+  craftForPlayer(recipeId, player) {
+    if (!player || typeof player !== 'object') return { success: false, reason: 'invalid_player' };
+    const result = this.craftItem(recipeId, player.honorScore, { persist: false });
+    if (result.success) {
+      player.honorScore = result.remainingHonor;
+      // Honor, ownership and consumed material now exist together before the
+      // persistence callback serializes the single progression snapshot.
+      result.persisted = this.save();
+    }
+    return result;
+  }
+
+  /** Holographic victories are recorded separately and cannot supply real bone. */
+  recordTrophy(sourceId, { simulation = false, quantity = 1 } = {}) {
+    if (typeof sourceId !== 'string' || !/^[a-zA-Z0-9][a-zA-Z0-9_.:-]{0,100}$/.test(sourceId)
+      || (!simulation && !PHYSICAL_TROPHY_SOURCES.has(sourceId))) {
+      return { success: false, reason: 'unknown_trophy_source' };
+    }
+    if (!Number.isSafeInteger(quantity) || quantity < 1 || quantity > 999) return { success: false, reason: 'invalid_quantity' };
+    const collection = simulation ? this.state.holoCollection : this.state.trophyInventory;
+    const previous = Object.prototype.hasOwnProperty.call(collection, sourceId) ? collection[sourceId] : 0;
+    collection[sourceId] = Math.min(999, previous + quantity);
+    const persisted = this.save();
+    return { success: true, sourceId, simulation, quantity, owned: collection[sourceId], persisted };
   }
 
   equipItem(recipeId) {
@@ -639,7 +722,8 @@ export class YautjaTrophyCraftsmanshipForgeSystem {
   }
 
   getActiveCraftedPerks() {
-    const equipped = this.state.equippedItemIds.map((id) => this.getRecipeById(id)).filter(Boolean);
+    this.state = normalizeForgeState(this.state);
+    const equipped = this.state.equippedItemIds.map((id) => this.getRecipeById(id));
     const perks = {
       acidImmunityRatio: 0,
       partBreakBonusMultiplier: 1.0,
@@ -649,6 +733,19 @@ export class YautjaTrophyCraftsmanshipForgeSystem {
       honorScoreBonusMultiplier: 1.0,
       bonusHealth: 0,
       cloakDurationBonusMultiplier: 1.0,
+      meleeDamageBonus: 0,
+      rangedDamageBonus: 0,
+      damageReductionRatio: 0,
+      fireResistanceRatio: 0,
+      energyResistanceRatio: 0,
+      ballisticResistanceRatio: 0,
+      sprintSpeedMultiplier: 1,
+      energyRegenMultiplier: 1,
+      staminaRegenMultiplier: 1,
+      sprintCostReductionRatio: 0,
+      plasmaCooldownMultiplier: 1,
+      queenHonorBonusMultiplier: 1,
+      giantGoldCrownChanceBonus: 0,
       equippedList: equipped,
     };
 
@@ -669,7 +766,9 @@ export class YautjaTrophyCraftsmanshipForgeSystem {
         perks.crossoverDamageBonusMultiplier += item.stats.anomalyDamageBonus / 100;
       }
       if (item.stats.honorGainBonus || item.stats.honorAura) {
-        perks.honorScoreBonusMultiplier += ((item.stats.honorGainBonus || 0) + (item.stats.honorAura || 0)) / 100;
+        // The matriarch throne describes a queen-family reward, not a bonus on every prey.
+        const universal = item.stats.queenDominationBonus ? 0 : (item.stats.honorGainBonus || 0);
+        perks.honorScoreBonusMultiplier += (universal + (item.stats.honorAura || 0)) / 100;
       }
       if (item.stats.healthBonus) {
         perks.bonusHealth += item.stats.healthBonus;
@@ -677,8 +776,54 @@ export class YautjaTrophyCraftsmanshipForgeSystem {
       if (item.stats.cloakDuration) {
         perks.cloakDurationBonusMultiplier += item.stats.cloakDuration / 100;
       }
+      perks.meleeDamageBonus += item.stats.damage ?? item.stats.meleeDamage ?? 0;
+      perks.rangedDamageBonus += item.stats.rangedDamage ?? 0;
+      perks.damageReductionRatio = Math.max(perks.damageReductionRatio, (item.stats.defense ?? 0) / 100);
+      perks.fireResistanceRatio = Math.max(perks.fireResistanceRatio, item.stats.fireImmunity ?? (item.stats.fireResistance ?? 0) / 100);
+      perks.energyResistanceRatio = Math.max(perks.energyResistanceRatio, (item.stats.energyResist ?? item.stats.plasmaResistance ?? 0) / 100);
+      perks.ballisticResistanceRatio = Math.max(perks.ballisticResistanceRatio, (item.stats.ballisticDamping ?? 0) / 100);
+      perks.sprintSpeedMultiplier += (item.stats.sprintSpeed ?? 0) / 100;
+      perks.energyRegenMultiplier += (item.stats.energyRechargeRate ?? 0) / 100;
+      perks.staminaRegenMultiplier += (item.stats.staminaRegen ?? 0) / 100;
+      perks.sprintCostReductionRatio += (item.stats.sprintCostReduction ?? 0) / 100;
+      perks.plasmaCooldownMultiplier /= 1 + (item.stats.plasmaRecharge ?? 0) / 100;
+      perks.queenHonorBonusMultiplier += (item.stats.queenDominationBonus ?? 0) / 100;
+      perks.giantGoldCrownChanceBonus += (item.stats.goldCrownGiantChance ?? 0) / 100;
     }
-
+    for (const key of ['acidImmunityRatio', 'fireResistanceRatio', 'energyResistanceRatio', 'ballisticResistanceRatio', 'goldCrownChanceBonus', 'giantGoldCrownChanceBonus']) {
+      perks[key] = Math.min(1, Math.max(0, perks[key]));
+    }
+    perks.damageReductionRatio = Math.min(0.85, Math.max(0, perks.damageReductionRatio));
+    perks.sprintCostReductionRatio = Math.min(0.8, Math.max(0, perks.sprintCostReductionRatio));
     return perks;
   }
+}
+
+export function normalizeForgeState(input = {}) {
+  const candidate = input && typeof input === 'object' && !Array.isArray(input) ? input : {};
+  const recipes = new Map(TROPHY_CRAFT_RECIPES.map(recipe => [recipe.id, recipe]));
+  const craftedItemIds = [...new Set(Array.isArray(candidate.craftedItemIds) ? candidate.craftedItemIds : [])]
+    .filter(id => recipes.has(id));
+  const crafted = new Set(craftedItemIds);
+  const categories = new Set();
+  const equippedItemIds = (Array.isArray(candidate.equippedItemIds) ? candidate.equippedItemIds : []).filter(id => {
+    const recipe = recipes.get(id);
+    if (!crafted.has(id) || categories.has(recipe.category)) return false;
+    categories.add(recipe.category);
+    return true;
+  });
+  const normalizeCounts = (counts, physical) => {
+    const result = {};
+    if (!counts || typeof counts !== 'object' || Array.isArray(counts)) return result;
+    for (const [sourceId, quantity] of Object.entries(counts)) {
+      if (!/^[a-zA-Z0-9][a-zA-Z0-9_.:-]{0,100}$/.test(sourceId)
+        || (physical && !PHYSICAL_TROPHY_SOURCES.has(sourceId))
+        || !Number.isSafeInteger(quantity) || quantity < 1) continue;
+      result[sourceId] = Math.min(999, quantity);
+    }
+    return result;
+  };
+  return { version: 1, craftedItemIds, equippedItemIds,
+    trophyInventory: normalizeCounts(candidate.trophyInventory, true),
+    holoCollection: normalizeCounts(candidate.holoCollection, false) };
 }

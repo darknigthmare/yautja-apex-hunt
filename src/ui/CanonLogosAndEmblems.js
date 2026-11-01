@@ -1,7 +1,8 @@
+import { getAdditionalCraftIconSvg } from './EquipmentIcons.js';
+
 /**
- * CanonLogosAndEmblems.js - Moteur de rendu SVG 1:1 des Logos et Emblèmes Officiels.
- * Reproduit avec une fidélité vectorielle millimétrique les insignes canoniques
- * des factions Yautja, Weyland-Yutani, USCM, Ingénieurs et Crossovers du Multivers.
+ * Signaux SVG des factions, contrats et équipements du catalogue.
+ * Ces dessins d'interface ne constituent pas des tracés d'assets officiels.
  */
 
 export const CANON_FACTION_COLORS = Object.freeze({
@@ -226,7 +227,9 @@ export function getXenomorphHiveLogo(size = 64) {
  * Insignes 1:1 Vectoriels des Proies Crossover du Multivers Officiel (DC Comics, Dark Horse, 2000 AD).
  */
 export function getCrossoverLogo(crossoverId, size = 64) {
-  const normalizedId = String(crossoverId || '').replace(/^crossover_/, '');
+  // A documented universe encounter keeps its parent's emblem, rather than
+  // silently displaying the Yautja fallback for every `parent__encounter` ID.
+  const normalizedId = String(crossoverId || '').split('__')[0].replace(/^crossover_/, '');
   switch (normalizedId) {
     case 'batman':
       // The Dark Knight Wayne Enterprises Bat-Insignia (Batman versus Predator)
@@ -1078,7 +1081,8 @@ export function getStargazerLogo(size = 64) {
 }
 
 /**
- * Génère un emblème vectoriel canonique 1:1 adapté pour chacune des 12 chasses.
+ * Signalétique des chasses déclarées ; les créations de jeu restent distinctes
+ * de leurs sources d'inspiration.
  */
 export function getHuntCardLogo(huntId, size = 64) {
   switch (huntId) {
@@ -1153,13 +1157,22 @@ export function getHuntCardLogo(huntId, size = 64) {
       `.trim();
 
     case 'upgrade_predator':
-      return getStargazerLogo(size);
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-hunt-upgrade" role="img" aria-label="Prédateur génétiquement amélioré"><path d="M16 26 27 10h26l11 16-6 31-18 16-18-16z" fill="#201f18" stroke="#c2bc8d" stroke-width="2"/><path d="m24 34 11 3m10 0 11-3M30 47l-9 13 13-5m16-8 9 13-13-5M31 25l9-6 9 6M40 38v13" fill="none" stroke="#c2bc8d" stroke-width="2"/></svg>`;
 
     case 'city_hunter':
-      return getOWLFLogo(size);
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-hunt-city" role="img" aria-label="Bio-masque du City Hunter"><path d="M17 20 40 8l23 12-5 38-18 15-18-15z" fill="#261d12" stroke="#d4a464" stroke-width="2"/><path d="m25 32 10 4m10 0 10-4M34 43h12l-2 19h-8zM25 48v9m30-9v9" fill="none" stroke="#d4a464" stroke-width="2"/><g fill="#ff4932"><circle cx="57" cy="20" r="2"/><circle cx="64" cy="19" r="2"/><circle cx="61" cy="25" r="2"/></g></svg>`;
 
     case 'grid_alien':
-      return getEngineerLogo(size);
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-hunt-grid" role="img" aria-label="Dôme xénomorphe de Grid aux cicatrices quadrillées"><path d="M13 30C17 7 64 7 68 30c3 17-13 25-21 31l-7 12-9-13C19 54 10 46 13 30z" fill="#101b19" stroke="#8dbda4" stroke-width="2"/><path d="m21 21 29 29M18 33l24 24M29 17l30 29M52 18 23 47m38-19L32 57M29 60h19M36 64v5m7-5v5" fill="none" stroke="#b4cba0" stroke-width="1.7"/></svg>`;
+
+    case 'vydrach_prime':
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-hunt-vydrach" role="img" aria-label="Épreuve originale du Vy’drach"><path d="m40 16 7 12 26-14-8 27-17 9-8 22-8-22-17-9-8-27 26 14z" fill="#25171b" stroke="#d7a286" stroke-width="2"/><path d="m40 24 1 27M12 20l21 17m35-17L47 37M20 37l12 7m28-7-12 7" fill="none" stroke="#d7a286" stroke-width="2"/></svg>`;
+
+    case 'rhynth_titan':
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-hunt-rhynth" role="img" aria-label="Épreuve originale du Rhynth"><path d="m40 22 25 11-6 26-19 13-19-13-6-26z" fill="#241e16" stroke="#ceb38a" stroke-width="2"/><path d="M32 29 40 5l8 24M24 42l10 4m12 0 10-4M25 58l15 7 15-7M21 29 11 17l3 23m45-11 10-12-3 23" fill="none" stroke="#ceb38a" stroke-width="2"/></svg>`;
+
+    case 'xeno_king':
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-hunt-xeno-king" role="img" aria-label="Épreuve originale du Roi xénomorphe"><path d="m40 5 8 20L67 9l-6 27 12 12-22 8-11 19-11-19-22-8 12-12L13 9l19 16z" fill="#102018" stroke="#a8d381" stroke-width="2"/><path d="M31 38h18l-3 23H34zM33 45h14m-14 6h14m-14 6h14" fill="none" stroke="#a8d381" stroke-width="2"/></svg>`;
 
     case 'jungle_hunter_1987':
     default:
@@ -1232,6 +1245,8 @@ export function renderFactionEmblem(factionName, size = 48) {
  * Générateur SVG Vectoriel 1:1 pour les Équipements Forgés à partir de Trophées.
  */
 export function getCraftsmanshipItemSvg(recipeId, size = 56) {
+  const additional = getAdditionalCraftIconSvg(recipeId, size);
+  if (additional) return additional;
   switch (recipeId) {
     case 'craft_shield_xeno_warrior':
       return `

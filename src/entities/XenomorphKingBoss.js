@@ -3,7 +3,8 @@ import { ShaderManager } from '../Shaders.js';
 import { audioSynth } from '../AudioSynthesizer.js';
 import { captureBaseMaterials, overrideMaterials, restoreBaseMaterials } from '../utils/materialState.js';
 import { getRuntimeTexture } from '../utils/runtimeTextures.js';
-import { forwardRayIntersectsSphere, resolveSegmentSphereImpact } from '../utils/projectileCollision.js';
+import { containsBossPartImpact, resolveBossGeometryImpact } from './BossProjectileGeometry.js';
+import { getVisualBounds, getVisualCenter } from '../utils/worldScale.js';
 
 export const XENOMORPH_KING_TEXTURES = Object.freeze({
   chitinExoskeleton: '/assets/textures/hive-biomechanical-membrane.webp',
@@ -11,8 +12,14 @@ export const XENOMORPH_KING_TEXTURES = Object.freeze({
   acidicVeins: '/assets/textures/goliath-armored-hide.webp',
 });
 
+// Original combat timings/ranges in game units; not a certified media mechanic.
+export const XENOMORPH_KING_ATTACK_SPECS = Object.freeze({
+  cleave_swipe: Object.freeze({ id: 'king_cleave_swipe', state: 'cleave_swipe', windup: 0.65, impact: 0.18, recovery: 0.6, cooldown: 2.2, range: 12 }),
+  leap_slam: Object.freeze({ id: 'king_leap_slam', state: 'leap_slam', windup: 0.95, impact: 1, recovery: 0.7, cooldown: 3.5, range: 13, speedKey: 'leapSpeed' }),
+});
+
 /**
- * Le Roi Xénomorphe / Rogue Titan (Fidélité 1:1 Canon Lore Dark Horse: Aliens Rogue 1993).
+ * Adaptation procédurale du Roi Xénomorphe, selon Aliens: Rogue (1993) référencé au catalogue.
  * Titan bio-mécanique colosse mâle dominant créé par hybridation génétique,
  * dominant les reines par sa force brute colossale, sa crête en trident et son dard caudal double.
  */
@@ -53,6 +60,21 @@ export class XenomorphKingBoss {
     // AI & Combat States
     this.aiState = 'stalk';
     this.attackCooldown = 0;
+    this.attackSpecs = XENOMORPH_KING_ATTACK_SPECS;
+    this.activeAttackType = null;
+    this.activeAttackKind = null;
+    this.attackStage = 'idle';
+    this.attackStageTimer = 0;
+    this.attackWindupTimer = 0;
+    this.attackWindupDuration = 0;
+    this.attackRecoveryTimer = 0;
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
+    this.attackSequence = 0;
+    this.attackTravelRemaining = 0;
+    this.attackDirection = new THREE.Vector3(0, 0, 1);
+    this.attackTarget = new THREE.Vector3();
     this.roarCooldown = 0;
     this.projectiles = [];
     this.position = new THREE.Vector3(0, 0, -50);
@@ -86,7 +108,7 @@ export class XenomorphKingBoss {
       map: boneTex,
     });
 
-    // 1. Colossal Biomechanical Torso (8.5m standing posture)
+    // 1. Biomechanical torso, authored in game units (not metres)
     const torso = new THREE.Mesh(new THREE.CylinderGeometry(1.8, 2.4, 5.8, 16), chitinMat);
     torso.position.set(0, 5.2, 0);
     torso.castShadow = true;
@@ -170,9 +192,11 @@ export class XenomorphKingBoss {
       leg.add(shin);
 
       this.mesh.add(leg);
+      // The former tibia extended more than one unit below the terrain.
+      leg.position.y -= getVisualBounds(leg).min.y;
     });
 
-    // 6. Colossal Dual-Bladed Tail (12m reach)
+    // 6. Dual-bladed tail, authored in game units
     this.tailGroup = new THREE.Group();
     this.tailGroup.name = 'kingDualBladedTail';
     this.tailGroup.position.set(0, 3.8, -2.2);
@@ -189,7 +213,7 @@ export class XenomorphKingBoss {
     this.tailBlade.name = 'kingTailBarbedBlades';
     [-1, 1].forEach((side) => {
       const blade = new THREE.Mesh(new THREE.ConeGeometry(0.35, 2.4, 6), boneMat);
-      blade.position.set(side * 0.65, -3.8, -9.2);
+      blade.position.set(side * 0.65, -3.35, -9.2);
       blade.rotation.x = -Math.PI / 2;
       blade.rotation.y = side * 0.2;
       this.tailBlade.add(blade);
@@ -208,7 +232,7 @@ export class XenomorphKingBoss {
 
   getCrownWorldPosition() {
     if (this.crownMesh) {
-      return this.crownMesh.getWorldPosition(new THREE.Vector3());
+      return getVisualCenter(this.crownMesh);
     }
     return this.mesh.localToWorld(new THREE.Vector3(0, 9.5, -1.0));
   }
@@ -222,7 +246,7 @@ export class XenomorphKingBoss {
 
   getTailWorldPosition() {
     if (this.tailBlade) {
-      return this.tailBlade.getWorldPosition(new THREE.Vector3());
+      return getVisualCenter(this.tailBlade);
     }
     return this.mesh.localToWorld(new THREE.Vector3(0, 0.5, -11.0));
   }
@@ -241,46 +265,10 @@ export class XenomorphKingBoss {
   }
 
   resolveProjectileImpact(projectilePosition, projectileRadius = 1, previousPosition = projectilePosition) {
-    if (!projectilePosition?.isVector3 || this.isDead) return null;
-    const safeRadius = Math.max(0, Number(projectileRadius) || 0);
-    const start = previousPosition?.isVector3 ? previousPosition : projectilePosition;
-
-    // 1. Weakpoint: Royal Acid Heart
-    if (this.coreExposed) {
-      const corePos = this.getCoreWorldPosition();
-      if (
-        resolveSegmentSphereImpact(start, projectilePosition, corePos, 3.4 + safeRadius)
-        || forwardRayIntersectsSphere(start, projectilePosition, corePos, 3.4 + safeRadius)
-      ) {
-        return corePos;
-      }
-    }
-
-    // 2. Trident Crown / Head
-    const crownPos = this.getCrownWorldPosition();
-    if (
-      resolveSegmentSphereImpact(start, projectilePosition, crownPos, 4.0 + safeRadius)
-      || forwardRayIntersectsSphere(start, projectilePosition, crownPos, 4.0 + safeRadius)
-    ) {
-      return crownPos;
-    }
-
-    // 3. Dual-Bladed Tail
-    if (this.tailIntact) {
-      const tailPos = this.getTailWorldPosition();
-      if (
-        resolveSegmentSphereImpact(start, projectilePosition, tailPos, 4.5 + safeRadius)
-        || forwardRayIntersectsSphere(start, projectilePosition, tailPos, 4.5 + safeRadius)
-      ) {
-        return tailPos;
-      }
-    }
-
-    // 4. Main Biomechanical Torso
-    const bodyPos = this.mesh.localToWorld(new THREE.Vector3(0, 5.2, 0));
-    return resolveSegmentSphereImpact(start, projectilePosition, bodyPos, this.colliderRadius + safeRadius);
+    if (this.isDead) return null;
+    return resolveBossGeometryImpact(this.mesh, previousPosition, projectilePosition, projectileRadius,
+      [this.coreExposed ? this.coreMesh : null, this.crownIntact ? this.crownMesh : null, this.tailIntact ? this.tailBlade : null]);
   }
-
   spawnSeveredTail() {
     if (this.severedTailMesh) return this.severedTailMesh;
     const tailProp = new THREE.Group();
@@ -303,7 +291,7 @@ export class XenomorphKingBoss {
     });
 
     tailProp.position.copy(this.getTailWorldPosition());
-    tailProp.position.y = 0.5;
+    tailProp.position.y = this.position.y - getVisualBounds(tailProp, { local: true }).min.y;
     tailProp.userData.isCarveable = true;
     tailProp.userData.carved = false;
     tailProp.userData.trophyType = 'KING_SEVERED_DUAL_BLADES';
@@ -314,6 +302,7 @@ export class XenomorphKingBoss {
 
   triggerTopple(durationSeconds = 8.0) {
     if (this.isDead || this.isToppled) return;
+    this.cancelAttack('toppled');
     this.isToppled = true;
     this.toppleTimer = durationSeconds;
     this.aiState = 'toppled';
@@ -331,19 +320,18 @@ export class XenomorphKingBoss {
   takeDamage(amount, hitPosition) {
     if (this.isDead) return { damage: 0, killed: false, remainingHealth: this.health };
 
-    let finalDamage = Math.max(0, Number(amount) || 0);
+    const baseDamage = Math.max(0, Number(amount) || 0);
+    let finalDamage = baseDamage;
     const impact = hitPosition?.isVector3 ? hitPosition : this.position;
 
     // 1. Acid Heart Weakpoint hit (x2.8 critical damage)
-    const distToCore = impact.distanceTo(this.getCoreWorldPosition());
-    if (distToCore < 3.8 && this.coreExposed) {
+    if (this.coreExposed && containsBossPartImpact(this.coreMesh, impact)) {
       finalDamage *= 2.8;
     }
 
     // 2. Trident Crown Break Check
-    const distToCrown = impact.distanceTo(this.getCrownWorldPosition());
-    if (distToCrown < 4.2 && this.crownIntact) {
-      this.crownHealth -= amount;
+    if (this.crownIntact && containsBossPartImpact(this.crownMesh, impact)) {
+      this.crownHealth -= baseDamage;
       if (this.crownHealth <= 0) {
         this.crownIntact = false;
         if (this.crownMesh) this.crownMesh.visible = false;
@@ -354,7 +342,7 @@ export class XenomorphKingBoss {
 
     // 3. Ribcage Armor Plating Check
     if (this.ribcageIntact) {
-      this.ribcageHealth -= amount;
+      this.ribcageHealth -= baseDamage;
       if (this.ribcageHealth <= 0) {
         this.ribcageIntact = false;
         this.coreExposed = true;
@@ -367,9 +355,8 @@ export class XenomorphKingBoss {
     }
 
     // 4. Dual Tail Sever Check
-    const distToTail = impact.distanceTo(this.getTailWorldPosition());
-    if (distToTail < 4.8 && this.tailIntact) {
-      this.tailHealth -= amount;
+    if (this.tailIntact && containsBossPartImpact(this.tailBlade, impact)) {
+      this.tailHealth -= baseDamage;
       if (this.tailHealth <= 0) {
         this.tailIntact = false;
         if (this.tailGroup) this.tailGroup.visible = false;
@@ -389,7 +376,7 @@ export class XenomorphKingBoss {
 
     if (this.health <= 0) {
       this.isDead = true;
-      this.aiState = 'dead';
+      this.cancelAttack('dead');
       audioSynth.playMonsterHunterRoar();
     }
 
@@ -401,84 +388,164 @@ export class XenomorphKingBoss {
   }
 
   applyNet() {
+    this.cancelAttack('netted');
     this.isNetted = true;
     this.netTimer = 3.2;
   }
 
-  update(delta, playerPos, isPlayerCloaked) {
-    if (this.isDead) return;
+  startTelegraphedAttack(kind, targetPosition) {
+    const spec = this.attackSpecs[kind];
+    if (!spec || this.activeAttackType || this.attackCooldown > 0 || this.isDead || this.isNetted || this.isToppled
+      || !targetPosition?.isVector3 || ![targetPosition.x, targetPosition.y, targetPosition.z].every(Number.isFinite)) return false;
+    if (kind === 'aerial_dive' && (!this.leftWingIntact || !this.rightWingIntact)) return false;
+    if (kind === 'tail_whip' && !this.tailIntact) return false;
+    this.activeAttackType = spec.id;
+    this.activeAttackKind = kind;
+    this.attackStage = 'windup';
+    this.attackWindupDuration = spec.windup * (this.isExhausted ? 1.15 : 1);
+    this.attackWindupTimer = this.attackWindupDuration;
+    this.attackStageTimer = this.attackWindupDuration;
+    this.attackCooldown = spec.cooldown * (this.isExhausted ? 1.35 : 1);
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
+    this.attackSequence += 1;
+    this.attackTarget.copy(targetPosition);
+    this.attackDirection.copy(targetPosition).sub(this.position);
+    this.attackDirection.y = 0;
+    this.attackTravelRemaining = Math.max(0, this.attackDirection.length() - this.colliderRadius - 1.8);
+    if (this.attackDirection.lengthSq() < 1e-8) this.attackDirection.set(0, 0, 1);
+    else this.attackDirection.normalize();
+    this.aiState = spec.state;
+    return true;
+  }
 
-    if (this.isToppled) {
-      this.toppleTimer -= delta;
-      if (this.toppleTimer <= 0) {
-        this.isToppled = false;
-        this.aiState = 'chase';
+  consumeAttackImpact() {
+    if (!this.attackImpactReady || this.attackImpactConsumed || this.attackStage !== 'impact') return false;
+    this.attackImpactConsumed = true;
+    this.attackImpactReady = false;
+    return true;
+  }
+
+  cancelAttack(nextState = this.isDead ? 'dead' : 'chase') {
+    this.activeAttackType = null;
+    this.activeAttackKind = null;
+    this.attackStage = 'idle';
+    this.attackStageTimer = 0;
+    this.attackWindupTimer = 0;
+    this.attackWindupDuration = 0;
+    this.attackRecoveryTimer = 0;
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
+    this.attackTravelRemaining = 0;
+    this.aiState = nextState;
+  }
+
+  updateTelegraphedAttack(delta) {
+    if (!this.activeAttackType) return false;
+    const spec = this.attackSpecs[this.activeAttackKind];
+    if ((this.activeAttackKind === 'aerial_dive' && (!this.leftWingIntact || !this.rightWingIntact))
+      || (this.activeAttackKind === 'tail_whip' && !this.tailIntact)) {
+      this.cancelAttack();
+      return false;
+    }
+    if (this.attackStage === 'windup') {
+      this.aiState = spec.state;
+      const angle = Math.atan2(this.attackDirection.x, this.attackDirection.z);
+      const difference = Math.atan2(Math.sin(angle - this.mesh.rotation.y), Math.cos(angle - this.mesh.rotation.y));
+      this.mesh.rotation.y += difference * Math.min(1, delta * 5);
+      this.attackStageTimer = Math.max(0, this.attackStageTimer - delta);
+      this.attackWindupTimer = this.attackStageTimer;
+      if (this.attackStageTimer === 0) {
+        this.attackStage = 'impact';
+        this.attackStageTimer = spec.impact;
+        this.attackImpactReady = true;
       }
+    } else if (this.attackStage === 'impact') {
+      this.aiState = spec.state;
+      if (spec.speedKey) {
+        const speed = this[spec.speedKey] * (this.isExhausted ? 0.75 : 1)
+          * (this.activeAttackKind === 'charge' && !this.hornIntact ? 0.7 : 1);
+        const travel = Math.min(this.attackTravelRemaining, speed * Math.min(delta, this.attackStageTimer));
+        this.position.addScaledVector(this.attackDirection, travel);
+        this.attackTravelRemaining -= travel;
+      }
+      this.attackStageTimer = Math.max(0, this.attackStageTimer - delta);
+      if (this.attackStageTimer === 0) {
+        this.attackStage = 'recovery';
+        this.attackStageTimer = spec.recovery;
+        this.attackRecoveryTimer = spec.recovery;
+        this.attackImpactReady = false;
+        this.aiState = 'recover';
+      }
+    } else if (this.attackStage === 'recovery') {
+      this.attackStageTimer = Math.max(0, this.attackStageTimer - delta);
+      this.attackRecoveryTimer = this.attackStageTimer;
+      this.aiState = 'recover';
+      if (this.attackStageTimer === 0) this.cancelAttack();
+    }
+    const boundary = Math.max(40, Number(this.arenaBoundary) || 320);
+    this.position.x = THREE.MathUtils.clamp(this.position.x, -boundary, boundary);
+    this.position.z = THREE.MathUtils.clamp(this.position.z, -boundary, boundary);
+    this.mesh.position.copy(this.position);
+    return true;
+  }
+
+  update(delta, playerPos, isPlayerCloaked) {
+    delta = Number.isFinite(delta) ? Math.max(0, delta) : 0;
+    if (this.isDead) { this.cancelAttack('dead'); return; }
+    if (this.isToppled) {
+      this.cancelAttack('toppled');
+      this.toppleTimer = Math.max(0, this.toppleTimer - delta);
+      if (this.toppleTimer === 0) { this.isToppled = false; this.aiState = 'chase'; }
       return;
     }
-
     if (this.isNetted) {
-      this.netTimer -= delta;
-      if (this.netTimer <= 0) this.isNetted = false;
+      this.cancelAttack('netted');
+      this.netTimer = Math.max(0, this.netTimer - delta);
+      if (this.netTimer === 0) { this.isNetted = false; this.aiState = 'chase'; }
       return;
     }
-
     this.attackCooldown = Math.max(0, this.attackCooldown - delta);
     this.roarCooldown = Math.max(0, this.roarCooldown - delta);
-
-    // Monster Hunter Stamina Consumption
-    if (this.aiState === 'leap_slam') {
-      this.stamina = Math.max(0, this.stamina - delta * 40);
-    } else {
-      this.stamina = Math.max(0, this.stamina - delta * 15);
-    }
-
-    if (this.stamina <= 0 && !this.isExhausted) {
+    this.stamina = Math.max(0, this.stamina - delta * (this.activeAttackType === 'king_leap_slam' ? 40 : 15));
+    if (this.stamina === 0 && !this.isExhausted) {
       this.isExhausted = true;
       audioSynth.playMonsterFatiguePant();
-    } else if (this.stamina > 450 && this.isExhausted) {
-      this.isExhausted = false;
-    }
+    } else if (this.stamina > 450) this.isExhausted = false;
+    if (this.updateTelegraphedAttack(delta)) return;
 
-    const distToPlayer = playerPos ? this.position.distanceTo(playerPos) : 999;
-    const detectionRadius = isPlayerCloaked ? 35.0 : 180.0;
-
-    if (distToPlayer < detectionRadius && playerPos) {
+    const distToPlayer = playerPos?.isVector3
+      ? Math.hypot(playerPos.x - this.position.x, playerPos.z - this.position.z) : Infinity;
+    const detectionRadius = isPlayerCloaked ? 35 : 180;
+    const radiusAllowance = Math.max(0, this.colliderRadius - (this.baseSimulationColliderRadius ?? this.colliderRadius));
+    if (distToPlayer < detectionRadius) {
       this.aiState = 'chase';
-      const targetDir = playerPos.clone().sub(this.position).normalize();
+      const targetDir = playerPos.clone().sub(this.position);
+      targetDir.y = 0;
+      if (targetDir.lengthSq() > 1e-8) targetDir.normalize();
       const targetAngle = Math.atan2(targetDir.x, targetDir.z);
-
-      let diff = targetAngle - this.mesh.rotation.y;
-      diff = Math.atan2(Math.sin(diff), Math.cos(diff));
-      this.mesh.rotation.y += diff * Math.min(1.0, delta * 4.2);
-
-      if (this.attackCooldown <= 0) {
-        if (distToPlayer < 9.5) {
-          this.aiState = 'cleave_swipe';
-          audioSynth.playMonsterHunterRoar();
-          this.attackCooldown = this.isExhausted ? 4.0 : 2.2;
-        } else if (distToPlayer >= 16.0 && distToPlayer <= 50.0) {
-          this.aiState = 'leap_slam';
-          audioSynth.playMonsterHunterRoar();
-          this.attackCooldown = this.isExhausted ? 5.2 : 3.5;
+      const difference = Math.atan2(Math.sin(targetAngle - this.mesh.rotation.y), Math.cos(targetAngle - this.mesh.rotation.y));
+      this.mesh.rotation.y += difference * Math.min(1, delta * 4.2);
+      if (this.attackCooldown === 0) {
+        if (distToPlayer <= this.attackSpecs.cleave_swipe.range + radiusAllowance) {
+          if (this.startTelegraphedAttack('cleave_swipe', playerPos)) audioSynth.playMonsterHunterRoar();
+        } else if (distToPlayer >= 16 + radiusAllowance && distToPlayer <= 40 + radiusAllowance) {
+          if (this.startTelegraphedAttack('leap_slam', playerPos)) audioSynth.playMonsterHunterRoar();
         }
       }
-
-      let speed = this.isEnraged ? this.enragedSpeed : this.moveSpeed;
-      if (this.isExhausted) speed *= 0.6;
-      if (this.aiState === 'leap_slam') speed = this.leapSpeed;
-
-      if (distToPlayer > 7.5) {
-        this.position.addScaledVector(targetDir, speed * delta);
+      if (!this.activeAttackType) {
+        let speed = this.isEnraged ? this.enragedSpeed : this.moveSpeed;
+        if (this.isExhausted) speed *= 0.6;
+        const travel = Math.min(speed * delta, Math.max(0, distToPlayer - this.colliderRadius - 1.8));
+        this.position.addScaledVector(targetDir, travel);
       }
-    } else {
-      this.aiState = 'stalk';
-    }
+    } else this.aiState = 'stalk';
 
     const arenaBoundary = Math.max(40, Number(this.arenaBoundary) || 320);
-    this.position.x = Math.max(-arenaBoundary, Math.min(arenaBoundary, this.position.x));
-    this.position.z = Math.max(-arenaBoundary, Math.min(arenaBoundary, this.position.z));
-
+    this.position.x = THREE.MathUtils.clamp(this.position.x, -arenaBoundary, arenaBoundary);
+    this.position.z = THREE.MathUtils.clamp(this.position.z, -arenaBoundary, arenaBoundary);
     this.mesh.position.copy(this.position);
   }
 

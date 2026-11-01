@@ -79,6 +79,20 @@ import {
   CROSSOVER_UNIVERSE_ENCOUNTERS,
   getEncountersForCrossover,
 } from './data/CrossoverUniverseEncounters.js';
+import { applySimulationReferenceScale, resolveSimulationSelection } from './gameplay/SimulationHuntRuntime.js';
+import {
+  applyCraftedEquipmentToPlayer, getCraftedOutgoingDamage, getCraftedIncomingDamage,
+  getCraftedHonorAward, selectCraftedCrown,
+  SUPPORTED_CRAFT_STATS, installCraftedDamageHook,
+} from './gameplay/CraftedEquipmentRuntime.js';
+import { renderTrophyCraftingGrid } from './ui/TrophyCraftingView.js';
+import { TrophySalvage } from './gameplay/TrophySalvage.js';
+import { resolveActorObstacle, resolvePlayerCapsuleImpact } from './gameplay/ActorCollision.js';
+import { getVisualBounds } from './utils/worldScale.js';
+import { RHYNTH_ATTACK_SPECS } from './entities/RhynthBoss.js';
+import { VYDRACH_ATTACK_SPECS } from './entities/VydrachBoss.js';
+import { XENOMORPH_KING_ATTACK_SPECS } from './entities/XenomorphKingBoss.js';
+import { getPreyProvenanceLabel, getPreySourceLabel } from './data/PreyReferenceMetadata.js';
 
 const DEFAULT_CAMERA_FOV = 65;
 const SCOPE_CAMERA_FOV = THREE.MathUtils.radToDeg(
@@ -147,6 +161,13 @@ const HUNT_VEHICLE_HUD_LABELS = Object.freeze({
   }),
 });
 const ENEMY_ATTACK_PROFILES = Object.freeze({
+  rhynth_stomp: { damage: 44, range: RHYNTH_ATTACK_SPECS.stomp.range, cooldown: 0.6, telegraphed: true },
+  rhynth_charge: { damage: 62, range: RHYNTH_ATTACK_SPECS.charge.range, cooldown: 0.7, telegraphed: true },
+  vydrach_tail_whip: { damage: 42, range: VYDRACH_ATTACK_SPECS.tail_whip.range, cooldown: 0.6, telegraphed: true },
+  vydrach_aerial_dive: { damage: 56, range: VYDRACH_ATTACK_SPECS.aerial_dive.range, cooldown: 0.7, telegraphed: true },
+  vydrach_bite: { damage: 24, range: VYDRACH_ATTACK_SPECS.bite.range, cooldown: 0.55, telegraphed: true },
+  king_cleave_swipe: { damage: 50, range: XENOMORPH_KING_ATTACK_SPECS.cleave_swipe.range, cooldown: 0.6, telegraphed: true },
+  king_leap_slam: { damage: 68, range: XENOMORPH_KING_ATTACK_SPECS.leap_slam.range, cooldown: 0.7, telegraphed: true },
   melee: { damage: 26, range: 7.5, cooldown: 1.5 },
   attack_claw: { damage: 22, range: 9.5, cooldown: 1.1 },
   attack_jaw: { damage: 30, range: 10.5, cooldown: 1.1 },
@@ -168,6 +189,13 @@ const ENEMY_ATTACK_PROFILES = Object.freeze({
   jungle_medicomp: { damage: 0, range: 150, cooldown: 3.6, telegraphed: true },
 });
 const ENEMY_ATTACK_TELEGRAPHS = Object.freeze({
+  rhynth_stomp: 'LE RHYNTH ARME UN PIÉTINEMENT — RECULEZ !',
+  rhynth_charge: 'LE RHYNTH BAISSE SA CORNE — QUITTEZ SON AXE !',
+  vydrach_tail_whip: 'LE VY’DRACH ARME SA QUEUE — ROMPEZ LE CONTACT !',
+  vydrach_aerial_dive: 'LE VY’DRACH PRÉPARE UN PIQUÉ — QUITTEZ SON AXE !',
+  vydrach_bite: 'LE VY’DRACH OUVRE LES MÂCHOIRES — RECULEZ !',
+  king_cleave_swipe: 'LE ROI XÉNOMORPHE ARME SES GRIFFES — ESQUIVEZ !',
+  king_leap_slam: 'LE ROI XÉNOMORPHE PRÉPARE UN BOND — QUITTEZ LA ZONE !',
   attack_tail: 'BALAYAGE DE QUEUE DÉTECTÉ — ESQUIVEZ !',
   acid_spray: 'PRESSION ACIDE : LA REINE ARME UNE PROJECTION !',
   acid_frenzy: 'FRÉNÉSIE ACIDE DU PREDALIEN — ROMPEZ LE CONTACT !',
@@ -234,6 +262,10 @@ export class Game {
     this.settings = { ...DEFAULT_SETTINGS, ...loadResult.settings };
     this.loadoutSystem = new HuntLoadoutSystem();
     this.trophyCraftForge = new YautjaTrophyCraftsmanshipForgeSystem();
+    this.trophyCraftForge.importState(this.player.trophyCraftForgeState);
+    this.trophyCraftForge.setPersistenceHandler(() => this.saveProgress());
+    installCraftedDamageHook(this.player, () => this.getCraftedPerks());
+    this.trophySalvage = new TrophySalvage();
     const loadoutResult = this.loadoutSystem.load({
       hunterClassId: this.player.customization?.hunterClassId,
       unlockedWeaponIds: this.player.unlockedWeaponIds,
@@ -320,9 +352,48 @@ export class Game {
   }
 
   saveProgress() {
+    if (this.trophyCraftForge?.exportState) this.player.trophyCraftForgeState = this.trophyCraftForge.exportState();
     const saved = saveManager.save(this.player, this.settings);
     this.setPersistenceUnavailable(!saved);
     return saved;
+  }
+
+  getCraftedPerks() {
+    return this.trophyCraftForge?.getActiveCraftedPerks?.() ?? {};
+  }
+
+  syncCraftedEquipmentStats() {
+    if (!this.trophyCraftForge?.getActiveCraftedPerks) return null;
+    return applyCraftedEquipmentToPlayer(this.player, this.getCraftedPerks());
+  }
+
+  getPlayerOutgoingDamage(amount, kind = 'ranged', target = this.activeBoss) {
+    const reference = target === this.activeBoss ? this.activeCrossoverHunt ?? this.activePreySimulation : null;
+    return getCraftedOutgoingDamage(amount, this.getCraftedPerks(), {
+      kind, isCrossover: target === this.activeBoss && Boolean(this.activeCrossoverHunt),
+      isGiant: reference ? reference.scale === 'GEANT' : (target?.colliderRadius ?? 0) >= 7,
+    });
+  }
+
+  applyPlayerDamage(amount, type = 'generic') {
+    return this.player.craftedDamageHookInstalled
+      ? this.player.takeDamage(amount, { type })
+      : this.player.takeDamage(getCraftedIncomingDamage(amount, this.getCraftedPerks(), { type }));
+  }
+
+  awardHonor(amount, { target = null } = {}) {
+    return this.player.addHonor(getCraftedHonorAward(amount, this.getCraftedPerks(), {
+      queenFamily: Boolean(target) && target === this.activeBoss && !this.activeCrossoverHunt && !this.activePreySimulation
+        && ['xeno_queen', 'xeno_king'].includes(this.currentHuntType),
+    }));
+  }
+
+  getTrophyHarvestDistance() {
+    if (this.activeBoss?.mesh?.isObject3D) {
+      const bounds = getVisualBounds(this.activeBoss.mesh);
+      if (!bounds.isEmpty()) return bounds.distanceToPoint(this.player.position);
+    }
+    return this.activeBoss?.position?.distanceTo(this.player.position) ?? Infinity;
   }
 
   setPersistenceUnavailable(unavailable, message = null) {
@@ -368,6 +439,7 @@ export class Game {
     this.activeHuntLoadout = loadout;
     this.hud?.setActiveLoadout?.(loadout);
     this.player?.applyHuntLoadout?.(loadout);
+    this.syncCraftedEquipmentStats();
     if (!isWeaponEquipped(loadout, this.player.selectedWeapon)) {
       const firstEquipped = PLAYABLE_WEAPONS.find((weapon) => isWeaponEquipped(loadout, weapon.id));
       this.player.selectedWeapon = firstEquipped?.slot ?? 1;
@@ -446,12 +518,13 @@ export class Game {
       ? HUNT_DEFINITIONS[this.pendingHunt.huntType] ?? HUNT_DEFINITIONS.goliath
       : null;
     const directive = this.pendingHunt ? getHuntDirective(this.pendingHunt.directiveId) : null;
+    const pendingSimulation = resolveSimulationSelection(this.pendingHunt?.simulationContext);
     const missionTitle = document.getElementById('loadout-mission-title');
     const missionContext = document.getElementById('loadout-mission-context');
-    if (missionTitle) missionTitle.textContent = missionDefinition?.name?.toUpperCase() ?? 'AUCUN CONTRAT SÉLECTIONNÉ';
+    if (missionTitle) missionTitle.textContent = pendingSimulation ? `HOLO-TRAQUE · ${pendingSimulation.target.name.toUpperCase()}` : missionDefinition?.name?.toUpperCase() ?? 'AUCUN CONTRAT SÉLECTIONNÉ';
     if (missionContext) {
       missionContext.textContent = missionDefinition
-        ? `${DIRECTIVE_BIOME_LABELS[this.pendingHunt.planetType] ?? this.pendingHunt.planetType} · ${directive?.shortLabel ?? 'CHASSE STANDARD'}`
+        ? `${DIRECTIVE_BIOME_LABELS[this.pendingHunt.planetType] ?? this.pendingHunt.planetType} · ${pendingSimulation ? 'SILHOUETTE D’ENTRAÎNEMENT · DIMENSIONS D’ARCHIVE' : directive?.shortLabel ?? 'CHASSE STANDARD'}`
         : 'Choisissez d’abord une cible dans l’onglet Contrats.';
     }
 
@@ -587,9 +660,12 @@ export class Game {
     return validation;
   }
 
-  prepareHunt(huntType, planetType, directiveId = 'standard_hunt') {
+  prepareHunt(huntType, planetType, directiveId = 'standard_hunt', simulationContext = null) {
     const huntDefinition = HUNT_DEFINITIONS[huntType] ?? HUNT_DEFINITIONS.goliath;
-    this.pendingHunt = { huntType: huntDefinition.id, planetType, directiveId };
+    const simulation = resolveSimulationSelection(simulationContext);
+    if (simulationContext && !simulation) return null;
+    this.pendingHunt = { huntType: huntDefinition.id, planetType, directiveId,
+      simulationContext: simulation ? { kind: simulation.kind, id: simulation.target.id } : null };
     this.pendingHuntRecommendation = this.loadoutSystem.recommend({
       huntType: huntDefinition.id,
       biomeId: planetType,
@@ -621,7 +697,7 @@ export class Game {
     if (!committed.applied) return false;
     const pending = this.pendingHunt;
     this.pendingHunt = null;
-    this.startHunt(pending.huntType, pending.planetType, pending.directiveId);
+    this.startHunt(pending.huntType, pending.planetType, pending.directiveId, pending.simulationContext);
     this.requestPointerLockSafely();
     return true;
   }
@@ -770,6 +846,7 @@ export class Game {
 
   updatePlayerFrame(delta) {
     const frameInput = this.getPlayerFrameInput();
+    this.trophySalvage?.update(delta);
     this.player.update(delta, frameInput, this.cameraYaw);
     return frameInput;
   }
@@ -796,6 +873,7 @@ export class Game {
   neutralizeVictoryDangers() {
     this.clearVehicleScan();
     this.activeFacehuggerCluster = null;
+    this.trophySalvage?.clear();
     this.eggClusters.forEach((egg) => egg.dispose());
     this.eggClusters = [];
     (this.activeEnemies ?? []).forEach((enemy) => enemy.dispose());
@@ -1095,9 +1173,9 @@ export class Game {
 
       const falloff = THREE.MathUtils.clamp(1 - (distance / Math.max(0.001, reach)) * 0.62, 0.38, 1);
       const damage = Math.max(1, Math.round(baseDamage * falloff));
-      const outcome = target.takeDamage(damage, impactPoint);
+      const outcome = target.takeDamage(this.getPlayerOutgoingDamage(damage, 'explosion', target), impactPoint);
       this.spawnBloodSpatterVFX(target.position, this.getTargetBloodColor(target), 14);
-      this.player.addHonor(target === this.activeBoss ? 100 : 35);
+      this.awardHonor(target === this.activeBoss ? 100 : 35, { target });
       outcomes.push({ target, damage, outcome });
       if (target !== this.activeBoss && (outcome?.killed || target.isDead)) {
         this.handleNpcDefeat(target, 105);
@@ -1177,7 +1255,7 @@ export class Game {
     if (!contact || contact.type !== 'environment_hazard') return false;
 
     const damage = Math.max(0, Number(contact.damage) || 0);
-    if (damage > 0) this.player.takeDamage(damage);
+    if (damage > 0) this.applyPlayerDamage(damage, contact.status === 'corrosion' || contact.status?.includes?.('corrosion') ? 'acid' : 'generic');
     const statusDuration = Math.max(
       0.25,
       Number(contact.statusDuration ?? contact.duration) || 2.5,
@@ -1242,7 +1320,7 @@ export class Game {
     let honorAwarded = 0;
     if (state === 'secured') {
       const before = Number(this.player?.honorScore) || 0;
-      this.player?.addHonor?.(250);
+      this.awardHonor(250);
       honorAwarded = Math.max(0, (Number(this.player?.honorScore) || 0) - before);
       if (this.player) {
         this.player.energy = Math.min(Number(this.player.maxEnergy) || 100, (Number(this.player.energy) || 0) + 45);
@@ -1447,7 +1525,7 @@ export class Game {
     this.directiveProgress = recordDirectiveNpcDefeat(this.directiveProgress, enemy.type);
     const directiveSummary = this.refreshDirectiveHud();
     const directiveAdvanced = directiveSummary.completedObjectives > previousSummary.completedObjectives;
-    const honorGained = this.player.addHonor(honorBase);
+    const honorGained = this.awardHonor(honorBase, { target: enemy });
     const directiveSuffix = directiveAdvanced
       ? ` · DIRECTIVE ${directiveSummary.completedObjectives}/${directiveSummary.totalObjectives}`
       : '';
@@ -1455,7 +1533,9 @@ export class Game {
       `${enemy.name.toUpperCase()} NEUTRALISÉ · +${honorGained} PTS${directiveSuffix}`,
       directiveAdvanced ? 2600 : 1800,
     );
-    enemy.dispose();
+    if (!this.activeCrossoverHunt && !this.activePreySimulation && this.trophySalvage?.register(enemy)) {
+      this.hud.showLogMessage('SPÉCIMEN PRÉLEVABLE · APPROCHEZ LE CORPS ET INTERAGISSEZ', 2200);
+    } else enemy.dispose();
     this.activeEnemies.splice(index, 1);
     this.retryPendingDirectiveWaves();
   }
@@ -1471,6 +1551,8 @@ export class Game {
         aggressionRange: entry.aggressionRange,
         leashRadius: entry.leashRadius,
       });
+      const safe = this.environment?.getSafeSpawnPosition?.(enemy.position, { clearance: Math.max(3, enemy.colliderRadius + 0.2) });
+      if (safe) { enemy.position.copy(safe); enemy.mesh.position.copy(safe); }
       enemy.mesh.userData.ecologyTerritoryId = entry.id;
       enemy.mesh.userData.ecologyTerritoryLabel = entry.label;
       this.scene.add(enemy.mesh);
@@ -1509,6 +1591,8 @@ export class Game {
         aggressionRange: 20,
         leashRadius: Math.max(65, Number(signal.radius) * 1.8 || 76),
       });
+      const safe = this.environment?.getSafeSpawnPosition?.(enemy.position, { clearance: Math.max(3, enemy.colliderRadius + 0.2) });
+      if (safe) { enemy.position.copy(safe); enemy.mesh.position.copy(safe); }
       enemy.mesh.userData.migratingPrey = true;
       this.scene.add(enemy.mesh);
       enemy.setVisionMode(this.player.activeVisionMode);
@@ -1603,8 +1687,10 @@ export class Game {
         120,
         (Number(this.environment?.playableRadius) || 330) - (Number(this.activeBoss.colliderRadius) || 5) - 4,
       );
-      this.activeBoss.position.copy(firstNode);
-      this.activeBoss.mesh?.position?.copy(firstNode);
+      const safeNode = this.environment?.getSafeSpawnPosition?.(firstNode, { clearance: this.activeBoss.colliderRadius + 0.2 }) ?? firstNode;
+      this.activeBoss.position.copy(safeNode);
+      this.activeBoss.mesh?.position?.copy(safeNode);
+      if (this.activeBoss.mesh?.isObject3D) this.activeBoss.colliderHeight = getVisualBounds(this.activeBoss.mesh).getSize(new THREE.Vector3()).y;
     }
     return this.bossMigrationRoute.length;
   }
@@ -1747,6 +1833,8 @@ export class Game {
       { clearance: 3 },
     ) ?? preferredPosition;
     const enemy = new HuntNPC(type, { position: spawnPosition });
+    const safe = this.environment?.getSafeSpawnPosition?.(enemy.position, { clearance: Math.max(3, enemy.colliderRadius + 0.2) });
+    if (safe) { enemy.position.copy(safe); enemy.mesh.position.copy(safe); }
     this.scene.add(enemy.mesh);
     enemy.setVisionMode(this.player.activeVisionMode);
     this.activeEnemies.push(enemy);
@@ -1987,8 +2075,8 @@ export class Game {
           if (signal.projectile) {
             const projectileOrigin = signal.projectile.origin?.isVector3
               ? signal.projectile.origin
-              : enemy.position?.clone?.();
-            const projectileTarget = this.player.position.clone().add(new THREE.Vector3(0, 2.4, 0));
+              : enemy.getProjectileOrigin?.() ?? enemy.position?.clone?.();
+            const projectileTarget = this.player.position.clone().add(new THREE.Vector3(0, 4.8, 0));
             const coverImpact = projectileOrigin
               ? this.environment?.resolveProjectileCoverImpact?.(
                 projectileOrigin,
@@ -2010,7 +2098,7 @@ export class Game {
             ? Math.max(1, Math.min(6, Math.round(Number(signal.burstCount) || 1)))
             : 1;
           for (let round = 0; round < burstCount; round += 1) {
-            this.player.takeDamage(signal.damage);
+            this.applyPlayerDamage(signal.damage, signal.status === 'corrosion' || signal.damageType === 'corrosion' ? 'acid' : signal.projectile ? 'ballistic' : 'generic');
           }
           if (signal.status === 'corrosion' || signal.damageType === 'corrosion') this.player.applyAcidCorrosion();
           const applyCombatStatus = (status, duration) => {
@@ -2076,7 +2164,7 @@ export class Game {
       }
     } else {
       this.player.energy = Math.max(0, this.player.energy - 8);
-      this.player.takeDamage(4);
+      this.applyPlayerDamage(4, 'fire');
       this.hud.showLogMessage('TEMPÊTE THERMIQUE · -8 ÉNERGIE / -4 SANTÉ', 1300);
     }
   }
@@ -2156,10 +2244,10 @@ export class Game {
     }
 
     const scaledDamage = Math.round(strike.damage * (this.player.meleeDamageMultiplier ?? 1));
-    const outcome = target.takeDamage(scaledDamage, this.player.position);
+    const outcome = target.takeDamage(this.getPlayerOutgoingDamage(scaledDamage, 'melee', target), this.player.position);
     this.reportShieldDeflection(target, outcome);
     this.spawnBloodSpatterVFX(targetPos, this.getTargetBloodColor(target), isDeathFromAbove ? 30 : 15);
-    this.player.addHonor(strike.honor);
+    this.awardHonor(strike.honor, { target });
     if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target);
 
     if (isDeathFromAbove) {
@@ -2519,7 +2607,7 @@ export class Game {
                 <h4 class="multiverse-target-title">${p.name}</h4>
                 <div class="multiverse-target-meta">
                   <span class="sector-badge">${p.universe}</span>
-                  <span class="threat-badge threat-renegade">CROSSOVER CANON</span>
+                  <span class="threat-badge threat-renegade">${getPreyProvenanceLabel(p)}</span>
                   <span class="spec-tag reward-tag">+${p.honorReward} PTS</span>
                 </div>
               </div>
@@ -2533,16 +2621,16 @@ export class Game {
               ${p.weakpoints.map(wp => `<span class="weakpoint-pill">${wp}</span>`).join(' ')}
             </div>
             <div style="font-size:11px; color:#90a4ae; margin-top:4px;">
-              <em>Source officielle : ${p.originMedia} (${p.crossoverYear}) · Arène : ${p.arena}</em>
+              <em>${getPreySourceLabel(p)} · Arène : ${p.arena}</em>
             </div>
             <div class="crossover-actions">
               <button id="btn-launch-crossover" class="btn-launch-crossover" type="button" data-crossover-id="${p.id}">
-                TRAQUER L'ANOMALIE : ${p.name.toUpperCase()}
+                PRÉPARER L’HOLO-TRAQUE : ${p.name.toUpperCase()}
               </button>
             </div>
             ${encounters.length ? `
             <div class="universe-encounters">
-              <span class="multiverse-weakpoints-label">RENCONTRES DE L'UNIVERS (5 GABARITS) :</span>
+              <span class="multiverse-weakpoints-label">ENTRAÎNEMENTS DE L’UNIVERS · 5 PALIERS :</span>
               <div class="universe-encounter-grid">
                 ${encounters.map((e) => `
                   <button type="button" class="universe-encounter-card" data-encounter-id="${e.id}">
@@ -2562,45 +2650,15 @@ export class Game {
           const enc = CROSSOVER_UNIVERSE_ENCOUNTERS.find((e) => e.id === btn.getAttribute('data-encounter-id'));
           if (!enc) return;
           audioSynth.playYautjaClick();
-          this.activeCrossoverHunt = enc;
-          this.activePreySimulation = null;
-          this.hud.setCustomTargetLabel(null);
-          this.hud.showLogMessage(`RENCONTRE D'UNIVERS : ${enc.name.toUpperCase()} (${enc.scale} · ${enc.sizeMeters}m) · +${enc.honorReward} HONNEUR`, 4500);
-          const bossByScale = { GEANT: 'kalisk', GRANDE: 'bad_blood', MOYEN: 'super_predator', PETITE: 'feral_predator', MINUSCULE: 'jungle_hunter_1987' };
-          const huntBoss = bossByScale[enc.scale] ?? 'goliath';
-          const arenaBiome = enc.scale === 'GEANT' ? 'desert' : (enc.scale === 'GRANDE' ? 'bouvetoya' : 'jungle');
-          this.prepareHunt(huntBoss, arenaBiome);
-          this.startHunt(huntBoss, arenaBiome);
+          const simulation = resolveSimulationSelection({ kind: 'crossover', id: enc.id });
+          if (simulation) this.prepareHunt(simulation.huntType, simulation.planetType, 'standard_hunt', { kind: 'crossover', id: enc.id });
         });
       });
 
       document.getElementById('btn-launch-crossover')?.addEventListener('click', () => {
         audioSynth.playYautjaClick();
-        this.activeCrossoverHunt = p;
-        this.activePreySimulation = null;
-    this.hud.setCustomTargetLabel(null);
-        this.hud.showLogMessage(`ANOMALIE DU MULTIVERS ENGAGÉE : ${p.name.toUpperCase()} (+${p.honorReward} HONNEUR)`, 4500);
-
-        let arenaBiome = 'jungle';
-        let huntBoss = 'jungle_hunter_1987';
-        if (p.id.includes('batman') || p.id.includes('dredd') || p.id.includes('terminator') || p.id.includes('robocop') || p.id.includes('grendel') || p.id.includes('anderson')) {
-          arenaBiome = 'city';
-          huntBoss = 'city_hunter';
-        } else if (p.id.includes('superman') || p.id.includes('tarzan') || p.id.includes('worlds_finest')) {
-          arenaBiome = 'jungle';
-          huntBoss = 'feral_predator';
-        } else if (p.id.includes('witchblade') || p.id.includes('darkness') || p.id.includes('buffy')) {
-          arenaBiome = 'bouvetoya';
-          huntBoss = 'bad_blood';
-        } else if (p.id.includes('kano') || p.id.includes('the_mask') || p.id.includes('t_infinity')) {
-          arenaBiome = 'desert';
-          huntBoss = 'super_predator';
-        } else if (p.id.includes('machiko')) {
-          arenaBiome = 'desert';
-          huntBoss = 'wolf_cleaner';
-        }
-        this.prepareHunt(huntBoss, arenaBiome);
-        this.startHunt(huntBoss, arenaBiome);
+        const simulation = resolveSimulationSelection({ kind: 'crossover', id: p.id });
+        if (simulation) this.prepareHunt(simulation.huntType, simulation.planetType, 'standard_hunt', { kind: 'crossover', id: p.id });
       });
     };
 
@@ -2646,7 +2704,9 @@ export class Game {
 
       // Multiverse Full Archive Roster with Faction/Universe Filter
       const rosterContainer = document.getElementById('multiverse-roster-grid');
-      if (rosterContainer) {
+      const rosterKey = `${activeMultiverseFilter}:${featuredTarget.id}`;
+      if (rosterContainer && rosterContainer.dataset.renderedRoster !== rosterKey) {
+        rosterContainer.dataset.renderedRoster = rosterKey;
         let filteredPrey = MULTIVERSE_CROSSOVER_PREY;
         if (activeMultiverseFilter === 'dc') {
           filteredPrey = MULTIVERSE_CROSSOVER_PREY.filter(c => c.universe.includes('DC Comics'));
@@ -2776,7 +2836,7 @@ export class Game {
             </div>
             <div class="taxonomy-actions" style="margin-top:10px;">
               <button type="button" class="btn-simulate-prey" data-sim-id="${prey.id}">
-                SIMULER L'AFFRONTEMENT HOLO-TRAQUE
+                PRÉPARER L’ENTRAÎNEMENT HOLOGRAPHIQUE
               </button>
             </div>
           </article>
@@ -2789,27 +2849,8 @@ export class Game {
           const target = filteredPrey.find((p) => p.id === preyId);
           if (target) {
             audioSynth.playYautjaClick();
-            this.activePreySimulation = target;
-            this.activeCrossoverHunt = null;
-            this.hud.showLogMessage(`LANCEMENT SIMULATION HOLO-TRAQUE : ${target.name.toUpperCase()} (${target.scale} - ${target.sizeMeters}m) · +${target.baseHonor} HONNEUR`, 4500);
-
-            let simBiome = 'jungle';
-            let simBoss = 'goliath';
-            if (target.scale === 'GEANT') {
-              simBoss = 'kalisk';
-              simBiome = 'desert';
-            } else if (target.scale === 'GRANDE') {
-              simBoss = target.faction.includes('Xenomorph') ? 'xeno_queen' : 'super_predator';
-              simBiome = 'bouvetoya';
-            } else if (target.scale === 'MOYEN') {
-              simBoss = target.faction.includes('Xenomorph') ? 'grid_alien' : 'wolf_cleaner';
-              simBiome = 'city';
-            } else {
-              simBoss = 'jungle_hunter_1987';
-              simBiome = 'jungle';
-            }
-            this.prepareHunt(simBoss, simBiome);
-            this.startHunt(simBoss, simBiome);
+            const simulation = resolveSimulationSelection({ kind: 'prey', id: target.id });
+            if (simulation) this.prepareHunt(simulation.huntType, simulation.planetType, 'standard_hunt', { kind: 'prey', id: target.id });
           }
         });
       });
@@ -2833,109 +2874,30 @@ export class Game {
   setupTrophyCraftsmanshipUI() {
     const grid = document.getElementById('trophy-crafting-grid');
     if (!grid) return;
-
-    let activeCraftFilter = 'all';
-
-    const renderCraftGrid = () => {
-      const recipes = this.trophyCraftForge.getRecipes(activeCraftFilter);
-      const playerHonor = this.player?.honorScore ?? 0;
-
-      grid.innerHTML = recipes.map((r) => {
-        const crafted = this.trophyCraftForge.isCrafted(r.id);
-        const equipped = this.trophyCraftForge.isEquipped(r.id);
-        const check = this.trophyCraftForge.canCraft(r.id, playerHonor);
-
-        let actionBtnHtml = '';
-        if (equipped) {
-          actionBtnHtml = `<button type="button" class="craft-action-btn btn-equipped" data-craft-action="unequip" data-recipe-id="${r.id}">DÉSÉQUIPER (ACTIF)</button>`;
-        } else if (crafted) {
-          actionBtnHtml = `<button type="button" class="craft-action-btn btn-ready-equip" data-craft-action="equip" data-recipe-id="${r.id}">ÉQUIPER POUR LA CHASSE</button>`;
-        } else if (check.canCraft) {
-          actionBtnHtml = `<button type="button" class="craft-action-btn btn-can-craft" data-craft-action="craft" data-recipe-id="${r.id}">FAÇONNER (${r.requiredHonor} HONNEUR)</button>`;
-        } else {
-          actionBtnHtml = `<button type="button" class="craft-action-btn btn-locked" disabled>REQUIS : ${r.requiredHonor} HONNEUR (${check.missingHonor || 0} MANQUANT)</button>`;
-        }
-
-        const perkValues = Object.entries(r.perks)
-          .map(([k, v]) => `<span class="spec-tag">${k}: +${typeof v === 'number' && v < 1 ? Math.round(v * 100) + '%' : v}</span>`)
-          .join(' ');
-
-        return `
-          <div class="craft-recipe-card ${crafted ? 'card-crafted' : ''} ${equipped ? 'card-equipped' : ''}" data-card-recipe="${r.id}">
-            <div class="craft-card-header">
-              <div class="craft-svg-box">
-                ${getCraftsmanshipItemSvg(r.id, 44)}
-              </div>
-              <div>
-                <h5>${r.name}</h5>
-                <span class="craft-origin-kicker">${r.originMedia}</span>
-              </div>
-            </div>
-            <div class="craft-trophy-badge">
-              <strong>Trophée requis :</strong> ${r.requiredTrophies.join(' + ')}
-            </div>
-            <p style="font-size:12px; color:#cfd8dc; margin:0; line-height:1.4;">${r.description}</p>
-            <div class="craft-perk-box">
-              <span class="craft-perk-title">Avantage Biomécanique :</span>
-              <p>${r.passiveBonus}</p>
-              <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
-                ${perkValues}
-              </div>
-            </div>
-            <div class="craft-card-footer">
-              ${actionBtnHtml}
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      grid.querySelectorAll('[data-craft-action]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const action = btn.getAttribute('data-craft-action');
-          const recipeId = btn.getAttribute('data-recipe-id');
-          const currentHonor = this.player?.honorScore ?? 0;
-
-          if (action === 'craft') {
-            const res = this.trophyCraftForge.craftItem(recipeId, currentHonor);
-            if (res.success) {
-              audioSynth.playYautjaClick();
-              this.hud.showLogMessage(`ARTISANAT DU CLAN : ${res.recipe.name.toUpperCase()} FORGÉ AVEC SUCCÈS !`, 4500);
-              renderCraftGrid();
-            } else {
-              this.hud.showLogMessage(`FORGE IMPOSSIBLE : ${res.reason}`, 3000);
-            }
-          } else if (action === 'equip') {
-            const res = this.trophyCraftForge.equipItem(recipeId);
-            if (res.success) {
-              audioSynth.playYautjaClick();
-              this.hud.showLogMessage(`ÉQUIPEMENT ACTIF : ${res.equippedItem.name.toUpperCase()} ÉQUIPÉ POUR LA CHASSE`, 4000);
-              renderCraftGrid();
-            }
-          } else if (action === 'unequip') {
-            const res = this.trophyCraftForge.unequipItem(recipeId);
-            if (res.success) {
-              audioSynth.playYautjaClick();
-              this.hud.showLogMessage('ÉQUIPEMENT DÉSÉQUIPÉ', 3000);
-              renderCraftGrid();
-            }
-          }
-        });
-      });
-    };
-
-    document.querySelectorAll('.craft-filter-bar [data-craft-filter]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.craft-filter-bar [data-craft-filter]').forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeCraftFilter = btn.getAttribute('data-craft-filter');
-        renderCraftGrid();
+    let category = 'all';
+    const onAction = (action, recipeId) => {
+      const result = action === 'craft' ? this.trophyCraftForge.craftForPlayer(recipeId, this.player)
+        : action === 'equip' ? this.trophyCraftForge.equipItem(recipeId)
+          : action === 'unequip' ? this.trophyCraftForge.unequipItem(recipeId) : null;
+      if (result?.success) {
+        this.syncCraftedEquipmentStats();
+        this.hud.updateVitals?.(this.player);
+        this.saveProgress();
         audioSynth.playYautjaClick();
-      });
+        this.hud.showLogMessage(action === 'craft' ? 'PIÈCE FAÇONNÉE · MATÉRIAUX ET HONNEUR CONSOMMÉS'
+          : action === 'equip' ? 'ÉQUIPEMENT DE CHASSE ACTIVÉ' : 'ÉQUIPEMENT RETIRÉ', 3200);
+      } else this.hud.showLogMessage('FORGE INDISPONIBLE · VÉRIFIEZ LES MATÉRIAUX ET L’HONNEUR', 3000);
+      renderCraftGrid();
+    };
+    const renderCraftGrid = () => renderTrophyCraftingGrid({ grid, forge: this.trophyCraftForge,
+      honorScore: this.player?.honorScore ?? 0, category, supportedStats: SUPPORTED_CRAFT_STATS, onAction });
+    document.querySelectorAll('.craft-filter-bar [data-craft-filter]').forEach(button => {
+      button.addEventListener('click', () => { category = button.dataset.craftFilter; renderCraftGrid(); });
     });
-
-    renderCraftGrid();
     this.renderTrophyCraftGrid = renderCraftGrid;
+    renderCraftGrid();
   }
+
 
   setupMissionTabs() {
     const tabKeys = ['missions', 'multiverse', 'crafting', 'loadout', 'armory', 'codex', 'options'];
@@ -3011,7 +2973,9 @@ export class Game {
       card.addEventListener('click', () => {
         const skinId = card.getAttribute('data-skin-id');
         this.player.setSkin(skinId);
+        this.syncCraftedEquipmentStats();
         this.hud.syncCustomization(this.player.customization);
+        this.hud.updateVitals?.(this.player);
         document.querySelectorAll('.skin-card').forEach(c => {
           c.classList.remove('selected');
           c.setAttribute('aria-pressed', 'false');
@@ -3044,6 +3008,8 @@ export class Game {
         this.player.applyCustomization({ [field]: select.value });
         this.hud.syncCustomization(this.player.customization);
         if (field === 'hunterClassId') this.syncHuntLoadoutClass();
+        this.syncCraftedEquipmentStats();
+        this.hud.updateVitals?.(this.player);
         this.saveProgress();
         audioSynth.playYautjaClick();
         const status = document.getElementById('customization-status');
@@ -3415,11 +3381,16 @@ export class Game {
     return true;
   }
 
-  startHunt(huntType, planetType, directiveId = 'standard_hunt') {
+  startHunt(huntType, planetType, directiveId = 'standard_hunt', simulationContext = null) {
     const huntDefinition = HUNT_DEFINITIONS[huntType] ?? HUNT_DEFINITIONS.goliath;
     const directive = getHuntDirective(directiveId);
     const resolvedPlanet = resolveDirectiveBiome(directive.id, planetType) ?? planetType;
+    const simulation = resolveSimulationSelection(simulationContext);
+    if (simulationContext && !simulation) return false;
     this.cleanupHunt();
+    this.activeCrossoverHunt = simulation?.kind === 'crossover' ? simulation.target : null;
+    this.activePreySimulation = simulation?.kind === 'prey' ? simulation.target : null;
+    this.harvestReward = null;
     this.currentDirectiveId = directive.id;
     this.directiveProgress = createDirectiveProgress(directive.id);
     this.directiveOutcome = null;
@@ -3467,80 +3438,42 @@ export class Game {
       5500,
     );
 
-    // Monster Hunter Size Variation System (Couronne d'Or Géante / Miniature / Argent)
-    const craftedPerks = this.trophyCraftForge?.getActiveCraftedPerks?.() ?? {};
-    if (craftedPerks.acidImmunityRatio >= 1.0) {
-      this.player.hasAntiAcidCloak = true;
-    }
-    if (craftedPerks.bonusHealth > 0) {
-      this.player.maxHealth = Math.max(this.player.maxHealth, 100 + craftedPerks.bonusHealth);
-      this.player.health = this.player.maxHealth;
-    }
-    const activeTarget = this.activeCrossoverHunt || this.activePreySimulation;
-    const crownRoll = Math.max(0, Math.random() - (craftedPerks.goldCrownChanceBonus || 0));
-    this.currentHuntCrown = determineMonsterHunterCrown(activeTarget, crownRoll);
-
-    if (this.activeCrossoverHunt) {
-      const p = this.activeCrossoverHunt;
-      const targetScanned = document.getElementById('target-scanned-name');
-      if (targetScanned) targetScanned.textContent = `ANOMALIE MULTIVERS : ${p.name.toUpperCase()} [${p.universe}]`;
-      const hudLogo = document.getElementById('hud-yautja-clan-logo');
-      if (hudLogo) hudLogo.innerHTML = getCrossoverLogo(p.parentId ?? p.id, 36);
-      const crownSuffix = (this.currentHuntCrown && this.currentHuntCrown.id !== 'STANDARD') ? ` [${this.currentHuntCrown.icon} ${this.currentHuntCrown.label.toUpperCase()}]` : '';
-      this.hud.setCustomTargetLabel(`ANOMALIE : ${p.name.toUpperCase()}${crownSuffix}`);
-      if (this.activeBoss?.mesh) {
-        const encScale = p.isUniverseEncounter
-          ? ({ GEANT: 1.6, GRANDE: 1.25, MOYEN: 1.0, PETITE: 0.65, MINUSCULE: 0.35 }[p.scale] ?? 1.0)
-          : 1.0;
-        const crownMult = (this.currentHuntCrown?.sizeMultiplier ?? 1.0) * encScale;
-        this.activeBoss.mesh.scale.set(crownMult, crownMult, crownMult);
-        const hpCrown = this.currentHuntCrown?.healthMultiplier ?? 1.0;
-        const encHp = p.isUniverseEncounter ? (PREY_SCALE_TIERS[p.scale]?.honorMultiplier ?? 1.0) / 1.5 : 1.0;
-        this.activeBoss.maxHealth = Math.round((this.activeBoss.maxHealth || 1000) * 1.5 * hpCrown * encHp);
-        this.activeBoss.health = this.activeBoss.maxHealth;
-      }
-      this.hud.showLogMessage(
-        `FAILLE TEMPORELLE : ${p.name.toUpperCase()} · ${p.arena} · +${p.honorReward} HONNEUR`,
-        6500,
-      );
-    } else if (this.activePreySimulation) {
-      const target = this.activePreySimulation;
-      const targetScanned = document.getElementById('target-scanned-name');
-      if (targetScanned) targetScanned.textContent = `SIMULATION HOLO-TRAQUE : ${target.name.toUpperCase()} (${target.scale} - ${target.sizeMeters}m)`;
-      const hudLogo = document.getElementById('hud-yautja-clan-logo');
-      if (hudLogo) hudLogo.innerHTML = renderFactionEmblem(target.faction, 36);
-      const crownSuffix = (this.currentHuntCrown && this.currentHuntCrown.id !== 'STANDARD') ? ` [${this.currentHuntCrown.icon} ${this.currentHuntCrown.label.toUpperCase()}]` : '';
-      this.hud.setCustomTargetLabel(`PROIE : ${target.name.toUpperCase()} (${target.scale})${crownSuffix}`);
-      if (this.activeBoss?.mesh) {
-        let scaleFactor = 1.0;
-        if (target.scale === 'GEANT') scaleFactor = 1.6;
-        else if (target.scale === 'GRANDE') scaleFactor = 1.25;
-        else if (target.scale === 'MOYEN') scaleFactor = 1.0;
-        else if (target.scale === 'PETITE') scaleFactor = 0.65;
-        else if (target.scale === 'MINUSCULE') scaleFactor = 0.35;
-        const crownMult = this.currentHuntCrown?.sizeMultiplier ?? 1.0;
-        scaleFactor *= crownMult;
-        this.activeBoss.mesh.scale.set(scaleFactor, scaleFactor, scaleFactor);
-        if (this.activeBoss.maxHealth) {
-          const mult = PREY_SCALE_TIERS[target.scale]?.honorMultiplier ?? 1.0;
-          const hpCrown = this.currentHuntCrown?.healthMultiplier ?? 1.0;
-          this.activeBoss.maxHealth = Math.round(this.activeBoss.maxHealth * mult * hpCrown);
-          this.activeBoss.health = this.activeBoss.maxHealth;
-        }
-      }
-      this.hud.showLogMessage(
-        `SIMULATION DE CHASSE : ${target.name.toUpperCase()} · POINT FAIBLE : ${target.weakpoints[0].toUpperCase()}`,
-        6000,
-      );
+    const activeTarget = this.activeCrossoverHunt ?? this.activePreySimulation;
+    this.currentHuntCrown = (activeTarget ? activeTarget.supportsSizeVariation !== true : this.currentHuntType !== 'goliath')
+      ? MONSTER_HUNTER_CROWNS.STANDARD
+      : selectCraftedCrown(Math.random(), this.getCraftedPerks());
+    this.syncCraftedEquipmentStats();
+    if (activeTarget) {
+      applySimulationReferenceScale(this.activeBoss, activeTarget);
+      const balanceTier = activeTarget.encounterTier ?? activeTarget.scale;
+      const multiplier = (PREY_SCALE_TIERS[balanceTier]?.honorMultiplier ?? 1) / 1.5;
+      this.activeBoss.maxHealth = Math.max(1, Math.round(this.activeBoss.maxHealth * multiplier));
+      this.activeBoss.health = this.activeBoss.maxHealth;
+      this.configureBossTerritory();
+      const label = `HOLO-TRAQUE : ${activeTarget.name.toUpperCase()}`;
+      this.hud.setCustomTargetLabel(label);
+      const scanned = document.getElementById('target-scanned-name');
+      if (scanned) scanned.textContent = `${label} · MODÈLE D’ENTRAÎNEMENT`;
+      const logo = document.getElementById('hud-yautja-clan-logo');
+      if (logo) logo.innerHTML = this.activeCrossoverHunt
+        ? getCrossoverLogo(activeTarget.parentId ?? activeTarget.id, 36)
+        : renderFactionEmblem(activeTarget.faction, 36);
+      this.hud.showLogMessage(`${label} · ${activeTarget.sizeMeters} m de référence · modèle proxy, dimensions d’archive estimées`, 6500);
     } else {
       this.hud.setCustomTargetLabel(null);
-    }
-
-    if (this.currentHuntCrown && this.currentHuntCrown.id !== 'STANDARD') {
-      this.hud.showLogMessage(
-        `SPÉCIMEN D'EXCEPTION (${this.currentHuntCrown.icon}) : ${this.currentHuntCrown.label.toUpperCase()} · MULTIPLICATEUR D'HONNEUR ×${this.currentHuntCrown.honorBonusMultiplier}`,
-        6500,
-      );
+      const logo = document.getElementById('hud-yautja-clan-logo');
+      if (logo) logo.innerHTML = getYautjaClanLogo(36);
+      if (this.currentHuntCrown.id !== 'STANDARD') {
+        const dimensions = getVisualBounds(this.activeBoss.mesh).getSize(new THREE.Vector3());
+        const axis = ['x', 'y', 'z'].reduce((largest, key) => dimensions[key] > dimensions[largest] ? key : largest, 'y');
+        applySimulationReferenceScale(this.activeBoss, { id: `original-goliath-${this.currentHuntCrown.id}`,
+          sizeMeters: dimensions[axis] / 3 * this.currentHuntCrown.sizeMultiplier,
+          sizeDimension: { x: 'width', y: 'height', z: 'length' }[axis], dimensionStatus: 'original_specimen_variation',
+        }, { training: false });
+        this.activeBoss.maxHealth = Math.round(this.activeBoss.maxHealth * this.currentHuntCrown.healthMultiplier);
+        this.activeBoss.health = this.activeBoss.maxHealth;
+        this.configureBossTerritory();
+      }
     }
 
     if (
@@ -3559,6 +3492,7 @@ export class Game {
     this.clearVehicleScan();
     this.victoryCountdown = null;
     this.activeFacehuggerCluster = null;
+    this.trophySalvage?.clear();
     this.eggClusters.forEach((egg) => egg.dispose());
     this.eggClusters = [];
     (this.activeEnemies ?? []).forEach((enemy) => enemy.dispose());
@@ -4055,6 +3989,15 @@ export class Game {
     const trophyWasHarvested = this.trophyHarvested;
     this.attemptTrophyHarvest();
     if (!trophyWasHarvested && this.trophyHarvested) return true;
+    if (this.gameState === 'HUNT' && !this.isPlayerCombatDisabled()) {
+      const salvage = this.trophySalvage?.collect(this.player.position,
+        sourceId => this.trophyCraftForge?.recordTrophy(sourceId)?.success === true);
+      if (salvage) {
+        this.saveProgress();
+        this.hud.showLogMessage(`MATÉRIAU DU CLAN PRÉLEVÉ · ${salvage.label.toUpperCase()}`, 3000);
+        return true;
+      }
+    }
 
     const result = this.eventDirector?.tryInteract(this.player);
     if (result) {
@@ -4092,7 +4035,7 @@ export class Game {
         this.environment.setDiscoveredPoiIds?.(this.player.discoveredPoiIds);
       }
       const effect = this.dispatchPointOfInterestEffect(environmentResult);
-      const honorGained = this.player.addHonor(effect.honorRequested);
+      const honorGained = this.awardHonor(effect.honorRequested);
       const message = environmentResult.message
         ?? `${environmentResult.label ?? 'ARCHIVE ENVIRONNEMENTALE'} ANALYSÉE`;
       this.hud.showLogMessage(
@@ -4115,7 +4058,7 @@ export class Game {
       || this.player.inQTE
       || this.isPlayerCombatDisabled()
     ) return;
-    const distToBoss = this.player.position.distanceTo(this.activeBoss.position);
+    const distToBoss = this.getTrophyHarvestDistance();
     if (this.activeBoss.isDead && distToBoss < 14.0) {
       this.trophyHarvested = true;
       this.timeScale = 0.2;
@@ -4128,13 +4071,19 @@ export class Game {
       this.neutralizeVictoryDangers();
 
       const huntDefinition = HUNT_DEFINITIONS[this.currentHuntType];
-      const baseReward = huntDefinition?.reward ?? 1200;
+      const trainingTarget = this.activeCrossoverHunt ?? this.activePreySimulation;
+      const training = Boolean(trainingTarget);
+      const baseReward = trainingTarget
+        ? Math.max(0, Number(trainingTarget.honorReward ?? trainingTarget.baseHonor) || 0)
+        : huntDefinition?.reward ?? 1200;
       const directive = getHuntDirective(this.currentDirectiveId);
       const summary = getDirectiveProgressSummary(this.directiveProgress);
-      const totalReward = resolveDirectiveReward(directive.id, baseReward, this.directiveProgress);
+      const crownMultiplier = this.currentHuntCrown?.honorBonusMultiplier ?? 1;
+      const totalReward = Math.round((training ? baseReward
+        : resolveDirectiveReward(directive.id, baseReward, this.directiveProgress)) * crownMultiplier);
       const bonus = Math.max(0, totalReward - baseReward);
       const previouslyCompleted = (this.player.completedDirectiveIds ?? []).includes(directive.id);
-      const directiveCompleted = directive.id !== 'standard_hunt' && summary.isComplete;
+      const directiveCompleted = !training && directive.id !== 'standard_hunt' && summary.isComplete;
       if (directiveCompleted) {
         this.player.completedDirectiveIds = [
           ...new Set([...(this.player.completedDirectiveIds ?? []), directive.id]),
@@ -4148,9 +4097,14 @@ export class Game {
         totalReward,
         newlyCompleted: directiveCompleted && !previouslyCompleted,
       };
-      const honorGained = this.player.addHonor(totalReward);
-      this.player.completedHunts = [...new Set([...this.player.completedHunts, this.currentHuntType])];
-      this.hub.setTrophyState(this.player.completedHunts);
+      const honorGained = this.awardHonor(totalReward, { target: this.activeBoss });
+      const sourceId = trainingTarget?.id ?? this.currentHuntType;
+      this.harvestReward = { honorGained, sourceId, simulation: training };
+      this.trophyCraftForge?.recordTrophy?.(sourceId, { simulation: training });
+      if (!training) {
+        this.player.completedHunts = [...new Set([...this.player.completedHunts, this.currentHuntType])];
+        this.hub.setTrophyState(this.player.completedHunts);
+      }
 
       this.saveProgress();
 
@@ -4185,50 +4139,23 @@ export class Game {
       }
     });
 
-    (this.environment?.obstacleColliders ?? []).forEach((obstacle) => {
-      if (obstacle.blocksActors === false) return;
-      const dx = playerPos.x - obstacle.x;
-      const dz = playerPos.z - obstacle.z;
-      const dist = Math.hypot(dx, dz);
-      const minDist = PLAYER_COLLIDER_RADIUS + obstacle.radius;
-
-      if (dist < minDist && !this.player.isPerched) {
-        const overlap = minDist - dist;
-        const normalX = dist > 0.01 ? dx / dist : 1;
-        const normalZ = dist > 0.01 ? dz / dist : 0;
-        playerPos.x += normalX * overlap;
-        playerPos.z += normalZ * overlap;
+    const actors = [{ position: playerPos, radius: PLAYER_COLLIDER_RADIUS, height: 7.21, skip: this.player.isPerched },
+      ...(this.activeBoss && !this.activeBoss.isDead ? [{ position: this.activeBoss.position,
+        radius: this.activeBoss.colliderRadius ?? 5, height: this.activeBoss.colliderHeight ?? 12 }] : []),
+      ...(this.activeEnemies ?? []).filter(enemy => !enemy.isDead).map(enemy => ({ position: enemy.position,
+        radius: enemy.colliderRadius ?? 0.8,
+        height: enemy.physicalScale ? (enemy.physicalScale.localBounds.max[1] - enemy.physicalScale.localBounds.min[1]) * enemy.mesh.scale.y : 5.4 }))];
+    for (const actor of actors) {
+      if (actor.skip) continue;
+      for (let iteration = 0; iteration < 3; iteration++) {
+        const obstacles = this.environment?.getNearbyObstacles?.(actor.position, actor.radius + 0.1)
+          ?? this.environment?.obstacleColliders ?? [];
+        let changed = false;
+        for (const obstacle of obstacles) changed = resolveActorObstacle(actor.position, actor.radius,
+          actor.height, obstacle, this.environment?.sampleHeight?.(obstacle.x, obstacle.z) ?? 0) || changed;
+        if (!changed) break;
       }
-
-      if (this.activeBoss) {
-        const bdx = this.activeBoss.position.x - obstacle.x;
-        const bdz = this.activeBoss.position.z - obstacle.z;
-        const bdist = Math.hypot(bdx, bdz);
-        const bossRadius = this.activeBoss.colliderRadius ?? 5;
-        const minBossDistance = bossRadius + obstacle.radius;
-        if (bdist < minBossDistance) {
-          const overlap = minBossDistance - bdist;
-          const normalX = bdist > 0.01 ? bdx / bdist : 1;
-          const normalZ = bdist > 0.01 ? bdz / bdist : 0;
-          this.activeBoss.position.x += normalX * overlap;
-          this.activeBoss.position.z += normalZ * overlap;
-        }
-      }
-
-      (this.activeEnemies ?? []).forEach((enemy) => {
-        const edx = enemy.position.x - obstacle.x;
-        const edz = enemy.position.z - obstacle.z;
-        const edist = Math.hypot(edx, edz);
-        const minEnemyDistance = (enemy.colliderRadius ?? 0.8) + obstacle.radius;
-        if (edist < minEnemyDistance) {
-          const overlap = minEnemyDistance - edist;
-          const normalX = edist > 0.01 ? edx / edist : 1;
-          const normalZ = edist > 0.01 ? edz / edist : 0;
-          enemy.position.x += normalX * overlap;
-          enemy.position.z += normalZ * overlap;
-        }
-      });
-    });
+    }
 
     if (!this.player.isPerched) {
       this.environment?.constrainToPlayableArea?.(
@@ -4266,7 +4193,7 @@ export class Game {
       if (!zone?.mesh?.position || zone.mesh.position.distanceTo(playerPos) > (zone.radius ?? 0)) continue;
 
       if (zone.type === 'dissolving_fluid' && (zone.tickCooldown ?? 0) <= 0) {
-        this.player.takeDamage(zone.damage ?? 17);
+        this.applyPlayerDamage(zone.damage ?? 17, 'acid');
         this.player.applyAcidCorrosion();
         zone.tickCooldown = zone.damageInterval ?? 0.7;
         hitCount += 1;
@@ -4276,7 +4203,7 @@ export class Game {
           this.hud.showLogMessage('AGENT CLEANER — CORROSION DE ZONE !', 1400);
         }
       } else if (zone.type === 'proximity_mine' && zone.armed) {
-        this.player.takeDamage(zone.damage ?? 52);
+        this.applyPlayerDamage(zone.damage ?? 52, 'energy');
         audioSynth.playMineExplosion();
         this.spawnPlasmaShockwaveVFX(zone.mesh.position);
         this.spawnBloodSpatterVFX(playerPos, 0xffff00, 14);
@@ -4381,10 +4308,10 @@ export class Game {
       } else if (Number(projectile.blastRadius) > 0) {
         this.applyPlayerBlastDamage(projectile, impact);
       } else {
-        const outcome = target.takeDamage(projectile.damage, impact);
+        const outcome = target.takeDamage(this.getPlayerOutgoingDamage(projectile.damage, 'ranged', target), impact);
         this.reportShieldDeflection(target, outcome);
         this.spawnBloodSpatterVFX(impact, this.getTargetBloodColor(target), 20);
-        this.player.addHonor(target === this.activeBoss ? 100 : 35);
+        this.awardHonor(target === this.activeBoss ? 100 : 35, { target });
         if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target);
       }
 
@@ -4410,7 +4337,7 @@ export class Game {
       ));
       if (!target) continue;
       audioSynth.playMineExplosion();
-      const outcome = target.takeDamage(mine.damage, mine.mesh.position);
+      const outcome = target.takeDamage(this.getPlayerOutgoingDamage(mine.damage, 'explosion', target), mine.mesh.position);
       this.spawnPlasmaShockwaveVFX(mine.mesh.position);
       this.hud.showLogMessage('EXPLOSION DE MINE À PLASMA RÉUSSIE! +120 DÉGÂTS!');
       if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target, 110);
@@ -4431,12 +4358,8 @@ export class Game {
           ? currentPosition.clone().addScaledVector(projectile.dir, -(projectile.speed ?? 0) * delta)
           : currentPosition.clone();
         const projectileRadius = this.getProjectileCollisionRadius(projectile);
-        const playerImpact = this.resolveSegmentSphereImpact(
-          previousPosition,
-          currentPosition,
-          playerPos.clone().add(new THREE.Vector3(0, 2.4, 0)),
-          3.25,
-        );
+        const playerImpact = resolvePlayerCapsuleImpact(previousPosition, currentPosition,
+          playerPos, this.player.isPerched ? 6.6 : 7.21, PLAYER_COLLIDER_RADIUS, projectileRadius);
         const playerDistanceSquared = playerImpact
           ? previousPosition.distanceToSquared(playerImpact)
           : Infinity;
@@ -4464,7 +4387,7 @@ export class Game {
         }
         if (!playerImpact) continue;
 
-        this.player.takeDamage(projectile.damage ?? 35);
+        this.applyPlayerDamage(projectile.damage ?? 35, projectile.damageType === 'acid' || projectile.statusEffect === 'corrosion' || String(projectile.type ?? '').includes('acid') ? 'acid' : String(projectile.type ?? '').includes('plasma') ? 'plasma' : 'ballistic');
         this.spawnBloodSpatterVFX(playerPos, 0xffff00, 12);
         if (projectile.signal === 'city_hunter_net' || projectile.statusEffect === 'netted') {
           this.player.applyCombatStatus?.('snare', projectile.statusDuration ?? 3);
@@ -4530,7 +4453,9 @@ export class Game {
     const isGridAttack = this.currentHuntType === 'grid_alien'
       && ['grid_bite', 'grid_pounce', 'grid_tail_sweep', 'grid_acid_volley']
         .includes(this.activeBoss.activeAttackType);
-    const attackState = isGridAttack ? this.activeBoss.activeAttackType
+    const nativeBoss = ['rhynth_titan', 'vydrach_prime', 'xeno_king'].includes(this.currentHuntType);
+    const nativeAttack = ENEMY_ATTACK_PROFILES[this.activeBoss.activeAttackType] ? this.activeBoss.activeAttackType : null;
+    const attackState = nativeBoss ? nativeAttack : (isGridAttack ? this.activeBoss.activeAttackType
       : isUpgradeLeap ? 'upgrade_leap'
       : isWolfWhip ? 'wolf_whip'
       : isKaliskAttack ? this.activeBoss.activeAttackType
@@ -4538,7 +4463,7 @@ export class Game {
       : isJungleWristblades ? 'jungle_wristblades'
       : isJungleTargeting ? 'jungle_targeting'
       : isJungleMedicomp ? 'jungle_medicomp'
-      : chargeImpactReady ? 'charge' : this.activeBoss.aiState;
+      : chargeImpactReady ? 'charge' : this.activeBoss.aiState);
     const attackProfile = ENEMY_ATTACK_PROFILES[attackState];
     if ((attackProfile?.telegraphed || isSuperPredatorCharge || isFeralSpearAttack || isUpgradePredatorCharge) && this.activeBoss.attackTelegraphAnnounced === false) {
       const message = isSuperPredatorCharge
@@ -4567,10 +4492,10 @@ export class Game {
       && impactReady
       && this.enemyDamageCooldown <= 0
       && freshBadBloodMelee
-      && playerBossDistance <= attackProfile.range
+      && playerBossDistance <= attackProfile.range + Math.max(0, (this.activeBoss.colliderRadius ?? 0) - (this.activeBoss.baseSimulationColliderRadius ?? this.activeBoss.colliderRadius ?? 0))
     ) {
       if (requiresExplicitImpact && this.activeBoss.consumeAttackImpact?.() !== true) return;
-      this.player.takeDamage(attackProfile.damage);
+      this.applyPlayerDamage(attackProfile.damage, attackProfile.corrosion ? 'acid' : 'generic');
       this.enemyDamageCooldown = attackProfile.cooldown;
       if (attackState === 'charge') this.goliathChargeWindow = 0;
       this.spawnBloodSpatterVFX(playerPos, 0xffff00, 15);
@@ -4583,7 +4508,7 @@ export class Game {
       if (playerBossDistance <= 38.0) {
         const falloff = 1 - (playerBossDistance / 38.0);
         const blastDamage = Math.round(95 * falloff);
-        this.player.takeDamage(blastDamage);
+        this.applyPlayerDamage(blastDamage);
         this.spawnBloodSpatterVFX(playerPos, 0xffff00, 25);
         this.hud.showLogMessage(`ONDE DE CHOC D'AUTODESTRUCTION ! -${blastDamage} SANTÉ`, 2500);
       }
@@ -4710,8 +4635,10 @@ export class Game {
         this.hud.showActionPrompt('LE JUNGLE HUNTER SE SOIGNE — TIREZ POUR INTERROMPRE !');
       } else if (this.activeBoss?.laserLocked) {
         this.hud.showActionPrompt('VERROUILLAGE TRI-LASER EN COURS — ESQUIVEZ !');
-      } else if (this.activeBoss.isDead && distToBoss < 14.0 && !this.trophyHarvested) {
+      } else if (this.activeBoss.isDead && this.getTrophyHarvestDistance() < 14.0 && !this.trophyHarvested) {
         this.hud.showActionPrompt('RÉCOLTER LE TROPHÉE YAUTJA [E]');
+      } else if (this.trophySalvage?.getNearby(this.player.position)) {
+        this.hud.showActionPrompt('PRÉLEVER LE MATÉRIAU SUR LE SPÉCIMEN [E]');
       } else if (nearbyCache) {
         this.hud.showActionPrompt(
           nearbyCache.cacheType === 'ritual_weapon_pod'
@@ -4751,18 +4678,18 @@ export class Game {
       const crown = this.currentHuntCrown;
       const crownSuffix = (crown && crown.id !== 'STANDARD') ? ` [${crown.icon} ${crown.label.toUpperCase()}]` : '';
       const bonusMult = crown?.honorBonusMultiplier ?? 1.0;
-      const honorGain = Math.round(this.activeCrossoverHunt.honorReward * bonusMult);
+      const honorGain = this.harvestReward?.honorGained ?? 0;
       document.getElementById('endgame-title').textContent = `ANOMALIE VAINCUE : ${this.activeCrossoverHunt.name.toUpperCase()}${crownSuffix} !`;
-      document.getElementById('endgame-desc').textContent = `Trophée d'exception réclamé : ${this.activeCrossoverHunt.trophy}. L'anomalie du multivers est archivée au panthéon du clan. (+${honorGain} PTS)`;
-      this.player.honorScore += honorGain;
+      document.getElementById('endgame-desc').textContent = `Archive d’entraînement : ${this.activeCrossoverHunt.trophy}. La simulation ne fournit aucune matière physique. (+${honorGain} PTS)`;
+
     } else if (this.activePreySimulation) {
       const crown = this.currentHuntCrown;
       const crownSuffix = (crown && crown.id !== 'STANDARD') ? ` [${crown.icon} ${crown.label.toUpperCase()}]` : '';
       const bonusMult = crown?.honorBonusMultiplier ?? 1.0;
-      const honorGain = Math.round(this.activePreySimulation.baseHonor * bonusMult);
+      const honorGain = this.harvestReward?.honorGained ?? 0;
       document.getElementById('endgame-title').textContent = `SIMULATION ACCOMPLIE : ${this.activePreySimulation.name.toUpperCase()}${crownSuffix} !`;
       document.getElementById('endgame-desc').textContent = `Spécimen ${this.activePreySimulation.scale} (${this.activePreySimulation.sizeMeters}m) maîtrisé. Trophée simulé : ${this.activePreySimulation.trophy}. (+${honorGain} PTS)`;
-      this.player.honorScore += honorGain;
+
     } else {
       document.getElementById('endgame-title').textContent = "CHASSE ACCOMPLIE !";
       document.getElementById('endgame-desc').textContent = `${huntDefinition?.name ?? 'La proie'} rejoint la salle des trophées du clan.`;

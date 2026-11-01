@@ -1,5 +1,6 @@
 import { DEFAULT_SETTINGS } from '../data/GameConfig.js';
 import { sanitizeGraphicsQuality } from '../render/graphicsQuality.js';
+import { normalizeForgeState } from '../gameplay/YautjaTrophyCraftsmanshipForgeSystem.js';
 import {
   DEFAULT_CUSTOMIZATION,
   PLAYABLE_WEAPONS,
@@ -65,6 +66,10 @@ export class SaveManager {
         selectedVehicleId: typeof player.selectedVehicleId === 'string'
           ? player.selectedVehicleId
           : 'vehicle_jungle_dropcraft',
+        ...(Object.prototype.hasOwnProperty.call(player, 'trophyCraftForgeState')
+          && player.trophyCraftForgeState !== undefined
+          ? { trophyCraftForgeState: normalizeForgeState(player.trophyCraftForgeState) }
+          : {}),
       },
       settings: this.sanitizeSettings(settings),
     };
@@ -185,6 +190,12 @@ export class SaveManager {
       player.selectedVehicleId = typeof source.selectedVehicleId === 'string'
         ? source.selectedVehicleId
         : 'vehicle_jungle_dropcraft';
+      if (Object.prototype.hasOwnProperty.call(source, 'trophyCraftForgeState')) {
+        player.trophyCraftForgeState = normalizeForgeState(source.trophyCraftForgeState);
+      } else {
+        // Preserve absence for the one-time migration of the legacy forge key.
+        delete player.trophyCraftForgeState;
+      }
 
       const settings = this.sanitizeSettings(raw.format === 'v1' ? DEFAULT_SETTINGS : parsed.settings);
       const migrated = raw.format !== 'v4';

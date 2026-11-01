@@ -1,9 +1,12 @@
 import CANON_PREY_EXPANSION_V251 from './CanonPreyExpansionV251.js';
+import { normalizePreyReference } from './PreyReferenceMetadata.js';
+export { classifyPreyScaleFromMeters, getPreyProvenanceLabel, getPreySourceLabel } from './PreyReferenceMetadata.js';
 /**
  * PreyTaxonomyAndCrossoverCatalog.js
  * 
- * Classification complète et exhaustive des proies de la franchise selon 5 paliers de taille (1:1 Lore Canon) :
- * - GÉANT (Titans & Léviathans : 8m à 30m)
+ * Catalogue de références et de simulations originales selon 5 paliers de taille.
+ * Les mètres sont des estimations d'archive, pas des dimensions officielles vérifiées.
+ * - GÉANT (Titans & Léviathans : 8m et plus)
  * - GRANDE (Prédateurs Apex & Gardes Royaux : 3m à 8m)
  * - MOYEN (Guerriers, Humanoïdes & Synthétiques : 1.8m à 3m)
  * - PETITE (Nuée, Parasites & Infiltration : 0.5m à 1.8m)
@@ -16,7 +19,9 @@ export const PREY_SCALE_TIERS = Object.freeze({
   GEANT: Object.freeze({
     id: 'geant',
     label: 'GÉANT (TITANS & LÉVIATHANS)',
-    sizeRange: '8m à 30m',
+    sizeRange: '8 m et plus',
+    minMeters: 8,
+    maxMeters: Infinity,
     badgeClass: 'scale-geant',
     honorMultiplier: 2.5,
     description: 'Monstres titanesques et titans bio-mécaniques capables de ravager une armée.'
@@ -24,7 +29,9 @@ export const PREY_SCALE_TIERS = Object.freeze({
   GRANDE: Object.freeze({
     id: 'grande',
     label: 'GRANDE (APEX & CONSTRUITS)',
-    sizeRange: '3m à 8m',
+    sizeRange: '3 m à moins de 8 m',
+    minMeters: 3,
+    maxMeters: 8,
     badgeClass: 'scale-grande',
     honorMultiplier: 1.8,
     description: 'Chasseurs d’élite, formes royales et bêtes blindées de premier ordre.'
@@ -32,7 +39,9 @@ export const PREY_SCALE_TIERS = Object.freeze({
   MOYEN: Object.freeze({
     id: 'moyen',
     label: 'MOYEN (GUERRIERS & SYNTHÉTIQUES)',
-    sizeRange: '1.8m à 3m',
+    sizeRange: '1,8 m à moins de 3 m',
+    minMeters: 1.8,
+    maxMeters: 3,
     badgeClass: 'scale-moyen',
     honorMultiplier: 1.2,
     description: 'Guerriers xénomorphes, soldats d’élite lourdement armés et androïdes de combat.'
@@ -40,7 +49,9 @@ export const PREY_SCALE_TIERS = Object.freeze({
   PETITE: Object.freeze({
     id: 'petite',
     label: 'PETITE (NUÉE & INFILTRATION)',
-    sizeRange: '0.5m à 1.8m',
+    sizeRange: '0,5 m à moins de 1,8 m',
+    minMeters: 0.5,
+    maxMeters: 1.8,
     badgeClass: 'scale-petite',
     honorMultiplier: 0.8,
     description: 'Parasites bondissants, bêtes de traque rapides et drones éclaireurs.'
@@ -48,7 +59,9 @@ export const PREY_SCALE_TIERS = Object.freeze({
   MINUSCULE: Object.freeze({
     id: 'minuscule',
     label: 'MINUSCULE (BIO-PATHOGÈNES & SPORES)',
-    sizeRange: '< 0.5m',
+    sizeRange: 'moins de 0,5 m',
+    minMeters: 0,
+    maxMeters: 0.5,
     badgeClass: 'scale-minuscule',
     honorMultiplier: 0.5,
     description: 'Mutagènes chimiques, vers parasitaires et spores fongiques aéroportées.'
@@ -64,7 +77,7 @@ export const PREY_FACTIONS = Object.freeze({
 });
 
 /**
- * Catalogue exhaustif de toutes les proies selon les 5 échelles.
+ * Export historique du catalogue : références de franchise et créations originales.
  */
 export const CANON_PREY_CATALOG = Object.freeze([
   // ================= 1. TAILLE GÉANTE =================
@@ -436,7 +449,7 @@ export const CANON_PREY_CATALOG = Object.freeze([
     scale: 'GEANT',
     sizeMeters: 9.2,
     originMedia: 'Batman / Aliens (Dark Horse / DC 1997)',
-    description: 'Mutation xénomorphe géante née de l\'infection d\'un crocodile d\'Amérique du Sud par un Facehugger. Cuirasse écailleuse et mâchoire броня.',
+    description: 'Mutation xénomorphe géante née de l\'infection d\'un crocodile d\'Amérique du Sud par un Facehugger. Cuirasse écailleuse et mâchoire blindée.',
     weakpoints: ['Gorge ventrale', 'Yeux vestigiaux', 'Massue de queue'],
     trophy: 'Mâchoire Blindée de Croco-Xéno',
     baseHonor: 3600,
@@ -2372,11 +2385,11 @@ export const CANON_PREY_CATALOG = Object.freeze([
     threatStars: 1,
   },
   ...CANON_PREY_EXPANSION_V251.map((p) => ({ ...p, faction: PREY_FACTIONS[p.faction] ?? p.faction })),
-]);
+].map((entry) => normalizePreyReference(entry)));
 
 /**
- * Catalogue Officiel des Proies Crossover du Multivers (DC Comics, Dark Horse, 2000 AD).
- * Proies d'exception rencontrées par les Yautja dans les œuvres sous licence officielle.
+ * Références de personnages pour les simulations multivers originales.
+ * La présence ici ne prouve ni un crossover publié ni une reproduction 1:1.
  */
 export const MULTIVERSE_CROSSOVER_PREY = Object.freeze([
   {
@@ -3461,22 +3474,25 @@ export const MULTIVERSE_CROSSOVER_PREY = Object.freeze([
     rotationPeriodHours: 6,
     arena: 'LABORATOIRE SOUTERRAIN DU PROJET STARGAZER — CUVE DU CAISSON CRYO',
   },
-]);
+].map((entry) => normalizePreyReference(entry, { kind: 'crossover' })));
 
 /**
  * Calcule l'état actuel de la rotation spatio-temporelle des anomalies multivers.
  * Change de cible active toutes les 6 heures de manière déterministe.
  */
 export function getMultiverseRotationState(timestamp = Date.now()) {
+  const suppliedTime = timestamp instanceof Date ? timestamp.getTime() : timestamp;
+  const time = Number.isFinite(suppliedTime) ? suppliedTime : 0;
+  const modulo = (value, divisor) => ((value % divisor) + divisor) % divisor;
   const rotationCycleMs = 6 * 3600 * 1000; // 6 heures
-  const totalPeriods = Math.floor(timestamp / rotationCycleMs);
-  const activeIndex = totalPeriods % MULTIVERSE_CROSSOVER_PREY.length;
+  const totalPeriods = Math.floor(time / rotationCycleMs);
+  const activeIndex = modulo(totalPeriods, MULTIVERSE_CROSSOVER_PREY.length);
   const nextIndex = (activeIndex + 1) % MULTIVERSE_CROSSOVER_PREY.length;
   const followingIndex = (activeIndex + 2) % MULTIVERSE_CROSSOVER_PREY.length;
 
-  const msIntoPeriod = timestamp % rotationCycleMs;
+  const msIntoPeriod = modulo(time, rotationCycleMs);
   const msRemaining = rotationCycleMs - msIntoPeriod;
-  const secondsRemaining = Math.floor(msRemaining / 1000);
+  const secondsRemaining = Math.ceil(msRemaining / 1000);
 
   const hours = Math.floor(secondsRemaining / 3600);
   const minutes = Math.floor((secondsRemaining % 3600) / 60);

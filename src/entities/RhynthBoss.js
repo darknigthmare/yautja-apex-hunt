@@ -3,7 +3,8 @@ import { ShaderManager } from '../Shaders.js';
 import { audioSynth } from '../AudioSynthesizer.js';
 import { captureBaseMaterials, overrideMaterials, restoreBaseMaterials } from '../utils/materialState.js';
 import { getRuntimeTexture } from '../utils/runtimeTextures.js';
-import { forwardRayIntersectsSphere, resolveSegmentSphereImpact } from '../utils/projectileCollision.js';
+import { containsBossPartImpact, resolveBossGeometryImpact } from './BossProjectileGeometry.js';
+import { getVisualBounds } from '../utils/worldScale.js';
 
 export const RHYNTH_TEXTURES = Object.freeze({
   rockHide: '/assets/textures/goliath-armored-hide.webp',
@@ -11,8 +12,14 @@ export const RHYNTH_TEXTURES = Object.freeze({
   carapacePlates: '/assets/textures/yautja-alloy.webp',
 });
 
+// Original combat timings/ranges in game units; not a certified media mechanic.
+export const RHYNTH_ATTACK_SPECS = Object.freeze({
+  stomp: Object.freeze({ id: 'rhynth_stomp', state: 'stomp', windup: 0.85, impact: 0.2, recovery: 0.6, cooldown: 2.5, range: 12 }),
+  charge: Object.freeze({ id: 'rhynth_charge', state: 'charge', windup: 1.05, impact: 1.2, recovery: 0.7, cooldown: 3.8, range: 12.5, speedKey: 'chargeSpeed' }),
+});
+
 /**
- * Le Rhynth Titanesque de Ryushi — Béhémoth Quadrupède/Hexapode Blindé (Fidélité 1:1 Canon Lore AVP: Prey).
+ * Adaptation procédurale du Rhynth de Ryushi, selon le référent AVP: Prey du catalogue.
  * Animal colossal indigène des plaines arides de Ryushi, chassé traditionnellement
  * par le Clan de Dachande (Broken Tusk) comme épreuve de force ancestrale.
  */
@@ -53,6 +60,21 @@ export class RhynthBoss {
     // AI & Combat States
     this.aiState = 'graze';
     this.attackCooldown = 0;
+    this.attackSpecs = RHYNTH_ATTACK_SPECS;
+    this.activeAttackType = null;
+    this.activeAttackKind = null;
+    this.attackStage = 'idle';
+    this.attackStageTimer = 0;
+    this.attackWindupTimer = 0;
+    this.attackWindupDuration = 0;
+    this.attackRecoveryTimer = 0;
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
+    this.attackSequence = 0;
+    this.attackTravelRemaining = 0;
+    this.attackDirection = new THREE.Vector3(0, 0, 1);
+    this.attackTarget = new THREE.Vector3();
     this.stompCooldown = 0;
     this.projectiles = [];
     this.position = new THREE.Vector3(0, 0, -45);
@@ -96,7 +118,7 @@ export class RhynthBoss {
       map: alloyTex,
     });
 
-    // 1. Massive Torso & Belly (7m long, 4.2m wide, 4m high)
+    // 1. Torso and belly, authored in game units (not metres)
     const torso = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 2.6, 7.2, 16), bodyMat);
     torso.rotation.x = Math.PI / 2;
     torso.position.set(0, 3.4, 0);
@@ -139,7 +161,7 @@ export class RhynthBoss {
     skull.position.set(0, 0, 0);
     this.headGroup.add(skull);
 
-    // Central Obsidian Battering Horn (2.5m)
+    // Central battering horn (2.8 game units)
     this.centralHorn = new THREE.Mesh(new THREE.ConeGeometry(0.65, 2.8, 16), hornMat);
     this.centralHorn.name = 'rhynthCentralHorn';
     this.centralHorn.position.set(0, 0.9, 1.8);
@@ -163,7 +185,7 @@ export class RhynthBoss {
     legZOffsets.forEach((zOffset, legIndex) => {
       [-1, 1].forEach((side) => {
         const legGroup = new THREE.Group();
-        legGroup.position.set(side * 1.8, 1.8, zOffset);
+        legGroup.position.set(side * 1.8, 1.5, zOffset);
 
         const upperLeg = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.55, 2.2, 12), bodyMat);
         upperLeg.castShadow = true;
@@ -242,46 +264,10 @@ export class RhynthBoss {
   }
 
   resolveProjectileImpact(projectilePosition, projectileRadius = 1, previousPosition = projectilePosition) {
-    if (!projectilePosition?.isVector3 || this.isDead) return null;
-    const safeRadius = Math.max(0, Number(projectileRadius) || 0);
-    const start = previousPosition?.isVector3 ? previousPosition : projectilePosition;
-
-    // 1. Weakpoint: Exposed Thermal Core
-    if (this.coreExposed) {
-      const corePos = this.getCoreWorldPosition();
-      if (
-        resolveSegmentSphereImpact(start, projectilePosition, corePos, 3.2 + safeRadius)
-        || forwardRayIntersectsSphere(start, projectilePosition, corePos, 3.2 + safeRadius)
-      ) {
-        return corePos;
-      }
-    }
-
-    // 2. Horn / Ram Head
-    const hornPos = this.getHornWorldPosition();
-    if (
-      resolveSegmentSphereImpact(start, projectilePosition, hornPos, 3.8 + safeRadius)
-      || forwardRayIntersectsSphere(start, projectilePosition, hornPos, 3.8 + safeRadius)
-    ) {
-      return hornPos;
-    }
-
-    // 3. Tail Club
-    if (this.tailIntact) {
-      const tailPos = this.getTailWorldPosition();
-      if (
-        resolveSegmentSphereImpact(start, projectilePosition, tailPos, 4.2 + safeRadius)
-        || forwardRayIntersectsSphere(start, projectilePosition, tailPos, 4.2 + safeRadius)
-      ) {
-        return tailPos;
-      }
-    }
-
-    // 4. Main Torso / Armor Carapace
-    const bodyPos = this.mesh.localToWorld(new THREE.Vector3(0, 3.4, 0));
-    return resolveSegmentSphereImpact(start, projectilePosition, bodyPos, this.colliderRadius + safeRadius);
+    if (this.isDead) return null;
+    return resolveBossGeometryImpact(this.mesh, previousPosition, projectilePosition, projectileRadius,
+      [this.coreExposed ? this.coreMesh : null, this.hornIntact ? this.centralHorn : null, this.tailIntact ? this.tailClub : null]);
   }
-
   spawnSeveredTail() {
     if (this.severedTailMesh) return this.severedTailMesh;
     const tailProp = new THREE.Group();
@@ -301,7 +287,7 @@ export class RhynthBoss {
     tailProp.add(club);
 
     tailProp.position.copy(this.getTailWorldPosition());
-    tailProp.position.y = 0.5;
+    tailProp.position.y = this.position.y - getVisualBounds(tailProp, { local: true }).min.y;
     tailProp.userData.isCarveable = true;
     tailProp.userData.carved = false;
     tailProp.userData.trophyType = 'RHYNTH_SEVERED_CLUB';
@@ -312,6 +298,7 @@ export class RhynthBoss {
 
   triggerTopple(durationSeconds = 7.5) {
     if (this.isDead || this.isToppled) return;
+    this.cancelAttack('toppled');
     this.isToppled = true;
     this.toppleTimer = durationSeconds;
     this.aiState = 'toppled';
@@ -329,19 +316,18 @@ export class RhynthBoss {
   takeDamage(amount, hitPosition) {
     if (this.isDead) return { damage: 0, killed: false, remainingHealth: this.health };
 
-    let finalDamage = Math.max(0, Number(amount) || 0);
+    const baseDamage = Math.max(0, Number(amount) || 0);
+    let finalDamage = baseDamage;
     const impact = hitPosition?.isVector3 ? hitPosition : this.position;
 
     // 1. Core Weakpoint hit (x2.5 critical damage)
-    const distToCore = impact.distanceTo(this.getCoreWorldPosition());
-    if (distToCore < 3.5 && this.coreExposed) {
+    if (this.coreExposed && containsBossPartImpact(this.coreMesh, impact)) {
       finalDamage *= 2.5;
     }
 
     // 2. Horn Ram Break Check
-    const distToHorn = impact.distanceTo(this.getHornWorldPosition());
-    if (distToHorn < 4.0 && this.hornIntact) {
-      this.hornHealth -= amount;
+    if (this.hornIntact && containsBossPartImpact(this.centralHorn, impact)) {
+      this.hornHealth -= baseDamage;
       if (this.hornHealth <= 0) {
         this.hornIntact = false;
         if (this.centralHorn) this.centralHorn.visible = false;
@@ -352,7 +338,7 @@ export class RhynthBoss {
 
     // 3. Dorsal Plates Fracture Check
     if (this.armorPlatesIntact) {
-      this.armorPlatesHealth -= amount;
+      this.armorPlatesHealth -= baseDamage;
       if (this.armorPlatesHealth <= 0) {
         this.armorPlatesIntact = false;
         this.coreExposed = true;
@@ -366,9 +352,8 @@ export class RhynthBoss {
     }
 
     // 4. Tail Sever Check
-    const distToTail = impact.distanceTo(this.getTailWorldPosition());
-    if (distToTail < 4.5 && this.tailIntact) {
-      this.tailHealth -= amount;
+    if (this.tailIntact && containsBossPartImpact(this.tailClub, impact)) {
+      this.tailHealth -= baseDamage;
       if (this.tailHealth <= 0) {
         this.tailIntact = false;
         if (this.tailGroup) this.tailGroup.visible = false;
@@ -388,7 +373,7 @@ export class RhynthBoss {
 
     if (this.health <= 0) {
       this.isDead = true;
-      this.aiState = 'dead';
+      this.cancelAttack('dead');
       audioSynth.playMonsterRoar();
     }
 
@@ -400,89 +385,164 @@ export class RhynthBoss {
   }
 
   applyNet() {
+    this.cancelAttack('netted');
     this.isNetted = true;
     this.netTimer = 3.5;
   }
 
-  update(delta, playerPos, isPlayerCloaked) {
-    if (this.isDead) return;
+  startTelegraphedAttack(kind, targetPosition) {
+    const spec = this.attackSpecs[kind];
+    if (!spec || this.activeAttackType || this.attackCooldown > 0 || this.isDead || this.isNetted || this.isToppled
+      || !targetPosition?.isVector3 || ![targetPosition.x, targetPosition.y, targetPosition.z].every(Number.isFinite)) return false;
+    if (kind === 'aerial_dive' && (!this.leftWingIntact || !this.rightWingIntact)) return false;
+    if (kind === 'tail_whip' && !this.tailIntact) return false;
+    this.activeAttackType = spec.id;
+    this.activeAttackKind = kind;
+    this.attackStage = 'windup';
+    this.attackWindupDuration = spec.windup * (this.isExhausted ? 1.15 : 1);
+    this.attackWindupTimer = this.attackWindupDuration;
+    this.attackStageTimer = this.attackWindupDuration;
+    this.attackCooldown = spec.cooldown * (this.isExhausted ? 1.35 : 1);
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
+    this.attackSequence += 1;
+    this.attackTarget.copy(targetPosition);
+    this.attackDirection.copy(targetPosition).sub(this.position);
+    this.attackDirection.y = 0;
+    this.attackTravelRemaining = Math.max(0, this.attackDirection.length() - this.colliderRadius - 1.8);
+    if (this.attackDirection.lengthSq() < 1e-8) this.attackDirection.set(0, 0, 1);
+    else this.attackDirection.normalize();
+    this.aiState = spec.state;
+    return true;
+  }
 
-    if (this.isToppled) {
-      this.toppleTimer -= delta;
-      if (this.toppleTimer <= 0) {
-        this.isToppled = false;
-        this.aiState = 'chase';
+  consumeAttackImpact() {
+    if (!this.attackImpactReady || this.attackImpactConsumed || this.attackStage !== 'impact') return false;
+    this.attackImpactConsumed = true;
+    this.attackImpactReady = false;
+    return true;
+  }
+
+  cancelAttack(nextState = this.isDead ? 'dead' : 'chase') {
+    this.activeAttackType = null;
+    this.activeAttackKind = null;
+    this.attackStage = 'idle';
+    this.attackStageTimer = 0;
+    this.attackWindupTimer = 0;
+    this.attackWindupDuration = 0;
+    this.attackRecoveryTimer = 0;
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
+    this.attackTravelRemaining = 0;
+    this.aiState = nextState;
+  }
+
+  updateTelegraphedAttack(delta) {
+    if (!this.activeAttackType) return false;
+    const spec = this.attackSpecs[this.activeAttackKind];
+    if ((this.activeAttackKind === 'aerial_dive' && (!this.leftWingIntact || !this.rightWingIntact))
+      || (this.activeAttackKind === 'tail_whip' && !this.tailIntact)) {
+      this.cancelAttack();
+      return false;
+    }
+    if (this.attackStage === 'windup') {
+      this.aiState = spec.state;
+      const angle = Math.atan2(this.attackDirection.x, this.attackDirection.z);
+      const difference = Math.atan2(Math.sin(angle - this.mesh.rotation.y), Math.cos(angle - this.mesh.rotation.y));
+      this.mesh.rotation.y += difference * Math.min(1, delta * 5);
+      this.attackStageTimer = Math.max(0, this.attackStageTimer - delta);
+      this.attackWindupTimer = this.attackStageTimer;
+      if (this.attackStageTimer === 0) {
+        this.attackStage = 'impact';
+        this.attackStageTimer = spec.impact;
+        this.attackImpactReady = true;
       }
+    } else if (this.attackStage === 'impact') {
+      this.aiState = spec.state;
+      if (spec.speedKey) {
+        const speed = this[spec.speedKey] * (this.isExhausted ? 0.75 : 1)
+          * (this.activeAttackKind === 'charge' && !this.hornIntact ? 0.7 : 1);
+        const travel = Math.min(this.attackTravelRemaining, speed * Math.min(delta, this.attackStageTimer));
+        this.position.addScaledVector(this.attackDirection, travel);
+        this.attackTravelRemaining -= travel;
+      }
+      this.attackStageTimer = Math.max(0, this.attackStageTimer - delta);
+      if (this.attackStageTimer === 0) {
+        this.attackStage = 'recovery';
+        this.attackStageTimer = spec.recovery;
+        this.attackRecoveryTimer = spec.recovery;
+        this.attackImpactReady = false;
+        this.aiState = 'recover';
+      }
+    } else if (this.attackStage === 'recovery') {
+      this.attackStageTimer = Math.max(0, this.attackStageTimer - delta);
+      this.attackRecoveryTimer = this.attackStageTimer;
+      this.aiState = 'recover';
+      if (this.attackStageTimer === 0) this.cancelAttack();
+    }
+    const boundary = Math.max(40, Number(this.arenaBoundary) || 320);
+    this.position.x = THREE.MathUtils.clamp(this.position.x, -boundary, boundary);
+    this.position.z = THREE.MathUtils.clamp(this.position.z, -boundary, boundary);
+    this.mesh.position.copy(this.position);
+    return true;
+  }
+
+  update(delta, playerPos, isPlayerCloaked) {
+    delta = Number.isFinite(delta) ? Math.max(0, delta) : 0;
+    if (this.isDead) { this.cancelAttack('dead'); return; }
+    if (this.isToppled) {
+      this.cancelAttack('toppled');
+      this.toppleTimer = Math.max(0, this.toppleTimer - delta);
+      if (this.toppleTimer === 0) { this.isToppled = false; this.aiState = 'chase'; }
       return;
     }
-
     if (this.isNetted) {
-      this.netTimer -= delta;
-      if (this.netTimer <= 0) this.isNetted = false;
+      this.cancelAttack('netted');
+      this.netTimer = Math.max(0, this.netTimer - delta);
+      if (this.netTimer === 0) { this.isNetted = false; this.aiState = 'chase'; }
       return;
     }
-
     this.attackCooldown = Math.max(0, this.attackCooldown - delta);
     this.stompCooldown = Math.max(0, this.stompCooldown - delta);
-
-    // Monster Hunter Stamina Consumption
-    if (this.aiState === 'charge') {
-      this.stamina = Math.max(0, this.stamina - delta * 35);
-    } else {
-      this.stamina = Math.max(0, this.stamina - delta * 12);
-    }
-
-    if (this.stamina <= 0 && !this.isExhausted) {
+    this.stamina = Math.max(0, this.stamina - delta * (this.activeAttackType === 'rhynth_charge' ? 35 : 12));
+    if (this.stamina === 0 && !this.isExhausted) {
       this.isExhausted = true;
       audioSynth.playMonsterFatiguePant();
-    } else if (this.stamina > 400 && this.isExhausted) {
-      this.isExhausted = false;
-    }
+    } else if (this.stamina > 400) this.isExhausted = false;
+    if (this.updateTelegraphedAttack(delta)) return;
 
-    const distToPlayer = playerPos ? this.position.distanceTo(playerPos) : 999;
-    const detectionRadius = isPlayerCloaked ? 32.0 : 160.0;
-
-    if (distToPlayer < detectionRadius && playerPos) {
+    const distToPlayer = playerPos?.isVector3
+      ? Math.hypot(playerPos.x - this.position.x, playerPos.z - this.position.z) : Infinity;
+    const detectionRadius = isPlayerCloaked ? 32 : 160;
+    const radiusAllowance = Math.max(0, this.colliderRadius - (this.baseSimulationColliderRadius ?? this.colliderRadius));
+    if (distToPlayer < detectionRadius) {
       this.aiState = 'chase';
-      const targetDir = playerPos.clone().sub(this.position).normalize();
+      const targetDir = playerPos.clone().sub(this.position);
+      targetDir.y = 0;
+      if (targetDir.lengthSq() > 1e-8) targetDir.normalize();
       const targetAngle = Math.atan2(targetDir.x, targetDir.z);
-
-      let diff = targetAngle - this.mesh.rotation.y;
-      diff = Math.atan2(Math.sin(diff), Math.cos(diff));
-      this.mesh.rotation.y += diff * Math.min(1.0, delta * 3.5);
-
-      if (this.attackCooldown <= 0) {
-        if (distToPlayer < 9.0) {
-          this.aiState = 'stomp';
-          audioSynth.playMonsterHunterFootstep();
-          this.attackCooldown = this.isExhausted ? 4.2 : 2.5;
-        } else if (distToPlayer >= 18.0 && distToPlayer <= 55.0) {
-          this.aiState = 'charge';
-          audioSynth.playMonsterHunterRoar();
-          this.attackCooldown = this.isExhausted ? 5.5 : 3.8;
+      const difference = Math.atan2(Math.sin(targetAngle - this.mesh.rotation.y), Math.cos(targetAngle - this.mesh.rotation.y));
+      this.mesh.rotation.y += difference * Math.min(1, delta * 3.5);
+      if (this.attackCooldown === 0) {
+        if (distToPlayer <= this.attackSpecs.stomp.range + radiusAllowance) {
+          if (this.startTelegraphedAttack('stomp', playerPos)) audioSynth.playMonsterHunterFootstep();
+        } else if (distToPlayer >= 18 + radiusAllowance && distToPlayer <= 42 + radiusAllowance) {
+          if (this.startTelegraphedAttack('charge', playerPos)) audioSynth.playMonsterHunterRoar();
         }
       }
-
-      let speed = this.isEnraged ? this.enragedSpeed : this.moveSpeed;
-      if (this.isExhausted) speed *= 0.6;
-      if (this.aiState === 'charge') speed = this.chargeSpeed * (this.hornIntact ? 1.0 : 0.7);
-
-      if (distToPlayer > 7.0) {
-        this.position.addScaledVector(targetDir, speed * delta);
+      if (!this.activeAttackType) {
+        let speed = this.isEnraged ? this.enragedSpeed : this.moveSpeed;
+        if (this.isExhausted) speed *= 0.6;
+        const travel = Math.min(speed * delta, Math.max(0, distToPlayer - this.colliderRadius - 1.8));
+        this.position.addScaledVector(targetDir, travel);
       }
-    } else {
-      this.aiState = 'graze';
-    }
+    } else this.aiState = 'graze';
 
     const arenaBoundary = Math.max(40, Number(this.arenaBoundary) || 320);
-    this.position.x = Math.max(-arenaBoundary, Math.min(arenaBoundary, this.position.x));
-    this.position.z = Math.max(-arenaBoundary, Math.min(arenaBoundary, this.position.z));
-
-    if (this.stompCooldown === 0 && (this.aiState === 'chase' || this.aiState === 'charge')) {
-      audioSynth.playMonsterHunterFootstep();
-      this.stompCooldown = this.aiState === 'charge' ? 0.38 : 0.85;
-    }
-
+    this.position.x = THREE.MathUtils.clamp(this.position.x, -arenaBoundary, arenaBoundary);
+    this.position.z = THREE.MathUtils.clamp(this.position.z, -arenaBoundary, arenaBoundary);
     this.mesh.position.copy(this.position);
   }
 

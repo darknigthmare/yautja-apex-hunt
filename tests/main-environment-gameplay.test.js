@@ -332,7 +332,7 @@ test('la couverture intercepte un tir PNJ avant tout dégât, statut ou recul', 
   harness.game.updateEncounterContent(0.1);
 
   assert.deepEqual(harness.coverQueries[0][0].toArray(), origin.toArray());
-  assert.deepEqual(harness.coverQueries[0][1].toArray(), [6, 2.4, 0]);
+  assert.deepEqual(harness.coverQueries[0][1].toArray(), [6, 4.8, 0]);
   assert.equal(harness.coverQueries[0][2], 0.25);
   assert.deepEqual(harness.tracers[0][1].toArray(), coverPoint.toArray());
   assert.equal(harness.game.player.health, 100);

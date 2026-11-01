@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { refineNpcVisual } from '../utils/characterDetail.js';
+import { applyNpcWorldScale, getVisualBounds } from '../utils/worldScale.js';
 
 export const HUNT_NPC_TEXTURES = Object.freeze({
   xeno_drone: '/assets/textures/xeno-carapace.webp',
@@ -613,6 +614,17 @@ function makeLowPolyNpcSilhouette(type, detailedGroup, profile) {
     }
   }
 
+  // Match the ground/contact height of the detailed model. Formerly the two-
+  // mesh humanoid LOD had no legs and floated a full scaled metre above its feet.
+  const silhouette = getVisualBounds(lod, { local: true });
+  const reference = detailedGroup.userData.worldScale;
+  const source = getNpcLocalBounds(detailedGroup);
+  const minimumY = reference?.localBounds.min[1] ?? source.center.y - source.size.y / 2;
+  const maximumY = profile.family === 'humanoid' && reference?.localHeadTop
+    ? reference.localHeadTop : source.center.y + source.size.y / 2;
+  const verticalScale = (maximumY - minimumY) / Math.max(0.001, silhouette.max.y - silhouette.min.y);
+  lod.scale.y = verticalScale;
+  lod.position.y = minimumY - silhouette.min.y * verticalScale;
   lod.visible = false;
   return lod;
 }
@@ -667,13 +679,38 @@ function makeXenoDrone(texture) {
   const carapace = makeMaterial(0x111817, texture, { roughness: 0.34, metalness: 0.35 });
   const teeth = makeMaterial(0xc5bfa8, null, { roughness: 0.45, metalness: 0.7 });
 
-  addPart(group, new THREE.SphereGeometry(0.55, 14, 9), carapace, [0, 1.15, 0], [0.78, 1.2, 0.7]);
-  addPart(group, new THREE.SphereGeometry(0.48, 14, 8), carapace, [0, 1.72, 0.34], [0.82, 0.56, 1.28]);
-  addPart(group, new THREE.ConeGeometry(0.22, 0.56, 8), teeth, [0, 1.48, 0.88], [1, 1, 1], [Math.PI / 2, 0, 0]);
+  const thorax = addPart(group, new THREE.SphereGeometry(0.55, 14, 9), carapace, [0, 1.15, 0], [0.6, 1.2, 0.7]);
+  thorax.name = 'anatomy:xeno_drone:thorax';
+  // Use the existing Grid model's longitudinal capsule construction and narrow
+  // cranial/thoracic ratio. This remains original procedural geometry, not a
+  // certified reconstruction of the Alien (1979) filming model.
+  const dome = addPart(group, new THREE.CapsuleGeometry(0.22, 0.7, 6, 20), carapace,
+    [0, 1.72, 0.12], [1, 1, 0.78], [Math.PI / 2, 0, 0]);
+  dome.name = 'anatomy:xeno_drone:dome';
+  const jaw = addPart(group, new THREE.CapsuleGeometry(0.11, 0.18, 4, 12), carapace,
+    [0, 1.49, 0.65], [1.25, 1, 0.65], [Math.PI / 2, 0, 0]);
+  jaw.name = 'anatomy:xeno_drone:outer_jaw';
+  const innerJaw = addPart(group, new THREE.CylinderGeometry(0.032, 0.038, 0.2, 10), carapace,
+    [0, 1.49, 0.87], null, [Math.PI / 2, 0, 0]);
+  innerJaw.name = 'anatomy:xeno_drone:inner_jaw';
+  const dentition = new THREE.InstancedMesh(new THREE.ConeGeometry(0.014, 0.05, 6), teeth, 6);
+  dentition.name = 'anatomy:xeno_drone:teeth';
+  const tooth = new THREE.Object3D();
+  for (let index = 0; index < 6; index++) {
+    const upper = index < 3;
+    tooth.position.set(((index % 3) - 1) * 0.09, 1.49 + (upper ? 0.045 : -0.045), 0.85);
+    tooth.rotation.z = upper ? Math.PI : 0;
+    tooth.updateMatrix();
+    dentition.setMatrixAt(index, tooth.matrix);
+  }
+  dentition.castShadow = dentition.receiveShadow = true;
+  group.add(dentition);
 
   for (const side of [-1, 1]) {
-    addPart(group, new THREE.CylinderGeometry(0.1, 0.13, 1.08, 7), carapace, [side * 0.48, 0.72, 0.02], null, [0, 0, side * 0.35]);
-    addPart(group, new THREE.CylinderGeometry(0.07, 0.1, 0.92, 7), carapace, [side * 0.7, 1.13, 0.22], null, [0.3, 0, side * 0.82]);
+    addPart(group, new THREE.CylinderGeometry(0.1, 0.13, 1.08, 7), carapace,
+      [side * 0.25, 0.6, 0.02], null, [0, 0, side * 0.1]);
+    addPart(group, new THREE.CylinderGeometry(0.07, 0.1, 0.92, 7), carapace,
+      [side * 0.37, 1.13, 0], null, [-0.12, 0, side * 0.12]);
   }
 
   const tail = addPart(group, new THREE.CylinderGeometry(0.035, 0.14, 2.4, 8), carapace, [0, 0.96, -1.08]);
@@ -1682,6 +1719,26 @@ export class HuntNPC {
     const texture = loadSharedTexture(HUNT_NPC_TEXTURES[this.type]);
     this.mesh = meshFactories[this.type](texture);
     refineNpcVisual(this.mesh, this.type, HUNT_NPC_LOD_PROFILES[this.type].family);
+    this.physicalScale = applyNpcWorldScale(this.mesh, this.type, HUNT_NPC_LOD_PROFILES[this.type].family);
+    const previousRadius = this.colliderRadius;
+    if (config.colliderRadius == null) {
+      this.colliderRadius *= this.physicalScale.factor;
+      if (HUNT_NPC_LOD_PROFILES[this.type].family === 'xeno') {
+        const torso = this.mesh.children.find((child) => child.isMesh && !child.isInstancedMesh);
+        const body = getVisualBounds(torso).getSize(new THREE.Vector3());
+        // A wider warrior's torso must not get a smaller collider merely
+        // because its old factory was taller than the original drone factory.
+        const bodyRadius = Math.hypot(body.x, body.z) * 0.625;
+        this.colliderRadius = this.type === 'xeno_drone' ? bodyRadius : Math.max(this.colliderRadius, bodyRadius);
+      }
+    }
+    if (this.attackKind !== 'projectile') {
+      // Preserve the authored extra reach beyond the actor's own body rather
+      // than stopping a newly full-sized creature outside collision distance.
+      this.attackRange += this.colliderRadius - previousRadius;
+      this.chargeRange = Math.max(this.chargeRange, this.attackRange);
+      this.ambushTriggerRange = Math.max(this.ambushTriggerRange, this.attackRange);
+    }
     this.detailedGroup = this.mesh;
     this.detailedGroup.userData.isHuntNpcDetailed = true;
     this.lodProfile = HUNT_NPC_LOD_PROFILES[this.type];
@@ -1746,6 +1803,23 @@ export class HuntNPC {
     this.mesh.userData.territoryCenter = this.territoryCenter.clone();
     this.mesh.userData.patrolRadius = this.patrolRadius;
     this.mesh.userData.leashRadius = this.leashRadius;
+  }
+
+  getAimPoint(target = new THREE.Vector3()) {
+    const { localBounds, localHeadTop } = this.physicalScale;
+    const top = localHeadTop || localBounds.max[1];
+    target.set(0, localBounds.min[1] + (top - localBounds.min[1]) * 0.58, 0);
+    return this.mesh.localToWorld(target);
+  }
+
+  getProjectileOrigin(target = new THREE.Vector3()) {
+    const { localBounds, localHeadTop, groundOffset } = this.physicalScale;
+    const humanoid = this.lodProfile.family === 'humanoid';
+    const height = localBounds.max[1] - localBounds.min[1];
+    target.set(humanoid ? 0.4 : 0,
+      humanoid ? 1.4 + groundOffset : localBounds.min[1] + height * 0.65,
+      localBounds.max[2] + 0.025);
+    return this.mesh.localToWorld(target);
   }
 
   _updateVisualLod(player) {
@@ -2292,8 +2366,9 @@ export class HuntNPC {
       signal.heavy = true;
     }
     if (this.attackKind === 'projectile') {
+      if (direction.lengthSq() > 0) this.mesh.rotation.y = Math.atan2(direction.x, direction.z);
       signal.projectile = {
-        origin: this.position.clone(),
+        origin: this.getProjectileOrigin(),
         direction: direction.lengthSq() > 0 ? direction.normalize().clone() : new THREE.Vector3(0, 0, 1),
         speed: this.projectileSpeed ?? (this.type === 'combat_synthetic' ? 24 : 31),
       };

@@ -1,4 +1,18 @@
-# Revue de correction et préparation de publication — 20 octobre 2026
+# Revue de correction et préparation de publication
+
+## Cohérence — 1er novembre 2026, base `a177aa0`
+
+La passe courante est détaillée dans [`COHERENCE_REVIEW.md`](COHERENCE_REVIEW.md) : échelles et silhouette du drone, contacts et sept attaques natives des grands boss, décors des quartiers extérieurs, collisions verticales, forge physique et sauvegarde commune, simulations explicitement séparées, icônes et quinze contrats accessibles. La source documentée de chaque élément du catalogue prime ; les dimensions estimées restent signalées.
+
+La suite complète finale a passé **1 836 tests**, zéro échec et zéro ignoré ; le build réussit sans avertissement et l'audit des dépendances de production indique zéro vulnérabilité. Elle inclut les derniers ajustements de récompense et les vrais handlers de changement cosmétique préservant les bonus de forge, les jauges et le ratio de santé sans soin gratuit ni cumul.
+
+Le parcours Chromium complet a réussi le 1er novembre de **01:47:23 à 01:55:46 UTC** : ordinateur/mobile, rotations tactiles, préparation, soins, pause, abandon, stockage refusé, **quinze scènes de contrats couvrant les neuf biomes**, avec zéro erreur JavaScript/console et zéro ressource en échec. Les 25 contrôles du vrai corps animé chargé passent aussi. Le contrôle séparé des proportions, de la simulation via le DOM et du prélèvement physique unique avec rechargement est également réussi. Les scènes ne sont pas quinze parties complètes ; Chromium utilise le rendu logiciel de cette machine.
+
+Cinq agents ont examiné les domaines en parallèle. Aucun test humain, niveau graphique AAA ou fidélité 1:1 exhaustive n'est revendiqué. Les 560 dossiers utilisent des modèles d'entraînement lorsqu'aucune réplique dédiée n'existe ; 24 des 40 recettes restent des archives sans matériau physique accessible. Les 675 modules Sector non importés ne sont pas présentés comme niveaux jouables.
+
+Les preuves de cette session sont regroupées dans `/workspace/artifacts/yautja-nov1/review.html`, avec captures avant/après, carte mesurée des décors et rapports JSON. Les états de publication des sections suivantes sont historiques ; ils ne certifient pas la publication de cette passe.
+
+## Historique — 20 octobre 2026
 
 ## Reprise du héros — base `673e028`
 

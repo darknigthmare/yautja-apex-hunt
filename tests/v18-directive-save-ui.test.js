@@ -194,10 +194,10 @@ test('main forwards directive identity and enforces strict capped encounter spaw
   assert.match(setupUi, /this\.prepareHunt\(huntType, planetType, directiveId\);/);
   assert.match(
     deployLoadout,
-    /this\.startHunt\(pending\.huntType, pending\.planetType, pending\.directiveId\);/,
+    /this\.startHunt\(pending\.huntType, pending\.planetType, pending\.directiveId, pending\.simulationContext\);/,
   );
 
-  assert.match(startHunt, /startHunt\(huntType, planetType, directiveId = 'standard_hunt'\)/);
+  assert.match(startHunt, /startHunt\(huntType, planetType, directiveId = 'standard_hunt', simulationContext = null\)/);
   assert.match(startHunt, /createDirectiveProgress\(directive\.id\)/);
   assert.match(
     startHunt,
@@ -232,11 +232,11 @@ test('main advances directive objectives on NPC defeat and persists trophy rewar
   assert.match(trophy, /resolveDirectiveReward\(directive\.id, baseReward, this\.directiveProgress\)/);
   assert.match(trophy, /directive\.id !== 'standard_hunt' && summary\.isComplete/);
   assert.match(trophy, /new Set\(\[\.\.\.\(this\.player\.completedDirectiveIds \?\? \[\]\), directive\.id\]\)/);
-  assert.match(trophy, /this\.player\.addHonor\(totalReward\)/);
+  assert.match(trophy, /this\.awardHonor\(totalReward(?:, [^\n]+)?\)/);
   assert.match(trophy, /this\.saveProgress\(\);/);
 
   const completionIndex = trophy.indexOf('this.player.completedDirectiveIds =');
-  const rewardIndex = trophy.indexOf('this.player.addHonor(totalReward)');
+  const rewardIndex = trophy.indexOf('this.awardHonor(totalReward');
   const persistenceIndex = trophy.indexOf('this.saveProgress();');
   assert.ok(completionIndex >= 0 && completionIndex < persistenceIndex);
   assert.ok(rewardIndex >= 0 && rewardIndex < persistenceIndex);

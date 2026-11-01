@@ -147,7 +147,7 @@ test('HUD target lock stays inside a narrow mobile viewport', () => {
 
     assert.match(hud.triLaser.style.transform, /translate3d\(294px, 96px, 0\)/);
     assert.equal(hud.lockonBracket.style.transform, hud.triLaser.style.transform);
-    assert.equal(hud.lockonDistance.textContent, '42.3m - SIGNAL THERMIQUE');
+    assert.equal(hud.lockonDistance.textContent, '14.1 m - SIGNAL THERMIQUE');
   } finally {
     if (previousWidth === undefined) delete globalThis.innerWidth;
     else globalThis.innerWidth = previousWidth;

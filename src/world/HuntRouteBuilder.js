@@ -140,7 +140,7 @@ function createRouteGeometry(route, sectorMap, sampleHeight) {
   return geometry;
 }
 
-function createSectorInstances(layout, sampleHeight, style, navigationSegments) {
+function createSectorInstances(layout, sampleHeight, style, navigationSegments, reservedFootprints) {
   const padGeometry = new THREE.CylinderGeometry(7, 8.5, 0.35, 16);
   const padMaterial = new THREE.MeshStandardMaterial({
     color: style.route,
@@ -191,6 +191,7 @@ function createSectorInstances(layout, sampleHeight, style, navigationSegments) 
         const candidateX = x + Math.cos(angle) * distance;
         const candidateZ = z + Math.sin(angle) * distance;
         if (Math.hypot(candidateX, candidateZ) > layout.playableRadius - 6) continue;
+        if (reservedFootprints.some(footprint => Math.hypot(candidateX - footprint.x, candidateZ - footprint.z) < footprint.radius + 5)) continue;
         if (!navigationSegments.every((segment) => distanceToRouteSegment(candidateX, candidateZ, segment) > segment.halfWidth + 4)) continue;
         beaconX = candidateX;
         beaconZ = candidateZ;
@@ -250,7 +251,7 @@ function distanceToRouteSegment(x, z, segment) {
   return Math.hypot(x - segment.startX - dx * progress, z - segment.startZ - dz * progress);
 }
 
-function createOuterCoverInstances(layout, sampleHeight, style, navigationSegments) {
+function createOuterCoverInstances(layout, sampleHeight, style, navigationSegments, reservedFootprints) {
   const { body: coverGeometry, accent: accentGeometry } = createSceneryCoverGeometry(layout.biomeId);
   const tallCover = layout.biomeId !== 'ryushi_desert';
   coverGeometry.computeBoundingBox();
@@ -271,6 +272,7 @@ function createOuterCoverInstances(layout, sampleHeight, style, navigationSegmen
   const isClearPlacement = (x, z, radius) => {
     if (Math.hypot(x, z) > layout.playableRadius - 18) return false;
     if (Math.hypot(x - layout.startCamp[0], z - layout.startCamp[2]) < radius + 20) return false;
+    if (reservedFootprints.some(footprint => Math.hypot(x - footprint.x, z - footprint.z) < radius + footprint.radius + 3)) return false;
     if (reservedSignals.some(({ position }) => Math.hypot(x - position[0], z - position[2]) < radius + 8)) return false;
     if (placements.some((placed) => Math.hypot(x - placed.x, z - placed.z) < radius + coverRadius * placed.scale + 2)) return false;
     return navigationSegments.every((segment) => distanceToRouteSegment(x, z, segment) >= radius + segment.halfWidth + 2);
@@ -309,30 +311,9 @@ function createOuterCoverInstances(layout, sampleHeight, style, navigationSegmen
     }
   });
 
-  // Le premier bloc garantit une couverture physique dans chaque secteur.
-  // Les candidats supplémentaires sont ensuite répartis sur toute la liste
-  // jusqu'à environ un collider pour trois silhouettes rendues.
-  const physicalTarget = Math.max(layout.sectors.length, Math.ceil(placements.length / 3));
-  const selectedPlacementIds = new Set();
-  const physicalPlacements = [];
-  for (const sector of layout.sectors) {
-    const placement = placements.find(({ sectorId }) => sectorId === sector.id);
-    if (!placement) continue;
-    physicalPlacements.push(placement);
-    selectedPlacementIds.add(placement.id);
-  }
-  for (let index = 0; index < placements.length && physicalPlacements.length < physicalTarget; index += 3) {
-    const placement = placements[index];
-    if (!placement || selectedPlacementIds.has(placement.id)) continue;
-    physicalPlacements.push(placement);
-    selectedPlacementIds.add(placement.id);
-  }
-  for (const placement of placements) {
-    if (physicalPlacements.length >= physicalTarget) break;
-    if (selectedPlacementIds.has(placement.id)) continue;
-    physicalPlacements.push(placement);
-    selectedPlacementIds.add(placement.id);
-  }
+  // Every rendered solid is physical. Environment bounds collision work with
+  // its spatial index instead of selecting only one collider per three meshes.
+  const physicalPlacements = placements;
 
   const coverMaterial = new THREE.MeshStandardMaterial({
     color: 0xffffff,
@@ -442,7 +423,7 @@ function createOuterCoverInstances(layout, sampleHeight, style, navigationSegmen
  * Construit le maillage de navigation d'une chasse ouverte. Les rubans rendent
  * les boucles lisibles depuis le sol sans transformer la carte en couloir.
  */
-export function buildHuntRouteNetwork(layout, sampleHeight = () => 0) {
+export function buildHuntRouteNetwork(layout, sampleHeight = () => 0, { reservedFootprints = [] } = {}) {
   const root = new THREE.Group();
   root.name = `hunt-route-network:${layout.biomeId}`;
   const style = ROUTE_STYLE[layout.biomeId] ?? ROUTE_STYLE.jungle;
@@ -493,9 +474,9 @@ export function buildHuntRouteNetwork(layout, sampleHeight = () => 0) {
     root.add(mesh);
   }
 
-  const sectorBatches = createSectorInstances(layout, sampleRouteHeight, style, navigationSegments);
+  const sectorBatches = createSectorInstances(layout, sampleRouteHeight, style, navigationSegments, reservedFootprints);
   const eventBatch = createEventNodeInstances(layout, sampleRouteHeight, style);
-  const outerCover = createOuterCoverInstances(layout, sampleRouteHeight, style, navigationSegments);
+  const outerCover = createOuterCoverInstances(layout, sampleRouteHeight, style, navigationSegments, reservedFootprints);
   root.add(...sectorBatches, eventBatch, ...outerCover.batches);
   root.userData.huntCoverColliders = outerCover.colliders;
   root.userData.huntPerches = outerCover.perches;

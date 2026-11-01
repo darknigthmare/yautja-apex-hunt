@@ -1,8 +1,10 @@
 # Yautja: Apex Hunt
 
-Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur incarne un chasseur Yautja, forge une apparence modulaire dans le vaisseau-mère, puis affronte onze cibles et des incidents dynamiques dans neuf biomes.
+Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur incarne un chasseur Yautja, forge une apparence modulaire dans le vaisseau-mère, puis choisit parmi quinze contrats et des incidents dynamiques dans neuf biomes.
 
 ## État du projet
+
+La reprise du 1er novembre 2026 part de `master` à `a177aa0`. Elle corrige les proportions des PNJ, les collisions, les attaques des grands boss, la répartition des décors, les matériaux de forge et les parcours du catalogue. La source documentée de chaque élément prime ; les estimations et les silhouettes d'entraînement restent identifiées. Les corrections, mesures et limites de fidélité sont détaillées dans [`COHERENCE_REVIEW.md`](COHERENCE_REVIEW.md). Les mentions de publication ci-dessous décrivent les anciennes releases.
 
 La version 1.13.0 Croiseur/Paquetage prolonge la release Gunnison/Predalien sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Elle transforme le hub en croiseur compartimenté et impose une préparation de chasse persistante : le joueur ne peut plus emporter simultanément tout l’arsenal.
 
@@ -27,10 +29,12 @@ npm run build
 npm audit
 ```
 
-La revue du 20 octobre 2026 et ses limites sont documentées dans
+Les revues de validation et leurs limites sont documentées dans
 [`QA_RELEASE_REVIEW.md`](QA_RELEASE_REVIEW.md). Le parcours Chromium desktop/mobile
 peut être reproduit après le build avec `npm run test:browser` ; définir
 `CHROMIUM_PATH` si le navigateur système n'est pas `/usr/bin/chromium`.
+
+La comparaison des proportions et le parcours simulation/prélèvement se reproduisent avec `node scripts/qa-coherence.cjs` après le build. `QA_BASE_URL` permet d'utiliser un serveur existant ; `QA_BASELINE_URL` ajoute la comparaison d'une ancienne version et `QA_ARTIFACT_DIR` choisit le dossier des preuves.
 
 ## Boucle de jeu
 
@@ -38,11 +42,11 @@ La passe graphique du 20 octobre 2026 enrichit les modèles, les neuf biomes et 
 
 La reprise du héros remplace les volumes corporels indépendants par une anatomie Blender continue et animée, avec textures 2K calculées depuis la sculpture, proportions adultes et armures ajustées. Les matières de chaque partie, les comparaisons et les contrôles sont décrits dans [`HERO_REALISM_REVIEW.md`](HERO_REALISM_REVIEW.md).
 
-- croiseur de 138 × 184 × 38 m, onze compartiments, treize portes/coursives, dix perchoirs et dix stations : pont, navigation, cryostase, pods d’évasion, laboratoire Cleaner/infirmerie, hangar, armurerie, noyau, forge/trophées et sas arrière ;
+- croiseur de 138 × 184 × 38 unités de jeu, onze compartiments, treize portes/coursives, dix perchoirs et dix stations : pont, navigation, cryostase, pods d’évasion, laboratoire Cleaner/infirmerie, hangar, armurerie, noyau, forge/trophées et sas arrière ; l'échelle physique courante utilise trois unités par mètre ;
 - préparation obligatoire avant chaque contrat : systèmes de base permanents, slots mêlée/secondaire/distance/gadgets/soutien, capacité propre à chacune des dix classes, restrictions de déblocage, incompatibilités, recommandations et douze presets persistants ;
 - le HUD, les raccourcis, les attaques et les assemblages 3D portés sont filtrés par le paquetage actif ; les wristblades, le biomask et le camouflage optique restent le noyau du chasseur ;
 - hub du vaisseau-mère, arsenal, forge et trophées persistants ;
-- onze chasses : Goliath Xeno-Akumo, Reine xénomorphe, rival Bad Blood, Predalien, Berserker Super Predator, Feral, Wolf Cleaner, Kalisk, Assassin Predator (2018), génétiquement amélioré, City Hunter dans l’adaptation originale Los Angeles 1997 et Grid Alien dans l’épreuve de Bouvetøya ;
+- quinze contrats : Goliath Xeno-Akumo, Reine xénomorphe, rival Bad Blood, Predalien, Berserker Super Predator, Feral, Wolf Cleaner, Kalisk, Assassin Predator génétiquement amélioré (2018), City Hunter dans l’adaptation originale Los Angeles 1997, Grid Alien dans l’épreuve de Bouvetøya, Jungle Hunter, Vydrach, Rhynth et Roi xénomorphe ;
 - neuf biomes : jungle, ruche, Ryushi, arène de clan, monde mortel de Genna, site noir Stargazer, Los Angeles 1997 sous canicule, pyramide antarctique de Bouvetøya et Gunnison sous pluie nocturne ;
 - neuf plans déterministes de 630 à 760 unités de rayon, tous organisés en boucles ; Gunnison déploie dix secteurs, 21 routes non linéaires, sept territoires, 19 habitants et huit nœuds d’événements sur un rayon jouable de 760 unités ;
 - trente-et-une familles de PNJ 3D, dont le garde d’expédition Weyland polaire, trois adversaires urbains et le fusilier de la Garde nationale de Gunnison, avec comportements distincts, patrouilles territoriales, migrations de proies, conflits d’écosystème, renforts bornés et combat maintenu jusqu’au prélèvement ;
@@ -53,6 +57,8 @@ La reprise du héros remplace les volumes corporels indépendants par une anatom
 - catalogue franchise/support de 236 entrées au statut explicite — jouable, rencontre 3D, galerie 3D ou archive — complété par un registre de 29 œuvres et médias distinguant publié, coupé, non publié, promotion et crossover séparé ;
 - pause, audio, mouvement réduit, fort contraste et échelle du HUD ;
 - Codex séparant écran Predator, écran AVP, univers étendu sous licence et créations originales.
+
+Le catalogue de proies complémentaire comprend 200 fiches principales, 60 fiches crossover et 300 rencontres. Ces 560 dossiers ne représentent pas 560 modèles distincts. Les holo-traques utilisent des silhouettes d'entraînement explicitement signalées ; elles ne fournissent pas les matériaux physiques de la forge. Parmi les 40 recettes, 16 possèdent actuellement des sources physiques accessibles et 24 restent des archives faute de matériau correspondant jouable.
 
 ## Direction artistique et assets
 

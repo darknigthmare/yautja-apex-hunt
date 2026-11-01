@@ -547,7 +547,10 @@ test('arches traversables et volumes finis autorisent perches et tirs au-dessus 
 
   const facility = environment.environmentProps.find(({ id }) => id === 'jungle-east-command-camp');
   const cover = environment.environmentProps.find(({ id }) => id === 'jungle-west-cover');
-  assert.deepEqual(facility.colliderParts.map(({ part }) => part), ['core', 'west_module', 'east_module']);
+  assert.deepEqual(facility.colliderParts.map(({ part }) => part), [
+    'north_west_post', 'north_east_post', 'south_west_post', 'south_east_post',
+    'tactical_table', 'west_supply_crate', 'center_supply_crate', 'east_supply_crate', 'canopy_roof',
+  ]);
   assert.deepEqual(cover.colliderParts.map(({ part }) => part), ['cover_left', 'cover_center', 'cover_right']);
   environment.dispose();
 });

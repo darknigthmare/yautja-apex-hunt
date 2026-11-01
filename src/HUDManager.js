@@ -1,6 +1,6 @@
 import { YautjaSkinsDatabase } from './data/YautjaLoreDatabase.js';
 import { LORE_SOURCE_TIERS } from './data/LoreCodex.js';
-import { HUNT_DEFINITIONS } from './data/GameConfig.js';
+import { BIOME_DEFINITIONS, HUNT_DEFINITIONS } from './data/GameConfig.js';
 import {
   ARMOR_ACCENTS,
   ARMOR_PALETTES,
@@ -22,6 +22,9 @@ import {
   WARPAINT_PATTERNS,
 } from './data/RuntimeEquipment.js';
 import { getEquippedLoadoutItemIds } from './gameplay/HuntLoadoutSystem.js';
+import { getEquipmentIconSvg } from './ui/EquipmentIcons.js';
+import { getHuntCardLogo } from './ui/CanonLogosAndEmblems.js';
+import { formatWorldDistance } from './ui/distanceFormat.js';
 import {
   MEDIA_COVERAGE_CATALOG,
   MEDIA_PROVENANCE_TIERS,
@@ -153,6 +156,8 @@ export class HUDManager {
     this.setAttribute(this.triLaser, 'aria-hidden', 'true');
     this.setAttribute(this.lockonBracket, 'aria-hidden', 'true');
 
+    this.renderMissingHuntCards();
+    this.renderGadgetIcons();
     this.renderWeaponSelector();
     this.weaponSlots = document.querySelectorAll('.weapon-slot');
     this.weaponSlots.forEach((slot) => {
@@ -233,7 +238,13 @@ export class HUDManager {
       slot.id = `wep-${weapon.slot}`;
       slot.dataset.wep = String(weapon.slot);
       slot.dataset.weaponId = weapon.id;
-      slot.title = `${weapon.name} — ${weapon.sourceTier}`;
+      slot.title = `${weapon.name} · touche ${weapon.keyLabel ?? weapon.slot}`;
+      slot.setAttribute('aria-label', `${weapon.name} · touche ${weapon.keyLabel ?? weapon.slot}`);
+
+      const icon = document.createElement('span');
+      icon.className = 'wep-icon';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.innerHTML = getEquipmentIconSvg(weapon.id);
 
       const number = document.createElement('span');
       number.className = 'wep-num';
@@ -241,10 +252,75 @@ export class HUDManager {
       const name = document.createElement('span');
       name.className = 'wep-name';
       name.textContent = weapon.shortName;
-      slot.append(number, name);
+      slot.append(icon, number, name);
       return slot;
     });
     this.weaponSelector.replaceChildren(...buttons);
+  }
+
+  renderGadgetIcons() {
+    const ids = { shield: 'wrist_shield', drone: 'scout_drone', shuriken: 'shuriken', decoy: 'apex_decoy', roar: 'victory_roar' };
+    document.querySelectorAll('#gadget-rack [data-gadget]').forEach(button => {
+      const label = button.querySelector('span');
+      if (!label || label.querySelector('.gadget-icon')) return;
+      const icon = document.createElement('span');
+      icon.className = 'gadget-icon';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.innerHTML = getEquipmentIconSvg(ids[button.dataset.gadget], 16);
+      label.prepend(icon);
+    });
+  }
+
+  renderMissingHuntCards() {
+    const grid = document.querySelector('.mission-cards-container');
+    if (!grid) return;
+    const existing = new Set([...grid.querySelectorAll('[data-hunt]')].map(button => button.dataset.hunt));
+    let count = grid.querySelectorAll('.mission-card').length;
+    for (const hunt of Object.values(HUNT_DEFINITIONS)) {
+      if (existing.has(hunt.id)) continue;
+      const card = document.createElement('article');
+      card.className = 'mission-card';
+      // The missing declared hunts are the three original colossal challenges.
+      // Do not invent precise physical metre values for their game geometry.
+      card.dataset.scale = 'geant';
+      const media = document.createElement('div');
+      media.className = 'mission-card-media';
+      media.setAttribute('aria-hidden', 'true');
+      media.innerHTML = getHuntCardLogo(hunt.id, 85);
+      const header = document.createElement('div');
+      header.className = 'mission-card-header-info';
+      const meta = document.createElement('div');
+      meta.className = 'mission-card-meta';
+      const provenance = document.createElement('span');
+      provenance.className = 'threat-badge';
+      provenance.textContent = hunt.sourceTier === 'ORIGINAL' ? 'ÉPREUVE ORIGINALE' : 'CONTRAT DU CLAN';
+      const sector = document.createElement('span');
+      sector.className = 'sector-badge';
+      sector.textContent = BIOME_DEFINITIONS[hunt.recommendedBiome]?.name ?? 'Secteur recommandé';
+      meta.append(provenance, sector);
+      const title = document.createElement('h3');
+      title.textContent = `${++count}. ${hunt.name.toLocaleUpperCase('fr')}`;
+      header.append(meta, title);
+      const description = document.createElement('p');
+      description.textContent = hunt.objective;
+      const specs = document.createElement('div');
+      specs.className = 'mission-card-specs';
+      const size = document.createElement('span');
+      size.className = 'spec-tag scale-tag scale-geant';
+      size.textContent = 'PROIE COLOSSALE';
+      const reward = document.createElement('span');
+      reward.className = 'spec-tag reward-tag';
+      reward.textContent = `+${Number(hunt.reward).toLocaleString('fr')} PTS`;
+      specs.append(size, reward);
+      const launch = document.createElement('button');
+      launch.className = 'btn-launch-hunt';
+      launch.type = 'button';
+      launch.dataset.hunt = hunt.id;
+      launch.textContent = 'PRÉPARER LA CHASSE';
+      launch.setAttribute('aria-label', `Préparer la chasse : ${hunt.name}`);
+      card.append(media, header, description, specs, launch);
+      grid.append(card);
+    }
   }
 
   setActiveLoadout(loadout) {
@@ -582,7 +658,7 @@ export class HUDManager {
     this.levelEventHud.dataset.state = normalizedState;
     this.setText(this.levelEventHudTitle, String(label ?? 'OBJECTIF DE SECTEUR').toUpperCase());
     if (normalizedState === 'active') {
-      this.setText(this.levelEventHudTimer, `${Math.max(0, Math.ceil(Number(remaining) || 0))} S · ${Math.max(0, Math.round(Number(distance) || 0))} M`);
+      this.setText(this.levelEventHudTimer, `${Math.max(0, Math.ceil(Number(remaining) || 0))} S · ${formatWorldDistance(distance)}`);
       this.setText(this.levelEventHudObjective, 'REJOIGNEZ LA BALISE D’EXTRACTION AVANT LA FRAPPE');
     } else {
       this.setText(this.levelEventHudTimer, normalizedState === 'secured' ? 'EXTRACTION SÉCURISÉE' : 'FENÊTRE FERMÉE');
@@ -641,9 +717,7 @@ export class HUDManager {
       const y = Math.round(clampToViewport(screenPos.y, viewportHeight) * 10) / 10;
       const targetTransform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(var(--hud-scale))`;
       const label = this.customTargetLabel ?? 'SIGNAL THERMIQUE';
-      const distanceText = Number.isFinite(distance)
-        ? `${distance.toFixed(1)}m - ${label}`
-        : `DISTANCE INCONNUE - ${label}`;
+      const distanceText = `${formatWorldDistance(distance, { fractionDigits: 1 })} - ${label}`;
 
       this.setClassState(this.triLaser, 'hidden', false);
       this.setStyle(this.triLaser, 'transform', targetTransform);
@@ -778,7 +852,8 @@ export class HUDManager {
 
   // Predator 1987 — Verrouillage balistique tri-laser convergé
   showTriLaserLockedAlert(distance = null) {
-    const distText = Number.isFinite(distance) ? ` (${distance.toFixed(1)}M)` : '';
+    const distanceLabel = formatWorldDistance(distance, { fractionDigits: 1, unknown: null });
+    const distText = distanceLabel === null ? '' : ` (${distanceLabel})`;
     const text = `🎯 VERROUILLAGE TRI-LASER CONVERGÉ${distText} — TIR CRITIQUE GARANTI`;
     this.showLogMessage(text, 1800);
     return text;

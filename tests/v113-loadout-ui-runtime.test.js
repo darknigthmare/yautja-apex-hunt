@@ -26,7 +26,7 @@ test('la préparation expose le contrat DOM complet avant déploiement', () => {
 test('un contrat prépare le paquetage et seul le bouton déployer lance la chasse', () => {
   const source = read('src/main.js');
   assert.ok(source.includes('this.prepareHunt(huntType, planetType, directiveId);'));
-  assert.ok(source.includes('this.startHunt(pending.huntType, pending.planetType, pending.directiveId);'));
+  assert.ok(source.includes('this.startHunt(pending.huntType, pending.planetType, pending.directiveId, pending.simulationContext);'));
   assert.ok(source.includes("document.getElementById('btn-loadout-deploy')"));
 });
 

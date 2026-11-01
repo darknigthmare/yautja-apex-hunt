@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="src/style.css">
   <link rel="stylesheet" href="src/professional.css">
   <link rel="stylesheet" href="src/content-pass.css">
+  <link rel="stylesheet" href="src/ui/equipment.css">
 
 </head>
 <body class="app-shell">
@@ -316,11 +317,11 @@
                 <div class="scale-filter-bar" role="toolbar" aria-label="Filtrer les proies par gabarit">
           <span class="scale-filter-title">CLASSIFICATION PAR TAILLE :</span>
           <button type="button" class="scale-filter-pill active" data-scale-filter="all">TOUTES LES TAILLES</button>
-          <button type="button" class="scale-filter-pill" data-scale-filter="geant">GÉANTES (8m-30m)</button>
-          <button type="button" class="scale-filter-pill" data-scale-filter="grande">GRANDES (3m-8m)</button>
-          <button type="button" class="scale-filter-pill" data-scale-filter="moyen">MOYENNES (1.8m-3m)</button>
-          <button type="button" class="scale-filter-pill" data-scale-filter="petite">PETITES (0.5m-1.8m)</button>
-          <button type="button" class="scale-filter-pill" data-scale-filter="minuscule">MINUSCULES (&lt;0.5m)</button>
+          <button type="button" class="scale-filter-pill" data-scale-filter="geant">GÉANTES (≥ 8 m)</button>
+          <button type="button" class="scale-filter-pill" data-scale-filter="grande">GRANDES (3 à &lt; 8 m)</button>
+          <button type="button" class="scale-filter-pill" data-scale-filter="moyen">MOYENNES (1,8 à &lt; 3 m)</button>
+          <button type="button" class="scale-filter-pill" data-scale-filter="petite">PETITES (0,5 à &lt; 1,8 m)</button>
+          <button type="button" class="scale-filter-pill" data-scale-filter="minuscule">MINUSCULES (&lt; 0,5 m)</button>
         </div>
 
         <div class="mission-cards-container">
@@ -639,7 +640,7 @@
             </div>
             <div class="mission-card-header-info">
               <div class="mission-card-meta">
-                <span class="threat-badge threat-jungle">STAN WINSTON 1:1</span>
+                <span class="threat-badge threat-jungle">CHASSE DE 1987</span>
                 <span class="sector-badge">VAL VERDE 1987</span>
               </div>
               <h3>12. JUNGLE HUNTER — VAL VERDE 1987</h3>
@@ -671,11 +672,11 @@
           <div class="multiverse-heading-badge">
             <span class="canon-logo-slot" id="multiverse-header-logo"></span>
             <div>
-              <p class="section-kicker">FACTION MULTIVERS · ANOMALIES SPATIO-TEMPORELLES</p>
-              <h3>PROIES D’EXCEPTION & CROSSOVERS DU MULTIVERS</h3>
+              <p class="section-kicker">NEXUS HOLOGRAPHIQUE · SCÉNARIOS D’ENTRAÎNEMENT</p>
+              <h3>ARCHIVES & HOLO-TRAQUES MULTIVERS</h3>
             </div>
           </div>
-          <p>Fidélité 1:1 aux rencontres officielles du lore Yautja dans les comics & récits Dark Horse, DC, Top Cow et cross-media. Les anomalies se manifestent selon une rotation temporelle stricte de 6 heures.</p>
+          <p>Les fiches indiquent leurs références et les dimensions estimées des proies. Les holo-traques utilisent des silhouettes d’entraînement : elles ne sont pas des reproductions visuelles validées 1:1. Le nexus renouvelle sa sélection toutes les six heures.</p>
         </div>
 
         <!-- Temporal Rotation Banner -->
@@ -685,8 +686,8 @@
             <span id="crossover-countdown-timer" class="rotation-countdown">06:00:00</span>
           </div>
           <div class="rotation-status-box">
-            <span class="rotation-status-badge">FAILLE ACTIVE · CYCLE #<span id="crossover-cycle-id">1</span></span>
-            <span class="rotation-status-desc">Cible d’exception actuellement traçable dans le continuum</span>
+            <span class="rotation-status-badge">NEXUS ACTIF · CYCLE #<span id="crossover-cycle-id">1</span></span>
+            <span class="rotation-status-desc">Scénario d’entraînement actuellement sélectionné</span>
           </div>
         </div>
 
@@ -697,7 +698,7 @@
 
         <!-- Upcoming Anomalies Preview -->
         <div class="upcoming-anomalies-section">
-          <h4>PROCHAINES ANOMALIES EN APPROCHE (ROTATION 6H)</h4>
+          <h4>PROCHAINS SCÉNARIOS DU NEXUS (ROTATION 6H)</h4>
           <div id="upcoming-crossovers-grid" class="upcoming-grid">
             <!-- Populated by JS -->
           </div>
@@ -705,7 +706,7 @@
 
         <!-- Full Multiverse Canon Catalog & Lore -->
         <div class="multiverse-archive-section">
-          <h4>ARCHIVES DES PROIES DU MULTIVERS DOCUMENTÉES</h4>
+          <h4>ARCHIVES DES SCÉNARIOS DU MULTIVERS</h4>
                   <div class="scale-filter-bar multiverse-filter-bar" role="toolbar" aria-label="Filtrer les anomalies par univers">
           <span class="scale-filter-title">UNIVERS D'ORIGINE :</span>
           <button type="button" class="scale-filter-pill active" data-multiverse-filter="all">TOUTES LES ANOMALIES (60)</button>
@@ -730,22 +731,23 @@
             <p class="section-kicker">ATELIER DU VAISSEAU-MÈRE · BIO-FORGE ANCESTRALE</p>
             <h3>FORGE DE TROPHÉES & ARTISANAT DU CLAN</h3>
             <p class="crafting-subtitle">
-              Façonnez des boucliers céphaliques en dôme de xénomorphe (style Scar & Lex Woods), des hasts caudaux,
-              des bio-masques hybrides et des étendards de chasse ancestraux à partir de vos trophées de victoires.
+              Transformez les matériaux de vos chasses en équipements du clan. Chaque recette indique sa source,
+              ses prérequis et ses effets de chasse ; les créations d’archive restent consultables.
             </p>
           </div>
         </div>
 
         <div class="scale-filter-bar craft-filter-bar" role="toolbar" aria-label="Filtrer l'artisanat par catégorie">
           <span class="scale-filter-title">CATÉGORIE :</span>
-          <button type="button" class="scale-filter-pill active" data-craft-filter="all">TOUT L'ARTISANAT (40)</button>
-          <button type="button" class="scale-filter-pill" data-craft-filter="shields">BOUCLIERS D'OS (8)</button>
-          <button type="button" class="scale-filter-pill" data-craft-filter="weapons">ARMES CAUDALES (8)</button>
-          <button type="button" class="scale-filter-pill" data-craft-filter="masks">BIO-MASQUES (8)</button>
-          <button type="button" class="scale-filter-pill" data-craft-filter="armor">ARMURES & CHITINE (8)</button>
-          <button type="button" class="scale-filter-pill" data-craft-filter="banners">ÉTENDARDS & TOTEMS (8)</button>
+          <button type="button" class="scale-filter-pill active" data-craft-filter="all" aria-pressed="true" aria-controls="trophy-crafting-grid">TOUT L'ARTISANAT (40)</button>
+          <button type="button" class="scale-filter-pill" data-craft-filter="shields" aria-pressed="false" aria-controls="trophy-crafting-grid">BOUCLIERS D'OS (8)</button>
+          <button type="button" class="scale-filter-pill" data-craft-filter="weapons" aria-pressed="false" aria-controls="trophy-crafting-grid">ARMES CAUDALES (8)</button>
+          <button type="button" class="scale-filter-pill" data-craft-filter="masks" aria-pressed="false" aria-controls="trophy-crafting-grid">BIO-MASQUES (8)</button>
+          <button type="button" class="scale-filter-pill" data-craft-filter="armor" aria-pressed="false" aria-controls="trophy-crafting-grid">ARMURES & CHITINE (8)</button>
+          <button type="button" class="scale-filter-pill" data-craft-filter="banners" aria-pressed="false" aria-controls="trophy-crafting-grid">ÉTENDARDS & TOTEMS (8)</button>
         </div>
 
+        <p id="trophy-crafting-status" class="craft-summary" role="status" aria-live="polite"></p>
         <div id="trophy-crafting-grid" class="trophy-crafting-grid">
           <!-- Populated by YautjaTrophyCraftsmanshipForgeSystem -->
         </div>
@@ -897,18 +899,18 @@
         <section class="canon-prey-taxonomy-section" aria-labelledby="taxonomy-vault-title">
           <div class="section-heading compact-heading" style="margin-top:24px;">
             <div>
-              <p class="section-kicker">TAXONOMIE OFFICIELLE · 5 PALIERS DE TAILLE</p>
-              <h3 id="taxonomy-vault-title">ENCYCLOPÉDIE DES PROIES CANONIQUES</h3>
+              <p class="section-kicker">ARCHIVES DE SOURCES · 5 PALIERS DE TAILLE</p>
+              <h3 id="taxonomy-vault-title">ENCYCLOPÉDIE DES PROIES</h3>
             </div>
-            <p>Classification métrique 1:1 de toutes les espèces et entités de l'univers Yautja, Ingénieurs et Ruche Xénomorphe.</p>
+            <p>Chaque fiche conserve sa source et ses dimensions d’archive estimées. Les holo-traques emploient des silhouettes d’entraînement, sans validation visuelle 1:1.</p>
           </div>
           <div class="scale-filter-bar taxonomy-filter-bar" role="toolbar" aria-label="Filtrer l'encyclopédie par gabarit">
             <button type="button" class="scale-filter-pill active" data-taxonomy-filter="all">TOUTES LES ESPÈCES</button>
-            <button type="button" class="scale-filter-pill" data-taxonomy-filter="geant">GÉANTES (8m-30m)</button>
-            <button type="button" class="scale-filter-pill" data-taxonomy-filter="grande">GRANDES (3m-8m)</button>
-            <button type="button" class="scale-filter-pill" data-taxonomy-filter="moyen">MOYENNES (1.8m-3m)</button>
-            <button type="button" class="scale-filter-pill" data-taxonomy-filter="petite">PETITES (0.5m-1.8m)</button>
-            <button type="button" class="scale-filter-pill" data-taxonomy-filter="minuscule">MINUSCULES (&lt;0.5m)</button>
+            <button type="button" class="scale-filter-pill" data-taxonomy-filter="geant">GÉANTES (≥ 8 m)</button>
+            <button type="button" class="scale-filter-pill" data-taxonomy-filter="grande">GRANDES (3 à &lt; 8 m)</button>
+            <button type="button" class="scale-filter-pill" data-taxonomy-filter="moyen">MOYENNES (1,8 à &lt; 3 m)</button>
+            <button type="button" class="scale-filter-pill" data-taxonomy-filter="petite">PETITES (0,5 à &lt; 1,8 m)</button>
+            <button type="button" class="scale-filter-pill" data-taxonomy-filter="minuscule">MINUSCULES (&lt; 0,5 m)</button>
           </div>
           <div id="canon-taxonomy-grid" class="content-catalog-grid"></div>
         </section>

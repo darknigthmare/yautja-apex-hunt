@@ -3,7 +3,8 @@ import { ShaderManager } from '../Shaders.js';
 import { audioSynth } from '../AudioSynthesizer.js';
 import { captureBaseMaterials, overrideMaterials, restoreBaseMaterials } from '../utils/materialState.js';
 import { getRuntimeTexture } from '../utils/runtimeTextures.js';
-import { forwardRayIntersectsSphere, resolveSegmentSphereImpact } from '../utils/projectileCollision.js';
+import { containsBossPartImpact, resolveBossGeometryImpact } from './BossProjectileGeometry.js';
+import { getVisualBounds, getVisualCenter } from '../utils/worldScale.js';
 
 export const VYDRACH_TEXTURES = Object.freeze({
   draconianScale: '/assets/textures/goliath-armored-hide.webp',
@@ -12,8 +13,15 @@ export const VYDRACH_TEXTURES = Object.freeze({
   boneCrest: '/assets/textures/trophy-bone.webp'
 });
 
+// Original combat timings/ranges in game units; not a certified media mechanic.
+export const VYDRACH_ATTACK_SPECS = Object.freeze({
+  tail_whip: Object.freeze({ id: 'vydrach_tail_whip', state: 'tail_whip', windup: 0.75, impact: 0.22, recovery: 0.6, cooldown: 2.8, range: 13 }),
+  aerial_dive: Object.freeze({ id: 'vydrach_aerial_dive', state: 'aerial_dive', windup: 1, impact: 1.2, recovery: 0.7, cooldown: 4.5, range: 13.5, speedKey: 'flightSpeed' }),
+  bite: Object.freeze({ id: 'vydrach_bite', state: 'bite', windup: 0.65, impact: 0.18, recovery: 0.55, cooldown: 2.4, range: 11.5 }),
+});
+
 /**
- * Vy'drach de Yautja Prime - Léviathan Céleste Ailé (Fidélité 1:1 Canon Lore).
+ * Adaptation procédurale du Vy'drach ailé de Yautja Prime référencé dans le catalogue.
  * Colossale créature reptilienne ailée des déserts de Yautja Prime,
  * proie mythique du rite d'initiation suprême des Maîtres Chasseurs.
  */
@@ -63,6 +71,21 @@ export class VydrachBoss {
 
     this.aiState = 'roam'; // 'roam', 'stalk', 'flight_gale', 'aerial_dive', 'tail_whip', 'toppled', 'exhausted'
     this.attackCooldown = 0;
+    this.attackSpecs = VYDRACH_ATTACK_SPECS;
+    this.activeAttackType = null;
+    this.activeAttackKind = null;
+    this.attackStage = 'idle';
+    this.attackStageTimer = 0;
+    this.attackWindupTimer = 0;
+    this.attackWindupDuration = 0;
+    this.attackRecoveryTimer = 0;
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
+    this.attackSequence = 0;
+    this.attackTravelRemaining = 0;
+    this.attackDirection = new THREE.Vector3(0, 0, 1);
+    this.attackTarget = new THREE.Vector3();
     this.footstepCooldown = 0;
     this.flappingCooldown = 0;
     this.roamPhase = 0;
@@ -117,7 +140,7 @@ export class VydrachBoss {
 
     const coreMat = new THREE.MeshBasicMaterial({ color: 0xff4400 });
 
-    // 1. Massive Torso & Ribcage (Length 12m, Width 5m, Height 4.5m)
+    // 1. Torso and ribcage, authored in game units (not metres)
     const torsoGeo = new THREE.CylinderGeometry(2.4, 2.8, 11.5, 24, 6);
     torsoGeo.rotateX(Math.PI / 2);
     const torso = new THREE.Mesh(torsoGeo, scaleMat);
@@ -164,7 +187,7 @@ export class VydrachBoss {
     }
     vydrachGroup.add(crestGroup);
 
-    // 5. Left & Right Colossal Wings (Wingspan 16m / 48 units)
+    // 5. Left and right wings (rendered span: 27 game units)
     const leftWingGroup = new THREE.Group();
     leftWingGroup.name = 'vydrachLeftWing';
     const leftArm = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.9, 8.5, 16), scaleMat);
@@ -199,9 +222,10 @@ export class VydrachBoss {
       vydrachGroup.add(talon);
     }
 
-    // 7. Spined Barbed Stinger Tail (Length 10m / 30 units)
+    // 7. Spined stinger tail, authored in game units
     const tailGroup = new THREE.Group();
     tailGroup.name = 'vydrachTail';
+    tailGroup.position.y = 0.3;
     for (let i = 0; i < 5; i++) {
       const seg = new THREE.Mesh(new THREE.CylinderGeometry(0.9 - i * 0.12, 1.1 - i * 0.12, 3.2, 16), scaleMat);
       seg.rotation.x = -Math.PI / 4;
@@ -209,6 +233,7 @@ export class VydrachBoss {
       tailGroup.add(seg);
     }
     const stinger = new THREE.Mesh(new THREE.ConeGeometry(0.9, 3.5, 16), boneMat);
+    stinger.name = 'vydrachTailStinger';
     stinger.rotation.x = -Math.PI / 2;
     stinger.position.set(0, 0.8, -19.0);
     tailGroup.add(stinger);
@@ -225,12 +250,13 @@ export class VydrachBoss {
 
   getCrestWorldPosition() {
     this.mesh.updateWorldMatrix(true, true);
-    return this.crestMesh?.getWorldPosition(new THREE.Vector3()) ?? this.mesh.localToWorld(new THREE.Vector3(0, 11.2, 7.8));
+    return this.crestMesh ? getVisualCenter(this.crestMesh) : this.mesh.localToWorld(new THREE.Vector3(0, 11.2, 7.8));
   }
 
   getTailWorldPosition() {
     this.mesh.updateWorldMatrix(true, true);
-    return this.tailMesh?.getWorldPosition(new THREE.Vector3()) ?? this.mesh.localToWorld(new THREE.Vector3(0, 1.5, -16.0));
+    const stinger = this.mesh.getObjectByName('vydrachTailStinger');
+    return stinger ? getVisualCenter(stinger) : this.mesh.localToWorld(new THREE.Vector3(0, 1.1, -19));
   }
 
   getAimPoint() {
@@ -254,7 +280,7 @@ export class VydrachBoss {
     tailProp.add(stinger);
 
     tailProp.position.copy(this.getTailWorldPosition());
-    tailProp.position.y = 0.5;
+    tailProp.position.y = this.position.y - getVisualBounds(tailProp, { local: true }).min.y;
     tailProp.userData.isCarveable = true;
     tailProp.userData.carved = false;
     tailProp.userData.trophyType = 'VYDRACH_SEVERED_BARBED_STINGER';
@@ -265,6 +291,7 @@ export class VydrachBoss {
 
   triggerTopple(durationSeconds = 8.0) {
     if (this.isDead || this.isToppled) return;
+    this.cancelAttack('toppled');
     this.isToppled = true;
     this.toppleTimer = durationSeconds;
     this.aiState = 'toppled';
@@ -281,61 +308,26 @@ export class VydrachBoss {
 
 
   resolveProjectileImpact(projectilePosition, projectileRadius = 1, previousPosition = projectilePosition) {
-    if (!projectilePosition?.isVector3 || this.isDead) return null;
-    const safeRadius = Math.max(0, Number(projectileRadius) || 0);
-    const start = previousPosition?.isVector3 ? previousPosition : projectilePosition;
-
-    // 1. Core Weakpoint
-    const corePos = this.getCoreWorldPosition();
-    if (
-      resolveSegmentSphereImpact(start, projectilePosition, corePos, 4.0 + safeRadius)
-      || forwardRayIntersectsSphere(start, projectilePosition, corePos, 4.0 + safeRadius)
-    ) {
-      return corePos;
-    }
-
-    // 2. Horned Crest / Head
-    const crestPos = this.getCrestWorldPosition();
-    if (
-      resolveSegmentSphereImpact(start, projectilePosition, crestPos, 4.2 + safeRadius)
-      || forwardRayIntersectsSphere(start, projectilePosition, crestPos, 4.2 + safeRadius)
-    ) {
-      return crestPos;
-    }
-
-    // 3. Barbed Tail Stinger
-    if (this.tailIntact) {
-      const tailPos = this.getTailWorldPosition();
-      if (
-        resolveSegmentSphereImpact(start, projectilePosition, tailPos, 5.0 + safeRadius)
-        || forwardRayIntersectsSphere(start, projectilePosition, tailPos, 5.0 + safeRadius)
-      ) {
-        return tailPos;
-      }
-    }
-
-    // 4. Main Torso / Wings
-    const bodyCenter = this.getAimPoint();
-    return resolveSegmentSphereImpact(start, projectilePosition, bodyCenter, this.colliderRadius + safeRadius);
+    if (this.isDead) return null;
+    return resolveBossGeometryImpact(this.mesh, previousPosition, projectilePosition, projectileRadius,
+      [this.coreMesh, this.crestIntact ? this.crestMesh : null, this.tailIntact ? this.mesh.getObjectByName('vydrachTailStinger') : null]);
   }
-
   takeDamage(amount, hitPosition) {
-    if (this.isDead) return;
+    if (this.isDead) return { damage: 0, killed: false, remainingHealth: this.health };
 
-    let finalDamage = amount;
+    const baseDamage = Math.max(0, Number(amount) || 0);
+    let finalDamage = baseDamage;
     const impact = hitPosition?.isVector3 ? hitPosition : this.position;
 
     // 1. Core Weakpoint check (x2.5 critical damage)
-    const distToCore = impact.distanceTo(this.getCoreWorldPosition());
-    if (distToCore < 4.0) {
+    if (containsBossPartImpact(this.coreMesh, impact)) {
       finalDamage *= 2.5;
       this.coreExposed = true;
     }
 
     // 2. Horned Crest Break check
-    const distToCrest = impact.distanceTo(this.getCrestWorldPosition());
-    if (distToCrest < 4.5 && this.crestIntact) {
-      this.crestHealth -= amount;
+    if (this.crestIntact && containsBossPartImpact(this.crestMesh, impact)) {
+      this.crestHealth -= baseDamage;
       if (this.crestHealth <= 0) {
         this.crestIntact = false;
         if (this.crestMesh) this.crestMesh.visible = false;
@@ -344,14 +336,29 @@ export class VydrachBoss {
     }
 
     // 3. Tail Sever check
-    const distToTail = impact.distanceTo(this.getTailWorldPosition());
-    if (distToTail < 5.8 && this.tailIntact) {
-      this.tailHealth -= amount;
+    if (this.tailIntact && containsBossPartImpact(this.mesh.getObjectByName('vydrachTailStinger'), impact)) {
+      this.tailHealth -= baseDamage;
       if (this.tailHealth <= 0) {
         this.tailIntact = false;
+        if (this.activeAttackKind === 'tail_whip') this.cancelAttack();
         if (this.tailMesh) this.tailMesh.visible = false;
         this.spawnSeveredTail();
         audioSynth.playMonsterRoar();
+      }
+    }
+
+    // Wing health was declared but never consumed: a shot through the visible
+    // membrane now damages that wing and removes aerial dives once it breaks.
+    for (const side of ['left', 'right']) {
+      const wing = this[`${side}WingMesh`];
+      if (this[`${side}WingIntact`] && containsBossPartImpact(wing, impact)) {
+        this[`${side}WingHealth`] = Math.max(0, this[`${side}WingHealth`] - baseDamage);
+        if (this[`${side}WingHealth`] === 0) {
+          this[`${side}WingIntact`] = false;
+          if (this.activeAttackKind === 'aerial_dive') this.cancelAttack();
+          wing.visible = false;
+          audioSynth.playMonsterRoar();
+        }
       }
     }
 
@@ -365,82 +372,168 @@ export class VydrachBoss {
 
     if (this.health <= 0) {
       this.isDead = true;
-      this.aiState = 'dead';
+      this.cancelAttack('dead');
       audioSynth.playMonsterRoar();
     }
+    return { damage: finalDamage, killed: this.isDead, remainingHealth: this.health };
   }
 
   applyNet() {
+    this.cancelAttack('netted');
     this.isNetted = true;
     this.netTimer = 4.0;
   }
 
-  update(delta, playerPos, isPlayerCloaked) {
-    if (this.isDead) return;
+  startTelegraphedAttack(kind, targetPosition) {
+    const spec = this.attackSpecs[kind];
+    if (!spec || this.activeAttackType || this.attackCooldown > 0 || this.isDead || this.isNetted || this.isToppled
+      || !targetPosition?.isVector3 || ![targetPosition.x, targetPosition.y, targetPosition.z].every(Number.isFinite)) return false;
+    if (kind === 'aerial_dive' && (!this.leftWingIntact || !this.rightWingIntact)) return false;
+    if (kind === 'tail_whip' && !this.tailIntact) return false;
+    this.activeAttackType = spec.id;
+    this.activeAttackKind = kind;
+    this.attackStage = 'windup';
+    this.attackWindupDuration = spec.windup * (this.isExhausted ? 1.15 : 1);
+    this.attackWindupTimer = this.attackWindupDuration;
+    this.attackStageTimer = this.attackWindupDuration;
+    this.attackCooldown = spec.cooldown * (this.isExhausted ? 1.35 : 1);
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
+    this.attackSequence += 1;
+    this.attackTarget.copy(targetPosition);
+    this.attackDirection.copy(targetPosition).sub(this.position);
+    this.attackDirection.y = 0;
+    this.attackTravelRemaining = Math.max(0, this.attackDirection.length() - this.colliderRadius - 1.8);
+    if (this.attackDirection.lengthSq() < 1e-8) this.attackDirection.set(0, 0, 1);
+    else this.attackDirection.normalize();
+    this.aiState = spec.state;
+    return true;
+  }
 
-    if (this.isToppled) {
-      this.toppleTimer -= delta;
-      if (this.toppleTimer <= 0) {
-        this.isToppled = false;
-        this.aiState = 'chase';
+  consumeAttackImpact() {
+    if (!this.attackImpactReady || this.attackImpactConsumed || this.attackStage !== 'impact') return false;
+    this.attackImpactConsumed = true;
+    this.attackImpactReady = false;
+    return true;
+  }
+
+  cancelAttack(nextState = this.isDead ? 'dead' : 'chase') {
+    this.activeAttackType = null;
+    this.activeAttackKind = null;
+    this.attackStage = 'idle';
+    this.attackStageTimer = 0;
+    this.attackWindupTimer = 0;
+    this.attackWindupDuration = 0;
+    this.attackRecoveryTimer = 0;
+    this.attackImpactReady = false;
+    this.attackImpactConsumed = false;
+    this.attackTelegraphAnnounced = false;
+    this.attackTravelRemaining = 0;
+    this.aiState = nextState;
+  }
+
+  updateTelegraphedAttack(delta) {
+    if (!this.activeAttackType) return false;
+    const spec = this.attackSpecs[this.activeAttackKind];
+    if ((this.activeAttackKind === 'aerial_dive' && (!this.leftWingIntact || !this.rightWingIntact))
+      || (this.activeAttackKind === 'tail_whip' && !this.tailIntact)) {
+      this.cancelAttack();
+      return false;
+    }
+    if (this.attackStage === 'windup') {
+      this.aiState = spec.state;
+      const angle = Math.atan2(this.attackDirection.x, this.attackDirection.z);
+      const difference = Math.atan2(Math.sin(angle - this.mesh.rotation.y), Math.cos(angle - this.mesh.rotation.y));
+      this.mesh.rotation.y += difference * Math.min(1, delta * 5);
+      this.attackStageTimer = Math.max(0, this.attackStageTimer - delta);
+      this.attackWindupTimer = this.attackStageTimer;
+      if (this.attackStageTimer === 0) {
+        this.attackStage = 'impact';
+        this.attackStageTimer = spec.impact;
+        this.attackImpactReady = true;
       }
+    } else if (this.attackStage === 'impact') {
+      this.aiState = spec.state;
+      if (spec.speedKey) {
+        const speed = this[spec.speedKey] * (this.isExhausted ? 0.75 : 1)
+          * (this.activeAttackKind === 'charge' && !this.hornIntact ? 0.7 : 1);
+        const travel = Math.min(this.attackTravelRemaining, speed * Math.min(delta, this.attackStageTimer));
+        this.position.addScaledVector(this.attackDirection, travel);
+        this.attackTravelRemaining -= travel;
+      }
+      this.attackStageTimer = Math.max(0, this.attackStageTimer - delta);
+      if (this.attackStageTimer === 0) {
+        this.attackStage = 'recovery';
+        this.attackStageTimer = spec.recovery;
+        this.attackRecoveryTimer = spec.recovery;
+        this.attackImpactReady = false;
+        this.aiState = 'recover';
+      }
+    } else if (this.attackStage === 'recovery') {
+      this.attackStageTimer = Math.max(0, this.attackStageTimer - delta);
+      this.attackRecoveryTimer = this.attackStageTimer;
+      this.aiState = 'recover';
+      if (this.attackStageTimer === 0) this.cancelAttack();
+    }
+    const boundary = Math.max(40, Number(this.arenaBoundary) || 350);
+    this.position.x = THREE.MathUtils.clamp(this.position.x, -boundary, boundary);
+    this.position.z = THREE.MathUtils.clamp(this.position.z, -boundary, boundary);
+    this.mesh.position.copy(this.position);
+    return true;
+  }
+
+  update(delta, playerPos, isPlayerCloaked) {
+    delta = Number.isFinite(delta) ? Math.max(0, delta) : 0;
+    if (this.isDead) { this.cancelAttack('dead'); return; }
+    if (this.isToppled) {
+      this.cancelAttack('toppled');
+      this.toppleTimer = Math.max(0, this.toppleTimer - delta);
+      if (this.toppleTimer === 0) { this.isToppled = false; this.aiState = 'chase'; }
       return;
     }
-
     if (this.isNetted) {
-      this.netTimer -= delta;
-      if (this.netTimer <= 0) this.isNetted = false;
+      this.cancelAttack('netted');
+      this.netTimer = Math.max(0, this.netTimer - delta);
+      if (this.netTimer === 0) { this.isNetted = false; this.aiState = 'chase'; }
       return;
     }
-
     this.attackCooldown = Math.max(0, this.attackCooldown - delta);
     this.footstepCooldown = Math.max(0, this.footstepCooldown - delta);
+    if (this.updateTelegraphedAttack(delta)) return;
 
-    const distToPlayer = this.position.distanceTo(playerPos);
-    const detectionRadius = isPlayerCloaked ? 30.0 : 220.0;
-
+    const distToPlayer = playerPos?.isVector3
+      ? Math.hypot(playerPos.x - this.position.x, playerPos.z - this.position.z) : Infinity;
+    const detectionRadius = isPlayerCloaked ? 30 : 220;
+    const radiusAllowance = Math.max(0, this.colliderRadius - (this.baseSimulationColliderRadius ?? this.colliderRadius));
     if (distToPlayer < detectionRadius) {
       this.aiState = 'chase';
-      const targetDir = playerPos.clone().sub(this.position).normalize();
+      const targetDir = playerPos.clone().sub(this.position);
+      targetDir.y = 0;
+      if (targetDir.lengthSq() > 1e-8) targetDir.normalize();
       const targetAngle = Math.atan2(targetDir.x, targetDir.z);
-
-      let diff = targetAngle - this.mesh.rotation.y;
-      diff = Math.atan2(Math.sin(diff), Math.cos(diff));
-      this.mesh.rotation.y += diff * Math.min(1.0, delta * 3.5);
-
-      if (this.attackCooldown <= 0) {
-        if (distToPlayer < 10.0) {
-          this.aiState = 'tail_whip';
-          audioSynth.playMonsterRoar();
-          this.attackCooldown = 2.8;
-        } else if (distToPlayer > 22.0 && distToPlayer < 55.0) {
-          this.aiState = 'aerial_dive';
-          audioSynth.playMonsterRoar();
-          this.attackCooldown = 4.5;
+      const difference = Math.atan2(Math.sin(targetAngle - this.mesh.rotation.y), Math.cos(targetAngle - this.mesh.rotation.y));
+      this.mesh.rotation.y += difference * Math.min(1, delta * 3.5);
+      if (this.attackCooldown === 0) {
+        const closeAttack = this.tailIntact ? 'tail_whip' : 'bite';
+        if (distToPlayer <= this.attackSpecs[closeAttack].range + radiusAllowance) {
+          if (this.startTelegraphedAttack(closeAttack, playerPos)) audioSynth.playMonsterRoar();
+        } else if (distToPlayer >= 22 + radiusAllowance && distToPlayer <= 40 + radiusAllowance
+          && this.leftWingIntact && this.rightWingIntact) {
+          if (this.startTelegraphedAttack('aerial_dive', playerPos)) audioSynth.playMonsterRoar();
         }
       }
-
-      let speed = this.isEnraged ? this.enragedSpeed : this.moveSpeed;
-      if (this.aiState === 'aerial_dive') speed *= 1.7;
-
-      if (distToPlayer > 7.5) {
-        this.position.addScaledVector(targetDir, speed * delta);
+      if (!this.activeAttackType) {
+        let speed = this.isEnraged ? this.enragedSpeed : this.moveSpeed;
+        if (this.isExhausted) speed *= 0.6;
+        const travel = Math.min(speed * delta, Math.max(0, distToPlayer - this.colliderRadius - 1.8));
+        this.position.addScaledVector(targetDir, travel);
       }
-    } else {
-      this.aiState = 'roam';
-      this.roamPhase += delta;
-      this.position.z += Math.sin(this.roamPhase) * delta * 2.5;
-    }
+    } else this.aiState = 'roam';
 
-    const arenaBoundary = Math.max(50, Number(this.arenaBoundary) || 350);
-    this.position.x = Math.max(-arenaBoundary, Math.min(arenaBoundary, this.position.x));
-    this.position.z = Math.max(-arenaBoundary, Math.min(arenaBoundary, this.position.z));
-
-    if (this.footstepCooldown === 0 && (this.aiState === 'chase' || this.aiState === 'aerial_dive')) {
-      audioSynth.playMonsterFootstep();
-      this.footstepCooldown = this.aiState === 'aerial_dive' ? 0.35 : 0.65;
-    }
-
+    const arenaBoundary = Math.max(40, Number(this.arenaBoundary) || 350);
+    this.position.x = THREE.MathUtils.clamp(this.position.x, -arenaBoundary, arenaBoundary);
+    this.position.z = THREE.MathUtils.clamp(this.position.z, -arenaBoundary, arenaBoundary);
     this.mesh.position.copy(this.position);
   }
 

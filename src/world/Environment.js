@@ -11,6 +11,8 @@ import {
   getBiomePropPlan,
 } from '../data/BiomePropCatalog.js';
 import { BiomePropBuilder, getCoverClusterLayout } from './BiomePropBuilder.js';
+import { getTravelSceneryPlacement, resolveWorldPropLayout } from './WorldPropLayout.js';
+import { ObstacleSpatialIndex } from './ObstacleSpatialIndex.js';
 import {
   buildHuntRouteNetwork,
   sampleHuntSectorElevation,
@@ -182,8 +184,6 @@ const WRECK_PROP_TYPES = new Set(['wreckage', 'expedition_wreck']);
 const PEN_PROP_TYPES = new Set(['egg_nursery', 'stock_pen', 'stargazer_kennel']);
 const SHRINE_PROP_TYPES = new Set(['trophy_tree', 'royal_dais', 'blooding_dais', 'weapon_shrine', 'trophy_gallery', 'kalisk_nest']);
 
-const MIN_ROUTE_COVER_COLLIDERS = 9;
-const MIN_GAMEPLAY_PROP_COLLIDERS = 12;
 const SHADOW_FOCUS_EXTENT = 96;
 const KEY_LIGHT_OFFSET = new THREE.Vector3(-180, 280, 220);
 const KEY_LIGHT_FORWARD = KEY_LIGHT_OFFSET.clone().normalize();
@@ -374,6 +374,40 @@ function resolveSegmentVerticalCylinderImpact(start, end, collider, projectileRa
   return start.clone().lerp(end, Math.min(...candidates));
 }
 
+function resolveSegmentBoxImpact(start, end, collider, projectileRadius, baseY) {
+  const yaw = Number(collider.yaw) || 0;
+  const cosine = Math.cos(yaw), sine = Math.sin(yaw);
+  const radius = Math.max(0, Number(projectileRadius) || 0);
+  const local = point => ({
+    x: cosine * (point.x - collider.x) - sine * (point.z - collider.z),
+    y: point.y - baseY,
+    z: sine * (point.x - collider.x) + cosine * (point.z - collider.z),
+  });
+  const from = local(start), to = local(end);
+  const bounds = {
+    x: [-collider.halfWidth - radius, collider.halfWidth + radius],
+    y: [-radius, collider.height + radius],
+    z: [-collider.halfDepth - radius, collider.halfDepth + radius],
+  };
+  if (Object.keys(bounds).every(axis => from[axis] >= bounds[axis][0] && from[axis] <= bounds[axis][1])) return null;
+  let enter = 0, exit = 1;
+  for (const axis of Object.keys(bounds)) {
+    const delta = to[axis] - from[axis];
+    const [minimum, maximum] = bounds[axis];
+    if (Math.abs(delta) < 1e-8) {
+      if (from[axis] < minimum || from[axis] > maximum) return null;
+      continue;
+    }
+    let near = (minimum - from[axis]) / delta;
+    let far = (maximum - from[axis]) / delta;
+    if (near > far) [near, far] = [far, near];
+    enter = Math.max(enter, near);
+    exit = Math.min(exit, far);
+    if (enter > exit) return null;
+  }
+  return enter >= 0 && enter <= 1 ? start.clone().lerp(end, enter) : null;
+}
+
 export class Environment {
   constructor(scene) {
     this.scene = scene;
@@ -395,6 +429,7 @@ export class Environment {
     this.runes = [];
     this.obstacleColliders = [];
     this.projectileCoverColliders = [];
+    this.obstacleIndex = new ObstacleSpatialIndex();
     this.thermalFootprints = [];
     this.particles = null;
     this.rainParticles = null;
@@ -411,6 +446,7 @@ export class Environment {
     this.activeWeatherEvent = null;
     this.thermalStormParticles = null;
     this.environmentProps = [];
+    this.resolvedPropPlan = null;
     this.pointsOfInterest = [];
     this.discoveredPoiIds = new Set();
     this.hazardZones = [];
@@ -660,6 +696,7 @@ export class Environment {
     this.propBuilder = null;
     this.propRoot = null;
     this.environmentProps = [];
+    this.resolvedPropPlan = null;
     this.pointsOfInterest = [];
     this.hazardZones = [];
     this.hazardSignals = [];
@@ -685,6 +722,9 @@ export class Environment {
     this.obstacleColliders = [];
     this.projectileCoverColliders = [];
     this.thermalFootprints = [];
+    this.obstacleIndex?.rebuild([]);
+    this._indexedActorSource = null;
+    this._indexedProjectileSource = null;
     this.particles = null;
     this.rainParticles = null;
     this.sandParticles = null;
@@ -701,55 +741,17 @@ export class Environment {
   }
 
   reserveHuntRouteColliderBudget() {
-    const maximum = ENVIRONMENT_PERFORMANCE_BUDGETS.maxColliders;
-    const distributedSectorCount = this.routeMetrics?.physicalCoverSectorCount ?? 0;
-    this.routeColliderQuota = Math.min(
-      MIN_ROUTE_COVER_COLLIDERS,
-      distributedSectorCount,
-      this.huntRouteColliders.length,
-      maximum,
-    );
-
-    // Les props de gameplay conservent une réserve distincte. Dans la Jungle,
-    // quelques piliers anciens redondants restent couverture projectile mais
-    // cèdent leur collision acteur aux nouveaux couverts répartis par secteur.
-    const propReserve = Math.min(
-      MIN_GAMEPLAY_PROP_COLLIDERS,
-      Math.max(0, maximum - this.routeColliderQuota),
-    );
-    let demotionsNeeded = Math.max(
-      0,
-      this.obstacleColliders.length + this.routeColliderQuota + propReserve - maximum,
-    );
-    for (let index = this.obstacleColliders.length - 1; index >= 0 && demotionsNeeded > 0; index -= 1) {
-      const collider = this.obstacleColliders[index];
-      if (collider.routeBudgetDemotable !== true) continue;
-      this.obstacleColliders.splice(index, 1);
-      collider.blocksActors = false;
-      this.projectileCoverColliders.push(collider);
-      this.demotedLegacyColliderCount += 1;
-      demotionsNeeded -= 1;
-    }
-
-    const available = Math.max(0, maximum - this.obstacleColliders.length);
-    this.huntRouteActiveColliders = this.huntRouteColliders.slice(
-      0,
-      Math.min(this.routeColliderQuota, available),
-    );
+    // Collision follows every solid silhouette. Spatial queries, rather than
+    // removing arbitrary obstacles, bound the work performed for each actor.
+    this.routeColliderQuota = this.huntRouteColliders.length;
+    this.huntRouteActiveColliders = [...this.huntRouteColliders];
     this.obstacleColliders.push(...this.huntRouteActiveColliders);
     return this.huntRouteActiveColliders.length;
   }
 
   completeHuntRouteColliderBudget() {
-    const remainingBudget = Math.max(
-      0,
-      ENVIRONMENT_PERFORMANCE_BUDGETS.maxColliders - this.obstacleColliders.length,
-    );
-    if (remainingBudget === 0) return 0;
-    const activeIds = new Set(this.huntRouteActiveColliders.map(({ sourceId }) => sourceId));
-    const additions = this.huntRouteColliders
-      .filter(({ sourceId }) => !activeIds.has(sourceId))
-      .slice(0, remainingBudget);
+    const activeIds = new Set(this.huntRouteActiveColliders.map(collider => collider.sourceId));
+    const additions = this.huntRouteColliders.filter(collider => !activeIds.has(collider.sourceId));
     this.huntRouteActiveColliders.push(...additions);
     this.obstacleColliders.push(...additions);
     return additions.length;
@@ -761,6 +763,7 @@ export class Environment {
     this.clearBiome();
     this.huntLayout = getBiomeHuntLayout(this.currentBiome);
     this.playableRadius = this.huntLayout.playableRadius;
+    this.resolvedPropPlan = resolveWorldPropLayout(getBiomePropPlan(this.currentBiome), this.huntLayout);
     const shadowExtent = SHADOW_FOCUS_EXTENT;
     this.mainLight.shadow.camera.left = -shadowExtent;
     this.mainLight.shadow.camera.right = shadowExtent;
@@ -770,7 +773,7 @@ export class Environment {
     this.mainLight.shadow.camera.far = 1600;
     this.mainLight.shadow.camera.updateProjectionMatrix();
     this.updateShadowFocus(new THREE.Vector3(0, 0, 0));
-    this.propFootprints = getBiomePropPlan(this.currentBiome).props
+    this.propFootprints = this.resolvedPropPlan.props
       .filter((prop) => Number(prop.colliderRadius) > 0)
       .map((prop) => ({
         id: prop.id,
@@ -792,7 +795,7 @@ export class Environment {
     this.sunSphere.material.color.setHex(style.sun);
     this.createAtmosphericSky(style);
     this.createTerrain(style.ground);
-    this.routeRoot = buildHuntRouteNetwork(this.huntLayout, (x, z) => this.sampleBaseHeight(x, z));
+    this.routeRoot = buildHuntRouteNetwork(this.huntLayout, (x, z) => this.sampleBaseHeight(x, z), { reservedFootprints: this.propFootprints });
     this.routeMetrics = this.routeRoot.userData.huntLayoutMetrics;
     this.biomeGroup.add(this.routeRoot);
     this.huntRouteColliders = (this.routeRoot.userData.huntCoverColliders ?? []).filter((collider) => (
@@ -1045,6 +1048,19 @@ export class Environment {
         { part: 'east_palms', x: 18, z: 0, radius: 7.5, height: 23 },
       ];
     }
+    if (prop.type === 'field_camp') {
+      return [
+        { part: 'north_west_post', x: -6, z: -3.8, radius: 0.24, height: 6, baseYOffset: 0.1 },
+        { part: 'north_east_post', x: 6, z: -3.8, radius: 0.24, height: 6, baseYOffset: 0.1 },
+        { part: 'south_west_post', x: -6, z: 3.8, radius: 0.24, height: 6, baseYOffset: 0.1 },
+        { part: 'south_east_post', x: 6, z: 3.8, radius: 0.24, height: 6, baseYOffset: 0.1 },
+        { part: 'tactical_table', x: 0, z: 0, radius: Math.hypot(2.6, 1.7), shape: 'box', halfWidth: 2.6, halfDepth: 1.7, yaw: 0.12, height: 1.1, baseYOffset: 1.15 },
+        { part: 'west_supply_crate', x: -5.1, z: 5, radius: Math.hypot(1.1, 1.1), shape: 'box', halfWidth: 1.1, halfDepth: 1.1, yaw: 0.17, height: 1.9, baseYOffset: 0.05 },
+        { part: 'center_supply_crate', x: -2.5, z: 5.4, radius: Math.hypot(1.1, 1.1), shape: 'box', halfWidth: 1.1, halfDepth: 1.1, yaw: 0.34, height: 1.9, baseYOffset: 0.05 },
+        { part: 'east_supply_crate', x: 5.4, z: 4.8, radius: Math.hypot(1.1, 1.1), shape: 'box', halfWidth: 1.1, halfDepth: 1.1, yaw: 0.51, height: 1.9, baseYOffset: 0.05 },
+        { part: 'canopy_roof', x: 0, z: 0, radius: Math.hypot(6.9, 4.4), shape: 'box', halfWidth: 6.9, halfDepth: 4.4, height: 0.45, baseYOffset: 5.975 },
+      ];
+    }
     if (FACILITY_PROP_TYPES.has(prop.type)) {
       return [
         { part: 'core', x: 0, z: 0, radius: 5.8, height: 8 },
@@ -1102,7 +1118,7 @@ export class Environment {
   }
 
   buildBiomeProps() {
-    const plan = getBiomePropPlan(this.currentBiome);
+    const plan = this.resolvedPropPlan ?? getBiomePropPlan(this.currentBiome);
     this.propBuilder = new BiomePropBuilder({
       createTexturedMaterial: (options) => this.createTexturedMaterial(options),
     });
@@ -1141,7 +1157,6 @@ export class Environment {
         const sine = Math.sin(rotation);
         for (const part of this.getPropColliderParts(prop)) {
           const blocksActors = part.blocksActors !== false;
-          if (blocksActors && this.obstacleColliders.length >= ENVIRONMENT_PERFORMANCE_BUDGETS.maxColliders) continue;
           const localX = part.x * scale;
           const localZ = part.z * scale;
           const collider = {
@@ -1155,6 +1170,7 @@ export class Environment {
             sourceId: prop.id,
             blocksActors,
             blocksProjectiles: part.blocksProjectiles !== false,
+            ...(part.shape === 'box' ? { shape: 'box', halfWidth: part.halfWidth * scale, halfDepth: part.halfDepth * scale, yaw: rotation + (Number(part.yaw) || 0) } : {}),
           };
           if (blocksActors) this.obstacleColliders.push(collider);
           else this.projectileCoverColliders.push(collider);
@@ -1226,9 +1242,7 @@ export class Environment {
       for (const collider of wall.colliders) {
         collider.baseY = wall.closedY;
         if (collider.blocksActors !== false) {
-          if (this.obstacleColliders.length < ENVIRONMENT_PERFORMANCE_BUDGETS.maxColliders) {
-            this.obstacleColliders.push(collider);
-          }
+          this.obstacleColliders.push(collider);
         } else if (!this.projectileCoverColliders.includes(collider)) {
           this.projectileCoverColliders.push(collider);
         }
@@ -1329,6 +1343,8 @@ export class Environment {
       hazardCount: this.hazardZones.length,
       colliderCount: this.obstacleColliders.length,
       projectileOnlyColliderCount: this.projectileCoverColliders.length,
+      totalColliderCount: this.obstacleColliders.length + this.projectileCoverColliders.length,
+      obstacleIndex: this.getObstacleQueryMetrics(),
       huntRouteColliderCount: this.huntRouteActiveColliders.length,
       huntRouteColliderSectorCount: new Set(this.huntRouteActiveColliders.map(({ sectorId }) => sectorId)).size,
       routeColliderQuota: this.routeColliderQuota,
@@ -1407,7 +1423,7 @@ export class Environment {
     let nearest = null;
     let nearestDistance = Infinity;
     for (const pointOfInterest of this.pointsOfInterest) {
-      const distance = horizontalDistance(origin, pointOfInterest.position);
+      const distance = origin.distanceTo(pointOfInterest.position);
       if (pointOfInterest.scanned) continue;
       if (distance <= pointOfInterest.interactionRadius && distance < nearestDistance) {
         nearest = pointOfInterest;
@@ -1446,8 +1462,14 @@ export class Environment {
       }
       if (!player?.position?.isVector3) continue;
       const distance = horizontalDistance(player.position, hazard.position);
-      hazard.warned = distance <= hazard.radius * 1.45;
-      if (distance > hazard.radius || hazard.cooldown > 0) continue;
+      // Pools and ground snares do not reach a hunter on a high perch. The
+      // taller vent/spore effects match the roughly six-unit visible plume.
+      const effectHeight = Number.isFinite(hazard.effectHeight) ? Math.max(0, hazard.effectHeight)
+        : ['acid_pool', 'resin_snare', 'snare_vines'].includes(hazard.type) ? 2 : 6;
+      const aboveGround = player.position.y - hazard.position.y;
+      const withinHeight = aboveGround >= -2 && aboveGround <= effectHeight;
+      hazard.warned = withinHeight && distance <= hazard.radius * 1.45;
+      if (!withinHeight || distance > hazard.radius || hazard.cooldown > 0) continue;
       hazard.cooldown = Math.max(0.25, Number(hazard.interval) || 2.5);
       const signal = {
         type: 'environment_hazard',
@@ -1493,6 +1515,40 @@ export class Environment {
 
   getHuntLayout() {
     return this.huntLayout ? getBiomeHuntLayout(this.currentBiome) : null;
+  }
+
+  ensureObstacleIndex() {
+    this.obstacleIndex ??= new ObstacleSpatialIndex();
+    this.obstacleColliders ??= [];
+    this.projectileCoverColliders ??= [];
+    if (this._indexedActorSource !== this.obstacleColliders
+      || this._indexedProjectileSource !== this.projectileCoverColliders
+      || this._indexedActorCount !== this.obstacleColliders.length
+      || this._indexedProjectileCount !== this.projectileCoverColliders.length) {
+      this.obstacleIndex.rebuild([...this.obstacleColliders, ...this.projectileCoverColliders]);
+      this._indexedActorSource = this.obstacleColliders;
+      this._indexedProjectileSource = this.projectileCoverColliders;
+      this._indexedActorCount = this.obstacleColliders.length;
+      this._indexedProjectileCount = this.projectileCoverColliders.length;
+    }
+    return this.obstacleIndex;
+  }
+
+  // Preserve access to the complete collision pool for tools and compatibility.
+  getObstacles({ includeProjectileOnly = false } = {}) {
+    return includeProjectileOnly ? [...this.obstacleColliders, ...this.projectileCoverColliders] : this.obstacleColliders;
+  }
+
+  getNearbyObstacles(position, radius = 0, options = {}) {
+    return this.ensureObstacleIndex().query(position, radius, options);
+  }
+
+  getObstacleQueryMetrics() {
+    return {
+      ...this.ensureObstacleIndex().getMetrics(),
+      actorCount: this.obstacleColliders.length,
+      projectileOnlyCount: this.projectileCoverColliders.length,
+    };
   }
 
   getTraversalPerches() {
@@ -1681,7 +1737,7 @@ export class Environment {
 
   isSpawnPositionClear(position, clearance = 4) {
     if (!position?.isVector3 || Math.hypot(position.x, position.z) > this.playableRadius) return false;
-    const obstacleFree = this.obstacleColliders.every((collider) => (
+    const obstacleFree = this.getNearbyObstacles(position, clearance).every((collider) => (
       Math.hypot(position.x - collider.x, position.z - collider.z)
         >= collider.radius + clearance
     ));
@@ -1716,7 +1772,7 @@ export class Environment {
     direct.normalize();
 
     const lookAhead = Math.min(28, remaining);
-    const blockers = this.obstacleColliders.filter((collider) => collider.blocksActors !== false);
+    const blockers = this.getNearbyObstacles(start, lookAhead + Math.max(0, Number(clearance) || 0));
     const candidateAngles = [0, 0.42, -0.42, 0.78, -0.78, 1.16, -1.16, Math.PI / 2, -Math.PI / 2];
     let bestDirection = null;
     let bestScore = -Infinity;
@@ -1833,12 +1889,16 @@ export class Environment {
   resolveProjectileCoverImpact(start, end, projectileRadius = 0.25) {
     if (!start?.isVector3 || !end?.isVector3) return null;
     let nearest = null;
-    for (const collider of [...this.obstacleColliders, ...this.projectileCoverColliders]) {
+    const midpoint = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+    const queryRadius = Math.hypot(end.x - start.x, end.z - start.z) * 0.5 + Math.max(0, Number(projectileRadius) || 0);
+    for (const collider of this.getNearbyObstacles(midpoint, queryRadius, { includeProjectileOnly: true })) {
       if (collider.blocksProjectiles === false) continue;
       const baseY = Number.isFinite(collider.baseY)
         ? collider.baseY
         : this.sampleHeight(collider.x, collider.z);
-      const point = resolveSegmentVerticalCylinderImpact(start, end, collider, projectileRadius, baseY);
+      const point = collider.shape === 'box'
+        ? resolveSegmentBoxImpact(start, end, collider, projectileRadius, baseY)
+        : resolveSegmentVerticalCylinderImpact(start, end, collider, projectileRadius, baseY);
       if (!point) continue;
       const distanceSquared = start.distanceToSquared(point);
       if (!nearest || distanceSquared < nearest.distanceSquared) {
@@ -1968,7 +2028,7 @@ export class Environment {
     };
     const clear = (x, z) => {
       if (this.huntLayout.sectors.some(({ center }) => Math.hypot(x - center[0], z - center[2]) < 17)) return false;
-      if (this.obstacleColliders.some((collider) => Math.hypot(x - collider.x, z - collider.z) < collider.radius + 2)) return false;
+      if (this.getNearbyObstacles({ x, z }, 2).some((collider) => Math.hypot(x - collider.x, z - collider.z) < collider.radius + 2)) return false;
       return routeSegments.every((segment) => {
         const dx = segment.endX - segment.x;
         const dz = segment.endZ - segment.z;
@@ -2126,7 +2186,8 @@ export class Environment {
       const radius = 82 + ((i * 47) % 175);
       const candidateX = Math.cos(angle) * radius;
       const candidateZ = Math.sin(angle) * radius;
-      const { x, z } = this.resolveLegacyPlacement(candidateX, candidateZ, 4.5, `tree-${i + 1}`);
+      const { x, z } = getTravelSceneryPlacement(this.huntLayout, i, 45, 4.5, [...this.propFootprints, ...this.obstacleColliders])
+        ?? this.resolveLegacyPlacement(candidateX, candidateZ, 4.5, `tree-${i + 1}`);
       const ground = this.sampleHeight(x, z);
       transform.position.set(x, ground + 18, z);
       transform.updateMatrix();
@@ -2166,13 +2227,14 @@ export class Environment {
       const radius = 70 + ((i * 61) % 170);
       const candidateX = Math.cos(angle) * radius;
       const candidateZ = Math.sin(angle) * radius;
-      const { x, z } = this.resolveLegacyPlacement(candidateX, candidateZ, 5.5, `resin-pillar-${i + 1}`);
+      const { x, z } = getTravelSceneryPlacement(this.huntLayout, i, 30, 7, [...this.propFootprints, ...this.obstacleColliders])
+        ?? this.resolveLegacyPlacement(candidateX, candidateZ, 7, `resin-pillar-${i + 1}`);
       const ground = this.sampleHeight(x, z);
       transform.position.set(x, ground + 20, z);
       transform.updateMatrix();
       pillars.setMatrixAt(i, transform.matrix);
       this.treePerches.push(new THREE.Vector3(x, ground + 40, z));
-      this.obstacleColliders.push({ x, z, radius: 5.5, height: 40, baseY: ground, blocksProjectiles: true, sourceId: `hive-resin-pillar-${i + 1}` });
+      this.obstacleColliders.push({ x, z, radius: 7, height: 40, baseY: ground, blocksProjectiles: true, sourceId: `hive-resin-pillar-${i + 1}` });
     }
     pillars.instanceMatrix.needsUpdate = true;
     pillars.computeBoundingBox();
@@ -2194,7 +2256,8 @@ export class Environment {
       const rockRadius = 12 + (i % 4) * 2.5;
       const candidateX = Math.cos(angle) * radius;
       const candidateZ = Math.sin(angle) * radius;
-      const { x, z } = this.resolveLegacyPlacement(candidateX, candidateZ, rockRadius, `rock-${i + 1}`);
+      const { x, z } = getTravelSceneryPlacement(this.huntLayout, i, 25, rockRadius, [...this.propFootprints, ...this.obstacleColliders])
+        ?? this.resolveLegacyPlacement(candidateX, candidateZ, rockRadius, `rock-${i + 1}`);
       const ground = this.sampleHeight(x, z);
       const mesh = new THREE.Mesh(new THREE.DodecahedronGeometry(rockRadius), rock);
       mesh.position.set(x, ground + 8, z);

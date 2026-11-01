@@ -444,42 +444,49 @@ test('YautjaTrophyCraftsmanshipForgeSystem : Mécaniques de forge, équipement p
   assert.equal(checkLow.missingHonor, 1300);
 
   // Forger avec honneur suffisant
+  forge.recordTrophy('grid_alien');
   const craftResult = forge.craftItem('craft_shield_xeno_warrior', 1800);
   assert.equal(craftResult.success, true);
   assert.equal(forge.isCrafted('craft_shield_xeno_warrior'), true);
   // Auto-équipé car premier de sa catégorie
   assert.equal(forge.isEquipped('craft_shield_xeno_warrior'), true);
 
-  // Forger un second bouclier (Queen Crest requis 5000)
-  forge.craftItem('craft_shield_xeno_queen', 5000);
-  assert.equal(forge.isCrafted('craft_shield_xeno_queen'), true);
+  // Une source physique de Kalisk permet le second bouclier. Une Reine-Mère
+  // d'archive ne peut plus être substituée par une Reine standard.
+  forge.recordTrophy('kalisk');
+  forge.craftItem('craft_shield_kalisk_bone', 3400);
+  assert.equal(forge.isCrafted('craft_shield_kalisk_bone'), true);
   // Le premier reste équipé jusqu'à équipement explicite
   assert.equal(forge.isEquipped('craft_shield_xeno_warrior'), true);
-  assert.equal(forge.isEquipped('craft_shield_xeno_queen'), false);
+  assert.equal(forge.isEquipped('craft_shield_kalisk_bone'), false);
 
   // Équiper le second bouclier (doit remplacer le premier dans le slot bouclier)
-  const equipResult = forge.equipItem('craft_shield_xeno_queen');
+  const equipResult = forge.equipItem('craft_shield_kalisk_bone');
   assert.equal(equipResult.success, true);
-  assert.equal(forge.isEquipped('craft_shield_xeno_queen'), true);
+  assert.equal(forge.isEquipped('craft_shield_kalisk_bone'), true);
   assert.equal(forge.isEquipped('craft_shield_xeno_warrior'), false);
 
-  // Forger et équiper une arme (partBreakBonus: 50)
-  forge.craftItem('craft_weapon_queen_spine_harpoon', 5400);
-  assert.equal(forge.isEquipped('craft_weapon_queen_spine_harpoon'), true);
+  // Forger et équiper une arme à partir d'une nouvelle récolte réelle.
+  forge.recordTrophy('grid_alien');
+  forge.craftItem('craft_weapon_tail_blade_glaive', 2200);
+  assert.equal(forge.isEquipped('craft_weapon_tail_blade_glaive'), true);
 
   // Forger et équiper un masque (honorGainBonus: 25)
+  forge.recordTrophy('rhynth_titan');
   forge.craftItem('craft_mask_broken_tusk_rhynth', 4800);
   assert.equal(forge.isEquipped('craft_mask_broken_tusk_rhynth'), true);
 
-  // Forger et équiper un totem (anomalyDamageBonus: 25)
-  forge.craftItem('craft_totem_multiverse_challenger', 6000);
+  // Les objets déjà possédés dans une sauvegarde ancienne sont conservés,
+  // même lorsque leur matériau n'a pas de source physique actuelle.
+  forge.state.craftedItemIds.push('craft_totem_multiverse_challenger');
+  forge.equipItem('craft_totem_multiverse_challenger');
   assert.equal(forge.isEquipped('craft_totem_multiverse_challenger'), true);
 
   // Calcul des perks actifs
   const perks = forge.getActiveCraftedPerks();
   assert.equal(perks.equippedList.length, 4);
-  assert.ok(perks.acidImmunityRatio >= 1.0, 'Immunité acide active');
-  assert.ok(perks.partBreakBonusMultiplier >= 1.50, 'Bonus de rupture de parties actif (1.5x)');
+  assert.equal(perks.acidImmunityRatio, 0, 'Le retrait du bouclier xénomorphe retire son immunité');
+  assert.equal(perks.meleeDamageBonus, 45, 'Le glaive octroie ses dégâts de mêlée');
   assert.ok(perks.crossoverDamageBonusMultiplier >= 1.25, 'Bonus dégâts crossover actif (1.25x)');
   assert.ok(perks.honorScoreBonusMultiplier >= 1.25, 'Bonus d\'honneur actif (1.25x)');
 

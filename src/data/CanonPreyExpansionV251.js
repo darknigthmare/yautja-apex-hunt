@@ -1,4 +1,10 @@
-﻿const e = (id, name, faction, scale, sizeMeters, originMedia, description, weakpoints, trophy, baseHonor, threatStars) => ({ id: 'canon251_' + id, name, faction, scale, sizeMeters, originMedia, description, weakpoints, trophy, baseHonor, threatStars });
+const REFERENCE_LINKS = Object.freeze({
+  yautja_pisteur_prey_2022: 'prey_feral_predator_1719',
+  yautja_bad_blood_vengeur: 'prey_bad_blood_warlord',
+  yautja_cleaner_gunnison: 'prey_wolf_cleaner_2007',
+  synth_rook_sentinelle: 'prey_synthetic_rook_science',
+});
+const e = (id, name, faction, scale, sizeMeters, originMedia, description, weakpoints, trophy, baseHonor, threatStars) => ({ id: 'canon251_' + id, name, faction, scale, sizeMeters, originMedia, description, weakpoints, trophy, baseHonor, threatStars, referencePreyId: REFERENCE_LINKS[id] ?? null });
 
 export default [
   // ===== GEANT =====
@@ -9,17 +15,17 @@ export default [
   e('ingenieur_gardien_acheron', 'Gardien de Cryptes d\'Acheron', 'ENGINEER', 'GEANT', 5.6, 'Prometheus (2012)', 'Ingénieur sentinelle réveillé de stase, protégeant les silos de pathogène noir.', ['Bio-armure fendue', 'Poitrail', 'Tempe'], 'Flûte Sacrée du Gardien', 4400, 5),
 
   // ===== GRANDE =====
-  e('yautja_pisteur_prey_2022', 'Chasseur Yautja de Naru — Cible du Clan', 'YAUTJA', 'GRANDE', 2.7, 'Prey (2022)', 'Yautja primitif à armure de bio-masque camouflée, traquant les Comanches des Grandes Plaines.', ['Ouïes de masque', 'Flanc gauche', 'Cuisses'], 'Masque Rouge de Prey', 3000, 4),
+  e('yautja_pisteur_prey_2022', 'Feral — Chasseur de Naru', 'YAUTJA', 'GRANDE', 2.25, 'Prey (2022)', 'Chasseur de 1719 au biomasque d\'os, au bouclier rétractable et à la lance télescopique, affrontant Naru.', ['Masque d\'os détachable', 'Arrière du bouclier', 'Flanc gauche'], 'Bio-Masque d\'Os de Feral', 3000, 4),
   e('xeno_praetorien_ravageur', 'Praetorian Hurleur de Hadley', 'XENOMORPH', 'GRANDE', 3.2, 'Aliens: Colonial Marines (2013)', 'Praetorian à crête étoilée, commandant des escouades de drones.', ['Crête', 'Cou', 'Abdomen mou'], 'Crête Étoilée de Hadley', 3200, 4),
   e('xeno_crusher_bouclier', 'Crusher Bouclier de Sevastopol', 'XENOMORPH', 'GRANDE', 3.4, 'Aliens: Colonial Marines (2013)', 'Cuirassé frontal d\'une carapace osseuse capable de percuter des cloisons blindées.', ['Flanc', 'Pattes arrière', 'Nuque'], 'Casque Osseux du Crusher', 3100, 4),
-  e('yautja_bad_blood_vengeur', 'Vengeur Bad Blood de Chicago', 'YAUTJA', 'GRANDE', 2.9, 'Predator 2 (1990)', 'Chasseur exilé ou rival maudit par son clan, armé de lames de poignet.', ['Tubes de masque', 'Épaules', 'Gorge'], 'Lame Bad Blood Brisée', 3500, 4),
+  e('yautja_bad_blood_vengeur', 'Bad Blood — Dossier de chasseur renégat', 'YAUTJA', 'GRANDE', 3.0, 'Predator: Bad Blood (Dark Horse 1993)', 'Chasseur renégat traqué par son clan ; dossier fondé sur la référence Bad Blood des comics.', ['Tubes de masque', 'Épaules', 'Gorge'], 'Lame Bad Blood Brisée', 3500, 4),
   e('neomorphe_alpha_covenant', 'Néomorphe Alpha de Covenant', 'XENOMORPH', 'GRANDE', 2.6, 'Alien: Covenant (2017)', 'Prédateur blanc effilé aux déplacements bondissants, sorti du dos d\'un colon.', ['Dos fendu', 'Crâne mince', 'Cou'], 'Crâne Nacré du Néomorphe', 2800, 4),
 
   // ===== MOYEN =====
   e('xeno_guerrier_alien_resurrection', 'Hybride de Reine de l\'Auriga', 'XENOMORPH', 'MOYEN', 2.4, 'Alien Resurrection (1997)', 'Spécimen clone aux traits humains et à la peau translucide, issu de la Reine clonée.', ['Yeux humains', 'Thorax translucide', 'Queue'], 'Chair Translucide de l\'Auriga', 2200, 4),
-  e('yautja_cleaner_gunnison', 'Nettoyeur de Piste des Forêts', 'YAUTJA', 'MOYEN', 2.3, 'Predator 2018 (The Predator)', 'Yautja agile chargé d\'effacer les traces de la chasse avec des drones de combat.', ['Casque', 'Dos', 'Bras'], 'Gantelet de Nettoyeur', 2000, 3),
+  e('yautja_cleaner_gunnison', 'Wolf — Nettoyeur de Gunnison', 'YAUTJA', 'MOYEN', 2.35, 'AVP: Requiem (2007)', 'Vétéran borgne chargé d\'effacer les traces de l\'épidémie de Gunnison, avec double plasmacaster, fouet et matériel Cleaner.', ['Casque', 'Dos', 'Bras'], 'Gantelet de Nettoyeur', 2000, 3),
   e('xeno_drone_lv426', 'Drone de Hadley\'s Hope', 'XENOMORPH', 'MOYEN', 2.2, 'Aliens (1986)', 'Guerrier noir cuirassé, tapi dans les conduits d\'aération.', ['Crâne', 'Thorax', 'Jarret'], 'Carapace de Hadley', 1800, 3),
-  e('synth_rook_sentinelle', 'Synthétique Sentinelle de Renaissance', 'HUMAN_SYNTHETIC', 'MOYEN', 1.9, 'Alien: Romulus (2024)', 'Androïde d\'enceinte aux protocoles corrompus, arme de poing.', ['Module crânien', 'Nuque', 'Colonne'], 'Visage Synthétique de Renaissance', 1500, 3),
+  e('synth_rook_sentinelle', 'Rook — Officier scientifique de Renaissance', 'HUMAN_SYNTHETIC', 'MOYEN', 1.82, 'Alien: Romulus (2024)', 'Officier scientifique synthétique de la station Renaissance, chargé des recherches biologiques de Weyland-Yutani.', ['Module crânien', 'Nuque', 'Colonne'], 'Visage Synthétique de Renaissance', 1500, 3),
   e('human_marine_usss_ferro', 'Marine USCM du Vecteur Ferro', 'HUMAN_SYNTHETIC', 'MOYEN', 1.8, 'Aliens: Colonial Marines (2013)', 'Vétéran équipé de fusil à impulsion M41A, tireur d\'élite de l\'escouade.', ['Dos', 'Casque', 'Pile d\'énergie'], 'Plaque d\'Identité Ferro', 1100, 3),
 
   // ===== PETITE =====

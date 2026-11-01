@@ -14,7 +14,8 @@ export const ENVIRONMENT_PERFORMANCE_BUDGETS = Object.freeze({
   maxProps: 96,
   maxPoi: 4,
   maxHazards: 4,
-  maxColliders: 72,
+  // Complete solid/overhead volumes, queried through a local spatial index.
+  maxColliders: 160,
   maxDrawCalls: 180,
   // Jungle leaf crowns bring the complete static scene to ~279k triangles.
   // Draw-call, collision and interaction budgets remain independently bounded.
