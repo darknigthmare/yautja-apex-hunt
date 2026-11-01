@@ -1050,6 +1050,13 @@ export class Game {
         card.append(sourceList);
       }
 
+      if (entry.sharedId) {
+        const provenance = document.createElement('small');
+        provenance.className = 'codex-shared-reference';
+        provenance.textContent = 'ALIEN_BASE · ' + entry.sharedId + ' · ARCHIVE NON JOUABLE';
+        card.append(provenance);
+      }
+
       return card;
     });
 

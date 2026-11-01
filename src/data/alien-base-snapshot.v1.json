@@ -1,0 +1,626 @@
+{
+  "schemaVersion": "1.0.0",
+  "origin": "darknigthmare/alien_base",
+  "scope": "public-minimal-yautja-apex-hunt",
+  "evidence": "identities-only-no-visual-fidelity-or-gameplay-stats",
+  "records": [
+    {
+      "id": "archive:lv223",
+      "kind": "archive",
+      "name": "LV-223 / Prometheus"
+    },
+    {
+      "id": "archive:lv426",
+      "kind": "archive",
+      "name": "LV-426 / Acheron"
+    },
+    {
+      "id": "archive:pathogen",
+      "kind": "archive",
+      "name": "Agents mutagènes et Néomorphes"
+    },
+    {
+      "id": "archive:renaissance",
+      "kind": "archive",
+      "name": "Station Renaissance"
+    },
+    {
+      "id": "archive:sevastopol",
+      "kind": "archive",
+      "name": "Sevastopol"
+    },
+    {
+      "id": "character:bishop",
+      "kind": "character",
+      "name": "Bishop"
+    },
+    {
+      "id": "character:ellen-ripley",
+      "kind": "character",
+      "name": "Ellen Ripley"
+    },
+    {
+      "id": "equipment:m314",
+      "kind": "equipment",
+      "name": "M314 — Détecteur de mouvement"
+    },
+    {
+      "id": "faction:synthetics",
+      "kind": "faction",
+      "name": "Personnel synthétique"
+    },
+    {
+      "id": "faction:uscm",
+      "kind": "faction",
+      "name": "Colonial Marines — USCM"
+    },
+    {
+      "id": "faction:weyland-yutani",
+      "kind": "faction",
+      "name": "Weyland-Yutani"
+    },
+    {
+      "id": "vehicle:m577",
+      "kind": "vehicle",
+      "name": "M577 Armored Personnel Carrier"
+    },
+    {
+      "id": "vehicle:p5000",
+      "kind": "vehicle",
+      "name": "P-5000 Powered Work Loader"
+    },
+    {
+      "id": "vehicle:ud4l",
+      "kind": "vehicle",
+      "name": "UD-4L Cheyenne Dropship"
+    },
+    {
+      "id": "weapon:m240",
+      "kind": "weapon",
+      "name": "M240 — Incinérateur"
+    },
+    {
+      "id": "weapon:m41a",
+      "kind": "weapon",
+      "name": "M41A — Fusil à impulsion"
+    },
+    {
+      "id": "weapon:m56",
+      "kind": "weapon",
+      "name": "M56 — Smartgun"
+    },
+    {
+      "id": "xeno:adult-1979",
+      "kind": "organism",
+      "name": "Drone xénomorphe"
+    },
+    {
+      "id": "xeno:chestburster",
+      "kind": "organism",
+      "name": "Chestburster"
+    },
+    {
+      "id": "xeno:facehugger",
+      "kind": "organism",
+      "name": "Facehugger"
+    },
+    {
+      "id": "xeno:ovomorph",
+      "kind": "organism",
+      "name": "Œuf xénomorphe"
+    },
+    {
+      "id": "xeno:queen-1986",
+      "kind": "organism",
+      "name": "Reine xénomorphe"
+    },
+    {
+      "id": "xeno:warrior-1986",
+      "kind": "organism",
+      "name": "Guerrier xénomorphe"
+    },
+    {
+      "id": "yautja:jungle-hunter-1987",
+      "kind": "character",
+      "name": "Jungle Hunter (1987)"
+    },
+    {
+      "id": "yautja:city-hunter-1990",
+      "kind": "character",
+      "name": "City Hunter (1990)"
+    },
+    {
+      "id": "yautja:elder-lost-tribe-1990",
+      "kind": "character",
+      "name": "Ancien du Lost Tribe"
+    },
+    {
+      "id": "yautja:scar-2004",
+      "kind": "character",
+      "name": "Scar Predator"
+    },
+    {
+      "id": "yautja:celtic-2004",
+      "kind": "character",
+      "name": "Celtic Predator"
+    },
+    {
+      "id": "yautja:chopper-2004",
+      "kind": "character",
+      "name": "Chopper Predator"
+    },
+    {
+      "id": "yautja:wolf-2007",
+      "kind": "character",
+      "name": "Wolf Predator"
+    },
+    {
+      "id": "yautja:berserker-2010",
+      "kind": "character",
+      "name": "Berserker Predator"
+    },
+    {
+      "id": "yautja:falconer-2010",
+      "kind": "character",
+      "name": "Falconer Predator"
+    },
+    {
+      "id": "yautja:tracker-2010",
+      "kind": "character",
+      "name": "Tracker Predator"
+    },
+    {
+      "id": "yautja:fugitive-2018",
+      "kind": "character",
+      "name": "Fugitive Predator"
+    },
+    {
+      "id": "yautja:feral-2022",
+      "kind": "character",
+      "name": "Feral Predator"
+    },
+    {
+      "id": "yautja:viking-hunter-2025",
+      "kind": "character",
+      "name": "Chasseur de l’ère viking"
+    },
+    {
+      "id": "yautja:feudal-hunter-2025",
+      "kind": "character",
+      "name": "Chasseur du Japon féodal"
+    },
+    {
+      "id": "yautja:wartime-hunter-2025",
+      "kind": "character",
+      "name": "Chasseur de l’ère aérienne"
+    },
+    {
+      "id": "yautja:dek-2025",
+      "kind": "character",
+      "name": "Dek"
+    },
+    {
+      "id": "yautja:kwei-2025",
+      "kind": "character",
+      "name": "Kwei"
+    },
+    {
+      "id": "equipment:yautja-biomask",
+      "kind": "equipment",
+      "name": "Biomasque multispectral"
+    },
+    {
+      "id": "equipment:yautja-cloak",
+      "kind": "equipment",
+      "name": "Camouflage réfractif"
+    },
+    {
+      "id": "equipment:yautja-wrist-computer",
+      "kind": "equipment",
+      "name": "Ordinateur de poignet"
+    },
+    {
+      "id": "equipment:yautja-self-destruct",
+      "kind": "equipment",
+      "name": "Autodestruction du brassard"
+    },
+    {
+      "id": "equipment:yautja-medicomp",
+      "kind": "equipment",
+      "name": "Nécessaire de soins"
+    },
+    {
+      "id": "equipment:yautja-tri-laser",
+      "kind": "equipment",
+      "name": "Viseur à trois points"
+    },
+    {
+      "id": "weapon:yautja-wrist-blades",
+      "kind": "weapon",
+      "name": "Lames de poignet"
+    },
+    {
+      "id": "weapon:yautja-plasmacaster",
+      "kind": "weapon",
+      "name": "Canon à plasma"
+    },
+    {
+      "id": "weapon:yautja-smart-disc",
+      "kind": "weapon",
+      "name": "Disque intelligent"
+    },
+    {
+      "id": "weapon:yautja-combistick",
+      "kind": "weapon",
+      "name": "Combi-stick"
+    },
+    {
+      "id": "weapon:yautja-net-launcher",
+      "kind": "weapon",
+      "name": "Lance-filet"
+    },
+    {
+      "id": "weapon:yautja-shuriken-avp",
+      "kind": "weapon",
+      "name": "Shuriken déployable"
+    },
+    {
+      "id": "weapon:feral-bolt-launcher-2022",
+      "kind": "weapon",
+      "name": "Lance-traits du Feral"
+    },
+    {
+      "id": "weapon:wolf-dual-plasma-2007",
+      "kind": "weapon",
+      "name": "Double canon à plasma de Wolf"
+    },
+    {
+      "id": "vessel:yautja-jungle-dropcraft-1987",
+      "kind": "vessel",
+      "name": "Appareil d’insertion de la jungle"
+    },
+    {
+      "id": "vessel:yautja-city-clan-vessel-1990",
+      "kind": "vessel",
+      "name": "Vaisseau du clan de Los Angeles"
+    }
+  ],
+  "crosswalks": [
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "jungle_1987",
+      "sharedId": "yautja:jungle-hunter-1987",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "city_1990",
+      "sharedId": "yautja:city-hunter-1990",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "elder_lost_tribe",
+      "sharedId": "yautja:elder-lost-tribe-1990",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "scar_avp",
+      "sharedId": "yautja:scar-2004",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "celtic_avp",
+      "sharedId": "yautja:celtic-2004",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "chopper_avp",
+      "sharedId": "yautja:chopper-2004",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "wolf_avpr",
+      "sharedId": "yautja:wolf-2007",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "berserker_2010",
+      "sharedId": "yautja:berserker-2010",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "falconer_2010",
+      "sharedId": "yautja:falconer-2010",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "tracker_2010",
+      "sharedId": "yautja:tracker-2010",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "fugitive_2018",
+      "sharedId": "yautja:fugitive-2018",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "feral_2022",
+      "sharedId": "yautja:feral-2022",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "kok_viking_hunter",
+      "sharedId": "yautja:viking-hunter-2025",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "kok_feudal_hunter",
+      "sharedId": "yautja:feudal-hunter-2025",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "kok_wartime_hunter",
+      "sharedId": "yautja:wartime-hunter-2025",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "dek_badlands",
+      "sharedId": "yautja:dek-2025",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaSkinsDatabase",
+      "legacyId": "kwei_badlands",
+      "sharedId": "yautja:kwei-2025",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_biomask",
+      "sharedId": "equipment:yautja-biomask",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_cloak",
+      "sharedId": "equipment:yautja-cloak",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_wrist_computer",
+      "sharedId": "equipment:yautja-wrist-computer",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_self_destruct",
+      "sharedId": "equipment:yautja-self-destruct",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_medicomp",
+      "sharedId": "equipment:yautja-medicomp",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_tri_laser",
+      "sharedId": "equipment:yautja-tri-laser",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_wrist_blades",
+      "sharedId": "weapon:yautja-wrist-blades",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_plasma_caster",
+      "sharedId": "weapon:yautja-plasmacaster",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_smart_disc",
+      "sharedId": "weapon:yautja-smart-disc",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_combistick",
+      "sharedId": "weapon:yautja-combistick",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_net_launcher",
+      "sharedId": "weapon:yautja-net-launcher",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_shuriken_avp",
+      "sharedId": "weapon:yautja-shuriken-avp",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_feral_bolt_launcher",
+      "sharedId": "weapon:feral-bolt-launcher-2022",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.technology",
+      "legacyId": "tech_wolf_dual_plasma",
+      "sharedId": "weapon:wolf-dual-plasma-2007",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.vehicles",
+      "legacyId": "vehicle_jungle_dropcraft",
+      "sharedId": "vessel:yautja-jungle-dropcraft-1987",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.vehicles",
+      "legacyId": "vehicle_city_clan_ship",
+      "sharedId": "vessel:yautja-city-clan-vessel-1990",
+      "note": "Identity / technology family reference only; no stats, gameplay, sprite or 1:1 certification."
+    }
+  ],
+  "archiveIds": [
+    "faction:weyland-yutani",
+    "faction:uscm",
+    "faction:synthetics",
+    "weapon:m41a",
+    "weapon:m56",
+    "weapon:m240",
+    "equipment:m314",
+    "vehicle:m577",
+    "vehicle:ud4l",
+    "vehicle:p5000",
+    "character:bishop",
+    "character:ellen-ripley",
+    "archive:sevastopol",
+    "archive:renaissance",
+    "archive:lv223",
+    "archive:lv426",
+    "xeno:facehugger",
+    "xeno:chestburster",
+    "xeno:ovomorph",
+    "archive:pathogen"
+  ],
+  "relations": [
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.huntBosses",
+      "localId": "xeno_queen",
+      "basisSharedId": "xeno:queen-1986",
+      "relation": "inspired-by",
+      "assertsIdentity": false,
+      "admission": "REVIEW_ONLY"
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.huntBosses",
+      "localId": "boss_feral_2022",
+      "basisSharedId": "yautja:feral-2022",
+      "relation": "inspired-by",
+      "assertsIdentity": false,
+      "admission": "REVIEW_ONLY"
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.huntBosses",
+      "localId": "boss_wolf_cleaner",
+      "basisSharedId": "yautja:wolf-2007",
+      "relation": "inspired-by",
+      "assertsIdentity": false,
+      "admission": "REVIEW_ONLY"
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.huntBosses",
+      "localId": "boss_berserker_super_predator",
+      "basisSharedId": "yautja:berserker-2010",
+      "relation": "inspired-by",
+      "assertsIdentity": false,
+      "admission": "REVIEW_ONLY"
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.huntBosses",
+      "localId": "boss_city_hunter_1990",
+      "basisSharedId": "yautja:city-hunter-1990",
+      "relation": "inspired-by",
+      "assertsIdentity": false,
+      "admission": "REVIEW_ONLY"
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.enemies",
+      "localId": "enemy_xenomorph_warrior",
+      "basisSharedId": "xeno:warrior-1986",
+      "relation": "inspired-by",
+      "assertsIdentity": false,
+      "admission": "REVIEW_ONLY"
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "YautjaContentCatalog.enemies",
+      "localId": "enemy_xenomorph_drone",
+      "basisSharedId": "xeno:adult-1979",
+      "relation": "inspired-by",
+      "assertsIdentity": false,
+      "admission": "REVIEW_ONLY"
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "CURRENT_HUNTS",
+      "localId": "jungle_hunter_1987",
+      "basisSharedId": "yautja:jungle-hunter-1987",
+      "relation": "inspired-by",
+      "assertsIdentity": false,
+      "admission": "REVIEW_ONLY"
+    },
+    {
+      "repository": "darknigthmare/yautja-apex-hunt",
+      "collection": "CURRENT_HUNTS",
+      "localId": "grid_alien",
+      "basisSharedId": "xeno:warrior-1986",
+      "relation": "inspired-by",
+      "assertsIdentity": false,
+      "admission": "REVIEW_ONLY"
+    }
+  ]
+}

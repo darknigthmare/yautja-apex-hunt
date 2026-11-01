@@ -1,3 +1,4 @@
+import { getAlienBaseArchiveCodexEntries } from './AlienBaseFederation.js';
 // Canon-conscious lore data for Yautja: Apex Hunt.
 // UI rule: always display the sourceTier badge with an entry.
 
@@ -25,6 +26,11 @@ export const LORE_SOURCES = Object.freeze({
   avp2004: { title: 'Alien vs. Predator (2004)', tier: 'AVP_SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien-vs-predator' },
   avpRequiem2007: { title: 'Aliens vs. Predator: Requiem (2007)', tier: 'AVP_SCREEN', url: 'https://www.20thcenturystudios.com/movies/aliens-vs-predator-requiem' },
   aliens1986: { title: 'Aliens (1986)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/aliens' },
+  alien1979: { title: 'Alien (1979)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien' },
+  alienIsolation2014: { title: 'Alien: Isolation (2014)', tier: 'LICENSED_EU', url: 'https://store.steampowered.com/app/214490/Alien_Isolation/' },
+  alienRomulus2024: { title: 'Alien: Romulus (2024)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien-romulus' },
+  prometheus2012: { title: 'Prometheus (2012)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/prometheus' },
+  alienCovenant2017: { title: 'Alien: Covenant (2017)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien-covenant' },
   huntingGrounds: { title: 'Predator: Hunting Grounds — équipement', tier: 'LICENSED_EU', url: 'https://predator.illfonic.com/the-predator/' },
   avpOriginalComics: { title: 'AVP — comics originaux Dark Horse', tier: 'LICENSED_EU', url: 'https://digital.darkhorse.com/books/47483ce0aec5466783599e38c9d0ac47/aliens-vs-predator-the-original-comics-series-30th-anniversary-edition' },
   huntingGroundsUpdates: { title: 'Predator: Hunting Grounds — classes et patch notes', tier: 'LICENSED_EU', url: 'https://forum.predator.illfonic.com/c/News/patch-notes' },
@@ -359,7 +365,8 @@ export const CURRENT_HUNTS = freezeEntries([
   },
 ]);
 
-export const ALL_LORE_ENTRIES = Object.freeze([...LORE_CODEX_ENTRIES, ...HUNT_LOCATIONS, ...CURRENT_HUNTS]);
+export const ALIEN_BASE_ARCHIVE_ENTRIES = Object.freeze(getAlienBaseArchiveCodexEntries());
+export const ALL_LORE_ENTRIES = Object.freeze([...LORE_CODEX_ENTRIES, ...HUNT_LOCATIONS, ...CURRENT_HUNTS, ...ALIEN_BASE_ARCHIVE_ENTRIES]);
 export const getLoreSourceTier = (tierId) => LORE_SOURCE_TIERS[tierId] ?? null;
 export const getLoreEntryById = (id) => ALL_LORE_ENTRIES.find((entry) => entry.id === id) ?? null;
 export const getLoreEntriesByCategory = (category) => ALL_LORE_ENTRIES.filter((entry) => entry.category === category);
@@ -369,5 +376,6 @@ export default Object.freeze({
   sources: LORE_SOURCES,
   codex: LORE_CODEX_ENTRIES,
   locations: HUNT_LOCATIONS,
-  hunts: CURRENT_HUNTS
+  hunts: CURRENT_HUNTS,
+  alienBaseArchives: ALIEN_BASE_ARCHIVE_ENTRIES
 });
