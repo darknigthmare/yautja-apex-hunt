@@ -1,4 +1,5 @@
 import { writeFileSync, readFileSync } from 'node:fs';
+import {createHash} from 'node:crypto';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { YautjaContentCatalog } from '../src/data/YautjaContentCatalog.js';
@@ -10,18 +11,28 @@ import * as expanded from '../src/data/YautjaExpandedContent.js';
 import { HUNTER_CLASSES, DREAD_STYLES, ARMOR_FINISHES, WARPAINT_PATTERNS, PLAYER_GADGETS, PLAYABLE_WEAPONS, WEAPON_TECH_VARIANTS, ARMOR_PRESET_WEAPON_VARIANTS } from '../src/data/RuntimeEquipment.js';
 import { PREY_FACTIONS } from '../src/data/PreyTaxonomyAndCrossoverCatalog.js';
 
-const YCOMMIT = "3cbe8861204c5fe7341b61cda61f806b596a7186";
+const YCOMMIT = "8b42b89288be20a9263b6002cec4862c782a80bc";
 const FILE_SHA = Object.freeze({
   "src/data/YautjaExpandedContent.js": "8663208bd897fc14ea8136a46b0760f65afe007b",
   "src/data/YautjaContentCatalog.js": "d03d62eb495e1e04a0bc30aaa9fff407c3f8bfc5",
   "src/data/YautjaLoreDatabase.js": "2ea6fbef17999783ac3bb14bfca24ff10fdd4beb",
-  "src/data/LoreCodex.js": "e2a27ef68be09b2812270423ed6325fe2586133e",
+  "src/data/LoreCodex.js": "5b47dd87275a9f40a40dff2d4dc9b79cc9ee2b1c",
   "src/data/MediaCoverageCatalog.js": "d272a5c736058ada02519800df52ddc10250530e",
   "src/data/CanonPreyExpansionV251.js": "cb447f220b0e3ed0b7ad2f0b4fcd63286a6d6726",
-  "src/data/PreyTaxonomyAndCrossoverCatalog.js": "ac307846bbfb1ce846ae5832da3f97873c81a564",
-  "src/data/PreyReferenceMetadata.js": "8352298311011570ac01ddbc19ee874bc387fc7b",
-  "src/data/RuntimeEquipment.js": "807a1c8bdbfa16c1fdbafbc39d00af6877e7e6f3"
+  "src/data/PreyTaxonomyAndCrossoverCatalog.js": "6181b8d73656938cb54c44a5bea1bb3079ce971d",
+  "src/data/PreyReferenceMetadata.js": "ff2aea94f670d140bac363de15bf8c35eaf3ad52",
+  "src/data/RuntimeEquipment.js": "d12156731b6a7ed72cc97eee9f0be0bfcd16e321"
 });
+// Source snapshots remain immutable; validate all file blobs before proposing an intake PR.
+export function assertAlienBaseCandidateSourcesCurrent(){
+ const root=new URL('../',import.meta.url);
+ for(const [path,pinned] of Object.entries(FILE_SHA)){
+  const bytes=readFileSync(new URL(path,root));
+  const actual=createHash('sha1').update(Buffer.from('blob '+bytes.length+'\0')).update(bytes).digest('hex');
+  if(actual!==pinned)throw Error('Alien_base source blob drift '+path+': '+pinned+' != '+actual);
+ }
+ return {sourceRevision:YCOMMIT,checkedPaths:Object.keys(FILE_SHA).length};
+}
 const REPO = 'darknigthmare/yautja-apex-hunt';
 const expandedIds = new Set(Object.values(expanded).filter(Array.isArray).flat().map(e=>e.id));
 // These five sources are newly shipped from the shared Alien_base archive: do not re-import our own snapshot as local Apex research.
@@ -79,6 +90,7 @@ export function buildAlienBaseCandidateExport(){
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  const args=process.argv.slice(2),i=args.indexOf('--out'),out=i>=0?args[i+1]:null;
  if(!out){console.error('Usage: node scripts/export-alien-base-candidates.mjs --out PATH [--check]');process.exit(2);}
+ assertAlienBaseCandidateSourcesCurrent();
  const raw=JSON.stringify(buildAlienBaseCandidateExport(),null,2)+'\n';
  if(args.includes('--check')){
   if(readFileSync(out,'utf8')!==raw){console.error('Alien_base candidate drift:',out);process.exit(1);}

@@ -64,3 +64,10 @@ Les apparences `alpha_yautja`, `samurai_yautja` et `viking_yautja` réutilisent 
 
 ### Recherche des archives au bio-masque
 Le Codex permet désormais de filtrer les dossiers par texte, provenance (écran, AVP, EU, création, recherche) et mode « archives uniquement ». Les **40 archives Alien_base** restent distinctes des chasses et des équipements. Les filtres agissent uniquement sur les fiches affichées ; ils ne modifient aucun état de jeu ou fichier de sauvegarde.
+
+
+## Reprise du 2 novembre 2026 — nouvelles sources du jeu
+
+Le nouveau `master@497fb84` du jeu contient 3 commits de travaux croiseur/PNJ et modifie les **blobs sources** `LoreCodex.js`, `PreyTaxonomyAndCrossoverCatalog.js`, `RuntimeEquipment.js` et leur dépendance `PreyReferenceMetadata.js`. La PR du jeu les a réconciliés par fusion Git `8b42b892` en conservant le Codex et les nouvelles interactions 3D.
+
+L'index de recherche produit désormais **732 candidats** : les 731 historiques, plus `apex:factions:FAUNA`, qui représente une *catégorie de faune propre au jeu* et **pas** une nouvelle organisation ou race officielle. Deux dossiers de chasse (`bad_blood` et `rhynth_titan`) ont des références source corrigées. Les identifiants historiques ne changent pas ; les statistiques restent dans Apex. `assertAlienBaseCandidateSourcesCurrent()` compare les **9 SHA Git blob** des sources et échoue si un des fichiers a été modifié depuis le dernier ré-épinglage.

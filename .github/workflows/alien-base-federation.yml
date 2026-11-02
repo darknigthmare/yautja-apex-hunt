@@ -43,6 +43,7 @@ jobs:
           node scripts/sync-alien-base-snapshot.mjs
           node scripts/sync-alien-base-registry-v2.mjs
           node scripts/export-alien-base-candidates.mjs --out /tmp/yautja-apex-intake.json
+          node scripts/export-alien-base-candidates.mjs --out /tmp/yautja-apex-intake-verified.json
       - name: Run game regression suite
         run: npm test
       - name: Build production client
