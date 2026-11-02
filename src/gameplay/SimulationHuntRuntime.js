@@ -3,6 +3,7 @@ import { HUNT_DEFINITIONS } from '../data/GameConfig.js';
 import { CANON_PREY_CATALOG, MULTIVERSE_CROSSOVER_PREY, PREY_FACTIONS } from '../data/PreyTaxonomyAndCrossoverCatalog.js';
 import { CROSSOVER_UNIVERSE_ENCOUNTERS } from '../data/CrossoverUniverseEncounters.js';
 import { getVisualBounds, metersToWorldUnits } from '../utils/worldScale.js';
+import { getPreySimulationModelReference, getDocumentedPreySubjectModelId } from '../data/PreyReferenceMetadata.js';
 
 /** A dossier selects a training proxy, never impersonates the referenced model. */
 export function resolveSimulationSelection(context) {
@@ -11,23 +12,7 @@ export function resolveSimulationSelection(context) {
     : [...MULTIVERSE_CROSSOVER_PREY, ...CROSSOVER_UNIVERSE_ENCOUNTERS];
   const target = entries.find(entry => entry.id === context.id);
   if (!target) return null;
-  const id = target.id.toLowerCase();
-  let huntType = context.kind === 'crossover' ? 'bad_blood' : 'goliath';
-  let planetType = 'jungle';
-  if (target.faction === PREY_FACTIONS.XENOMORPH) {
-    huntType = /king|roi/.test(id) ? 'xeno_king' : /queen|reine|matriarch/.test(id) ? 'xeno_queen' : 'grid_alien';
-    planetType = 'hive_lv426';
-  } else if (/rhynth/.test(id)) {
-    huntType = 'rhynth_titan'; planetType = 'ryushi_desert';
-  } else if (/vydrach/.test(id)) {
-    huntType = 'vydrach_prime'; planetType = 'genna_deathworld';
-  } else if (target.faction === PREY_FACTIONS.YAUTJA) {
-    huntType = 'bad_blood'; planetType = 'yautja_prime';
-  } else if (target.faction === PREY_FACTIONS.HUMAN_SYNTHETIC || /batman|dredd|robocop|terminator/.test(id)) {
-    huntType = 'city_hunter'; planetType = 'los_angeles_1997';
-  } else if (target.sizeMeters >= 8) {
-    huntType = 'kalisk'; planetType = 'ryushi_desert';
-  }
+  const { huntType, planetType } = getPreySimulationModelReference(target, { kind: context.kind, factions: PREY_FACTIONS });
   if (!HUNT_DEFINITIONS[huntType]) return null;
   return { kind: context.kind, target, huntType, planetType };
 }
@@ -64,6 +49,9 @@ export function applySimulationReferenceScale(boss, target, { training = true } 
     targetId: target.id, nominalMeters: target.sizeMeters, dimensionAxis: axis,
     dimensionStatus: target.dimensionStatus ?? 'catalogue_estimate', factor,
     modelStatus: training ? 'training_proxy' : 'original_specimen', fidelityVerified: false,
+    matchedRuntimeSubjectId: training ? getDocumentedPreySubjectModelId(target) : null,
+    subjectModelStatus: training && getDocumentedPreySubjectModelId(target)
+      ? 'matching_subject_adaptation' : training ? 'generic_proxy' : 'original_specimen',
   };
   mesh.userData[training ? 'simulationReference' : 'specimenReference'] = reference;
   mesh.updateMatrixWorld(true);

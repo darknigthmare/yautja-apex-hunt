@@ -44,11 +44,23 @@ test('a physical contract console opens mandatory preparation without deploying 
     game.hub = hub;
     game.gameState = 'HUB'; game.isHubExploring = true;
     game.player = { position: station.position.clone() };
-    let opened, prepared;
+    let opened, prepared, consoleContext, shipAction;
+    game.keyboardInputDir = { x: 0, z: 0, isSprinting: false };
+    game.gamepadAxes = { x: 0, z: 0 };
+    game.inputDir = { x: 0, z: 0, isSprinting: false };
+    game.hud = {
+      setShipInterfaceActionHandler(handler) { shipAction = handler; },
+      showShipConsole(context) { consoleContext = context; return true; },
+      hideActionPrompt() {}, hideShipInterfaces() {},
+    };
     game.showMissionSelectionModal = tab => { opened = tab; game.isHubExploring = false; };
     game.prepareHunt = (...args) => { prepared = args; };
     game.startHunt = () => assert.fail('physical console must not bypass preparation');
     assert.equal(game.attemptHubInteraction(), station);
+    assert.equal(consoleContext.station.id, station.id);
+    assert.equal(opened, undefined, 'E opens the real post without silently selecting a service');
+    assert.equal(prepared, undefined);
+    assert.equal(shipAction({ type: 'service', stationId: station.id, serviceId: 'prepare_hunt' }), true);
     assert.equal(opened, 'loadout');
     assert.equal(game.isHubExploring, false);
     assert.deepEqual(prepared, ['rhynth_titan', HUNT_DEFINITIONS.rhynth_titan.recommendedBiome, 'standard_hunt']);

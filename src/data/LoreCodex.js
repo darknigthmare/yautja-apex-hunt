@@ -298,7 +298,7 @@ export const CURRENT_HUNTS = freezeEntries([
     id: 'bad_blood', entryType: 'hunt', category: 'cible', title: 'Rival Yautja « Bad Blood »',
     summary: 'Chasseur renégat employé comme duel miroir contre les tactiques du joueur.',
     sourceTier: 'ORIGINAL', basisTier: 'LICENSED_EU', isOriginal: true,
-    canonNote: 'Le titre Bad Blood vient surtout de l’EU ; ce rival précis est une création du jeu.', sources: ['predators2010', 'predatorBadBloodComics'], locationIds: ALL_LOCATION_IDS
+    canonNote: 'Le titre Bad Blood vient surtout de l’EU ; ce rival précis est une création du jeu.', sources: ['predatorBadBloodComics'], locationIds: ALL_LOCATION_IDS
   },
   {
     id: 'predalien', entryType: 'hunt', category: 'cible', title: 'Predalien — toit de Gunnison',
@@ -333,14 +333,14 @@ export const CURRENT_HUNTS = freezeEntries([
     summary: 'Chasseur original de Val Verde : bio-masque classique, canon à plasma d’épaule unique, acquisition tri-laser et protocole d’autodestruction.',
     sourceTier: 'ORIGINAL', basisTier: 'SCREEN', isOriginal: true,
     canonNote: 'Le Jungle Hunter et ses armes iconiques proviennent du film originel Predator (1987) ; ce duel, le timing de visée et le compte à rebours d’autodestruction sont une adaptation de gameplay Apex Hunt.',
-    assetPolicy: 'Modèle procédural 1:1 et textures Yautja originales du jeu ; aucun modèle propriétaire officiel.',
+    assetPolicy: 'Modèle procédural et textures originales du jeu, inspirés du film ; fidélité visuelle 1:1 non vérifiée.',
     sources: ['predator1987'], locationIds: ['jungle']
   },
   {
     id: 'vydrach_prime', entryType: 'hunt', category: 'cible', title: "Vy'drach — Léviathan Céleste de Yautja Prime",
     summary: "Léviathan ailé mythique vénéré sur Yautja Prime, traqué au combi-stick lors du rite d'initiation suprême.",
     sourceTier: 'ORIGINAL', basisTier: 'CANON_LORE', isOriginal: true,
-    canonNote: "Le Vy'drach fait partie de la mythologie et du canon officiel Yautja Prime.",
+    canonNote: "Créature interprétée par Apex Hunt à partir d’une référence de catalogue non résolue ; aucune publication primaire vérifiée ne permet d’en confirmer le statut canonique.",
     sources: ['yautjaPrimeLore'], locationIds: ['yautja_prime']
   },
   {
@@ -348,7 +348,7 @@ export const CURRENT_HUNTS = freezeEntries([
     summary: "Herbivore colossal hexapode blindé indigène de Ryushi chassé par Dachande pour éprouver les jeunes guerriers.",
     sourceTier: 'ORIGINAL', basisTier: 'CANON_LORE', isOriginal: true,
     canonNote: "Le Rhynth est la mégafaune native centrale de Aliens vs. Predator: Prey (1994).",
-    sources: ['avpPrey1994'], locationIds: ['ryushi_desert']
+    sources: ['avpPreyOmnibus'], locationIds: ['ryushi_desert']
   },
   {
     id: 'xeno_king', entryType: 'hunt', category: 'cible', title: 'Roi Xénomorphe — Rogue Titan Colossal',

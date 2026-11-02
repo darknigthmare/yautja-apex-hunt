@@ -150,6 +150,32 @@ export class HuntVehicle {
       roughness: 0.3,
     });
 
+    // Original deployment capsule, sized for a 7.2-unit hunter. Its compact
+    // vertical hull is distinct from the winged shuttle, with the same flight
+    // lifecycle and shared energy map as the existing vehicles.
+    if (this.type === 'hunt_drop_pod') {
+      group.userData.vehicleProfile = 'original_hunt_drop_pod';
+      const shell = new THREE.Mesh(new THREE.LatheGeometry([
+        [0, -5.1], [1.25, -5.05], [2.05, -4.4], [2.55, -2.8],
+        [2.65, 2.6], [2.3, 4.2], [1.4, 5.0], [0, 5.25],
+      ].map(([x, y]) => new THREE.Vector2(x, y)), 24), hullMaterial);
+      shell.castShadow = true; shell.receiveShadow = true; group.add(shell);
+      const frame = new THREE.InstancedMesh(new THREE.BoxGeometry(0.24, 7.7, 0.3), armorMaterial, 6);
+      const rail = new THREE.Object3D();
+      for (let i = 0; i < 6; i++) {
+        const angle = i * Math.PI / 3;
+        rail.position.set(Math.sin(angle) * 2.55, -0.05, Math.cos(angle) * 2.55);
+        rail.rotation.set(0, angle, 0); rail.updateMatrix(); frame.setMatrixAt(i, rail.matrix);
+      }
+      frame.instanceMatrix.needsUpdate = true; group.add(frame);
+      const iris = new THREE.Mesh(new THREE.TorusGeometry(1.45, 0.22, 8, 24), energyMaterial);
+      iris.rotation.x = Math.PI / 2; iris.position.y = -4.95; group.add(iris);
+      const hatch = new THREE.Mesh(new THREE.CapsuleGeometry(1.15, 4.4, 4, 16), armorMaterial);
+      hatch.scale.z = 0.16; hatch.position.set(0, 0.15, -2.5); group.add(hatch);
+      this.energyMaterial = energyMaterial;
+      return group;
+    }
+
     const hull = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 12), hullMaterial);
     hull.scale.set(
       isFugitiveCraft ? 4.25 : isRitualShip ? 6.2 : isCleanerCraft ? 5.35 : 4.8,
@@ -290,6 +316,17 @@ export class HuntVehicle {
     group.add(cockpit);
 
     this.energyMaterial = energyMaterial;
+    if (this.type === 'hunter_shuttle') {
+      group.userData.vehicleProfile = 'original_hunter_transport_shuttle';
+      group.scale.set(1.18, 1.35, 1.08);
+      const cargo = new THREE.InstancedMesh(new THREE.CapsuleGeometry(0.95, 5.2, 4, 12), armorMaterial, 2);
+      const pod = new THREE.Object3D();
+      for (let index = 0; index < 2; index++) {
+        pod.position.set(index ? 3.4 : -3.4, -0.65, 0.6);
+        pod.rotation.set(Math.PI / 2, 0, 0); pod.updateMatrix(); cargo.setMatrixAt(index, pod.matrix);
+      }
+      cargo.instanceMatrix.needsUpdate = true; cargo.name = 'transport-cargo-pods'; group.add(cargo);
+    }
     return group;
   }
 

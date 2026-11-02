@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="src/professional.css">
   <link rel="stylesheet" href="src/content-pass.css">
   <link rel="stylesheet" href="src/ui/equipment.css">
+  <link rel="stylesheet" href="src/ui/ship.css">
 
 </head>
 <body class="app-shell">
@@ -189,6 +190,10 @@
     </div>
 
     <div id="log-banner" class="hidden"></div>
+    <div id="ship-exploration-hud">
+    <div id="ship-zone-hud" class="ship-zone-hud hidden"><span id="ship-zone-label">CROISEUR</span><button id="btn-ship-navigation" type="button" aria-label="Ouvrir le plan du croiseur">PLAN <span>[N]</span></button><button id="btn-ship-medicomp" type="button" aria-label="Ouvrir le Medicomp portable">MEDICOMP <span>[M]</span></button></div>
+    <div id="ship-waypoint-hud" class="ship-waypoint-hud hidden"><div><span class="ship-waypoint-kicker">REPÈRE CROISEUR</span><strong id="ship-waypoint-label"></strong><span id="ship-waypoint-hint"></span></div><strong id="ship-waypoint-distance"></strong><button id="btn-ship-waypoint-clear" type="button" aria-label="Effacer le repère du croiseur">×</button></div>
+    </div>
     <div id="touch-hub-controls" class="touch-hub-controls hidden" aria-label="Commandes tactiles du vaisseau-mère">
       <div class="touch-hub-dpad" role="group" aria-label="Déplacement dans le vaisseau-mère">
         <button class="touch-hub-up" type="button" data-hub-move="up" aria-label="Avancer">▲</button>
@@ -222,13 +227,16 @@
   </div>
   </main>
 
+  <section id="ship-navigation-dialog" class="ship-interface hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="ship-navigation-title"></section>
+  <section id="ship-console-dialog" class="ship-interface hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="ship-console-title"></section>
+
   <!-- Start / Controls Modal -->
   <div id="controls-modal" role="dialog" aria-modal="true" aria-labelledby="controls-title">
     <div class="modal-box modal-scroll" tabindex="-1">
-      <p class="modal-eyebrow">BRIEFING DE CHASSE</p>
-      <h2 id="controls-title">MÉCANIQUES DU CHASSEUR YAUTJA</h2>
-      <p class="modal-intro">Choisissez un contrat, préparez votre paquetage, puis traquez votre cible. Clavier/souris, manette et commandes tactiles sont pris en charge.</p>
-      <button id="btn-start-game" type="button">ENTRER DANS LE VAISSEAU-MÈRE</button>
+      <p class="modal-eyebrow">LIAISON AU CROISEUR</p>
+      <h2 id="controls-title">LE VAISSEAU DU CLAN VOUS ATTEND</h2>
+      <p class="modal-intro">Explorez les coursives, ouvrez le plan avec N et interagissez avec les postes avec E. Le nexus prépare vos contrats ; l’armurerie, le laboratoire et le noyau entretiennent votre équipement avant la traque. Clavier/souris, manette et commandes tactiles sont disponibles.</p>
+      <button id="btn-start-game" type="button">ENTRER DANS LE CROISEUR</button>
       <div class="controls-grid">
         <div><strong>Z Q S D / W A S D / flèches :</strong> Déplacement Yautja</div>
         <div><strong>Souris :</strong> Caméra du bio-masque</div>
@@ -236,6 +244,7 @@
         <div><strong>Espace :</strong> Saut de canopée</div>
         <div><strong>Maj :</strong> Sprint (consomme de l’endurance)</div>
         <div><strong>[M] :</strong> Ouvrir / fermer le Medicomp</div>
+        <div><strong>[N] / bouton PLAN :</strong> Plan du croiseur et repère vers un poste</div>
         <div><strong>[R] :</strong> Rugissement de victoire</div>
         <div><strong>[F] :</strong> Leurre vocal directionnel (3 appels)</div>
         <div><strong>[B] :</strong> Bouclier de poignet Feral</div>
@@ -245,7 +254,7 @@
         <div><strong>[C] :</strong> Camouflage optique</div>
         <div><strong>Armes :</strong> Touches 1 à 0, −, =, crochets et \ selon le paquetage</div>
         <div><strong>[E] / bouton A / tactile :</strong> Interagir avec une station ou récolter un trophée</div>
-        <div><strong>[Échap] / [P] :</strong> Console du hub ou pause en chasse</div>
+        <div><strong>[Échap] / [P] :</strong> Accès rapide au bio-masque, options et aide ; pause en chasse</div>
         <div><strong>[Start] / [Select] :</strong> Rouvrir la console pendant l’exploration du hub</div>
         <div><strong>Clic droit :</strong> Zoom thermique si débloqué</div>
       </div>

@@ -3,6 +3,7 @@ import {
   getMedbayDiagnostic,
   applyMedbayItem,
   canApplyMedbayItem,
+  getMedbayTreatmentProfile,
   refillMedbayInventory,
 } from '../gameplay/YautjaMedbaySystem.js';
 import { audioSynth } from '../AudioSynthesizer.js';
@@ -104,7 +105,7 @@ export class MedbayInventoryOverlay {
           </div>
 
           <div class="medbay-right-col">
-            <div class="medbay-panel-title">ARSENAL MÉDICAL ET SOINS 1:1</div>
+            <div class="medbay-panel-title">COMPOSANTS MÉDICAUX EMBARQUÉS</div>
             <div class="medbay-items-grid" id="medbay-items-grid">
               <!-- Item cards generated via renderItems() -->
             </div>
@@ -116,8 +117,8 @@ export class MedbayInventoryOverlay {
         </div>
 
         <div class="medbay-footer">
-          <span class="medbay-footer-hint">[ÉCHAP] FERMER · [E / M] BASCULER · CLIQUEZ POUR DÉTACHER ET DÉPLACER LA FENÊTRE</span>
-          ${this.inventoryState?.isMothership ? '<button class="medbay-refill-btn" id="medbay-btn-refill">RECHARGER LES COMPOSANTS [PLEIN]</button>' : ''}
+          <span class="medbay-footer-hint">[ÉCHAP / M] FERMER · FAITES GLISSER L’EN-TÊTE POUR DÉPLACER LA FENÊTRE</span>
+          <button class="medbay-refill-btn" id="medbay-btn-refill" hidden disabled>RECHARGER LES COMPOSANTS</button>
         </div>
       </div>
     `;
@@ -138,7 +139,7 @@ export class MedbayInventoryOverlay {
     });
 
     this.container.querySelector('#medbay-btn-refill')?.addEventListener('click', () => {
-      if (this.inventoryState) {
+      if (this.inventoryState?.isMothership === true) {
         // The hub view can offer free treatment without converting the shared
         // portable kit into an infinite stock for the next hunt.
         const fieldInventory = this.player?.medbayInventory ?? this.inventoryState;
@@ -148,6 +149,7 @@ export class MedbayInventoryOverlay {
         audioSynth.playMedicompOpen?.();
         this.addLog('Réserves médicales rechargées à 100 % au laboratoire du croiseur.');
         this.render();
+        this.onAction?.({ success: true, type: 'refill' });
       }
     });
 
@@ -289,6 +291,12 @@ export class MedbayInventoryOverlay {
   render() {
     if (!this.container || !this.player) return;
 
+    const isMothership = this.inventoryState?.isMothership === true;
+    const locationTag = this.container.querySelector('#medbay-location-tag');
+    if (locationTag) locationTag.textContent = isMothership ? 'SANCTUAIRE DU CROISEUR' : 'KIT DE TERRAIN DÉTACHABLE';
+    const refillButton = this.container.querySelector('#medbay-btn-refill');
+    if (refillButton) { refillButton.hidden = !isMothership; refillButton.disabled = !isMothership; }
+
     const diag = getMedbayDiagnostic(this.player);
     if (!diag) return;
 
@@ -324,6 +332,10 @@ export class MedbayInventoryOverlay {
     if (grid) {
       grid.innerHTML = '';
       for (const item of MEDBAY_ITEMS) {
+        const profile = getMedbayTreatmentProfile(this.player, item.id);
+        const treatmentEffects = [profile.effects.health ? `+${profile.effects.health} PV` : '',
+          profile.immunityDurationSeconds ? `${profile.immunityDurationSeconds} s de protection anti-acide` : '',
+          `recharge ${profile.cooldown.toFixed(1)} s`].filter(Boolean).join(' · ');
         const check = canApplyMedbayItem(this.player, item.id, this.inventoryState);
         const charges = this.inventoryState?.isMothership
           ? Number.POSITIVE_INFINITY
@@ -339,6 +351,7 @@ export class MedbayInventoryOverlay {
             <span class="item-charges">RÉSERVE : ${chargesDisplay}</span>
           </div>
           <div class="item-lore">${item.lore}</div>
+          <p class="medbay-item-effects">${treatmentEffects}</p>
           ${check.allowed ? '' : `<p class="medbay-item-availability">${check.reason}</p>`}
           <div class="item-actions">
             <button class="medbay-action-btn" aria-label="Appliquer : ${item.name}" data-item-id="${item.id}" ${check.allowed ? '' : 'disabled'}>

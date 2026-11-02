@@ -11,8 +11,8 @@ test('le hub expose quatre silhouettes spatiales et une allée centrale praticab
     [...hub.landmarks.keys()].sort(),
     ['armory-forge', 'mission-nexus', 'trophy-vault', 'vehicle-hangar'],
   );
-  assert.equal(hub.landmarks.get('armory-forge').position.x, 22);
-  assert.equal(hub.landmarks.get('vehicle-hangar').position.x, -21);
+  assert.equal(hub.getZoneAt(hub.landmarks.get('armory-forge').position).id, 'armory-forge');
+  assert.equal(hub.getZoneAt(hub.landmarks.get('vehicle-hangar').position).id, 'vehicle-hangar');
 
   const missionStations = [];
   hub.landmarks.get('mission-nexus').traverse((object) => {
@@ -86,8 +86,10 @@ test('la forge, le hangar et les trophées possèdent des props identifiables', 
   hub.setTrophyState(['wolf_cleaner']);
   const wolf = hub.trophyDisplays.get('wolf_cleaner');
   assert.equal(wolf.userData.unlocked, true);
-  assert.ok(wolf.children.length >= 3);
-  assert.ok(wolf.children.every(({ material }) => material === wolf.material));
+  assert.equal(wolf.geometry.type, 'BufferGeometry', 'the cranial study must be fused into its trophy material draw');
+  assert.equal(wolf.userData.sourceBossType, 'wolfCleaner');
+  assert.ok(wolf.geometry.userData.features.includes('paired-mandible-bone'));
+  assert.ok(wolf.geometry.userData.features.includes('orbital-cavity'));
 
   hub.dispose();
 });

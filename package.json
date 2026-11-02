@@ -16,6 +16,7 @@
     "test:graphics": "node scripts/qa-graphics.cjs",
     "test:coherence": "node scripts/qa-coherence.cjs",
     "test:catalogue": "node scripts/qa-catalogue.cjs",
+    "test:ship": "node scripts/qa-ship.cjs && node scripts/qa-ship-interactions.cjs",
     "test:npc-visuals": "node scripts/qa-npc-visuals.cjs"
   },
   "dependencies": {

@@ -20,7 +20,10 @@ test('le vaisseau-mère expose et déverrouille tous les trophées de chasse', (
   assert.equal(feral.material.wireframe, false);
   assert.equal(goliath.material.opacity, 0.28);
   assert.equal(goliath.material.wireframe, true);
+  const gallery = hub.getZones().find(zone => zone.id === 'trophy-vault');
   for (const [huntId, trophy] of hub.trophyDisplays) {
-    assert.ok(Math.abs(trophy.position.x) <= 28, `${huntId}: le trophée sort du mur du vaisseau`);
+    assert.ok(trophy.position.x > gallery.bounds.minX + 1.35 && trophy.position.x < gallery.bounds.maxX - 1.35,
+      `${huntId}: le trophée sort du mur du vaisseau`);
   }
+  hub.dispose();
 });

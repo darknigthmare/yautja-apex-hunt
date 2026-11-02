@@ -26,7 +26,7 @@ test('le croiseur v1.13 expose onze compartiments connectés par treize portes',
     assert.ok(zoneIds.has(door.to), `zone destination inconnue: ${door.to}`);
     assert.ok(door.width >= 8);
     assert.ok(door.clearance >= 5.6);
-    assert.equal(door.state, 'open');
+    assert.equal(door.state, door.id === 'rear-pressure-hatch' ? 'sealed' : 'open');
     graph.get(door.from).add(door.to);
     graph.get(door.to).add(door.from);
   });
@@ -114,7 +114,7 @@ test('les nouvelles stations interactives restent compatibles avec les quatre st
   assert.equal(hub.getNearbyStation(new THREE.Vector3(0, 0, -58.5)).id, 'bridge-navigation');
   assert.equal(hub.getNearbyStation(new THREE.Vector3(-50.5, 0, -23)).id, 'cryo-control');
   assert.equal(hub.getNearbyStation(new THREE.Vector3(49, 0, -18)).id, 'cleaner-lab-control');
-  assert.equal(hub.getNearbyStation(new THREE.Vector3(33, 0, 60)).id, 'engine-core-control');
+  assert.equal(hub.getNearbyStation(hub.getStation('engine-core-control').approachPosition).id, 'engine-core-control');
   hub.dispose();
 });
 
@@ -123,7 +123,7 @@ test('les coursives, portes et colliders du grand plan restent praticables', () 
   const bounds = hub.getBounds();
   assert.equal(bounds.maxX - bounds.minX, 133);
   assert.equal(bounds.maxZ - bounds.minZ, 173);
-  assert.equal(hub.getColliders().length, 90);
+  assert.equal(hub.getColliders().length, 156);
 
   for (const point of [
     new THREE.Vector3(0, 0, -52),

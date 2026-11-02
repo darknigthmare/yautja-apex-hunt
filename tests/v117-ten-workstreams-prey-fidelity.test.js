@@ -140,12 +140,28 @@ test('Chantier 8 — Bouclier du Feral exposé sur le râtelier de la forge', ()
   try {
     const rack = hub.group.getObjectByName('forge-weapon-rack');
     assert.ok(rack.userData.weaponSilhouettes.includes('feral-shield'));
-    const shield = rack.getObjectByName('rack-feral-shield');
+    const display = hub.shipEquipmentDisplays.entries.find(entry => entry.id === 'equipment:wrist_shield');
+    assert.ok(display, 'le vrai bouclier exposé reste présent dans le registre d’inspection');
+    assert.equal(display.variantId, 'variant_feral_bone_shield');
+    assert.deepEqual(display.sources, ['prey2022']);
+    assert.equal(display.modelSourceTier, 'ORIGINAL', 'la référence cinéma ne certifie pas le modèle procédural');
+    assert.equal(display.modelStatus, 'existing_equipment_display_geometry');
+    assert.equal(display.fidelityVerified, false);
+    const shield = display.object;
+    assert.equal(shield.parent, rack);
     assert.ok(shield?.isMesh, 'bouclier fusionné en un seul mesh (un draw call)');
     assert.equal(shield.userData.segmentCount, 7);
     assert.ok(shield.geometry.getAttribute('position').count > 0);
-    // Reste dans l'emprise du panneau arrière (z ∈ [-4.2, 4.2]).
-    assert.ok(Math.abs(shield.position.z) + 0.78 < 4.2);
+    assert.equal(shield.geometry.groups.length, 0, 'le bouclier ne crée pas de sous-draws cachés');
+    assert.equal(Array.isArray(shield.material), false);
+    assert.equal(shield.children.length, 0, 'aucun faux alias ou enfant décoratif pour satisfaire le contrat');
+    const back = rack.getObjectByName('armory-equipment-backed-cabinet');
+    shield.geometry.computeBoundingBox(); back.geometry.computeBoundingBox();
+    shield.updateMatrix(); back.updateMatrix();
+    const shieldBounds = shield.geometry.boundingBox.clone().applyMatrix4(shield.matrix);
+    const panelBounds = back.geometry.boundingBox.clone().applyMatrix4(back.matrix);
+    assert.ok(shieldBounds.min.z >= panelBounds.min.z && shieldBounds.max.z <= panelBounds.max.z,
+      'le modèle reste dans le vrai panneau du présentoir');
   } finally {
     hub.dispose();
   }

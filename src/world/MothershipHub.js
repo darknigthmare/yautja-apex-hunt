@@ -2,6 +2,10 @@ import * as THREE from 'three';
 import { HUNT_DEFINITIONS } from '../data/GameConfig.js';
 import { applySurfaceDetail } from '../utils/surfaceDetail.js';
 import { createHubInstrumentTexture, createHubPanelGeometry } from '../utils/hubSurfaceDetail.js';
+import { ShipNavigation } from './ShipNavigation.js';
+import { attachShipInteriorDetail } from './ShipInteriorDetail.js';
+import { attachShipEquipmentDisplays } from './ShipEquipmentDisplays.js';
+import { WORLD_UNITS_PER_METER } from '../utils/worldScale.js';
 
 const HUB_ZONES = Object.freeze({
   VAULT: 'trophy-vault',
@@ -30,14 +34,14 @@ const SHIP_COMPARTMENTS = Object.freeze([
     id: HUB_ZONES.VAULT,
     label: 'Galerie cérémonielle des trophées',
     deck: 'ritual',
-    bounds: Object.freeze({ minX: -33, maxX: 33, minZ: -38, maxZ: -26 }),
+    bounds: Object.freeze({ minX: -33, maxX: 33, minZ: -38, maxZ: -21 }),
     inspiration: 'chambre des trophées et archives de chasse',
   }),
   Object.freeze({
     id: HUB_ZONES.MISSIONS,
     label: 'Nexus des contrats de chasse',
     deck: 'ritual',
-    bounds: Object.freeze({ minX: -32, maxX: 32, minZ: -24, maxZ: 14 }),
+    bounds: Object.freeze({ minX: -32, maxX: 32, minZ: -21, maxZ: 32 }),
     inspiration: 'hologrammes de briefing et glyphes de clan',
   }),
   Object.freeze({
@@ -100,17 +104,17 @@ const SHIP_COMPARTMENTS = Object.freeze([
 
 const PRESSURE_DOORS = Object.freeze([
   ['bridge-spine-gate', 'bridge-cockpit', 'spine-corridor', 0, -52, 'x', 12],
-  ['vault-port-gate', HUB_ZONES.VAULT, 'spine-corridor', -35, -32, 'z', 8],
-  ['vault-starboard-gate', HUB_ZONES.VAULT, 'spine-corridor', 35, -32, 'z', 8],
-  ['mission-spine-gate', HUB_ZONES.MISSIONS, 'spine-corridor', 0, -18, 'x', 10],
+  ['vault-port-gate', HUB_ZONES.VAULT, 'spine-corridor', 0, -34, 'x', 14],
+  ['vault-starboard-gate', HUB_ZONES.VAULT, 'spine-corridor', 0, -22, 'x', 14],
+  ['mission-spine-gate', HUB_ZONES.MISSIONS, 'spine-corridor', 0, 32, 'x', 12],
   ['cryo-spine-gate', 'cryo-gallery', 'spine-corridor', -36, -22, 'z', 10],
   ['cleaner-spine-gate', 'cleaner-medbay', 'spine-corridor', 36, -22, 'z', 10],
   ['pods-spine-gate', 'escape-pod-bay', 'spine-corridor', -36, 12, 'z', 10],
   ['forge-spine-gate', HUB_ZONES.FORGE, 'spine-corridor', 36, 12, 'z', 10],
   ['hangar-spine-gate', HUB_ZONES.HANGAR, 'spine-corridor', -20, 40, 'x', 12],
   ['core-spine-gate', 'engine-core', 'spine-corridor', 20, 40, 'x', 12],
-  ['hangar-airlock-gate', HUB_ZONES.HANGAR, 'rear-airlock', -9, 60, 'z', 8],
-  ['core-airlock-gate', 'engine-core', 'rear-airlock', 9, 60, 'z', 8],
+  ['hangar-airlock-gate', HUB_ZONES.HANGAR, 'rear-airlock', -15, 60, 'z', 8],
+  ['core-airlock-gate', 'engine-core', 'rear-airlock', 15, 60, 'z', 8],
   ['rear-pressure-hatch', 'rear-airlock', 'spine-corridor', 0, 82, 'x', 10],
 ].map(([id, from, to, x, z, axis, width]) => Object.freeze({
   id,
@@ -119,8 +123,9 @@ const PRESSURE_DOORS = Object.freeze([
   position: Object.freeze({ x, y: 0, z }),
   axis,
   width,
-  clearance: 5.6,
-  state: 'open',
+  clearance: 10.2,
+  state: id === 'rear-pressure-hatch' ? 'sealed' : 'open',
+  accessLabel: id === 'rear-pressure-hatch' ? 'Écoutille extérieure scellée · atmosphère protégée' : 'Circulation du clan autorisée',
 })));
 
 const BULKHEAD_SEGMENTS = Object.freeze([
@@ -134,8 +139,10 @@ const BULKHEAD_SEGMENTS = Object.freeze([
   ['starboard-bulkhead-aft', 36, 32, 0.6, 5],
   ['aft-bulkhead-port', -50, 40, 14, 0.6],
   ['aft-bulkhead-starboard', 50, 40, 14, 0.6],
-  ['aft-divider-forward', 0, 48, 0.6, 8],
-  ['aft-divider-rear', 0, 72, 0.6, 8],
+  ['aft-divider-forward', -15, 49, 0.6, 7],
+  ['aft-divider-rear', -15, 73, 0.6, 9],
+  ['aft-starboard-divider-forward', 15, 49, 0.6, 7],
+  ['aft-starboard-divider-rear', 15, 73, 0.6, 9],
 ].map(([id, x, z, halfWidth, halfDepth]) => Object.freeze({ id, type: 'box', x, z, halfWidth, halfDepth })));
 
 const PERCH_POINTS = Object.freeze([
@@ -152,21 +159,34 @@ const PERCH_POINTS = Object.freeze([
 ].map(([id, x, y, z, zone]) => Object.freeze({ id, x, y, z, zone, radius: 1.45 })));
 
 const HANGAR_EXTENSION_CRAFT = Object.freeze([
-  Object.freeze({ id: 'hangar-heavy-scout', x: -52, z: 55, radius: 4.4 }),
-  Object.freeze({ id: 'hangar-clan-shuttle', x: -31, z: 55, radius: 4.8 }),
-  Object.freeze({ id: 'hangar-drop-ship', x: -43, z: 71, radius: 5.2 }),
+  Object.freeze({ id: 'hangar-heavy-scout', x: -55, z: 73, radius: 4.4 }),
+  Object.freeze({ id: 'hangar-clan-shuttle', x: -28, z: 73, radius: 4.8 }),
+  Object.freeze({ id: 'hangar-drop-ship', x: -23, z: 54, radius: 5.2 }),
 ]);
+
+const SERVICE_CONSOLE_LAYOUT = Object.freeze([
+  { stationId: HUB_ZONES.MISSIONS, id: 'nexus-briefing-console', x: 0, z: -8.8, yaw: 0 },
+  { stationId: HUB_ZONES.VAULT, id: 'vault-archive-console', x: -22, z: -26, yaw: Math.PI / 2 },
+  { stationId: 'bridge-navigation', id: 'bridge-navigation-console', x: 0, z: -62.3, yaw: 0 },
+  { stationId: 'cryo-control', id: 'cryo-service-console', x: -50.5, z: -26.8, yaw: 0 },
+  { stationId: 'escape-pod-control', id: 'pod-flight-console', x: -50.5, z: 10.2, yaw: 0 },
+  { stationId: 'cleaner-lab-control', id: 'cleaner-medical-console', x: 49, z: -20.9, yaw: 0 },
+  { stationId: 'engine-core-control', id: 'reactor-diagnostic-console', x: 31.8, z: 56.2, yaw: 0 },
+  { stationId: 'rear-airlock-control', id: 'airlock-pressure-console', x: 5.5, z: 76.8, yaw: Math.PI },
+].map(entry => Object.freeze(entry)));
 
 function getMissionStationPosition(index, count) {
   const leftCount = Math.ceil(count / 2);
   const isLeft = index < leftCount;
   const sideIndex = isLeft ? index : index - leftCount;
   const sideCount = isLeft ? leftCount : Math.max(1, count - leftCount);
-  const magnitude = sideCount <= 1 ? 6 : 6 + ((22 * sideIndex) / (sideCount - 1));
-  const stagger = sideIndex % 2;
   return {
-    x: (isLeft ? -1 : 1) * magnitude,
-    z: isLeft ? -10 + (stagger * 10) : -(stagger * 10),
+    x: isLeft ? -24 : 24,
+    // Preserve the transverse service aisle at z=12 instead of filling it
+    // with a checkerboard of obstacles between the two side compartments.
+    z: sideIndex < Math.min(5, sideCount) ? -20 + sideIndex * 6 : 20 + (sideIndex - 5) * 6,
+    rotation: isLeft ? Math.PI / 2 : -Math.PI / 2,
+    approachX: isLeft ? -19.2 : 19.2,
   };
 }
 
@@ -242,6 +262,9 @@ export class MothershipHub {
     this.createNavigationBeacons();
     this.createSurfaceArchitectureDetail();
     this.createGameplayLayout();
+    this.createServiceTerminals();
+    this.shipEquipmentDisplays = attachShipEquipmentDisplays(this);
+    this.shipInteriorDetail = attachShipInteriorDetail(this);
     this.scene.add(this.group);
   }
 
@@ -589,18 +612,18 @@ export class MothershipHub {
       const tangentZ = door.axis === 'z' ? 1 : 0;
       for (const side of [-1, 1]) {
         frameTransforms.push({
-          position: [x + (tangentX * side * door.width * 0.5), 3.2, z + (tangentZ * side * door.width * 0.5)],
-          scale: [door.axis === 'x' ? 0.65 : 1.2, 6.4, door.axis === 'z' ? 0.65 : 1.2],
+          position: [x + (tangentX * side * door.width * 0.5), 5.4, z + (tangentZ * side * door.width * 0.5)],
+          scale: [door.axis === 'x' ? 0.65 : 1.2, 10.8, door.axis === 'z' ? 0.65 : 1.2],
         });
       }
       frameTransforms.push({
-        position: [x, 6.35, z],
+        position: [x, 10.65, z],
         scale: [door.axis === 'x' ? door.width + 1.2 : 1.2, 0.7, door.axis === 'z' ? door.width + 1.2 : 1.2],
       });
       for (let toothIndex = 0; toothIndex < 4; toothIndex += 1) {
         const offset = (-0.375 + (toothIndex * 0.25)) * door.width;
         toothTransforms.push({
-          position: [x + (tangentX * offset), 5.7, z + (tangentZ * offset)],
+          position: [x + (tangentX * offset), 11.4, z + (tangentZ * offset)],
           rotation: [0, 0, toothIndex % 2 === 0 ? Math.PI : 0],
           scale: [0.7, 1.25, 0.7],
         });
@@ -747,8 +770,10 @@ export class MothershipHub {
     );
 
     const lockerTransforms = [];
-    for (const x of [43, 50, 57, 63]) {
-      for (const z of [0, 8, 16, 24]) {
+    for (const bank of ['starboard', 'aft']) {
+      for (let index = 0; index < 8; index++) {
+        const x = bank === 'starboard' ? 61.5 : 40 + index * 18 / 7;
+        const z = bank === 'starboard' ? -1 + index * 4 : 27;
         lockerTransforms.push({
           position: [x, 3.1, z],
           rotation: [0, ((x + z) % 2 === 0 ? -1 : 1) * 0.04, 0],
@@ -827,15 +852,15 @@ export class MothershipHub {
       const horizontal = door.axis === 'x';
       for (const face of [-1, 1]) {
         for (const side of [-1, 1]) jambs.push({
-          position: [x + (horizontal ? side * (door.width * 0.5 + 0.32) : face * 0.7), 3.15, z + (horizontal ? face * 0.7 : side * (door.width * 0.5 + 0.32))],
-          scale: horizontal ? [0.2, 6.0, 0.18] : [0.18, 6.0, 0.2],
+          position: [x + (horizontal ? side * (door.width * 0.5 + 0.32) : face * 0.7), 5.1, z + (horizontal ? face * 0.7 : side * (door.width * 0.5 + 0.32))],
+          scale: horizontal ? [0.2, 10.2, 0.18] : [0.18, 10.2, 0.2],
         });
         jambs.push({
-          position: [x + (horizontal ? 0 : face * 0.7), 6.38, z + (horizontal ? face * 0.7 : 0)],
+          position: [x + (horizontal ? 0 : face * 0.7), 10.6, z + (horizontal ? face * 0.7 : 0)],
           scale: horizontal ? [door.width + 1.35, 0.18, 0.18] : [0.18, 0.18, door.width + 1.35],
         });
         displays.push({
-          position: [x + (horizontal ? 0 : face * 0.82), 6.95, z + (horizontal ? face * 0.82 : 0)],
+          position: [x + (horizontal ? 0 : face * 0.82), 11.3, z + (horizontal ? face * 0.82 : 0)],
           rotation: [0, horizontal ? 0 : Math.PI / 2, 0], scale: [2.1, 0.75, 0.08],
         });
       }
@@ -847,7 +872,7 @@ export class MothershipHub {
     this.createInstancedBatch(details, 'ship-captive-fasteners', new THREE.CylinderGeometry(0.075, 0.075, 0.035, 6), this.createAlloyMaterial(0x7b878d), bolts, 'hub', 'captive-fasteners', visual);
     this.createInstancedBatch(details, 'bulkhead-service-panels', createHubPanelGeometry(1, 1, 1, 0.09), this.createAlloyMaterial(0x42515d), panels, 'hub', 'service-panels', visual);
     this.createInstancedBatch(details, 'bulkhead-vent-louvers', new THREE.BoxGeometry(1, 1, 1), this.createAlloyMaterial(0x111c24), vents, 'hub', 'vent-louvers', visual);
-    this.createInstancedBatch(details, 'pressure-door-seal-trim', createHubPanelGeometry(1, 1, 1, 0.08), this.createAlloyMaterial(0x839198), jambs, 'hub', 'pressure-seal-trim', { ...visual, openClearance: 5.6 });
+    this.createInstancedBatch(details, 'pressure-door-seal-trim', createHubPanelGeometry(1, 1, 1, 0.08), this.createAlloyMaterial(0x839198), jambs, 'hub', 'pressure-seal-trim', { ...visual, openClearance: 10.2 });
     this.createInstancedBatch(details, 'pressure-door-system-displays', createHubPanelGeometry(1, 1, 1, 0.05), this.createInstrumentMaterial(0x59d9cc), displays, 'hub', 'pressure-status-displays', visual);
     this.group.add(details);
   }
@@ -873,8 +898,8 @@ export class MothershipHub {
       }),
     );
     canopy.name = 'cockpit-forward-canopy';
-    canopy.position.set(0, 1.2, -75);
-    canopy.scale.set(1, 0.52, 0.55);
+    canopy.position.set(0, 8, -71);
+    canopy.scale.set(1, 0.6, 0.7);
     this.registerProp(canopy, 'bridge-cockpit', 'armored-star-canopy', { panoramic: true });
     bridge.add(canopy);
 
@@ -976,7 +1001,7 @@ export class MothershipHub {
     const cryoTransforms = [];
     const cryoWindowTransforms = [];
     const hatchTransforms = [];
-    for (const x of [-59, -42]) {
+    for (const x of [-59, -45]) {
       for (const z of [-35, -29, -23, -17, -11]) {
         cryoTransforms.push({ position: [x, 3.7, z], scale: [1, 1, 0.72] });
         cryoWindowTransforms.push({ position: [x + (x < -50 ? 0.78 : -0.78), 4, z], scale: [0.58, 0.78, 0.48] });
@@ -1023,7 +1048,7 @@ export class MothershipHub {
     const podTransforms = [];
     const podRingTransforms = [];
     const clampTransforms = [];
-    for (const x of [-59, -42]) {
+    for (const x of [-59, -45]) {
       for (const z of [2, 10, 18, 26]) {
         podTransforms.push({ position: [x, 3.2, z], rotation: [Math.PI / 2, 0, 0], scale: [1, 1, 0.82] });
         for (const offsetY of [1.9, 4.5]) {
@@ -1402,8 +1427,11 @@ export class MothershipHub {
       new THREE.Group(),
       'Mur des trophées et archives de chasse',
     );
-    const wall = new THREE.Mesh(new THREE.BoxGeometry(62, 18, 2), this.createAlloyMaterial(0x202a35));
-    wall.position.set(0, 11, -33);
+    const wall = new THREE.InstancedMesh(new THREE.BoxGeometry(26, 18, 2), this.createAlloyMaterial(0x202a35), 2);
+    wall.name = 'vault-flanking-display-walls';
+    wall.setMatrixAt(0, new THREE.Matrix4().makeTranslation(-20, 11, -33));
+    wall.setMatrixAt(1, new THREE.Matrix4().makeTranslation(20, 11, -33));
+    wall.instanceMatrix.needsUpdate = true;
     vault.add(wall);
 
     const canopy = new THREE.Mesh(new THREE.BoxGeometry(62, 1.1, 3.4), this.createAlloyMaterial(0x3b2830));
@@ -1417,8 +1445,8 @@ export class MothershipHub {
     vault.add(vaultSignal);
 
     const definitions = Object.values(HUNT_DEFINITIONS);
-    const spacing = 56 / Math.max(1, definitions.length - 1);
-    const vaultPlaqueGeometry = new THREE.BoxGeometry(6.5, 7.4, 0.72);
+    const leftCount = Math.ceil(definitions.length / 2);
+    const vaultPlaqueGeometry = new THREE.BoxGeometry(3, 7.4, 0.72);
     const vaultPlaques = new THREE.InstancedMesh(vaultPlaqueGeometry, this.createAlloyMaterial(0x313b46), definitions.length);
     vaultPlaques.name = 'vault-trophy-plaques';
     const plaqueMatrix = new THREE.Matrix4();
@@ -1440,28 +1468,29 @@ export class MothershipHub {
     let evenRailIndex = 0;
     let oddRailIndex = 0;
     definitions.forEach((definition, index) => {
-      const x = (index - ((definitions.length - 1) / 2)) * spacing;
+      const sideIndex = index < leftCount ? index : index - leftCount;
+      const x = index < leftCount ? -30.9 + sideIndex * 3.1 : 8.6 + sideIndex * 3.1;
       const display = new THREE.Group();
       display.name = `vault-display-${definition.id}`;
       display.userData.huntId = definition.id;
 
-      plaqueMatrix.setPosition(x, 13, -31.78);
+      plaqueMatrix.setPosition(x, 6.5, -31.78);
       vaultPlaques.setMatrixAt(index, plaqueMatrix);
 
       const frameMaterial = index % 2 === 0 ? evenFrameMaterial : oddFrameMaterial;
       const targetRails = index % 2 === 0 ? evenFrameRails : oddFrameRails;
       [-1, 1].forEach((side) => {
-        staticTransform.position.set(x + (side * 3.05), 13, -31.25);
+        staticTransform.position.set(x + (side * 1.4), 6.5, -31.25);
         staticTransform.rotation.set(0, 0, 0);
         staticTransform.scale.set(0.13, 6.8, 0.16);
         staticTransform.updateMatrix();
         const rIdx = index % 2 === 0 ? evenRailIndex++ : oddRailIndex++;
         targetRails.setMatrixAt(rIdx, staticTransform.matrix);
       });
-      [9.65, 16.35].forEach((y) => {
+      [3.15, 9.85].forEach((y) => {
         staticTransform.position.set(x, y, -31.25);
         staticTransform.rotation.set(0, 0, 0);
-        staticTransform.scale.set(6.2, 0.13, 0.16);
+        staticTransform.scale.set(2.9, 0.13, 0.16);
         staticTransform.updateMatrix();
         const rIdx = index % 2 === 0 ? evenRailIndex++ : oddRailIndex++;
         targetRails.setMatrixAt(rIdx, staticTransform.matrix);
@@ -1472,7 +1501,7 @@ export class MothershipHub {
       const glyphs = new THREE.InstancedMesh(vaultGlyphGeometry, frameMaterial, glyphCount);
       glyphs.name = `vault-glyphs-${definition.id}`;
       for (let glyphIndex = 0; glyphIndex < glyphCount; glyphIndex += 1) {
-        staticTransform.position.set(x - 1 + (glyphIndex * 0.66), 10.25, -31.08);
+        staticTransform.position.set(x - 0.8 + (glyphIndex * 0.5), 3.75, -31.08);
         staticTransform.rotation.set(0, 0, 0);
         staticTransform.scale.set(1, 1, 1);
         staticTransform.updateMatrix();
@@ -1492,12 +1521,12 @@ export class MothershipHub {
         wireframe: true,
       });
       const trophy = this.createTrophySilhouette(definition, material, index);
-      trophy.position.set(x, 13, -30.4);
+      trophy.position.set(x, 6.5, -30.4);
       display.add(trophy);
       this.registerProp(trophy, HUB_ZONES.VAULT, 'hunt-trophy', { huntId: definition.id });
       this.trophyDisplays.set(definition.id, trophy);
 
-      uplightMatrix.setPosition(x, 9.45, -30.75);
+      uplightMatrix.setPosition(x, 2.95, -30.75);
       vaultUplights.setMatrixAt(index, uplightMatrix);
       vault.add(display);
     });
@@ -1506,7 +1535,7 @@ export class MothershipHub {
     // Conservé sous cloche de stase énergétique dorée au centre du sanctuaire.
     const reliquary = new THREE.Group();
     reliquary.name = 'vault-reliquary-adolini-1715';
-    reliquary.position.set(0, 0, -25.5);
+    reliquary.position.set(-11, 0, -25.5);
 
     // Cloche de champ de stase ambrée
     const stasisField = new THREE.Mesh(
@@ -1605,6 +1634,12 @@ export class MothershipHub {
     });
     vault.add(elderStela);
 
+    const archiveReader = new THREE.Group();
+    archiveReader.name = 'vault-archive-console';
+    archiveReader.position.set(-22, 0, -26);
+    this.registerProp(archiveReader, HUB_ZONES.VAULT, 'interactive-console', { consoleId: 'vault-archive-console' });
+    vault.add(archiveReader);
+
     this.registerProp(vault, HUB_ZONES.VAULT, 'trophy-gallery');
     this.group.add(vault);
   }
@@ -1633,25 +1668,26 @@ export class MothershipHub {
     const consoleGroup = new THREE.Group();
     consoleGroup.name = id;
     consoleGroup.position.copy(position);
+    consoleGroup.scale.y = 1.65;
     consoleGroup.rotation.y = rotationY;
-    const base = new THREE.Mesh(createHubPanelGeometry(2.2, 1.5, 1.5, 0.14), this.createAlloyMaterial(0x252e37));
+    const base = new THREE.Mesh(createHubPanelGeometry(3.2, 1.5, 1.8, 0.14), this.createAlloyMaterial(0x252e37));
     base.position.y = 0.75;
     consoleGroup.add(base);
     const screen = new THREE.Mesh(
-      createHubPanelGeometry(1.75, 0.12, 1.02, 0.05),
+      createHubPanelGeometry(2.6, 0.12, 1.45, 0.05),
       this.createInstrumentMaterial(signalColor),
     );
     screen.userData.cameraOcclusion = false;
     screen.position.set(0, 1.72, -0.08);
-    screen.rotation.x = -0.48;
+    screen.rotation.x = 0.48;
     consoleGroup.add(screen);
-    const hood = new THREE.Mesh(new THREE.BoxGeometry(2.3, 0.18, 0.4), this.createAlloyMaterial(0x434b54));
+    const hood = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.18, 0.4), this.createAlloyMaterial(0x434b54));
     hood.position.set(0, 2.02, -0.42);
     consoleGroup.add(hood);
     for (let indicator = 0; indicator < 3; indicator += 1) {
       const pip = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.06, 0.12), this.createSignalMaterial(signalColor));
       pip.position.set(-0.45 + (indicator * 0.45), 1.82, -0.58);
-      pip.rotation.x = -0.48;
+      pip.rotation.x = 0.48;
       consoleGroup.add(pip);
     }
     this.registerProp(consoleGroup, zone, 'interactive-console', { consoleId: id });
@@ -1667,20 +1703,21 @@ export class MothershipHub {
     );
     const colors = [0xff3300, 0x00ff66, 0x00f0ff, 0xff0055, 0xff7a2e, 0xffc65a, 0x67e8f9, 0x9d5cff, 0xff8c58];
     const definitions = Object.values(HUNT_DEFINITIONS);
-    const nexusDeck = new THREE.Mesh(new THREE.BoxGeometry(62, 0.28, 18), this.createAlloyMaterial(0x1f2933));
-    nexusDeck.position.set(0, 0.18, -5);
+    const nexusDeck = new THREE.Mesh(new THREE.BoxGeometry(62, 0.28, 62), this.createAlloyMaterial(0x1f2933));
+    nexusDeck.position.set(0, -0.12, 6);
     missionNexus.add(nexusDeck);
     const ringGeometry = new THREE.TorusGeometry(2.15, 0.08, 5, 24);
     const ringMatrixSource = new THREE.Object3D();
 
     const pedestalTransforms = [];
     definitions.forEach((definition, index) => {
-      const { x, z } = getMissionStationPosition(index, definitions.length);
+      const { x, z, rotation } = getMissionStationPosition(index, definitions.length);
       pedestalTransforms.push({ position: [x, 0, z] });
       const color = colors[index % colors.length];
       const station = new THREE.Group();
       station.name = `mission-station-${definition.id}`;
       station.position.set(x, 0, z);
+      station.rotation.y = rotation;
       station.userData.huntId = definition.id;
 
 
@@ -1722,8 +1759,8 @@ export class MothershipHub {
 
       const control = new THREE.Mesh(createHubPanelGeometry(1.75, 0.16, 0.9, 0.06), this.createInstrumentMaterial(color));
       control.userData.cameraOcclusion = false;
-      control.position.set(0, 2.25, 2.05);
-      control.rotation.x = -0.38;
+      control.position.set(0, 3.4, 2.05);
+      control.rotation.x = 0.38;
       station.add(control);
       this.registerProp(station, HUB_ZONES.MISSIONS, 'mission-pedestal', { huntId: definition.id });
       missionNexus.add(station);
@@ -1759,7 +1796,7 @@ export class MothershipHub {
   createWeaponRack(parent) {
     const rack = new THREE.Group();
     rack.name = 'forge-weapon-rack';
-    rack.position.set(6.2, 0, -1.5);
+    rack.position.set(9.2, 0, -1.5);
     const back = new THREE.Mesh(new THREE.BoxGeometry(0.55, 6.5, 8.4), this.createAlloyMaterial(0x242b32));
     back.position.y = 3.4;
     rack.add(back);
@@ -1906,7 +1943,7 @@ export class MothershipHub {
       new THREE.Group(),
       'Forge, maintenance et armurerie',
     );
-    forge.position.set(22, 0, 18);
+    forge.position.set(49, 0, 12);
     const platform = new THREE.Mesh(new THREE.BoxGeometry(15, 0.5, 13), this.createAlloyMaterial(0x292d32));
     platform.position.y = 0.25;
     forge.add(platform);
@@ -1961,14 +1998,14 @@ export class MothershipHub {
     this.createWeaponRack(forge);
     this.createConsole(
       forge,
-      new THREE.Vector3(2.9, 0.5, 4.4),
-      Math.PI,
+      new THREE.Vector3(-5.6, 0, 4.8),
+      0,
       SIGNAL_COLORS.forge,
       'forge-control-console',
       HUB_ZONES.FORGE,
     );
-    this.createCrate(forge, new THREE.Vector3(4.5, 0.5, 3.5), 0.72, 'forge-alloy-crate', HUB_ZONES.FORGE, SIGNAL_COLORS.forge);
-    this.createCrate(forge, new THREE.Vector3(6.1, 0.5, 4.2), 0.55, 'forge-component-crate', HUB_ZONES.FORGE, 0x55ddff);
+    this.createCrate(forge, new THREE.Vector3(4.5, 0, 3.5), 0.72, 'forge-alloy-crate', HUB_ZONES.FORGE, SIGNAL_COLORS.forge);
+    this.createCrate(forge, new THREE.Vector3(6.1, 0, 4.2), 0.55, 'forge-component-crate', HUB_ZONES.FORGE, 0x55ddff);
 
     const duct = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.6, 5.2, 8), this.createAlloyMaterial(0x323b43));
     duct.position.set(-1, 10.2, 0);
@@ -1990,9 +2027,9 @@ export class MothershipHub {
       new THREE.Group(),
       'Hangar des véhicules de chasse',
     );
-    hangar.position.set(-21, 0, 20);
-    const deck = new THREE.Mesh(new THREE.BoxGeometry(24, 1, 13), this.createAlloyMaterial(0x202a35));
-    deck.position.y = 0.5;
+    hangar.position.set(-42, 0, 56);
+    const deck = new THREE.Mesh(new THREE.BoxGeometry(24, 0.24, 13), this.createAlloyMaterial(0x202a35));
+    deck.position.y = -0.04;
     hangar.add(deck);
 
     const energyMat = new THREE.MeshStandardMaterial({
@@ -2081,14 +2118,14 @@ export class MothershipHub {
     }
     this.createConsole(
       hangar,
-      new THREE.Vector3(-9.5, 1, 4.2),
+      new THREE.Vector3(-11, 0, -8),
       Math.PI,
       SIGNAL_COLORS.hangar,
       'hangar-traffic-console',
       HUB_ZONES.HANGAR,
     );
-    this.createCrate(hangar, new THREE.Vector3(8.8, 1, 4.4), 0.62, 'hangar-hunt-supply-crate', HUB_ZONES.HANGAR, SIGNAL_COLORS.hangar);
-    this.createCrate(hangar, new THREE.Vector3(10.1, 1, 5), 0.46, 'hangar-fuel-cell-crate', HUB_ZONES.HANGAR, 0x8b43ff);
+    this.createCrate(hangar, new THREE.Vector3(8.8, 0, 4.4), 0.62, 'hangar-hunt-supply-crate', HUB_ZONES.HANGAR, SIGNAL_COLORS.hangar);
+    this.createCrate(hangar, new THREE.Vector3(10.1, 0, 5), 0.46, 'hangar-fuel-cell-crate', HUB_ZONES.HANGAR, 0x8b43ff);
     this.registerProp(hangar, HUB_ZONES.HANGAR, 'vehicle-bay', { vehicleCount: 3 });
     this.group.add(hangar);
   }
@@ -2254,7 +2291,7 @@ export class MothershipHub {
     const beaconGroup = new THREE.Group();
     beaconGroup.name = 'spatial-navigation-beacons';
     const definitions = [
-      { id: 'beacon-hangar', position: [-30, 0, 8], color: SIGNAL_COLORS.hangar, pointsTo: HUB_ZONES.HANGAR },
+      { id: 'beacon-hangar', position: [-30, 0, 38], color: SIGNAL_COLORS.hangar, pointsTo: HUB_ZONES.HANGAR },
       { id: 'beacon-forge', position: [30, 0, 8], color: SIGNAL_COLORS.forge, pointsTo: HUB_ZONES.FORGE },
       { id: 'beacon-vault-port', position: [-29, 0, -23], color: SIGNAL_COLORS.vault, pointsTo: HUB_ZONES.VAULT },
       { id: 'beacon-vault-starboard', position: [29, 0, -23], color: SIGNAL_COLORS.vault, pointsTo: HUB_ZONES.VAULT },
@@ -2304,28 +2341,55 @@ export class MothershipHub {
     });
 
     colliders.push(
-      { id: 'trophy-vault-wall', type: 'box', x: 0, z: -32.4, halfWidth: 31, halfDepth: 1.2 },
-      { id: 'forge-core', type: 'circle', x: 21, z: 18, radius: 3.4 },
-      { id: 'forge-weapon-rack', type: 'box', x: 28.2, z: 16.5, halfWidth: 1.1, halfDepth: 4.4 },
-      { id: 'forge-manipulator-aft', type: 'circle', x: 17.9, z: 16.3, radius: 0.9 },
-      { id: 'forge-manipulator-fore', type: 'circle', x: 17.9, z: 19.7, radius: 0.9 },
-      { id: 'forge-alloy-crate', type: 'circle', x: 26.5, z: 21.5, radius: 1.2 },
-      { id: 'forge-component-crate', type: 'circle', x: 28.1, z: 22.2, radius: 0.9 },
-      { id: 'hangar-scout', type: 'circle', x: -26, z: 20, radius: 3.2 },
-      { id: 'hangar-shuttle', type: 'circle', x: -17, z: 20, radius: 3.2 },
-      { id: 'hangar-pod', type: 'circle', x: -21, z: 26, radius: 2.4 },
-      { id: 'hangar-gantry-port', type: 'circle', x: -30.2, z: 15.2, radius: 0.8 },
-      { id: 'hangar-gantry-starboard', type: 'circle', x: -11.8, z: 15.2, radius: 0.8 },
-      { id: 'hangar-traffic-console', type: 'circle', x: -30.5, z: 24.2, radius: 1.4 },
-      { id: 'hangar-supply-crate', type: 'circle', x: -12.2, z: 24.4, radius: 1.2 },
-      { id: 'hangar-fuel-crate', type: 'circle', x: -10.9, z: 25, radius: 0.9 },
-      { id: 'beacon-hangar', type: 'circle', x: -30, z: 8, radius: 0.9 },
+      { id: 'trophy-vault-wall', type: 'box', x: -20, z: -33, halfWidth: 13, halfDepth: 1 },
+      { id: 'trophy-vault-wall-starboard', type: 'box', x: 20, z: -33, halfWidth: 13, halfDepth: 1 },
+      { id: 'vault-reliquary', type: 'circle', x: -11, z: -25.5, radius: 2.1 },
+      { id: 'forge-core', type: 'box', x: 48, z: 12, halfWidth: 3.75, halfDepth: 2.5 },
+      { id: 'forge-weapon-rack', type: 'box', x: 58.2, z: 10.5, halfWidth: 0.6, halfDepth: 8 },
+      { id: 'forge-manipulator-aft', type: 'circle', x: 44.9, z: 10.3, radius: 0.9 },
+      { id: 'forge-manipulator-fore', type: 'circle', x: 44.9, z: 13.7, radius: 0.9 },
+      { id: 'forge-control-console', type: 'box', x: 43.4, z: 16.8, halfWidth: 1.6, halfDepth: 0.9 },
+      { id: 'forge-alloy-crate', type: 'circle', x: 53.5, z: 15.5, radius: 1.2 },
+      { id: 'forge-component-crate', type: 'circle', x: 55.1, z: 16.2, radius: 0.9 },
+      { id: 'hangar-scout', type: 'circle', x: -47, z: 56, radius: 3.2 },
+      { id: 'hangar-shuttle', type: 'circle', x: -38, z: 56, radius: 3.2 },
+      { id: 'hangar-pod', type: 'circle', x: -42, z: 62, radius: 2.4 },
+      { id: 'hangar-gantry-port', type: 'circle', x: -51.2, z: 51.2, radius: 0.8 },
+      { id: 'hangar-gantry-starboard', type: 'circle', x: -32.8, z: 51.2, radius: 0.8 },
+      { id: 'hangar-traffic-console', type: 'box', x: -53, z: 48, halfWidth: 1.6, halfDepth: 0.9 },
+      { id: 'hangar-supply-crate', type: 'circle', x: -33.2, z: 60.4, radius: 1.2 },
+      { id: 'hangar-fuel-crate', type: 'circle', x: -31.9, z: 61, radius: 0.9 },
+      { id: 'beacon-hangar', type: 'circle', x: -30, z: 38, radius: 0.9 },
       { id: 'beacon-forge', type: 'circle', x: 30, z: 8, radius: 0.9 },
       { id: 'beacon-vault-port', type: 'circle', x: -29, z: -23, radius: 0.9 },
       { id: 'beacon-vault-starboard', type: 'circle', x: 29, z: -23, radius: 0.9 },
     );
 
     BULKHEAD_SEGMENTS.forEach((collider) => colliders.push(collider));
+    for (const console of SERVICE_CONSOLE_LAYOUT) colliders.push({
+      id: console.id, type: 'box', x: console.x, z: console.z,
+      halfWidth: Math.abs(Math.sin(console.yaw)) > 0.5 ? 0.7 : 1.6,
+      halfDepth: Math.abs(Math.sin(console.yaw)) > 0.5 ? 1.6 : 0.7,
+    });
+    for (let index = 0; index < 10; index++) {
+      const angle = -Math.PI * 0.72 + Math.PI * 1.44 * index / 9;
+      colliders.push({ id: `cockpit-console-${index}`, type: 'circle',
+        x: Math.sin(angle) * 14, z: -70 + Math.cos(angle) * 8, radius: 1.875 });
+    }
+    for (let index = 0; index < 16; index++) {
+      const angle = index / 16 * Math.PI * 2;
+      colliders.push({ id: `reactor-conduction-rod-${index}`, type: 'circle',
+        x: 43 + Math.cos(angle) * 8.2, z: 60 + Math.sin(angle) * 8.2, radius: 0.38 });
+    }
+    for (const door of PRESSURE_DOORS) {
+      for (const side of [-1, 1]) colliders.push({
+        id: `${door.id}-jamb-${side < 0 ? 'port' : 'starboard'}`, type: 'box',
+        x: door.position.x + (door.axis === 'x' ? side * door.width * 0.5 : 0),
+        z: door.position.z + (door.axis === 'z' ? side * door.width * 0.5 : 0),
+        halfWidth: door.axis === 'x' ? 0.325 : 0.6,
+        halfDepth: door.axis === 'z' ? 0.325 : 0.6,
+      });
+    }
     PERCH_POINTS.forEach((perch) => colliders.push({
       id: `${perch.id}-support`,
       type: 'circle',
@@ -2340,12 +2404,12 @@ export class MothershipHub {
       { id: 'engine-reactor-core', type: 'circle', x: 43, z: 60, radius: 5.4 },
       { id: 'rear-airlock-hatch', type: 'box', x: 0, z: 84.5, halfWidth: 8.8, halfDepth: 0.75 },
     );
-    for (const x of [-59, -42]) {
+    for (const x of [-59, -45]) {
       for (const z of [-35, -29, -23, -17, -11]) {
         colliders.push({ id: `cryo-pod-${x}-${z}`, type: 'circle', x, z, radius: 1.65 });
       }
       for (const z of [2, 10, 18, 26]) {
-        colliders.push({ id: `escape-pod-${x}-${z}`, type: 'circle', x, z, radius: 1.75 });
+        colliders.push({ id: `escape-pod-${x}-${z}`, type: 'circle', x, z, radius: 2.2 });
       }
     }
     for (const x of [41, 47, 53, 59]) {
@@ -2361,6 +2425,7 @@ export class MothershipHub {
       radius: craft.radius,
     }));
     colliders.push({ id: 'armory-loadout-lockers', type: 'box', x: 62.2, z: 14, halfWidth: 2.2, halfDepth: 16 });
+    colliders.push({ id: 'armory-aft-issue-lockers', type: 'box', x: 49, z: 27, halfWidth: 10, halfDepth: 1.2 });
     this.colliders = Object.freeze(colliders.map((collider) => Object.freeze(collider)));
 
     this.stations = Object.freeze([
@@ -2377,7 +2442,7 @@ export class MothershipHub {
         interactionType: 'forge',
         label: 'Forge et armurerie',
         prompt: 'ACCÉDER À LA FORGE ET À L’ARMURERIE [E]',
-        position: new THREE.Vector3(13, 0, 18),
+        position: new THREE.Vector3(43.4, 0, 20.6),
         interactionRadius: 4.8,
       }),
       Object.freeze({
@@ -2385,7 +2450,7 @@ export class MothershipHub {
         interactionType: 'trophies',
         label: 'Galerie des trophées',
         prompt: 'CONSULTER LA GALERIE DES TROPHÉES [E]',
-        position: new THREE.Vector3(0, 0, -27),
+        position: new THREE.Vector3(-18, 0, -26),
         interactionRadius: 4.5,
       }),
       Object.freeze({
@@ -2393,7 +2458,7 @@ export class MothershipHub {
         interactionType: 'hangar',
         label: 'Hangar des véhicules',
         prompt: 'INSPECTER LE HANGAR DE CHASSE [E]',
-        position: new THREE.Vector3(-8.5, 0, 20),
+        position: new THREE.Vector3(-53, 0, 44),
         interactionRadius: 5,
       }),
     ]);
@@ -2441,7 +2506,7 @@ export class MothershipHub {
         interactionType: 'core',
         label: 'Noyau énergétique',
         prompt: 'DIAGNOSTIQUER LE NOYAU ÉNERGÉTIQUE [E]',
-        position: new THREE.Vector3(33, 0, 60),
+        position: new THREE.Vector3(31.8, 0, 60),
         interactionRadius: 6.5,
       }),
       Object.freeze({
@@ -2458,7 +2523,7 @@ export class MothershipHub {
     // approach point stays outside its solid shell, on the control-panel side.
     const contracts = Object.values(HUNT_DEFINITIONS);
     this.missionStations = Object.freeze(contracts.map((hunt, index) => {
-      const { x, z } = getMissionStationPosition(index, contracts.length);
+      const { x, z, approachX, rotation } = getMissionStationPosition(index, contracts.length);
       return Object.freeze({
         id: `contract-console-${hunt.id}`,
         zoneId: HUB_ZONES.MISSIONS,
@@ -2466,11 +2531,61 @@ export class MothershipHub {
         huntId: hunt.id,
         label: hunt.name,
         prompt: `PRÉPARER : ${hunt.name.toLocaleUpperCase('fr')} [E]`,
-        position: new THREE.Vector3(x, 0, z + 4.8),
+        position: new THREE.Vector3(approachX, 0, z),
+        consolePosition: new THREE.Vector3(x + Math.sin(rotation) * 2.05, 3.4, z),
+        consoleYaw: rotation,
+        consolePitch: -Math.PI / 2 + 0.38,
         interactionRadius: 2.6,
       });
     }));
+    const services = { contracts: 'contracts', forge: 'crafting', trophies: 'codex', hangar: 'hangar',
+      navigation: 'navigation', cryo: 'restore_vitals', escape_pods: 'prepare_hunt', cleaner_lab: 'medical',
+      core: 'recharge', airlock: 'airlock', mission_contract: 'prepare_hunt' };
+    const terminals = {
+      'armory-forge': new THREE.Vector3(43.4, 2.9, 16.72),
+      'vehicle-hangar': new THREE.Vector3(-53, 2.9, 48.08),
+    };
+    for (const entry of SERVICE_CONSOLE_LAYOUT) terminals[entry.stationId] = new THREE.Vector3(
+      entry.x + Math.sin(entry.yaw) * 0.82, 3.1, entry.z + Math.cos(entry.yaw) * 0.82);
+    const enrich = station => Object.freeze({ ...station,
+      zoneId: station.zoneId ?? station.id,
+      serviceId: services[station.interactionType] ?? station.interactionType,
+      consoleId: SERVICE_CONSOLE_LAYOUT.find(entry => entry.stationId === station.id)?.id
+        ?? (station.huntId ? `mission-station-${station.huntId}`
+          : station.id === HUB_ZONES.FORGE ? 'forge-control-console' : 'hangar-traffic-console'),
+      approachPosition: station.position.clone(),
+      consolePosition: station.consolePosition ?? terminals[station.id] ?? station.position.clone().setY(3.4),
+      consoleYaw: station.consoleYaw ?? SERVICE_CONSOLE_LAYOUT.find(entry => entry.stationId === station.id)?.yaw
+        ?? (station.id === HUB_ZONES.HANGAR ? Math.PI : 0),
+      // The console's non-uniform Y scale also changes its world normal.
+      consolePitch: station.consolePitch ?? (station.id === HUB_ZONES.FORGE || station.id === HUB_ZONES.HANGAR
+        ? -Math.atan2(Math.cos(0.48) / 1.65, Math.sin(0.48)) : 0),
+      accessLabel: station.interactionType === 'airlock' ? 'Inspection autorisée · écoutille extérieure scellée' : 'Accès du clan autorisé',
+      available: true,
+    });
+    this.stations = Object.freeze(this.stations.map(enrich));
+    this.compartmentStations = Object.freeze(this.compartmentStations.map(enrich));
+    this.missionStations = Object.freeze(this.missionStations.map(enrich));
     this.allStations = Object.freeze([...this.stations, ...this.compartmentStations, ...this.missionStations]);
+    this.navigation = new ShipNavigation(this.bounds, this.colliders);
+  }
+
+  createServiceTerminals() {
+    const terminals = new THREE.Group();
+    terminals.name = 'ship-functional-service-terminals';
+    const transforms = SERVICE_CONSOLE_LAYOUT.map(entry => ({
+      position: [entry.x, 1.4, entry.z], rotation: [0, entry.yaw, 0],
+    }));
+    this.createInstancedBatch(terminals, 'service-terminal-solid-housings', createHubPanelGeometry(3.2, 2.8, 1.4, 0.18),
+      this.createAlloyMaterial(0x34454d), transforms, 'hub', 'service-terminal-housings',
+      { collisionMatched: true, stationIds: SERVICE_CONSOLE_LAYOUT.map(entry => entry.stationId) });
+    for (const entry of SERVICE_CONSOLE_LAYOUT) {
+      if (this.group.getObjectByName(entry.id)) continue;
+      const anchor = new THREE.Group(); anchor.name = entry.id; anchor.position.set(entry.x, 0, entry.z);
+      this.registerProp(anchor, this.getStation(entry.stationId).zoneId, 'interactive-console', { consoleId: entry.id, stationId: entry.stationId });
+      terminals.add(anchor);
+    }
+    this.group.add(terminals);
   }
 
   constrainPlayer(position, playerRadius = 1.8) {
@@ -2664,6 +2779,7 @@ export class MothershipHub {
       );
       const interactionLimit = Math.min(station.interactionRadius, requestedLimit);
       if (distance > interactionLimit || distance >= nearestDistance) continue;
+      if (!this.navigation.isSegmentClear(position, station.approachPosition)) continue;
       nearest = station;
       nearestDistance = distance;
     }
@@ -2672,6 +2788,59 @@ export class MothershipHub {
 
   getStations() {
     return this.allStations;
+  }
+
+  getStation(id) {
+    return this.allStations.find(station => station.id === id) ?? null;
+  }
+
+  getNavigationRoute(from, stationId, { radius = 1.8 } = {}) {
+    const station = this.getStation(stationId);
+    const empty = { status: 'invalid', stationId, label: station?.label ?? '', zoneId: station?.zoneId ?? null,
+      points: [], distanceUnits: 0, distanceMeters: 0, doorIds: [] };
+    if (this.disposed || !station || !from?.isVector3) return empty;
+    const navigation = Math.abs(radius - 1.8) < 1e-6 ? this.navigation : new ShipNavigation(this.bounds, this.colliders, { radius });
+    const points = navigation.findRoute(from, station.approachPosition);
+    if (!points) return { ...empty, status: 'unreachable' };
+    const distanceUnits = points.slice(1).reduce((total, point, index) => total + point.distanceTo(points[index]), 0);
+    const crossings = [];
+    points.slice(1).forEach((point, index) => this.doors.forEach(door => {
+      if (door.state !== 'open') return;
+      const start = points[index];
+      const normal = door.axis === 'x' ? 'z' : 'x', along = door.axis === 'x' ? 'x' : 'z';
+      const delta = point[normal] - start[normal];
+      if (Math.abs(delta) < 1e-8) return;
+      const t = (door.position[normal] - start[normal]) / delta;
+      if (t >= 0 && t <= 1 && Math.abs(start[along] + (point[along] - start[along]) * t - door.position[along]) <= door.width / 2) {
+        crossings.push({ id: door.id, progress: index + t });
+      }
+    }));
+    const doorIds = [...new Set(crossings.sort((left, right) => left.progress - right.progress).map(crossing => crossing.id))];
+    return { status: 'ready', stationId, label: station.label, zoneId: station.zoneId,
+      points, distanceUnits, distanceMeters: distanceUnits / WORLD_UNITS_PER_METER, doorIds };
+  }
+
+  getNavigationSnapshot(position) {
+    return { zone: this.getZoneAt(position), bounds: this.bounds, zones: this.zones, doors: this.doors,
+      unitsPerMeter: WORLD_UNITS_PER_METER,
+      stations: this.allStations.map(station => ({
+        id: station.id, label: station.label, zoneId: station.zoneId, serviceId: station.serviceId,
+        position: station.position.clone(), approachPosition: station.approachPosition.clone(),
+        consolePosition: station.consolePosition.clone(), accessLabel: station.accessLabel, available: station.available,
+      })),
+    };
+  }
+
+  setTerminalContext(context = {}) {
+    return this.shipInteriorDetail?.updateTerminalContext(context) ?? false;
+  }
+
+  setNavigationRoute(route = null) {
+    return this.shipInteriorDetail?.setNavigationRoute(route) ?? false;
+  }
+
+  setShadowQuality(quality) {
+    return this.shipInteriorDetail?.setShadowQuality(quality) ?? false;
   }
 
   getBounds() {
@@ -2770,6 +2939,7 @@ export class MothershipHub {
   dispose() {
     if (this.disposed) return;
     this.disposed = true;
+    this.shipInteriorDetail?.dispose();
     this.group.parent?.remove(this.group);
 
     const geometries = new Set();
@@ -2790,6 +2960,8 @@ export class MothershipHub {
     textures.forEach((texture) => texture.dispose());
 
     this.group.clear();
+    this.shipEquipmentDisplays?.clear();
+    this.navigation = null;
     this.cameraOcclusion = null;
     this.animatedProps.length = 0;
     this.vehicleDisplays.length = 0;
