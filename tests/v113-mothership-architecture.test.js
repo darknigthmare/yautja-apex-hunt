@@ -98,7 +98,7 @@ test('le pont, la cryostase, les pods, le Cleaner lab, le noyau et le sas sont r
 test('les nouvelles stations interactives restent compatibles avec les quatre stations historiques', () => {
   const hub = new MothershipHub(new THREE.Scene());
   assert.equal(hub.stations.length, 4);
-  assert.equal(hub.getStations().length, 10);
+  assert.equal(hub.getStations().length, 25);
 
   assert.deepEqual(
     hub.compartmentStations.map(({ id, interactionType }) => [id, interactionType]),
@@ -123,7 +123,7 @@ test('les coursives, portes et colliders du grand plan restent praticables', () 
   const bounds = hub.getBounds();
   assert.equal(bounds.maxX - bounds.minX, 133);
   assert.equal(bounds.maxZ - bounds.minZ, 173);
-  assert.equal(hub.getColliders().length, 87);
+  assert.equal(hub.getColliders().length, 90);
 
   for (const point of [
     new THREE.Vector3(0, 0, -52),

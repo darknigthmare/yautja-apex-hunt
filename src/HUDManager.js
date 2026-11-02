@@ -25,6 +25,7 @@ import { getEquippedLoadoutItemIds } from './gameplay/HuntLoadoutSystem.js';
 import { getEquipmentIconSvg } from './ui/EquipmentIcons.js';
 import { getHuntCardLogo } from './ui/CanonLogosAndEmblems.js';
 import { formatWorldDistance } from './ui/distanceFormat.js';
+import { setupCatalogueBrowsers } from './ui/CatalogueBrowser.js';
 import {
   MEDIA_COVERAGE_CATALOG,
   MEDIA_PROVENANCE_TIERS,
@@ -169,6 +170,7 @@ export class HUDManager {
     this.renderExpandedContentCatalog();
     this.renderMediaCoverageCatalog();
     this.updateContentCatalogCounts();
+    this.catalogueBrowsers = setupCatalogueBrowsers(document);
   }
 
   commit(element, key, value, mutate) {

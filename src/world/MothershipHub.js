@@ -2292,11 +2292,8 @@ export class MothershipHub {
 
     const colliders = [];
     const definitions = Object.values(HUNT_DEFINITIONS);
-    const pedestalDefinitions = definitions.slice(0, 12);
-    const pedestalTransforms = [];
-    pedestalDefinitions.forEach((definition, index) => {
+    definitions.forEach((definition, index) => {
       const { x, z } = getMissionStationPosition(index, definitions.length);
-      pedestalTransforms.push({ position: [x, 0, z] });
       colliders.push({
         id: 'mission-pedestal-' + definition.id,
         type: 'circle',
@@ -2457,7 +2454,23 @@ export class MothershipHub {
         interactionRadius: 5.2,
       }),
     ]);
-    this.allStations = Object.freeze([...this.stations, ...this.compartmentStations]);
+    // Each visible contract pedestal is an actual preparation console. The
+    // approach point stays outside its solid shell, on the control-panel side.
+    const contracts = Object.values(HUNT_DEFINITIONS);
+    this.missionStations = Object.freeze(contracts.map((hunt, index) => {
+      const { x, z } = getMissionStationPosition(index, contracts.length);
+      return Object.freeze({
+        id: `contract-console-${hunt.id}`,
+        zoneId: HUB_ZONES.MISSIONS,
+        interactionType: 'mission_contract',
+        huntId: hunt.id,
+        label: hunt.name,
+        prompt: `PRÉPARER : ${hunt.name.toLocaleUpperCase('fr')} [E]`,
+        position: new THREE.Vector3(x, 0, z + 4.8),
+        interactionRadius: 2.6,
+      });
+    }));
+    this.allStations = Object.freeze([...this.stations, ...this.compartmentStations, ...this.missionStations]);
   }
 
   constrainPlayer(position, playerRadius = 1.8) {
@@ -2646,6 +2659,7 @@ export class MothershipHub {
     for (const station of this.allStations) {
       const distance = Math.hypot(
         position.x - station.position.x,
+        position.y - station.position.y,
         position.z - station.position.z,
       );
       const interactionLimit = Math.min(station.interactionRadius, requestedLimit);

@@ -22,6 +22,17 @@
 .craft-card-title,
 .multiverse-active-details,
 .multiverse-roster-card { min-width: 0; overflow-wrap: anywhere; }
+.multiverse-roster-card.active-selected::after {
+  position: static;
+  top: auto;
+  right: auto;
+  order: -1;
+  align-self: flex-end;
+  max-width: 100%;
+  box-sizing: border-box;
+  line-height: 1.4;
+  text-align: right;
+}
 .craft-recipe-card { text-align: left; }
 .craft-recipe-card.card-equipped::after { content: none; }
 .craft-card-header { align-items: flex-start; }
@@ -48,6 +59,19 @@
 .craft-action-btn:focus-visible { outline: 2px solid #f5df8c; outline-offset: 3px; }
 .craft-action-btn:disabled { opacity: 1; color: #b6c3ca; background: #182028; border-color: #64727c; }
 .craft-filter-bar [aria-pressed='true'] { outline: 1px solid #f6b464; outline-offset: 2px; }
+
+.catalogue-search { display: grid; gap: 8px; margin: 16px 0 8px; text-align: left; }
+.catalogue-search label { color: #c7d7d8; font-size: 11px; line-height: 1.5; letter-spacing: 0.04em; }
+.catalogue-search-controls { display: flex; gap: 8px; align-items: stretch; }
+.catalogue-search input { flex: 1; min-width: 0; min-height: 44px; padding: 10px 12px; color: #eef6f6; background: #101a22; border: 1px solid #718894; border-radius: 5px; font: inherit; font-size: 14px; }
+.catalogue-search input::placeholder { color: #a4b9c1; opacity: 1; }
+.catalogue-search button { min-height: 44px; margin: 0; padding: 9px 12px; color: #e1e9e7; background: #21343d; border: 1px solid #718894; border-radius: 5px; font-size: 11px; cursor: pointer; }
+.catalogue-search button:disabled { color: #98aab2; background: #18252d; cursor: default; }
+.catalogue-search input:focus-visible, .catalogue-search button:focus-visible { outline: 2px solid #f5df8c; outline-offset: 3px; }
+.catalogue-search-status { color: #c7d7d8; font-size: 12px; line-height: 1.5; text-align: left; margin: 5px 0 12px; }
+.catalogue-search-empty { padding: 16px; border: 1px solid #718894; border-radius: 5px; color: #d1e1e3; font-size: 13px; line-height: 1.5; text-align: left; }
+#canon-taxonomy-grid > [hidden], #multiverse-roster-grid > [hidden], .catalogue-search-empty[hidden] { display: none !important; }
+.multiverse-filter-bar [aria-pressed='true'], .taxonomy-filter-bar [aria-pressed='true'] { outline: 1px solid #f6b464; outline-offset: 2px; }
 
 @media (max-width: 760px) {
   #weapon-selector .weapon-slot { flex: 0 0 72px; min-width: 72px; min-height: 50px; padding: 4px; column-gap: 3px; grid-template-columns: 20px minmax(0, 1fr); }

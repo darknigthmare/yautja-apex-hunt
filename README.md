@@ -4,6 +4,8 @@ Jeu de chasse 3D pour navigateur construit avec Three.js et Vite. Le joueur inca
 
 ## État du projet
 
+La continuation du 2 novembre 2026, fondée sur `3cbe886`, reprend les silhouettes humaines et xénomorphes, raccorde les quinze consoles physiques du croiseur, corrige la mêlée contre les grandes cibles et les familles de dégâts, puis ajoute la recherche au catalogue. Les contrôles, comparaisons et limites sont détaillés dans [`CONTINUATION_REVIEW.md`](CONTINUATION_REVIEW.md).
+
 La reprise du 1er novembre 2026 part de `master` à `a177aa0`. Elle corrige les proportions des PNJ, les collisions, les attaques des grands boss, la répartition des décors, les matériaux de forge et les parcours du catalogue. La source documentée de chaque élément prime ; les estimations et les silhouettes d'entraînement restent identifiées. Les corrections, mesures et limites de fidélité sont détaillées dans [`COHERENCE_REVIEW.md`](COHERENCE_REVIEW.md). Les mentions de publication ci-dessous décrivent les anciennes releases.
 
 La version 1.13.0 Croiseur/Paquetage prolonge la release Gunnison/Predalien sur [GitHub](https://github.com/darknigthmare/yautja-apex-hunt) et [yautja-apex-hunt.vercel.app](https://yautja-apex-hunt.vercel.app/). Elle transforme le hub en croiseur compartimenté et impose une préparation de chasse persistante : le joueur ne peut plus emporter simultanément tout l’arsenal.

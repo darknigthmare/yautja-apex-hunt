@@ -13,6 +13,7 @@ import {
 import { BiomePropBuilder, getCoverClusterLayout } from './BiomePropBuilder.js';
 import { getTravelSceneryPlacement, resolveWorldPropLayout } from './WorldPropLayout.js';
 import { ObstacleSpatialIndex } from './ObstacleSpatialIndex.js';
+import { conformGroundMarker } from './GroundMarkerGeometry.js';
 import {
   buildHuntRouteNetwork,
   sampleHuntSectorElevation,
@@ -1144,6 +1145,7 @@ export class Environment {
       const terrainY = this.sampleHeight(hazard.position);
       hazard.position.y = terrainY;
       hazard.mesh.position.y = terrainY;
+      conformGroundMarker(hazard.boundaryRing, (x, z) => this.sampleHeight(x, z), terrainY);
     }
     this.biomeGroup.add(this.propRoot);
 
@@ -1452,6 +1454,7 @@ export class Environment {
   updateHazardZones(delta, player = null) {
     const frameDelta = Number.isFinite(delta) ? Math.max(0, delta) : 0;
     const signals = [];
+    const playerGroundY = player?.position?.isVector3 ? this.sampleHeight(player.position) : 0;
     for (const hazard of this.hazardZones) {
       hazard.cooldown = Math.max(0, hazard.cooldown - frameDelta);
       hazard.pulsePhase += frameDelta * 1.8;
@@ -1466,7 +1469,10 @@ export class Environment {
       // taller vent/spore effects match the roughly six-unit visible plume.
       const effectHeight = Number.isFinite(hazard.effectHeight) ? Math.max(0, hazard.effectHeight)
         : ['acid_pool', 'resin_snare', 'snare_vines'].includes(hazard.type) ? 2 : 6;
-      const aboveGround = player.position.y - hazard.position.y;
+      // The floor can slope across the footprint; the centre's altitude is not
+      // the floor beneath a hunter at the edge of the same snare or pool.
+      const baseOffset = hazard.position.y - this.sampleHeight(hazard.position);
+      const aboveGround = player.position.y - playerGroundY - baseOffset;
       const withinHeight = aboveGround >= -2 && aboveGround <= effectHeight;
       hazard.warned = withinHeight && distance <= hazard.radius * 1.45;
       if (!withinHeight || distance > hazard.radius || hazard.cooldown > 0) continue;
@@ -1476,6 +1482,7 @@ export class Environment {
         hazardId: hazard.id,
         hazardType: hazard.type,
         damage: Math.max(0, Number(hazard.damage) || 0),
+        damageType: hazard.damageType ?? 'generic',
         status: hazard.status ?? null,
         message: hazard.message ?? '',
       };
@@ -1659,6 +1666,7 @@ export class Environment {
     ring.rotation.x = -Math.PI / 2;
     ring.position.copy(position).add(new THREE.Vector3(0, 0.18, 0));
     this.biomeGroup.add(ring);
+    conformGroundMarker(ring, (x, z) => this.sampleHeight(x, z), position.y, { cloneGeometry: false });
     const hazard = {
       id: event.id ?? ring.name,
       type: event.eventType ?? 'localized_hazard',
@@ -1667,6 +1675,7 @@ export class Environment {
       duration,
       remaining: duration,
       damage: isObjectiveZone ? 0 : Math.max(0, Number(event.damage) || 0),
+      damageType: event.damageType ?? 'generic',
       status: isObjectiveZone ? null : event.status ?? null,
       message: event.label ?? event.message ?? 'Anomalie locale détectée',
       mechanism,
@@ -1676,7 +1685,8 @@ export class Environment {
       cooldown: 0,
       pulsePhase: 0,
       mesh: ring,
-      pulseRoot: ring,
+      // This ring is the actual gameplay boundary, not decorative geometry.
+      boundaryRing: ring,
       dynamic: true,
     };
     if (!isObjectiveZone) this.hazardZones.push(hazard);
@@ -1687,31 +1697,39 @@ export class Environment {
 
   applyLocalizedEventMechanism(zone) {
     if (zone?.mechanism !== 'power_grid_blackout' || zone.mechanismState) return false;
-    const emergencyLights = this.biomeGroup.children.filter(({ userData }) => userData?.gunnisonEmergencyLight === true);
-    zone.mechanismState = {
-      restored: false,
-      mainLightIntensity: this.mainLight.intensity,
-      ambientLightIntensity: this.ambientLight.intensity,
-      hemisphereLightIntensity: this.hemisphereLight.intensity,
-      emergencyLights: emergencyLights.map((light) => ({ light, intensity: light.intensity })),
-    };
-    this.mainLight.intensity *= 0.24;
-    this.ambientLight.intensity *= 0.38;
-    this.hemisphereLight.intensity *= 0.42;
-    emergencyLights.forEach((light) => { light.intensity *= 0.08; });
+    if (!this.localizedBlackoutState) {
+      const emergencyLights = this.biomeGroup.children.filter(({ userData }) => userData?.gunnisonEmergencyLight === true);
+      this.localizedBlackoutState = {
+        zones: new Set(),
+        mainLightIntensity: this.mainLight.intensity,
+        ambientLightIntensity: this.ambientLight.intensity,
+        hemisphereLightIntensity: this.hemisphereLight.intensity,
+        emergencyLights: emergencyLights.map((light) => ({ light, intensity: light.intensity })),
+      };
+      this.mainLight.intensity *= 0.24;
+      this.ambientLight.intensity *= 0.38;
+      this.hemisphereLight.intensity *= 0.42;
+      emergencyLights.forEach((light) => { light.intensity *= 0.08; });
+    }
+    this.localizedBlackoutState.zones.add(zone);
+    zone.mechanismState = { restored: false, blackout: this.localizedBlackoutState };
     return true;
   }
 
   endLocalizedEventMechanism(zone) {
-    const state = zone?.mechanismState;
-    if (!state || state.restored) return false;
-    state.restored = true;
+    const mechanism = zone?.mechanismState;
+    if (!mechanism || mechanism.restored) return false;
+    mechanism.restored = true;
+    const state = mechanism.blackout;
+    state.zones.delete(zone);
+    if (state.zones.size) return true;
     this.mainLight.intensity = state.mainLightIntensity;
     this.ambientLight.intensity = state.ambientLightIntensity;
     this.hemisphereLight.intensity = state.hemisphereLightIntensity;
     state.emergencyLights.forEach(({ light, intensity }) => {
       if (light) light.intensity = intensity;
     });
+    if (this.localizedBlackoutState === state) this.localizedBlackoutState = null;
     return true;
   }
 

@@ -52,8 +52,8 @@ test('ship microgeometry stays batched and does not expand solid camera occlusio
     hub.group.traverse((object) => { if (object.isPointLight) pointLights.push(object); });
     assert.ok(pointLights.length <= 7);
     assert.ok(pointLights.every((light) => !light.castShadow));
-    assert.equal(hub.getStations().length, 10);
-    assert.equal(hub.getColliders().length, 87);
+    assert.equal(hub.getStations().length, 25);
+    assert.equal(hub.getColliders().length, 90);
   } finally { hub.dispose(); }
 });
 

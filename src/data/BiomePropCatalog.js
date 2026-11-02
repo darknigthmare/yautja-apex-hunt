@@ -48,7 +48,7 @@ const PLAN_DATA = {
       { id: 'jungle-poi-trophy-markers', type: 'trophy_archive', label: 'Arbre des prises anciennes', position: [4, 0, -134], interactionRadius: 14, interactionType: 'scan_trophies', honor: 95, message: 'Marques d’honneur : trois itinéraires de chasse convergent vers la clairière.' },
     ],
     hazardZones: [
-      { id: 'jungle-hazard-snare-vines', type: 'snare_vines', position: [46, 0, -78], radius: 7, damage: 8, interval: 2.8, status: 'venom', message: 'LIANES PRÉDATRICES — ENDURANCE CONTAMINÉE' },
+      { id: 'jungle-hazard-snare-vines', type: 'snare_vines', position: [46, 0, -78], radius: 7, damageType: 'generic', damage: 8, interval: 2.8, status: 'venom', message: 'LIANES PRÉDATRICES — ENDURANCE CONTAMINÉE' },
     ],
   },
   hive_lv426: {
@@ -76,8 +76,8 @@ const PLAN_DATA = {
       { id: 'hive-poi-cleaner', type: 'cleaner_trace', label: 'Résidus d’agent Cleaner', position: [78, 0, 58], interactionRadius: 12, interactionType: 'scan_archive', honor: 85, message: 'Analyse : dissolution contrôlée et trajectoire d’un chasseur vétéran.' },
     ],
     hazardZones: [
-      { id: 'hive-hazard-acid-west', type: 'acid_pool', position: [-22, 0, -42], radius: 8, damage: 10, interval: 2.2, status: 'corrosion', message: 'BASSIN ACIDE — CAMOUFLAGE COMPROMIS' },
-      { id: 'hive-hazard-acid-east', type: 'acid_pool', position: [34, 0, -96], radius: 7, damage: 10, interval: 2.2, status: 'corrosion', message: 'BASSIN ACIDE — CAMOUFLAGE COMPROMIS' },
+      { id: 'hive-hazard-acid-west', type: 'acid_pool', position: [-22, 0, -42], radius: 8, damageType: 'acid', damage: 10, interval: 2.2, status: 'corrosion', message: 'BASSIN ACIDE — CAMOUFLAGE COMPROMIS' },
+      { id: 'hive-hazard-acid-east', type: 'acid_pool', position: [34, 0, -96], radius: 7, damageType: 'acid', damage: 10, interval: 2.2, status: 'corrosion', message: 'BASSIN ACIDE — CAMOUFLAGE COMPROMIS' },
     ],
   },
   ryushi_desert: {
@@ -103,7 +103,7 @@ const PLAN_DATA = {
       { id: 'ryushi-poi-blooding', type: 'hunt_trace', label: 'Trace de blooding dans le sable', position: [96, 0, 70], interactionRadius: 13, interactionType: 'scan_archive', honor: 90, message: 'Analyse : une chasse rituelle a traversé l’enclos vers les dunes orientales.' },
     ],
     hazardZones: [
-      { id: 'ryushi-hazard-heat-vent', type: 'heat_vent', position: [24, 0, -62], radius: 8, damage: 7, interval: 2.5, status: 'energy_jam', message: 'VENT THERMIQUE — SYSTÈMES SURCHAUFFÉS' },
+      { id: 'ryushi-hazard-heat-vent', type: 'heat_vent', position: [24, 0, -62], radius: 8, damageType: 'fire', damage: 7, interval: 2.5, status: 'energy_jam', message: 'VENT THERMIQUE — SYSTÈMES SURCHAUFFÉS' },
     ],
   },
   yautja_prime: {
@@ -131,7 +131,7 @@ const PLAN_DATA = {
       { id: 'prime-poi-trophy-lineage', type: 'trophy_archive', label: 'Lignée de trophées du clan', position: [90, 0, -44], interactionRadius: 13, interactionType: 'scan_trophies', honor: 100, message: 'Lignée vérifiée : prises, cicatrices et rangs restent séparés des récits non confirmés.' },
     ],
     hazardZones: [
-      { id: 'prime-hazard-plasma-brazier', type: 'plasma_brazier', position: [0, 0, -78], radius: 7, damage: 9, interval: 2.4, status: 'energy_jam', message: 'PLASMA RITUEL — ÉNERGIE DRAINÉE' },
+      { id: 'prime-hazard-plasma-brazier', type: 'plasma_brazier', position: [0, 0, -78], radius: 7, damageType: 'plasma', damage: 9, interval: 2.4, status: 'energy_jam', message: 'PLASMA RITUEL — ÉNERGIE DRAINÉE' },
     ],
   },
   genna_deathworld: {
@@ -159,8 +159,8 @@ const PLAN_DATA = {
       { id: 'genna-poi-synthetic-array', type: 'seismic_array', label: 'Réseau de confinement détruit', position: [104, 0, -32], interactionRadius: 13, interactionType: 'tune_beacon', honor: 80, message: 'Réseau recalibré : couloirs de charge et nœuds organiques cartographiés.' },
     ],
     hazardZones: [
-      { id: 'genna-hazard-spore-west', type: 'spore_vent', position: [-28, 0, -104], radius: 7, damage: 6, interval: 2.6, status: 'venom', message: 'SPORES DE GENNA — ENDURANCE CONTAMINÉE' },
-      { id: 'genna-hazard-spore-east', type: 'spore_vent', position: [32, 0, -112], radius: 7, damage: 6, interval: 2.6, status: 'venom', message: 'SPORES DE GENNA — ENDURANCE CONTAMINÉE' },
+      { id: 'genna-hazard-spore-west', type: 'spore_vent', position: [-28, 0, -104], radius: 7, damageType: 'generic', damage: 6, interval: 2.6, status: 'venom', message: 'SPORES DE GENNA — ENDURANCE CONTAMINÉE' },
+      { id: 'genna-hazard-spore-east', type: 'spore_vent', position: [32, 0, -112], radius: 7, damageType: 'generic', damage: 6, interval: 2.6, status: 'venom', message: 'SPORES DE GENNA — ENDURANCE CONTAMINÉE' },
     ],
   },
   stargazer_blacksite: {
@@ -188,8 +188,8 @@ const PLAN_DATA = {
       { id: 'stargazer-poi-breach-trail', type: 'hunt_trace', label: 'Piste de poursuite de l’Assassin', position: [20, 0, -515], interactionRadius: 15, interactionType: 'scan_archive', honor: 105, message: 'Trace : impacts lourds, plaques biologiques et bond terminal vers le cratère.' },
     ],
     hazardZones: [
-      { id: 'stargazer-hazard-arc-field', type: 'containment_arc', position: [405, 0, -108], radius: 9, damage: 9, interval: 2.3, status: 'energy_jam', message: 'ARC DE CONFINEMENT — SYSTÈMES YAUTJA PERTURBÉS' },
-      { id: 'stargazer-hazard-sterilization', type: 'sterilization_vent', position: [245, 0, -205], radius: 8, damage: 8, interval: 2.6, status: 'corrosion', message: 'PURGE DE STÉRILISATION — ARMURE CORRODÉE' },
+      { id: 'stargazer-hazard-arc-field', type: 'containment_arc', position: [405, 0, -108], radius: 9, damageType: 'energy', damage: 9, interval: 2.3, status: 'energy_jam', message: 'ARC DE CONFINEMENT — SYSTÈMES YAUTJA PERTURBÉS' },
+      { id: 'stargazer-hazard-sterilization', type: 'sterilization_vent', position: [245, 0, -205], radius: 8, damageType: 'acid', damage: 8, interval: 2.6, status: 'corrosion', message: 'PURGE DE STÉRILISATION — ARMURE CORRODÉE' },
     ],
   },
   los_angeles_1997: {
@@ -217,9 +217,9 @@ const PLAN_DATA = {
       { id: 'la-poi-lost-tribe-law', type: 'honor_archive', label: 'Marque d’honneur du Lost Tribe', position: [-72, 0, -625], interactionRadius: 15, interactionType: 'scan_archive', honor: 120, message: 'Archive d’honneur : le duel achevé est reconnu, puis le survivant reçoit une prise ancienne.' },
     ],
     hazardZones: [
-      { id: 'la-hazard-subway-steam', type: 'subway_steam', position: [-455, 0, -315], radius: 9, damage: 7, interval: 2.4, status: 'energy_jam', message: 'VAPEUR DU MÉTRO — VISIONS THERMIQUES SATURÉES' },
-      { id: 'la-hazard-owlf-cryo', type: 'cryo_fog', position: [410, 0, -315], radius: 11, damage: 8, interval: 2.2, status: 'snare', message: 'BROUILLARD CRYOGÉNIQUE — MOBILITÉ RÉDUITE' },
-      { id: 'la-hazard-transformer-arc', type: 'transformer_arc', position: [470, 0, 105], radius: 8, damage: 9, interval: 2.5, status: 'energy_jam', message: 'ARC ÉLECTRIQUE — TECHNOLOGIE YAUTJA PERTURBÉE' },
+      { id: 'la-hazard-subway-steam', type: 'subway_steam', position: [-455, 0, -315], radius: 9, damageType: 'fire', damage: 7, interval: 2.4, status: 'energy_jam', message: 'VAPEUR DU MÉTRO — VISIONS THERMIQUES SATURÉES' },
+      { id: 'la-hazard-owlf-cryo', type: 'cryo_fog', position: [410, 0, -315], radius: 11, damageType: 'generic', damage: 8, interval: 2.2, status: 'snare', message: 'BROUILLARD CRYOGÉNIQUE — MOBILITÉ RÉDUITE' },
+      { id: 'la-hazard-transformer-arc', type: 'transformer_arc', position: [470, 0, 105], radius: 8, damageType: 'energy', damage: 9, interval: 2.5, status: 'energy_jam', message: 'ARC ÉLECTRIQUE — TECHNOLOGIE YAUTJA PERTURBÉE' },
     ],
   },
   bouvetoya_pyramid: {
@@ -260,10 +260,10 @@ const PLAN_DATA = {
       { id: 'bouvet-poi-grid-acid', type: 'hunt_trace', label: 'Entaille acide de Grid', position: [145, 0, -370], interactionRadius: 15, interactionType: 'scan_archive', honor: 125, message: 'Trace : le drone marqué a brisé un filet puis rejoint l’arène par la galerie royale.' },
     ],
     hazardZones: [
-      { id: 'bouvet-hazard-thermal-vent', type: 'heat_vent', position: [455, 0, 410], radius: 9, damage: 8, interval: 2.4, status: 'energy_jam', message: 'SURPRESSION THERMIQUE — SYSTÈMES YAUTJA SATURÉS' },
-      { id: 'bouvet-hazard-acid-channel', type: 'acid_pool', position: [-260, 0, -250], radius: 10, damage: 11, interval: 2.1, status: 'corrosion', message: 'SANG ACIDE — ARMURE ET CAMOUFLAGE CORRODÉS' },
-      { id: 'bouvet-hazard-resin-snare', type: 'resin_snare', position: [475, 0, 115], radius: 9, damage: 6, interval: 2.7, status: 'snare', message: 'RÉSINE ACTIVE — MOBILITÉ RÉDUITE' },
-      { id: 'bouvet-hazard-crush-zone', type: 'pyramid_crush_zone', position: [105, 0, 38], radius: 11, damage: 10, interval: 2.8, status: 'impact', message: 'MÉCANISME PYRAMIDAL — ZONE D’ÉCRASEMENT' },
+      { id: 'bouvet-hazard-thermal-vent', type: 'heat_vent', position: [455, 0, 410], radius: 9, damageType: 'fire', damage: 8, interval: 2.4, status: 'energy_jam', message: 'SURPRESSION THERMIQUE — SYSTÈMES YAUTJA SATURÉS' },
+      { id: 'bouvet-hazard-acid-channel', type: 'acid_pool', position: [-260, 0, -250], radius: 10, damageType: 'acid', damage: 11, interval: 2.1, status: 'corrosion', message: 'SANG ACIDE — ARMURE ET CAMOUFLAGE CORRODÉS' },
+      { id: 'bouvet-hazard-resin-snare', type: 'resin_snare', position: [475, 0, 115], radius: 9, damageType: 'generic', damage: 6, interval: 2.7, status: 'snare', message: 'RÉSINE ACTIVE — MOBILITÉ RÉDUITE' },
+      { id: 'bouvet-hazard-crush-zone', type: 'pyramid_crush_zone', position: [105, 0, 38], radius: 11, damageType: 'generic', damage: 10, interval: 2.8, status: 'impact', message: 'MÉCANISME PYRAMIDAL — ZONE D’ÉCRASEMENT' },
     ],
   },
   gunnison_outbreak: {
@@ -303,10 +303,10 @@ const PLAN_DATA = {
       { id: 'gunnison-poi-hospital-nest', type: 'hive_sample', label: 'Mue de la ruche hospitalière', position: [340, 0, -310], interactionRadius: 15, interactionType: 'scan_archive', honor: 125, message: 'Analyse : la croissance accélérée converge vers le toit et la signature du Predalien.' },
     ],
     hazardZones: [
-      { id: 'gunnison-hazard-transformer', type: 'transformer_arc', position: [390, 0, 390], radius: 9, damage: 9, interval: 2.4, status: 'energy_jam', message: 'ARC DE LA CENTRALE — TECHNOLOGIE YAUTJA PERTURBÉE' },
-      { id: 'gunnison-hazard-sewer-acid', type: 'acid_pool', position: [455, 0, -120], radius: 10, damage: 11, interval: 2.1, status: 'corrosion', message: 'RÉSEAU D’ÉGOUT ACIDE — ARMURE CORRODÉE' },
-      { id: 'gunnison-hazard-cleaner-solvent', type: 'acid_pool', position: [-250, 0, 285], radius: 8, damage: 10, interval: 2.4, status: 'corrosion', message: 'AGENT CLEANER — MATIÈRE ORGANIQUE EN DISSOLUTION' },
-      { id: 'gunnison-hazard-hospital-steam', type: 'subway_steam', position: [300, 0, -360], radius: 9, damage: 7, interval: 2.5, status: 'snare', message: 'VAPEUR DE SECOURS — VISIONS ET MOBILITÉ RÉDUITES' },
+      { id: 'gunnison-hazard-transformer', type: 'transformer_arc', position: [390, 0, 390], radius: 9, damageType: 'energy', damage: 9, interval: 2.4, status: 'energy_jam', message: 'ARC DE LA CENTRALE — TECHNOLOGIE YAUTJA PERTURBÉE' },
+      { id: 'gunnison-hazard-sewer-acid', type: 'acid_pool', position: [455, 0, -120], radius: 10, damageType: 'acid', damage: 11, interval: 2.1, status: 'corrosion', message: 'RÉSEAU D’ÉGOUT ACIDE — ARMURE CORRODÉE' },
+      { id: 'gunnison-hazard-cleaner-solvent', type: 'acid_pool', position: [-250, 0, 285], radius: 8, damageType: 'acid', damage: 10, interval: 2.4, status: 'corrosion', message: 'AGENT CLEANER — MATIÈRE ORGANIQUE EN DISSOLUTION' },
+      { id: 'gunnison-hazard-hospital-steam', type: 'subway_steam', position: [300, 0, -360], radius: 9, damageType: 'fire', damage: 7, interval: 2.5, status: 'snare', message: 'VAPEUR DE SECOURS — VISIONS ET MOBILITÉ RÉDUITES' },
     ],
   },
 };

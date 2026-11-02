@@ -25,7 +25,9 @@ import { DEFAULT_SETTINGS, HUNT_DEFINITIONS, resolveHuntBiome } from './data/Gam
 import { ALL_LORE_ENTRIES, LORE_SOURCE_TIERS, LORE_SOURCES } from './data/LoreCodex.js';
 import { MedbayInventoryOverlay } from './ui/MedbayInventoryOverlay.js';
 import { refillMedbayInventory } from './gameplay/YautjaMedbaySystem.js';
-import { resolveMeleeStrike } from './gameplay/combatRules.js';
+import { MELEE_WEAPONS, resolveMeleeStrike } from './gameplay/combatRules.js';
+import { resolveMeleeTargetContact } from './gameplay/TargetReach.js';
+import { getIncomingDamageType } from './gameplay/DamageContext.js';
 import { applyPointOfInterestEffect } from './gameplay/PointOfInterestEffects.js';
 import {
   HUNTER_CLASSES,
@@ -1255,7 +1257,7 @@ export class Game {
     if (!contact || contact.type !== 'environment_hazard') return false;
 
     const damage = Math.max(0, Number(contact.damage) || 0);
-    if (damage > 0) this.applyPlayerDamage(damage, contact.status === 'corrosion' || contact.status?.includes?.('corrosion') ? 'acid' : 'generic');
+    if (damage > 0) this.applyPlayerDamage(damage, getIncomingDamageType(contact));
     const statusDuration = Math.max(
       0.25,
       Number(contact.statusDuration ?? contact.duration) || 2.5,
@@ -2098,7 +2100,7 @@ export class Game {
             ? Math.max(1, Math.min(6, Math.round(Number(signal.burstCount) || 1)))
             : 1;
           for (let round = 0; round < burstCount; round += 1) {
-            this.applyPlayerDamage(signal.damage, signal.status === 'corrosion' || signal.damageType === 'corrosion' ? 'acid' : signal.projectile ? 'ballistic' : 'generic');
+            this.applyPlayerDamage(signal.damage, getIncomingDamageType(signal));
           }
           if (signal.status === 'corrosion' || signal.damageType === 'corrosion') this.player.applyAcidCorrosion();
           const applyCombatStatus = (status, duration) => {
@@ -2205,7 +2207,10 @@ export class Game {
     const wristbladeRangeMultiplier = result === 'wristblades'
       ? this.player.wristbladeRangeMultiplier ?? 1
       : 1;
-    const effectiveMeleeDistance = distance / wristbladeRangeMultiplier;
+    const meleeContact = isDeathFromAbove ? null : resolveMeleeTargetContact(target, launchPosition,
+      (MELEE_WEAPONS[this.player.selectedWeapon]?.range ?? 0) * wristbladeRangeMultiplier);
+    const effectiveMeleeDistance = isDeathFromAbove ? distance
+      : (meleeContact?.distance ?? Infinity) / wristbladeRangeMultiplier;
     const strike = resolveMeleeStrike(this.player.selectedWeapon, effectiveMeleeDistance, {
       fromCanopy: isDeathFromAbove,
     });
@@ -2244,9 +2249,10 @@ export class Game {
     }
 
     const scaledDamage = Math.round(strike.damage * (this.player.meleeDamageMultiplier ?? 1));
+    const impactPoint = meleeContact?.point ?? targetPos;
     const outcome = target.takeDamage(this.getPlayerOutgoingDamage(scaledDamage, 'melee', target), this.player.position);
     this.reportShieldDeflection(target, outcome);
-    this.spawnBloodSpatterVFX(targetPos, this.getTargetBloodColor(target), isDeathFromAbove ? 30 : 15);
+    this.spawnBloodSpatterVFX(impactPoint, this.getTargetBloodColor(target), isDeathFromAbove ? 30 : 15);
     this.awardHonor(strike.honor, { target });
     if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target);
 
@@ -2532,7 +2538,7 @@ export class Game {
 
 
   setupTaxonomyAndMultiverse() {
-    // 1. Injected Canon Vector Logos
+    // Interface emblems identify catalogue entries; they are interpreted artwork.
     const hudLogo = document.getElementById('hud-yautja-clan-logo');
     if (hudLogo) hudLogo.innerHTML = getYautjaClanLogo(36);
 
@@ -2542,7 +2548,7 @@ export class Game {
     const multiverseLogo = document.getElementById('multiverse-header-logo');
     if (multiverseLogo) multiverseLogo.innerHTML = getYautjaClanLogo(40);
 
-    // Inject 1:1 Vector Logos into the 12 Mission Cards
+    // Add the target emblem to each declared mission card.
     document.querySelectorAll('.mission-card').forEach((card) => {
       const huntBtn = card.querySelector('[data-hunt]');
       const huntId = huntBtn?.getAttribute('data-hunt');
@@ -2554,7 +2560,7 @@ export class Game {
       }
     });
 
-    // Inject 1:1 Logos in Pause & Endgame modals
+    // Add the clan emblem to pause and result panels.
     const pauseTitle = document.getElementById('pause-title');
     if (pauseTitle && !pauseTitle.querySelector('.canon-logo')) {
       pauseTitle.insertAdjacentHTML('beforebegin', `<div class="canon-logo-slot" style="margin-bottom:8px;">${getYautjaClanLogo(48)}</div>`);
@@ -2737,12 +2743,12 @@ export class Game {
         rosterContainer.innerHTML = filteredPrey.map((item) => {
           const isSelected = (item.id === featuredTarget.id);
           return `
-            <div class="multiverse-roster-card ${isSelected ? 'active-selected' : ''}" data-crossover-select="${item.id}" tabindex="0" role="button" aria-label="Consulter ${item.name}">
+            <div class="multiverse-roster-card ${isSelected ? 'active-selected' : ''}" data-crossover-select="${item.id}" tabindex="0" role="button" aria-pressed="${isSelected}" aria-label="Consulter ${item.name}">
               <div class="roster-card-header">
                 ${getCrossoverLogo(item.id, 40)}
                 <div>
                   <h5>${item.name}</h5>
-                  <div class="roster-card-source">${item.originMedia}</div>
+                  <div class="roster-card-source">${getPreySourceLabel(item)}</div>
                 </div>
               </div>
               <div style="display:flex; gap:6px; flex-wrap:wrap; margin:4px 0;">
@@ -2765,8 +2771,12 @@ export class Game {
             const target = MULTIVERSE_CROSSOVER_PREY.find(c => c.id === cId);
             if (target) {
               renderActiveCard(target);
-              rosterContainer.querySelectorAll('.multiverse-roster-card').forEach(c => c.classList.remove('active-selected'));
-              cardEl.classList.add('active-selected');
+              rosterContainer.dataset.renderedRoster = `${activeMultiverseFilter}:${target.id}`;
+              rosterContainer.querySelectorAll('.multiverse-roster-card').forEach(c => {
+                const selected = c === cardEl;
+                c.classList.toggle('active-selected', selected);
+                c.setAttribute('aria-pressed', String(selected));
+              });
               audioSynth.playYautjaClick();
             }
           };
@@ -3313,7 +3323,12 @@ export class Game {
     const station = this.hub.getNearbyStation(this.player.position);
     if (!station) return false;
 
-    if (station.interactionType === 'contracts') {
+    if (station.interactionType === 'mission_contract') {
+      const hunt = HUNT_DEFINITIONS[station.huntId];
+      if (!hunt) return false;
+      this.showMissionSelectionModal('loadout');
+      this.prepareHunt(hunt.id, resolveHuntBiome(hunt.id, hunt.recommendedBiome), 'standard_hunt');
+    } else if (station.interactionType === 'contracts') {
       this.showMissionSelectionModal('missions');
     } else if (station.interactionType === 'forge') {
       this.showMissionSelectionModal('armory');

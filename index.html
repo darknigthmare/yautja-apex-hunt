@@ -718,6 +718,15 @@
           <button type="button" class="scale-filter-pill" data-multiverse-filter="legends">LÉGENDES CULTES</button>
         </div>
 
+        <div class="catalogue-search" role="search" aria-label="Rechercher un scénario du multivers">
+          <label for="multiverse-search">RECHERCHER UN DOSSIER · NOM, UNIVERS OU SOURCE</label>
+          <div class="catalogue-search-controls">
+            <input id="multiverse-search" type="search" autocomplete="off" spellcheck="false" placeholder="Ex. : Boba Fett, Marvel…" aria-controls="multiverse-roster-grid" aria-describedby="multiverse-search-status">
+            <button id="multiverse-search-clear" type="button" disabled>EFFACER</button>
+          </div>
+        </div>
+        <p id="multiverse-search-status" class="catalogue-search-status" role="status" aria-live="polite" aria-atomic="true"></p>
+        <p id="multiverse-search-empty" class="catalogue-search-empty" hidden>Aucun dossier ne correspond. Essayez un autre nom ou changez le filtre d’univers.</p>
         <div id="multiverse-roster-grid" class="multiverse-roster-grid">
             <!-- Populated by JS -->
           </div>
@@ -912,6 +921,15 @@
             <button type="button" class="scale-filter-pill" data-taxonomy-filter="petite">PETITES (0,5 à &lt; 1,8 m)</button>
             <button type="button" class="scale-filter-pill" data-taxonomy-filter="minuscule">MINUSCULES (&lt; 0,5 m)</button>
           </div>
+          <div class="catalogue-search" role="search" aria-label="Rechercher une proie dans l’encyclopédie">
+            <label for="taxonomy-search">RECHERCHER UNE PROIE · NOM, ESPÈCE OU SOURCE</label>
+            <div class="catalogue-search-controls">
+              <input id="taxonomy-search" type="search" autocomplete="off" spellcheck="false" placeholder="Ex. : reine, Alien…" aria-controls="canon-taxonomy-grid" aria-describedby="taxonomy-search-status">
+              <button id="taxonomy-search-clear" type="button" disabled>EFFACER</button>
+            </div>
+          </div>
+          <p id="taxonomy-search-status" class="catalogue-search-status" role="status" aria-live="polite" aria-atomic="true"></p>
+          <p id="taxonomy-search-empty" class="catalogue-search-empty" hidden>Aucune fiche ne correspond. Essayez un autre nom ou changez le filtre de gabarit.</p>
           <div id="canon-taxonomy-grid" class="content-catalog-grid"></div>
         </section>
       </div>
