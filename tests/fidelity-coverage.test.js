@@ -169,6 +169,13 @@ test('the browser inventory has no dependency on a 3D renderer, geometry factory
   const inspect = file => {
     if (visited.has(file)) return;
     visited.add(file);
+    // A local, reviewed Alien_base snapshot is a JSON data dependency, not a JS module.
+    // Validate its JSON structure rather than parsing the JSON text as ECMAScript.
+    if(file.endsWith('.json')){
+      const data=JSON.parse(readFileSync(file,'utf8'));
+      assert.ok(data!==null&&typeof data==='object',file);
+      return;
+    }
     const ast = parseAst(readFileSync(file, 'utf8'));
     for (const node of ast.body) {
       if (!['ImportDeclaration', 'ExportNamedDeclaration', 'ExportAllDeclaration'].includes(node.type) || !node.source) continue;
