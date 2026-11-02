@@ -36,6 +36,8 @@ La dernière suite Node valide **1 943 tests, zéro échec, zéro ignoré** apr�
 
 Le navigateur valide onze scénarios du croiseur sur ordinateur, 390 px et 320 px, avec onze captures, zéro erreur JavaScript et zéro ressource en échec. Le catalogue retrouve les dix-sept résultats « reine », conserve le focus après filtrage, prépare le contrat choisi depuis son lecteur et affiche ses références documentaires. Le test de cohérence valide aussi la simulation à sa taille déclarée et le prélèvement physique unique conservé au rechargement. Les fixtures de téléportation et de réserves entamées sont déclarées dans les scripts ; elles ne prétendent pas mesurer des parties complètes.
 
+Le smoke terminé de 06:27:51 à 06:36:05 UTC comprend quarante-six résultats : quinze contrats distincts dans neuf biomes, vingt-cinq contrôles du véritable GLB animé, ordinateur et mobile, rotations, HUD à 125 %, pause, Medicomp et stockage refusé. Le parcours ciblé final distingue aussi le trophée non acquis du trophée acquis sans attribuer de récompense. Les deux correctifs ultimes de métadonnées et de libération sont validés séparément et par la suite Node finale.
+
 ```bash
 npm ci
 npm test
@@ -51,4 +53,10 @@ QA_BASE_URL=http://127.0.0.1:4173 node scripts/qa-ship-interactions.cjs
 
 Six agents ont réparti construction, art, expositions, interface, gameplay et provenance. Les validations utilisent Node et Chromium avec SwiftShader ; aucun testeur humain ou appareil mobile physique n’est revendiqué. Les quinze contrats des scripts navigateur sont des contrôles de rendu et d’intégration, pas quinze parties complètes.
 
-Les résultats finaux et l’état effectif de publication sont ajoutés après la vérification du bundle livré. Un push GitHub seul ne prouve pas la mise à jour de l’alias Vercel.
+## Livraison vérifiée
+
+Le commit fonctionnel `bfd682a63b3d476dd9c24cfca8acaf630bdf7b11` est poussé sur `master`. Vercel refuse le déploiement automatique de ce commit avec le statut **« Deployment rate limited — retry in 24 hours. »** L’alias `https://yautja-apex-hunt.vercel.app/` répond en HTTP 200 mais conserve l’ancien point d’entrée `index-BtqwTYjl.js` : il ne contient pas cette passe.
+
+Une préversion Vercel temporaire est prête : <https://racing-bassoon-vgmxjf5.tmp.now>, déploiement `dpl_C3YSPimQircEZ6KJ5Smtsv5Nc6WS`, expiration annoncée le **2 novembre 2026 à 07:36:13 UTC**. Sa racine et ses **73 fichiers** correspondent intégralement au build local par taille et SHA-256, avec vérification TLS active via la CA système et le proxy de session. Son entrée est `index-BUUudz_o.js`. La vérification HTTP publique et le navigateur local du même contenu sont distingués ; aucune validation native de certificat Chromium sur l’URL publique n’est revendiquée.
+
+Les rapports et captures sont dans `/workspace/artifacts/yautja-modern-ship/` ; la matrice générale et le catalogue dans `/workspace/artifacts/yautja-ship-pass/`. Le lien privé permettant au propriétaire de conserver le déploiement est enregistré séparément, hors dépôt et hors artefacts publics, dans `/workspace/.vercel-runtime/conserver-croiseur-modernise.html`. Aucun jeton ni lien de reprise privé n’est ajouté au code.
