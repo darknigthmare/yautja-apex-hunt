@@ -381,6 +381,76 @@ const RECIPE_REFERENCES = Object.freeze({
     "referencePreyIds": [],
     "materialLabel": "Trophées de Vainqueur d'Anomalie Géante (HK-Tank, Scarab, Cyberdemon)",
     "availabilityReason": "HK/Scarab/Cyberdemon simulés. HK4.5m et Cyberdemon5.5m ne sont pas GEANT au barème >=8m."
+  },
+  "craft_shield_offspring_chitin": {
+    "trophySourceIds": [],
+    "requiredTrophyCount": 1,
+    "referencePreyIds": ["alien_base_offspring_romulus_hybrid"],
+    "materialLabel": "Vertèbres Cervicales Hybrides de l'Offspring",
+    "availabilityReason": "Spécimen hybride de la station Renaissance; prélèvement physique en cours de classification."
+  },
+  "craft_shield_working_joe_hazard": {
+    "trophySourceIds": [],
+    "requiredTrophyCount": 1,
+    "referencePreyIds": ["alien_base_seegson_working_joe_electrified"],
+    "materialLabel": "Condensateur Haute Tension 10kV de Working Joe Industriel",
+    "availabilityReason": "Matériaux d'androïdes Seegson de Sébastopol archivés dans la banque de données."
+  },
+  "craft_weapon_neomorph_fang_daggers": {
+    "trophySourceIds": [],
+    "requiredTrophyCount": 1,
+    "referencePreyIds": ["alien_base_neomorph_adult_hunter"],
+    "materialLabel": "Crâne Échancré Translucide de Néomorphe Pâle",
+    "availabilityReason": "Spécimen blanc de la Cité des Architectes répertorié en simulation holocube."
+  },
+  "craft_weapon_dutch_cyborg_blade": {
+    "trophySourceIds": [],
+    "requiredTrophyCount": 1,
+    "referencePreyIds": ["alien_base_major_dutch_schaefer_cyborg"],
+    "materialLabel": "Bras Cybernétique Haute-Pression à Piston de Dutch Schaefer",
+    "availabilityReason": "Technologie cybernétique humaine AVP Capcom 1994 archivée en simulation."
+  },
+  "craft_mask_alien_earth_prodigy": {
+    "trophySourceIds": [],
+    "requiredTrophyCount": 1,
+    "referencePreyIds": ["alien_base_wendy_prodigy_hybrid_synthetic"],
+    "materialLabel": "Module de Conscience Émancipée Prodigy Corporation",
+    "availabilityReason": "Technologie méta-synthétique Prodigy 2025 répertoriée dans les archives."
+  },
+  "craft_mask_working_joe_blank": {
+    "trophySourceIds": [],
+    "requiredTrophyCount": 1,
+    "referencePreyIds": ["alien_base_seegson_apollo_security_microchip"],
+    "materialLabel": "Puce d'Instruction Meurtrière Apollo Décryptée",
+    "availabilityReason": "Composant logique Seegson Apollo conservé pour réplication optique."
+  },
+  "craft_armor_power_loader_chassis": {
+    "trophySourceIds": [],
+    "requiredTrophyCount": 1,
+    "referencePreyIds": ["alien_base_ripley_p5000_power_loader"],
+    "materialLabel": "Pince Pneumatique Sulaco P-5000 Caterpillar",
+    "availabilityReason": "Exosquelette de manutention Sulaco conservé en spécification d'archive."
+  },
+  "craft_armor_davis01_tactical_rig": {
+    "trophySourceIds": [],
+    "requiredTrophyCount": 1,
+    "referencePreyIds": ["alien_base_zula_hendricks_defiance_marine"],
+    "materialLabel": "Harnais Neural de Rééducation Martiale de Zula Hendricks",
+    "availabilityReason": "Harnais de rééducation et de tir composite conservé en archive USCM."
+  },
+  "craft_banner_nostromo_sacrifice": {
+    "trophySourceIds": [],
+    "requiredTrophyCount": 1,
+    "referencePreyIds": ["alien_base_ripley_narcissus_survivor"],
+    "materialLabel": "Harpon d'Éjection Pneumatique de la Navette Narcissus",
+    "availabilityReason": "Trophée commémoratif du remorqueur interstellaire Nostromo 1979."
+  },
+  "craft_totem_romulus_renaissance": {
+    "trophySourceIds": [],
+    "requiredTrophyCount": 1,
+    "referencePreyIds": ["alien_base_andy_synthetic_nd5_upgraded"],
+    "materialLabel": "Puce Directrice Weyland-Yutani Upgrade Romulus d'Andy",
+    "availabilityReason": "Modules de laboratoire prélevés dans la station de recherche orbitale Renaissance."
   }
 });
 

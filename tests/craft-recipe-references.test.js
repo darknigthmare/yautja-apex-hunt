@@ -30,7 +30,7 @@ test('every recipe has an explicit obtainable-material contract or an archive re
     }
   }
   assert.equal(physical, 16);
-  assert.equal(archive, 24);
+  assert.equal(archive, 34);
   assert.ok(PHYSICAL_NPC_TROPHY_SOURCE_IDS.every(id => AVAILABLE_HUNT_NPC_ARCHETYPES[id]), 'harvested NPC sources must physically exist');
 });
 
