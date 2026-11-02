@@ -75,7 +75,9 @@ import {
   getStargazerLogo,
   renderFactionEmblem,
   getCraftsmanshipItemSvg,
+  getSquadLogo,
 } from './ui/CanonLogosAndEmblems.js';
+import { SQUAD_ENCOUNTERS, getSquadById } from './data/SquadEncountersCatalog.js';
 import {
   YautjaTrophyCraftsmanshipForgeSystem,
 } from './gameplay/YautjaTrophyCraftsmanshipForgeSystem.js';
@@ -376,7 +378,7 @@ export class Game {
   }
 
   getPlayerOutgoingDamage(amount, kind = 'ranged', target = this.activeBoss) {
-    const reference = target === this.activeBoss ? this.activeCrossoverHunt ?? this.activePreySimulation : null;
+    const reference = target === this.activeBoss ? this.activeCrossoverHunt ?? this.activePreySimulation ?? this.activeSquadHunt : null;
     return getCraftedOutgoingDamage(amount, this.getCraftedPerks(), {
       kind, isCrossover: target === this.activeBoss && Boolean(this.activeCrossoverHunt),
       isGiant: reference ? reference.scale === 'GEANT' : (target?.colliderRadius ?? 0) >= 7,
@@ -1552,7 +1554,7 @@ export class Game {
       `${enemy.name.toUpperCase()} NEUTRALISÉ · +${honorGained} PTS${directiveSuffix}`,
       directiveAdvanced ? 2600 : 1800,
     );
-    if (!this.activeCrossoverHunt && !this.activePreySimulation && this.trophySalvage?.register(enemy)) {
+    if (!this.activeCrossoverHunt && !this.activePreySimulation && !this.activeSquadHunt && this.trophySalvage?.register(enemy)) {
       this.hud.showLogMessage('SPÉCIMEN PRÉLEVABLE · APPROCHEZ LE CORPS ET INTERAGISSEZ', 2200);
     } else enemy.dispose();
     this.activeEnemies.splice(index, 1);
@@ -2842,6 +2844,68 @@ export class Game {
       const taxonomyGrid = document.getElementById('canon-taxonomy-grid');
       if (!taxonomyGrid) return;
 
+      if (filterScale === 'squads') {
+        taxonomyGrid.innerHTML = SQUAD_ENCOUNTERS.map((squad) => `
+          <article class="taxonomy-card squad-card" data-prey-id="${squad.id}" data-squad-id="${squad.id}">
+            <div class="taxonomy-card-header">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div class="taxonomy-faction-icon" style="flex-shrink:0;">${getSquadLogo(squad.id, 28)}</div>
+                <div>
+                  <h5 class="taxonomy-card-title">${squad.name}</h5>
+                  <span class="taxonomy-card-source">${squad.originMedia}</span>
+                </div>
+              </div>
+              <span class="spec-tag reward-tag">+${squad.totalHonorReward} PTS</span>
+            </div>
+            <div class="taxonomy-meta-row">
+              <span class="scale-tag scale-moyen">GROUPE (${squad.totalMembers} CIBLES)</span>
+              <span class="faction-badge faction-human">${squad.category}</span>
+              <span class="sector-badge" style="background:#263238; color:#80d8ff; padding:2px 6px; font-size:10px; border-radius:3px;">${squad.recommendedBiome}</span>
+            </div>
+            <p style="font-size:12px; color:#cfd8dc; margin:0; line-height:1.4;">${squad.description}</p>
+            <div style="font-size:11px; color:#ffab91;">
+              <strong>Tactique de Groupe :</strong> ${squad.tactics}
+            </div>
+            <div class="squad-members-preview" style="font-size:11px; color:#90caf9; margin-top:4px;">
+              <strong>Composition (${squad.totalMembers} membres) :</strong> ${squad.members.map(m => `<span style="color:#e0e0e0;">${m.name}</span> <em style="color:#b0bec5;">(${m.role})</em>`).join(' · ')}
+            </div>
+            <div class="taxonomy-actions" style="margin-top:10px; display:flex; flex-direction:column; gap:6px;">
+              <button type="button" class="btn-simulate-squad" data-squad-id="${squad.id}" style="width:100%; background:linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%); color:#fff; font-weight:700; padding:8px; border:1px solid #ff5252; border-radius:4px; cursor:pointer;">
+                ⚔️ DÉFIER L'ESCOUADE AU GRAND COMPLET (${squad.totalMembers} CIBLES)
+              </button>
+              <button type="button" class="btn-simulate-solo" data-solo-id="${squad.soloVariantId}" style="width:100%; background:linear-gradient(135deg, #1b2838 0%, #2a3f5a 100%); color:#ffd54f; font-weight:600; padding:6px; border:1px solid #d4af37; border-radius:4px; cursor:pointer;">
+                🎯 TRAQUER LE LEADER EN DUEL SOLO
+              </button>
+            </div>
+          </article>
+        `).join('');
+
+        taxonomyGrid.querySelectorAll('.btn-simulate-squad').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const squadId = btn.getAttribute('data-squad-id');
+            const squad = SQUAD_ENCOUNTERS.find((s) => s.id === squadId);
+            if (squad) {
+              audioSynth.playYautjaClick();
+              const simulation = resolveSimulationSelection({ kind: 'squad', id: squad.id });
+              if (simulation) this.prepareHunt(simulation.huntType, simulation.planetType, simulation.directiveId || squad.id, { kind: 'squad', id: squad.id });
+            }
+          });
+        });
+
+        taxonomyGrid.querySelectorAll('.btn-simulate-solo').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const soloId = btn.getAttribute('data-solo-id');
+            const target = CANON_PREY_CATALOG.find((p) => p.id === soloId);
+            if (target) {
+              audioSynth.playYautjaClick();
+              const simulation = resolveSimulationSelection({ kind: 'prey', id: target.id });
+              if (simulation) this.prepareHunt(simulation.huntType, simulation.planetType, 'standard_hunt', { kind: 'prey', id: target.id });
+            }
+          });
+        });
+        return;
+      }
+
       const filteredPrey = filterPreyByScale(filterScale);
       taxonomyGrid.innerHTML = filteredPrey.map((prey) => {
         let factionClass = 'faction-yautja';
@@ -3396,6 +3460,7 @@ export class Game {
     this.cleanupHunt();
     this.activeCrossoverHunt = simulation?.kind === 'crossover' ? simulation.target : null;
     this.activePreySimulation = simulation?.kind === 'prey' ? simulation.target : null;
+    this.activeSquadHunt = simulation?.kind === 'squad' ? simulation.target : null;
     this.harvestReward = null;
     this.currentDirectiveId = directive.id;
     this.directiveProgress = createDirectiveProgress(directive.id);
@@ -3446,7 +3511,7 @@ export class Game {
       5500,
     );
 
-    const activeTarget = this.activeCrossoverHunt ?? this.activePreySimulation;
+    const activeTarget = this.activeCrossoverHunt ?? this.activePreySimulation ?? this.activeSquadHunt;
     this.currentHuntCrown = (activeTarget ? activeTarget.supportsSizeVariation !== true : this.currentHuntType !== 'goliath')
       ? MONSTER_HUNTER_CROWNS.STANDARD
       : selectCraftedCrown(Math.random(), this.getCraftedPerks());
@@ -3458,15 +3523,26 @@ export class Game {
       this.activeBoss.maxHealth = Math.max(1, Math.round(this.activeBoss.maxHealth * multiplier));
       this.activeBoss.health = this.activeBoss.maxHealth;
       this.configureBossTerritory();
-      const label = `HOLO-TRAQUE : ${activeTarget.name.toUpperCase()}`;
+      const label = this.activeSquadHunt
+        ? `INCURSION D'ESCOUADE : ${activeTarget.name.toUpperCase()}`
+        : `HOLO-TRAQUE : ${activeTarget.name.toUpperCase()}`;
       this.hud.setCustomTargetLabel(label);
       const scanned = document.getElementById('target-scanned-name');
-      if (scanned) scanned.textContent = `${label} · MODÈLE D’ENTRAÎNEMENT`;
+      if (scanned) scanned.textContent = this.activeSquadHunt
+        ? `${label} · ${activeTarget.totalMembers} CIBLES COORDONNÉES`
+        : `${label} · MODÈLE D’ENTRAÎNEMENT`;
       const logo = document.getElementById('hud-yautja-clan-logo');
-      if (logo) logo.innerHTML = this.activeCrossoverHunt
-        ? getCrossoverLogo(activeTarget.parentId ?? activeTarget.id, 36)
-        : renderFactionEmblem(activeTarget.faction, 36);
-      this.hud.showLogMessage(`${label} · ${activeTarget.sizeMeters} m de référence · modèle proxy, dimensions d’archive estimées`, 6500);
+      if (logo) logo.innerHTML = this.activeSquadHunt
+        ? getSquadLogo(activeTarget.id, 36)
+        : this.activeCrossoverHunt
+          ? getCrossoverLogo(activeTarget.parentId ?? activeTarget.id, 36)
+          : renderFactionEmblem(activeTarget.faction, 36);
+      this.hud.showLogMessage(
+        this.activeSquadHunt
+          ? `${label} · ${activeTarget.totalMembers} cibles tactiques déployées · directives coordonnées`
+          : `${label} · ${activeTarget.sizeMeters} m de référence · modèle proxy, dimensions d’archive estimées`,
+        6500,
+      );
     } else {
       this.hud.setCustomTargetLabel(null);
       const logo = document.getElementById('hud-yautja-clan-logo');
@@ -3561,6 +3637,8 @@ export class Game {
   returnToMothershipHub() {
     this.activeCrossoverHunt = null;
     this.activePreySimulation = null;
+    this.activeSquadHunt = null;
+    this.activeSquadHunt = null;
     const hudLogo = document.getElementById('hud-yautja-clan-logo');
     if (hudLogo) hudLogo.innerHTML = getYautjaClanLogo(36);
     const targetScanned = document.getElementById('target-scanned-name');
@@ -4115,7 +4193,7 @@ export class Game {
       this.neutralizeVictoryDangers();
 
       const huntDefinition = HUNT_DEFINITIONS[this.currentHuntType];
-      const trainingTarget = this.activeCrossoverHunt ?? this.activePreySimulation;
+      const trainingTarget = this.activeCrossoverHunt ?? this.activePreySimulation ?? this.activeSquadHunt;
       const training = Boolean(trainingTarget);
       const baseReward = trainingTarget
         ? Math.max(0, Number(trainingTarget.honorReward ?? trainingTarget.baseHonor) || 0)
@@ -4734,6 +4812,11 @@ export class Game {
       const honorGain = this.harvestReward?.honorGained ?? 0;
       document.getElementById('endgame-title').textContent = `ANOMALIE VAINCUE : ${this.activeCrossoverHunt.name.toUpperCase()}${crownSuffix} !`;
       document.getElementById('endgame-desc').textContent = `Archive d’entraînement : ${this.activeCrossoverHunt.trophy}. La simulation ne fournit aucune matière physique. (+${honorGain} PTS)`;
+
+    } else if (this.activeSquadHunt) {
+      const honorGain = this.harvestReward?.honorGained ?? 0;
+      document.getElementById('endgame-title').textContent = `INCURSION D'ESCOUADE TRIOMPHÉE : ${this.activeSquadHunt.name.toUpperCase()} !`;
+      document.getElementById('endgame-desc').textContent = `L'escouade tactique (${this.activeSquadHunt.totalMembers} cibles) a été neutralisée. Directives de combat accomplies. (+${honorGain} PTS)`;
 
     } else if (this.activePreySimulation) {
       const crown = this.currentHuntCrown;

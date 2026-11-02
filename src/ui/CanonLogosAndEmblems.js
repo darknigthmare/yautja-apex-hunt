@@ -1213,6 +1213,116 @@ export function getBorgiaIndustriesLogo(size = 64) {
   `.trim();
 }
 
+/**
+ * Insignes & Emblèmes Vectoriels 1:1 pour les Escouades & Groupes d'Intervention.
+ */
+export function getSquadLogo(squadId, size = 64) {
+  if (!squadId) return getYautjaClanLogo(size);
+  const id = String(squadId).toLowerCase();
+
+  // 1. Escouade Commando Dutch 1987 (Val Verde)
+  if (id.includes('dutch') || id.includes('val_verde')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-dutch" role="img" aria-label="Insigne Commando Val Verde 1987">
+        <circle cx="40" cy="40" r="36" fill="#1b2418" stroke="#556b2f" stroke-width="2.5" />
+        <circle cx="40" cy="40" r="30" fill="none" stroke="#d4af37" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.7" />
+        <path d="M18 40 L62 40 M40 18 L40 62" stroke="#d4af37" stroke-width="1.2" opacity="0.6" />
+        <circle cx="40" cy="40" r="14" fill="none" stroke="#ff3d00" stroke-width="2" />
+        <circle cx="40" cy="40" r="3" fill="#ff3d00" />
+        <path d="M26 58 L54 22 L58 26 L30 62 Z" fill="#cfd8dc" stroke="#37474f" stroke-width="1" />
+        <path d="M24 60 L28 64 L22 66 Z" fill="#8d6e63" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="5.5" font-weight="900" fill="#aed581" letter-spacing="1" text-anchor="middle">VAL VERDE '87</text>
+      </svg>
+    `.trim();
+  }
+
+  // 2. Section Marines Coloniaux USCM Hadley's Hope 1986
+  if (id.includes('uscm') || id.includes('hadleys')) {
+    return getUSCMLogo(size);
+  }
+
+  // 3. Équipage USCSS Nostromo 1979
+  if (id.includes('nostromo')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-nostromo" role="img" aria-label="Insigne USCSS Nostromo">
+        <polygon points="40,8 72,24 72,56 40,72 8,56 8,24" fill="#0d1b2a" stroke="#415a77" stroke-width="2" />
+        <path d="M20 32 Q40 16 60 32 L56 50 Q40 58 24 50 Z" fill="#1b263b" stroke="#e0a96d" stroke-width="1.5" />
+        <path d="M16 38 L30 38 L36 48 L14 44 Z" fill="#e0a96d" opacity="0.8" />
+        <path d="M64 38 L50 38 L44 48 L66 44 Z" fill="#e0a96d" opacity="0.8" />
+        <circle cx="40" cy="38" r="6" fill="#0d1b2a" stroke="#e0a96d" stroke-width="1.5" />
+        <text x="40" y="65" font-family="'Orbitron', sans-serif" font-size="5" font-weight="900" fill="#e0e1dd" letter-spacing="1" text-anchor="middle">NOSTROMO 180286</text>
+      </svg>
+    `.trim();
+  }
+
+  // 4. Mercenaires Betty 1997
+  if (id.includes('betty')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-betty" role="img" aria-label="Insigne Mercenaires du Betty">
+        <circle cx="40" cy="40" r="35" fill="#1c0f13" stroke="#b71c1c" stroke-width="2.5" />
+        <path d="M22 24 L58 56 M58 24 L22 56" stroke="#78909c" stroke-width="3.5" stroke-linecap="round" />
+        <circle cx="40" cy="36" r="13" fill="#d32f2f" stroke="#ffebee" stroke-width="1.5" />
+        <circle cx="36" cy="34" r="2.5" fill="#1c0f13" />
+        <circle cx="44" cy="34" r="2.5" fill="#1c0f13" />
+        <rect x="36" y="44" width="8" height="6" fill="#d32f2f" stroke="#ffebee" stroke-width="1" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="5.5" font-weight="900" fill="#ffcdd2" letter-spacing="1" text-anchor="middle">THE BETTY</text>
+      </svg>
+    `.trim();
+  }
+
+  // 5. Working Joes Seegson 2137
+  if (id.includes('seegson') || id.includes('working_joe')) {
+    return getSeegsonLogo(size);
+  }
+
+  // 6. Guerriers Comanches 1719
+  if (id.includes('comanche')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-comanche" role="img" aria-label="Insigne Guerriers Comanches">
+        <circle cx="40" cy="40" r="35" fill="#2d1e12" stroke="#c86432" stroke-width="2.5" />
+        <circle cx="40" cy="40" r="24" fill="#4e342e" stroke="#e0a96d" stroke-width="1.8" />
+        <line x1="20" y1="20" x2="60" y2="60" stroke="#f0e6d2" stroke-width="2" />
+        <line x1="60" y1="20" x2="20" y2="60" stroke="#f0e6d2" stroke-width="2" />
+        <polygon points="60,20 54,23 57,26" fill="#c86432" />
+        <polygon points="20,20 26,23 23,26" fill="#c86432" />
+        <path d="M40 22 C36 32 38 48 40 58 C42 48 44 32 40 22 Z" fill="#f5f5f5" stroke="#3e2723" stroke-width="1" />
+        <line x1="40" y1="22" x2="40" y2="58" stroke="#c86432" stroke-width="1" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="5" font-weight="900" fill="#ffcc80" letter-spacing="1" text-anchor="middle">COMANCHE 1719</text>
+      </svg>
+    `.trim();
+  }
+
+  // 7. Expédition Bouvetøya Weyland 2004
+  if (id.includes('bouvetoya')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-bouvetoya" role="img" aria-label="Insigne Expédition Bouvetøya">
+        <polygon points="40,6 74,25 74,65 40,76 6,65 6,25" fill="#0c1821" stroke="#00b4d8" stroke-width="2" />
+        <polygon points="40,24 60,54 20,54" fill="#1e3d59" stroke="#90e0ef" stroke-width="1.5" />
+        <polygon points="40,24 50,54 40,54" fill="#0077b6" />
+        <circle cx="40" cy="24" r="3" fill="#ffb703" />
+        <line x1="24" y1="34" x2="56" y2="48" stroke="#e0e1dd" stroke-width="2" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#90e0ef" letter-spacing="1" text-anchor="middle">BOUVETØYA 2004</text>
+      </svg>
+    `.trim();
+  }
+
+  // 8. Commando Weyland Black-Ops Bio-Confinement
+  if (id.includes('blackops') || id.includes('weyland_blackops')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-blackops" role="img" aria-label="Insigne Weyland Black-Ops">
+        <polygon points="40,6 74,25 74,65 40,76 6,65 6,25" fill="#120c14" stroke="#ff1744" stroke-width="2" />
+        <path d="M40 22 L58 54 L22 54 Z" fill="none" stroke="#ff1744" stroke-width="2.5" />
+        <circle cx="40" cy="38" r="6" fill="#ff1744" />
+        <circle cx="40" cy="38" r="2.5" fill="#120c14" />
+        <path d="M30 46 L34 40 M50 46 L46 40 M40 28 L40 34" stroke="#ff1744" stroke-width="2" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#ff8a80" letter-spacing="1" text-anchor="middle">WY BLACK-OPS</text>
+      </svg>
+    `.trim();
+  }
+
+  return getYautjaClanLogo(size);
+}
+
 export function renderFactionEmblem(factionName, size = 48) {
   if (!factionName) return getYautjaClanLogo(size);
   const name = String(factionName).toLowerCase();

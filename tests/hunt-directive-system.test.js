@@ -37,6 +37,13 @@ test('les douze directives et leurs collections imbriquées sont immuables', () 
     'game_preserve_trio_trial',
     'bouvetoya_surface_infiltration',
     'field_medicomp_triage_1990',
+    'squad_dutch_val_verde_1987',
+    'squad_uscm_hadleys_hope_1986',
+    'squad_nostromo_crew_1979',
+    'squad_seegson_working_joes_pack',
+    'squad_comanche_war_party_1719',
+    'squad_bouvetoya_expedition_2004',
+    'squad_weyland_blackops_containment',
   ]);
   assert.ok(Object.isFrozen(HUNT_DIRECTIVES));
 

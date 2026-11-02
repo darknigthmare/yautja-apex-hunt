@@ -2,12 +2,34 @@ import * as THREE from 'three';
 import { HUNT_DEFINITIONS } from '../data/GameConfig.js';
 import { CANON_PREY_CATALOG, MULTIVERSE_CROSSOVER_PREY, PREY_FACTIONS } from '../data/PreyTaxonomyAndCrossoverCatalog.js';
 import { CROSSOVER_UNIVERSE_ENCOUNTERS } from '../data/CrossoverUniverseEncounters.js';
+import { getSquadById } from '../data/SquadEncountersCatalog.js';
 import { getVisualBounds, metersToWorldUnits } from '../utils/worldScale.js';
 import { getPreySimulationModelReference, getDocumentedPreySubjectModelId } from '../data/PreyReferenceMetadata.js';
 
 /** A dossier selects a training proxy, never impersonates the referenced model. */
 export function resolveSimulationSelection(context) {
-  if (!context || !['prey', 'crossover'].includes(context.kind)) return null;
+  if (!context || !['prey', 'crossover', 'squad'].includes(context.kind)) return null;
+  if (context.kind === 'squad') {
+    const squad = getSquadById(context.id);
+    if (!squad) return null;
+    const huntType = squad.biomeId === 'hive_lv426' ? 'grid_alien'
+      : squad.biomeId === 'bouvetoya_pyramid' ? 'grid_alien'
+      : squad.biomeId === 'stargazer_blacksite' ? 'upgrade_predator'
+      : squad.biomeId === 'los_angeles_1997' ? 'city_hunter'
+      : 'jungle_hunter_1987';
+    const planetType = squad.biomeId === 'colony' ? 'hive_lv426' : squad.biomeId;
+    return {
+      kind: 'squad',
+      target: {
+        ...squad,
+        sizeMeters: 1.88,
+        encounterTier: 'MOYEN',
+      },
+      huntType,
+      planetType,
+      directiveId: squad.id,
+    };
+  }
   const entries = context.kind === 'prey' ? CANON_PREY_CATALOG
     : [...MULTIVERSE_CROSSOVER_PREY, ...CROSSOVER_UNIVERSE_ENCOUNTERS];
   const target = entries.find(entry => entry.id === context.id);
