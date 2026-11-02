@@ -1,4 +1,5 @@
 import { audioSynth } from '../AudioSynthesizer.js';
+import { getArmorPresetWeaponTechVariant } from '../data/RuntimeEquipment.js';
 
 export const MEDBAY_ITEMS = Object.freeze([
   Object.freeze({
@@ -108,6 +109,22 @@ export function getMedbayItemById(id) {
   return MEDBAY_ITEMS_MAP[id] ?? null;
 }
 
+/** The same component profile drives the kit UI and its actual consumption. */
+export function getMedbayTreatmentProfile(player, itemId) {
+  const item = getMedbayItemById(itemId);
+  if (!item) return null;
+  const variant = getArmorPresetWeaponTechVariant(player?.customization?.armorPresetId, 'medicomp');
+  const modifiers = variant?.modifiers ?? {};
+  const effects = { ...item.effects };
+  if (effects.health) effects.health *= modifiers.healingEfficiencyMultiplier ?? 1;
+  const cleanerVial = itemId === 'acid_neutralizer_vial' && modifiers.acidPurgeBonus > 0;
+  if (cleanerVial && effects.health) effects.health *= modifiers.acidPurgeBonus;
+  const speed = modifiers.sutureSpeedMultiplier ?? 1;
+  return { item, effects, cooldown: item.cooldown / speed, animationDuration: 1.2 / speed,
+    immunityDurationSeconds: cleanerVial ? modifiers.immunityDurationSeconds ?? 0 : 0,
+    variantId: variant?.id ?? null };
+}
+
 export function createMedbayInventoryState({ isMothership = false, chargesModifier = 1 } = {}) {
   const charges = {};
   const cooldowns = {};
@@ -207,7 +224,8 @@ export function getMedbayDiagnostic(player) {
 }
 
 export function canApplyMedbayItem(player, itemId, inventoryState) {
-  const item = getMedbayItemById(itemId);
+  const profile = getMedbayTreatmentProfile(player, itemId);
+  const item = profile?.item;
   if (!player || !item) return { allowed: false, reason: 'Équipement médical inconnu' };
   if (player.isDead || player.isSelfDestructing || player.selfDestructComplete || player.health <= 0) {
     return { allowed: false, reason: 'Traitement indisponible : constantes vitales interrompues' };
@@ -220,13 +238,13 @@ export function canApplyMedbayItem(player, itemId, inventoryState) {
     if (cooldown > 0) return { allowed: false, reason: `Refroidissement en cours (${cooldown.toFixed(1)}s)` };
   }
 
-  if (item.effects.staminaCost && (player.stamina || 0) < item.effects.staminaCost) {
+  if (profile.effects.staminaCost && (player.stamina || 0) < profile.effects.staminaCost) {
     return { allowed: false, reason: 'Endurance insuffisante pour endurer le choc de cautérisation' };
   }
 
   // Conserver les charges lorsqu'aucun des effets du composant ne peut aider.
   const diag = getMedbayDiagnostic(player);
-  const { effects } = item;
+  const { effects } = profile;
   const hasBenefit = (effects.health && player.health < player.maxHealth)
     || (effects.stamina && (player.stamina ?? 0) < (player.maxStamina ?? 100))
     || (effects.energy && (player.energy ?? 0) < (player.maxEnergy ?? 100))
@@ -236,7 +254,7 @@ export function canApplyMedbayItem(player, itemId, inventoryState) {
     return { allowed: false, reason: 'Aucun soin nécessaire avec ce composant' };
   }
 
-  return { allowed: true, item };
+  return { allowed: true, item, profile };
 }
 
 export function applyMedbayItem(player, itemId, inventoryState = null, audio = audioSynth) {
@@ -244,7 +262,7 @@ export function applyMedbayItem(player, itemId, inventoryState = null, audio = a
   if (!check.allowed) return { success: false, reason: check.reason };
 
   const item = check.item;
-  const effects = item.effects;
+  const effects = check.profile.effects;
 
   // Audio synchro
   if (audio && typeof audio[item.sound] === 'function') {
@@ -285,6 +303,9 @@ export function applyMedbayItem(player, itemId, inventoryState = null, audio = a
     player.acidTimer = 0;
     if (player.combatStatusTimers) player.combatStatusTimers.acid_burn = 0;
     curedStatuses.push('acid_burn');
+    if (check.profile.immunityDurationSeconds > 0) {
+      player.medicalAcidImmunityTimer = Math.max(player.medicalAcidImmunityTimer ?? 0, check.profile.immunityDurationSeconds);
+    }
   }
 
   if (effects.removeBleeding) {
@@ -298,10 +319,12 @@ export function applyMedbayItem(player, itemId, inventoryState = null, audio = a
     if (!inventoryState.isMothership && inventoryState.charges[itemId] !== Number.POSITIVE_INFINITY) {
       inventoryState.charges[itemId] = Math.max(0, inventoryState.charges[itemId] - 1);
     }
-    inventoryState.cooldowns[itemId] = item.cooldown;
+    inventoryState.cooldowns[itemId] = check.profile.cooldown;
     inventoryState.lastUsedItemId = itemId;
     inventoryState.totalTreatmentsApplied = (inventoryState.totalTreatmentsApplied || 0) + 1;
   }
+
+  player.beginMedicalTreatmentAnimation?.(check.profile.animationDuration);
 
   return {
     success: true,
@@ -311,5 +334,6 @@ export function applyMedbayItem(player, itemId, inventoryState = null, audio = a
     energyRestored,
     curedStatuses,
     remainingCharges: inventoryState?.charges[itemId] ?? null,
+    profile: check.profile,
   };
 }

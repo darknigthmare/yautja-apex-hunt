@@ -1,5 +1,7 @@
 # Rapport QA — release 1.13.0
 
+> Rapport historique d’août. La passe du 2 novembre 2026 et son état effectif de livraison sont documentés dans [`MODERN_SHIP_REVIEW.md`](MODERN_SHIP_REVIEW.md). Les anciennes vérifications Vercel ci-dessous ne prouvent pas la publication des changements suivants.
+
 **Date :** 30 août 2026
 **Statut :** release 1.13.0 validée, poussée et publiée.
 **Production actuellement vérifiée :** release 1.13.0 sur <https://yautja-apex-hunt.vercel.app/> — HTTP 200 et marqueurs v1.13 confirmés.

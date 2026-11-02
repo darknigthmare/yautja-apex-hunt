@@ -1,5 +1,5 @@
 import CANON_PREY_EXPANSION_V251 from './CanonPreyExpansionV251.js';
-import { normalizePreyReference } from './PreyReferenceMetadata.js';
+import { normalizePreyReference, REFERENCE_FAUNA_FACTION } from './PreyReferenceMetadata.js';
 export { classifyPreyScaleFromMeters, getPreyProvenanceLabel, getPreySourceLabel } from './PreyReferenceMetadata.js';
 /**
  * PreyTaxonomyAndCrossoverCatalog.js
@@ -69,6 +69,7 @@ export const PREY_SCALE_TIERS = Object.freeze({
 });
 
 export const PREY_FACTIONS = Object.freeze({
+  FAUNA: REFERENCE_FAUNA_FACTION,
   YAUTJA: 'Yautja Prime & Clans de Chasse',
   ENGINEER: 'Ingénieurs & Architectes Sacrificiels',
   XENOMORPH: 'Ruche Xénomorphe & Mutations',

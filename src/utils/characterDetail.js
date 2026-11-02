@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { applySurfaceDetail } from './surfaceDetail.js';
+import { createXenoFingerGeometry, createXenoRibGeometry, refineCreatureAnatomy } from './CreatureNpcGeometry.js';
+import { refineHumanoidAnatomy } from './HumanNpcGeometry.js';
 
 // Each batch owns one geometry/material; repeated seams, ribs and fasteners
 // share that geometry through instance transforms rather than individual draws.
@@ -41,7 +43,8 @@ function finishMaterial(material, family, type) {
     : type.includes('xeno') ? 'resin' : 'skin';
   if (material.metalness > 0.68 && !type.includes('xeno')) kind = 'metal';
   if (type.startsWith('genna')) kind = 'foliage';
-  applySurfaceDetail(material, { kind, repeat: [3, 3], normalStrength: kind === 'fabric' ? 0.24 : 0.42, roughnessStrength: 0.38 });
+  const sculptedXeno = type === 'xeno_drone' || type === 'xeno_warrior';
+  applySurfaceDetail(material, { kind, repeat: [3, 3], normalStrength: sculptedXeno ? 0.18 : kind === 'fabric' ? 0.24 : 0.42, roughnessStrength: 0.38 });
 }
 
 // Spend triangles on curved contours and bevels which affect the highlight and
@@ -124,18 +127,37 @@ function xenoDetails(root, type, material) {
   for (let index = 0; index < 7; index++) {
     const taper = 1 - Math.abs(index - 2) * 0.07;
     const bulk = type === 'xeno_warrior' ? 1.35 : ghost || type === 'xeno_drone' ? 0.75 : 1;
-    ribs.push({ position: [0, (ghost ? 1.58 : 1.48) - index * 0.095, 0.01], scale: [0.43 * taper * bulk, 0.3, 0.4 * taper * bulk], rotation: [Math.PI / 2, 0, 0] });
+    if (type === 'xeno_drone' || type === 'xeno_warrior') {
+      const warrior = type === 'xeno_warrior';
+      const height = warrior ? 1.12 : 1, width = warrior ? 1.22 : 1;
+      const cageWidths = [0.29, 0.33, 0.325, 0.30, 0.27, 0.225, 0.185];
+      const cageDepths = [0.19, 0.225, 0.23, 0.225, 0.21, 0.185, 0.15];
+      ribs.push({ position: [0, (1.49 - index * 0.07) * height, 0],
+        scale: [cageWidths[index] * width, 0.24, cageDepths[index] * (warrior ? 1.12 : 1)] });
+    } else ribs.push({ position: [0, (ghost ? 1.58 : 1.48) - index * 0.095, 0.01], scale: [0.43 * taper * bulk, 0.3, 0.4 * taper * bulk], rotation: [Math.PI / 2, 0, 0] });
   }
-  const ridge = detailMaterial(plant ? 0x4a633b : ghost ? 0x647b60 : 0x344446, plant ? 'foliage' : 'resin', { roughness: 0.42, metalness: 0.18 });
-  addCharacterInstances(root, `near-detail:${type}:thoracic-ribs`, new THREE.TorusGeometry(1, 0.09, 6, 20, Math.PI), ridge, ribs);
+  const bipedXeno = type === 'xeno_drone' || type === 'xeno_warrior';
+  const ridge = detailMaterial(plant ? 0x4a633b : ghost ? 0x647b60 : bipedXeno ? material.color.getHex() : 0x344446, plant ? 'foliage' : 'resin', { roughness: bipedXeno ? 0.48 : 0.42, metalness: bipedXeno ? 0.35 : 0.18 });
+  if (bipedXeno) applySurfaceDetail(ridge, { kind: 'resin', repeat: [3, 3], normalStrength: 0.18, roughnessStrength: 0.3 });
+  addCharacterInstances(root, `near-detail:${type}:thoracic-ribs`, bipedXeno ? createXenoRibGeometry() : new THREE.TorusGeometry(1, 0.09, 6, 20, Math.PI), ridge, ribs);
   const digits = [];
   for (const side of [-1, 1]) for (let finger = 0; finger < 3; finger++) {
-    digits.push({ position: [side * (type === 'xeno_drone' ? 0.43 + finger * 0.025 : 0.68 + finger * 0.045), 0.74 + finger * 0.028, type === 'xeno_drone' ? 0.14 : 0.24], scale: [0.025, 0.2 - finger * 0.025, 0.04], rotation: [0.4, 0, side * -0.42] });
+    const biped = type === 'xeno_drone' || type === 'xeno_warrior';
+    const warrior = type === 'xeno_warrior';
+    digits.push({ position: [side * (biped ? (0.43 + finger * 0.025) * (warrior ? 1.2 : 1) : 0.68 + finger * 0.045),
+      (0.74 + finger * 0.028) * (warrior ? 1.12 : 1), biped ? 0.14 : 0.24],
+    scale: [0.025, 0.2 - finger * 0.025, 0.04], rotation: [0.4, 0, side * -0.42] });
   }
-  addCharacterInstances(root, `near-detail:${type}:tapered-digits`, new THREE.ConeGeometry(1, 1, 10, 2), material, digits);
+  const fingerGeometry = type === 'xeno_drone' || type === 'xeno_warrior'
+    ? createXenoFingerGeometry() : new THREE.ConeGeometry(1, 1, 10, 2);
+  addCharacterInstances(root, `near-detail:${type}:tapered-digits`, fingerGeometry, material, digits);
   if (!ghost) {
     const curve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0.5, -0.18), new THREE.Vector3(0, 0.63, -0.5));
-    const tubes = [-1, 1].flatMap(side => [0, 1].map(row => ({ position: [side * (0.18 + row * (type === 'xeno_drone' ? 0.08 : 0.12)), 1.24, type === 'xeno_drone' ? -0.14 - row * 0.04 : -0.21 - row * 0.07], scale: [1, 0.7 + row * 0.16, 1], rotation: [0, side * -0.2, side * 0.1] })));
+    const biped = type === 'xeno_drone' || type === 'xeno_warrior';
+    const warrior = type === 'xeno_warrior';
+    const tubes = [-1, 1].flatMap(side => [0, 1].map(row => ({ position: [side * (0.18 + row * (biped ? 0.08 : 0.12)) * (warrior ? 1.22 : 1),
+      biped ? 1.31 * (warrior ? 1.12 : 1) : 1.24, biped ? -0.19 - row * 0.04 : -0.21 - row * 0.07],
+    scale: [1, (0.7 + row * 0.16) * (warrior ? 1.1 : 1), 1], rotation: [0, side * -0.2, side * 0.1] })));
     addCharacterInstances(root, `near-detail:${type}:dorsal-conduits`, new THREE.TubeGeometry(curve, 12, 0.043, 8, false), material, tubes);
   }
 }
@@ -189,9 +211,10 @@ function droneDetails(root, type, material) {
 }
 
 export function refineNpcVisual(root, type, family) {
+  refineCreatureAnatomy(root, type);
   let baseDraws = 0;
   root.traverse(node => { if (node.isMesh) baseDraws++; });
-  const refinedContours = refineContours(root);
+  const refinedContours = refineContours(root) + (root.userData.creatureAnatomy?.refinedContours ?? 0);
   const materials = new Set();
   root.traverse(node => {
     if (node.material) (Array.isArray(node.material) ? node.material : [node.material]).forEach(material => materials.add(material));
@@ -199,7 +222,10 @@ export function refineNpcVisual(root, type, family) {
   materials.forEach(material => finishMaterial(material, family, type));
   const primary = [...materials][0];
   const armor = [...materials].find(material => material.metalness >= 0.25 && material.emissiveIntensity < 0.6) ?? primary;
-  if (family === 'humanoid') humanoidDetails(root, type, armor);
+  if (family === 'humanoid') {
+    humanoidDetails(root, type, armor);
+    refineHumanoidAnatomy(root, type);
+  }
   else if (family === 'quadruped' || type === 'genna_stalker') quadrupedDetails(root, type, primary);
   else if (family === 'facehugger') facehuggerDetails(root, type, primary);
   else if (family === 'drone') droneDetails(root, type, armor);

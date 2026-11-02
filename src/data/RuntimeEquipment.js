@@ -222,13 +222,13 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
   Object.freeze({
     id: 'variant_city_hunter_surgical_kit', armorPresetId: 'city_1990', baseWeaponId: 'medicomp', name: 'Kit chirurgical du City Hunter',
     sourceTier: 'SCREEN', sources: Object.freeze(['predator2']), behavior: 'rapid_surgical_triage',
-    modifiers: Object.freeze({ healingEfficiencyMultiplier: 1.25, sutureSpeedMultiplier: 1.3, energyCostMultiplier: 0.85 }),
+    modifiers: Object.freeze({ healingEfficiencyMultiplier: 1.25, sutureSpeedMultiplier: 1.3 }),
   }),
   // Aliens vs. Predator: Requiem (2007) : Bio-neutralisant de Wolf dissolvant et purifiant l'acide xénomorphe
   Object.freeze({
     id: 'variant_wolf_cleaner_antidote', armorPresetId: 'wolf_avpr', baseWeaponId: 'medicomp', name: 'Bio-neutralisant Cleaner de Wolf',
     sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), behavior: 'corrosive_antidote_cleanse',
-    modifiers: Object.freeze({ acidPurgeBonus: 1.5, immunityDurationSeconds: 4, energyCostMultiplier: 0.9 }),
+    modifiers: Object.freeze({ acidPurgeBonus: 1.5, immunityDurationSeconds: 4 }),
   }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);

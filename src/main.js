@@ -27,7 +27,11 @@ import {initializeSharedReferenceVault} from './ui/SharedReferenceVault.js';
 import {filterLoreEntries} from './ui/CodexFilters.js';
 import { MedbayInventoryOverlay } from './ui/MedbayInventoryOverlay.js';
 import { refillMedbayInventory } from './gameplay/YautjaMedbaySystem.js';
-import { resolveMeleeStrike } from './gameplay/combatRules.js';
+import { MELEE_WEAPONS, resolveMeleeStrike } from './gameplay/combatRules.js';
+import { resolveMeleeTargetContact } from './gameplay/TargetReach.js';
+import { getIncomingDamageType } from './gameplay/DamageContext.js';
+import { ShipInteractionController } from './gameplay/ShipInteractionController.js';
+import { spawnShipDeploymentTransport } from './gameplay/ShipDeploymentTransport.js';
 import { applyPointOfInterestEffect } from './gameplay/PointOfInterestEffects.js';
 import {
   HUNTER_CLASSES,
@@ -284,7 +288,11 @@ export class Game {
     this.player.applyCustomization(this.player.customization);
     this.hud.syncCustomization(this.player.customization);
     this.applyActiveHuntLoadout();
-    this.player.resetForHunt(HUB_PLAYER_POSITION);
+    this.player.restoreSavedRecovery();
+    const initialArrival = this.player.resetForHub(HUB_PLAYER_POSITION);
+    this.shipInterface = new ShipInteractionController(this);
+    this.shipInterface.placeAtMedicalArrival(initialArrival);
+    this.shipInterface.syncTerminal();
     this.hub.setTrophyState(this.player.completedHunts);
     this.hub.setVisible(true);
     this.environment.setVisible(false);
@@ -530,8 +538,9 @@ export class Game {
     const missionContext = document.getElementById('loadout-mission-context');
     if (missionTitle) missionTitle.textContent = pendingSimulation ? `HOLO-TRAQUE · ${pendingSimulation.target.name.toUpperCase()}` : missionDefinition?.name?.toUpperCase() ?? 'AUCUN CONTRAT SÉLECTIONNÉ';
     if (missionContext) {
+      const transport = this.shipInterface?.services.getDeploymentTransport();
       missionContext.textContent = missionDefinition
-        ? `${DIRECTIVE_BIOME_LABELS[this.pendingHunt.planetType] ?? this.pendingHunt.planetType} · ${pendingSimulation ? 'SILHOUETTE D’ENTRAÎNEMENT · DIMENSIONS D’ARCHIVE' : directive?.shortLabel ?? 'CHASSE STANDARD'}`
+        ? `${DIRECTIVE_BIOME_LABELS[this.pendingHunt.planetType] ?? this.pendingHunt.planetType} · ${pendingSimulation ? 'SILHOUETTE D’ENTRAÎNEMENT · DIMENSIONS D’ARCHIVE' : directive?.shortLabel ?? 'CHASSE STANDARD'}${transport ? ` · INSERTION : ${transport.label}` : ''}`
         : 'Choisissez d’abord une cible dans l’onglet Contrats.';
     }
 
@@ -695,6 +704,14 @@ export class Game {
 
   deployPreparedHunt() {
     if (!this.pendingHunt) return false;
+    if (this.player.requiresMedicalRecovery) {
+      this.hud.showLogMessage('TRAITEMENT AU LABORATOIRE CLEANER REQUIS AVANT LE DÉPART', 3500);
+      this.enterHubExploration();
+      const medical = this.hub.getStations?.().find(station => station.interactionType === 'cleaner_lab');
+      if (medical) this.shipInterface?.setWaypoint(medical.id);
+      this.shipInterface?.openNavigation();
+      return false;
+    }
     const validation = validateHuntLoadout(this.draftHuntLoadout, this.getLoadoutValidationOptions());
     if (!validation.valid) {
       this.renderHuntLoadoutUI();
@@ -703,8 +720,9 @@ export class Game {
     const committed = this.commitHuntLoadout(validation.loadout);
     if (!committed.applied) return false;
     const pending = this.pendingHunt;
+    const started = this.startHunt(pending.huntType, pending.planetType, pending.directiveId, pending.simulationContext);
+    if (started === false) return false;
     this.pendingHunt = null;
-    this.startHunt(pending.huntType, pending.planetType, pending.directiveId, pending.simulationContext);
     this.requestPointerLockSafely();
     return true;
   }
@@ -946,6 +964,7 @@ export class Game {
     this.eventDirector?.setReducedMotion?.(this.settings.reducedMotion);
     audioSynth.setMuted(!this.settings.audioEnabled);
     this.graphics?.setQuality(this.settings.graphicsQuality);
+    this.hub?.setShadowQuality?.(this.graphics?.quality ?? this.settings.graphicsQuality);
     this.renderDirty = true;
     this.syncSettingsControls();
 
@@ -1278,7 +1297,7 @@ export class Game {
     if (!contact || contact.type !== 'environment_hazard') return false;
 
     const damage = Math.max(0, Number(contact.damage) || 0);
-    if (damage > 0) this.applyPlayerDamage(damage, contact.status === 'corrosion' || contact.status?.includes?.('corrosion') ? 'acid' : 'generic');
+    if (damage > 0) this.applyPlayerDamage(damage, getIncomingDamageType(contact));
     const statusDuration = Math.max(
       0.25,
       Number(contact.statusDuration ?? contact.duration) || 2.5,
@@ -2121,7 +2140,7 @@ export class Game {
             ? Math.max(1, Math.min(6, Math.round(Number(signal.burstCount) || 1)))
             : 1;
           for (let round = 0; round < burstCount; round += 1) {
-            this.applyPlayerDamage(signal.damage, signal.status === 'corrosion' || signal.damageType === 'corrosion' ? 'acid' : signal.projectile ? 'ballistic' : 'generic');
+            this.applyPlayerDamage(signal.damage, getIncomingDamageType(signal));
           }
           if (signal.status === 'corrosion' || signal.damageType === 'corrosion') this.player.applyAcidCorrosion();
           const applyCombatStatus = (status, duration) => {
@@ -2193,6 +2212,12 @@ export class Game {
   }
 
   performAttack() {
+    if (this.isGameStarted && !this.isPaused && this.gameState === 'HUNT'
+      && this.player.selectedWeapon === 6 && !this.isPlayerCombatDisabled()) {
+      if (isWeaponEquipped(this.activeHuntLoadout, 'medicomp')) this.openMedbay(false);
+      else this.hud.showLogMessage('MEDICOMP NON EMBARQUÉ — MODIFIEZ LE PAQUETAGE AU CROISEUR', 2200);
+      return;
+    }
     const hasLivingEncounterEnemy = (this.activeEnemies ?? []).some((enemy) => !enemy.isDead);
     if (
       !this.isGameStarted
@@ -2228,7 +2253,13 @@ export class Game {
     const wristbladeRangeMultiplier = result === 'wristblades'
       ? this.player.wristbladeRangeMultiplier ?? 1
       : 1;
-    const effectiveMeleeDistance = distance / wristbladeRangeMultiplier;
+    const whipProfile = this.player.selectedWeapon === 8
+      ? this.player.getWeaponRuntimeProfile?.('whip_thorns') : null;
+    const meleeRangeMultiplier = wristbladeRangeMultiplier * (whipProfile?.rangeMultiplier ?? 1);
+    const meleeContact = isDeathFromAbove ? null : resolveMeleeTargetContact(target, launchPosition,
+      (MELEE_WEAPONS[this.player.selectedWeapon]?.range ?? 0) * meleeRangeMultiplier);
+    const effectiveMeleeDistance = isDeathFromAbove ? distance
+      : (meleeContact?.distance ?? Infinity) / meleeRangeMultiplier;
     const strike = resolveMeleeStrike(this.player.selectedWeapon, effectiveMeleeDistance, {
       fromCanopy: isDeathFromAbove,
     });
@@ -2266,10 +2297,12 @@ export class Game {
       placePlayerSafely(preferredLanding);
     }
 
-    const scaledDamage = Math.round(strike.damage * (this.player.meleeDamageMultiplier ?? 1));
+    const scaledDamage = Math.round(strike.damage * (this.player.meleeDamageMultiplier ?? 1)
+      * (whipProfile?.damageMultiplier ?? 1));
+    const impactPoint = meleeContact?.point ?? targetPos;
     const outcome = target.takeDamage(this.getPlayerOutgoingDamage(scaledDamage, 'melee', target), this.player.position);
     this.reportShieldDeflection(target, outcome);
-    this.spawnBloodSpatterVFX(targetPos, this.getTargetBloodColor(target), isDeathFromAbove ? 30 : 15);
+    this.spawnBloodSpatterVFX(impactPoint, this.getTargetBloodColor(target), isDeathFromAbove ? 30 : 15);
     this.awardHonor(strike.honor, { target });
     if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target);
 
@@ -2308,7 +2341,7 @@ export class Game {
   requestPointerLockSafely() {
     if (
       (typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)')?.matches)
-      || typeof this.container.requestPointerLock !== 'function'
+      || typeof this.container?.requestPointerLock !== 'function'
       || document.pointerLockElement === this.container
       || navigator.userActivation?.isActive === false
     ) return false;
@@ -2324,6 +2357,7 @@ export class Game {
 
   canControlCamera() {
     return this.isGameStarted && !this.isPaused && !this.medbayOverlay?.isOpen
+      && !this.shipInterface?.isOpen()
       && (this.gameState === 'HUNT' || (this.gameState === 'HUB' && this.isHubExploring));
   }
 
@@ -2373,7 +2407,7 @@ export class Game {
     this.container.addEventListener('click', () => {
       const canCaptureCamera = this.gameState === 'HUNT'
         || (this.gameState === 'HUB' && this.isHubExploring);
-      if (this.isGameStarted && canCaptureCamera && !this.isPaused && !this.isPointerLocked) {
+      if (this.isGameStarted && canCaptureCamera && this.canControlCamera() && !this.isPointerLocked) {
         this.requestPointerLockSafely();
       }
     });
@@ -2555,7 +2589,7 @@ export class Game {
 
 
   setupTaxonomyAndMultiverse() {
-    // 1. Injected Canon Vector Logos
+    // Interface emblems identify catalogue entries; they are interpreted artwork.
     const hudLogo = document.getElementById('hud-yautja-clan-logo');
     if (hudLogo) hudLogo.innerHTML = getYautjaClanLogo(36);
 
@@ -2565,7 +2599,7 @@ export class Game {
     const multiverseLogo = document.getElementById('multiverse-header-logo');
     if (multiverseLogo) multiverseLogo.innerHTML = getYautjaClanLogo(40);
 
-    // Inject 1:1 Vector Logos into the 12 Mission Cards
+    // Add the target emblem to each declared mission card.
     document.querySelectorAll('.mission-card').forEach((card) => {
       const huntBtn = card.querySelector('[data-hunt]');
       const huntId = huntBtn?.getAttribute('data-hunt');
@@ -2577,7 +2611,7 @@ export class Game {
       }
     });
 
-    // Inject 1:1 Logos in Pause & Endgame modals
+    // Add the clan emblem to pause and result panels.
     const pauseTitle = document.getElementById('pause-title');
     if (pauseTitle && !pauseTitle.querySelector('.canon-logo')) {
       pauseTitle.insertAdjacentHTML('beforebegin', `<div class="canon-logo-slot" style="margin-bottom:8px;">${getYautjaClanLogo(48)}</div>`);
@@ -2760,12 +2794,12 @@ export class Game {
         rosterContainer.innerHTML = filteredPrey.map((item) => {
           const isSelected = (item.id === featuredTarget.id);
           return `
-            <div class="multiverse-roster-card ${isSelected ? 'active-selected' : ''}" data-crossover-select="${item.id}" tabindex="0" role="button" aria-label="Consulter ${item.name}">
+            <div class="multiverse-roster-card ${isSelected ? 'active-selected' : ''}" data-crossover-select="${item.id}" tabindex="0" role="button" aria-pressed="${isSelected}" aria-label="Consulter ${item.name}">
               <div class="roster-card-header">
                 ${getCrossoverLogo(item.id, 40)}
                 <div>
                   <h5>${item.name}</h5>
-                  <div class="roster-card-source">${item.originMedia}</div>
+                  <div class="roster-card-source">${getPreySourceLabel(item)}</div>
                 </div>
               </div>
               <div style="display:flex; gap:6px; flex-wrap:wrap; margin:4px 0;">
@@ -2788,8 +2822,12 @@ export class Game {
             const target = MULTIVERSE_CROSSOVER_PREY.find(c => c.id === cId);
             if (target) {
               renderActiveCard(target);
-              rosterContainer.querySelectorAll('.multiverse-roster-card').forEach(c => c.classList.remove('active-selected'));
-              cardEl.classList.add('active-selected');
+              rosterContainer.dataset.renderedRoster = `${activeMultiverseFilter}:${target.id}`;
+              rosterContainer.querySelectorAll('.multiverse-roster-card').forEach(c => {
+                const selected = c === cardEl;
+                c.classList.toggle('active-selected', selected);
+                c.setAttribute('aria-pressed', String(selected));
+              });
               audioSynth.playYautjaClick();
             }
           };
@@ -2833,6 +2871,7 @@ export class Game {
         if (prey.faction === PREY_FACTIONS.ENGINEER) factionClass = 'faction-engineer';
         else if (prey.faction === PREY_FACTIONS.XENOMORPH) factionClass = 'faction-xenomorph';
         else if (prey.faction === PREY_FACTIONS.HUMAN_SYNTHETIC) factionClass = 'faction-human';
+        else if (prey.faction === PREY_FACTIONS.FAUNA) factionClass = 'faction-fauna';
 
         return `
           <article class="taxonomy-card" data-prey-id="${prey.id}">
@@ -2974,7 +3013,7 @@ export class Game {
       this.isGameStarted = true;
       audioSynth.init();
       audioSynth.playYautjaClick();
-      this.showMissionSelectionModal();
+      this.enterHubExploration();
     });
 
     document.getElementById('btn-restart-game').addEventListener('click', () => {
@@ -3241,6 +3280,7 @@ export class Game {
   }
 
   setHubTouchControlsVisible(visible) {
+    if (typeof document === 'undefined') return false;
     const controls = document.getElementById('touch-hub-controls');
     controls?.classList.toggle('hidden', !visible);
     if (!visible) this.resetHubTouchInput();
@@ -3273,6 +3313,7 @@ export class Game {
   }
 
   showMissionSelectionModal(tabKey = 'missions', moveFocus = true) {
+    this.shipInterface?.hide();
     const modal = document.getElementById('mission-modal');
     modal?.classList.remove('hidden');
     modal?.setAttribute('aria-hidden', 'false');
@@ -3299,6 +3340,7 @@ export class Game {
 
   enterHubExploration() {
     if (!this.isGameStarted || this.gameState !== 'HUB') return false;
+    this.shipInterface?.hide();
     const modal = document.getElementById('mission-modal');
     modal?.classList.add('hidden');
     modal?.setAttribute('aria-hidden', 'true');
@@ -3311,13 +3353,18 @@ export class Game {
     this.hud.hideActionPrompt();
     this.setHubTouchControlsVisible(true);
     this.hud.showLogMessage('EXPLORATION DU VAISSEAU-MÈRE — INTERACTION [E], [A] OU ACTION TACTILE', 3200);
+    if (this.shipArrivalNotice) {
+      this.hud.showLogMessage(this.shipArrivalNotice, 4500);
+      this.shipArrivalNotice = null;
+    }
     this.container?.focus?.();
     this.requestPointerLockSafely();
     return true;
   }
 
-  updateHubHUD() {
+  updateHubHUD(delta = 0) {
     this.hud.updateVitals(this.player);
+    this.shipInterface?.update(delta);
     if (!this.isHubExploring) {
       this.hud.hideActionPrompt();
       return null;
@@ -3327,89 +3374,48 @@ export class Game {
 
     const station = this.hub.getNearbyStation(this.player.position);
     if (station) this.hud.showActionPrompt(station.prompt);
-    else this.hud.hideActionPrompt();
+    else {
+      const display = this.shipInterface?.getNearbyExhibit();
+      if (display) this.hud.showActionPrompt(`SCANNER : ${display.entry.label.toLocaleUpperCase('fr')} [E]`);
+      else this.hud.hideActionPrompt();
+    }
     return station;
   }
 
   attemptHubInteraction() {
     if (this.gameState !== 'HUB' || !this.isHubExploring) return false;
+    this.shipInterface ??= new ShipInteractionController(this);
+    if (this.shipInterface.isOpen()) return false;
     const station = this.hub.getNearbyStation(this.player.position);
-    if (!station) return false;
-
-    if (station.interactionType === 'contracts') {
-      this.showMissionSelectionModal('missions');
-    } else if (station.interactionType === 'forge') {
-      this.showMissionSelectionModal('armory');
-    } else if (station.interactionType === 'trophies') {
-      this.hub.setTrophyState(this.player.completedHunts);
-      const unlocked = [...this.hub.trophyDisplays.values()]
-        .filter((trophy) => trophy.userData.unlocked).length;
-      const total = this.hub.trophyDisplays.size;
-      this.hud.showLogMessage(
-        'GALERIE DU CLAN — ' + unlocked + '/' + total + ' TROPHÉES D’HONNEUR EXPOSÉS',
-        3200,
-      );
-    } else if (station.interactionType === 'hangar') {
-      const vehicleLabels = {
-        scout: 'ÉCLAIREUR',
-        shuttle: 'NAVETTE',
-        pod: 'POD DE TRAQUE',
-      };
-      const vehicles = this.hub.vehicleDisplays
-        .map((vehicle) => vehicleLabels[vehicle.userData.vehicleKind] ?? vehicle.userData.vehicleKind)
-        .join(' · ');
-      this.hud.showLogMessage(
-        'HANGAR DE CHASSE — ' + vehicles + ' · NEXUS CENTRAL POUR LE DÉPLOIEMENT',
-        3600,
-      );
-    } else if (station.interactionType === 'navigation') {
-      const zoneCount = this.hub.getZones?.().length ?? 11;
-      this.hud.showLogMessage(`PONT DE NAVIGATION — ${zoneCount} COMPARTIMENTS PRESSURISÉS · ROUTES DE CHASSE SYNCHRONISÉES`, 3600);
-    } else if (station.interactionType === 'cryo') {
-      this.player.health = this.player.maxHealth;
-      this.player.stamina = this.player.maxStamina;
-      this.hud.updateVitals(this.player);
-      this.hud.showLogMessage('CRYOSTASE — CONSTANTES RESTAURÉES ET MÉTABOLISME STABILISÉ', 3000);
-    } else if (station.interactionType === 'escape_pods') {
-      this.hud.showLogMessage('BAIE DES PODS — SIX CAPSULES DE TRAQUE ET DEUX VECTEURS D’ÉVACUATION PRÊTS', 3200);
-    } else if (station.interactionType === 'cleaner_lab') {
-      this.player.health = this.player.maxHealth;
-      this.player.energy = this.player.maxEnergy;
-      this.player.stamina = this.player.maxStamina;
-      this.player.isAcidCorroded = false;
-      this.player.acidTimer = 0;
-      this.player.isBleeding = false;
-      if (this.player.medbayInventory) {
-        refillMedbayInventory(this.player.medbayInventory);
-      }
-      this.hud.updateVitals(this.player);
-      this.hud.showLogMessage('BAIE MÉDICALE DU CROISEUR — STÉRILISATION ET RÉSERVES MEDICOMP RECHARGÉES', 3400);
-      this.openMedbay(true);
-    } else if (station.interactionType === 'core') {
-      this.player.energy = this.player.maxEnergy;
-      this.hud.updateVitals(this.player);
-      this.hud.showLogMessage('NOYAU DU VAISSEAU — HARNAIS ÉNERGÉTIQUE RECHARGÉ À 100 %', 3000);
-    } else if (station.interactionType === 'airlock') {
-      this.showMissionSelectionModal('loadout');
-    }
-    return station;
+    if (station) return this.shipInterface.openStation(station) ? station : false;
+    const display = this.shipInterface.getNearbyExhibit(true);
+    return display && this.shipInterface.openExhibit(display) ? display.entry : false;
   }
 
   updateHubExploration(delta) {
     if (this.gameState !== 'HUB' || !this.isHubExploring) return false;
+    if (this.shipInterface?.isOpen()) {
+      this.shipInterface.update(delta);
+      this.hud.hideActionPrompt();
+      return true;
+    }
     this.updatePlayerFrame(delta);
     this.hub.constrainPlayer(this.player.position, PLAYER_COLLIDER_RADIUS);
     this.updateCamera(delta);
-    this.updateHubHUD();
+    this.updateHubHUD(delta);
     return true;
   }
 
   startHunt(huntType, planetType, directiveId = 'standard_hunt', simulationContext = null) {
+    if (this.player.requiresMedicalRecovery) return false;
     const huntDefinition = HUNT_DEFINITIONS[huntType] ?? HUNT_DEFINITIONS.goliath;
     const directive = getHuntDirective(directiveId);
     const resolvedPlanet = resolveDirectiveBiome(directive.id, planetType) ?? planetType;
     const simulation = resolveSimulationSelection(simulationContext);
     if (simulationContext && !simulation) return false;
+    this.shipInterface?.hide();
+    this.hub.setNavigationRoute?.(null);
+    this.hud.updateShipHUD?.({ hub: this.hub, player: this.player, visible: false });
     this.cleanupHunt();
     this.activeCrossoverHunt = simulation?.kind === 'crossover' ? simulation.target : null;
     this.activePreySimulation = simulation?.kind === 'prey' ? simulation.target : null;
@@ -3425,6 +3431,7 @@ export class Game {
     this.currentHuntType = huntDefinition.id;
     this.currentPlanet = resolvedPlanet;
     this.hub.setVisible(false);
+    this.hud.setTargetType?.(huntDefinition.id);
     this.applyActiveHuntLoadout();
     this.setHuntTouchControlsVisible(true);
     this.environment.setDiscoveredPoiIds(this.player.discoveredPoiIds);
@@ -3437,7 +3444,7 @@ export class Game {
     this.cameraPitch = 0.2;
     const huntStartPosition = this.environment.getHuntStartPosition?.() ?? new THREE.Vector3(0, 0, 60);
     this.player.movementBounds = this.environment.playableRadius;
-    this.player.resetForHunt(huntStartPosition);
+    this.player.resetForDeployment(huntStartPosition);
     this.trophyHarvested = false;
     this.huntResultShown = false;
     this.isPaused = false;
@@ -3450,6 +3457,7 @@ export class Game {
     this.targetSpotted = false;
     const ecologyCount = this.spawnBiomeEcology();
     this.eventDirector.start({ huntId: this.currentHuntType, biomeId: resolvedPlanet, directiveId: directive.id });
+    this.departureTransport = spawnShipDeploymentTransport(this);
     this.pendingDirectiveWaves = [];
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
@@ -3523,6 +3531,7 @@ export class Game {
     this.pendingDirectiveWaves = [];
     this.activeTerritoryClashes = [];
     this.eventDirector?.stop();
+    this.departureTransport = null;
     this.activeHazard = null;
     this.hazardPulseTimer = 0;
     this.clearExtractionObjective();
@@ -3585,7 +3594,9 @@ export class Game {
     this.cameraYaw = Math.PI;
     this.cameraPitch = 0.2;
     this.player.movementBounds = 330;
-    this.player.resetForHunt(HUB_PLAYER_POSITION);
+    const arrival = this.player.resetForHub(HUB_PLAYER_POSITION);
+    this.shipInterface?.placeAtMedicalArrival(arrival);
+    this.shipInterface?.syncTerminal();
     this.hub.setVisible(true);
     this.hub.setTrophyState(this.player.completedHunts);
     this.environment.setVisible(false);
@@ -3593,33 +3604,66 @@ export class Game {
     audioSynth.updateAdaptiveBGM('stealth');
     document.getElementById('pause-modal')?.classList.add('hidden');
     this.saveProgress();
-    this.showMissionSelectionModal();
+    this.enterHubExploration();
+    this.shipInterface?.update(1);
+    this.hub.setNavigationRoute?.(this.shipInterface?.route ?? null);
+    if (arrival.requiresMedicalRecovery) {
+      const medical = this.hub.getNearbyStation?.(this.player.position);
+      if (medical?.interactionType === 'cleaner_lab') this.shipInterface?.openStation(medical);
+    }
   }
 
   openMedbay(isMothership = this.gameState === 'HUB') {
+    if (this.isHuntFlowActive() && !isWeaponEquipped(this.activeHuntLoadout, 'medicomp')) {
+      this.hud.showLogMessage('MEDICOMP NON EMBARQUÉ — MODIFIEZ LE PAQUETAGE AU CROISEUR', 2200);
+      return false;
+    }
     if (!this.medbayOverlay) {
       this.medbayOverlay = new MedbayInventoryOverlay({
         player: this.player,
         inventoryState: this.player.medbayInventory,
-        onAction: () => this.hud.updateVitals(this.player),
+        onAction: () => { this.hud.updateVitals(this.player); this.saveProgress(); },
+        onClose: () => {
+          this.setHubTouchControlsVisible(this.gameState === 'HUB' && this.isHubExploring && !this.shipInterface?.isOpen());
+          this.setHuntTouchControlsVisible(this.isHuntFlowActive() && !this.isPaused && !this.huntResultShown);
+          this.renderDirty = true;
+          if (!this.getVisibleDialog()) {
+            this.container?.focus?.();
+            if (this.canControlCamera()) this.requestPointerLockSafely();
+          }
+        },
       });
       this.medbayOverlay.mount();
     }
     this.resetKeyboardInput();
     this.resetHubTouchInput();
     this.resetHuntTouchInput();
+    this.setHubTouchControlsVisible(false);
+    this.setHuntTouchControlsVisible(false);
     this.gamepadAxes = { x: 0, z: 0 };
     this.syncInputDirection();
     this.isScopeZooming = false;
     if (document.pointerLockElement) document.exitPointerLock();
-    this.medbayOverlay.open(this.player, { ...this.player.medbayInventory, isMothership });
+    const atMedicalStation = isMothership && this.gameState === 'HUB'
+      && this.hub?.getNearbyStation?.(this.player.position)?.interactionType === 'cleaner_lab';
+    this.medbayOverlay.open(this.player, { ...this.player.medbayInventory, isMothership: Boolean(atMedicalStation) });
   }
 
   onKeyDown(e) {
     if (!this.isGameStarted) return;
     if (this.medbayOverlay?.isOpen) return;
+    if (this.shipInterface?.isOpen()) {
+      if (e.code === 'Escape' && !e.repeat) { e.preventDefault?.(); this.shipInterface.close(); }
+      else if (e.code === 'KeyN' && !e.repeat && !['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target?.tagName)) {
+        e.preventDefault?.(); this.shipInterface.openNavigation();
+      }
+      return;
+    }
 
     if (this.gameState === 'HUB') {
+      if (e.code === 'KeyN' && !e.repeat && this.isHubExploring) {
+        e.preventDefault?.(); this.shipInterface?.openNavigation(); return;
+      }
       if ((e.code === 'Escape' || e.code === 'KeyP') && !e.repeat) {
         e.preventDefault?.();
         this.showMissionSelectionModal('missions');
@@ -4327,6 +4371,15 @@ export class Game {
 
       if (projectile.isNet) {
         target.applyNet?.();
+        if (target.isNetted && Number.isFinite(target.netTimer)) {
+          target.netTimer *= Math.max(1, Number(projectile.netDurationMultiplier) || 1);
+        }
+        const damage = Number(projectile.damage) || 0;
+        if (damage > 0) {
+          const outcome = target.takeDamage(this.getPlayerOutgoingDamage(damage, 'ranged', target), impact);
+          this.reportShieldDeflection(target, outcome);
+          if (target !== this.activeBoss && (outcome?.killed || target.isDead)) this.handleNpcDefeat(target);
+        }
         this.hud.showLogMessage('CIBLE IMMOBILISÉE DANS LE FILET!');
       } else if (Number(projectile.blastRadius) > 0) {
         this.applyPlayerBlastDamage(projectile, impact);

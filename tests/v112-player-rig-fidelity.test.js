@@ -159,7 +159,8 @@ test('les animations idle, marche, sprint, attaque, dégâts et soin pilotent r�
   player.health = 40;
   player.energy = 100;
   player.selectedWeapon = 6;
-  player.attack(new THREE.Vector3());
+  assert.equal(player.attack(new THREE.Vector3()), 'medicomp');
+  assert.equal(player.applyMedicalTreatment('dermal_stapler').success, true);
   player.update(0.08, STILL, 0);
   assert.equal(player.currentAnimationState, 'heal');
   assert.ok(player.leftArmRig.elbow.rotation.x < -0.1);

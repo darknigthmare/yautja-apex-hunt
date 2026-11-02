@@ -1,5 +1,9 @@
 # Revue de correction et préparation de publication
 
+## Continuation — 2 novembre 2026, base `3cbe886`
+
+La passe courante est documentée dans [`CONTINUATION_REVIEW.md`](CONTINUATION_REVIEW.md). Elle reprend les contours des dix-huit humanoïdes et des deux xénomorphes communs, les tirs depuis leurs armes, les contacts de mêlée sur les grands boss, les familles de dégâts, les consoles physiques du croiseur, la recherche et le focus des archives, ainsi que les dangers sur le relief et les pannes superposées. Les preuves finales sont regroupées dans `/workspace/artifacts/yautja-nov2/review.html` et ses rapports JSON. Les sections suivantes décrivent les validations historiques.
+
 ## Cohérence — 1er novembre 2026, base `a177aa0`
 
 La passe courante est détaillée dans [`COHERENCE_REVIEW.md`](COHERENCE_REVIEW.md) : échelles et silhouette du drone, contacts et sept attaques natives des grands boss, décors des quartiers extérieurs, collisions verticales, forge physique et sauvegarde commune, simulations explicitement séparées, icônes et quinze contrats accessibles. La source documentée de chaque élément du catalogue prime ; les dimensions estimées restent signalées.

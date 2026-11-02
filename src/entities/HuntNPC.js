@@ -1816,6 +1816,13 @@ export class HuntNPC {
     const { localBounds, localHeadTop, groundOffset } = this.physicalScale;
     const humanoid = this.lodProfile.family === 'humanoid';
     const height = localBounds.max[1] - localBounds.min[1];
+    const muzzle = this.mesh.userData.humanoidWeaponMuzzle;
+    if (humanoid && Array.isArray(muzzle) && muzzle.length === 3 && muzzle.every(Number.isFinite)) {
+      target.fromArray(muzzle);
+      target.y += groundOffset;
+      target.z += 0.025;
+      return this.mesh.localToWorld(target);
+    }
     target.set(humanoid ? 0.4 : 0,
       humanoid ? 1.4 + groundOffset : localBounds.min[1] + height * 0.65,
       localBounds.max[2] + 0.025);

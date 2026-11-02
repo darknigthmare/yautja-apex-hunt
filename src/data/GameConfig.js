@@ -166,7 +166,7 @@ export const HUNT_DEFINITIONS = Object.freeze({
     colliderRadius: 5.2,
     sourceTier: 'ORIGINAL',
     basisTier: 'SCREEN',
-    continuity: 'Duel canonique inspiré de Predator (1987) au cœur de la jungle centraméricaine',
+    continuity: 'Duel original inspiré de Predator (1987) au cœur de la jungle centraméricaine',
     objective: 'Forcer la destruction du bio-masque classique, esquiver le verrou tri-laser et le plasma d’épaule, puis survivre au compte à rebours d’autodestruction.',
     reward: 2800,
     trophyColor: 0x8b6534,

@@ -1216,6 +1216,9 @@ export function getBorgiaIndustriesLogo(size = 64) {
 export function renderFactionEmblem(factionName, size = 48) {
   if (!factionName) return getYautjaClanLogo(size);
   const name = String(factionName).toLowerCase();
+  if (name.includes('faune')) {
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="${size}" height="${size}" class="canon-logo logo-fauna" role="img" aria-label="Biosignature de faune"><circle cx="32" cy="32" r="28" fill="#10241d" stroke="#8cc9a0" stroke-width="2"/><path d="M19 42c0-7 7-15 13-15s13 8 13 15c0 6-7 5-13 2-6 3-13 4-13-2Z" fill="#8cc9a0"/><path d="m16 30-3-13 8 9m7-5 2-14 5 14m8 4 8-10-3 15" fill="none" stroke="#b9dcc3" stroke-width="4" stroke-linecap="round"/></svg>`;
+  }
   if (name.includes('engineer') || name.includes('ingénieur') || name.includes('architecte')) {
     return getEngineerLogo(size);
   }

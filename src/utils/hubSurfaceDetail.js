@@ -1,9 +1,49 @@
 import * as THREE from 'three';
-import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 /** One bevel segment gives a real highlight edge without subdividing flat faces. */
 export function createHubPanelGeometry(width, height, depth, radius = 0.08) {
-  return new RoundedBoxGeometry(width, height, depth, 1, radius);
+  const half = [width / 2, height / 2, depth / 2];
+  const bevel = Math.max(0.00001, Math.min(radius, Math.min(...half) * 0.95));
+  const inner = half.map(value => value - bevel), positions = [], normals = [], uvs = [], indices = [];
+  const add = points => {
+    let vectors = points.map(point => new THREE.Vector3(...point));
+    const normal = vectors[1].clone().sub(vectors[0]).cross(vectors[2].clone().sub(vectors[0])).normalize();
+    const center = vectors.reduce((sum, point) => sum.add(point), new THREE.Vector3()).multiplyScalar(1 / points.length);
+    if (normal.dot(center) < 0) { vectors.reverse(); normal.negate(); }
+    const start = positions.length / 3;
+    vectors.forEach((point, index) => {
+      positions.push(point.x, point.y, point.z); normals.push(normal.x, normal.y, normal.z);
+      uvs.push(index === 1 || index === 2 ? 1 : 0, index >= 2 ? 1 : 0);
+    });
+    for (let index = 1; index < vectors.length - 1; index++) indices.push(start, start + index, start + index + 1);
+  };
+  for (let axis = 0; axis < 3; axis++) for (const sign of [-1, 1]) {
+    const others = [0, 1, 2].filter(value => value !== axis);
+    add([[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([a, b]) => {
+      const point = [0, 0, 0]; point[axis] = sign * half[axis];
+      point[others[0]] = a * inner[others[0]]; point[others[1]] = b * inner[others[1]]; return point;
+    }));
+    for (const a of [-1, 1]) for (const b of [-1, 1]) {
+      // Each long edge is emitted once, independently of the face triangulation.
+      if (sign !== 1) continue;
+      const first = others[0], second = others[1];
+      add([[-1, 0], [1, 0], [1, 1], [-1, 1]].map(([along, variant]) => {
+        const point = [0, 0, 0]; point[axis] = along * inner[axis];
+        point[first] = a * (variant ? inner[first] : half[first]);
+        point[second] = b * (variant ? half[second] : inner[second]); return point;
+      }));
+    }
+  }
+  for (const x of [-1, 1]) for (const y of [-1, 1]) for (const z of [-1, 1]) {
+    add([[x * half[0], y * inner[1], z * inner[2]], [x * inner[0], y * half[1], z * inner[2]],
+      [x * inner[0], y * inner[1], z * half[2]]]);
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.type = 'HubPanelGeometry'; geometry.parameters = { width, height, depth, radius: bevel };
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+  geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2)); geometry.setIndex(indices);
+  return geometry;
 }
 
 /** A compact, deterministic instrument display shared by every ship console.
@@ -62,4 +102,85 @@ export function createHubInstrumentTexture() {
   texture.anisotropy = 4;
   texture.needsUpdate = true;
   return texture;
+}
+
+const TERMINAL_FONT = {
+  A:'01110/10001/10001/11111/10001/10001/10001',B:'11110/10001/10001/11110/10001/10001/11110',C:'01111/10000/10000/10000/10000/10000/01111',
+  D:'11110/10001/10001/10001/10001/10001/11110',E:'11111/10000/10000/11110/10000/10000/11111',F:'11111/10000/10000/11110/10000/10000/10000',
+  G:'01111/10000/10000/10111/10001/10001/01111',H:'10001/10001/10001/11111/10001/10001/10001',I:'111/010/010/010/010/010/111',
+  J:'00111/00010/00010/00010/10010/10010/01100',K:'10001/10010/10100/11000/10100/10010/10001',L:'10000/10000/10000/10000/10000/10000/11111',
+  M:'10001/11011/10101/10101/10001/10001/10001',N:'10001/11001/10101/10011/10001/10001/10001',O:'01110/10001/10001/10001/10001/10001/01110',
+  P:'11110/10001/10001/11110/10000/10000/10000',Q:'01110/10001/10001/10001/10101/10010/01101',R:'11110/10001/10001/11110/10100/10010/10001',
+  S:'01111/10000/10000/01110/00001/00001/11110',T:'11111/00100/00100/00100/00100/00100/00100',U:'10001/10001/10001/10001/10001/10001/01110',
+  V:'10001/10001/10001/10001/10001/01010/00100',W:'10001/10001/10001/10101/10101/10101/01010',X:'10001/10001/01010/00100/01010/10001/10001',
+  Y:'10001/10001/01010/00100/00100/00100/00100',Z:'11111/00001/00010/00100/01000/10000/11111',
+  0:'01110/10001/10011/10101/11001/10001/01110',1:'010/110/010/010/010/010/111',2:'01110/10001/00001/00010/00100/01000/11111',
+  3:'11110/00001/00001/01110/00001/00001/11110',4:'00010/00110/01010/10010/11111/00010/00010',5:'11111/10000/10000/11110/00001/00001/11110',
+  6:'01110/10000/10000/11110/10001/10001/01110',7:'11111/00001/00010/00100/01000/01000/01000',8:'01110/10001/10001/01110/10001/10001/01110',
+  9:'01110/10001/10001/01111/00001/00001/01110','-':'000/000/000/111/000/000/000',':':'0/1/0/0/1/0/0','/':'00001/00010/00010/00100/01000/01000/10000',
+};
+
+/** One reusable atlas for real ship terminals; no per-frame canvas allocation. */
+export function createShipTerminalAtlas(zones) {
+  const size = 1024, atlasHeight = 512, cell = 256, cellHeight = 128, data = new Uint8Array(size * atlasHeight * 4);
+  let canvas, context;
+  if (typeof document !== 'undefined') {
+    try { canvas = document.createElement('canvas'); canvas.width = size; canvas.height = atlasHeight; context = canvas.getContext('2d'); }
+    catch { context = null; }
+  }
+  const texture = context ? new THREE.CanvasTexture(canvas) : new THREE.DataTexture(data, size, atlasHeight, THREE.RGBAFormat);
+  texture.name = 'ship-live-terminal-atlas'; texture.colorSpace = THREE.SRGBColorSpace;
+  texture.magFilter = THREE.LinearFilter; texture.minFilter = THREE.LinearMipmapLinearFilter;
+  texture.generateMipmaps = true; texture.flipY = true; texture.userData.liveTerminal = true;
+  let previousKey = '', state = {}, disposed = false;
+  const rect = (x, y, width, height, color) => {
+    if (context) { context.fillStyle = color; context.fillRect(x, y, width, height); return; }
+    const rgb = [1, 3, 5].map(offset => parseInt(color.slice(offset, offset + 2), 16));
+    for (let row = Math.max(0, y); row < Math.min(atlasHeight, y + height); row++) for (let column = Math.max(0, x); column < Math.min(size, x + width); column++) {
+      const offset = (row * size + column) * 4; data[offset] = rgb[0]; data[offset + 1] = rgb[1]; data[offset + 2] = rgb[2]; data[offset + 3] = 255;
+    }
+  };
+  const text = (label, x, y, color = '#cbded8', fontSize = 15) => {
+    const safe = String(label).toLocaleUpperCase('fr').slice(0, 27);
+    if (context) { context.fillStyle = color; context.font = `${fontSize}px monospace`; context.textBaseline = 'top'; context.fillText(safe, x, y, 232); return; }
+    let pen = x;
+    for (const letter of safe.normalize('NFD').replace(/[\u0300-\u036f]/g, '')) {
+      const glyph = TERMINAL_FONT[letter]?.split('/') ?? ['00000'];
+      glyph.forEach((row, v) => [...row].forEach((value, u) => { if (value === '1') rect(pen + u * 2, y + v * 2, 2, 2, color); }));
+      pen += (glyph[0].length + 1) * 2;
+      if (pen > x + 230) break;
+    }
+  };
+  const finite = value => Number.isFinite(Number(value)) && value != null ? String(Math.round(Number(value))) : '-';
+  const update = (next = {}) => {
+    if (disposed) return false;
+    state = { ...state, ...next };
+    const normalized = {
+      stationId: String(state.stationId ?? ''), zoneId: String(state.zoneId ?? ''), stationTitle: String(state.stationTitle ?? ''),
+      honorScore: finite(state.honorScore), health: finite(state.health), maxHealth: finite(state.maxHealth), energy: finite(state.energy),
+      loadoutItems: (Array.isArray(state.loadoutItems) ? state.loadoutItems : []).map(item => String(item)).slice(0, 8),
+      targetLabel: String(state.targetLabel || 'Aucune proie engagee'), routeLabel: String(state.routeLabel || 'Aucun guidage actif'),
+    };
+    const key = JSON.stringify(normalized); if (key === previousKey) return false; previousKey = key;
+    rect(0, 0, size, atlasHeight, '#040c10');
+    zones.slice(0, 16).forEach((zone, index) => {
+      const x = index % 4 * cell, y = Math.floor(index / 4) * cellHeight;
+      const active = normalized.zoneId === zone.id || normalized.stationId === zone.id;
+      const accent = active ? '#e5b26b' : '#66b8b4';
+      rect(x + 4, y + 4, 248, 120, '#0a171c'); rect(x + 8, y + 8, 3, 112, accent);
+      for (let line = 10; line < 124; line += 4) rect(x + 14, y + line, 232, 1, '#0d2025');
+      text(zone.label, x + 18, y + 10, accent, 15);
+      text(active ? normalized.stationTitle || 'Console liee au bio-masque' : 'Terminal du croiseur', x + 18, y + 29, '#92b4b8', 10);
+      text(`HON ${normalized.honorScore} PV ${normalized.health}/${normalized.maxHealth} E ${normalized.energy}`, x + 18, y + 45, '#e0d7b8', 12);
+      text(normalized.loadoutItems[0] ?? 'Aucun element selectionne', x + 18, y + 65, '#b8d2ce', 12);
+      text(normalized.loadoutItems.slice(1).join(' / ') || '-', x + 18, y + 81, '#8caead', 10);
+      text(normalized.targetLabel, x + 18, y + 98, '#d3bc91', 11);
+      text(normalized.routeLabel, x + 18, y + 114, accent, 9);
+    });
+    texture.userData.context = normalized; texture.userData.revision = (texture.userData.revision ?? 0) + 1;
+    texture.needsUpdate = true; return true;
+  };
+  update();
+  return { texture, zones, update, getContext: () => texture.userData.context,
+    dispose() { if (!disposed) { disposed = true; texture.dispose(); } } };
 }

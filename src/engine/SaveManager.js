@@ -1,6 +1,8 @@
 import { DEFAULT_SETTINGS } from '../data/GameConfig.js';
 import { sanitizeGraphicsQuality } from '../render/graphicsQuality.js';
 import { normalizeForgeState } from '../gameplay/YautjaTrophyCraftsmanshipForgeSystem.js';
+import { normalizeShipServiceState } from '../gameplay/ShipServiceRuntime.js';
+import { createMedbayInventoryState, prepareFieldMedbayInventory } from '../gameplay/YautjaMedbaySystem.js';
 import {
   DEFAULT_CUSTOMIZATION,
   PLAYABLE_WEAPONS,
@@ -10,6 +12,35 @@ import {
 
 const uniqueStrings = (value = []) => [...new Set(Array.isArray(value) ? value : [])]
   .filter((entry) => typeof entry === 'string');
+
+function normalizeRecoveryState(value) {
+  if (!value || !['healthRatio', 'energyRatio', 'staminaRatio'].every(key => Number.isFinite(value[key]))) return null;
+  return { healthRatio: Math.max(0, Math.min(1, value.healthRatio)), energyRatio: Math.max(0, Math.min(1, value.energyRatio)),
+    staminaRatio: Math.max(0, Math.min(1, value.staminaRatio)), isAcidCorroded: value.isAcidCorroded === true,
+    acidTimer: Number.isFinite(value.acidTimer) ? Math.max(0, value.acidTimer) : 0, isBleeding: value.isBleeding === true,
+    requiresMedicalRecovery: value.requiresMedicalRecovery === true,
+    wristShieldIntegrity: Number.isFinite(value.wristShieldIntegrity) ? Math.max(0, Math.min(100, value.wristShieldIntegrity)) : 100 };
+}
+
+function serializeRecovery(player) {
+  if (![player.health, player.energy, player.stamina, player.maxHealth, player.maxEnergy, player.maxStamina].every(Number.isFinite)) return null;
+  return normalizeRecoveryState({ ...player, healthRatio: player.health / Math.max(1, player.maxHealth),
+    energyRatio: player.energy / Math.max(1, player.maxEnergy), staminaRatio: player.stamina / Math.max(1, player.maxStamina) });
+}
+
+function normalizeMedicalInventory(source) {
+  const chargesModifier = Number.isFinite(source?.chargesModifier) && source.chargesModifier > 0 ? source.chargesModifier : 1;
+  const inventory = createMedbayInventoryState({ chargesModifier });
+  if (source?.charges && typeof source.charges === 'object') {
+    for (const key of Object.keys(inventory.charges)) {
+      if (Number.isFinite(source.charges[key])) inventory.charges[key] = Math.max(0, Math.floor(source.charges[key]));
+    }
+  }
+  inventory.lastUsedItemId = Object.hasOwn(inventory.charges, source?.lastUsedItemId) ? source.lastUsedItemId : null;
+  inventory.totalTreatmentsApplied = Number.isFinite(source?.totalTreatmentsApplied)
+    ? Math.max(0, Math.floor(source.totalTreatmentsApplied)) : 0;
+  return prepareFieldMedbayInventory(inventory);
+}
 
 // Versioned and validated LocalStorage persistence for Yautja: Apex Hunt.
 export class SaveManager {
@@ -66,6 +97,9 @@ export class SaveManager {
         selectedVehicleId: typeof player.selectedVehicleId === 'string'
           ? player.selectedVehicleId
           : 'vehicle_jungle_dropcraft',
+        ...(player.shipServiceState ? { shipServiceState: normalizeShipServiceState(player.shipServiceState) } : {}),
+        ...(player.medbayInventory ? { medbayInventory: normalizeMedicalInventory(player.medbayInventory) } : {}),
+        ...(serializeRecovery(player) ? { recoveryState: serializeRecovery(player) } : {}),
         ...(Object.prototype.hasOwnProperty.call(player, 'trophyCraftForgeState')
           && player.trophyCraftForgeState !== undefined
           ? { trophyCraftForgeState: normalizeForgeState(player.trophyCraftForgeState) }
@@ -190,6 +224,10 @@ export class SaveManager {
       player.selectedVehicleId = typeof source.selectedVehicleId === 'string'
         ? source.selectedVehicleId
         : 'vehicle_jungle_dropcraft';
+      if (source.shipServiceState) player.shipServiceState = normalizeShipServiceState(source.shipServiceState);
+      if (source.medbayInventory) player.medbayInventory = normalizeMedicalInventory(source.medbayInventory);
+      const recovery = normalizeRecoveryState(source.recoveryState);
+      if (recovery) player.pendingRecoveryState = recovery;
       if (Object.prototype.hasOwnProperty.call(source, 'trophyCraftForgeState')) {
         player.trophyCraftForgeState = normalizeForgeState(source.trophyCraftForgeState);
       } else {

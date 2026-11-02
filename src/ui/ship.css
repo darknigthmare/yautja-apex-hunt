@@ -1,0 +1,112 @@
+.ship-interface {
+  position: fixed; inset: 0; z-index: 145; display: grid; place-items: center;
+  padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+  background: radial-gradient(ellipse at 50% 45%, rgba(3, 15, 18, .15), rgba(1, 6, 10, .66));
+  backdrop-filter: blur(3px); color: #e3efe8; pointer-events: auto;
+}
+.ship-interface.hidden, .ship-zone-hud.hidden, .ship-waypoint-hud.hidden { display: none !important; }
+.ship-panel {
+  width: min(940px, 100%); max-height: calc(100dvh - 36px); overflow: auto;
+  border: 1px solid #6aa997; border-top: 3px solid #9ddbc2; border-radius: 3px 18px 3px 18px;
+  background: linear-gradient(135deg, rgba(8, 27, 29, .94), rgba(5, 15, 20, .87));
+  box-shadow: 0 22px 85px #0009, inset 0 0 40px #102c2b55; padding: 24px;
+  scrollbar-color: #6aa997 #071519; scrollbar-width: thin; overscroll-behavior: contain;
+}
+.ship-interface button, .ship-interface select { min-height: 44px; margin: 0; border-radius: 3px; font-size: 12px; line-height: 1.5; }
+.ship-interface button { border: 1px solid #6b9f91; background: #152b2de8; color: #e3eee8; padding: 10px 14px; cursor: pointer; }
+.ship-interface button:hover:not(:disabled) { background: #26443f; border-color: #b5e2c7; }
+.ship-interface button:disabled { color: #a2b5af; border-color: #4b665e; cursor: default; opacity: 1; }
+.ship-interface :is(button,select,summary):focus-visible, .ship-dialog-title:focus-visible { outline: 3px solid #f5dd92; outline-offset: 3px; }
+.ship-dialog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding-bottom: 18px; border-bottom: 1px solid #51867580; }
+.ship-eyebrow { color: #9dd3bc; font-size: 10px; letter-spacing: .14em; line-height: 1.6; margin: 0 0 7px; }
+.ship-dialog-title { font-family: 'Orbitron', sans-serif; font-size: clamp(19px, 2.5vw, 29px); font-weight: 600; line-height: 1.35; color: #eef6e9; margin: 0; overflow-wrap: anywhere; }
+.ship-location { margin: 8px 0 0; font-size: 14px; color: #bdcfc6; }
+.ship-close { flex-shrink: 0; }
+.ship-close span { display: block; font-size: 8px; color: #a2bfb4; letter-spacing: .1em; }
+.ship-navigation-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(240px, 1fr); gap: 26px; padding-top: 20px; }
+.ship-plan-frame { position: relative; margin: 0; padding: 10px; border: 1px solid #486e6380; background: radial-gradient(ellipse, #183d342f, #030e1366); }
+.ship-plan { width: 100%; max-height: 50dvh; display: block; }
+.ship-plan-orientation { text-align: center; color: #9bb9ac; letter-spacing: .22em; font-size: 8px; }
+.ship-plan-room { fill: #25423a60; stroke: #79a08e; stroke-width: .45; }
+.ship-plan-room.is-destination { fill: #bc963841; stroke: #e6c274; }
+.ship-plan-room.is-current { fill: #429f8754; }
+.ship-plan-label { fill: #c8d8ce; font-size: 2.7px; text-anchor: middle; dominant-baseline: middle; }
+.ship-plan-door { fill: #9abbb0; }
+.ship-plan-route { fill: none; stroke: #e6bc65; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+.ship-plan-station { fill: #81aaa0; }
+.ship-plan-station.is-destination { fill: #f1cd7d; stroke: #f4dda6; stroke-width: .5; }
+.ship-plan-player { fill: #d2fff4; stroke: #61cfa9; stroke-width: 1; }
+.ship-plan-frame figcaption { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; color: #bdd0c5; font-size: 10px; margin-top: 10px; }
+.ship-plan-key { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-left: 7px; }
+.ship-plan-key.is-current { background: #d2fff4; }.ship-plan-key.is-route { background: #e6bc65; }.ship-plan-key.is-target { border: 1px solid #f1cd7d; }
+.ship-destination-panel { display: flex; min-width: 0; flex-direction: column; align-items: stretch; gap: 12px; justify-content: center; }
+.ship-destination-panel label { color: #b5c8bd; font-size: 11px; letter-spacing: .1em; }
+.ship-destination-panel select { width: 100%; min-width: 0; padding: 10px; color: #e7f1e9; background: #0d2526; border: 1px solid #7da58c; }
+.ship-destination-panel p { margin: 0; }
+.ship-destination-name { font-size: 19px; color: #edf1d8; line-height: 1.4; overflow-wrap: anywhere; }
+.ship-route-distance { font: 26px/1.5 'Orbitron', sans-serif; color: #e5c98c; }
+.ship-route-status { color: #c3d5c9; font-size: 13px; line-height: 1.6; min-height: 3em; }
+.ship-interface .ship-primary { background: #345641; border-color: #b3c996; color: #f1f1d4; }
+.ship-control-hint { color: #a9bcb1; font-size: 12px; line-height: 1.5; }
+.ship-console-body { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(230px, 1fr); gap: 28px; padding: 24px 0; }
+.ship-service-section { min-width: 0; }.ship-service-list { display: grid; gap: 10px; }
+.ship-interface .ship-service-button { display: flex; align-items: center; gap: 13px; text-align: left; padding: 15px; }
+.ship-service-button > span:nth-child(2) { flex: 1; min-width: 0; }
+.ship-service-button strong { display: block; font-size: 15px; font-weight: 600; color: #eef1db; line-height: 1.5; }
+.ship-service-button small { display: block; font-size: 12px; color: #bdcfc5; line-height: 1.5; margin-top: 5px; }
+.ship-service-icon { font-size: 24px; color: #b5d5ad; }.ship-service-arrow { color: #d1dcae; font-size: 25px; }
+.ship-service-reason { display: block; color: #d4c391; font-size: 11px; line-height: 1.5; margin-top: 5px; }
+.ship-service-reason:empty { display: none; }
+.ship-inspection-record { padding: 14px; margin-bottom: 20px; border-left: 2px solid #b6cda3; background: #15312c80; }
+.ship-inspection-record h3 { color: #e0e9ce; font-size: 17px; line-height: 1.4; margin: 0 0 14px; }
+.ship-inspection-record dl { display: grid; gap: 12px; margin: 0; }.ship-inspection-record dl > div { display: grid; gap: 3px; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }.ship-inspection-record dt { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }.ship-inspection-record p:last-child { margin: 12px 0 0; color: #b6c8bb; font-size: 11px; line-height: 1.5; }
+.ship-interface .ship-service-button.is-selected { border-color: #c1d6a6; background: #2a473bee; box-shadow: inset 3px 0 #bfd39a; }
+.ship-service-button .ship-service-source { color: #b4c3a6; font-size: 9px; letter-spacing: .06em; }
+.ship-interface .ship-service-button[data-service-id^='select_transport_'] { padding: 10px 14px; }
+.ship-recovery-notice { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; padding: 14px 16px; margin-top: 18px; border-left: 3px solid #e9bc76; background: #6d361b59; }
+.ship-recovery-notice.hidden { display: none !important; }
+.ship-recovery-notice > div { flex: 1 1 240px; }.ship-recovery-notice strong { color: #f2d19c; font-size: 11px; letter-spacing: .06em; }.ship-recovery-notice p { margin: 5px 0 0; color: #e4d4b9; font-size: 12px; line-height: 1.5; }
+.ship-interface .ship-recovery-notice button { border-color: #c0a274; color: #f2dfb7; background: #473926; font-size: 10px; }
+.ship-player-panel { padding-left: 24px; border-left: 1px solid #53857266; min-width: 0; }
+.ship-vitals, .ship-record-summary, .ship-personal-record dl { margin: 0; display: grid; gap: 10px; }
+.ship-vitals > div, .ship-record-summary > div, .ship-personal-record dl > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 14px; font-size: 13px; line-height: 1.4; }
+.ship-panel dt { color: #bdd0c5; }.ship-panel dd { margin: 0; color: #e2ecd7; font-weight: 600; }
+.ship-medical-status { margin: 14px 0 18px; color: #c4d3a4; font-size: 11px; line-height: 1.5; }
+.ship-record-summary { border-top: 1px solid #53857266; padding-top: 15px; }
+.ship-personal-record { margin-top: 18px; font-size: 12px; }.ship-personal-record summary { color: #b9d4c3; padding: 7px 0; cursor: pointer; }.ship-personal-record dl { margin-top: 10px; }
+.ship-dialog-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; border-top: 1px solid #53857266; padding-top: 16px; }
+.ship-dialog-footer p, .ship-service-description, .ship-trophy-record p { color: #b8cbbf; font-size: 12px; line-height: 1.6; margin: 0; }
+.ship-dialog-footer button span { color: #b0c9b9; font-size: 10px; }.ship-trophy-record h3 { font-size: 13px; color: #d9e6c7; margin: 18px 0 6px; }
+.ship-console-notice { color: #e2d39c; font-size: 13px; line-height: 1.5; margin: 14px 0 0; }.ship-console-notice:empty { display: none; }
+.ship-empty { color: #c6d7cb; font-size: 13px; line-height: 1.6; }
+.ship-zone-hud { pointer-events: auto; position: absolute; bottom: 90px; left: 50%; transform: translateX(-50%); width: min(420px, 65vw); display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 7px 10px 7px 14px; background: #07191bd9; border: 1px solid #68958799; border-radius: 3px; }
+#ship-zone-label { color: #d1e0d2; font-size: 12px; line-height: 1.4; }
+.ship-zone-hud button, .ship-waypoint-hud button { pointer-events: auto; min-height: 44px; min-width: 44px; margin: 0; border: 1px solid #7b9e8f; border-radius: 3px; background: #17342ee8; color: #e6ecd8; font-size: 11px; padding: 6px 10px; cursor: pointer; }.ship-zone-hud button span { font-size: 9px; color: #bdd0bb; }
+.ship-waypoint-hud { position: absolute; bottom: 166px; left: 50%; transform: translateX(-50%); width: min(420px, 65vw); display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-left: 3px solid #d9bc7e; background: #07191bd9; color: #ddedda; }
+.ship-waypoint-hud > div { min-width: 0; flex: 1; display: grid; gap: 3px; }.ship-waypoint-kicker { font-size: 8px; letter-spacing: .12em; color: #c6c398; }#ship-waypoint-label { font-size: 13px; line-height: 1.4; }#ship-waypoint-hint { font-size: 9px; line-height: 1.4; color: #b6cbc0; }#ship-waypoint-distance { font-size: 15px; white-space: nowrap; color: #e7d49a; }
+#hud-container.ship-hub-mode :is(#hud-right,#gadget-rack,#weapon-selector,#cloak-status-card,#canopy-badge,#tri-laser-container,#lockon-bracket,#hud-top) { display: none !important; }
+#hud-container.ship-hub-mode #hud-left { top: 20px; left: 20px; width: 200px; gap: 6px; }
+#hud-container.ship-hub-mode .stat-group { padding: 6px 9px; background: #061417a8; border-color: #618a7b66; }
+#hud-container.ship-hub-mode .stat-header { font-size: 10px; margin-bottom: 4px; }
+#hud-container.ship-hub-mode .stat-bar-bg { height: 5px; }
+#ship-exploration-hud { position: absolute; bottom: 90px; left: 50%; transform: translateX(-50%); width: min(480px, 65vw); display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+#ship-exploration-hud :is(.ship-zone-hud,.ship-waypoint-hud) { position: static; width: 100%; transform: none; box-sizing: border-box; }
+#ship-exploration-hud .ship-waypoint-hud { order: -1; }
+.ship-zone-hud button { flex-shrink: 0; }
+@media (max-width: 700px) {
+  .ship-interface { padding: 10px; }.ship-panel { max-height: calc(100dvh - 20px); padding: 17px; }
+  .ship-dialog-header { gap: 10px; padding-bottom: 14px; }.ship-dialog-title { font-size: 20px; }.ship-eyebrow { font-size: 8px; }.ship-close { padding: 8px !important; font-size: 10px !important; }
+  .ship-navigation-layout, .ship-console-body { grid-template-columns: minmax(0, 1fr); gap: 18px; padding-top: 17px; }
+  .ship-plan { max-height: 32dvh; }.ship-destination-panel { gap: 10px; }.ship-destination-name { font-size: 17px; }.ship-route-distance { font-size: 22px; }.ship-route-status { min-height: 0; }
+  .ship-player-panel { padding: 17px 0 0; border-left: none; border-top: 1px solid #53857266; }.ship-service-button strong { font-size: 14px; }
+  .ship-dialog-footer { align-items: flex-start; flex-direction: column; gap: 10px; }.ship-interface .ship-dialog-footer button { width: 100%; }
+  .ship-zone-hud, .ship-waypoint-hud { left: 8px; right: 8px; width: auto; transform: none; }.ship-zone-hud { bottom: 166px; }.ship-waypoint-hud { bottom: 238px; }
+  #hud-container.ship-hub-mode #hud-left { top: 8px; left: 8px; width: min(180px, 46vw); gap: 4px; }
+  #hud-container.ship-hub-mode .stat-group { padding: 5px 7px; }
+  #hud-container.ship-hub-mode .stat-header { font-size: 9px; }
+  #ship-exploration-hud { bottom: 166px; left: 8px; right: 8px; width: auto; transform: none; }
+}
+@media (max-height: 440px) and (min-width: 500px) {
+  .ship-interface { padding: 8px; }.ship-panel { max-height: calc(100dvh - 16px); padding: 15px; }.ship-navigation-layout, .ship-console-body { grid-template-columns: minmax(0, 1fr) minmax(220px, 1fr); gap: 16px; }.ship-plan { max-height: 55dvh; }.ship-zone-hud { bottom: 8px; left: 50%; right: auto; width: min(290px, 45vw); transform: translateX(-50%); }.ship-waypoint-hud { bottom: 77px; left: 50%; right: auto; width: min(290px, 45vw); transform: translateX(-50%); }
+  #ship-exploration-hud { bottom: 8px; left: 50%; right: auto; width: min(290px, 45vw); transform: translateX(-50%); }
+}

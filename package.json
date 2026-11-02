@@ -13,7 +13,11 @@
     "test": "node --test tests/*.test.js",
     "check": "npm run test && npm run build",
     "test:browser": "node scripts/qa-browser.cjs",
-    "test:graphics": "node scripts/qa-graphics.cjs"
+    "test:graphics": "node scripts/qa-graphics.cjs",
+    "test:coherence": "node scripts/qa-coherence.cjs",
+    "test:catalogue": "node scripts/qa-catalogue.cjs",
+    "test:ship": "node scripts/qa-ship.cjs && node scripts/qa-ship-interactions.cjs",
+    "test:npc-visuals": "node scripts/qa-npc-visuals.cjs"
   },
   "dependencies": {
     "@fontsource/orbitron": "5.3.0",

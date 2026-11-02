@@ -83,7 +83,7 @@ test('le hub expose des limites, colliders et quatre stations déterministes', (
   ]);
   assert.ok(hub.colliders.length >= 20);
   assert.equal(hub.getNearbyStation(new THREE.Vector3(0, 0, -5)).interactionType, 'contracts');
-  assert.equal(hub.getNearbyStation(new THREE.Vector3(13, 0, 18)).interactionType, 'forge');
+  assert.equal(hub.getNearbyStation(hub.getStation('armory-forge').approachPosition).interactionType, 'forge');
   assert.equal(hub.getNearbyStation(new THREE.Vector3(0, 0, 20)), null);
 
   const aisle = new THREE.Vector3(0, 4, 20);
@@ -184,65 +184,53 @@ test('l’exploration met à jour le joueur, applique le clamp et rafraîchit ca
   assert.equal(game.updateHubExploration(0.25), false);
 });
 
-test('E active les stations du hub et Échap rouvre la console des contrats', () => {
+test('E ouvre le poste sans effet implicite, puis le service choisi agit et Échap rend les commandes', () => {
   const game = Object.create(Game.prototype);
-  const openedTabs = [];
-  const logs = [];
-  let station = {
-    id: 'armory-forge',
-    interactionType: 'forge',
-    prompt: 'ACCÉDER À LA FORGE [E]',
-  };
-  game.isGameStarted = true;
-  game.isPaused = false;
-  game.gameState = 'HUB';
-  game.isHubExploring = true;
-  game.keyboardInputDir = { x: 0, z: 0, isSprinting: false };
-  game.gamepadAxes = { x: 0, z: 0 };
-  game.inputDir = { x: 0, z: 0, isSprinting: false };
-  game.player = { position: new THREE.Vector3(), completedHunts: ['goliath'] };
-  game.hub = {
-    getNearbyStation: () => station,
-    setTrophyState() {},
-    trophyDisplays: new Map([
-      ['goliath', { userData: { unlocked: true } }],
-      ['xeno_queen', { userData: { unlocked: false } }],
-    ]),
-    vehicleDisplays: [
-      { userData: { vehicleKind: 'scout' } },
-      { userData: { vehicleKind: 'shuttle' } },
-      { userData: { vehicleKind: 'pod' } },
-    ],
-  };
-  game.hud = {
-    updateVitals() {},
-    showActionPrompt(prompt) { this.prompt = prompt; },
-    hideActionPrompt() {},
-    showLogMessage(message) { logs.push(message); },
-  };
-  game.showMissionSelectionModal = (tab) => openedTabs.push(tab);
-
+  const openedTabs = [], logs = [];
+  let station = { id: 'armory-forge', interactionType: 'forge', prompt: 'ACCÉDER À LA FORGE [E]' };
+  let open = false, context, dispatch, saves = 0;
+  Object.assign(game, { isGameStarted: true, isPaused: false, gameState: 'HUB', isHubExploring: true,
+    keyboardInputDir: { x: 0, z: 0, isSprinting: false }, gamepadAxes: { x: 0, z: 0 },
+    inputDir: { x: 0, z: 0, isSprinting: false },
+    player: { position: new THREE.Vector3(), completedHunts: ['goliath'], honorScore: 125 },
+    saveProgress() { saves++; },
+    hub: { getNearbyStation: () => station, getStation: id => id === station.id ? station : null,
+      getStations: () => [station] },
+    hud: { setShipInterfaceActionHandler(handler) { dispatch = handler; },
+      showShipConsole(value) { context = value; open = true; return true; },
+      isShipInterfaceOpen: () => open, hideShipInterfaces() { open = false; },
+      updateVitals() {}, showActionPrompt(prompt) { this.prompt = prompt; }, hideActionPrompt() {},
+      showLogMessage(message) { logs.push(message); } },
+  });
+  game.showMissionSelectionModal = tab => { openedTabs.push(tab); game.isHubExploring = false; };
+  const visit = next => { game.shipInterface?.hide(); station = next; game.isHubExploring = true; game.attemptHubInteraction(); };
   game.onKeyDown({ code: 'KeyE', repeat: false });
+  assert.equal(context.station.id, 'armory-forge');
+  assert.deepEqual(openedTabs, [], 'opening a station must not choose a service or change resources');
+  assert.equal(dispatch({ type: 'service', stationId: station.id, serviceId: 'armory' }), true);
   assert.deepEqual(openedTabs, ['armory']);
-
-  station = { id: 'mission-nexus', interactionType: 'contracts', prompt: 'CONTRATS [E]' };
-  game.attemptHubInteraction();
+  visit({ id: 'mission-nexus', interactionType: 'contracts', prompt: 'CONTRATS [E]' });
+  dispatch({ type: 'service', stationId: station.id, serviceId: 'contracts' });
   assert.deepEqual(openedTabs, ['armory', 'missions']);
-
-  station = { id: 'trophy-vault', interactionType: 'trophies', prompt: 'TROPHÉES [E]' };
-  game.attemptHubInteraction();
-  assert.match(logs.at(-1), /1\/2 TROPHÉES/);
-
-  station = { id: 'vehicle-hangar', interactionType: 'hangar', prompt: 'HANGAR [E]' };
-  game.attemptHubInteraction();
-  assert.match(logs.at(-1), /ÉCLAIREUR · NAVETTE · POD DE TRAQUE/);
+  visit({ id: 'trophy-vault', interactionType: 'trophies', prompt: 'TROPHÉES [E]' });
+  assert.equal(context.station.interactionType, 'trophies');
+  assert.deepEqual(game.player.completedHunts, ['goliath']);
+  dispatch({ type: 'service', stationId: station.id, serviceId: 'codex' });
+  assert.equal(openedTabs.at(-1), 'codex');
+  visit({ id: 'vehicle-hangar', interactionType: 'hangar', prompt: 'HANGAR [E]' });
+  assert.equal(dispatch({ type: 'service', stationId: station.id, serviceId: 'select_transport_pod' }), true);
+  assert.equal(game.shipInterface.services.getDeploymentTransport().kind, 'pod');
+  assert.equal(game.player.honorScore, 125);
+  assert.equal(saves, 1);
   assert.equal(game.updateHubHUD(), station);
   assert.equal(game.hud.prompt, 'HANGAR [E]');
-
   let prevented = false;
-  game.onKeyDown({ code: 'Escape', repeat: false, preventDefault() { prevented = true; } });
-  assert.equal(prevented, true);
-  assert.equal(openedTabs.at(-1), 'missions');
+  const escape = { code: 'Escape', repeat: false, preventDefault() { prevented = true; } };
+  game.onKeyDown(escape);
+  assert.equal(open, false); assert.equal(game.isHubExploring, true);
+  assert.equal(openedTabs.at(-1), 'codex');
+  game.onKeyDown(escape);
+  assert.equal(prevented, true); assert.equal(openedTabs.at(-1), 'missions');
 });
 
 test('le CTA d’exploration est exposé avec aide clavier et styles dédiés', () => {

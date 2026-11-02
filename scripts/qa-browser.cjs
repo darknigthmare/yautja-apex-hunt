@@ -54,6 +54,47 @@ async function inspectOrganicBody({ label, phase }) {
   };
 }
 
+// A deliberate QA placement reaches the physical control panel; E and the
+// service button remain real browser input. Inspection must not prepare a hunt.
+async function prepareAtPhysicalContract(page, huntId, { mobile = false } = {}) {
+  const before = await page.evaluate(huntId => {
+    const g = window.__YAUTJA_APEX_HUNT__;
+    const station = g.hub.missionStations.find(item => item.huntId === huntId);
+    if (!station) throw new Error(`Contrat physique absent : ${huntId}`);
+    g.player.position.copy(station.approachPosition ?? station.position);
+    g.hub.constrainPlayer(g.player.position, 1.8);
+    g.player.mesh.position.copy(g.player.position); g.updateHubHUD();
+    return { stationId: station.id, pending: JSON.stringify(g.pendingHunt ?? null) };
+  }, huntId);
+  if (mobile) await page.locator('#btn-touch-hub-interact').tap();
+  else await page.keyboard.press('KeyE');
+  await page.locator('#ship-console-dialog:not(.hidden)').waitFor();
+  const inspected = await page.evaluate(() => {
+    const g = window.__YAUTJA_APEX_HUNT__;
+    g.onKeyDown({ code: 'KeyW', repeat: false, preventDefault() {} });
+    return { state: g.gameState, stationId: g.shipInterface.stationId,
+      pending: JSON.stringify(g.pendingHunt ?? null), input: { ...g.inputDir },
+      archiveVisible: !document.getElementById('mission-modal').classList.contains('hidden') };
+  });
+  assert.equal(inspected.state, 'HUB');
+  assert.equal(inspected.stationId, before.stationId);
+  assert.equal(inspected.pending, before.pending, 'E doit inspecter le contrat sans le préparer automatiquement');
+  assert.equal(inspected.archiveVisible, false);
+  assert.equal(inspected.input.x, 0); assert.equal(inspected.input.z, 0);
+  await page.locator('#ship-console-dialog [data-service-id="prepare_hunt"]').click();
+  await page.locator('#mission-modal:not(.hidden)').waitFor();
+  const prepared = await page.evaluate(() => {
+    const g = window.__YAUTJA_APEX_HUNT__;
+    return { state: g.gameState, pending: g.pendingHunt, exploring: g.isHubExploring,
+      consoleOpen: g.hud.isShipInterfaceOpen() };
+  });
+  assert.equal(prepared.state, 'HUB'); assert.equal(prepared.exploring, false);
+  assert.equal(prepared.pending?.huntType, huntId);
+  assert.equal(prepared.pending?.simulationContext, null);
+  assert.equal(prepared.consoleOpen, false);
+  return { fixture: 'placement au poste physique', inspected, prepared };
+}
+
 (async () => {
   const artifacts = process.env.QA_ARTIFACT_DIR || '/tmp/yautja-qa/final';
   fs.mkdirSync(artifacts, { recursive: true });
@@ -107,8 +148,18 @@ async function inspectOrganicBody({ label, phase }) {
       if (mobile) assert.equal(briefing.columns, 1, 'briefing mobile doit rester lisible sur une colonne');
       console.log(`[QA] ${label}: briefing vérifié`);
       await page.locator('#btn-start-game').click();
-      await page.locator('#mission-modal:not(.hidden)').waitFor();
+      await page.waitForFunction(() => window.__YAUTJA_APEX_HUNT__.isHubExploring === true);
+      assert.equal(await page.locator('#mission-modal').isVisible(), false, 'le démarrage doit entrer directement dans le croiseur 3D');
+      assert.equal(await page.locator('#hud-container').evaluate(node => node.classList.contains('ship-hub-mode')), true);
+      for (const selector of ['#hud-right', '#gadget-rack', '#weapon-selector']) {
+        assert.equal(await page.locator(selector).isVisible(), false, `${label}: le HUD du croiseur doit masquer ${selector}`);
+      }
+      await page.locator('#btn-ship-navigation').waitFor({ state: 'visible' });
+      assert.equal(await page.locator('#btn-ship-navigation').isVisible(), true);
+      assert.equal(await page.locator('#btn-ship-medicomp').isVisible(), true);
       if (!mobile) {
+        await page.keyboard.press('Escape');
+        await page.locator('#mission-modal:not(.hidden)').waitFor();
         await page.locator('#tab-btn-options').click();
         await page.locator('#setting-graphics-quality').selectOption('performance');
         assert.equal(await page.evaluate(() => window.__YAUTJA_APEX_HUNT__.graphics.quality), 'performance');
@@ -118,8 +169,8 @@ async function inspectOrganicBody({ label, phase }) {
         await page.locator('#setting-hud-scale').press('End');
         assert.equal(await page.evaluate(() => window.__YAUTJA_APEX_HUNT__.settings.hudScale), 1.25);
         await page.locator('#tab-btn-missions').click();
+        await page.locator('#btn-explore-hub').click();
       }
-      await page.locator('#btn-explore-hub').click();
       assert.equal(await page.evaluate(() => window.__YAUTJA_APEX_HUNT__.isHubExploring), true);
       await recordOrganicBody(page, label, 'hub-explore');
       if (mobile) {
@@ -135,7 +186,9 @@ async function inspectOrganicBody({ label, phase }) {
       if (mobile) await page.locator('#btn-touch-hub-console').tap();
       else await page.keyboard.press('Escape');
       await page.locator('#mission-modal:not(.hidden)').waitFor();
-      await page.locator('.btn-launch-hunt[data-hunt="goliath"]').click();
+      await page.locator('#btn-explore-hub').click();
+      const physicalContract = await prepareAtPhysicalContract(page, 'goliath', { mobile });
+      outcomes.push({ label, physicalContract });
       await page.locator('#btn-loadout-deploy').click();
       await page.waitForFunction(() => window.__YAUTJA_APEX_HUNT__.gameState === 'HUNT');
       await recordOrganicBody(page, label, 'initial-hunt');
@@ -295,7 +348,9 @@ async function inspectOrganicBody({ label, phase }) {
         && document.getElementById('fatal-error').classList.contains('hidden');
     }), true, 'le jeu doit démarrer et prévenir sans fatal quand le stockage est refusé');
     await storagePage.locator('#btn-start-game').click();
-    await storagePage.locator('.btn-launch-hunt[data-hunt="goliath"]').click();
+    await storagePage.waitForFunction(() => window.__YAUTJA_APEX_HUNT__.isHubExploring === true);
+    const storageContract = await prepareAtPhysicalContract(storagePage, 'goliath');
+    outcomes.push({ label: 'storage-disabled', physicalContract: storageContract });
     await storagePage.locator('#btn-loadout-deploy').click();
     assert.equal(await storagePage.evaluate(() => window.__YAUTJA_APEX_HUNT__.gameState), 'HUNT');
     await recordOrganicBody(storagePage, 'storage-disabled', 'initial-hunt');

@@ -25,6 +25,9 @@ import { getEquippedLoadoutItemIds } from './gameplay/HuntLoadoutSystem.js';
 import { getEquipmentIconSvg } from './ui/EquipmentIcons.js';
 import { getHuntCardLogo } from './ui/CanonLogosAndEmblems.js';
 import { formatWorldDistance } from './ui/distanceFormat.js';
+import { setupCatalogueBrowsers } from './ui/CatalogueBrowser.js';
+import { ShipNavigationView } from './ui/ShipNavigationView.js';
+import { ShipConsoleView } from './ui/ShipConsoleView.js';
 import {
   MEDIA_COVERAGE_CATALOG,
   MEDIA_PROVENANCE_TIERS,
@@ -55,6 +58,7 @@ function normalizeMeter(value, maxValue) {
 
 export class HUDManager {
   constructor() {
+    this.hudContainer = document.getElementById('hud-container');
     this.visionOverlay = document.getElementById('vision-overlay');
     this.visionModeDisplay = document.getElementById('vision-mode-display');
     this.honorRankDisplay = document.getElementById('honor-rank-display');
@@ -169,6 +173,55 @@ export class HUDManager {
     this.renderExpandedContentCatalog();
     this.renderMediaCoverageCatalog();
     this.updateContentCatalogCounts();
+    this.catalogueBrowsers = setupCatalogueBrowsers(document);
+    this.shipNavigationView = new ShipNavigationView({ root: document.getElementById('ship-navigation-dialog'), onAction: action => this.shipInterfaceActionHandler?.(action) });
+    this.shipConsoleView = new ShipConsoleView({ root: document.getElementById('ship-console-dialog'), onAction: action => this.shipInterfaceActionHandler?.(action) });
+    this.shipZoneHUD = document.getElementById('ship-zone-hud');
+    this.shipZoneLabel = document.getElementById('ship-zone-label');
+    this.shipWaypointHUD = document.getElementById('ship-waypoint-hud');
+    this.shipWaypointLabel = document.getElementById('ship-waypoint-label');
+    this.shipWaypointDistance = document.getElementById('ship-waypoint-distance');
+    this.shipWaypointHint = document.getElementById('ship-waypoint-hint');
+    document.getElementById('btn-ship-navigation')?.addEventListener('click', () => this.shipInterfaceActionHandler?.({ type: 'navigation' }));
+    document.getElementById('btn-ship-medicomp')?.addEventListener('click', () => this.shipInterfaceActionHandler?.({ type: 'medicomp' }));
+    document.getElementById('btn-ship-waypoint-clear')?.addEventListener('click', () => this.shipInterfaceActionHandler?.({ type: 'waypoint', stationId: null }));
+  }
+
+  setShipInterfaceActionHandler(handler) { this.shipInterfaceActionHandler = typeof handler === 'function' ? handler : null; }
+
+  showShipNavigation(context) {
+    this.shipConsoleView?.close();
+    return this.shipNavigationView?.show(context) ?? false;
+  }
+
+  showShipConsole(context) {
+    this.shipNavigationView?.close();
+    return this.shipConsoleView?.show(context) ?? false;
+  }
+
+  hideShipInterfaces(options = {}) {
+    this.shipNavigationView?.close(options); this.shipConsoleView?.close(options);
+  }
+
+  isShipInterfaceOpen() { return Boolean(this.shipNavigationView?.isOpen || this.shipConsoleView?.isOpen); }
+
+  updateShipHUD({ hub, player, waypointStationId = null, route = null, visible = true } = {}) {
+    const show = Boolean(visible && hub && player);
+    this.shipZoneHUD?.classList.toggle('hidden', !show);
+    this.shipConsoleView?.refresh({ player });
+    this.shipNavigationView?.refresh({ player });
+    if (!show) { this.shipWaypointHUD?.classList.add('hidden'); return; }
+    this.updateHubZoneInfo(hub.getZoneAt?.(player.position));
+    const station = waypointStationId ? hub.getStation?.(waypointStationId)
+      ?? hub.getStations?.().find(item => item.id === waypointStationId) : null;
+    const ready = station && route?.status === 'ready' && route.stationId === station.id && Number.isFinite(route.distanceUnits);
+    this.shipWaypointHUD?.classList.toggle('hidden', !station);
+    if (station) {
+      this.setText(this.shipWaypointLabel, station.label);
+      this.setText(this.shipWaypointDistance, ready ? formatWorldDistance(route.distanceUnits, { fractionDigits: 1 }) : 'Trajet indisponible');
+      this.setText(this.shipWaypointHint, ready ? route.distanceUnits <= (station.interactionRadius ?? 4.5)
+        ? 'POSTE À PORTÉE · INTERAGIR [E / A]' : 'SUIVRE LE REPÈRE DANS LES COURSIVES' : 'OUVREZ LE PLAN POUR CHOISIR UN AUTRE POSTE');
+    }
   }
 
   commit(element, key, value, mutate) {
@@ -594,6 +647,7 @@ export class HUDManager {
 
   updateBossStatus(boss, huntType, isSpotted = true) {
     if (!boss) return;
+    this.setTargetType(huntType);
     this.setClassState(this.bossCard, 'hidden', false);
 
     const definition = HUNT_DEFINITIONS[huntType] ?? HUNT_DEFINITIONS.goliath;
@@ -672,13 +726,20 @@ export class HUDManager {
   }
 
   showHubTarget(zoneLabel = 'VAISSEAU-MÈRE YAUTJA — SALLE DES TROPHÉES') {
+    if (this.hudContainer) this.setClassState(this.hudContainer, 'ship-hub-mode', true);
     this.setClassState(this.bossCard, 'hidden', true);
     this.setClassState(this.directiveHud, 'hidden', true);
     this.hideLevelEventObjective();
     this.setText(this.targetScannedName, zoneLabel);
   }
 
+  setTargetType(type) {
+    if (type === 'HUB' || type === 'hub') return this.showHubTarget();
+    if (this.hudContainer) this.setClassState(this.hudContainer, 'ship-hub-mode', false);
+  }
+
   updateHubZoneInfo(zone) {
+    this.setText(this.shipZoneLabel, zone?.label ?? 'Coursives du croiseur');
     if (!zone) {
       this.setText(this.targetScannedName, 'VAISSEAU-MÈRE YAUTJA — TRANSIT');
       return;

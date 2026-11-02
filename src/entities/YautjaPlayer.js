@@ -300,6 +300,9 @@ export class YautjaPlayer {
     this.currentPerchNode = null;
     this.isAcidCorroded = false;
     this.acidTimer = 0;
+    this.medicalAcidImmunityTimer = 0;
+    this.shipboardSafe = false;
+    this.requiresMedicalRecovery = false;
     this.isBleeding = false;
     this.medbayInventory = createMedbayInventoryState({ isMothership: false });
     this.roarUsed = false;
@@ -2011,6 +2014,14 @@ export class YautjaPlayer {
     }
     return variant;
   }
+
+  getWeaponRuntimeProfile(weaponId) {
+    const variant = getArmorPresetWeaponTechVariant(this.customization?.armorPresetId, weaponId);
+    return { damageMultiplier: 1, cooldownMultiplier: 1, energyCostMultiplier: 1, projectileSpeedMultiplier: 1,
+      rangeMultiplier: 1, burstCount: 1, snareDurationMultiplier: 1, healingEfficiencyMultiplier: 1,
+      sutureSpeedMultiplier: 1, acidPurgeBonus: 0, immunityDurationSeconds: 0,
+      ...variant?.modifiers, variantId: variant?.id ?? null };
+  }
   applyCustomization(next = {}) {
     const preserveCloak = this.isCloaked;
     if (preserveCloak) this.restoreCloakMaterials();
@@ -2394,7 +2405,7 @@ export class YautjaPlayer {
   }
 
   applyAcidCorrosion() {
-    if (this.hasAntiAcidCloak || this.craftedAcidResistanceRatio >= 1) return false;
+    if (this.hasAntiAcidCloak || this.craftedAcidResistanceRatio >= 1 || this.medicalAcidImmunityTimer > 0) return false;
     if (this.isCloaked) this.toggleCloak();
     this.isAcidCorroded = true;
     this.acidTimer = 5.0;
@@ -2476,7 +2487,8 @@ export class YautjaPlayer {
   }
 
   attack(targetPos) {
-    if (this.isAttacking || this.isHealing || this.inQTE) return;
+    if (this.isAttacking || this.isHealing || this.inQTE || this.isDead || this.isSelfDestructing || this.shipboardSafe) return;
+    if (this.selectedWeapon === 6) return 'medicomp';
     this.meleeDamageMultiplier = this.hunterClassMeleeMultiplier ?? 1;
 
     if (this.isPerched) {
@@ -2499,12 +2511,14 @@ export class YautjaPlayer {
       return 'wristblades';
     }
     else if (this.selectedWeapon === 2) {
-      if (this.energy < 25) return;
-      this.energy -= 25;
+      const profile = this.getWeaponRuntimeProfile('plasmacaster_single');
+      const cost = 25 * profile.energyCostMultiplier;
+      if (this.energy < cost) return;
+      this.energy -= cost;
       this.isAttacking = true;
       audioSynth.playPlasmacasterBlast();
       this.firePlasmaBall(targetPos);
-      this.attackTimer = 0.6 * (this.craftedEquipmentPerks?.plasmaCooldownMultiplier ?? 1);
+      this.attackTimer = 0.6 * profile.cooldownMultiplier * (this.craftedEquipmentPerks?.plasmaCooldownMultiplier ?? 1);
     }
     else if (this.selectedWeapon === 3) {
       this.isAttacking = true;
@@ -2519,19 +2533,14 @@ export class YautjaPlayer {
       this.attackTimer = 0.5;
     }
     else if (this.selectedWeapon === 5) {
-      if (this.energy < 15) return;
-      this.energy -= 15;
+      const profile = this.getWeaponRuntimeProfile('netgun');
+      const cost = 15 * profile.energyCostMultiplier;
+      if (this.energy < cost) return;
+      this.energy -= cost;
       this.isAttacking = true;
       audioSynth.playSpearThrow();
       this.fireNetgun(targetPos);
-      this.attackTimer = 0.5;
-    }
-    else if (this.selectedWeapon === 6) {
-      if (this.energy < 50 || this.health >= this.maxHealth) return;
-      this.energy -= 50;
-      this.isHealing = true;
-      audioSynth.playMedicompHeal();
-      this.healTimer = 1.2;
+      this.attackTimer = 0.5 * profile.cooldownMultiplier;
     }
     else if (this.selectedWeapon === 7) {
       if (this.energy < 20) return;
@@ -2539,9 +2548,11 @@ export class YautjaPlayer {
       this.deployPlasmaMine();
     }
     else if (this.selectedWeapon === 8) {
+      const profile = this.getWeaponRuntimeProfile('whip_thorns');
       this.isAttacking = true;
+      this.meleeDamageMultiplier *= profile.damageMultiplier;
       audioSynth.playWhipSlash();
-      this.attackTimer = 0.4;
+      this.attackTimer = 0.4 * profile.cooldownMultiplier;
       return 'whip_slash';
     }
     else if (this.selectedWeapon === 9) {
@@ -2553,12 +2564,14 @@ export class YautjaPlayer {
       this.attackTimer = 0.45;
     }
     else if (this.selectedWeapon === 0) {
-      if (this.energy < 10) return;
-      this.energy -= 10;
+      const profile = this.getWeaponRuntimeProfile('speargun');
+      const cost = 10 * profile.energyCostMultiplier;
+      if (this.energy < cost) return;
+      this.energy -= cost;
       this.isAttacking = true;
       audioSynth.playSpearThrow();
       this.fireSpeargunBolt(targetPos);
-      this.attackTimer = 0.35;
+      this.attackTimer = 0.35 * profile.cooldownMultiplier;
     }
     else if (this.selectedWeapon === 10) {
       if (this.energy < 9) return;
@@ -2683,22 +2696,26 @@ export class YautjaPlayer {
   firePlasmaBall(targetPos) {
     const spawnPos = new THREE.Vector3();
     this.plasmacasterMesh.getWorldPosition(spawnPos);
-
-    if (this.hasTriBeam) {
-      for (let offset of [-0.3, 0, 0.3]) {
+    const profile = this.getWeaponRuntimeProfile('plasmacaster_single');
+    const shots = this.hasTriBeam ? 3 : Math.max(1, Math.floor(profile.burstCount));
+    if (shots > 1) {
+      for (let index = 0; index < shots; index++) {
+        const offset = (index - (shots - 1) / 2) * (this.hasTriBeam ? 0.3 : 0.035);
         const ball = new THREE.Mesh(new THREE.SphereGeometry(0.8, 16, 16), ShaderManager.createPlasmaMaterial());
         ball.position.copy(spawnPos);
         const dir = targetPos.clone().sub(spawnPos).normalize();
         dir.x += offset;
         dir.normalize();
-        this.projectiles.push({ mesh: ball, dir, speed: 65, type: 'plasma', damage: 40, lifetime: 3.0 });
+        this.projectiles.push({ mesh: ball, dir, speed: 65 * profile.projectileSpeedMultiplier, type: 'plasma',
+          damage: (this.hasTriBeam ? 40 : 45) * profile.damageMultiplier, lifetime: 3.0, variantId: profile.variantId });
         this.scene.add(ball);
       }
     } else {
       const ball = new THREE.Mesh(new THREE.SphereGeometry(0.8, 16, 16), ShaderManager.createPlasmaMaterial());
       ball.position.copy(spawnPos);
       const dir = targetPos.clone().sub(spawnPos).normalize();
-      this.projectiles.push({ mesh: ball, dir, speed: 65, type: 'plasma', damage: 45, lifetime: 3.0 });
+      this.projectiles.push({ mesh: ball, dir, speed: 65 * profile.projectileSpeedMultiplier, type: 'plasma',
+        damage: 45 * profile.damageMultiplier, lifetime: 3.0, variantId: profile.variantId });
       this.scene.add(ball);
     }
   }
@@ -2907,7 +2924,10 @@ export class YautjaPlayer {
     net.position.copy(this.mesh.position).add(new THREE.Vector3(0, 4, 0));
     const dir = targetPos.clone().sub(net.position).normalize();
     net.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir);
-    this.projectiles.push({ mesh: net, dir, speed: 45, type: 'net', damage: 15, isNet: true, lifetime: 3.0 });
+    const profile = this.getWeaponRuntimeProfile('netgun');
+    this.projectiles.push({ mesh: net, dir, speed: 45 * profile.projectileSpeedMultiplier, type: 'net',
+      damage: 15 * profile.damageMultiplier, isNet: true, lifetime: 3.0 * profile.rangeMultiplier,
+      netDurationMultiplier: profile.snareDurationMultiplier, variantId: profile.variantId });
     this.scene.add(net);
   }
 
@@ -2940,7 +2960,9 @@ export class YautjaPlayer {
     bolt.position.copy(this.mesh.position).add(new THREE.Vector3(0, 4.25, 0));
     const dir = targetPos.clone().sub(bolt.position).normalize();
     bolt.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
-    this.projectiles.push({ mesh: bolt, dir, speed: 118, type: 'speargun', damage: 88, lifetime: 2.4 });
+    const profile = this.getWeaponRuntimeProfile('speargun');
+    this.projectiles.push({ mesh: bolt, dir, speed: 118 * profile.projectileSpeedMultiplier, type: 'speargun',
+      damage: 88 * profile.damageMultiplier, lifetime: 2.4, variantId: profile.variantId });
     this.scene.add(bolt);
   }
 
@@ -3060,8 +3082,10 @@ export class YautjaPlayer {
     return true;
   }
 
-  takeDamage(amount) {
+  takeDamage(amount, context = {}) {
     if (this.isDead || this.selfDestructComplete) return { damage: 0, absorbed: 0 };
+    const damageType = typeof context === 'string' ? context : context?.type;
+    if (this.shipboardSafe || (damageType === 'acid' && this.medicalAcidImmunityTimer > 0)) return { damage: 0, absorbed: 0, remainingHealth: this.health };
     const incoming = Math.max(0, Number(amount) || 0);
     let absorbed = 0;
     if (this.wristShieldActive && this.wristShieldIntegrity > 0) {
@@ -3128,6 +3152,9 @@ export class YautjaPlayer {
     this.inQTE = false;
     this.qteTimer = 0;
     this.acidTimer = 0;
+    this.medicalAcidImmunityTimer = 0;
+    this.shipboardSafe = false;
+    this.requiresMedicalRecovery = false;
     this.roarUsed = false;
     this.wristShieldTimer = 0;
     this.wristShieldCooldown = 0;
@@ -3150,6 +3177,61 @@ export class YautjaPlayer {
     this.mesh.position.copy(this.position);
     this.mesh.visible = true;
     if (this.mesh.userData) this.mesh.userData.animationState = 'idle';
+  }
+
+  getRecoverySnapshot() {
+    return { health: this.health, energy: this.energy, stamina: this.stamina,
+      isAcidCorroded: this.isAcidCorroded, acidTimer: this.acidTimer,
+      isBleeding: this.isBleeding, wristShieldIntegrity: this.wristShieldIntegrity,
+      requiresMedicalRecovery: this.requiresMedicalRecovery };
+  }
+
+  restoreRecoverySnapshot(snapshot) {
+    for (const [field, maximum] of [['health', this.maxHealth], ['energy', this.maxEnergy], ['stamina', this.maxStamina]]) {
+      this[field] = Number.isFinite(snapshot[field]) ? Math.max(0, Math.min(maximum, snapshot[field])) : maximum;
+    }
+    this.isAcidCorroded = snapshot.isAcidCorroded === true;
+    this.acidTimer = Math.max(0, Number(snapshot.acidTimer) || 0);
+    this.isBleeding = snapshot.isBleeding === true;
+    this.requiresMedicalRecovery = snapshot.requiresMedicalRecovery === true;
+    this.wristShieldIntegrity = Number.isFinite(snapshot.wristShieldIntegrity) ? Math.max(0, Math.min(100, snapshot.wristShieldIntegrity)) : 100;
+  }
+
+  resetForHub(position = new THREE.Vector3()) {
+    const wasIncapacitated = this.isDead || this.isSelfDestructing || this.selfDestructComplete || this.health <= 0;
+    const snapshot = this.getRecoverySnapshot();
+    this.resetForHunt(position);
+    this.restoreRecoverySnapshot(snapshot);
+    // Emergency transfer stabilises, but does not silently replace treatment.
+    if (wasIncapacitated) this.health = 1;
+    this.requiresMedicalRecovery ||= wasIncapacitated;
+    this.shipboardSafe = true;
+    this.activeVisionMode = 'normal';
+    return { wasIncapacitated, requiresMedicalRecovery: this.requiresMedicalRecovery,
+      hasUntreatedWounds: this.isAcidCorroded || this.isBleeding || this.health < this.maxHealth * 0.25 };
+  }
+
+  resetForDeployment(position) {
+    if (this.requiresMedicalRecovery) return { success: false, reason: 'emergency_medical_required' };
+    const snapshot = this.getRecoverySnapshot();
+    this.resetForHunt(position);
+    this.restoreRecoverySnapshot(snapshot);
+    this.shipboardSafe = false;
+    return { success: true, ...snapshot };
+  }
+
+  restoreSavedRecovery() {
+    const state = this.pendingRecoveryState;
+    if (!state) return false;
+    this.restoreRecoverySnapshot({ ...state, health: this.maxHealth * state.healthRatio,
+      energy: this.maxEnergy * state.energyRatio, stamina: this.maxStamina * state.staminaRatio });
+    delete this.pendingRecoveryState;
+    return true;
+  }
+
+  beginMedicalTreatmentAnimation(duration = 1.2) {
+    this.isHealing = true;
+    this.healTimer = Math.max(0, duration);
   }
 
   resolvePlayerAnimationState(hasMovementInput, isSprinting) {
@@ -3345,6 +3427,7 @@ export class YautjaPlayer {
 
   update(delta, inputDir, cameraYaw) {
     if (this.isDead) return;
+    this.medicalAcidImmunityTimer = Math.max(0, this.medicalAcidImmunityTimer - delta);
     const hasMovementInput = inputDir.x !== 0 || inputDir.z !== 0;
     if (this.energy < this.maxEnergy) this.energy = Math.min(this.maxEnergy, this.energy + delta * this.energyRegen);
     if (this.stamina < this.maxStamina && !(inputDir.isSprinting && hasMovementInput)) this.stamina = Math.min(this.maxStamina, this.stamina + delta * (this.staminaRegen ?? 25));
@@ -3395,10 +3478,13 @@ export class YautjaPlayer {
       }
     }
 
+    if (this.isSelfDestructing || this.health <= 0) {
+      this.healTimer = 0;
+      this.isHealing = false;
+    }
     if (this.healTimer > 0) {
       this.healTimer = Math.max(0, this.healTimer - delta);
       if (this.healTimer === 0) {
-        this.health = Math.min(this.maxHealth, this.health + 45);
         this.isHealing = false;
       }
     }
@@ -3408,7 +3494,7 @@ export class YautjaPlayer {
       if (this.qteTimer <= 0) this.resolveQTE(false);
     }
 
-    if (this.isAcidCorroded) {
+    if (this.isAcidCorroded && !this.shipboardSafe) {
       if (this.craftedAcidResistanceRatio >= 1) {
         this.isAcidCorroded = false;
         this.acidTimer = 0;
@@ -3422,7 +3508,7 @@ export class YautjaPlayer {
     if (this.medbayInventory) {
       updateMedbayCooldowns(this.medbayInventory, delta);
     }
-    if (this.isBleeding) {
+    if (this.isBleeding && !this.shipboardSafe) {
       this.takeDamage(delta * 1.5);
     }
 
