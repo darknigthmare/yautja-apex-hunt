@@ -1,6 +1,7 @@
 import CANON_PREY_EXPANSION_V251 from './CanonPreyExpansionV251.js';
+import CANON_PREY_EXPANSION_ALIEN_BASE from './CanonPreyExpansionAlienBase.js';
 import { normalizePreyReference, REFERENCE_FAUNA_FACTION } from './PreyReferenceMetadata.js';
-export { classifyPreyScaleFromMeters, getPreyProvenanceLabel, getPreySourceLabel } from './PreyReferenceMetadata.js';
+export { classifyPreyScaleFromMeters, getPreyProvenanceLabel, getPreySourceLabel } from './PreyReferenceMetadata.js'; b502012 (feat: complete canon lore from alien_base reference, expand bio-forge craftsmanship to 50 items and verify all 5 scales)
 /**
  * PreyTaxonomyAndCrossoverCatalog.js
  * 
@@ -2386,7 +2387,8 @@ export const CANON_PREY_CATALOG = Object.freeze([
     threatStars: 1,
   },
   ...CANON_PREY_EXPANSION_V251.map((p) => ({ ...p, faction: PREY_FACTIONS[p.faction] ?? p.faction })),
-].map((entry) => normalizePreyReference(entry)));
+  ...CANON_PREY_EXPANSION_ALIEN_BASE.map((p) => ({ ...p, faction: PREY_FACTIONS[p.faction] ?? p.faction })),
+].map((entry) => normalizePreyReference(entry))); b502012 (feat: complete canon lore from alien_base reference, expand bio-forge craftsmanship to 50 items and verify all 5 scales)
 
 /**
  * Références de personnages pour les simulations multivers originales.

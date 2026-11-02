@@ -1534,6 +1534,108 @@ export function getCraftsmanshipItemSvg(recipeId, size = 56) {
         </svg>
       `.trim();
 
+    case 'craft_shield_offspring_chitin':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-shield-offspring" role="img" aria-label="Bouclier Offspring">
+          <circle cx="40" cy="40" r="36" fill="#141416" stroke="#b0bec5" stroke-width="2.5" />
+          <polygon points="40,10 65,25 58,62 40,74 22,62 15,25" fill="#263238" stroke="#eceff1" stroke-width="2" />
+          <line x1="40" y1="20" x2="40" y2="65" stroke="#78909c" stroke-width="2.5" />
+          <circle cx="40" cy="38" r="7" fill="#37474f" stroke="#b0bec5" stroke-width="1.5" />
+        </svg>
+      `.trim();
+
+    case 'craft_shield_working_joe_hazard':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-shield-joe" role="img" aria-label="Pavois Seegson Hazmat">
+          <circle cx="40" cy="40" r="36" fill="#1c1a14" stroke="#ffeb3b" stroke-width="2.5" />
+          <rect x="22" y="18" width="36" height="44" rx="6" fill="#37321e" stroke="#fff176" stroke-width="2" />
+          <path d="M40 24 L32 38 L42 38 L36 54 L48 38 L38 38 Z" fill="#ffeb3b" stroke="#fbc02d" stroke-width="1" />
+        </svg>
+      `.trim();
+
+    case 'craft_weapon_neomorph_fang_daggers':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-weapon-neomorph" role="img" aria-label="Dagues Néomorphe">
+          <circle cx="40" cy="40" r="36" fill="#161719" stroke="#cfd8dc" stroke-width="2" />
+          <path d="M28 62 Q34 38 48 18 Q44 42 34 62 Z" fill="#eceff1" stroke="#b0bec5" stroke-width="1.5" />
+          <path d="M52 62 Q46 38 32 18 Q36 42 46 62 Z" fill="#cfd8dc" stroke="#90a4ae" stroke-width="1.5" />
+        </svg>
+      `.trim();
+
+    case 'craft_weapon_dutch_cyborg_blade':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-weapon-dutch" role="img" aria-label="Combi-Lame Cyborg Dutch">
+          <circle cx="40" cy="40" r="36" fill="#181310" stroke="#ff6d00" stroke-width="2.5" />
+          <rect x="36" y="28" width="8" height="40" fill="#3e2723" stroke="#ffab40" stroke-width="1.5" />
+          <polygon points="40,10 48,32 32,32" fill="#ff9100" stroke="#ffd180" stroke-width="2" />
+          <line x1="28" y1="42" x2="52" y2="42" stroke="#ff6d00" stroke-width="3" />
+        </svg>
+      `.trim();
+
+    case 'craft_mask_alien_earth_prodigy':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-mask-prodigy" role="img" aria-label="Masque Prodigy Earth">
+          <circle cx="40" cy="40" r="36" fill="#0d1b1e" stroke="#00e5ff" stroke-width="2.5" />
+          <ellipse cx="40" cy="40" rx="18" ry="24" fill="#00363a" stroke="#18ffff" stroke-width="2" />
+          <circle cx="34" cy="36" r="4" fill="#00e5ff" />
+          <circle cx="46" cy="36" r="4" fill="#00e5ff" />
+          <line x1="40" y1="20" x2="40" y2="60" stroke="#84ffff" stroke-width="1.5" />
+        </svg>
+      `.trim();
+
+    case 'craft_mask_working_joe_blank':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-mask-joe" role="img" aria-label="Masque Working Joe">
+          <circle cx="40" cy="40" r="36" fill="#1e1e24" stroke="#9e9e9e" stroke-width="2.5" />
+          <ellipse cx="40" cy="40" rx="16" ry="22" fill="#424242" stroke="#e0e0e0" stroke-width="2" />
+          <circle cx="33" cy="36" r="3" fill="#ffffff" />
+          <circle cx="47" cy="36" r="3" fill="#ffffff" />
+          <line x1="34" y1="52" x2="46" y2="52" stroke="#eeeeee" stroke-width="2" />
+        </svg>
+      `.trim();
+
+    case 'craft_armor_power_loader_chassis':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-armor-loader" role="img" aria-label="Exo-Armure Power Loader">
+          <circle cx="40" cy="40" r="36" fill="#1b170c" stroke="#ffab00" stroke-width="2.5" />
+          <rect x="24" y="22" width="32" height="36" fill="#3e2f0a" stroke="#ffd600" stroke-width="2.5" />
+          <line x1="18" y1="28" x2="24" y2="34" stroke="#ffab00" stroke-width="3" />
+          <line x1="62" y1="28" x2="56" y2="34" stroke="#ffab00" stroke-width="3" />
+          <rect x="32" y="32" width="16" height="16" fill="#ffd600" />
+        </svg>
+      `.trim();
+
+    case 'craft_armor_davis01_tactical_rig':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-armor-davis" role="img" aria-label="Harnais Davis 01">
+          <circle cx="40" cy="40" r="36" fill="#101918" stroke="#00bfa5" stroke-width="2.5" />
+          <polygon points="40,18 58,30 52,62 40,68 28,62 22,30" fill="#004d40" stroke="#64ffda" stroke-width="2" />
+          <line x1="40" y1="22" x2="40" y2="64" stroke="#1de9b6" stroke-width="2.5" />
+          <line x1="30" y1="36" x2="50" y2="36" stroke="#64ffda" stroke-width="2" />
+        </svg>
+      `.trim();
+
+    case 'craft_banner_nostromo_sacrifice':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-banner-nostromo" role="img" aria-label="Étendard Nostromo">
+          <circle cx="40" cy="40" r="36" fill="#11161d" stroke="#29b6f6" stroke-width="2.5" />
+          <line x1="40" y1="12" x2="40" y2="68" stroke="#81d4fa" stroke-width="3" />
+          <polygon points="40,16 66,28 40,42" fill="#0277bd" stroke="#4fc3f7" stroke-width="2" />
+          <circle cx="40" cy="14" r="4" fill="#ffd700" />
+        </svg>
+      `.trim();
+
+    case 'craft_totem_romulus_renaissance':
+      return `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-totem-romulus" role="img" aria-label="Totem Romulus Renaissance">
+          <circle cx="40" cy="40" r="36" fill="#1a111a" stroke="#f06292" stroke-width="2.5" />
+          <rect x="32" y="16" width="16" height="50" fill="#4a148c" stroke="#ba68c8" stroke-width="2" rx="4" />
+          <circle cx="40" cy="26" r="5" fill="#f48fb1" />
+          <polygon points="36,46 44,46 40,36" fill="#ea80fc" />
+          <line x1="26" y1="64" x2="54" y2="64" stroke="#e1bee7" stroke-width="3" />
+        </svg>
+      `.trim();
+
     default:
       return `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="craft-logo craft-default" role="img" aria-label="Équipement de Forge Yautja">
