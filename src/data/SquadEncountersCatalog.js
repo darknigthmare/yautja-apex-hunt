@@ -43,6 +43,42 @@ export const SQUAD_CATEGORIES = Object.freeze({
     label: 'Mercenaires & Forces Corporatistes',
     icon: '💼',
     description: 'Équipes de sécurité privée et contrebandiers surarmés sous contrat Weyland-Yutani.'
+  },
+  LAW_ENFORCEMENT: {
+    id: 'LAW_ENFORCEMENT',
+    label: 'Forces de Police & Détectives',
+    icon: '🚔',
+    description: 'Brigades criminelles et unités d\'intervention urbaines spécialisées dans les zones de canicule et de guerre de gangs.'
+  },
+  CRIME_CARTEL: {
+    id: 'CRIME_CARTEL',
+    label: 'Cartels Criminels & Syndicats Armés',
+    icon: '💀',
+    description: 'Cartels de drogue, bandes vaudoues et syndicats criminels armés de fusils d\'assaut et d\'explosifs lourds.'
+  },
+  SUPER_PREDATORS: {
+    id: 'SUPER_PREDATORS',
+    label: 'Clans de Super Predators & Berserkers',
+    icon: '🩸',
+    description: 'Chasseurs Yautja hérétiques de grande taille, usant de molosses Hell-Hounds et de drones faucons sans pitié.'
+  },
+  XENO_INFESTATION: {
+    id: 'XENO_INFESTATION',
+    label: 'Essaims d\'Infestation Xénomorphe & Predalien',
+    icon: '☣️',
+    description: 'Nuées de combat xénomorphes menées par des abominations hybrides Predaliens et des castes corrosives.'
+  },
+  CIVILIAN_SURVIVORS: {
+    id: 'CIVILIAN_SURVIVORS',
+    label: 'Collectifs de Survivants Civils & Réfugiés',
+    icon: '📻',
+    description: 'Groupes de civils armés et de militaires isolés improvisant des défenses d\'urgence face aux menaces extraterrestres.'
+  },
+  WASTELAND_OUTCASTS: {
+    id: 'WASTELAND_OUTCASTS',
+    label: 'Pisteurs des Terres Dévastées & Badlands',
+    icon: '🏜️',
+    description: 'Éclaireurs nomades et unités mécanisées survivant dans les secteurs irradiés et les déserts de cendres.'
   }
 });
 
@@ -634,6 +670,822 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
         hp: 290,
         armor: 35,
         trophy: 'Masque Filtrant Gaz Neuro-Toxique'
+      }
+    ]
+  },
+
+  // 9. Brigade Tactique LAPD du Lieutenant Harrigan — Los Angeles 1997 (Héros Predator 2)
+  {
+    id: 'squad_p2_lapd_harrigan_1997',
+    name: 'Brigade Tactique Criminelle LAPD — Lieutenant Mike Harrigan',
+    shortName: 'Brigade LAPD Harrigan (4 Détectives)',
+    category: 'LAW_ENFORCEMENT',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator 2 (1990, Stephen Hopkins)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiome: 'Los Angeles 1997 — Chasse de Chaleur',
+    description: 'L\'équipe de flics d\'élite du LAPD traquant le City Hunter au milieu de la guerre des cartels et de la canicule.',
+    tactics: 'Tirs de barrage coordonnés Desert Eagle/Beretta, replis tactiques en ruelle urbaine et assaut de bélier au Benelli M1.',
+    totalHonorReward: 4800,
+    soloVariantId: 'alien_base_mike_harrigan_lapd',
+    members: [
+      {
+        id: 'harrigan',
+        name: 'Lieutenant Mike Harrigan',
+        role: 'Commandant d\'Intervention de Choc',
+        weapon: 'Pistolet Desert Eagle .50 AE & Fusil Benelli M1 Super 90',
+        hp: 340,
+        armor: 25,
+        trophy: 'Pistolet à Silex Raphael Adolini 1715 de Harrigan'
+      },
+      {
+        id: 'danny',
+        name: 'Détective Danny Archuleta',
+        role: 'Appui Balistique & Relevé d\'Indices',
+        weapon: 'Pistolet Smith & Wesson 4506 .45 ACP & Dague Tactique',
+        hp: 260,
+        armor: 20,
+        trophy: 'Pointe de Lance Yautja Récupérée par Danny'
+      },
+      {
+        id: 'leona',
+        name: 'Détective Leona Cantrell',
+        role: 'Tir de Couverture & Flanc Rapproché',
+        weapon: 'Pistolet Beretta 92FS & Gilet Pare-Balles Renforcé',
+        hp: 270,
+        armor: 20,
+        trophy: 'Insigne de Détective LAPD de Leona Cantrell'
+      },
+      {
+        id: 'lambert',
+        name: 'Détective Jerry Lambert (« The Lone Ranger »)',
+        role: 'Tir d\'Interception Rapide',
+        weapon: 'Revolver Colt Python .357 Magnum & Pistolet Mitrailleur MP5',
+        hp: 250,
+        armor: 15,
+        trophy: 'Boucle de Ceinture Lone Ranger de Jerry Lambert'
+      }
+    ]
+  },
+
+  // 10. Syndicat Vaudou Jamaïcain & Gang Colombien — Los Angeles 1997 (Méchants Predator 2)
+  {
+    id: 'squad_p2_cartel_king_willie_posse',
+    name: 'Syndicat Vaudou Jamaïcain & Cartel Colombien — King Willie',
+    shortName: 'Cartel Vaudou & Gangs (5 Gangsters)',
+    category: 'CRIME_CARTEL',
+    scale: 'MOYEN',
+    totalMembers: 5,
+    originMedia: 'Predator 2 (1990, Stephen Hopkins)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiome: 'Los Angeles 1997 — Chasse de Chaleur',
+    description: 'Alliance des barons criminels de Los Angeles : les sorciers vaudous jamaïcains lourdement armés et les tueurs colombiens à gages.',
+    tactics: 'Tirs de rafales aveugles aux pistolets mitrailleurs, embuscades dans la fumée rituelle et attaques à la machette.',
+    totalHonorReward: 4600,
+    soloVariantId: 'alien_base_king_willie_voodoo_priest',
+    members: [
+      {
+        id: 'king_willie',
+        name: 'King Willie (Patriarche Occulte Vaudou)',
+        role: 'Chef Spirituel & Maître d\'Armes',
+        weapon: 'Canne-Épée Cérémoniale en Os & Amulette de Vision',
+        hp: 310,
+        armor: 15,
+        trophy: 'Canne Rituelle en Os Sculpté de King Willie'
+      },
+      {
+        id: 'ramon_scorpio',
+        name: 'Ramon Vega (« El Scorpio »)',
+        role: 'Artilleur Lourd Colombien',
+        weapon: 'Doubles Pistolets Mitrailleurs MAC-10 & Pointeur Laser',
+        hp: 280,
+        armor: 20,
+        trophy: 'Pendentif Scorpione en Or Massif'
+      },
+      {
+        id: 'voodoo_enforcer',
+        name: 'Exécuteur Jamaïcain Vaudou Lourd',
+        role: 'Tir de Saturation Automatique',
+        weapon: 'Fusil d\'Assaut Bullpup Steyr AUG & Machette Ciselée',
+        hp: 290,
+        armor: 20,
+        trophy: 'Machette Rituelle Ciselée Vaudou'
+      },
+      {
+        id: 'cartel_sniper',
+        name: 'Tireur d\'Élite du Cartel de Drogue',
+        role: 'Tir Rapproché Meurtrier',
+        weapon: 'Fusil à Pompe à Canon Scié & Pistolet Nickelé',
+        hp: 240,
+        armor: 15,
+        trophy: 'Montre en Or Plaquée du Cartel'
+      },
+      {
+        id: 'demolition_thug',
+        name: 'Pyrotechnicien Urbain du Gang',
+        role: 'Explosifs & Fumigènes',
+        weapon: 'Cocktails Molotov & Bâtons de Dynamite Industrielle',
+        hp: 230,
+        armor: 10,
+        trophy: 'Harnais de Détonateurs du Cartel'
+      }
+    ]
+  },
+
+  // 11. Groupe des Proies Évadées de la Réserve — Planète Chasseresse 2010 (Héros Predators)
+  {
+    id: 'squad_predators_royce_survivors_2010',
+    name: 'Collectif des Proies Évadées de la Réserve — Planète-Chasseresse',
+    shortName: 'Évadés de la Réserve (7 Tueurs)',
+    category: 'CIVILIAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 7,
+    originMedia: 'Predators (2010, Nimród Antal)',
+    biomeId: 'jungle',
+    recommendedBiome: 'Jungle de Réserve — Planète Chasseresse',
+    description: 'Les tueurs les plus dangereux de la Terre largués vivants sur la planète-réserve des Super Predators, unis sous le commandement pragmatique de Royce.',
+    tactics: 'Tir d\'élite Blaser R93 à longue distance, appui minigun Spetsnaz de Nikolai, duel au katana de Hanzo et grenades incendiaires de Royce.',
+    totalHonorReward: 5600,
+    soloVariantId: 'alien_base_royce_mercenaire_2010',
+    members: [
+      {
+        id: 'royce',
+        name: 'Royce (Mercenaire d\'Élite)',
+        role: 'Commandant Tactique & Chasseur Pragmatique',
+        weapon: 'Fusil Automatique AA-12 Calibre 12 & Machette de Survie',
+        hp: 350,
+        armor: 25,
+        trophy: 'Fusil Automatique AA-12 & Machette de Royce'
+      },
+      {
+        id: 'isabelle',
+        name: 'Isabelle (Sniper d\'Élite Tsahal)',
+        role: 'Tir de Précision Longue Portée',
+        weapon: 'Fusil de Précision Blaser R93 LRS2 à Pointeur Laser',
+        hp: 260,
+        armor: 15,
+        trophy: 'Lunette Thermique Blaser R93 d\'Isabelle'
+      },
+      {
+        id: 'nikolai',
+        name: 'Nikolai Fedorov (Spetsnaz Alpha Russe)',
+        role: 'Puissance de Feu Lourde',
+        weapon: 'Minigun Rotatif Portatif M134 & Double Claymore',
+        hp: 330,
+        armor: 30,
+        trophy: 'Insigne Alpha Spetsnaz & Détonateur de Nikolai'
+      },
+      {
+        id: 'hanzo',
+        name: 'Hanzo (Enforcer Yakuza Inagawa-kai)',
+        role: 'Maître Duelliste de Mêlée',
+        weapon: 'Katana Ancestral Ciselé & Pistolet Beretta 92FS',
+        hp: 270,
+        armor: 10,
+        trophy: 'Garde Tsuba d\'Or de Katana de Hanzo'
+      },
+      {
+        id: 'mombasa',
+        name: 'Mombasa (Guerrier RUF Sierra Leone)',
+        role: 'Pisteur & Chasseur Furtif',
+        weapon: 'Fusil d\'Assaut AK-47 & Machette Africaine',
+        hp: 280,
+        armor: 15,
+        trophy: 'Amulette Protectrice en Dent de Léopard'
+      },
+      {
+        id: 'stans',
+        name: 'Walter Stans (Condamné à Mort)',
+        role: 'Attaque Surprise Furieuse',
+        weapon: 'Couteau de Cuisine Artisanal & Dague de Cou',
+        hp: 250,
+        armor: 10,
+        trophy: 'Dague de Survie de Détenu de Stans'
+      },
+      {
+        id: 'edwin',
+        name: 'Dr. Edwin (Médecin Empoisonneur)',
+        role: 'Neurotoxines & Pièges Toxiques',
+        weapon: 'Bistouri Chirurgical & Toxines Neuro-Incapacitantes',
+        hp: 210,
+        armor: 5,
+        trophy: 'Fiole de Neurotoxine Paralysante d\'Edwin'
+      }
+    ]
+  },
+
+  // 12. Trinité des Super Predators & Meute Hell-Hounds — Clan Berserker (Méchants Predators)
+  {
+    id: 'squad_predators_super_clan_berserkers',
+    name: 'Trinité des Super Predators & Meute Hell-Hounds — Clan Berserker',
+    shortName: 'Clan Super Predators (5 Chasseurs)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 5,
+    originMedia: 'Predators (2010, Nimród Antal)',
+    biomeId: 'jungle',
+    recommendedBiome: 'Jungle de Réserve — Planète Chasseresse',
+    description: 'Le clan impitoyable des Super Predators renégats dominant la planète-réserve : Mr. Black, Falconer, Tracker et leurs molosses épineux.',
+    tactics: 'Battue menée par les molosses Hell-Hounds pour rabattre les proies vers le canon plasma rotatif de Berserker et le drone aérien de Falconer.',
+    totalHonorReward: 6200,
+    soloVariantId: 'prey_super_predator_berserker',
+    members: [
+      {
+        id: 'berserker_mr_black',
+        name: 'Berserker Predator (« Mr. Black »)',
+        role: 'Seigneur de Clan Super Predator',
+        weapon: 'Plasmacaster Gatling Lourd & Lame de Poignet Simple Géante',
+        hp: 440,
+        armor: 45,
+        trophy: 'Bio-Masque en Mâchoire d\'Os de Xénomorphe de Mr. Black'
+      },
+      {
+        id: 'falconer',
+        name: 'Falconer Predator (Maître de la Reconnaissance)',
+        role: 'Éclaireur Aérien & Mêlée Honorable',
+        weapon: 'Drone Faucon de Reconnaissance & Doubles Wrist-Blades',
+        hp: 380,
+        armor: 35,
+        trophy: 'Drone Faucon Cybernétique de Reconnaissance'
+      },
+      {
+        id: 'tracker_flusher',
+        name: 'Tracker Predator (« Flusher »)',
+        role: 'Maître des Chiens de Battue',
+        weapon: 'Canons Plasma Portatifs Doubles & Corne de Traque',
+        hp: 390,
+        armor: 40,
+        trophy: 'Défenses Osseuses de Masque de Tracker'
+      },
+      {
+        id: 'hell_hound_alpha',
+        name: 'Hell-Hound Alpha de Meute',
+        role: 'Traqueur Blindé Véloce',
+        weapon: 'Mâchoires Broyeuses & Épines Osseuses Dorsales',
+        hp: 290,
+        armor: 30,
+        trophy: 'Corne Osseuse Épineuse de Hell-Hound Alpha'
+      },
+      {
+        id: 'hell_hound_beta',
+        name: 'Hell-Hound Rabatteur',
+        role: 'Choc & Désarçonnement',
+        weapon: 'Griffes Lacérantes & Morsure Corrosive',
+        hp: 250,
+        armor: 25,
+        trophy: 'Collier en Cuir Yautja de Molosse de Chasse'
+      }
+    ]
+  },
+
+  // 13. Escouade des Rebuts « The Loonies » — 2018 (Héros The Predator)
+  {
+    id: 'squad_the_predator_loonies_2018',
+    name: 'Escouade d\'Intervention des Rebuts « The Loonies » — 2018',
+    shortName: 'Escouade The Loonies (6 Vétérans)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 6,
+    originMedia: 'The Predator (2018, Shane Black)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiome: 'Complexe de Confinement Stargazer',
+    description: 'Le groupe hétéroclite de soldats vétérans traumatisés mené par Quinn McKenna et le Dr. Casey Bracket pour détruire l\'Upgrade Predator.',
+    tactics: 'Attaques kamikazes improvisées, tirs d\'armes lourdes M249, diversion explosive et utilisation de grenades à plasma dérobées.',
+    totalHonorReward: 5200,
+    soloVariantId: 'alien_base_quinn_mckenna_ranger_2018',
+    members: [
+      {
+        id: 'quinn',
+        name: 'Capitaine Quinn McKenna',
+        role: 'Sniper Ranger & Chef d\'Assaut',
+        weapon: 'Carabine Tactique M4A1 & Fragment de Masque Yautja',
+        hp: 330,
+        armor: 25,
+        trophy: 'Visière Balistique Modulaire de McKenna'
+      },
+      {
+        id: 'nebraska',
+        name: 'Nebraska Williams (Ex-Marine)',
+        role: 'Second d\'Assaut & Sacrifié Volontaire',
+        weapon: 'Fusil à Pompe Franchi SPAS-12 & Grenades Plasmiques',
+        hp: 310,
+        armor: 20,
+        trophy: 'Briquet Militaire Gravé de Nebraska Williams'
+      },
+      {
+        id: 'coyle',
+        name: 'Coyle (Vétéran Artilleur)',
+        role: 'Mitrailleur de Suppression',
+        weapon: 'Mitrailleuse d\'Assaut M249 SAW & Tirs Répétés',
+        hp: 290,
+        armor: 20,
+        trophy: 'Bande de Cartouches 5.56mm de Coyle'
+      },
+      {
+        id: 'baxley',
+        name: 'Baxley (Tireur Tactique)',
+        role: 'Flanc & Tir Croisé Continu',
+        weapon: 'Carabine d\'Assaut M4A1 & Viseur Holographique',
+        hp: 280,
+        armor: 20,
+        trophy: 'Insigne Militaire d\'Opérations de Baxley'
+      },
+      {
+        id: 'nettles',
+        name: 'Nettles (Pilote d\'Hélicoptère)',
+        role: 'Soutien Balistique & Mobilité',
+        weapon: 'Pistolet Mitrailleur MP5A3 & Fumigènes d\'Extraction',
+        hp: 250,
+        armor: 15,
+        trophy: 'Casque de Pilote d\'Hélicoptère de Nettles'
+      },
+      {
+        id: 'casey_bracket',
+        name: 'Dr. Casey Bracket (Biologiste Évolutionniste)',
+        role: 'Soutien Scientifique & Neutralisation Chimique',
+        weapon: 'Fusil à Fléchettes Tranquillisantes & Pistolet Glock 19',
+        hp: 240,
+        armor: 10,
+        trophy: 'Seringue d\'Anesthésique Génétique du Dr. Bracket'
+      }
+    ]
+  },
+
+  // 14. Division Spéciale Stargazer & Molosses Modifiés (Méchants The Predator)
+  {
+    id: 'squad_the_predator_stargazer_strike',
+    name: 'Division Spéciale Stargazer & Molosses Modifiés — Projet Récupération',
+    shortName: 'Division Stargazer (5 Spécialistes)',
+    category: 'MERCENARY_SYNDICATE',
+    scale: 'MOYEN',
+    totalMembers: 5,
+    originMedia: 'The Predator (2018, Shane Black)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiome: 'Complexe de Confinement Stargazer',
+    description: 'Forces armées gouvernementales privatisées du Projet Stargazer dirigées par Will Traeger, équipées d\'armes anti-matériel et de molosses hybridés.',
+    tactics: 'Filets électrifiés en alliage supraconducteur, snipers lourds Barrett .50 et molosses génétiquement altérés insensibles au feu.',
+    totalHonorReward: 5400,
+    soloVariantId: 'prey_yautja_assassin_stargazer',
+    members: [
+      {
+        id: 'will_traeger',
+        name: 'Will Traeger (Directeur Exécutif Stargazer)',
+        role: 'Commandant Suprême du Projet',
+        weapon: 'Canon à Énergie Plasmique d\'Épaule Reconditionné',
+        hp: 320,
+        armor: 30,
+        trophy: 'Plasmacaster Humain Modifié de Traeger'
+      },
+      {
+        id: 'sean_keyes',
+        name: 'Sean Keyes (Chef de Laboratoire OWLF)',
+        role: 'Technologie d\'Analyse en Direct',
+        weapon: 'Pistolet Mitrailleur P90 & Scanner Multi-Spectres',
+        hp: 250,
+        armor: 15,
+        trophy: 'Scanner Thermo-Spectral de Laboratoire Stargazer'
+      },
+      {
+        id: 'stargazer_sniper',
+        name: 'Sniper Anti-Matériel Stargazer',
+        role: 'Tir Lourd de Neutralisation Blindée',
+        weapon: 'Fusil Anti-Matériel Barrett M82A1 Calibre .50 BMG',
+        hp: 270,
+        armor: 25,
+        trophy: 'Lunette Balistique Anti-Matériel .50 BMG'
+      },
+      {
+        id: 'net_specialist',
+        name: 'Opérateur de Filet Électrifié Stargazer',
+        role: 'Entrave & Confinement Cryo-Électrique',
+        weapon: 'Lanceur de Filets Alliage Tungstène Électrocutant',
+        hp: 280,
+        armor: 30,
+        trophy: 'Déclencheur de Filet Supraconducteur Stargazer'
+      },
+      {
+        id: 'hybrid_hound',
+        name: 'Molosse Predator Modifié Génétiquement',
+        role: 'Traqueur de Choc Hybride',
+        weapon: 'Dents d\'Alliage & Écailles Réfractaires de Chitine',
+        hp: 360,
+        armor: 35,
+        trophy: 'Plaque Crânienne Hybride de Molosse Stargazer'
+      }
+    ]
+  },
+
+  // 15. Collectif des Survivants Civils de Gunnison — 2007 (Héros AVP: Requiem)
+  {
+    id: 'squad_avpr_gunnison_citizens_2007',
+    name: 'Collectif des Survivants Civils de Gunnison — Nuit de l\'Épidémie',
+    shortName: 'Survivants de Gunnison (5 Résistants)',
+    category: 'CIVILIAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 5,
+    originMedia: 'Aliens vs. Predator: Requiem (2007, Frères Strause)',
+    biomeId: 'gunnison_outbreak',
+    recommendedBiome: 'Gunnison — Nuit de l\'Épidémie',
+    description: 'Les habitants armés et la pilote militaire Kelly O\'Brien traversant la ville de Gunnison submergée par les Xénomorphes sous un déluge diluvien.',
+    tactics: 'Tirs de fusils de chasse en couloir fermé, balayage à la vision nocturne militaire et défense en étoile à l\'hôpital.',
+    totalHonorReward: 4700,
+    soloVariantId: 'alien_base_kelly_obrien_survivor_2007',
+    members: [
+      {
+        id: 'kelly_obrien',
+        name: 'Kelly O\'Brien (Pilote US Army)',
+        role: 'Leader Militaire Tactique',
+        weapon: 'Carabine M4 avec Vision Nocturne & Grenades Fumigènes',
+        hp: 310,
+        armor: 20,
+        trophy: 'Vision Nocturne Militaire & Dog Tags de Kelly O\'Brien'
+      },
+      {
+        id: 'dallas_howard',
+        name: 'Dallas Howard (Survivant Vétéran)',
+        role: 'Assaut Rapproché de Ruelles',
+        weapon: 'Fusil de Chasse Remington 870 Calibre 12 & Pistolet 9mm',
+        hp: 290,
+        armor: 15,
+        trophy: 'Ceinturon de Cartouches de Chasse de Dallas'
+      },
+      {
+        id: 'sheriff_morales',
+        name: 'Shérif Eddie Morales',
+        role: 'Contrôle Urbain & Cordon de Crise',
+        weapon: 'Revolver Smith & Wesson .357 Magnum & Radio de Crise',
+        hp: 270,
+        armor: 20,
+        trophy: 'Étoile de Shérif du Comté de Gunnison'
+      },
+      {
+        id: 'ricky_howard',
+        name: 'Ricky Howard',
+        role: 'Flanc & Tir Rapide',
+        weapon: 'Pistolet Automatique Glock 17 & Torche Tactique',
+        hp: 230,
+        armor: 10,
+        trophy: 'Clés du Magasin d\'Armes de Sport de Gunnison'
+      },
+      {
+        id: 'colorado_national_guard',
+        name: 'Fusilier de la Garde Nationale du Colorado',
+        role: 'Appui Militaire Régulier',
+        weapon: 'Fusil d\'Assaut M16A2 & Gilet Pare-Éclats PASGT',
+        hp: 280,
+        armor: 25,
+        trophy: 'Insigne de Bras de la Garde Nationale du Colorado'
+      }
+    ]
+  },
+
+  // 16. Essaim Hybride du Predalien Chet & Drones d'Infiltration (Méchants AVP: Requiem)
+  {
+    id: 'squad_avpr_predalien_infestation_swarm',
+    name: 'Essaim Hybride du Predalien Chet & Drones d\'Infiltration',
+    shortName: 'Essaim du Predalien (5 Créatures)',
+    category: 'XENO_INFESTATION',
+    scale: 'MOYEN',
+    totalMembers: 5,
+    originMedia: 'Aliens vs. Predator: Requiem (2007, Frères Strause)',
+    biomeId: 'gunnison_outbreak',
+    recommendedBiome: 'Gunnison — Nuit de l\'Épidémie',
+    description: 'La ruche hospitalière dévastatrice engendrée par l\'abomination hybride Predalien « Chet », capable d\'inoculer directement des embryons multiples.',
+    tactics: 'Charge perforante de la queue Yautja-Xéno, morsures intérieures dévastatrices et couverture corrosive par les guerriers de la ruche.',
+    totalHonorReward: 6000,
+    soloVariantId: 'prey_predalien_abomination',
+    members: [
+      {
+        id: 'chet_predalien',
+        name: 'Le Predalien « Chet » (Matriarche Hybride)',
+        role: 'Reine Procréatrice Abominable',
+        weapon: 'Queue Épineuse Perforante & Mandibules Yautja Intérieures',
+        hp: 460,
+        armor: 45,
+        trophy: 'Crête Hybride & Mandibules Osseuses de Predalien'
+      },
+      {
+        id: 'hospital_warrior',
+        name: 'Guerrier Xénomorphe de la Ruche Hospitalière',
+        role: 'Assaut Lourd Corrosif',
+        weapon: 'Griffes Tranchantes & Sang Moléculaire Hyper-Acide',
+        hp: 310,
+        armor: 30,
+        trophy: 'Dôme Rayé d\'Acide de Guerrier Hospitalier'
+      },
+      {
+        id: 'sewer_drone',
+        name: 'Drone d\'Infiltration des Égouts Pluviaux',
+        role: 'Embuscade Submergée Furtive',
+        weapon: 'Queue Caudale Aiguë & Mâchoire Pharyngienne',
+        hp: 270,
+        armor: 25,
+        trophy: 'Mâchoire Pharyngienne de Drone des Égouts'
+      },
+      {
+        id: 'acid_runner',
+        name: 'Coureur Corrosif de Surface',
+        role: 'Vélocité & Flanc Continu',
+        weapon: 'Course Quadrupède Rapide & Crachat d\'Acide',
+        hp: 250,
+        armor: 20,
+        trophy: 'Glande d\'Acide Hyper-Concentré de Coureur'
+      },
+      {
+        id: 'maternity_hugger',
+        name: 'Facehugger Royal de Maternité',
+        role: 'Implantation Parasitaire d\'Urgence',
+        weapon: 'Doigts Palmés d\'Étreinte & Dard d\'Oviposition',
+        hp: 150,
+        armor: 10,
+        trophy: 'Queue Préhensile Ligamentaire de Facehugger Royal'
+      }
+    ]
+  },
+
+  // 17. Éclaireuses Jumelles & Pisteurs des Terres Dévastées — Badlands (Héros Badlands)
+  {
+    id: 'squad_badlands_twin_outcasts',
+    name: 'Éclaireuses Jumelles & Pisteurs des Terres Dévastées — Badlands',
+    shortName: 'Éclaireuses des Badlands (4 Pisteurs)',
+    category: 'WASTELAND_OUTCASTS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Badlands (2025, Dan Trachtenberg)',
+    biomeId: 'genna_deathworld',
+    recommendedBiome: 'Monde Mortel de Genna — Terres Dévastées',
+    description: 'Les deux sœurs jumelles survivant dans les friches radioactives et les citadelles abandonnées, assistées d\'un androïde déclassé et d\'un molosse cyborg.',
+    tactics: 'Flèches cryo-thermiques à longue distance, repérage par drone bionique et attaques rapides en terrain accidenté.',
+    totalHonorReward: 5000,
+    soloVariantId: 'alien_base_thia_badlands_scout_2025',
+    members: [
+      {
+        id: 'thia',
+        name: 'Thia (Sœur Aînée Pisteuse)',
+        role: 'Tireuse à l\'Arc Composite & Camouflage',
+        weapon: 'Arc Haute Tension & Flèches Cryo-Thermiques',
+        hp: 300,
+        armor: 20,
+        trophy: 'Arc Composite Haute Tension des Badlands'
+      },
+      {
+        id: 'tessa',
+        name: 'Tessa (Sœur Cadette Technicienne)',
+        role: 'Sabotage Cybernétique & Drones',
+        weapon: 'Fusil IEM à Impulsion & Mines de Proximité',
+        hp: 280,
+        armor: 20,
+        trophy: 'Décodeur Bionique Portatif des Terres Mortes'
+      },
+      {
+        id: 'nomad_synth',
+        name: 'Nomad (Synthétique Déclassé de Chantier)',
+        role: 'Bouclier Humanoïde Bionique Reconditionné',
+        weapon: 'Marteau Pneumatique Lourd & Châssis Renforcé',
+        hp: 360,
+        armor: 35,
+        trophy: 'Unité Centrale Bionique Déclassée Nomad',
+        isSynthetic: true
+      },
+      {
+        id: 'cyber_mastiff',
+        name: 'Mastiff Bionique de Piste',
+        role: 'Sentinelle Canine Cybernétique',
+        weapon: 'Mâchoires en Titane & Détecteur de Mouvements',
+        hp: 240,
+        armor: 25,
+        trophy: 'Capteur Olfactif en Titane de Mastiff Bionique'
+      }
+    ]
+  },
+
+  // 18. Brigade de Récupération Bionique Weyland — Badlands (Méchants Badlands)
+  {
+    id: 'squad_badlands_weyland_scavenger_brigade',
+    name: 'Brigade de Récupération Bionique Weyland — Territoires Interdits',
+    shortName: 'Brigade Bionique Weyland (5 Enforcers)',
+    category: 'MERCENARY_SYNDICATE',
+    scale: 'MOYEN',
+    totalMembers: 5,
+    originMedia: 'Predator: Badlands (2025, Dan Trachtenberg)',
+    biomeId: 'genna_deathworld',
+    recommendedBiome: 'Monde Mortel de Genna — Terres Dévastées',
+    description: 'Unités de conquête mécanisées envoyées par les corporations pour piller les artefacts aliens et asservir les populations nomades des friches.',
+    tactics: 'Tirs de canons cinétiques Gauss, lance-flammes à pression constante et tirs de mitrailleuses automatiques quadri-rotors.',
+    totalHonorReward: 5500,
+    soloVariantId: 'alien_base_weyland_badlands_overseer',
+    members: [
+      {
+        id: 'weyland_overseer',
+        name: 'Superviseur Bionique de Convoi',
+        role: 'Commandant d\'Assaut Exosquelette',
+        weapon: 'Fusil Cinétique Lourd W-120 & Blindage Renforcé',
+        hp: 370,
+        armor: 40,
+        trophy: 'Noyau Énergétique d\'Exosquelette Weyland'
+      },
+      {
+        id: 'rotor_drone',
+        name: 'Drone Quadri-Rotor de Mitraillage Lourd',
+        role: 'Appui Aérien Continu',
+        weapon: 'Mitrailleuse Rotative Aérienne 7.62mm & Blindage Alliage',
+        hp: 280,
+        armor: 30,
+        trophy: 'Rotor Blindé en Titane de Drone de Conquête'
+      },
+      {
+        id: 'purge_synthetic',
+        name: 'Synthétique d\'Incinération Industrielle',
+        role: 'Purification Thermique de Zone',
+        weapon: 'Lance-Flammes à Haute Pression & Réservoir Dorsal',
+        hp: 340,
+        armor: 35,
+        trophy: 'Buse de Lance-Flammes Haute Pression',
+        isSynthetic: true
+      },
+      {
+        id: 'gauss_sniper',
+        name: 'Tireur Gauss Anti-Véhicule',
+        role: 'Tir Électromagnétique Perforant',
+        weapon: 'Fusil Railgun Gauss Portatif à Charge Magnétique',
+        hp: 260,
+        armor: 25,
+        trophy: 'Accélérateur Magnétique de Fusil Railgun'
+      },
+      {
+        id: 'tox_cleaner',
+        name: 'Nettoyeur Toxique Chimique',
+        role: 'Saturation de Gaz Incapacitant',
+        weapon: 'Lanceur de Grenades Neuro-Corrosives & Combinaison NBC',
+        hp: 270,
+        armor: 25,
+        trophy: 'Cartouche Filtrante NBC de Haute Sécurité'
+      }
+    ]
+  },
+
+  // 19. Cercle des Champions Historiques Invoqués — Killers of Killers (Héros Killers of Killers / Prey)
+  {
+    id: 'squad_killers_of_killers_trio',
+    name: 'Cercle des Champions Historiques Invoqués — Tueurs de Tueurs',
+    shortName: 'Champions Historiques (4 Guerriers)',
+    category: 'TRIBAL_WAR_PARTY',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predators (2010) / Predator: Killer of Killers / Prey',
+    biomeId: 'yautja_prime',
+    recommendedBiome: 'Arène de Clan — Yautja Prime',
+    description: 'Quatre guerriers d\'exception issus d\'époques et de continents distincts, sélectionnés et transportés vivants pour éprouver les plus grands prédateurs.',
+    tactics: 'Charge berserker à la hache à deux mains, feintes et contre-attaques parfaites au katana, tirs de carabine de guerre et esquives acrobatiques comanches.',
+    totalHonorReward: 5800,
+    soloVariantId: 'canon249_duelliste_feodal_samourai',
+    members: [
+      {
+        id: 'samurai_master',
+        name: 'Duelliste Samouraï Féodal',
+        role: 'Maître Katana du Duel Singulier',
+        weapon: 'Katana Forgé Hattori & Armure Laquée Noire',
+        hp: 330,
+        armor: 25,
+        trophy: 'Garde Tsuba d\'Or de Katana Féodal'
+      },
+      {
+        id: 'viking_berserker',
+        name: 'Pillard Viking Berserker',
+        role: 'Choc Brutal & Démembrement',
+        weapon: 'Hache d\'Armes Daneaxe à Deux Mains & Bouclier Rond',
+        hp: 360,
+        armor: 20,
+        trophy: 'Fer de Hache Daneaxe Incrusté d\'Argent'
+      },
+      {
+        id: 'war_pilot',
+        name: 'Pilote As de Guerre 1944',
+        role: 'Tir Réflexe Rapproché & Machette de Jungle',
+        weapon: 'Pistolet Colt M1911 .45 ACP & Couteau Ka-Bar',
+        hp: 280,
+        armor: 15,
+        trophy: 'Blouson d\'Aviateur en Cuir & Couteau Ka-Bar'
+      },
+      {
+        id: 'comanche_champion',
+        name: 'Guerrière d\'Élite Comanche',
+        role: 'Pisteuse Équilibriste & Furtivité',
+        weapon: 'Tomahawk Cérémonial & Arc Réflexe à Flèches d\'Os',
+        hp: 290,
+        armor: 15,
+        trophy: 'Tomahawk en Silex Noir & Plumes d\'Aigle'
+      }
+    ]
+  },
+
+  // 20. Syndicat Cyber-Génétique Borgia Industries — Concrete Jungle (Méchants Concrete Jungle)
+  {
+    id: 'squad_concrete_jungle_borgia_syndicate',
+    name: 'Syndicat Cyber-Génétique Borgia Industries — New Way City',
+    shortName: 'Syndicat Borgia (5 Cyber-Troupiers)',
+    category: 'CRIME_CARTEL',
+    scale: 'MOYEN',
+    totalMembers: 5,
+    originMedia: 'Predator: Concrete Jungle (2005, Eurocom / Sierra)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiome: 'Los Angeles 1997 — Canicule & District Borgia',
+    description: 'Le cartel technologique mafieux de Bruno Borgia ayant piraté la technologie Yautja tombée en 1930 pour fabriquer des cyborgs et des hybrides de combat.',
+    tactics: 'Brouillage IEM du camouflage de bio-masque, tirs de canons cybernétiques lourds et assauts aux wrist-blades volées.',
+    totalHonorReward: 5700,
+    soloVariantId: 'alien_base_bruno_borgia_godfather',
+    members: [
+      {
+        id: 'bruno_borgia',
+        name: 'Don Bruno Borgia (Le Parrain Bionique)',
+        role: 'Seigneur du Syndicat Cybernétique',
+        weapon: 'Pistolet Lourd Haute Vélocité & Costume Blindé en Kevlar',
+        hp: 350,
+        armor: 35,
+        trophy: 'Anneau Sigillaire Borgia & Mallette de Données Yautja'
+      },
+      {
+        id: 'cyber_samurai',
+        name: 'Mercenaire Cybernétique Katana-Rig',
+        role: 'Mêlée Augmentée à Servomoteurs',
+        weapon: 'Katana Thermique Motorisé & Wrist-Blades Yautja Piratées',
+        hp: 340,
+        armor: 35,
+        trophy: 'Bras Bionique Servomoteur Katana-Rig'
+      },
+      {
+        id: 'monster_squad_brute',
+        name: 'Brute Génétique Monster Squad',
+        role: 'Choc Humanoïde Altéré à l\'ADN Yautja',
+        weapon: 'Massue Industrielle & Force Décuplée',
+        hp: 420,
+        armor: 40,
+        trophy: 'Implant Génétique Crânien Borgia Industries'
+      },
+      {
+        id: 'infiltrator_cyborg',
+        name: 'Cyborg Infiltrateur de Combat Modèle X',
+        role: 'Tir Furtif & Visière Thermo-Optique',
+        weapon: 'Carabine Silencieuse & Détecteur Infrarouge',
+        hp: 290,
+        armor: 25,
+        trophy: 'Capteur Oculaire Thermo-Optique Borgia'
+      },
+      {
+        id: 'iem_saboteur',
+        name: 'Saboteur de Brouillage Anti-Camouflage',
+        role: 'Désactivation de Technologie Yautja',
+        weapon: 'Générateur d\'Impulsion Électromagnétique Portatif',
+        hp: 260,
+        armor: 20,
+        trophy: 'Micro-Puce de Piratage de Bio-Masque Borgia'
+      }
+    ]
+  },
+
+  // 21. Trio Rituel des Jeunes Sangs Yautja — Bouvetøya 2004 (Antagonistes AVP 2004)
+  {
+    id: 'squad_avp_young_bloods_trio',
+    name: 'Trio Rituel des Jeunes Sangs Yautja — Pyramide Bouvetøya 2004',
+    shortName: 'Trio Jeunes Sangs AVP (3 Chasseurs)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'AVP: Alien vs. Predator (2004, Paul W.S. Anderson)',
+    biomeId: 'bouvetoya_pyramid',
+    recommendedBiome: 'Bouvetøya — Pyramide du Blooding',
+    description: 'Les trois frères d\'armes Yautja envoyés dans la pyramide souterraine pour accomplir leur rite d\'initiation face aux Xénomorphes.',
+    tactics: 'Coordination en triangle dans les couloirs rotatifs de la pyramide, tirs de Plasmacasters cérémoniaux et lancers synchronisés de Shurikens.',
+    totalHonorReward: 6400,
+    soloVariantId: 'alien_base_scar_young_blood_1719',
+    members: [
+      {
+        id: 'scar_predator',
+        name: 'Scar Predator (Jeune Sang Initié Honorable)',
+        role: 'Chasseur Cérémonial de Pointe',
+        weapon: 'Combi-Stick Rétractable, Shuriken Tri-Lame & Plasmacaster',
+        hp: 420,
+        armor: 40,
+        trophy: 'Bio-Masque Ciselé de la Marque du Sang'
+      },
+      {
+        id: 'celtic_predator',
+        name: 'Celtic Predator (Leader d\'Initiation Belliqueux)',
+        role: 'Assaut Lourd & Lutte Corporelle',
+        weapon: 'Masque Orné d\'Acier, Wrist-Blades Doubles Géantes & Filet',
+        hp: 440,
+        armor: 45,
+        trophy: 'Bio-Masque Orné en Acier Brut de Celtic'
+      },
+      {
+        id: 'chopper_predator',
+        name: 'Chopper Predator (Chasseur Agil aux Scimitars)',
+        role: 'Flanc Meurtrier Rapide',
+        weapon: 'Doubles Lames Scimitars d\'Avant-Bras & Fouet Rachidien',
+        hp: 390,
+        armor: 35,
+        trophy: 'Lames Scimitars d\'Avant-Bras de Chopper'
       }
     ]
   }

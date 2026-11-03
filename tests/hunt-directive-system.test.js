@@ -44,6 +44,20 @@ test('les douze directives et leurs collections imbriquées sont immuables', () 
     'squad_comanche_war_party_1719',
     'squad_bouvetoya_expedition_2004',
     'squad_weyland_blackops_containment',
+    'squad_p2_lapd_harrigan_1997',
+    'squad_p2_cartel_king_willie_posse',
+    'squad_predators_royce_survivors_2010',
+    'squad_predators_super_clan_berserkers',
+    'squad_the_predator_loonies_2018',
+    'squad_the_predator_stargazer_strike',
+    'squad_avpr_gunnison_citizens_2007',
+    'squad_avpr_predalien_infestation_swarm',
+    'squad_badlands_twin_outcasts',
+    'squad_badlands_weyland_scavenger_brigade',
+    'squad_killers_of_killers_trio',
+    'squad_concrete_jungle_borgia_syndicate',
+    'squad_avp_young_bloods_trio',
+    'squad_betty_mercenaries_1997',
   ]);
   assert.ok(Object.isFrozen(HUNT_DIRECTIVES));
 

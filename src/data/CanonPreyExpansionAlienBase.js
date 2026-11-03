@@ -1888,6 +1888,141 @@ export const CANON_PREY_EXPANSION_ALIEN_BASE = [
     3200,
     3
   )
+,
+
+  // ==========================================
+  // SOLO DUEL TARGETS — FRANCHISE HEROES & VILLAINS
+  // ==========================================
+  createPrey(
+    'mike_harrigan_lapd',
+    'Lieutenant Mike Harrigan — Détective de Choc LAPD',
+    'HUMAN_SYNTHETIC',
+    'MOYEN',
+    1.88,
+    'Predator 2 (1990)',
+    'Chef intrépide de la brigade criminelle du LAPD traquant le City Hunter dans le slaughterhouse sous une canicule écrasante.',
+    ['Gilet pare-balles LAPD', 'Torse', 'Épaule droite'],
+    'Pistolet Flintlock Raphael Adolini 1715 & Insigne Or LAPD',
+    4200,
+    4
+  ),
+  createPrey(
+    'king_willie_voodoo_priest',
+    'King Willie — Patriarche Occulte du Cartel Vaudou',
+    'HUMAN_SYNTHETIC',
+    'MOYEN',
+    1.83,
+    'Predator 2 (1990)',
+    'Seigneur mystique et impitoyable du gang des Jamaican Voodoo Posse, capable de pressentir les démons de l\'autre monde.',
+    ['Canne-épée cérémoniale', 'Tête', 'Cœur'],
+    'Canne Rituelle en Os Sculpté & Crâne Orné de King Willie',
+    3800,
+    3
+  ),
+  createPrey(
+    'royce_mercenaire_2010',
+    'Royce — Mercenaire d\'Élite & Tacticien de Survie',
+    'HUMAN_SYNTHETIC',
+    'MOYEN',
+    1.85,
+    'Predators (2010)',
+    'Ancien soldat d\'élite et mercenaire solitaire menant les survivants parachutés sur la planète-réserve des Super Predators.',
+    ['Gilet tactique modulaire', 'Nuque', 'Cuisse gauche'],
+    'Fusil Automatique AA-12 Calibre 12 & Machette de Survie de Royce',
+    4500,
+    4
+  ),
+  createPrey(
+    'quinn_mckenna_ranger_2018',
+    'Quinn McKenna — Tireur d\'Élite US Army Ranger',
+    'HUMAN_SYNTHETIC',
+    'MOYEN',
+    1.85,
+    'The Predator (2018)',
+    'Capitaine des Rangers ayant intercepté la capsule du Predator Fuyard et pris la tête de l\'escouade des Rebuts.',
+    ['Visière tactique de sniper', 'Torse', 'Genoux'],
+    'Fragment de Bio-Masque Fuyard & Visière Balistique de McKenna',
+    4000,
+    3
+  ),
+  createPrey(
+    'kelly_obrien_survivor_2007',
+    'Kelly O\'Brien — Pilote d\'Hélicoptère US Army',
+    'HUMAN_SYNTHETIC',
+    'MOYEN',
+    1.76,
+    'Aliens vs. Predator: Requiem (2007)',
+    'Militaire de retour au foyer guidant les civils de Gunnison à travers l\'épidémie sous la pluie battante.',
+    ['Tenue de combat BDU', 'Torse', 'Bras droit'],
+    'Jumelles de Vision Nocturne Militaire & Dog Tags de Kelly',
+    3600,
+    3
+  ),
+  createPrey(
+    'scar_young_blood_1719',
+    'Scar Predator — Jeune Sang Initié de Bouvetøya',
+    'YAUTJA',
+    'MOYEN',
+    2.25,
+    'AVP: Alien vs. Predator (2004)',
+    'Guerrier Yautja initié ayant gravé la marque de sang sur son front avec l\'aide de Lex Woods au cœur de la pyramide.',
+    ['Plastron rituel d\'acier', 'Mandibule gauche', 'Jointure des genoux'],
+    'Bio-Masque Ciselé de la Marque du Sang & Shuriken Tri-Lame',
+    4800,
+    4
+  ),
+  createPrey(
+    'bruno_borgia_godfather',
+    'Don Bruno Borgia — Parrain Cybernétique de New Way City',
+    'HUMAN_SYNTHETIC',
+    'MOYEN',
+    1.82,
+    'Predator: Concrete Jungle (2005)',
+    'Chef tout-puissant du cartel Borgia ayant pillé la technologie Yautja pour bâtir un empire d\'armes génétiques.',
+    ['Costume blindé en kevlar', 'Tempe droite', 'Torse'],
+    'Anneau Sigillaire Borgia & Mallette de Données Cybernétiques',
+    4400,
+    4
+  ),
+  createPrey(
+    'thia_badlands_scout_2025',
+    'Thia — Éclaireuse Nomade des Terres Dévastées',
+    'HUMAN_SYNTHETIC',
+    'MOYEN',
+    1.75,
+    'Predator: Badlands (2025)',
+    'Pisteuse agile survivant dans les étendues radioactives et hostiles des Badlands avec son arc composite haute tension.',
+    ['Capuche de camouflage thermique', 'Flanc droit', 'Épaule'],
+    'Arc Composite Haute Tension & Puce de Pistage des Terres Mortes',
+    3900,
+    3
+  ),
+  createPrey(
+    'weyland_badlands_overseer',
+    'Superviseur Bionique Weyland — Territoires Interdits',
+    'HUMAN_SYNTHETIC',
+    'MOYEN',
+    1.90,
+    'Predator: Badlands (2025)',
+    'Officier corporatiste augmenté dirigeant les convois de pillage technologique dans les zones irradiées.',
+    ['Châssis exosquelette', 'Noyau énergétique dorsal', 'Visière'],
+    'Noyau d\'Alimentation Bionique Weyland Badlands',
+    4600,
+    4
+  ),
+  {
+    id: 'canon249_duelliste_feodal_samourai',
+    name: 'Duelliste Samouraï de l\'Ère Féodale — Maître du Sabre',
+    faction: 'HUMAN_SYNTHETIC',
+    scale: 'MOYEN',
+    sizeMeters: 1.78,
+    originMedia: 'Predators (2010) / Killers of Killers',
+    description: 'Maître d\'armes ancestral ayant défié en duel singulier le Falconer Predator dans la clairière de hautes herbes.',
+    weakpoints: ['Liaisons d\'armure laquée', 'Gorge', 'Jointures d\'épaules'],
+    trophy: 'Garde Tsuba d\'Or Pur & Katana de Maître Féodal',
+    baseHonor: 4400,
+    threatStars: 4
+  }
 ];
 
 export default CANON_PREY_EXPANSION_ALIEN_BASE;

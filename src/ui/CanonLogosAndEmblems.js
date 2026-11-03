@@ -1320,6 +1320,154 @@ export function getSquadLogo(squadId, size = 64) {
     `.trim();
   }
 
+  // 9. Brigade Criminelle LAPD Harrigan (Predator 2)
+  if (id.includes('lapd') || id.includes('harrigan')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-lapd" role="img" aria-label="Insigne LAPD Harrigan">
+        <polygon points="40,6 72,18 64,68 40,76 16,68 8,18" fill="#0d1b2a" stroke="#d4af37" stroke-width="2" />
+        <polygon points="40,16 46,30 62,30 48,40 54,54 40,44 26,54 32,40 18,30 34,30" fill="#d4af37" opacity="0.9" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="5" font-weight="900" fill="#ffffff" letter-spacing="1" text-anchor="middle">LAPD METRO</text>
+      </svg>
+    `.trim();
+  }
+
+  // 10. Cartel Vaudou King Willie (Predator 2)
+  if (id.includes('king_willie') || id.includes('posse')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-voodoo" role="img" aria-label="Insigne Cartel Vaudou">
+        <circle cx="40" cy="40" r="35" fill="#1a0022" stroke="#7b1fa2" stroke-width="2.5" />
+        <circle cx="40" cy="36" r="14" fill="#311b92" stroke="#e040fb" stroke-width="1.8" />
+        <circle cx="35" cy="34" r="2.5" fill="#ffd600" />
+        <circle cx="45" cy="34" r="2.5" fill="#ffd600" />
+        <path d="M30 54 L50 54 L40 64 Z" fill="#e040fb" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="5" font-weight="900" fill="#ffd600" letter-spacing="1" text-anchor="middle">VOODOO POSSE</text>
+      </svg>
+    `.trim();
+  }
+
+  // 11. Évadés de la Réserve Royce (Predators 2010)
+  if (id.includes('royce') || id.includes('survivors_2010')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-royce" role="img" aria-label="Insigne Évadés de la Réserve">
+        <polygon points="40,8 72,24 68,64 40,74 12,64 8,24" fill="#1b2e1e" stroke="#689f38" stroke-width="2" />
+        <path d="M22 28 Q40 14 58 28 L40 58 Z" fill="none" stroke="#cddc39" stroke-width="2" />
+        <line x1="40" y1="20" x2="40" y2="58" stroke="#ffeb3b" stroke-width="1.5" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="5" font-weight="900" fill="#f1f8e9" letter-spacing="1" text-anchor="middle">PRESERVE '10</text>
+      </svg>
+    `.trim();
+  }
+
+  // 12. Super Predators Berserkers (Predators 2010)
+  if (id.includes('berserkers') || id.includes('super_clan')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-berserker" role="img" aria-label="Insigne Clan Berserker">
+        <circle cx="40" cy="40" r="35" fill="#1a0505" stroke="#d50000" stroke-width="2.5" />
+        <path d="M22 24 L58 24 L48 56 L32 56 Z" fill="#b71c1c" stroke="#ff1744" stroke-width="2" />
+        <circle cx="40" cy="36" r="5" fill="#ff5252" />
+        <path d="M26 60 L54 60 L40 70 Z" fill="#d50000" />
+        <text x="40" y="74" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#ff8a80" letter-spacing="1" text-anchor="middle">SUPER BERSERKER</text>
+      </svg>
+    `.trim();
+  }
+
+  // 13. The Loonies McKenna (The Predator 2018)
+  if (id.includes('loonies')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-loonies" role="img" aria-label="Insigne The Loonies">
+        <polygon points="40,8 72,28 62,68 40,74 18,68 8,28" fill="#1f2421" stroke="#81c784" stroke-width="2" />
+        <circle cx="40" cy="38" r="14" fill="#2e7d32" stroke="#a5d6a7" stroke-width="2" />
+        <path d="M34 38 L46 38 M40 32 L40 44" stroke="#ffffff" stroke-width="2.5" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="5" font-weight="900" fill="#e8f5e9" letter-spacing="1" text-anchor="middle">THE LOONIES</text>
+      </svg>
+    `.trim();
+  }
+
+  // 14. Division Stargazer Strike (The Predator 2018)
+  if (id.includes('stargazer_strike')) {
+    return getStargazerLogo(size);
+  }
+
+  // 15. Survivants Gunnison (AVP: Requiem 2007)
+  if (id.includes('gunnison_citizens')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-gunnison" role="img" aria-label="Insigne Survivants Gunnison">
+        <circle cx="40" cy="40" r="35" fill="#0d1b2a" stroke="#00b4d8" stroke-width="2.5" />
+        <path d="M40 18 L54 50 L26 50 Z" fill="#1b4965" stroke="#90e0ef" stroke-width="2" />
+        <circle cx="40" cy="38" r="4" fill="#00e5ff" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="5" font-weight="900" fill="#caf0f8" letter-spacing="1" text-anchor="middle">GUNNISON '07</text>
+      </svg>
+    `.trim();
+  }
+
+  // 16. Essaim Predalien (AVP: Requiem 2007)
+  if (id.includes('predalien_infestation')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-predalien" role="img" aria-label="Insigne Essaim Predalien">
+        <polygon points="40,6 74,25 74,65 40,76 6,65 6,25" fill="#0f1f0a" stroke="#76ff03" stroke-width="2" />
+        <path d="M26 28 Q40 12 54 28 Q60 54 40 68 Q20 54 26 28 Z" fill="#1b3a12" stroke="#ccff90" stroke-width="2" />
+        <circle cx="34" cy="36" r="3" fill="#ff1744" />
+        <circle cx="46" cy="36" r="3" fill="#ff1744" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#ccff90" letter-spacing="1" text-anchor="middle">CHET PREDALIEN</text>
+      </svg>
+    `.trim();
+  }
+
+  // 17. Éclaireuses des Badlands (Predator: Badlands 2025)
+  if (id.includes('twin_outcasts') || id.includes('badlands_twin')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-badlands" role="img" aria-label="Insigne Éclaireuses des Badlands">
+        <circle cx="40" cy="40" r="35" fill="#2d1e12" stroke="#ff9800" stroke-width="2.5" />
+        <line x1="24" y1="20" x2="56" y2="60" stroke="#ffb74d" stroke-width="2" />
+        <line x1="56" y1="20" x2="24" y2="60" stroke="#ffb74d" stroke-width="2" />
+        <circle cx="40" cy="40" r="10" fill="#e65100" stroke="#ffe0b2" stroke-width="2" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="5" font-weight="900" fill="#ffe082" letter-spacing="1" text-anchor="middle">BADLANDS '25</text>
+      </svg>
+    `.trim();
+  }
+
+  // 18. Brigade Bionique Weyland Badlands
+  if (id.includes('weyland_scavenger') || id.includes('badlands_weyland')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-weyland-badlands" role="img" aria-label="Insigne Brigade Weyland Badlands">
+        <polygon points="40,8 72,24 68,64 40,74 12,64 8,24" fill="#1b1c1e" stroke="#d4af37" stroke-width="2" />
+        <path d="M22 28 L40 50 L58 28 L48 28 L40 38 L32 28 Z" fill="#d4af37" />
+        <circle cx="40" cy="58" r="4" fill="#ff9800" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#ffd54f" letter-spacing="1" text-anchor="middle">WY SCAVENGER</text>
+      </svg>
+    `.trim();
+  }
+
+  // 19. Champions Historiques Killers of Killers
+  if (id.includes('killers_of_killers')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-killers" role="img" aria-label="Insigne Tueurs de Tueurs">
+        <polygon points="40,8 72,26 66,66 40,74 14,66 8,26" fill="#1b1b1b" stroke="#ffd700" stroke-width="2" />
+        <path d="M24 24 L56 56 M56 24 L24 56" stroke="#e0e0e0" stroke-width="3" stroke-linecap="round" />
+        <circle cx="40" cy="40" r="8" fill="#b71c1c" stroke="#ffd700" stroke-width="1.5" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#ffd700" letter-spacing="1" text-anchor="middle">KILLER OF KILLERS</text>
+      </svg>
+    `.trim();
+  }
+
+  // 20. Syndicat Borgia Concrete Jungle
+  if (id.includes('borgia_syndicate') || id.includes('concrete_jungle')) {
+    return getBorgiaIndustriesLogo(size);
+  }
+
+  // 21. Trio Jeunes Sangs AVP 2004
+  if (id.includes('young_bloods') || id.includes('avp_young')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-young-bloods" role="img" aria-label="Insigne Trio Jeunes Sangs">
+        <polygon points="40,6 74,25 74,65 40,76 6,65 6,25" fill="#120c14" stroke="#ff5511" stroke-width="2" />
+        <circle cx="40" cy="28" r="4" fill="#ff1100" />
+        <circle cx="28" cy="50" r="4" fill="#ff1100" />
+        <circle cx="52" cy="50" r="4" fill="#ff1100" />
+        <path d="M40 28 L28 50 L52 50 Z" fill="none" stroke="#ff5511" stroke-width="1.5" stroke-dasharray="2,2" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#ffab91" letter-spacing="1" text-anchor="middle">YOUNG BLOODS</text>
+      </svg>
+    `.trim();
+  }
+
   return getYautjaClanLogo(size);
 }
 

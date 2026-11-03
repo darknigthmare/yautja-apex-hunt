@@ -56,7 +56,7 @@ test('all 560 dossier bindings use exactly the same shared proxy choice as actua
     assert.equal(record.dimensions.status, 'catalogue_estimate');
     checked++;
   }
-  assert.equal(checked, 701);
+  assert.equal(checked, 711);
   for (const context of [null, {}, { kind: 'unknown', id: CANON_PREY_CATALOG[0].id },
     { kind: 'prey', id: 'missing' }, { kind: 'crossover', id: '__proto__' }]) {
     assert.equal(resolveSimulationSelection(context), null);
@@ -115,7 +115,7 @@ test('source authority is not silently replaced by an unrelated shared mask or v
 test('the archive cannot supply physical crafting sources or become a certified replica through its source title', () => {
   const result = getFidelityCoverage();
   assert.equal(result.summary.verifiedReplicas, 0);
-  assert.equal(result.summary.trainingDossiers, 701);
+  assert.equal(result.summary.trainingDossiers, 711);
   assert.equal(result.summary.dedicatedRuntimeArchetypes, 46);
   assert.equal(result.summary.physicalCraftRecipes, 16);
   assert.equal(result.summary.archiveCraftRecipes, 34);
@@ -156,7 +156,7 @@ test('inventory filters and namespace lookup do not mutate source catalogues or 
   assert.equal(getFidelityEntry('goliath'), null, 'bare overlapping catalogue IDs need a category');
   assert.equal(getFidelityEntry('contract:goliath').id, 'goliath');
   const proxies = getFidelityCoverage({ status: 'proxy' });
-  assert.equal(proxies.entries.length, 701);
+  assert.equal(proxies.entries.length, 711);
   assert.ok(proxies.entries.every(entry => entry.status === 'proxy'));
   assert.throws(() => proxies.entries.push({}), TypeError);
   assert.throws(() => proxies.entries[0].source.sourceIds.push('invented'), TypeError);

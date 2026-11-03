@@ -12,8 +12,8 @@ import { HUNT_DIRECTIVES, getHuntDirective } from '../src/gameplay/HuntDirective
 import { getSquadLogo } from '../src/ui/CanonLogosAndEmblems.js';
 import { resolveSimulationSelection } from '../src/gameplay/SimulationHuntRuntime.js';
 
-test('le catalogue des escouades contient les 8 groupes légendaires canoniques', () => {
-  assert.equal(SQUAD_ENCOUNTERS.length, 8);
+test('le catalogue des escouades contient les 21 groupes légendaires canoniques (héros & antagonistes)', () => {
+  assert.equal(SQUAD_ENCOUNTERS.length, 21);
   assert.ok(Object.isFrozen(SQUAD_ENCOUNTERS));
 
   const expectedSquadIds = [
@@ -25,6 +25,19 @@ test('le catalogue des escouades contient les 8 groupes légendaires canoniques'
     'squad_comanche_war_party_1719',
     'squad_bouvetoya_expedition_2004',
     'squad_weyland_blackops_containment',
+    'squad_p2_lapd_harrigan_1997',
+    'squad_p2_cartel_king_willie_posse',
+    'squad_predators_royce_survivors_2010',
+    'squad_predators_super_clan_berserkers',
+    'squad_the_predator_loonies_2018',
+    'squad_the_predator_stargazer_strike',
+    'squad_avpr_gunnison_citizens_2007',
+    'squad_avpr_predalien_infestation_swarm',
+    'squad_badlands_twin_outcasts',
+    'squad_badlands_weyland_scavenger_brigade',
+    'squad_killers_of_killers_trio',
+    'squad_concrete_jungle_borgia_syndicate',
+    'squad_avp_young_bloods_trio',
   ];
 
   assert.deepEqual(SQUAD_ENCOUNTERS.map((s) => s.id), expectedSquadIds);
@@ -52,26 +65,18 @@ test('chaque escouade possède une cible solo équivalente vérifiée dans le ca
     );
     assert.ok(solo.name, `Nom manquant pour la cible solo ${squad.soloVariantId}`);
     assert.ok(
-      ['PETITE', 'MOYEN'].includes(solo.scale),
-      `Le gabarit physique de ${solo.id} doit être PETITE ou MOYEN (trouvé: ${solo.scale})`,
+      ['PETITE', 'MOYEN', 'GRANDE'].includes(solo.scale),
+      `Le gabarit physique de ${solo.id} doit être valide (trouvé: ${solo.scale})`,
     );
     assert.ok(
-      ['PETITE', 'MOYEN'].includes(solo.encounterTier ?? solo.declaredScale),
-      `Le palier d'affrontement tactique de ${solo.id} doit être PETITE ou MOYEN`,
+      ['PETITE', 'MOYEN', 'GRANDE'].includes(solo.encounterTier ?? solo.declaredScale),
+      `Le palier d'affrontement tactique de ${solo.id} doit être valide`,
     );
   }
 });
 
 test('chaque escouade correspond à une directive de chasse tactique structurée', () => {
-  const squadsWithDirectives = [
-    'squad_dutch_val_verde_1987',
-    'squad_uscm_hadleys_hope_1986',
-    'squad_nostromo_crew_1979',
-    'squad_seegson_working_joes_pack',
-    'squad_comanche_war_party_1719',
-    'squad_bouvetoya_expedition_2004',
-    'squad_weyland_blackops_containment',
-  ];
+  const squadsWithDirectives = SQUAD_ENCOUNTERS.map(s => s.id);
 
   for (const squadId of squadsWithDirectives) {
     const directive = getHuntDirective(squadId);
@@ -115,7 +120,7 @@ test('les fonctions d’interrogation et de filtrage d’escouade sont fonctionn
   assert.equal(commandos[0].id, 'squad_dutch_val_verde_1987');
 
   const allSquads = filterSquadsByCategory('all');
-  assert.equal(allSquads.length, 8);
+  assert.equal(allSquads.length, 21);
 });
 
 test('chaque escouade génère un insigne vectoriel SVG valide', () => {
