@@ -1,3 +1,4 @@
+import { getAlienBaseRecord } from './AlienBaseRegistry.js';
 // Registre d'œuvres utilisé pour empêcher qu'une passe contenu oublie un film
 // ou confonde une apparition écran avec un nom de jouet, un jeu ou un crossover.
 // Les missions restent des adaptations originales Apex Hunt.
@@ -201,5 +202,10 @@ export const MEDIA_COVERAGE_STATS = Object.freeze(MEDIA_COVERAGE_CATALOG.reduce(
   stats.byRuntime[entry.gameCoverage.runtimeStatus] = (stats.byRuntime[entry.gameCoverage.runtimeStatus] ?? 0) + 1;
   return stats;
 }, { total: 0, byStatus: {}, byRuntime: {} }));
+
+// Referential bridge only: game missions stay authored and enabled locally.
+export const MEDIA_COVERAGE_ALIEN_BASE_IDS=Object.freeze(Object.fromEntries(MEDIA_COVERAGE_CATALOG.map(work=>[
+  work.id,getAlienBaseRecord('mediaCoverage','apex:media:'+work.id)?.id??null
+])));
 
 export default MEDIA_COVERAGE_CATALOG;
