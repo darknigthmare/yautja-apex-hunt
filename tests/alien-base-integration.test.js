@@ -24,12 +24,12 @@ test('Twenty additional Alien archives are non-playable, sourced, and unique in 
 });
 test('Export candidate preserves 731 local names/source refs but excludes gameplay balance',()=>{
  const candidate=buildAlienBaseCandidateExport();
- assert.equal(candidate.entries.length,732);
+ assert.equal(candidate.entries.length,921);
  assert.ok(candidate.entries.every(e=>e.researchOnly&&e.admission==='RESEARCH_ONLY'&&e.reference?.blobSha&&e.canonExact===false));
  for(const x of candidate.entries){for(const f of ['baseHonor','threatStars','damage','sizeMeters','maxHealth','moveSpeed'])assert.ok(!Object.hasOwn(x,f),x.id);}
- assert.equal(candidate.counts.prey,200);assert.equal(candidate.counts.skins,50);
+ assert.equal(candidate.counts.prey,361);assert.equal(candidate.counts.skins,50);
  assert.equal(candidate.counts.playableWeapons,15);assert.equal(candidate.counts.hunterClasses,10);
- assert.equal(candidate.counts.sources,21);assert.equal(candidate.counts.factions,6);
+ assert.equal(candidate.counts.sources,26);assert.equal(candidate.counts.factions,6);
  assert.equal(candidate.counts.weaponTechVariants,5);
  assert.ok(candidate.entries.filter(e=>e.collection==='playableWeapons').every(e=>!Object.hasOwn(e,'behavior')&&!Object.hasOwn(e,'effects')));
 });

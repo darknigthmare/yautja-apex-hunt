@@ -13,15 +13,15 @@ import { PREY_FACTIONS } from '../src/data/PreyTaxonomyAndCrossoverCatalog.js';
 
 const YCOMMIT = "8b42b89288be20a9263b6002cec4862c782a80bc";
 const FILE_SHA = Object.freeze({
-  "src/data/YautjaExpandedContent.js": "8663208bd897fc14ea8136a46b0760f65afe007b",
-  "src/data/YautjaContentCatalog.js": "d03d62eb495e1e04a0bc30aaa9fff407c3f8bfc5",
-  "src/data/YautjaLoreDatabase.js": "2ea6fbef17999783ac3bb14bfca24ff10fdd4beb",
-  "src/data/LoreCodex.js": "5b47dd87275a9f40a40dff2d4dc9b79cc9ee2b1c",
-  "src/data/MediaCoverageCatalog.js": "d272a5c736058ada02519800df52ddc10250530e",
-  "src/data/CanonPreyExpansionV251.js": "cb447f220b0e3ed0b7ad2f0b4fcd63286a6d6726",
-  "src/data/PreyTaxonomyAndCrossoverCatalog.js": "6181b8d73656938cb54c44a5bea1bb3079ce971d",
-  "src/data/PreyReferenceMetadata.js": "ff2aea94f670d140bac363de15bf8c35eaf3ad52",
-  "src/data/RuntimeEquipment.js": "d12156731b6a7ed72cc97eee9f0be0bfcd16e321"
+  "src/data/YautjaExpandedContent.js": "9263751af1c0e93649ef828a96a5c274720a20e2",
+  "src/data/YautjaContentCatalog.js": "550a72c3026e38d9ef8d79606654629efb80f7ec",
+  "src/data/YautjaLoreDatabase.js": "c17d5f31944762e6eb20b2c50ece1b3fc3f665d9",
+  "src/data/LoreCodex.js": "7867122a6e74e4a993d99be911317231b6a20bcb",
+  "src/data/MediaCoverageCatalog.js": "cdd82fd3c6a994e9590d32ba552c56ed139c2bf9",
+  "src/data/CanonPreyExpansionV251.js": "548ab703da410a1067238a087ce02727b6aa3afc",
+  "src/data/PreyTaxonomyAndCrossoverCatalog.js": "6725a4c3343cfbdb7356dcf9a00946b42139088a",
+  "src/data/PreyReferenceMetadata.js": "0b3abdda06e395ad570df54e0dcea20abae713d5",
+  "src/data/RuntimeEquipment.js": "4bfa30c984529c052c005ed651389deeac22d3d8"
 });
 // Source snapshots remain immutable; validate all file blobs before proposing an intake PR.
 export function assertAlienBaseCandidateSourcesCurrent(){
