@@ -178,3 +178,19 @@ Les principaux lots de contenu encore distincts de cette passe restent des campa
 ## Mention légale
 
 Projet de fan game non officiel. Predator, Alien, Yautja, Xenomorph et les marques associées appartiennent à leurs ayants droit respectifs. Ce dépôt ne revendique aucun lien, parrainage ou approbation officielle.
+
+## Alien_base — référentiel partagé
+
+Le Codex dispose de 20 archives documentaires Alien supplémentaires, référencées dans un snapshot public minimal de `alien_base`. Les 33 identités/technologies partagées restent reliées à leurs IDs locaux sans changer les sauvegardes; les 9 boss/variantes adaptés utilisent des relations `inspired-by` non identitaires. Un export de 731 candidats de recherche permet d'enrichir la base privée en sens inverse, sans importer de statistiques de gameplay. Voir [ALIEN_BASE_INTEGRATION.md](docs/ALIEN_BASE_INTEGRATION.md).
+
+### Registre Alien_base v2 (PR en revue)
+
+La migration des 731 candidats vers les identifiants unifiés apporte **35 correspondances locales**, **49 alias hérités**, **9 relations de boss non identitaires** et **4 ambiguïtés conservées en revue**. Le Codex affiche les IDs du registre pour les 16 archives correspondantes et garde les quatre autres en attente, sans impact sur l'équilibrage. Voir [le dossier d'intégration](docs/ALIEN_BASE_INTEGRATION.md).
+
+Le registre unifié ajoute également **20 dossiers de recherche consultables** au Codex, clairement différenciés des références visuelles certifiées et du gameplay jouable.
+
+La commande `scripts/diff-alien-base-candidates.mjs` prépare les futures mises à jour **jeu → base** comme des deltas de recherche avec SHA réel, sans modification ou suppression automatique.
+
+La galerie « Archives de franchise » affiche désormais réellement les dossiers technologie/véhicules/ennemis/événements/boss/alliés et les **29 œuvres** du registre commun, avec recherche et provenance, sans aucune activation automatique du gameplay.
+
+La passerelle commune passe à **75 notices** et **38 identifiants locaux** : Alpha, Samurai et Viking (Hunting Grounds) conservent leur forme de jeu, sans uniformisation des stats ni promesse d'apparence 1:1.

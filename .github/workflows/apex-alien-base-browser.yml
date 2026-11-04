@@ -1,0 +1,31 @@
+name: Apex Alien_base browser smoke
+on:
+  pull_request:
+    paths:
+      - 'src/ui/SharedReferenceVault.js'
+      - 'src/ui/CodexFilters.js'
+      - 'src/data/AlienBaseMediaV2.js'
+      - 'src/data/alien-base-media.v2.json'
+      - 'src/data/alien-base-registry.v2.json'
+      - 'src/main.js'
+      - 'index.html'
+      - 'scripts/qa-alien-base-browser.cjs'
+      - '.github/workflows/apex-alien-base-browser.yml'
+  push:
+    branches: [feat/alien-base-crossgame-apex-hunt-20261101]
+permissions:
+  contents: read
+jobs:
+  browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/qa-alien-base-browser.cjs

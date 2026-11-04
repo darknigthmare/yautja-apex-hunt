@@ -1,0 +1,1100 @@
+{
+  "schemaVersion": "2.0.0",
+  "origin": "darknigthmare/alien_base",
+  "scope": "public-minimal-yautja-apex-hunt",
+  "sourceCommit": "3cbe8861204c5fe7341b61cda61f806b596a7186",
+  "evidence": "project-identities-not-gameplay-or-1to1-visual-certification",
+  "records": [
+    {
+      "id": "bio.automaton.bombardier",
+      "name": "Bombardier",
+      "category": "organism"
+    },
+    {
+      "id": "bio.automaton.bulwark",
+      "name": "Bulwark",
+      "category": "organism"
+    },
+    {
+      "id": "bio.synthetic.combat-synthetic",
+      "name": "Combat Synthetic",
+      "category": "organism"
+    },
+    {
+      "id": "bio.synthetic.working-joe",
+      "name": "Working Joe",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.boiler",
+      "name": "Boiler",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.carrier",
+      "name": "Carrier",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.chestburster",
+      "name": "Chestburster",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.crusher",
+      "name": "Crusher",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.drone",
+      "name": "Drone",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.exploder",
+      "name": "Exploder",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.facehugger",
+      "name": "Facehugger",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.k-series-yellow-xenomorph",
+      "name": "K-Series Yellow Xenomorph",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.lurker",
+      "name": "Lurker",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.ovomorph",
+      "name": "Ovomorphe",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.praetorian",
+      "name": "Prétorien",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.predalien",
+      "name": "Predalien",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.prowler",
+      "name": "Prowler",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.queen",
+      "name": "Reine Xénomorphe",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.ravager",
+      "name": "Ravager",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.runner",
+      "name": "Runner",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.spitter",
+      "name": "Spitter",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.warden",
+      "name": "Warden",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.warrior",
+      "name": "Warrior",
+      "category": "organism"
+    },
+    {
+      "id": "bio.xenomorph.xenoborg",
+      "name": "Xenoborg",
+      "category": "organism"
+    },
+    {
+      "id": "character.reference.ellen-ripley",
+      "name": "Ellen Ripley",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.alpha_predator",
+      "name": "ALPHA PREDATOR (HUNTING GROUNDS)",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.city_hunter",
+      "name": "CITY HUNTER (1990)",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.feral_predator",
+      "name": "FERAL PREDATOR (PREY 2022)",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.jungle_hunter",
+      "name": "JUNGLE HUNTER (1987)",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.samurai_predator",
+      "name": "SAMURAI PREDATOR (PHG DLC)",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.viking_predator",
+      "name": "VIKING PREDATOR (PHG DLC)",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.wolf_predator",
+      "name": "WOLF PREDATOR (AVP REQUIEM)",
+      "category": "character"
+    },
+    {
+      "id": "faction.uscm",
+      "name": "United States Colonial Marine Corps",
+      "category": "faction"
+    },
+    {
+      "id": "faction.weyland-yutani",
+      "name": "Weyland-Yutani",
+      "category": "faction"
+    },
+    {
+      "id": "item.m240-incinerator-unit",
+      "name": "M240 Incinerator Unit",
+      "category": "equipment"
+    },
+    {
+      "id": "item.m41a-pulse-rifle",
+      "name": "M41A Pulse Rifle",
+      "category": "equipment"
+    },
+    {
+      "id": "item.m41a2-pulse-rifle",
+      "name": "M41A2 Pulse Rifle",
+      "category": "equipment"
+    },
+    {
+      "id": "item.m56-smartgun",
+      "name": "M56 Smartgun",
+      "category": "equipment"
+    },
+    {
+      "id": "item.motion-tracker",
+      "name": "Motion Tracker",
+      "category": "equipment"
+    },
+    {
+      "id": "item.ua-571-c-sentry-gun",
+      "name": "UA 571-C Sentry Gun",
+      "category": "equipment"
+    },
+    {
+      "id": "item.yautja.cloak",
+      "name": "Active Camouflage Cloaking Device",
+      "category": "equipment"
+    },
+    {
+      "id": "item.yautja.combistick",
+      "name": "Combi-Stick",
+      "category": "equipment"
+    },
+    {
+      "id": "item.yautja.medicomp",
+      "name": "Medicomp Bio-Gel Injection Kit",
+      "category": "equipment"
+    },
+    {
+      "id": "item.yautja.netgun",
+      "name": "Razor-Wire Netgun",
+      "category": "equipment"
+    },
+    {
+      "id": "item.yautja.plasma_caster",
+      "name": "Shoulder Plasma Caster (Single)",
+      "category": "equipment"
+    },
+    {
+      "id": "item.yautja.shuriken",
+      "name": "6-Blade Telescopic Shuriken",
+      "category": "equipment"
+    },
+    {
+      "id": "item.yautja.smart_disc",
+      "name": "Smart Disc",
+      "category": "equipment"
+    },
+    {
+      "id": "item.yautja.thermal_mask",
+      "name": "Thermal Multi-Vision Bio-Mask",
+      "category": "equipment"
+    },
+    {
+      "id": "item.yautja.wristblades",
+      "name": "Wrist Blades",
+      "category": "equipment"
+    },
+    {
+      "id": "place.acheron-lv-426",
+      "name": "Acheron / LV-426",
+      "category": "place"
+    },
+    {
+      "id": "place.lv-223",
+      "name": "LV-223",
+      "category": "place"
+    },
+    {
+      "id": "place.renaissance-station",
+      "name": "Renaissance Station",
+      "category": "place"
+    },
+    {
+      "id": "place.sevastopol",
+      "name": "Sevastopol",
+      "category": "place"
+    },
+    {
+      "id": "vehicle.m577-armored-personnel-carrier",
+      "name": "M577 Armored Personnel Carrier",
+      "category": "vehicle"
+    },
+    {
+      "id": "vehicle.ud-4l-cheyenne-dropship",
+      "name": "UD-4L Cheyenne Dropship",
+      "category": "vehicle"
+    },
+    {
+      "id": "character.yautja.elder_lost_tribe_1990",
+      "name": "Ancien du Lost Tribe",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.scar_avp_2004",
+      "name": "Scar Predator",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.celtic_avp_2004",
+      "name": "Celtic Predator",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.chopper_avp_2004",
+      "name": "Chopper Predator",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.berserker_2010",
+      "name": "Berserker Predator",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.falconer_2010",
+      "name": "Falconer Predator",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.tracker_2010",
+      "name": "Tracker Predator",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.fugitive_2018",
+      "name": "Fugitive Predator",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.kok_viking_hunter_2025",
+      "name": "Chasseur de l’ère viking",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.kok_feudal_hunter_2025",
+      "name": "Chasseur du Japon féodal",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.kok_wartime_hunter_2025",
+      "name": "Chasseur de l’ère aérienne",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.dek_badlands_2025",
+      "name": "Dek",
+      "category": "character"
+    },
+    {
+      "id": "character.yautja.kwei_badlands_2025",
+      "name": "Kwei",
+      "category": "character"
+    },
+    {
+      "id": "item.yautja.wrist_computer",
+      "name": "Ordinateur de poignet",
+      "category": "equipment"
+    },
+    {
+      "id": "item.yautja.self_destruct",
+      "name": "Autodestruction du brassard",
+      "category": "equipment"
+    },
+    {
+      "id": "item.yautja.tri_laser_targeting",
+      "name": "Viseur à trois points",
+      "category": "equipment"
+    },
+    {
+      "id": "item.yautja.feral_bolt_launcher_2022",
+      "name": "Lance-traits du Feral",
+      "category": "equipment"
+    },
+    {
+      "id": "item.yautja.wolf_dual_plasma_2007",
+      "name": "Double canon à plasma de Wolf",
+      "category": "equipment"
+    },
+    {
+      "id": "vehicle.yautja.jungle_dropcraft_1987",
+      "name": "Appareil d’insertion de la jungle",
+      "category": "vehicle"
+    },
+    {
+      "id": "vehicle.yautja.city_clan_vessel_1990",
+      "name": "Vaisseau du clan de Los Angeles",
+      "category": "vehicle"
+    }
+  ],
+  "groups": {
+    "skins": {
+      "jungle_1987": {
+        "id": "character.yautja.jungle_hunter",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "city_1990": {
+        "id": "character.yautja.city_hunter",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "elder_lost_tribe": {
+        "id": "character.yautja.elder_lost_tribe_1990",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "scar_avp": {
+        "id": "character.yautja.scar_avp_2004",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "celtic_avp": {
+        "id": "character.yautja.celtic_avp_2004",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "chopper_avp": {
+        "id": "character.yautja.chopper_avp_2004",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "wolf_avpr": {
+        "id": "character.yautja.wolf_predator",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "berserker_2010": {
+        "id": "character.yautja.berserker_2010",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "falconer_2010": {
+        "id": "character.yautja.falconer_2010",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "tracker_2010": {
+        "id": "character.yautja.tracker_2010",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "fugitive_2018": {
+        "id": "character.yautja.fugitive_2018",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "feral_2022": {
+        "id": "character.yautja.feral_predator",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "kok_viking_hunter": {
+        "id": "character.yautja.kok_viking_hunter_2025",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "kok_feudal_hunter": {
+        "id": "character.yautja.kok_feudal_hunter_2025",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "kok_wartime_hunter": {
+        "id": "character.yautja.kok_wartime_hunter_2025",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "dek_badlands": {
+        "id": "character.yautja.dek_badlands_2025",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "kwei_badlands": {
+        "id": "character.yautja.kwei_badlands_2025",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "alpha_yautja": {
+        "id": "character.yautja.alpha_predator",
+        "qualifier": "same-licensed-game-character-identity-no-visual-1to1-attestation"
+      },
+      "samurai_yautja": {
+        "id": "character.yautja.samurai_predator",
+        "qualifier": "same-licensed-game-character-identity-no-visual-1to1-attestation"
+      },
+      "viking_yautja": {
+        "id": "character.yautja.viking_predator",
+        "qualifier": "same-licensed-game-character-identity-no-visual-1to1-attestation"
+      }
+    },
+    "technology": {
+      "tech_biomask": {
+        "id": "item.yautja.thermal_mask",
+        "qualifier": "equipment-family-not-visual-variant"
+      },
+      "tech_cloak": {
+        "id": "item.yautja.cloak",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "tech_wrist_computer": {
+        "id": "item.yautja.wrist_computer",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "tech_self_destruct": {
+        "id": "item.yautja.self_destruct",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "tech_medicomp": {
+        "id": "item.yautja.medicomp",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "tech_tri_laser": {
+        "id": "item.yautja.tri_laser_targeting",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "tech_wrist_blades": {
+        "id": "item.yautja.wristblades",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "tech_plasma_caster": {
+        "id": "item.yautja.plasma_caster",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "tech_smart_disc": {
+        "id": "item.yautja.smart_disc",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "tech_combistick": {
+        "id": "item.yautja.combistick",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "tech_net_launcher": {
+        "id": "item.yautja.netgun",
+        "qualifier": "equipment-family-not-visual-variant"
+      },
+      "tech_shuriken_avp": {
+        "id": "item.yautja.shuriken",
+        "qualifier": "equipment-family-not-visual-variant"
+      },
+      "tech_feral_bolt_launcher": {
+        "id": "item.yautja.feral_bolt_launcher_2022",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "tech_wolf_dual_plasma": {
+        "id": "item.yautja.wolf_dual_plasma_2007",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      }
+    },
+    "vehicles": {
+      "vehicle_jungle_dropcraft": {
+        "id": "vehicle.yautja.jungle_dropcraft_1987",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      },
+      "vehicle_city_clan_ship": {
+        "id": "vehicle.yautja.city_clan_vessel_1990",
+        "qualifier": "project-linked-no-visual-fidelity-certification"
+      }
+    },
+    "enemies": {
+      "enemy_xenomorph_drone": {
+        "id": "bio.xenomorph.drone",
+        "qualifier": "generic-xenomorph-archetype-not-medium-specific"
+      },
+      "enemy_xenomorph_warrior": {
+        "id": "bio.xenomorph.warrior",
+        "qualifier": "generic-xenomorph-archetype-not-medium-specific"
+      }
+    }
+  },
+  "researchArchives": [
+    {
+      "id": "bio.xenomorph.praetorian",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.runner",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.crusher",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.spitter",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.boiler",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.predalien",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.xenoborg",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.ravager",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.carrier",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.prowler",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.lurker",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.k-series-yellow-xenomorph",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.exploder",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.xenomorph.warden",
+      "category": "xenomorphes",
+      "reviewNote": "Forme ou catégorie xénomorphe enregistrée dans les catalogues de projets : œuvre et apparence précises encore à vérifier.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.synthetic.working-joe",
+      "category": "culture",
+      "reviewNote": "Entité synthétique ou automate de catalogue : ne pas l'assimiler biologiquement à un Xénomorphe.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.synthetic.combat-synthetic",
+      "category": "culture",
+      "reviewNote": "Entité synthétique ou automate de catalogue : ne pas l'assimiler biologiquement à un Xénomorphe.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.automaton.bulwark",
+      "category": "culture",
+      "reviewNote": "Entité synthétique ou automate de catalogue : ne pas l'assimiler biologiquement à un Xénomorphe.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "bio.automaton.bombardier",
+      "category": "culture",
+      "reviewNote": "Entité synthétique ou automate de catalogue : ne pas l'assimiler biologiquement à un Xénomorphe.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "item.ua-571-c-sentry-gun",
+      "category": "technologie",
+      "reviewNote": "Équipement colonial documenté comme référence de recherche, sans déblocage dans l'arsenal Yautja.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    },
+    {
+      "id": "item.m41a2-pulse-rifle",
+      "category": "technologie",
+      "reviewNote": "Équipement colonial documenté comme référence de recherche, sans déblocage dans l'arsenal Yautja.",
+      "reviewRequired": true,
+      "archiveOnly": true,
+      "fidelityVerified": false
+    }
+  ],
+  "legacyAliases": [
+    {
+      "legacySharedId": "yautja:jungle-hunter-1987",
+      "registryId": "character.yautja.jungle_hunter",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:city-hunter-1990",
+      "registryId": "character.yautja.city_hunter",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:elder-lost-tribe-1990",
+      "registryId": "character.yautja.elder_lost_tribe_1990",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:scar-2004",
+      "registryId": "character.yautja.scar_avp_2004",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:celtic-2004",
+      "registryId": "character.yautja.celtic_avp_2004",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:chopper-2004",
+      "registryId": "character.yautja.chopper_avp_2004",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:wolf-2007",
+      "registryId": "character.yautja.wolf_predator",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:berserker-2010",
+      "registryId": "character.yautja.berserker_2010",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:falconer-2010",
+      "registryId": "character.yautja.falconer_2010",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:tracker-2010",
+      "registryId": "character.yautja.tracker_2010",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:fugitive-2018",
+      "registryId": "character.yautja.fugitive_2018",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:feral-2022",
+      "registryId": "character.yautja.feral_predator",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:viking-hunter-2025",
+      "registryId": "character.yautja.kok_viking_hunter_2025",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:feudal-hunter-2025",
+      "registryId": "character.yautja.kok_feudal_hunter_2025",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:wartime-hunter-2025",
+      "registryId": "character.yautja.kok_wartime_hunter_2025",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:dek-2025",
+      "registryId": "character.yautja.dek_badlands_2025",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "yautja:kwei-2025",
+      "registryId": "character.yautja.kwei_badlands_2025",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "equipment:yautja-biomask",
+      "registryId": "item.yautja.thermal_mask",
+      "kind": "equipment-family",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "equipment:yautja-cloak",
+      "registryId": "item.yautja.cloak",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "equipment:yautja-wrist-computer",
+      "registryId": "item.yautja.wrist_computer",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "equipment:yautja-self-destruct",
+      "registryId": "item.yautja.self_destruct",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "equipment:yautja-medicomp",
+      "registryId": "item.yautja.medicomp",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "equipment:yautja-tri-laser",
+      "registryId": "item.yautja.tri_laser_targeting",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "weapon:yautja-wrist-blades",
+      "registryId": "item.yautja.wristblades",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "weapon:yautja-plasmacaster",
+      "registryId": "item.yautja.plasma_caster",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "weapon:yautja-smart-disc",
+      "registryId": "item.yautja.smart_disc",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "weapon:yautja-combistick",
+      "registryId": "item.yautja.combistick",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "weapon:yautja-net-launcher",
+      "registryId": "item.yautja.netgun",
+      "kind": "equipment-family",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "weapon:yautja-shuriken-avp",
+      "registryId": "item.yautja.shuriken",
+      "kind": "equipment-family",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "weapon:feral-bolt-launcher-2022",
+      "registryId": "item.yautja.feral_bolt_launcher_2022",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "weapon:wolf-dual-plasma-2007",
+      "registryId": "item.yautja.wolf_dual_plasma_2007",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "vessel:yautja-jungle-dropcraft-1987",
+      "registryId": "vehicle.yautja.jungle_dropcraft_1987",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "vessel:yautja-city-clan-vessel-1990",
+      "registryId": "vehicle.yautja.city_clan_vessel_1990",
+      "kind": "project-identity",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "faction:weyland-yutani",
+      "registryId": "faction.weyland-yutani",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "faction:uscm",
+      "registryId": "faction.uscm",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "weapon:m41a",
+      "registryId": "item.m41a-pulse-rifle",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "weapon:m56",
+      "registryId": "item.m56-smartgun",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "weapon:m240",
+      "registryId": "item.m240-incinerator-unit",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "equipment:m314",
+      "registryId": "item.motion-tracker",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "vehicle:m577",
+      "registryId": "vehicle.m577-armored-personnel-carrier",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "vehicle:ud4l",
+      "registryId": "vehicle.ud-4l-cheyenne-dropship",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "character:ellen-ripley",
+      "registryId": "character.reference.ellen-ripley",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "archive:sevastopol",
+      "registryId": "place.sevastopol",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "archive:renaissance",
+      "registryId": "place.renaissance-station",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "archive:lv223",
+      "registryId": "place.lv-223",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "archive:lv426",
+      "registryId": "place.acheron-lv-426",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "xeno:facehugger",
+      "registryId": "bio.xenomorph.facehugger",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "xeno:chestburster",
+      "registryId": "bio.xenomorph.chestburster",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    },
+    {
+      "legacySharedId": "xeno:ovomorph",
+      "registryId": "bio.xenomorph.ovomorph",
+      "kind": "documentary-alias",
+      "fidelityVerified": false
+    }
+  ],
+  "unresolvedLegacy": [
+    {
+      "legacySharedId": "faction:synthetics",
+      "reason": "Personnel générique, pas une faction unique",
+      "reviewStatus": "open"
+    },
+    {
+      "legacySharedId": "vehicle:p5000",
+      "reason": "Le P-5000 industriel n'est pas le Combat Power Loader",
+      "reviewStatus": "open"
+    },
+    {
+      "legacySharedId": "character:bishop",
+      "reason": "Le Bishop du film est distinct de Bishop-9 et d'une carte TCG",
+      "reviewStatus": "open"
+    },
+    {
+      "legacySharedId": "archive:pathogen",
+      "reason": "Le pathogène n'est pas une espèce/variante unique",
+      "reviewStatus": "open"
+    }
+  ],
+  "relations": [
+    {
+      "collection": "YautjaContentCatalog.huntBosses",
+      "localId": "xeno_queen",
+      "basisId": "bio.xenomorph.queen",
+      "relationship": "inspired-by",
+      "assertsIdentity": false,
+      "fidelityVerified": false
+    },
+    {
+      "collection": "YautjaContentCatalog.huntBosses",
+      "localId": "boss_feral_2022",
+      "basisId": "character.yautja.feral_predator",
+      "relationship": "inspired-by",
+      "assertsIdentity": false,
+      "fidelityVerified": false
+    },
+    {
+      "collection": "YautjaContentCatalog.huntBosses",
+      "localId": "boss_wolf_cleaner",
+      "basisId": "character.yautja.wolf_predator",
+      "relationship": "inspired-by",
+      "assertsIdentity": false,
+      "fidelityVerified": false
+    },
+    {
+      "collection": "YautjaContentCatalog.huntBosses",
+      "localId": "boss_berserker_super_predator",
+      "basisId": "character.yautja.berserker_2010",
+      "relationship": "inspired-by",
+      "assertsIdentity": false,
+      "fidelityVerified": false
+    },
+    {
+      "collection": "YautjaContentCatalog.huntBosses",
+      "localId": "boss_city_hunter_1990",
+      "basisId": "character.yautja.city_hunter",
+      "relationship": "inspired-by",
+      "assertsIdentity": false,
+      "fidelityVerified": false
+    },
+    {
+      "collection": "YautjaContentCatalog.enemies",
+      "localId": "enemy_xenomorph_warrior",
+      "basisId": "bio.xenomorph.warrior",
+      "relationship": "inspired-by",
+      "assertsIdentity": false,
+      "fidelityVerified": false
+    },
+    {
+      "collection": "YautjaContentCatalog.enemies",
+      "localId": "enemy_xenomorph_drone",
+      "basisId": "bio.xenomorph.drone",
+      "relationship": "inspired-by",
+      "assertsIdentity": false,
+      "fidelityVerified": false
+    },
+    {
+      "collection": "CURRENT_HUNTS",
+      "localId": "jungle_hunter_1987",
+      "basisId": "character.yautja.jungle_hunter",
+      "relationship": "inspired-by",
+      "assertsIdentity": false,
+      "fidelityVerified": false
+    },
+    {
+      "collection": "CURRENT_HUNTS",
+      "localId": "grid_alien",
+      "basisId": "bio.xenomorph.warrior",
+      "relationship": "inspired-by",
+      "assertsIdentity": false,
+      "fidelityVerified": false
+    }
+  ]
+}

@@ -865,6 +865,23 @@
         </section>
 
         <section class="expanded-content-vault" aria-labelledby="content-vault-title">
+          <div class="reference-vault-controls" role="search" aria-label="Chercher dans les archives de franchise">
+            <label for="reference-vault-search">RECHERCHE DANS LES DOSSIERS
+              <input id="reference-vault-search" type="search" placeholder="Xénomorphe, clan, plasma, film..." autocomplete="off">
+            </label>
+            <label for="reference-vault-status">STATUT DE CONTENU
+              <select id="reference-vault-status">
+                <option value="all">Tous les statuts</option>
+                <option value="playable">Jouable déclaré</option>
+                <option value="encounter">Rencontre déclarée</option>
+                <option value="customization">Personnalisation</option>
+                <option value="archive">Archives non jouables</option>
+              </select>
+            </label>
+          </div>
+          <p id="reference-vault-empty" class="reference-vault-empty" hidden>Aucun dossier ne correspond à cette recherche.</p>
+
+
           <div class="section-heading compact-heading">
             <div>
               <p class="section-kicker">ARCHIVES ÉTENDUES · PROVENANCE BADGÉE</p>
@@ -911,6 +928,28 @@
             <h3>CODEX YAUTJA</h3>
           </div>
           <p>Les badges de provenance distinguent les films, la branche AVP, les récits licenciés et les créations originales du jeu.</p>
+        </div>
+        <div class="codex-reference-controls" role="search" aria-label="Filtrer le Codex et les références Alien_base">
+          <label for="codex-search">RECHERCHER UNE FICHE
+            <input id="codex-search" type="search" placeholder="Reine, Weyland, plasma, film, identifiant..." autocomplete="off">
+          </label>
+          <label for="codex-source-filter">PROVENANCE
+            <select id="codex-source-filter">
+              <option value="all">Toutes les provenances</option>
+              <option value="SCREEN">Films Predator / Alien</option>
+              <option value="AVP_SCREEN">Films AVP</option>
+              <option value="LICENSED_SCREEN_DESIGN">Designs sous licence</option>
+              <option value="LICENSED_EU">Univers étendu</option>
+              <option value="MERCH_CONCEPT">Produits et concepts</option>
+              <option value="ORIGINAL">Créations Apex Hunt</option>
+              <option value="RESEARCH">Recherches à vérifier</option>
+            </select>
+          </label>
+          <label class="codex-check-filter" for="codex-archives-only">
+            <input id="codex-archives-only" type="checkbox">
+            Archives uniquement
+          </label>
+          <output id="codex-filter-count" aria-live="polite">0 DOSSIERS</output>
         </div>
         <div id="codex-grid" class="codex-grid" aria-live="polite"></div>
 

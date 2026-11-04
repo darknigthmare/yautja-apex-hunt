@@ -8525,3 +8525,6 @@ button:hover { transform: scale(1.04); }
 .universe-encounter-card:hover{border-color:#ffd54f}
 .universe-encounter-card small{font-size:11px;color:#b0bec5}
 .universe-encounter-card .encounter-trophy{color:#ffd54f}
+
+/* Alien_base : traçabilité documentaire sans modifier les indicateurs de combat. */
+.codex-shared-reference { display: block; margin-top: .6rem; padding-top: .45rem; border-top: 1px solid rgba(140,170,160,.27); font-size: .69rem; line-height: 1.4; letter-spacing: .08em; color: #a9c6b7; overflow-wrap: anywhere; }

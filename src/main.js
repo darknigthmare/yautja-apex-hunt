@@ -23,6 +23,8 @@ import { audioSynth } from './AudioSynthesizer.js';
 import { saveManager } from './engine/SaveManager.js';
 import { DEFAULT_SETTINGS, HUNT_DEFINITIONS, resolveHuntBiome } from './data/GameConfig.js';
 import { ALL_LORE_ENTRIES, LORE_SOURCE_TIERS, LORE_SOURCES } from './data/LoreCodex.js';
+import {initializeSharedReferenceVault} from './ui/SharedReferenceVault.js';
+import {filterLoreEntries} from './ui/CodexFilters.js';
 import { MedbayInventoryOverlay } from './ui/MedbayInventoryOverlay.js';
 import { refillMedbayInventory } from './gameplay/YautjaMedbaySystem.js';
 import { MELEE_WEAPONS, resolveMeleeStrike } from './gameplay/combatRules.js';
@@ -353,6 +355,11 @@ export class Game {
 
     this.applySettings(false);
     this.renderLoreCodex();
+    for(const id of ['codex-search','codex-source-filter','codex-archives-only']){
+      const input=document.getElementById(id);
+      if(input?.addEventListener)input.addEventListener(id==='codex-search'?'input':'change',()=>this.renderLoreCodex());
+    }
+    initializeSharedReferenceVault(document);
     this.renderDirectiveSelector();
     this.initEventListeners();
     this.setupUIButtons();
@@ -1021,7 +1028,14 @@ export class Game {
     const codexGrid = document.getElementById('codex-grid');
     if (!codexGrid) return;
 
-    const cards = ALL_LORE_ENTRIES.map((entry) => {
+    const visible=filterLoreEntries(ALL_LORE_ENTRIES,{
+      query:document.getElementById('codex-search')?.value??'',
+      sourceTier:document.getElementById('codex-source-filter')?.value??'all',
+      archivesOnly:document.getElementById('codex-archives-only')?.checked??false
+    });
+    const counter=document.getElementById('codex-filter-count');
+    if(counter)counter.textContent=visible.length+' / '+ALL_LORE_ENTRIES.length+' DOSSIERS';
+    const cards = visible.map((entry) => {
       const card = document.createElement('article');
       card.className = 'codex-card';
       card.dataset.category = entry.category;
@@ -1069,6 +1083,15 @@ export class Game {
           if (index < sources.length - 1) sourceList.append(document.createTextNode(' · '));
         });
         card.append(sourceList);
+      }
+
+      if (entry.sharedId || entry.canonicalRegistryId) {
+        const provenance = document.createElement('small');
+        provenance.className = 'codex-shared-reference';
+        provenance.textContent = entry.canonicalRegistryId
+          ? 'REGISTRE ALIEN_BASE · ' + entry.canonicalRegistryId + ' · ARCHIVE NON JOUABLE'
+          : 'ALIEN_BASE · ' + entry.sharedId + ' · CORRESPONDANCE EN REVUE · ARCHIVE NON JOUABLE';
+        card.append(provenance);
       }
 
       return card;

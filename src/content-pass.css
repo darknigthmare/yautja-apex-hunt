@@ -935,3 +935,25 @@ body:has(#vision-overlay.vision-normal) #scanline-overlay { opacity: 0.22; }
   .setting-graphics { align-items: stretch; flex-direction: column; }
   .setting-graphics select { max-width: 100%; width: 100%; }
 }
+
+/* Shared Alien_base documentary vault: no gameplay grants or hidden admin toggles. */
+.reference-vault-controls {display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin:12px 0;}
+.reference-vault-controls label {display:grid;gap:5px;flex:1 1 210px;font:700 10px 'Orbitron',sans-serif;color:#d6b875;}
+.reference-vault-controls input,.reference-vault-controls select {width:100%;min-height:40px;padding:9px;background:rgba(4,11,18,.96);color:#e7faf7;border:1px solid rgba(84,212,208,.5);border-radius:5px;}
+.reference-vault-controls :is(input,select):focus-visible {outline:2px solid #7afbea;outline-offset:2px;}
+.reference-vault-empty {padding:12px;border:1px solid #788e95;color:#bed1d9;}
+.reference-shared-id,.reference-verification,.reference-source-label,.reference-source-name {overflow-wrap:anywhere;}
+.reference-shared-id {color:#98e6d4!important;font-size:9px!important;}
+.reference-verification {color:#f5c888!important;}
+.reference-source-list {display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
+.reference-source-list .reference-source-label {width:100%;}
+.reference-source-list .media-coverage-source {font-size:9px;margin-top:2px;}
+
+/* Searchable offline Codex: filter by provenance, not by canon status. */
+.codex-reference-controls {display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;margin:12px 0 18px;}
+.codex-reference-controls label:not(.codex-check-filter){display:grid;gap:5px;flex:1 1 190px;color:#dbba77;font:700 10px 'Orbitron',sans-serif;}
+.codex-reference-controls :is(input[type=search],select) {box-sizing:border-box;width:100%;min-height:40px;padding:9px;border-radius:5px;background:rgba(4,11,18,.97);border:1px solid rgba(83,209,210,.47);color:#e3f7f5;}
+.codex-reference-controls :is(input,select):focus-visible{outline:2px solid #77f7dc;outline-offset:2px;}
+.codex-reference-controls .codex-check-filter {display:flex;align-items:center;gap:6px;min-height:40px;color:#e5d19d;font:700 10px 'Orbitron',sans-serif;}
+.codex-reference-controls .codex-check-filter input {accent-color:#69e8bf;min-width:18px;min-height:18px;}
+#codex-filter-count {color:#8defcf;font:700 10px 'Orbitron',sans-serif;min-height:32px;display:flex;align-items:center;}

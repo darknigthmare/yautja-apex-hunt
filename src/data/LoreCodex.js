@@ -1,16 +1,24 @@
 // Canon-conscious lore data for Yautja: Apex Hunt.
 // UI rule: always display the sourceTier badge with an entry.
 
+import { getAlienBaseArchiveCodexEntries } from './AlienBaseFederation.js';
+import {getAlienRegistryResearchCodexEntries} from './AlienBaseRegistryV2.js';
 export const LORE_SOURCE_TIERS = Object.freeze({
   SCREEN: Object.freeze({ id: 'SCREEN', label: 'ÉCRAN PRINCIPAL PREDATOR / ALIEN', shortLabel: 'ÉCRAN', color: '#55e6a5', priority: 1 }),
   AVP_SCREEN: Object.freeze({ id: 'AVP_SCREEN', label: 'ÉCRAN AVP', shortLabel: 'AVP', color: '#e9b949', priority: 2 }),
   LICENSED_SCREEN_DESIGN: Object.freeze({ id: 'LICENSED_SCREEN_DESIGN', label: 'DESIGN ÉCRAN DOCUMENTÉ SOUS LICENCE', shortLabel: 'DESIGN', color: '#8dd7c6', priority: 3 }),
   LICENSED_EU: Object.freeze({ id: 'LICENSED_EU', label: 'UNIVERS ÉTENDU SOUS LICENCE', shortLabel: 'EU', color: '#7aa2f7', priority: 4 }),
   MERCH_CONCEPT: Object.freeze({ id: 'MERCH_CONCEPT', label: 'CONCEPT DE COLLECTION SOUS LICENCE', shortLabel: 'MERCH', color: '#d6a75c', priority: 5 }),
-  ORIGINAL: Object.freeze({ id: 'ORIGINAL', label: 'CRÉATION APEX HUNT', shortLabel: 'ORIGINAL', color: '#ff7a8a', priority: 6 })
+  ORIGINAL: Object.freeze({ id: 'ORIGINAL', label: 'CRÉATION APEX HUNT', shortLabel: 'ORIGINAL', color: '#ff7a8a', priority: 6 }),
+  RESEARCH: Object.freeze({ id: 'RESEARCH', label: 'RECHERCHE INTER-JEUX À VÉRIFIER', shortLabel: 'RECH.', color: '#9baab6', priority: 7 })
 });
 
 export const LORE_SOURCES = Object.freeze({
+  alien1979: { title: 'Alien (1979)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien' },
+  alienIsolation2014: { title: 'Alien: Isolation (2014)', tier: 'LICENSED_EU', url: 'https://store.steampowered.com/app/214490/Alien_Isolation/' },
+  alienRomulus2024: { title: 'Alien: Romulus (2024)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien-romulus' },
+  prometheus2012: { title: 'Prometheus (2012)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/prometheus' },
+  alienCovenant2017: { title: 'Alien: Covenant (2017)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien-covenant' },
   predator1987: { title: 'Predator (1987)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/predator' },
   predatorArchives: { title: 'Predator — Walt Disney Archives', tier: 'SCREEN', url: 'https://thewaltdisneycompany.com/news/predator-archives/' },
   predator2: { title: 'Predator 2 (1990)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/predator-2' },
@@ -359,7 +367,9 @@ export const CURRENT_HUNTS = freezeEntries([
   },
 ]);
 
-export const ALL_LORE_ENTRIES = Object.freeze([...LORE_CODEX_ENTRIES, ...HUNT_LOCATIONS, ...CURRENT_HUNTS]);
+export const ALIEN_BASE_ARCHIVE_ENTRIES = Object.freeze(getAlienBaseArchiveCodexEntries());
+export const ALIEN_BASE_RESEARCH_ARCHIVE_ENTRIES = Object.freeze(getAlienRegistryResearchCodexEntries());
+export const ALL_LORE_ENTRIES = Object.freeze([...LORE_CODEX_ENTRIES, ...HUNT_LOCATIONS, ...CURRENT_HUNTS, ...ALIEN_BASE_ARCHIVE_ENTRIES, ...ALIEN_BASE_RESEARCH_ARCHIVE_ENTRIES]);
 export const getLoreSourceTier = (tierId) => LORE_SOURCE_TIERS[tierId] ?? null;
 export const getLoreEntryById = (id) => ALL_LORE_ENTRIES.find((entry) => entry.id === id) ?? null;
 export const getLoreEntriesByCategory = (category) => ALL_LORE_ENTRIES.filter((entry) => entry.category === category);
@@ -369,5 +379,7 @@ export default Object.freeze({
   sources: LORE_SOURCES,
   codex: LORE_CODEX_ENTRIES,
   locations: HUNT_LOCATIONS,
-  hunts: CURRENT_HUNTS
+  hunts: CURRENT_HUNTS,
+  alienBaseArchives: ALIEN_BASE_ARCHIVE_ENTRIES,
+  alienBaseResearchArchives: ALIEN_BASE_RESEARCH_ARCHIVE_ENTRIES
 });
