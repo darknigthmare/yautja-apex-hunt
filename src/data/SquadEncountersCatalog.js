@@ -2184,8 +2184,133 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
         trophy: 'Fragment de Chitine Noire Évoluée par le Pathogène'
       }
     ]
+  },
+  {
+    id: 'squad_cold_war_spetsnaz_1991',
+    name: 'Spetsnaz de Sibérie & Commandos de Kola (1991)',
+    shortName: 'Spetsnaz de Sibérie (4 Commandos)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Cold War (Comics Dark Horse 1991)',
+    biomeId: 'antarctic',
+    recommendedBiome: 'Toundra Glaciale Soviétique',
+    description: 'Commandos soviétiques d\'élite survivant dans le blizzard de Sibérie face à un chasseur Yautja écrasé dans la toundra.',
+    tactics: 'Tirs croisés lourds en tenaille, fusées éclairantes dans le blizzard et tirs de mortier de tranchée.',
+    totalHonorReward: 3200,
+    soloVariantId: 'alien_base_major_dutch_schaefer_1987',
+    members: [
+      { id: 'ligachev', name: 'Lieutenant Ligachev', role: 'Commandement Spetsnaz', weapon: 'Fusil d\'Assaut Kalachnikov AK-74 & Fusées', hp: 380, armor: 40, trophy: 'Insigne d\'Officier des Troupes Spéciales Soviétiques' },
+      { id: 'kirenkov', name: 'Sergent Kirenkov', role: 'Appui Lourd', weapon: 'Mitrailleuse Lourde PKM 7.62×54mmR', hp: 420, armor: 45, trophy: 'Bande de Cartouches Calcinée & Épaulette de Sergent' },
+      { id: 'morozov', name: 'Tireur d\'Élite Morozov', role: 'Sniper Camouflé', weapon: 'Fusil de Précision Dragunov SVD & Lunette PSO-1', hp: 310, armor: 25, trophy: 'Viseur Optique Soviétique PSO-1 à Réticule Lumineux' },
+      { id: 'chenko', name: 'Sapeur Chenko', role: 'Démolition Antichar', weapon: 'Lance-Roquettes RPG-7 & Mines Antichar', hp: 350, armor: 35, trophy: 'Dégoupilleur de Roquette Antichar RPG Soviétique' }
+    ]
+  },
+  {
+    id: 'squad_enforcers_council_arbiters',
+    name: 'Arbitres Enforcers & Juges Claniques Yautja',
+    shortName: 'Arbitres Enforcers (4 Juges)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Bad Blood (Comics Dark Horse 1993)',
+    biomeId: 'jungle',
+    recommendedBiome: 'Jungle de Traque Punitive',
+    description: 'Exécuteurs suprêmes mandatés par le Conseil des Anciens pour traquer sans merci et exécuter les Bad Bloods hérétiques.',
+    tactics: 'Chasse en binôme coordonnée : téléportation courte, disque de traque et plasmacaster double asservi.',
+    totalHonorReward: 4800,
+    soloVariantId: 'alien_base_cleopatra_predator',
+    members: [
+      { id: 'enforcer_prime', name: 'Enforcer Prime', role: 'Grand Arbitre du Conseil', weapon: 'Double Plasmacaster Épaule & Glaive en Argent Mat', hp: 680, armor: 70, trophy: 'Biomasque Gravé du Sceau d\'Arbitre Suprême' },
+      { id: 'enforcer_tracker', name: 'Enforcer Traqueur', role: 'Traque Sensorielle', weapon: 'Smart Disc Gravé & Filet Métallique Rétractable', hp: 540, armor: 55, trophy: 'Gantelet Lance-Filet d\'Argent à Serrage Moléculaire' },
+      { id: 'enforcer_heavy', name: 'Arbitre des Sables', role: 'Appui Artillerie Plasma', weapon: 'Canon à Plasma Lourd Asservi & Fouet Électrifié', hp: 580, armor: 60, trophy: 'Injecteur d\'Agent Dissolvant Moléculaire d\'Enforcer' },
+      { id: 'enforcer_duelist', name: 'Inquisiteur d\'Honneur', role: 'Duelliste d\'Exécution', weapon: 'Double Combi-Stick Télescopique & Lames 60cm', hp: 520, armor: 50, trophy: 'Lame d\'Exécution Cérémoniale Gravée de Glyphes de Verdict' }
+    ]
+  },
+  {
+    id: 'squad_dark_descent_cerberus_marines',
+    name: 'Escouade Tactique USCM & Protocole Cerberus (2203)',
+    shortName: 'USCM Cerberus Lethe (4 Marines)',
+    category: 'COLONIAL_MARINES',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Dark Descent (Focus Home / Tindalos 2023)',
+    biomeId: 'space_hulk',
+    recommendedBiome: 'Port Hills sous Blocus Cerberus',
+    description: 'Escouade de Marines coloniaux sous blocus orbital Cerberus sur la planète Lethe, coordonnée par radio tactique.',
+    tactics: 'Verrouillage de sas, tourelles sentinelles UA 571-C en couverture et tir de suppression continu.',
+    totalHonorReward: 3600,
+    soloVariantId: 'alien_base_herrera_endeavor_commander',
+    members: [
+      { id: 'hayes', name: 'Sergent Maeko Hayes', role: 'Officier Coordinateur', weapon: 'Armat M41A Pulse Rifle & Tablette Tactique Cerberus', hp: 360, armor: 35, trophy: 'Module de Liaison Satellitaire Tactique de Lethe' },
+      { id: 'harper', name: 'Caporal Jonas Harper', role: 'Démolition & Brèche', weapon: 'Fusil à Pompe Lourd d\'Assaut & Chalumeau Thermique', hp: 410, armor: 45, trophy: 'Chalumeau Industriel & Écusson de Bras de l\'Otago' },
+      { id: 'jensen', name: 'Artilleur Lourd Jensen', role: 'Tir de Suppression Mobile', weapon: 'M56B Smartgun Amélioré & Harnais Gyroscopique', hp: 440, armor: 50, trophy: 'Harnais Stabilisateur d\'Artilleur USCM Décoré' },
+      { id: 'smith', name: 'Recon Smith', role: 'Reconnaissance & Scanner', weapon: 'Fusil de Sniper Silencieux & Scanner M314', hp: 320, armor: 25, trophy: 'Scanner de Mouvement Portatif USCM M314 Mil-Spec' }
+    ]
+  },
+  {
+    id: 'squad_charon_kleist_rogue_swarm',
+    name: 'Complexe Rogue & Gardes Génétiques du Dr Kleist',
+    shortName: 'Généticiens Charon (4 Combattants)',
+    category: 'SYNTHETIC_PACK',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Rogue (Comics Dark Horse 1993)',
+    biomeId: 'temple',
+    recommendedBiome: 'Station de Recherche Charon',
+    description: 'Scientifiques fanatiques et gardes génétiques protégeant le King Alien géant synthétisé en laboratoire.',
+    tactics: 'Nuages de gaz neurotoxique, barrières d\'énergie et lâcher de bêtes mutants en première ligne.',
+    totalHonorReward: 4200,
+    soloVariantId: 'alien_base_monica_leon_895',
+    members: [
+      { id: 'kleist', name: 'Dr Ernst Kleist', role: 'Démiurge Généticien Fou', weapon: 'Injecteur Chimique Z-Series & Pistolet Stun', hp: 340, armor: 20, trophy: 'Seringue d\'Extraction Génétique Chromée de Kleist' },
+      { id: 'king_specimen', name: 'Spécimen King Alien', role: 'Titan Hybride Colossal', weapon: 'Crête d\'Airain Renforcée, Morsure 5000J', hp: 850, armor: 80, trophy: 'Fragment de Crâne Strié Blindé du King Alien' },
+      { id: 'synthetic_alpha', name: 'Synthétique Alpha Charon', role: 'Garde du Corps Cybernétique', weapon: 'Canon à Impulsion de Laboratoire & Mâchoire d\'Acier', hp: 510, armor: 55, trophy: 'Puce Synaptique Cybernétique du Garde Alpha' },
+      { id: 'charon_guard', name: 'Chef de Sécurité Charon', role: 'Assaut & Contention', weapon: 'Fusil Automatique Weyland Type-12 & Armure', hp: 390, armor: 40, trophy: 'Badge d\'Accès de Niveau 5 du Laboratoire Rogue' }
+    ]
+  },
+  {
+    id: 'squad_ryushi_chian_am_ranchers',
+    name: 'Ranchers de Prosperity Wells & Colons de Ryushi (1990)',
+    shortName: 'Ranchers de Ryushi (4 Colons)',
+    category: 'CIVILIAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator (Comics Dark Horse 1990)',
+    biomeId: 'desert',
+    recommendedBiome: 'Plaines Arides de Prosperity Wells',
+    description: 'Pionniers de la colonie agricole de Ryushi guidés par Machiko Noguchi pour repousser la ruche xénomorphe.',
+    tactics: 'Charges de bétail Rhynths pour disperser les lignes ennemies et tir de précision longue portée.',
+    totalHonorReward: 3800,
+    soloVariantId: 'alien_base_dutch_2025_owlf',
+    members: [
+      { id: 'machiko', name: 'Machiko Noguchi', role: 'Administratrice & Chasseresse', weapon: 'Arc Composite à Flèches Acides & Lames Yautja', hp: 450, armor: 40, trophy: 'Marque Frontale de Sang d\'Initié du Clan Dachande' },
+      { id: 'henderson', name: 'Vétéran Henderson', role: 'Rancher en Chef', weapon: 'Carabine Lourde à Levier de Sous-Garde .458 Magnum', hp: 390, armor: 35, trophy: 'Chapeau de Feutre Renforcé de Colon de Ryushi' },
+      { id: 'hernandez', name: 'Hernandez le Pistolero', role: 'Tir Réflexe Rapproché', weapon: 'Doubles Revolvers Lourds de Colonie et Piro-Grenades', hp: 360, armor: 30, trophy: 'Ceinturon de Cuir Poussiéreux de Prosperity Wells' },
+      { id: 'revna', name: 'Dr Revna', role: 'Médecine Coloniale', weapon: 'Fusil de Chasse Calico & Trousse Chirurgicale', hp: 330, armor: 25, trophy: 'Pince d\'Extraction de Facehugger de Ryushi' }
+    ]
+  },
+  {
+    id: 'squad_yautja_prime_proving_circle',
+    name: 'Cercle d\'Épreuve des Vétérans de Yautja Prime',
+    shortName: 'Champions d\'Airain (4 Guerriers)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator: War (Comics & Romans)',
+    biomeId: 'yautja_prime',
+    recommendedBiome: 'Colisée d\'Airain de Yautja Prime',
+    description: 'Quatre champions d\'élite s\'affrontant sous les yeux des Matriarches dans l\'arène suprême d\'airain.',
+    tactics: 'Combats circulaires tournants : enchaînement glaive lourd, fouet plasma et bonds cinétiques aériens.',
+    totalHonorReward: 5200,
+    soloVariantId: 'alien_base_alpha_predator_kaail',
+    members: [
+      { id: 'prime_champion', name: 'Champion de l\'Arène', role: 'Duelliste Suprême du Colisée', weapon: 'Double Glaive Dentelé & Armure Cérémoniale d\'Or', hp: 720, armor: 75, trophy: 'Crête d\'Or Massif du Champion de l\'Arène' },
+      { id: 'prime_tracker', name: 'Maître de Traque', role: 'Tir Réfractif & Réticule', weapon: 'Arc Yautja Télescopique & Pointes Incendiaires', hp: 560, armor: 55, trophy: 'Corde d\'Arc Tressée en Tendon de Reine' },
+      { id: 'prime_whipmaster', name: 'Vétéran Sang-Marqué', role: 'Assaut Mêlée Fouet Plasma', weapon: 'Fouet Énergétique Segmenté & Lames 80cm', hp: 610, armor: 65, trophy: 'Section de Fouet d\'Épines Anti-Acide' },
+      { id: 'prime_initiator', name: 'Initiateur du Temple', role: 'Gardien du Premier Sang', weapon: 'Combi-Stick Royal d\'Airain & Masque Ancestral', hp: 580, armor: 60, trophy: 'Stèle d\'Initié Miniaturisée des Lois de Chasse' }
+    ]
   }
-
 ]);
 
 export function getSquadById(squadId) {

@@ -306,6 +306,36 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     sourceTier: 'SCREEN', sources: Object.freeze(['predator2']), behavior: 'plasma',
     modifiers: Object.freeze({ damageMultiplier: 1.35, projectileSpeedMultiplier: 1.15, blastRadiusMultiplier: 1.3 }),
   }),
+  Object.freeze({
+    id: 'variant_jungle_1987_plasma_trophy', armorPresetId: 'jungle_1987', baseWeaponId: 'plasmacaster_single', name: 'Plasmacaster Matriciel Jungle Hunter 1987',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predator1987']), behavior: 'plasma',
+    modifiers: Object.freeze({ damageMultiplier: 1.0, lockSpeedMultiplier: 1.2, thermalTrackingMultiplier: 1.3 }),
+  }),
+  Object.freeze({
+    id: 'variant_elder_1990_ceremonial_sword', armorPresetId: 'elder_lost_tribe', baseWeaponId: 'wristblades', name: 'Épée Cérémoniale & Lames d\'Or Elder 1990',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predator2']), behavior: 'blade',
+    modifiers: Object.freeze({ meleeReachMultiplier: 1.3, parryAngleMultiplier: 1.35, honorGainMultiplier: 1.5 }),
+  }),
+  Object.freeze({
+    id: 'variant_falconer_2010_falcon_drone', armorPresetId: 'falconer_2010', baseWeaponId: 'smart_disc', name: 'Drone Faucon de Reconnaissance Falconer 2010',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predators2010']), behavior: 'drone',
+    modifiers: Object.freeze({ scoutRadiusMultiplier: 1.5, tagDurationMultiplier: 1.4, returnSpeedMultiplier: 1.3 }),
+  }),
+  Object.freeze({
+    id: 'variant_tracker_2010_whistle_spear', armorPresetId: 'tracker_2010', baseWeaponId: 'combi_stick', name: 'Lance Barbelée & Sifflet de Meute Tracker 2010',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predators2010']), behavior: 'spear',
+    modifiers: Object.freeze({ houndSummonSpeedMultiplier: 1.25, bleedDurationMultiplier: 1.4, damageMultiplier: 1.2 }),
+  }),
+  Object.freeze({
+    id: 'variant_fugitive_2018_shuriken_wrist', armorPresetId: 'fugitive_2018', baseWeaponId: 'wristblades', name: 'Multi-Lames Rétractables Fugitive 2018',
+    sourceTier: 'SCREEN', sources: Object.freeze(['thePredator2018']), behavior: 'blade',
+    modifiers: Object.freeze({ attackSpeedMultiplier: 1.3, dismemberChanceMultiplier: 1.35, armorPierceMultiplier: 1.25 }),
+  }),
+  Object.freeze({
+    id: 'variant_machiko_yautja_honor_glaive', armorPresetId: 'machiko_yautja', baseWeaponId: 'glaive', name: 'Glaive d\'Initié & Arc Composite Machiko Noguchi',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics', 'avpPreyOmnibus']), behavior: 'blade',
+    modifiers: Object.freeze({ agilityMultiplier: 1.35, stealthDamageMultiplier: 1.4, criticalChanceMultiplier: 1.3 }),
+  }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);
 

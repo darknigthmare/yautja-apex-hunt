@@ -37,7 +37,7 @@ export const FRANCHISE_UNIVERSES = Object.freeze({
 // 1. CATALOGUE DES 24 CARTES & SECTEURS MÉDIA CANONIQUES
 // =========================================================================
 export const MEDIA_MAPS_CATALOG = Object.freeze([
-  // --- UNIVERS PREDATOR (8 Cartes) ---
+  // --- UNIVERS PREDATOR (10 Cartes) ---
   {
     id: 'map_val_verde_1987',
     name: 'Val Verde — Jungle Équatoriale & Guérilla (1987)',
@@ -159,7 +159,38 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     villainSquadId: 'squad_concrete_jungle_borgia_syndicate'
   },
 
-  // --- UNIVERS ALIEN (10 Cartes) ---
+  {
+    id: 'map_siberia_cold_war_1991',
+    name: 'Sibérie — Péninsule de Kola & Base Soviétique (1991)',
+    originMedia: 'Predator: Cold War (Comics Dark Horse 1991)',
+    universe: 'PREDATOR',
+    releaseYear: 1991,
+    biomeId: 'antarctic',
+    recommendedBiomeLabel: 'Toundra Glaciale Soviétique',
+    environmentSummary: 'Neige épaisse, puits de pétrole enflammés, hangars militaires soviétiques et blizzard arctique gelant le camouflage optique.',
+    tacticalSectors: ['Station Pétrolière de Kola', 'Hangars Militaires Soviétiques', 'Crête Glaciaire du Blizzard', 'Épave de l\'Hélicoptère Mil Mi-24'],
+    environmentalHazards: ['Tempête de neige polaire', 'Froid extrême gelant les optiques', 'Puits de méthane enflammé'],
+    keyPreyIds: ['alien_base_major_dutch_schaefer_1987', 'alien_base_billy_sole_tracker'],
+    heroSquadId: 'squad_cold_war_spetsnaz_1991',
+    villainSquadId: 'squad_cold_war_spetsnaz_1991'
+  },
+  {
+    id: 'map_pine_ridge_desert_1991',
+    name: 'Nouveau-Mexique — Réserve de Pine Ridge & Canyons (1991)',
+    originMedia: 'Predator: Big Game (Comics Dark Horse 1991)',
+    universe: 'PREDATOR',
+    releaseYear: 1991,
+    biomeId: 'desert',
+    recommendedBiomeLabel: 'Canyons Rouges de Pine Ridge',
+    environmentSummary: 'Mésas escarpées, poussière désertique rouge, base d\'essais d\'artillerie et canyons arides propices aux embuscades de sniper.',
+    tacticalSectors: ['Plateau des Mésas Rouges', 'Base d\'Essais Balistiques', 'Canyon de la Faille Sèche', 'Sanctuaire Sacré Navajo'],
+    environmentalHazards: ['Tempête de sable réduisant la visibilité', 'Chaleur caniculaire', 'Parois friables instables'],
+    keyPreyIds: ['alien_base_billy_sole_tracker', 'alien_base_george_dillon_cia'],
+    heroSquadId: 'squad_dutch_val_verde_1987',
+    villainSquadId: 'squad_dutch_val_verde_1987'
+  },
+
+  // --- UNIVERS ALIEN (12 Cartes) ---
   {
     id: 'map_nostromo_derelict_1979',
     name: 'USCSS Nostromo & Vaisseau Derelict de LV-426 (1979)',
@@ -311,7 +342,38 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     villainSquadId: 'squad_weyland_blackops_containment'
   },
 
-  // --- UNIVERS ALIEN VS. PREDATOR (6 Cartes) ---
+  {
+    id: 'map_gateway_station_1986',
+    name: 'Station Gateway — Quais Orbitaux & Spatioport Terrien (2179)',
+    originMedia: 'Aliens (1986, James Cameron)',
+    universe: 'ALIEN',
+    releaseYear: 1986,
+    biomeId: 'space_hulk',
+    recommendedBiomeLabel: 'Quais Stellaires Gateway',
+    environmentSummary: 'Anneaux de gravité artificielle, docks d\'amarrage de l\'USS Sulaco, baies de décontamination et coursives industrielles Weyland.',
+    tacticalSectors: ['Docks d\'Amarrage de l\'USS Sulaco', 'Complexe de Quarantaine Médicale', 'Centre de Contrôle de Trafic Orbital', 'Hangar de Maintenance des Navettes'],
+    environmentalHazards: ['Dépressurisation en brèche', 'Sas de sécurité étanches automatisés', 'Arcs haute tension d\'amarrage'],
+    keyPreyIds: ['alien_base_ripley_p5000_power_loader', 'prey_synthetic_bishop_hyperdyne'],
+    heroSquadId: 'squad_uscm_hadleys_hope_1986',
+    villainSquadId: 'squad_uscm_hadleys_hope_1986'
+  },
+  {
+    id: 'map_charon_research_facility_1993',
+    name: 'Station Charon — Laboratoires de Bio-Génétique & Arène (1993)',
+    originMedia: 'Aliens: Rogue (Comics Dark Horse 1993)',
+    universe: 'ALIEN',
+    releaseYear: 1993,
+    biomeId: 'temple',
+    recommendedBiomeLabel: 'Complexe de Recherche Charon',
+    environmentSummary: 'Laboratoires génétiques souterrains du Dr Kleist, cuves de culture du King Alien, arène de duel et couloirs de confinement renforcés.',
+    tacticalSectors: ['Arène de Combat Éprouvette', 'Cuves de Gestation du King Alien', 'Quartier Médical du Dr Kleist', 'Noyau de Purge Thermonucléaire'],
+    environmentalHazards: ['Vapeurs d\'acide xénomorphe', 'Barrières lasers de confinement', 'Brèche de spécimens mutants'],
+    keyPreyIds: ['alien_base_ripley_p5000_power_loader', 'prey_synthetic_ash_hyperdyne'],
+    heroSquadId: 'squad_charon_kleist_rogue_swarm',
+    villainSquadId: 'squad_charon_kleist_rogue_swarm'
+  },
+
+  // --- UNIVERS ALIEN VS. PREDATOR (8 Cartes) ---
   {
     id: 'map_bouvetoya_pyramid_2004',
     name: 'Bouvetøya — Station Baleinière & Pyramide Souterraine (2004)',
@@ -402,6 +464,37 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     heroSquadId: 'squad_phg_yautja_legends_circle',
     villainSquadId: 'squad_predators_super_clan_berserkers'
   }
+,
+  {
+    id: 'map_lv1201_forward_pods_2001',
+    name: 'LV-1201 — Forward Observation Pods & Ruches du Canyon (2001)',
+    originMedia: 'Aliens versus Predator 2 (Monolith 2001)',
+    universe: 'AVP',
+    releaseYear: 2001,
+    biomeId: 'hive_lv426',
+    recommendedBiomeLabel: 'Canyons & Pods de LV-1201',
+    environmentSummary: 'Passerelles suspendues au-dessus du gouffre, modules d\'observation de la Weyland-Yutani, grottes xénomorphes et temple d\'initiation Yautja.',
+    tacticalSectors: ['Pods d\'Observation Suspendus', 'Canyon des Ruches Profondes', 'Station de Recherche Weyland Lab', 'Sanctuaire des Lames Anciennes'],
+    environmentalHazards: ['Chutes mortelles dans le gouffre', 'Nids de Facehuggers furtifs', 'Brumes acides sulfuriques'],
+    keyPreyIds: ['prey_wolf_cleaner_2007', 'alien_base_ripley_p5000_power_loader'],
+    heroSquadId: 'squad_uscm_hadleys_hope_1986',
+    villainSquadId: 'squad_avpr_predalien_infestation_swarm'
+  },
+  {
+    id: 'map_yautja_prime_proving_arena',
+    name: 'Yautja Prime — Grande Arène des Matriarches & Colisée (Lore)',
+    originMedia: 'Aliens vs. Predator: Prey (Roman 1994, Steve & Stephani Perry)',
+    universe: 'AVP',
+    releaseYear: 1994,
+    biomeId: 'temple',
+    recommendedBiomeLabel: 'Arène Cérémoniale de Yautja Prime',
+    environmentSummary: 'Sable rouge incandescent, colonnades basaltiques gravées de glyphes de victoire, balcons des Matriarches et fosses de combat xénomorphes.',
+    tacticalSectors: ['Colisée de Sable Rouge', 'Balcon d\'Observation des Matriarches', 'Fosses d\'Élevage des Proies d\'Élite', 'Autel du Premier Sang'],
+    environmentalHazards: ['Piliers d\'énergie sacrificielle', 'Arcs de plasma de confinement', 'Duels d\'honneur sans armes de jet autorisées'],
+    keyPreyIds: ['alien_base_alpha_predator_kaail', 'alien_base_cleopatra_predator'],
+    heroSquadId: 'squad_yautja_prime_proving_circle',
+    villainSquadId: 'squad_yautja_prime_proving_circle'
+  },
 ]);
 
 // =========================================================================

@@ -21,7 +21,7 @@ const FILE_SHA = Object.freeze({
   "src/data/CanonPreyExpansionV251.js": "548ab703da410a1067238a087ce02727b6aa3afc",
   "src/data/PreyTaxonomyAndCrossoverCatalog.js": "6725a4c3343cfbdb7356dcf9a00946b42139088a",
   "src/data/PreyReferenceMetadata.js": "0b3abdda06e395ad570df54e0dcea20abae713d5",
-  "src/data/RuntimeEquipment.js": "4bfa30c984529c052c005ed651389deeac22d3d8"
+  "src/data/RuntimeEquipment.js": "24801b9b21c258e77c104831d57a4e29cfc96ee8"
 });
 // Source snapshots remain immutable; validate all file blobs before proposing an intake PR.
 export function assertAlienBaseCandidateSourcesCurrent(){

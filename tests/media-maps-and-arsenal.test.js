@@ -34,17 +34,17 @@ test('le catalogue des univers contient exactement PREDATOR, ALIEN et AVP', () =
   }
 });
 
-test('le catalogue des cartes contient les 24 cartes canoniques réparties sur les 3 univers', () => {
-  assert.equal(MEDIA_MAPS_CATALOG.length, 24);
+test('le catalogue des cartes contient les 30 cartes canoniques réparties sur les 3 univers', () => {
+  assert.equal(MEDIA_MAPS_CATALOG.length, 30);
   assert.ok(Object.isFrozen(MEDIA_MAPS_CATALOG));
 
   const predatorMaps = getMediaMapsByUniverse('PREDATOR');
   const alienMaps = getMediaMapsByUniverse('ALIEN');
   const avpMaps = getMediaMapsByUniverse('AVP');
 
-  assert.equal(predatorMaps.length, 8, '8 cartes pour l\'univers Predator');
-  assert.equal(alienMaps.length, 10, '10 cartes pour l\'univers Alien');
-  assert.equal(avpMaps.length, 6, '6 cartes pour l\'univers AVP');
+  assert.equal(predatorMaps.length, 10, '10 cartes pour l\'univers Predator');
+  assert.equal(alienMaps.length, 12, '12 cartes pour l\'univers Alien');
+  assert.equal(avpMaps.length, 8, '8 cartes pour l\'univers AVP');
 
   const mapIds = new Set();
   for (const map of MEDIA_MAPS_CATALOG) {
@@ -125,8 +125,8 @@ test('le catalogue d\'arsenal PNJ contient les 34 armes emblématiques de chaque
   assert.equal(getNpcWeaponProfile('combat_synthetic'), 'npc_wep_seegson_stun_baton');
 });
 
-test('les 24 variantes d\'armes Yautja liées aux presets sont actives et immuables', () => {
-  assert.equal(ARMOR_PRESET_WEAPON_VARIANTS.length, 24);
+test('les 30 variantes d\'armes Yautja liées aux presets sont actives et immuables', () => {
+  assert.equal(ARMOR_PRESET_WEAPON_VARIANTS.length, 30);
   assert.ok(Object.isFrozen(ARMOR_PRESET_WEAPON_VARIANTS));
 
   const variantIds = new Set();

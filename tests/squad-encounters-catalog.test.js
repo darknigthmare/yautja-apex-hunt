@@ -12,8 +12,8 @@ import { HUNT_DIRECTIVES, getHuntDirective } from '../src/gameplay/HuntDirective
 import { getSquadLogo } from '../src/ui/CanonLogosAndEmblems.js';
 import { resolveSimulationSelection } from '../src/gameplay/SimulationHuntRuntime.js';
 
-test('le catalogue des escouades contient les 34 groupes légendaires canoniques (héros & antagonistes)', () => {
-  assert.equal(SQUAD_ENCOUNTERS.length, 34);
+test('le catalogue des escouades contient les 40 groupes légendaires canoniques (héros & antagonistes)', () => {
+  assert.equal(SQUAD_ENCOUNTERS.length, 40);
   assert.ok(Object.isFrozen(SQUAD_ENCOUNTERS));
 
   const expectedSquadIds = [
@@ -51,6 +51,12 @@ test('le catalogue des escouades contient les 34 groupes légendaires canoniques
     'squad_phg_yautja_legends_circle',
     'squad_afe_endeavor_marines_2202',
     'squad_afe_katanga_pathogen_swarm',
+    'squad_cold_war_spetsnaz_1991',
+    'squad_enforcers_council_arbiters',
+    'squad_dark_descent_cerberus_marines',
+    'squad_charon_kleist_rogue_swarm',
+    'squad_ryushi_chian_am_ranchers',
+    'squad_yautja_prime_proving_circle',
   ];
 
   assert.deepEqual(SQUAD_ENCOUNTERS.map((s) => s.id), expectedSquadIds);
@@ -133,7 +139,7 @@ test('les fonctions d’interrogation et de filtrage d’escouade sont fonctionn
   assert.equal(commandos[0].id, 'squad_dutch_val_verde_1987');
 
   const allSquads = filterSquadsByCategory('all');
-  assert.equal(allSquads.length, 34);
+  assert.equal(allSquads.length, 40);
 });
 
 test('chaque escouade génère un insigne vectoriel SVG valide', () => {
