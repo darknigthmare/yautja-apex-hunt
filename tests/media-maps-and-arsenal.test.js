@@ -18,6 +18,7 @@ import {
 import { getNpcWeaponProfile } from '../src/entities/HuntNPC.js';
 import { SQUAD_ENCOUNTERS } from '../src/data/SquadEncountersCatalog.js';
 import { CANON_PREY_CATALOG } from '../src/data/PreyTaxonomyAndCrossoverCatalog.js';
+import { LORE_CODEX_ENTRIES, getLoreEntryUniverse } from '../src/data/LoreCodex.js';
 
 test('le catalogue des univers contient exactement PREDATOR, ALIEN et AVP', () => {
   assert.equal(Object.keys(FRANCHISE_UNIVERSES).length, 3);
@@ -81,17 +82,17 @@ test('le catalogue des cartes contient les 24 cartes canoniques réparties sur l
   assert.ok(getMediaMapsByBiome('jungle').length >= 3);
 });
 
-test('le catalogue d\'arsenal PNJ contient les 28 armes emblématiques de chaque média', () => {
-  assert.equal(NPC_ARSENAL_CATALOG.length, 28);
+test('le catalogue d\'arsenal PNJ contient les 34 armes emblématiques de chaque média', () => {
+  assert.equal(NPC_ARSENAL_CATALOG.length, 34);
   assert.ok(Object.isFrozen(NPC_ARSENAL_CATALOG));
 
   const predatorWeps = getNpcWeaponsByUniverse('PREDATOR');
   const alienWeps = getNpcWeaponsByUniverse('ALIEN');
   const avpWeps = getNpcWeaponsByUniverse('AVP');
 
-  assert.equal(predatorWeps.length, 11, '11 armes pour l\'univers Predator');
-  assert.equal(alienWeps.length, 11, '11 armes pour l\'univers Alien');
-  assert.equal(avpWeps.length, 6, '6 armes pour l\'univers AVP');
+  assert.equal(predatorWeps.length, 12, '12 armes pour l\'univers Predator');
+  assert.equal(alienWeps.length, 15, '15 armes pour l\'univers Alien');
+  assert.equal(avpWeps.length, 7, '7 armes pour l\'univers AVP');
 
   const wepIds = new Set();
   for (const wep of NPC_ARSENAL_CATALOG) {
@@ -151,4 +152,31 @@ test('les 24 variantes d\'armes Yautja liées aux presets sont actives et immuab
   assert.ok(ARMOR_PRESET_WEAPON_VARIANTS.some((v) => v.id === 'variant_dek_kinetic_bow'));
   assert.ok(ARMOR_PRESET_WEAPON_VARIANTS.some((v) => v.id === 'variant_ahab_engineer_harpoon'));
   assert.ok(ARMOR_PRESET_WEAPON_VARIANTS.some((v) => v.id === 'variant_samurai_katana'));
+});
+
+test('le catalogue du Lore Codex contient les 42 dossiers répartis sur les 3 univers', () => {
+  assert.equal(LORE_CODEX_ENTRIES.length, 42);
+  assert.ok(Object.isFrozen(LORE_CODEX_ENTRIES));
+
+  const byU = { PREDATOR: 0, ALIEN: 0, AVP: 0 };
+  const ids = new Set();
+  for (const entry of LORE_CODEX_ENTRIES) {
+    assert.ok(entry.id);
+    assert.ok(!ids.has(entry.id), `ID Lore dupliqué : ${entry.id}`);
+    ids.add(entry.id);
+
+    assert.ok(entry.title);
+    assert.ok(entry.summary);
+    assert.ok(entry.body);
+    assert.ok(entry.sourceTier);
+    assert.ok(Array.isArray(entry.sources) && entry.sources.length > 0);
+
+    const universe = getLoreEntryUniverse(entry);
+    assert.ok(['PREDATOR', 'ALIEN', 'AVP'].includes(universe));
+    byU[universe]++;
+  }
+
+  assert.equal(byU.PREDATOR, 27);
+  assert.equal(byU.ALIEN, 9);
+  assert.equal(byU.AVP, 6);
 });

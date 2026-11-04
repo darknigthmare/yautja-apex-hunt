@@ -250,6 +250,66 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     summary: 'Signature optique projetant trois faisceaux laser rouges convergents couplés à l’asservissement du canon à plasma.',
     body: 'Apparu dès Predator (1987) et reconduit dans Predator 2 (1990), le triangle de visée rouge se projette depuis la tempe du biomasque sur la proie. En se resserrant, les trois points calculent la distance télémétrique et verrouillent la trajectoire balistique pour garantir un impact critique.',
     sourceTier: 'SCREEN', isOriginal: false, sources: ['predator1987', 'predator2']
+  },
+  {
+    id: 'biologie-physiologie-anatomie-yautja', entryType: 'codex', category: 'culture', title: 'Biologie, Anatomie & Métabolisme Yautja',
+    summary: 'Physiologie reptilienne/humanoïde supérieure : sang chimiluminescent au cuivre, vision thermique, métabolisme anaérobie et faisceaux sensoriels.',
+    body: 'Les Yautja mesurent en moyenne 2,20m à 2,50m pour plus de 150kg de masse musculaire hyper-dense. Leur sang vert fluorescent, riche en cuivre et en amines phosphorées, neutralise partiellement les acides faibles. Leurs yeux possèdent une rétine sensible au spectre infrarouge thermique lointain. Leur système mandibulaire quadruplé articulé permet la morsure réflexe et la modulation des cliquetis gutturaux. Leurs cordes crâniennes ("dreads") contiennent des ramifications du système nerveux central liées à l’équilibre et à la proprioception.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['predatorArchives', 'predator1987', 'huntingGrounds'], universe: 'PREDATOR'
+  },
+  {
+    id: 'culture-langue-glyphes-cuniforme-yautja', entryType: 'codex', category: 'culture', title: 'Linguistique Yautja : Glyphes Cuniformes & Signaux Sonores',
+    summary: 'Système d’écriture logographique angulaire et communication vocale combinant trilles, cliquetis de mandibulaires et synthèse mimique.',
+    body: 'L’écriture Yautja repose sur des idéogrammes géométriques séquentiels formés de segments verticaux et obliques, visibles sur le compte à rebours d’autodestruction du gantelet et les réticules du biomasque. La communication acoustique articule des fréquences inaudibles pour l’oreille humaine, des cliquetis mandibulaires trillés pour la coordination en meute, des rugissements de défi gutturaux et l’usage répété d’enregistrements de voix humaines pour leurrer les proies.',
+    sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['predator1987', 'predator2', 'avpOriginalComics'], universe: 'PREDATOR'
+  },
+  {
+    id: 'culture-matriarches-yautja-prime-societe', entryType: 'codex', category: 'culture', title: 'Société Clanique : Yautja Prime & Suprématie des Matriarches',
+    summary: 'Organisation matriarcale sur le monde natal Yautja Prime : sélection des reproducteurs, garde des sanctuaires et chefferies suprêmes.',
+    body: 'Yautja Prime est un monde aride et tempétueux ponctué de cités pyramidales monolithiques et d’arènes d’entraînement. Alors que les mâles parcourent les étoiles pour chasser, les grandes Matriarches régissent les territoires claniques. Plus massives et physiquement plus puissantes que les mâles de guerre, elles sélectionnent les lignées d’accouplement sur la base des trophées rapportés et gardent les sanctuaires d’honneur et les reliques ancestrales du Conseil.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpPreyOmnibus', 'huntingGrounds'], universe: 'PREDATOR'
+  },
+  {
+    id: 'science-ingenieurs-malakak-mutagene-originel', entryType: 'codex', category: 'xenomorphes', title: 'Les Ingénieurs (Mala\'kak) & la Genèse du Mutagène Noir',
+    summary: 'Civilisation précurseur créatrice de la vie humanoïde et du pathogène Chemical A0-3959X sur LV-223 et la Planète 4.',
+    body: 'Les Ingénieurs (ou Mala\'kak dans les archives étendues) sont des humanoïdes géants au teint marbré possédant une maîtrise absolue de la bio-ingénierie sacrificielle. Dans Prometheus, un Ingénieur boit le fluide noir pour dissoudre son propre ADN et féconder les océans primitifs de la Terre. Leurs complexes militaires de LV-223 stockaient des milliers d’urnes contenant le mutagène déstabilisateur destiné à éradiquer l’humanité à bord de croiseurs stellaires Juggernaut.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['prometheus2012', 'alienCovenant2017'], universe: 'ALIEN'
+  },
+  {
+    id: 'xenomorphes-cycle-biologique-mues-castes', entryType: 'codex', category: 'xenomorphes', title: 'Cycle Biologique Xénomorphe : Mues, Castes & Réflexe ADN',
+    summary: 'Cycle évolutif complet du spécimen XX121 : Ovomorph, Facehugger royal, Chestburster, Drone, Guerrier, Prétorien et Reine mère.',
+    body: 'L’organisme XX121 est le prédateur ultime parasitaire. La Reine pond des Ovomorphs libérant des Facehuggers qui implantent un embryon dans l’appareil digestif de l’hôte. Grâce au « réflexe ADN », le fœtus assimile les propriétés motrices et physiologiques de sa victime (bipédie sur l’humain, quadrupédie vélociraptor sur le chien/bœuf, robustesse chitineuse sur le Yautja donnant le Predalien). Les individus muent ensuite de Drones en Guerriers à crête striée, puis en Prétoriens royaux avant de développer une nouvelle colonie.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['alien1979', 'aliens1986', 'alienRomulus2024'], universe: 'ALIEN'
+  },
+  {
+    id: 'factions-owlf-stargazer-recherche-anti-yautja', entryType: 'codex', category: 'technologie', title: 'Agences Secrètes Terrestres : Traqueurs OWLF & Projet Stargazer',
+    summary: 'Unités spéciales militaires de rétro-ingénierie Yautja : combinaisons thermiques OWLF de Peter Keyes et complexe Stargazer de Traeger.',
+    body: 'L’Other World Life Forms (OWLF), fondée suite au massacre de Val Verde en 1987, intervient dans Predator 2 sous les ordres de Peter Keyes avec des combinaisons cryogéniques isolantes pour dissimuler leur chaleur corporelle. En 2018, Sean Keyes et Will Traeger dirigent le Projet Stargazer, une division secrète séquestrant le Fugitive Predator et rétro-ingéniant le biomasque, le camouflage et les capsules d’hybridation ADN avant la riposte de l’Assassin géant.',
+    sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['predator2', 'thePredator2018', 'huntingGrounds'], universe: 'PREDATOR'
+  },
+  {
+    id: 'factions-corporations-seegson-hyperdyne-borgia', entryType: 'codex', category: 'culture', title: 'Corporations Rivales de la Frontière : Seegson, Hyperdyne & Borgia',
+    summary: 'Guerre économique et technologique entre géants corporatistes : Seegson sur Sébastopol, Hyperdyne Systems et le cartel Borgia.',
+    body: 'Weyland-Yutani n’est pas le seul conglomérat en quête de suprématie. Seegson Industries commercialise les Working Joes rudimentaires sur la station Sébastopol face à sa faillite imminente. Hyperdyne Systems déploie des modèles synthétiques militaires de pointe tels que Samuel et Ash. À Neonopolis en 2005, la Borgia Corporation et son fondateur Bruno Borgia piratent l’arsenal abandonné du Yautja Scarface pour développer des armes à plasma et des cyber-améliorations génétiques.',
+    sourceTier: 'LICENSED_EU', relatedTier: 'SCREEN', isOriginal: false, sources: ['alienIsolation2014', 'predatorConcreteJungle2005', 'alien1979'], universe: 'ALIEN'
+  },
+  {
+    id: 'lore-chronique-ryushi-machiko-noguchi-broken-tusk', entryType: 'codex', category: 'culture', title: 'L’Incident de Ryushi : Dachande (Broken Tusk) & Machiko Noguchi',
+    summary: 'L’épreuve fondatrice d’AVP (1990) : alliance d’honneur sur le monde d’élevage de Ryushi et initiation historique de Machiko Noguchi.',
+    body: 'Dans le comic fondateur Aliens vs. Predator (1990), le clan de Dachande (Broken Tusk) lâche des œufs xénomorphes sur la planète pastorale de Ryushi. Face à la submersion de la colonie, Dachande combat côte à côte avec l’administratrice humaine Machiko Noguchi. Admiratif de son courage au tir et de son intrépidité face à la Reine, Dachande grave la marque du clan sur son front avant de succomber, faisant de Machiko la première et seule humaine acceptée parmi les guerriers stellaires Yautja.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'avpPreyOmnibus'], universe: 'AVP'
+  },
+  {
+    id: 'technologie-reserves-chasse-planetes-gibier', entryType: 'codex', category: 'technologie', title: 'Réserves de Chasse Interstellaires & Vaisseaux de Moisson',
+    summary: 'Mondes réserves préservés pour la traque : largage en capsules cinétiques, faune importée et rivalités territoriales de clans.',
+    body: 'Dans Predators (2010), les Super Predators maintiennent des planètes entières dédiées au rituel cynégétique. Des capsules orbitales parachutent les guerriers les plus dangereux de chaque monde (commandos, cartels, assassins, yakuza). La réserve combine une flore tropicale luxuriante, des balises de repérage et un campement central où le Berserker Clan utilise des meutes de Hell-Hounds et des drones faucons pour affiner leur suprématie génétique.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['predators2010', 'thePredator2018'], universe: 'PREDATOR'
+  },
+  {
+    id: 'culture-bad-blood-enforcer-justice-clanique', entryType: 'codex', category: 'culture', title: 'L’Hérésie Bad Blood & les Répurgateurs Enforcers',
+    summary: 'Les renégats ayant violé le Code d’Honneur et les juges Yautja mandatés pour les exterminer sans concession.',
+    body: 'Un Yautja qui massacre des proies désarmées, des femmes enceintes ou des enfants, ou qui tue un pair en dehors d’un duel d’honneur codifié, est déclaré « Bad Blood » (Sang-Impur). Rejeté de la société clanique, il devient une abomination traquée à travers la galaxie par les Enforcers. Ces exécuteurs assermentés par les Anciens portent des armures d’argent mat et utilisent tout leur arsenal pour abattre les renégats et purifier leur dépouille par incinération totale.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['predatorBadBloodComics', 'predators2010'], universe: 'PREDATOR'
   }
 ]);
 // IDs match the values already used by the planet selector.
@@ -441,3 +501,12 @@ export default Object.freeze({
   alienBaseArchives: ALIEN_BASE_ARCHIVE_ENTRIES,
   alienBaseResearchArchives: ALIEN_BASE_RESEARCH_ARCHIVE_ENTRIES
 });
+
+export function getLoreEntryUniverse(entry) {
+  if (entry?.universe) return entry.universe;
+  const id = String(entry?.id || '').toLowerCase();
+  const title = String(entry?.title || '').toLowerCase();
+  if (id.includes('avp') || id.includes('bouvetoya') || id.includes('cleaner') || title.includes('bouvetøya') || title.includes('avp') || title.includes('ryushi')) return 'AVP';
+  if (entry?.category === 'xenomorphes' || title.includes('alien') || title.includes('romulus') || title.includes('fiorina') || title.includes('ingénieur') || title.includes('uscm') || title.includes('synthétique') || title.includes('pathogène') || title.includes('ordre spécial')) return 'ALIEN';
+  return 'PREDATOR';
+}

@@ -22,7 +22,7 @@ import { HUDManager } from './HUDManager.js';
 import { audioSynth } from './AudioSynthesizer.js';
 import { saveManager } from './engine/SaveManager.js';
 import { DEFAULT_SETTINGS, HUNT_DEFINITIONS, resolveHuntBiome } from './data/GameConfig.js';
-import { ALL_LORE_ENTRIES, LORE_SOURCE_TIERS, LORE_SOURCES } from './data/LoreCodex.js';
+import { ALL_LORE_ENTRIES, LORE_CODEX_ENTRIES, getLoreEntryUniverse, LORE_SOURCE_TIERS, LORE_SOURCES } from './data/LoreCodex.js';
 import {initializeSharedReferenceVault} from './ui/SharedReferenceVault.js';
 import {filterLoreEntries} from './ui/CodexFilters.js';
 import { MedbayInventoryOverlay } from './ui/MedbayInventoryOverlay.js';
@@ -3020,6 +3020,29 @@ export class Game {
       `;
     };
 
+
+    const renderLoreDrawerCard = (entry) => {
+      const tier = LORE_SOURCE_TIERS[entry.sourceTier] ?? LORE_SOURCE_TIERS.ORIGINAL;
+      return `
+        <article class="taxonomy-card lore-card" data-lore-id="${entry.id}">
+          <div class="taxonomy-card-header">
+            <div>
+              <h5 class="taxonomy-card-title">📜 ${entry.title}</h5>
+              <span class="taxonomy-card-source">${entry.category.toUpperCase()} · ${tier.label}</span>
+            </div>
+            <span class="spec-tag" style="background:${tier.color}; color:#000; font-weight:700;">${tier.shortLabel}</span>
+          </div>
+          <p style="font-size:12px; color:#cfd8dc; margin:4px 0 0 0; line-height:1.4;">${entry.summary}</p>
+          <div style="font-size:11px; color:#90caf9; margin-top:6px; line-height:1.3;">
+            ${entry.body ? entry.body.slice(0, 240) + '...' : ''}
+          </div>
+          <div style="font-size:10px; color:#a7ffeb; margin-top:4px;">
+            <strong>Sources :</strong> ${(entry.sources || []).map(s => LORE_SOURCES[s]?.title || s).join(' · ')}
+          </div>
+        </article>
+      `;
+    };
+
     const renderUniverseDrawer = (universeKey, title, badge, contentHtml, defaultOpen = true) => `
       <details class="universe-drawer" data-universe="${universeKey}" ${defaultOpen ? 'open' : ''}>
         <summary class="universe-drawer-summary">
@@ -3086,7 +3109,19 @@ export class Game {
         return;
       }
 
-      // CAS 4 : FILTRE TIROIRS PAR UNIVERS (VUE TOTALE 3 UNIVERS)
+      // CAS 4 : FILTRE CODEX & LORE (42 DOSSIERS EN 3 TIROIRS)
+      if (filterScale === 'lore') {
+        taxonomyGrid.innerHTML = universes.map((u) => {
+          const uLore = LORE_CODEX_ENTRIES.filter((e) => getLoreEntryUniverse(e) === u);
+          const uInfo = FRANCHISE_UNIVERSES[u];
+          const cardsHtml = uLore.map(renderLoreDrawerCard).join('');
+          return renderUniverseDrawer(u, uInfo.label + ' — DOMAINES LORE & CODEX', `${uLore.length} DOSSIERS ARCHIVES`, cardsHtml);
+        }).join('');
+        wireActionButtons();
+        return;
+      }
+
+      // CAS 5 : FILTRE TIROIRS PAR UNIVERS (VUE TOTALE 3 UNIVERS)
       if (filterScale === 'universes') {
         taxonomyGrid.innerHTML = universes.map((u) => {
           const uInfo = FRANCHISE_UNIVERSES[u];
@@ -3110,7 +3145,7 @@ export class Game {
             ${uNpcWeps.map(renderWeaponCard).join('')}
           `;
 
-          return renderUniverseDrawer(u, uInfo.label + ' — ARCHIVES GLOBALES', `${uMaps.length} Cartes · ${uSquads.length} Escouades · ${uNpcWeps.length} Armes`, compositeHtml);
+          return renderUniverseDrawer(u, uInfo.label + ' — ARCHIVES GLOBALES', `${uMaps.length} Cartes · ${uSquads.length} Escouades · ${uNpcWeps.length} Armes · ${uLore.length} Dossiers`, compositeHtml);
         }).join('');
         wireActionButtons();
         return;
