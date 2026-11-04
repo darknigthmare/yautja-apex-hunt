@@ -1627,6 +1627,125 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  if (id.includes('cold_war_spetsnaz')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-spetsnaz" role="img" aria-label="Insigne Spetsnaz de Sibérie">
+        <circle cx="40" cy="40" r="36" fill="#0c1926" stroke="#38bdf8" stroke-width="2.5" />
+        <polygon points="40,14 46,32 64,32 50,42 55,60 40,49 25,60 30,42 16,32 34,32" fill="#dc2626" stroke="#fbbf24" stroke-width="1.5" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#bae6fd" letter-spacing="1" text-anchor="middle">KOLA SPETSNAZ</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('enforcers_council')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-enforcers" role="img" aria-label="Insigne Arbitres Enforcers">
+        <circle cx="40" cy="40" r="36" fill="#111827" stroke="#e5e7eb" stroke-width="2.5" />
+        <polygon points="40,12 58,28 50,62 40,68 30,62 22,28" fill="#374151" stroke="#f3f4f6" stroke-width="2" />
+        <circle cx="40" cy="36" r="6" fill="#ef4444" />
+        <text x="40" y="74" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#f9fafb" letter-spacing="1" text-anchor="middle">ENFORCERS</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('dark_descent_cerberus')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-cerberus" role="img" aria-label="Insigne USCM Cerberus Lethe">
+        <circle cx="40" cy="40" r="36" fill="#091a16" stroke="#10b981" stroke-width="2.5" />
+        <rect x="24" y="22" width="32" height="32" rx="4" fill="#064e3b" stroke="#34d399" stroke-width="2" />
+        <circle cx="40" cy="38" r="8" fill="none" stroke="#a7f3d0" stroke-width="2" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#6ee7b7" letter-spacing="1" text-anchor="middle">CERBERUS LETHE</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('charon_kleist_rogue')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-rogue" role="img" aria-label="Insigne Complexe Rogue">
+        <circle cx="40" cy="40" r="36" fill="#1f091d" stroke="#d946ef" stroke-width="2.5" />
+        <polygon points="40,12 60,26 54,58 40,66 26,58 20,26" fill="#4a044e" stroke="#f0abfc" stroke-width="2" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#f5d0fe" letter-spacing="1" text-anchor="middle">ROGUE KING</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('ryushi_chian_am')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-ryushi" role="img" aria-label="Insigne Ranchers de Ryushi">
+        <circle cx="40" cy="40" r="36" fill="#231709" stroke="#f59e0b" stroke-width="2.5" />
+        <path d="M22 34 L40 16 L58 34 L50 60 L30 60 Z" fill="#78350f" stroke="#fcd34d" stroke-width="2" />
+        <line x1="40" y1="22" x2="40" y2="54" stroke="#ef4444" stroke-width="3" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fde68a" letter-spacing="1" text-anchor="middle">RYUSHI MARK</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('yautja_prime_proving')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-proving" role="img" aria-label="Insigne Champions de Yautja Prime">
+        <circle cx="40" cy="40" r="36" fill="#261205" stroke="#fbbf24" stroke-width="2.5" />
+        <circle cx="40" cy="38" r="20" fill="#7c2d12" stroke="#fde047" stroke-width="2" />
+        <polygon points="40,22 48,46 32,46" fill="#fef08a" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fef08a" letter-spacing="1" text-anchor="middle">PRIME ARENA</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('predator_hunters_veterans')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-phunters" role="img" aria-label="Insigne Predator Hunters">
+        <circle cx="40" cy="40" r="36" fill="#0a1f17" stroke="#10b981" stroke-width="2.5" />
+        <circle cx="40" cy="38" r="18" fill="none" stroke="#34d399" stroke-width="2" />
+        <line x1="20" y1="38" x2="60" y2="38" stroke="#ef4444" stroke-width="2" />
+        <line x1="40" y1="18" x2="40" y2="58" stroke="#ef4444" stroke-width="2" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#a7f3d0" letter-spacing="1" text-anchor="middle">HUNTERS 2017</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('bad_blood_renegade')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-badblood" role="img" aria-label="Insigne Meute Bad Bloods">
+        <circle cx="40" cy="40" r="36" fill="#240505" stroke="#dc2626" stroke-width="2.5" />
+        <polygon points="40,14 60,30 52,60 40,66 28,60 20,30" fill="#450a0a" stroke="#f87171" stroke-width="2" />
+        <line x1="24" y1="22" x2="56" y2="56" stroke="#ef4444" stroke-width="3" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fca5a5" letter-spacing="1" text-anchor="middle">BAD BLOODS</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('uss_sephora')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-sephora" role="img" aria-label="Insigne USS Sephora USCM">
+        <circle cx="40" cy="40" r="36" fill="#0c192c" stroke="#60a5fa" stroke-width="2.5" />
+        <polygon points="40,16 58,36 40,60 22,36" fill="#1e3a8a" stroke="#93c5fd" stroke-width="2" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#bfdbfe" letter-spacing="1" text-anchor="middle">USS SEPHORA</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('innominata_research')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-labyrinth" role="img" aria-label="Insigne Labyrinthe Innominata">
+        <circle cx="40" cy="40" r="36" fill="#111b24" stroke="#a855f7" stroke-width="2.5" />
+        <rect x="22" y="20" width="36" height="36" fill="none" stroke="#c084fc" stroke-width="2" />
+        <rect x="30" y="28" width="20" height="20" fill="none" stroke="#e9d5ff" stroke-width="2" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#e9d5ff" letter-spacing="1" text-anchor="middle">INNOMINATA</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('bg386_elite')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-bg386" role="img" aria-label="Insigne Clan Dark BG-386">
+        <circle cx="40" cy="40" r="36" fill="#1c1608" stroke="#eab308" stroke-width="2.5" />
+        <polygon points="40,14 62,56 18,56" fill="#422006" stroke="#facc15" stroke-width="2" />
+        <circle cx="40" cy="42" r="5" fill="#ef4444" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fef08a" letter-spacing="1" text-anchor="middle">DARK BG-386</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('fire_and_stone')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-ahab" role="img" aria-label="Insigne Croisade Ahab LV-223">
+        <circle cx="40" cy="40" r="36" fill="#18121e" stroke="#f97316" stroke-width="2.5" />
+        <polygon points="40,14 58,28 52,58 40,64 28,58 22,28" fill="#431407" stroke="#fb923c" stroke-width="2" />
+        <line x1="28" y1="24" x2="42" y2="44" stroke="#ef4444" stroke-width="2.5" />
+        <circle cx="48" cy="34" r="3.5" fill="#fde047" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fed7aa" letter-spacing="1" text-anchor="middle">AHAB LV-223</text>
+      </svg>
+    `.trim();
+  }
   return getYautjaClanLogo(size);
 }
 

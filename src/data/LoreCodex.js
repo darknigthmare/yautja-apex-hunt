@@ -310,6 +310,78 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     summary: 'Les renégats ayant violé le Code d’Honneur et les juges Yautja mandatés pour les exterminer sans concession.',
     body: 'Un Yautja qui massacre des proies désarmées, des femmes enceintes ou des enfants, ou qui tue un pair en dehors d’un duel d’honneur codifié, est déclaré « Bad Blood » (Sang-Impur). Rejeté de la société clanique, il devient une abomination traquée à travers la galaxie par les Enforcers. Ces exécuteurs assermentés par les Anciens portent des armures d’argent mat et utilisent tout leur arsenal pour abattre les renégats et purifier leur dépouille par incinération totale.',
     sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['predatorBadBloodComics', 'predators2010'], universe: 'PREDATOR'
+  },
+  {
+    id: 'factions-geopolitique-trois-empires-upp-ua', entryType: 'codex', category: 'culture', title: 'Géopolitique Stellaire : Trois Empires, Amériques Unies & UPP',
+    summary: 'La guerre froide intersidérale partageant l’espace colonisé entre l’UA (USCM), le Three World Empire (3WE) et l’Union des Peuples Progressistes (UPP).',
+    body: 'Au XXIIe siècle, l’expansion humaine dans les Territoires de la Frontière (Outer Rim) est fracturée en trois superpuissances rivales. L’Empire des Trois Mondes (3WE, alliance Royaume-Uni, Japon et Inde) s’appuie sur la Weyland-Yutani et la Royal Marines Commando. Les Amériques Unies (UA) déploient le Corps des Marines Coloniaux (USCM) comme gendarme stellaire. Face à eux, l’Union des Peuples Progressistes (UPP), bloc socialiste spatial technologiquement avancé, engage ses commandos Spetsnaz spatiaux pour disputer le contrôle des mondes miniers et des bio-armes.',
+    sourceTier: 'LICENSED_EU', relatedTier: 'SCREEN', isOriginal: false, sources: ['aliens1986', 'aliensFireteamElite2021', 'aliensDarkDescent2023'], universe: 'ALIEN'
+  },
+  {
+    id: 'xenomorphes-hierarchie-reine-mere-empress-palatine', entryType: 'codex', category: 'xenomorphes', title: 'Xéno-Biologie Royale : Reine-Mère, Impératrice & Gardes Palatins',
+    summary: 'La super-hiérarchie des ruches planétaires : Impératrices (Empress), Reine-Mère souveraine (Queen Mother) et relais télépathique inter-castes.',
+    body: 'Lorsqu’une infestation xénomorphe recouvre un continent ou une planète entière, plusieurs Reines classiques entrent en compétition jusqu’à l’émergence d’une Impératrice (Empress) plus massive et dotée d’une couronne crânienne dentelée. Au sommet absolu de l’espèce XX121 sur son monde natal règne la Reine-Mère (Queen Mother), capable de coordonner télépathiquement des millions d’individus à travers l’espace et protégée par la caste d’élite des Palatins et des Prétoriens royaux.',
+    sourceTier: 'LICENSED_EU', relatedTier: 'SCREEN', isOriginal: false, sources: ['aliens1986', 'avpOriginalComics', 'aliensFireteamElite2021'], universe: 'ALIEN'
+  },
+  {
+    id: 'science-clonage-usm-auriga-ripley8-newborn', entryType: 'codex', category: 'xenomorphes', title: 'Programme de Clonage USM Auriga, Ripley 8 & Hybride Newborn (2381)',
+    summary: 'Les expérimentations génétiques de l’United Systems Military : sept clones tragiques, la réussite hybride Ripley 8 et l’abomination Newborn.',
+    body: 'Deux siècles après le sacrifice d’Ellen Ripley sur Fiorina 161, les scientifiques militaires de l’USM Auriga (Dr Gediman et Dr Wren) clonent ses échantillons sanguins congelés pour extraire l’embryon royal. Après sept itérations monstrueuses déformées, le clone numéro 8 (Ripley 8) survit avec une force surhumaine, un sang acide corrosif et une empathie psychique liée à la ruche. En retour, la Reine hérite d’un cycle utérin humain et engendre le Newborn, hybride blême et meurtrier doté d’un regard anthropomorphe.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['alienResurrection1997'], universe: 'ALIEN'
+  },
+  {
+    id: 'technologie-logistique-lourde-p5000-ud4l-apc', entryType: 'codex', category: 'technologie', title: 'Logistique Lourde : Exosquelette P-5000, Blindé APC & Navette UD-4L',
+    summary: 'Les piliers mécaniques de la colonisation et de l’assaut : Caterpillar P-5000 Power Loader, transport blindé M577 et Dropship Cheyenne.',
+    body: 'La survie sur les mondes hostiles dépend d’une ingénierie mécanique robuste. Le Caterpillar P-5000 Power Loader est un exosquelette anthropomorphe hydraulique capable de soulever quatre tonnes de fret ou d’affronter une Reine Xénomorphe au corps à corps. Sur le champ de bataille, la navette orbitale UD-4L Cheyenne largue le transport de troupes blindé M577 APC équipé de tourelles jumelées à railgun et de canons-mitrailleurs de 20mm.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['aliens1986', 'alienRomulus2024'], universe: 'ALIEN'
+  },
+  {
+    id: 'technologie-ia-muthur-6000-apollo-mainframe', entryType: 'codex', category: 'technologie', title: 'Intelligences Artificielles Centrales : MU/TH/UR 6000, Father & APOLLO',
+    summary: 'Les cerveaux cybernétiques régissant les vaisseaux et stations : chambres acoustiques MU/TH/UR (« Maman ») et noyau APOLLO.',
+    body: 'Chaque vaisseau long-courrier de la Weyland-Yutani est gouverné par une unité centrale MU/TH/UR (« Mother » / « Maman »), accessible via une salle blanche capitonnée de voyants télémétriques. Du modèle MU/TH/UR 6000 du Nostromo au MU/TH/UR 9000 de l’Anesidora, ces IA appliquent froidement l’Ordre Spécial 937. Sur la station Sébastopol, Seegson déploie l’IA concurrente APOLLO, tandis que l’USM Auriga est administré par le système militaire « Father ».',
+    sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['alien1979', 'alienResurrection1997', 'alienIsolation2014', 'alienRomulus2024'], universe: 'ALIEN'
+  },
+  {
+    id: 'xenomorphes-monde-natal-g435-gelee-royale-xeno-zip', entryType: 'codex', category: 'xenomorphes', title: 'Xenomorph Prime (G-435), Gelée Royale & Stimulant Xeno-Zip',
+    summary: 'L’écosystème cauchemardesque du monde natal xénomorphe et le trafic pharmaceutique de la Gelée Royale (Royal Jelly / Fire).',
+    body: 'Dans l’Univers Étendu Dark Horse (Earth War, Genocide, Labyrinth), le monde d’origine de l’espèce XX121 est une biosphère impitoyable où deux méga-ruches rivales s’affrontent en permanence. Les corporations humaines y lancent des expéditions suicides pour récolter la Gelée Royale sécrétée par la Reine-Mère. Raffinée sous le nom de « Xeno-Zip » ou « Fire », cette substance confère aux soldats humains une vitesse et une agressivité décuplées au prix d’une dépendance neurotoxique mortelle.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'aliensFireteamElite2021'], universe: 'ALIEN'
+  },
+  {
+    id: 'avp-architecture-pyramides-sacrificielles-cycles', entryType: 'codex', category: 'culture', title: 'Architecture des Pyramides Sacrificielles & Cycles Séculaires',
+    summary: 'Les temples-arènes Yautja bâtis sur Terre et dans la galaxie : murs reconfigurables, chambres d’ovipositeur et calendriers rituels.',
+    body: 'Bien avant l’essor des civilisations antiques (Cambodge, Aztèques, Égypte, Bouvetøya), les Yautja ont érigé des pyramides souterraines servant de terrains d’épreuve pour leurs Jeunes Sangs. Ces édifices monumentaux intègrent des mécanismes d’engrenages monolithiques déplaçant les cloisons toutes les dix minutes, une salle de stase maintenant une Reine Xénomorphe enchaînée, et des sarcophages d’armement ne s’ouvrant qu’aux initiés.',
+    sourceTier: 'AVP_SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['avp2004', 'avpOriginalComics'], universe: 'AVP'
+  },
+  {
+    id: 'avp-biologie-predalien-implantation-embryonnaire', entryType: 'codex', category: 'xenomorphes', title: 'L’Hybride Abominable : Predalien, Force Brute & Implantation Directe',
+    summary: 'Anatomie et comportement de l’hybride né d’un hôte Yautja : dreads chitineuses, mandibules externes et reproduction accélérée.',
+    body: 'Considéré par les clans Yautja comme la pire profanation cosmique, le Predalien (tel que Chet dans AVP: Requiem ou l’Abomination de BG-386) fusionne la férocité parasitaire du Xénomorphe avec la masse musculaire du Predator. Doté d’une couronne de dreads charnues, de mandibules acérées et d’un exosquelette résistant au plasma léger, un spécimen en transition royale peut implanter directement jusqu’à quatre embryons par voie orale dans un hôte affaibli.',
+    sourceTier: 'AVP_SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['avp2004', 'avpRequiem2007'], universe: 'AVP'
+  },
+  {
+    id: 'avp-chronique-ahab-fire-and-stone-ingenieur', entryType: 'codex', category: 'culture', title: 'La Croisade d’Ahab : Le Trophée de l’Ingénieur sur LV-223',
+    summary: 'La quête obsessionnelle de l’Ancien borgne Ahab sur la lune mutée LV-223 pour abattre un Ingénieur Mala’kak (Fire and Stone).',
+    body: 'Après avoir perdu un œil au cours de décennies de chasses victorieuses, le vétéran Yautja Ahab découvre l’existence des Ingénieurs (Mala’kak), considérés comme les dieux créateurs et le gibier suprême. Sur la lune LV-223 ravagée par le mutagène noir du Prometheus, Ahab forge une alliance pragmatique avec le mercenaire humain Galgo Helder, survit aux essaims mutants et terrasse un Ingénieur en duel pour s’emparer de son fusil énergétique et de son crâne monumental.',
+    sourceTier: 'LICENSED_EU', relatedTier: 'SCREEN', isOriginal: false, sources: ['prometheus2012', 'avpOriginalComics'], universe: 'AVP'
+  },
+  {
+    id: 'avp-chronique-bg386-freyas-prospect-dark-2010', entryType: 'codex', category: 'lieu', title: 'Freya’s Prospect (BG-386) : La Pyramide de Karl Bishop Weyland & Dark',
+    summary: 'La campagne de BG-386 (AVP 2010) : éveil de la Matriarche ancestrale, meute d’élite de Dark et découverte de Xenomorph Prime.',
+    body: 'Sur la planète coloniale BG-386 (Freya’s Prospect), l’androïde dirigeant Karl Bishop Weyland perce le sceau de la plus ancienne pyramide Yautja connue, libérant la Matriarche xénomorphe « Specimen 6 ». Un vaisseau clanique dépêche alors l’Élite Dark pour effacer toute trace de la profanation. Après avoir récupéré le masque ancestral d’un Seigneur Yautja antique et abattu l’Abomination Predalien dans les laves du temple, Dark extrait de son gantelet les coordonnées stellaires du monde natal xénomorphe.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'avp2004'], universe: 'AVP'
+  },
+  {
+    id: 'predator-faune-chasse-hellhounds-river-ghosts-kalisk', entryType: 'codex', category: 'culture', title: 'Faune Cynégétique Extraterrestre : Hell-Hounds, River Ghosts & Kalisk',
+    summary: 'Le bestiaire non-xénomorphe traqué ou dressé par les clans : molosses à cornes, spectres insectoïdes et béhémoths régénérants.',
+    body: 'La chasse Yautja ne se limite ni aux humains ni aux Xénomorphes. Les Super Predators dressent des meutes de Hell-Hounds quadrupèdes hérissés d’épines osseuses pour rabattre leurs proies, et capturent les « River Ghosts », créatures pâles symbiotiques capables de bonds fulgurants. Sur le monde mortel de Genna (Badlands), les chasseurs affrontent le Kalisk, prédateur apex titanesque doté d’une régénération cellulaire quasi instantanée, tandis que sur Ryushi, le Rhynth sert d’épreuve de force brute.',
+    sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['predators2010', 'thePredator2018', 'badlands2025', 'avpPreyOmnibus'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-reliques-historiques-trophees-humains-clans', entryType: 'codex', category: 'culture', title: 'Reliques Historiques & Trophées Humains : De 1715 à Dutch 2025',
+    summary: 'Les armes d’honneur échangées entre guerriers humains et Anciens Yautja à travers les siècles et la survie cybernétique de Dutch.',
+    body: 'Lorsqu’un humain triomphe d’un Yautja en combat singulier loyal, les Anciens honorent le vainqueur en lui remettant une relique historique. Le pistolet à silex « Raphael Adolini 1715 » passe ainsi de Naru (1719) à Greyback qui l’offre à Mike Harrigan en 1997. De même, des sabres de samouraï, des haches vikings et des médailles militaires ornent les nefs claniques. Enfin, le Major Alan « Dutch » Schaefer, infusé d’un sérum d’ADN Yautja stabilisé, poursuit sa traque à la tête de l’OWLF jusqu’en 2025.',
+    sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['predator2', 'prey2022', 'killerOfKillers', 'huntingGrounds'], universe: 'PREDATOR'
   }
 ]);
 // IDs match the values already used by the planet selector.

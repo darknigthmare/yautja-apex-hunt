@@ -2310,6 +2310,132 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'prime_whipmaster', name: 'Vétéran Sang-Marqué', role: 'Assaut Mêlée Fouet Plasma', weapon: 'Fouet Énergétique Segmenté & Lames 80cm', hp: 610, armor: 65, trophy: 'Section de Fouet d\'Épines Anti-Acide' },
       { id: 'prime_initiator', name: 'Initiateur du Temple', role: 'Gardien du Premier Sang', weapon: 'Combi-Stick Royal d\'Airain & Masque Ancestral', hp: 580, armor: 60, trophy: 'Stèle d\'Initié Miniaturisée des Lois de Chasse' }
     ]
+  },
+  {
+    id: 'squad_predator_hunters_veterans_2017',
+    name: 'Collectif des Chasseurs de Prédateurs — Opération Atoll (2017)',
+    shortName: 'Predator Hunters (4 Vétérans)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Hunters (Comics Dark Horse 2017-2020)',
+    biomeId: 'jungle',
+    recommendedBiome: 'Atoll Tropical de Mer de Chine',
+    description: 'Survivants d\'anciennes chasses Yautja réunis par Enoch Nakai et Jaya Soames pour traquer les chasseurs stellaires sur leur propre terrain.',
+    tactics: 'Couverture thermique à la boue, pièges périmétriques et tirs de précision synchronisés visant le biomasque.',
+    totalHonorReward: 3900,
+    soloVariantId: 'alien_base_dutch_2025_owlf',
+    members: [
+      { id: 'enoch_nakai', name: 'Enoch Nakai', role: 'Traqueur Navajo & Tireur d\'Élite', weapon: 'Carabine Custom .338 Lapua & Couteau de Chasse', hp: 410, armor: 35, trophy: 'Amulette de Turquoise & Douille Gravée de Nakai' },
+      { id: 'jaya_soames', name: 'Jaya Soames', role: 'Commandante Tactique', weapon: 'Fusil d\'Assaut L85A2 & Grenades Thermiques', hp: 380, armor: 35, trophy: 'Journal de Traque Chiffré de Jaya Soames' },
+      { id: 'mandy_graves', name: 'Mandy Graves', role: 'Spécialiste Armes Lourdes', weapon: 'Mitrailleuse M240B & Capteur Infrarouge', hp: 400, armor: 40, trophy: 'Plaque Militaire Survivante d\'Afghanistan' },
+      { id: 'raphael_herrera', name: 'Raphael Herrera', role: 'Vétéran des Cartels & éclaireur', weapon: 'Fusil à Pompe Tactique Benelli M4 & Machette', hp: 370, armor: 30, trophy: 'Machette Damasquinée de Raphael Herrera' }
+    ]
+  },
+  {
+    id: 'squad_bad_blood_renegade_pack',
+    name: 'Meute des Renégats Bad Bloods & Écorcheurs Exilés',
+    shortName: 'Meute Bad Bloods (4 Renégats)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Bad Blood (Comics Dark Horse 1993)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiome: 'Jungle Urbaine & Marais de Pine Barrens',
+    description: 'Quatre Yautja frappés d\'hérésie ayant massacré leur propre vaisseau clanique et chassant sans aucune restriction du Code d\'Honneur.',
+    tactics: 'Frénésie sanguinaire imprévisible, embuscades en meute camouflée et usage d\'armes chimiques et plasmiques surchargées.',
+    totalHonorReward: 5100,
+    soloVariantId: 'prey_bad_blood_warlord',
+    members: [
+      { id: 'bad_blood_alpha', name: 'Seigneur Écorcheur Bad Blood', role: 'Berserker Hérétique', weapon: 'Machette Yautja Crantée & Crânes de Frères', hp: 700, armor: 65, trophy: 'Biomasque Profané Peint de Sang Yautja' },
+      { id: 'bad_blood_flayer', name: 'Traqueur Sans-Loi', role: 'Assassin Furtif', weapon: 'Doubles Lames Écorcheuses & Filet Barbelé', hp: 550, armor: 50, trophy: 'Collier de Mandibules Arrachées à des Pairs' },
+      { id: 'bad_blood_pyro', name: 'Incinérateur Renégat', role: 'Artilleur Plasma Instable', weapon: 'Plasmacaster Surchargé à Tir Continu', hp: 580, armor: 55, trophy: 'Condensateur Plasma Fissuré de Bad Blood' },
+      { id: 'bad_blood_butcher', name: 'Boucher des Marais', role: 'Exécuteur Lourd', weapon: 'Hachette d\'Abattage Moléculaire & Harpon', hp: 620, armor: 60, trophy: 'Trophée Crânien Volé d\'Ancien Arbitre' }
+    ]
+  },
+  {
+    id: 'squad_colonial_marines_uss_sephora_2013',
+    name: 'Escouade de Choc USS Sephora — Caporal Christopher Winter (2179)',
+    shortName: 'USS Sephora USCM (4 Marines)',
+    category: 'COLONIAL_MARINES',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Colonial Marines (Gearbox / SEGA 2013)',
+    biomeId: 'hive_lv426',
+    recommendedBiome: 'Tranchée du Derelict LV-426',
+    description: 'Bataillon de secours de l\'USS Sephora déployé sur LV-426 pour enquêter sur la disparition du Sulaco et briser le blocus Weyland-Yutani.',
+    tactics: 'Formation en carré USCM, tirs de fusil à impulsion M41A Mk2, minigun lourd et déploiement de tourelles.',
+    totalHonorReward: 3700,
+    soloVariantId: 'alien_base_dwayne_hicks_corporal',
+    members: [
+      { id: 'winter', name: 'Caporal Christopher Winter', role: 'Chef d\'Escouade Sephora', weapon: 'M41A Pulse Rifle Mk2 & Fusil à Pompe Hicks', hp: 390, armor: 40, trophy: 'Plaque d\'Identification USCM de l\'USS Sephora' },
+      { id: 'oneal', name: 'Soldat Peter O\'Neal', role: 'Appui Mitrailleuse Lourde', weapon: 'M56 Smartgun & Minigun Rotatif M90', hp: 440, armor: 50, trophy: 'Casque Tactique Optique du Soldat O\'Neal' },
+      { id: 'bella', name: 'Soldat Bella Clarison', role: 'Éclaireuse & Assaut Rapproché', weapon: 'Sous-Mitrailleuse Tactique & Lance-Grenades', hp: 340, armor: 30, trophy: 'Écusson Brodé de l\'Escouade de Choc Sephora' },
+      { id: 'cruz', name: 'Capitaine Jeremy Cruz', role: 'Commandant Vétéran', weapon: 'Fusil de Combat Lourd & Pistolet Service VP70', hp: 410, armor: 45, trophy: 'Insigne de Commandement du Capitaine Cruz' }
+    ]
+  },
+  {
+    id: 'squad_labyrinth_innominata_research_1993',
+    name: 'Expédition Scientifique Innominata — Colonel Dr Paul Church (1993)',
+    shortName: 'Complexe Innominata (4 Chercheurs)',
+    category: 'SYNTHETIC_PACK',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Labyrinth (Comics Dark Horse 1993)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiome: 'Station Orbitale Innominata',
+    description: 'Équipe de recherche biocomportementale dirigée par l\'impitoyable Dr Paul Church au cœur du labyrinthe vitré de la station Innominata.',
+    tactics: 'Pièges de confinement, décharges électriques de couloir, gaz soporifique et gardes synthétiques en scaphandre.',
+    totalHonorReward: 3500,
+    soloVariantId: 'prey_weyland_combat_android',
+    members: [
+      { id: 'dr_church', name: 'Colonel Dr Paul Church', role: 'Directeur Xéno-Comportementaliste', weapon: 'Fusil à Impulsion Cryo-Acide & Aiguillon', hp: 360, armor: 30, trophy: 'Carnets Cliniques de Survie en Ruche du Dr Church' },
+      { id: 'col_crespi', name: 'Colonel Anthony Crespi', role: 'Inspecteur Militaire', weapon: 'Carabine d\'Assaut USCM & Pistolet Automatique', hp: 380, armor: 35, trophy: 'Badge d\'Inspection Militaire de la Station Innominata' },
+      { id: 'innominata_synth', name: 'Androïde de Confinement Lab-4', role: 'Sécurité Bio-Hazard', weapon: 'Fusil Électromagnétique & Bouclier Anti-Acide', hp: 490, armor: 55, trophy: 'Visière Intacte de Scaphandre de Laboratoire' },
+      { id: 'hazard_tech', name: 'Technicien de Purge', role: 'Opérateur Chimique', weapon: 'Lance-Flammes Lourd M240 & Bombes Neurotoxiques', hp: 350, armor: 35, trophy: 'Valve Pressurisée de Purge du Labyrinthe' }
+    ]
+  },
+  {
+    id: 'squad_avp2010_bg386_elite_claw',
+    name: 'Meute d\'Élite du Clan Dark & Garde de la Pyramide (BG-386 2010)',
+    shortName: 'Clan d\'Élite BG-386 (4 Yautja)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator (Rebellion / SEGA 2010)',
+    biomeId: 'bouvetoya_pyramid',
+    recommendedBiome: 'Jungle & Pyramide Antique de BG-386',
+    description: 'Détachement d\'Élite envoyé sur Freya\'s Prospect (BG-386) pour purifier la pyramide ancestrale et abattre l\'Abomination Predalien.',
+    tactics: 'Coordination létale d\'Élite : mines laser de proximité, disque chakram à têtes chercheuses et double canon plasma.',
+    totalHonorReward: 5000,
+    soloVariantId: 'prey_predalien_abomination',
+    members: [
+      { id: 'dark_elite', name: 'Dark (Guerrier d\'Élite)', role: 'Exécuteur Suprême de BG-386', weapon: 'Masque Ancestral, Combi-Stick & Canon Antique', hp: 710, armor: 70, trophy: 'Fragment du Sceau Pyramidal du Seigneur Ancestral' },
+      { id: 'wolf_bg386', name: 'Vétéran Wolf (BG-386)', role: 'Instructeur de Combat', weapon: 'Lames de Poignet Doubles & Mines Énergétiques', hp: 590, armor: 60, trophy: 'Gantelet Holographique de Coordonnées Stellaires' },
+      { id: 'claw_hunter', name: 'Claw (Chasseur de la Jungle)', role: 'Sentinelle des Marais', weapon: 'Smart Disc Chakram & Plasmacaster d\'Épaule', hp: 540, armor: 50, trophy: 'Tresse d\'Or du Clan de Freya\'s Prospect' },
+      { id: 'stalker_bg386', name: 'Stalker (Initié de l\'Arène)', role: 'Duelliste de Fosse', weapon: 'Lance Télescopique & Filet de Confinement', hp: 520, armor: 50, trophy: 'Griffe de la Matriarche Specimen 6 de BG-386' }
+    ]
+  },
+  {
+    id: 'squad_fire_and_stone_perses_crew_2014',
+    name: 'Survivants du Geryon & Chasseur Ahab — Croisade de LV-223 (2219)',
+    shortName: 'Croisade d\'Ahab LV-223 (4 Survivants)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien vs. Predator: Fire and Stone (Comics Dark Horse 2014)',
+    biomeId: 'genna_deathworld',
+    recommendedBiome: 'Montagnes Mutées de LV-223',
+    description: 'L\'alliance improbable entre le vétéran borgne Ahab, le mercenaire Galgo Helder et les survivants du vaisseau Geryon face aux Ingénieurs et au mutagène noir.',
+    tactics: 'Tir de suppression au fusil d\'Ingénieur, salves de harpon lourd et assaut frénétique de synthétique muté.',
+    totalHonorReward: 4900,
+    soloVariantId: 'prey_ahab_elder_persée',
+    members: [
+      { id: 'ahab_veteran', name: 'Ahab (Ancien Borgne)', role: 'Chasseur d\'Ingénieurs Mala\'kak', weapon: 'Fusil à Particules d\'Ingénieur & Harpon Lourd', hp: 690, armor: 70, trophy: 'Œil Bionique Balafré & Trophée Mala\'kak d\'Ahab' },
+      { id: 'galgo_helder', name: 'Galgo Helder', role: 'Mercenaire & Contrebandier', weapon: 'Fusil à Impulsion Modifié & Pistolet Volé', hp: 380, armor: 35, trophy: 'Bracelet de Survie Volé au Complexe Weyland' },
+      { id: 'derrick_foster', name: 'Capitaine Angela Foster', role: 'Chef d\'Expédition du Geryon', weapon: 'Carabine de Sécurité & Torche Thermique', hp: 350, armor: 30, trophy: 'Enregistreur de Vol Noir du Vaisseau Geryon' },
+      { id: 'elden_mutated', name: 'Elden (Synthétique Muté A0-3959X)', role: 'Hybride Biomécanique Enragé', weapon: 'Griffes Organo-Métalliques & Force Surhumaine', hp: 580, armor: 55, trophy: 'Noyau Cortical Cristallisé par le Mutagène Noir' }
+    ]
   }
 ]);
 

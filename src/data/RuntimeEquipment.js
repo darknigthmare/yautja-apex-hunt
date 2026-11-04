@@ -336,6 +336,36 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics', 'avpPreyOmnibus']), behavior: 'blade',
     modifiers: Object.freeze({ agilityMultiplier: 1.35, stealthDamageMultiplier: 1.4, criticalChanceMultiplier: 1.3 }),
   }),
+  Object.freeze({
+    id: 'variant_boar_lost_tribe_twin_axes', armorPresetId: 'boar_lost_tribe', baseWeaponId: 'wristblades', name: 'Doubles Lames d\'Assaut Brise-Os de Boar (Lost Tribe 1990)',
+    sourceTier: 'LICENSED_SCREEN_DESIGN', sources: Object.freeze(['predator2', 'lostTribeDesigns']), behavior: 'melee_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.32, knockbackBonus: 6, armorCrackChance: 0.35 }),
+  }),
+  Object.freeze({
+    id: 'variant_snake_lost_tribe_phantom_disc', armorPresetId: 'snake_lost_tribe', baseWeaponId: 'smart_disc', name: 'Disque Fantôme Silencieux de Snake (Lost Tribe 1990)',
+    sourceTier: 'LICENSED_SCREEN_DESIGN', sources: Object.freeze(['predator2', 'lostTribeDesigns']), behavior: 'returning_disc',
+    modifiers: Object.freeze({ damageMultiplier: 1.24, projectileSpeedMultiplier: 1.3, stealthReturnBonus: 0.4 }),
+  }),
+  Object.freeze({
+    id: 'variant_scout_lost_tribe_long_speargun', armorPresetId: 'scout_lost_tribe', baseWeaponId: 'speargun', name: 'Fusil-Harpon Longue Portée de Scout (Lost Tribe 1990)',
+    sourceTier: 'LICENSED_SCREEN_DESIGN', sources: Object.freeze(['predator2', 'lostTribeDesigns']), behavior: 'precision_bolt',
+    modifiers: Object.freeze({ damageMultiplier: 1.35, projectileSpeedMultiplier: 1.4, headshotBonus: 0.5 }),
+  }),
+  Object.freeze({
+    id: 'variant_stalker_lost_tribe_needle_spear', armorPresetId: 'stalker_lost_tribe', baseWeaponId: 'combi_stick', name: 'Combi-Stick Perforant de Stalker (Lost Tribe 1990)',
+    sourceTier: 'LICENSED_SCREEN_DESIGN', sources: Object.freeze(['predator2', 'lostTribeDesigns']), behavior: 'spear',
+    modifiers: Object.freeze({ damageMultiplier: 1.26, armorPenetrationBonus: 0.45, throwVelocityMultiplier: 1.25 }),
+  }),
+  Object.freeze({
+    id: 'variant_exiled_bad_blood_serrated_blades', armorPresetId: 'exiled_hg', baseWeaponId: 'wristblades', name: 'Lames Écorcheuses Crantées d\'Exilé Bad Blood',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['predatorBadBloodComics', 'huntingGrounds']), behavior: 'melee_fast',
+    modifiers: Object.freeze({ damageMultiplier: 1.28, bleedDurationSeconds: 5, attackSpeedMultiplier: 1.2 }),
+  }),
+  Object.freeze({
+    id: 'variant_captured_hg_bionic_breach_claw', armorPresetId: 'captured_hg', baseWeaponId: 'wristblades', name: 'Griffe d\'Évasion trempée du Chasseur Capturé',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['predators2010', 'huntingGrounds']), behavior: 'melee_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.3, restraintBreakBonus: 0.5, rageDamageBonus: 0.25 }),
+  }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);
 
