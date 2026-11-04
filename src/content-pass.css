@@ -957,3 +957,98 @@ body:has(#vision-overlay.vision-normal) #scanline-overlay { opacity: 0.22; }
 .codex-reference-controls .codex-check-filter {display:flex;align-items:center;gap:6px;min-height:40px;color:#e5d19d;font:700 10px 'Orbitron',sans-serif;}
 .codex-reference-controls .codex-check-filter input {accent-color:#69e8bf;min-width:18px;min-height:18px;}
 #codex-filter-count {color:#8defcf;font:700 10px 'Orbitron',sans-serif;min-height:32px;display:flex;align-items:center;}
+/* =========================================================================
+   TIROIRS REFERMABLES PAR UNIVERS (PREDATOR, ALIEN, AVP)
+   ========================================================================= */
+.universe-drawer {
+  width: 100%;
+  margin-bottom: 24px;
+  background: rgba(14, 20, 28, 0.92);
+  border: 1px solid #37474f;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.universe-drawer[data-universe="PREDATOR"] {
+  border-left: 5px solid #ff5533;
+}
+.universe-drawer[data-universe="ALIEN"] {
+  border-left: 5px solid #00e5ff;
+}
+.universe-drawer[data-universe="AVP"] {
+  border-left: 5px solid #ffd700;
+}
+.universe-drawer[open] {
+  border-color: #546e7a;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
+}
+.universe-drawer-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: linear-gradient(90deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.9));
+  cursor: pointer;
+  user-select: none;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #eceff1;
+  transition: background 0.2s ease;
+}
+.universe-drawer-summary:hover {
+  background: linear-gradient(90deg, rgba(40, 53, 75, 0.95), rgba(20, 30, 50, 0.95));
+}
+.universe-drawer-summary::-webkit-details-marker {
+  display: none;
+}
+.universe-drawer-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.universe-drawer-title {
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.universe-drawer-badge {
+  font-size: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #cfd8dc;
+  font-weight: 600;
+}
+.universe-drawer-toggle-icon {
+  font-size: 14px;
+  color: #90a4ae;
+  transition: transform 0.25s ease;
+}
+.universe-drawer[open] .universe-drawer-toggle-icon {
+  transform: rotate(180deg);
+}
+.universe-drawer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  padding: 18px;
+  background: rgba(10, 14, 20, 0.75);
+}
+.sub-drawer-section {
+  width: 100%;
+  margin-bottom: 16px;
+}
+.sub-drawer-heading {
+  font-size: 13px;
+  font-weight: 700;
+  color: #80d8ff;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(128, 216, 255, 0.2);
+  padding-bottom: 4px;
+}

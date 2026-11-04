@@ -81,6 +81,16 @@ import {
 } from './ui/CanonLogosAndEmblems.js';
 import { SQUAD_ENCOUNTERS, getSquadById } from './data/SquadEncountersCatalog.js';
 import {
+  MEDIA_MAPS_CATALOG,
+  NPC_ARSENAL_CATALOG,
+  FRANCHISE_UNIVERSES,
+  getMediaMapById,
+  getNpcWeaponById,
+} from './data/MediaMapsAndArsenalCatalog.js';
+import {
+  ARMOR_PRESET_WEAPON_VARIANTS,
+} from './data/RuntimeEquipment.js';
+import {
   YautjaTrophyCraftsmanshipForgeSystem,
 } from './gameplay/YautjaTrophyCraftsmanshipForgeSystem.js';
 import {
@@ -2862,117 +2872,329 @@ export class Game {
       renderMultiverseUI();
     }, 1000);
 
-    // 4. Render Canon Prey Taxonomy Encyclopedia in Codex
+    // 4. Render Canon Prey Taxonomy Encyclopedia in Codex with 3 Universe Drawers
+    const getPreyUniverse = (p) => {
+      const media = String(p.originMedia || '').toLowerCase();
+      if (media.includes('alien vs. predator') || media.includes('avp')) return 'AVP';
+      if (media.includes('alien') || media.includes('prometheus') || media.includes('covenant') || media.includes('romulus') || media.includes('nostromo')) return 'ALIEN';
+      return 'PREDATOR';
+    };
+
+    const getSquadUniverse = (s) => {
+      const media = String(s.originMedia || '').toLowerCase();
+      if (media.includes('alien vs. predator') || media.includes('avp')) return 'AVP';
+      if (media.includes('alien') || media.includes('prometheus') || media.includes('covenant') || media.includes('romulus') || media.includes('nostromo')) return 'ALIEN';
+      return 'PREDATOR';
+    };
+
+    const renderSquadCard = (squad) => `
+      <article class="taxonomy-card squad-card" data-prey-id="${squad.id}" data-squad-id="${squad.id}">
+        <div class="taxonomy-card-header">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="taxonomy-faction-icon" style="flex-shrink:0;">${getSquadLogo(squad.id, 28)}</div>
+            <div>
+              <h5 class="taxonomy-card-title">${squad.name}</h5>
+              <span class="taxonomy-card-source">${squad.originMedia}</span>
+            </div>
+          </div>
+          <span class="spec-tag reward-tag">+${squad.totalHonorReward} PTS</span>
+        </div>
+        <div class="taxonomy-meta-row">
+          <span class="scale-tag scale-moyen">GROUPE (${squad.totalMembers} CIBLES)</span>
+          <span class="faction-badge faction-human">${squad.category}</span>
+          <span class="sector-badge" style="background:#263238; color:#80d8ff; padding:2px 6px; font-size:10px; border-radius:3px;">${squad.recommendedBiome}</span>
+        </div>
+        <p style="font-size:12px; color:#cfd8dc; margin:0; line-height:1.4;">${squad.description}</p>
+        <div style="font-size:11px; color:#ffab91;">
+          <strong>Tactique de Groupe :</strong> ${squad.tactics}
+        </div>
+        <div class="squad-members-preview" style="font-size:11px; color:#90caf9; margin-top:4px;">
+          <strong>Composition (${squad.totalMembers} membres) :</strong> ${squad.members.map(m => `<span style="color:#e0e0e0;">${m.name}</span> <em style="color:#b0bec5;">(${m.role})</em>`).join(' · ')}
+        </div>
+        <div class="taxonomy-actions" style="margin-top:10px; display:flex; flex-direction:column; gap:6px;">
+          <button type="button" class="btn-simulate-squad" data-squad-id="${squad.id}" style="width:100%; background:linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%); color:#fff; font-weight:700; padding:8px; border:1px solid #ff5252; border-radius:4px; cursor:pointer;">
+            ⚔️ DÉFIER L'ESCOUADE AU GRAND COMPLET (${squad.totalMembers} CIBLES)
+          </button>
+          <button type="button" class="btn-simulate-solo" data-solo-id="${squad.soloVariantId}" style="width:100%; background:linear-gradient(135deg, #1b2838 0%, #2a3f5a 100%); color:#ffd54f; font-weight:600; padding:6px; border:1px solid #d4af37; border-radius:4px; cursor:pointer;">
+            🎯 TRAQUER LE LEADER EN DUEL SOLO
+          </button>
+        </div>
+      </article>
+    `;
+
+    const renderMapCard = (map) => `
+      <article class="taxonomy-card map-card" data-map-id="${map.id}">
+        <div class="taxonomy-card-header">
+          <div>
+            <h5 class="taxonomy-card-title">🗺️ ${map.name}</h5>
+            <span class="taxonomy-card-source">${map.originMedia} (${map.releaseYear})</span>
+          </div>
+          <span class="spec-tag reward-tag" style="background:#003747; color:#80d8ff;">${map.recommendedBiomeLabel}</span>
+        </div>
+        <div class="taxonomy-meta-row">
+          <span class="scale-tag" style="background:#1b263b; color:#90caf9;">BIOME : ${map.biomeId.toUpperCase()}</span>
+          <span class="faction-badge faction-yautja">${map.universe}</span>
+        </div>
+        <p style="font-size:12px; color:#cfd8dc; margin:0; line-height:1.4;">${map.environmentSummary}</p>
+        <div style="font-size:11px; color:#80cbc4; margin-top:4px;">
+          <strong>Secteurs Tactiques (${map.tacticalSectors.length}) :</strong> ${map.tacticalSectors.join(' · ')}
+        </div>
+        <div style="font-size:11px; color:#ffcc80; margin-top:2px;">
+          <strong>Dangers Environnementaux :</strong> ${map.environmentalHazards.join(' · ')}
+        </div>
+        <div class="taxonomy-actions" style="margin-top:10px; display:flex; flex-direction:column; gap:6px;">
+          <button type="button" class="btn-simulate-map-squad" data-biome-id="${map.biomeId}" data-squad-id="${map.heroSquadId || ''}" style="width:100%; background:linear-gradient(135deg, #006064 0%, #00838f 100%); color:#e0f7fa; font-weight:700; padding:8px; border:1px solid #00bcd4; border-radius:4px; cursor:pointer;">
+            ⚔️ SIMULER COMBAT D'ESCOUADE SUR CETTE CARTE
+          </button>
+          <button type="button" class="btn-simulate-map-solo" data-biome-id="${map.biomeId}" data-solo-id="${map.keyPreyIds[0] || ''}" style="width:100%; background:linear-gradient(135deg, #1e293b 0%, #334155 100%); color:#ffd54f; font-weight:600; padding:6px; border:1px solid #64748b; border-radius:4px; cursor:pointer;">
+            🎯 TRAQUE SOLO DANS CE SECTEUR
+          </button>
+        </div>
+      </article>
+    `;
+
+    const renderWeaponCard = (weapon) => {
+      const isYautja = Boolean(weapon.armorPresetId || weapon.baseWeaponId);
+      return `
+        <article class="taxonomy-card weapon-card" data-weapon-id="${weapon.id}">
+          <div class="taxonomy-card-header">
+            <div>
+              <h5 class="taxonomy-card-title">${isYautja ? '⚡' : '🔫'} ${weapon.name}</h5>
+              <span class="taxonomy-card-source">${weapon.originMedia || (weapon.sources ? weapon.sources.join(', ') : 'Arsenal Yautja')}</span>
+            </div>
+            <span class="spec-tag reward-tag" style="background:${isYautja ? '#b71c1c' : '#1e3a8a'}; color:#fff;">${isYautja ? 'ARME YAUTJA' : (weapon.faction || 'PNJ')}</span>
+          </div>
+          <div class="taxonomy-meta-row">
+            <span class="scale-tag" style="background:#263238; color:#ffd54f;">${isYautja ? ('BASE : ' + (weapon.baseWeaponId || 'wristblades').toUpperCase()) : ('CALIBRE : ' + (weapon.caliber || 'Standard'))}</span>
+            <span class="faction-badge ${isYautja ? 'faction-yautja' : 'faction-human'}">${weapon.universe || (isYautja ? 'PREDATOR' : 'TACTIQUE')}</span>
+          </div>
+          <p style="font-size:12px; color:#cfd8dc; margin:0; line-height:1.4;">${weapon.description || ('Variante exclusive liée au preset d\'armure ' + (weapon.armorPresetId || 'Yautja') + '.')}</p>
+          ${weapon.wieldedBy ? `<div style="font-size:11px; color:#90caf9; margin-top:4px;"><strong>Manié par :</strong> ${weapon.wieldedBy}</div>` : ''}
+          ${weapon.yautjaCounterplay ? `<div style="font-size:11px; color:#ffab91; margin-top:2px;"><strong>Contre-mesure Yautja :</strong> ${weapon.yautjaCounterplay}</div>` : ''}
+          ${weapon.modifiers ? `<div style="font-size:11px; color:#a7ffeb; margin-top:2px;"><strong>Modificateurs :</strong> ${Object.entries(weapon.modifiers).map(([k, v]) => k + ': ' + v).join(' · ')}</div>` : ''}
+          <div class="taxonomy-actions" style="margin-top:10px;">
+            <button type="button" class="btn-simulate-weapon" data-weapon-id="${weapon.id}" style="width:100%; background:linear-gradient(135deg, #1b263b 0%, #2a3f5a 100%); color:#ffe082; font-weight:600; padding:6px; border:1px solid #ffd54f; border-radius:4px; cursor:pointer;">
+              🎯 S'ENTRAÎNER FACE À CE PROFIL BALISTIQUE
+            </button>
+          </div>
+        </article>
+      `;
+    };
+
+    const renderPreyCard = (prey) => {
+      let factionClass = 'faction-yautja';
+      if (prey.faction === PREY_FACTIONS.ENGINEER) factionClass = 'faction-engineer';
+      else if (prey.faction === PREY_FACTIONS.XENOMORPH) factionClass = 'faction-xenomorph';
+      else if (prey.faction === PREY_FACTIONS.HUMAN_SYNTHETIC) factionClass = 'faction-human';
+      else if (prey.faction === PREY_FACTIONS.FAUNA) factionClass = 'faction-fauna';
+
+      return `
+        <article class="taxonomy-card" data-prey-id="${prey.id}">
+          <div class="taxonomy-card-header">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div class="taxonomy-faction-icon" style="flex-shrink:0;">${renderFactionEmblem(prey.faction, 26)}</div>
+              <div>
+                <h5 class="taxonomy-card-title">${prey.name}</h5>
+                <span class="taxonomy-card-source">${prey.originMedia}</span>
+              </div>
+            </div>
+            <span class="spec-tag reward-tag">+${prey.baseHonor} PTS</span>
+          </div>
+          <div class="taxonomy-meta-row">
+            <span class="scale-tag scale-${prey.scale.toLowerCase()}">${prey.scale} (${prey.sizeMeters}m)</span>
+            <span class="faction-badge ${factionClass}">${prey.faction}</span>
+          </div>
+          <p style="font-size:12px; color:#cfd8dc; margin:0; line-height:1.4;">${prey.description}</p>
+          <div style="font-size:11px; color:#ffab91;">
+            <strong>Points faibles :</strong> ${prey.weakpoints.join(', ')}
+          </div>
+          <div style="font-size:11px; color:#ffd54f;">
+            <strong>Trophée :</strong> ${prey.trophy}
+          </div>
+          <div class="taxonomy-actions" style="margin-top:10px;">
+            <button type="button" class="btn-simulate-prey" data-sim-id="${prey.id}">
+              PRÉPARER L’ENTRAÎNEMENT HOLOGRAPHIQUE
+            </button>
+          </div>
+        </article>
+      `;
+    };
+
+    const renderUniverseDrawer = (universeKey, title, badge, contentHtml, defaultOpen = true) => `
+      <details class="universe-drawer" data-universe="${universeKey}" ${defaultOpen ? 'open' : ''}>
+        <summary class="universe-drawer-summary">
+          <div class="universe-drawer-header-left">
+            <span style="font-size:18px;">${FRANCHISE_UNIVERSES[universeKey]?.emblem || '🌌'}</span>
+            <span class="universe-drawer-title" style="color:${FRANCHISE_UNIVERSES[universeKey]?.color || '#fff'};">${title}</span>
+            <span class="universe-drawer-badge">${badge}</span>
+          </div>
+          <span class="universe-drawer-toggle-icon">▼</span>
+        </summary>
+        <div class="universe-drawer-content">
+          ${contentHtml}
+        </div>
+      </details>
+    `;
+
     const renderTaxonomyEncyclopedia = (filterScale = 'all') => {
       const taxonomyGrid = document.getElementById('canon-taxonomy-grid');
       if (!taxonomyGrid) return;
 
-      if (filterScale === 'squads') {
-        taxonomyGrid.innerHTML = SQUAD_ENCOUNTERS.map((squad) => `
-          <article class="taxonomy-card squad-card" data-prey-id="${squad.id}" data-squad-id="${squad.id}">
-            <div class="taxonomy-card-header">
-              <div style="display:flex; align-items:center; gap:8px;">
-                <div class="taxonomy-faction-icon" style="flex-shrink:0;">${getSquadLogo(squad.id, 28)}</div>
-                <div>
-                  <h5 class="taxonomy-card-title">${squad.name}</h5>
-                  <span class="taxonomy-card-source">${squad.originMedia}</span>
-                </div>
-              </div>
-              <span class="spec-tag reward-tag">+${squad.totalHonorReward} PTS</span>
-            </div>
-            <div class="taxonomy-meta-row">
-              <span class="scale-tag scale-moyen">GROUPE (${squad.totalMembers} CIBLES)</span>
-              <span class="faction-badge faction-human">${squad.category}</span>
-              <span class="sector-badge" style="background:#263238; color:#80d8ff; padding:2px 6px; font-size:10px; border-radius:3px;">${squad.recommendedBiome}</span>
-            </div>
-            <p style="font-size:12px; color:#cfd8dc; margin:0; line-height:1.4;">${squad.description}</p>
-            <div style="font-size:11px; color:#ffab91;">
-              <strong>Tactique de Groupe :</strong> ${squad.tactics}
-            </div>
-            <div class="squad-members-preview" style="font-size:11px; color:#90caf9; margin-top:4px;">
-              <strong>Composition (${squad.totalMembers} membres) :</strong> ${squad.members.map(m => `<span style="color:#e0e0e0;">${m.name}</span> <em style="color:#b0bec5;">(${m.role})</em>`).join(' · ')}
-            </div>
-            <div class="taxonomy-actions" style="margin-top:10px; display:flex; flex-direction:column; gap:6px;">
-              <button type="button" class="btn-simulate-squad" data-squad-id="${squad.id}" style="width:100%; background:linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%); color:#fff; font-weight:700; padding:8px; border:1px solid #ff5252; border-radius:4px; cursor:pointer;">
-                ⚔️ DÉFIER L'ESCOUADE AU GRAND COMPLET (${squad.totalMembers} CIBLES)
-              </button>
-              <button type="button" class="btn-simulate-solo" data-solo-id="${squad.soloVariantId}" style="width:100%; background:linear-gradient(135deg, #1b2838 0%, #2a3f5a 100%); color:#ffd54f; font-weight:600; padding:6px; border:1px solid #d4af37; border-radius:4px; cursor:pointer;">
-                🎯 TRAQUER LE LEADER EN DUEL SOLO
-              </button>
-            </div>
-          </article>
-        `).join('');
+      const universes = ['PREDATOR', 'ALIEN', 'AVP'];
 
-        taxonomyGrid.querySelectorAll('.btn-simulate-squad').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            const squadId = btn.getAttribute('data-squad-id');
-            const squad = SQUAD_ENCOUNTERS.find((s) => s.id === squadId);
-            if (squad) {
-              audioSynth.playYautjaClick();
-              const simulation = resolveSimulationSelection({ kind: 'squad', id: squad.id });
-              if (simulation) this.prepareHunt(simulation.huntType, simulation.planetType, simulation.directiveId || squad.id, { kind: 'squad', id: squad.id });
-            }
-          });
-        });
-
-        taxonomyGrid.querySelectorAll('.btn-simulate-solo').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            const soloId = btn.getAttribute('data-solo-id');
-            const target = CANON_PREY_CATALOG.find((p) => p.id === soloId);
-            if (target) {
-              audioSynth.playYautjaClick();
-              const simulation = resolveSimulationSelection({ kind: 'prey', id: target.id });
-              if (simulation) this.prepareHunt(simulation.huntType, simulation.planetType, 'standard_hunt', { kind: 'prey', id: target.id });
-            }
-          });
-        });
+      // CAS 1 : FILTRE CARTES (24 CARTES EN 3 TIROIRS)
+      if (filterScale === 'maps') {
+        taxonomyGrid.innerHTML = universes.map((u) => {
+          const uMaps = MEDIA_MAPS_CATALOG.filter((m) => m.universe === u);
+          const uInfo = FRANCHISE_UNIVERSES[u];
+          const cardsHtml = uMaps.map(renderMapCard).join('');
+          return renderUniverseDrawer(u, uInfo.label + ' — CARTES CANONIQUES', `${uMaps.length} SECTEURS MÉDIA`, cardsHtml);
+        }).join('');
+        wireActionButtons();
         return;
       }
 
+      // CAS 2 : FILTRE ESCOUADES (34 ESCOUADES EN 3 TIROIRS)
+      if (filterScale === 'squads') {
+        taxonomyGrid.innerHTML = universes.map((u) => {
+          const uSquads = SQUAD_ENCOUNTERS.filter((s) => getSquadUniverse(s) === u);
+          const uInfo = FRANCHISE_UNIVERSES[u];
+          const cardsHtml = uSquads.map(renderSquadCard).join('');
+          return renderUniverseDrawer(u, uInfo.label + ' — ESCOUADES DE CHASSE', `${uSquads.length} GROUPES CANONIQUES`, cardsHtml);
+        }).join('');
+        wireActionButtons();
+        return;
+      }
+
+      // CAS 3 : FILTRE ARSENAL (52 ARMES YAUTJA & PNJ EN 3 TIROIRS)
+      if (filterScale === 'weapons') {
+        const allWeapons = [
+          ...ARMOR_PRESET_WEAPON_VARIANTS.map(v => ({
+            ...v,
+            universe: (v.armorPresetId.includes('avp') || v.name.includes('AVP') || (v.sources && v.sources.some(s => s.toLowerCase().includes('avp')))) ? 'AVP' : 'PREDATOR'
+          })),
+          ...NPC_ARSENAL_CATALOG
+        ];
+
+        taxonomyGrid.innerHTML = universes.map((u) => {
+          const uWeapons = allWeapons.filter((w) => w.universe === u);
+          const uInfo = FRANCHISE_UNIVERSES[u];
+          const cardsHtml = uWeapons.map(renderWeaponCard).join('');
+          return renderUniverseDrawer(u, uInfo.label + ' — ARSENAL & CALIBRES', `${uWeapons.length} ARMES SIMULÉES`, cardsHtml);
+        }).join('');
+        wireActionButtons();
+        return;
+      }
+
+      // CAS 4 : FILTRE TIROIRS PAR UNIVERS (VUE TOTALE 3 UNIVERS)
+      if (filterScale === 'universes') {
+        taxonomyGrid.innerHTML = universes.map((u) => {
+          const uInfo = FRANCHISE_UNIVERSES[u];
+          const uMaps = MEDIA_MAPS_CATALOG.filter((m) => m.universe === u);
+          const uSquads = SQUAD_ENCOUNTERS.filter((s) => getSquadUniverse(s) === u);
+          const uNpcWeps = NPC_ARSENAL_CATALOG.filter((w) => w.universe === u);
+
+          const compositeHtml = `
+            <div style="grid-column: 1 / -1; margin-bottom:8px;">
+              <p style="font-size:12px; color:#b0bec5; margin:0 0 12px 0;">${uInfo.description}</p>
+              <div class="sub-drawer-heading">🗺️ Cartes & Territoires Média (${uMaps.length})</div>
+            </div>
+            ${uMaps.map(renderMapCard).join('')}
+            <div style="grid-column: 1 / -1; margin-top:16px; margin-bottom:8px;">
+              <div class="sub-drawer-heading">⚔️ Escouades de Héros & Antagonistes (${uSquads.length})</div>
+            </div>
+            ${uSquads.map(renderSquadCard).join('')}
+            <div style="grid-column: 1 / -1; margin-top:16px; margin-bottom:8px;">
+              <div class="sub-drawer-heading">🔫 Arsenal Emblématique (${uNpcWeps.length})</div>
+            </div>
+            ${uNpcWeps.map(renderWeaponCard).join('')}
+          `;
+
+          return renderUniverseDrawer(u, uInfo.label + ' — ARCHIVES GLOBALES', `${uMaps.length} Cartes · ${uSquads.length} Escouades · ${uNpcWeps.length} Armes`, compositeHtml);
+        }).join('');
+        wireActionButtons();
+        return;
+      }
+
+      // CAS 5 : VUE PROIES STANDARD (PAR GABARIT EN 3 TIROIRS D'UNIVERS)
       const filteredPrey = filterPreyByScale(filterScale);
-      taxonomyGrid.innerHTML = filteredPrey.map((prey) => {
-        let factionClass = 'faction-yautja';
-        if (prey.faction === PREY_FACTIONS.ENGINEER) factionClass = 'faction-engineer';
-        else if (prey.faction === PREY_FACTIONS.XENOMORPH) factionClass = 'faction-xenomorph';
-        else if (prey.faction === PREY_FACTIONS.HUMAN_SYNTHETIC) factionClass = 'faction-human';
-        else if (prey.faction === PREY_FACTIONS.FAUNA) factionClass = 'faction-fauna';
-
-        return `
-          <article class="taxonomy-card" data-prey-id="${prey.id}">
-            <div class="taxonomy-card-header">
-              <div style="display:flex; align-items:center; gap:8px;">
-                <div class="taxonomy-faction-icon" style="flex-shrink:0;">${renderFactionEmblem(prey.faction, 26)}</div>
-                <div>
-                  <h5 class="taxonomy-card-title">${prey.name}</h5>
-                  <span class="taxonomy-card-source">${prey.originMedia}</span>
-                </div>
-              </div>
-              <span class="spec-tag reward-tag">+${prey.baseHonor} PTS</span>
-            </div>
-            <div class="taxonomy-meta-row">
-              <span class="scale-tag scale-${prey.scale.toLowerCase()}">${prey.scale} (${prey.sizeMeters}m)</span>
-              <span class="faction-badge ${factionClass}">${prey.faction}</span>
-            </div>
-            <p style="font-size:12px; color:#cfd8dc; margin:0; line-height:1.4;">${prey.description}</p>
-            <div style="font-size:11px; color:#ffab91;">
-              <strong>Points faibles :</strong> ${prey.weakpoints.join(', ')}
-            </div>
-            <div style="font-size:11px; color:#ffd54f;">
-              <strong>Trophée :</strong> ${prey.trophy}
-            </div>
-            <div class="taxonomy-actions" style="margin-top:10px;">
-              <button type="button" class="btn-simulate-prey" data-sim-id="${prey.id}">
-                PRÉPARER L’ENTRAÎNEMENT HOLOGRAPHIQUE
-              </button>
-            </div>
-          </article>
-        `;
+      taxonomyGrid.innerHTML = universes.map((u) => {
+        const uPrey = filteredPrey.filter((p) => getPreyUniverse(p) === u);
+        if (uPrey.length === 0) return '';
+        const uInfo = FRANCHISE_UNIVERSES[u];
+        const cardsHtml = uPrey.map(renderPreyCard).join('');
+        return renderUniverseDrawer(u, uInfo.label + ' — BESTIAIRE ' + (filterScale === 'all' ? 'COMPLET' : filterScale.toUpperCase()), `${uPrey.length} PROIES`, cardsHtml);
       }).join('');
+      wireActionButtons();
+    };
 
+    const wireActionButtons = () => {
+      const taxonomyGrid = document.getElementById('canon-taxonomy-grid');
+      if (!taxonomyGrid) return;
+
+      // Squad simulate buttons
+      taxonomyGrid.querySelectorAll('.btn-simulate-squad').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const squadId = btn.getAttribute('data-squad-id');
+          const squad = SQUAD_ENCOUNTERS.find((s) => s.id === squadId);
+          if (squad) {
+            audioSynth.playYautjaClick();
+            const simulation = resolveSimulationSelection({ kind: 'squad', id: squad.id });
+            if (simulation) this.prepareHunt(simulation.huntType, simulation.planetType, simulation.directiveId || squad.id, { kind: 'squad', id: squad.id });
+          }
+        });
+      });
+
+      // Solo simulate buttons
+      taxonomyGrid.querySelectorAll('.btn-simulate-solo').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const soloId = btn.getAttribute('data-solo-id');
+          const target = CANON_PREY_CATALOG.find((p) => p.id === soloId);
+          if (target) {
+            audioSynth.playYautjaClick();
+            const simulation = resolveSimulationSelection({ kind: 'prey', id: target.id });
+            if (simulation) this.prepareHunt(simulation.huntType, simulation.planetType, 'standard_hunt', { kind: 'prey', id: target.id });
+          }
+        });
+      });
+
+      // Map squad simulate buttons
+      taxonomyGrid.querySelectorAll('.btn-simulate-map-squad').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const biomeId = btn.getAttribute('data-biome-id') || 'jungle';
+          const squadId = btn.getAttribute('data-squad-id');
+          const squad = SQUAD_ENCOUNTERS.find((s) => s.id === squadId) || SQUAD_ENCOUNTERS[0];
+          audioSynth.playYautjaClick();
+          const simulation = resolveSimulationSelection({ kind: 'squad', id: squad.id });
+          if (simulation) this.prepareHunt(simulation.huntType, biomeId, simulation.directiveId || squad.id, { kind: 'squad', id: squad.id });
+        });
+      });
+
+      // Map solo simulate buttons
+      taxonomyGrid.querySelectorAll('.btn-simulate-map-solo').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const biomeId = btn.getAttribute('data-biome-id') || 'jungle';
+          const soloId = btn.getAttribute('data-solo-id');
+          const target = CANON_PREY_CATALOG.find((p) => p.id === soloId) || CANON_PREY_CATALOG[0];
+          audioSynth.playYautjaClick();
+          const simulation = resolveSimulationSelection({ kind: 'prey', id: target.id });
+          if (simulation) this.prepareHunt(simulation.huntType, biomeId, 'standard_hunt', { kind: 'prey', id: target.id });
+        });
+      });
+
+      // Weapon simulate buttons
+      taxonomyGrid.querySelectorAll('.btn-simulate-weapon').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          audioSynth.playYautjaClick();
+          this.prepareHunt('jungle_hunter_1987', 'jungle', 'standard_hunt', null);
+        });
+      });
+
+      // Standard prey simulate buttons
       taxonomyGrid.querySelectorAll('.btn-simulate-prey').forEach((btn) => {
         btn.addEventListener('click', () => {
           const preyId = btn.getAttribute('data-sim-id');
-          const target = filteredPrey.find((p) => p.id === preyId);
+          const target = CANON_PREY_CATALOG.find((p) => p.id === preyId);
           if (target) {
             audioSynth.playYautjaClick();
             const simulation = resolveSimulationSelection({ kind: 'prey', id: target.id });

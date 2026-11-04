@@ -230,6 +230,82 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avpRequiem2007']), behavior: 'corrosive_antidote_cleanse',
     modifiers: Object.freeze({ acidPurgeBonus: 1.5, immunityDurationSeconds: 4 }),
   }),
+  // 15 Nouvelles Variantes Canoniques d'Armes Yautja
+  Object.freeze({
+    id: 'variant_scarface_glaive', armorPresetId: 'scarface_game', baseWeaponId: 'combi_stick', name: 'Glaive à deux mains de Scarface',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['predatorConcreteJungle2005']), behavior: 'spear_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.34, rangeMultiplier: 1.25, cooldownMultiplier: 1.12 }),
+  }),
+  Object.freeze({
+    id: 'variant_alpha_bone_sickle', armorPresetId: 'alpha_yautja', baseWeaponId: 'wristblades', name: 'Faux en chitine d\'Alpha Predator',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'melee_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.36, cooldownMultiplier: 1.18, rangeMultiplier: 1.22 }),
+  }),
+  Object.freeze({
+    id: 'variant_cleopatra_solar_disc', armorPresetId: 'cleopatra_hg', baseWeaponId: 'smart_disc', name: 'Disque Solaire Pharaonique de Cleopatra',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'returning_disc',
+    modifiers: Object.freeze({ damageMultiplier: 1.28, projectileSpeedMultiplier: 1.24, returnSpeedMultiplier: 1.3 }),
+  }),
+  Object.freeze({
+    id: 'variant_dek_kinetic_bow', armorPresetId: 'dek_badlands', baseWeaponId: 'yautja_bow', name: 'Arc cinétique composite de Dek',
+    sourceTier: 'SCREEN', sources: Object.freeze(['badlandsGear']), behavior: 'charged_arrow',
+    modifiers: Object.freeze({ chargeSpeedMultiplier: 1.25, damageMultiplier: 1.2, projectileSpeedMultiplier: 1.35 }),
+  }),
+  Object.freeze({
+    id: 'variant_kwei_mentor_spear', armorPresetId: 'kwei_badlands', baseWeaponId: 'combi_stick', name: 'Combi-stick cérémonial de Kwei',
+    sourceTier: 'SCREEN', sources: Object.freeze(['badlands2025']), behavior: 'spear',
+    modifiers: Object.freeze({ damageMultiplier: 1.22, rangeMultiplier: 1.15, throwDamageMultiplier: 1.3 }),
+  }),
+  Object.freeze({
+    id: 'variant_celtic_ceremonial_dagger', armorPresetId: 'celtic_avp', baseWeaponId: 'wristblades', name: 'Lames d\'assaut massives de Celtic',
+    sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), behavior: 'melee_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.26, cooldownMultiplier: 1.1, shieldPierceBonus: 0.25 }),
+  }),
+  Object.freeze({
+    id: 'variant_scar_shuriken_chakram', armorPresetId: 'scar_avp', baseWeaponId: 'smart_disc', name: 'Shuriken cérémonial à six pointes de Scar',
+    sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), behavior: 'returning_disc',
+    modifiers: Object.freeze({ damageMultiplier: 1.22, projectileSpeedMultiplier: 1.2, multiHitCount: 3 }),
+  }),
+  Object.freeze({
+    id: 'variant_ahab_engineer_harpoon', armorPresetId: 'ahab_comic', baseWeaponId: 'speargun', name: 'Fusil-harpon tueur d\'Ingénieur d\'Ahab',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics']), behavior: 'precision_bolt',
+    modifiers: Object.freeze({ damageMultiplier: 1.42, armorPenetrationBonus: 0.4, projectileSpeedMultiplier: 1.25 }),
+  }),
+  Object.freeze({
+    id: 'variant_dark_ancient_plasma', armorPresetId: 'dark_avp2010', baseWeaponId: 'plasmacaster_single', name: 'Canon à plasma antique d\'Élite de Dark',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics']), behavior: 'plasma',
+    modifiers: Object.freeze({ damageMultiplier: 1.3, blastRadiusMultiplier: 1.25, energyCostMultiplier: 1.1 }),
+  }),
+  Object.freeze({
+    id: 'variant_samurai_katana', armorPresetId: 'samurai_yautja', baseWeaponId: 'wristblades', name: 'Katana Yautja trempé dans l\'acide',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'melee_fast',
+    modifiers: Object.freeze({ damageMultiplier: 1.24, attackSpeedMultiplier: 1.2, bleedDurationSeconds: 4 }),
+  }),
+  Object.freeze({
+    id: 'variant_viking_battle_axe', armorPresetId: 'viking_yautja', baseWeaponId: 'wristblades', name: 'Hache de guerre en acier noir viking',
+    sourceTier: 'SCREEN', sources: Object.freeze(['killerOfKillers']), behavior: 'melee_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.38, cooldownMultiplier: 1.22, knockbackBonus: 8 }),
+  }),
+  Object.freeze({
+    id: 'variant_valkyrie_norse_hammer', armorPresetId: 'valkyrie_hg', baseWeaponId: 'wristblades', name: 'Masse de guerre Yautja Valkyrie',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'melee_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.32, stunDurationSeconds: 1.5, shockwaveRadius: 4 }),
+  }),
+  Object.freeze({
+    id: 'variant_feudal_kusarigama', armorPresetId: 'kok_feudal_hunter', baseWeaponId: 'whip_thorns', name: 'Kusarigama féodale à chaîne lestée',
+    sourceTier: 'SCREEN', sources: Object.freeze(['killerOfKillers']), behavior: 'melee_control',
+    modifiers: Object.freeze({ rangeMultiplier: 1.35, snareDurationMultiplier: 1.3, damageMultiplier: 1.18 }),
+  }),
+  Object.freeze({
+    id: 'variant_shaman_staff', armorPresetId: 'shaman_lost_tribe', baseWeaponId: 'combi_stick', name: 'Bâton cérémonial rituel du Chaman',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predator2']), behavior: 'spear',
+    modifiers: Object.freeze({ healingAuraMultiplier: 1.2, energyRegenMultiplier: 1.25, damageMultiplier: 1.15 }),
+  }),
+  Object.freeze({
+    id: 'variant_guardian_heavy_cannon', armorPresetId: 'guardian_lost_tribe', baseWeaponId: 'plasmacaster_single', name: 'Canon lourd d\'interdiction du Guardian',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predator2']), behavior: 'plasma',
+    modifiers: Object.freeze({ damageMultiplier: 1.35, projectileSpeedMultiplier: 1.15, blastRadiusMultiplier: 1.3 }),
+  }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);
 

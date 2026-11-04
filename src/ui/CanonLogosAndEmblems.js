@@ -1468,6 +1468,165 @@ export function getSquadLogo(squadId, size = 64) {
     `.trim();
   }
 
+
+  // 22. Trappeurs Français 1719 (Prey)
+  if (id.includes('voyageurs') || id.includes('prey_french')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-voyageurs" role="img" aria-label="Insigne Trappeurs Français 1719">
+        <circle cx="40" cy="40" r="36" fill="#2b1d0c" stroke="#bcaaa4" stroke-width="2.5" />
+        <path d="M20 54 L60 26 M20 26 L60 54" stroke="#8d6e63" stroke-width="3" stroke-linecap="round" />
+        <circle cx="40" cy="40" r="14" fill="#4e342e" stroke="#d7ccc8" stroke-width="1.5" />
+        <path d="M35 34 L45 34 L40 46 Z" fill="#d7ccc8" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="5" font-weight="900" fill="#d7ccc8" letter-spacing="1" text-anchor="middle">VOYAGEURS 1719</text>
+      </svg>
+    `.trim();
+  }
+
+  // 23. Détenus Fiorina 161 (Alien³)
+  if (id.includes('fiorina_inmates') || id.includes('fiorina_161')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-fiorina" role="img" aria-label="Insigne Fiorina 161">
+        <polygon points="40,8 72,24 72,56 40,72 8,56 8,24" fill="#1c1917" stroke="#ea580c" stroke-width="2.5" />
+        <line x1="40" y1="20" x2="40" y2="52" stroke="#ea580c" stroke-width="3" />
+        <line x1="28" y1="32" x2="52" y2="32" stroke="#ea580c" stroke-width="3" />
+        <text x="40" y="66" font-family="'Orbitron', sans-serif" font-size="5" font-weight="900" fill="#fdba74" letter-spacing="1" text-anchor="middle">FURY 161</text>
+      </svg>
+    `.trim();
+  }
+
+  // 24. Dog Catchers Weyland (Alien³)
+  if (id.includes('dog_catchers')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-dogcatchers" role="img" aria-label="Insigne Dog Catchers">
+        <circle cx="40" cy="40" r="36" fill="#0f172a" stroke="#eab308" stroke-width="2.5" />
+        <circle cx="40" cy="40" r="22" fill="none" stroke="#eab308" stroke-width="1.5" stroke-dasharray="4,2" />
+        <polygon points="40,24 52,48 28,48" fill="#eab308" opacity="0.8" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fef08a" letter-spacing="1" text-anchor="middle">DOG CATCHERS</text>
+      </svg>
+    `.trim();
+  }
+
+  // 25. Expédition Prometheus (Prometheus)
+  if (id.includes('prometheus_expedition')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-prometheus" role="img" aria-label="Insigne Prometheus">
+        <circle cx="40" cy="40" r="36" fill="#032030" stroke="#00e5ff" stroke-width="2.5" />
+        <polygon points="40,16 62,38 40,60 18,38" fill="none" stroke="#00e5ff" stroke-width="2" />
+        <circle cx="40" cy="38" r="6" fill="#00e5ff" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="5" font-weight="900" fill="#b2ebf2" letter-spacing="1" text-anchor="middle">PROMETHEUS</text>
+      </svg>
+    `.trim();
+  }
+
+  // 26. Éveil des Ingénieurs (Prometheus)
+  if (id.includes('engineer_awakening')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-engineers" role="img" aria-label="Insigne Ingénieurs">
+        <polygon points="40,6 74,25 74,65 40,76 6,65 6,25" fill="#1e293b" stroke="#94a3b8" stroke-width="2" />
+        <circle cx="40" cy="36" r="16" fill="#0f172a" stroke="#cbd5e1" stroke-width="2" />
+        <circle cx="34" cy="34" r="3" fill="#cbd5e1" />
+        <circle cx="46" cy="34" r="3" fill="#cbd5e1" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#e2e8f0" letter-spacing="1" text-anchor="middle">ENGINEERS</text>
+      </svg>
+    `.trim();
+  }
+
+  // 27. Colons Covenant (Alien: Covenant)
+  if (id.includes('covenant_colonists')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-covenant" role="img" aria-label="Insigne Covenant">
+        <circle cx="40" cy="40" r="36" fill="#141e17" stroke="#22c55e" stroke-width="2.5" />
+        <path d="M25 50 Q40 20 55 50" fill="none" stroke="#22c55e" stroke-width="3" />
+        <circle cx="40" cy="32" r="5" fill="#4ade80" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="5" font-weight="900" fill="#bbf7d0" letter-spacing="1" text-anchor="middle">COVENANT</text>
+      </svg>
+    `.trim();
+  }
+
+  // 28. Meute Néomorphes de David (Alien: Covenant)
+  if (id.includes('neomorph_david')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-neomorph" role="img" aria-label="Insigne Néomorphe">
+        <circle cx="40" cy="40" r="36" fill="#18181b" stroke="#f43f5e" stroke-width="2.5" />
+        <path d="M26 30 Q40 18 54 30 Q48 52 40 56 Q32 52 26 30 Z" fill="#fdf4ff" stroke="#f43f5e" stroke-width="1.5" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fecdd3" letter-spacing="1" text-anchor="middle">NEOMORPH</text>
+      </svg>
+    `.trim();
+  }
+
+  // 29. Mineurs Corbelan IV (Alien: Romulus)
+  if (id.includes('corbelan_scavengers')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-corbelan" role="img" aria-label="Insigne Corbelan">
+        <circle cx="40" cy="40" r="36" fill="#1c1917" stroke="#f59e0b" stroke-width="2.5" />
+        <polygon points="40,20 60,50 20,50" fill="none" stroke="#f59e0b" stroke-width="2.5" />
+        <circle cx="40" cy="38" r="4" fill="#fbbf24" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fde68a" letter-spacing="1" text-anchor="middle">CORBELAN IV</text>
+      </svg>
+    `.trim();
+  }
+
+  // 30. Horreurs Romulus & Offspring (Alien: Romulus)
+  if (id.includes('renaissance_offspring') || id.includes('romulus_renaissance')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-offspring" role="img" aria-label="Insigne The Offspring">
+        <circle cx="40" cy="40" r="36" fill="#1e1024" stroke="#a855f7" stroke-width="2.5" />
+        <circle cx="40" cy="34" r="14" fill="#2e1065" stroke="#c084fc" stroke-width="1.5" />
+        <circle cx="36" cy="32" r="2.5" fill="#e9d5ff" />
+        <circle cx="44" cy="32" r="2.5" fill="#e9d5ff" />
+        <path d="M34 42 Q40 46 46 42" stroke="#e9d5ff" stroke-width="1.5" fill="none" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#e9d5ff" letter-spacing="1" text-anchor="middle">OFFSPRING Z-01</text>
+      </svg>
+    `.trim();
+  }
+
+  // 31. Fireteam OWLF Voodoo & Dutch 2025 (Hunting Grounds)
+  if (id.includes('fireteam_voodoo')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-voodoo" role="img" aria-label="Insigne Fireteam Voodoo">
+        <circle cx="40" cy="40" r="36" fill="#0f172a" stroke="#38bdf8" stroke-width="2.5" />
+        <circle cx="40" cy="38" r="18" fill="none" stroke="#38bdf8" stroke-width="2" />
+        <path d="M40 20 L40 56 M22 38 L58 38" stroke="#38bdf8" stroke-width="1.5" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#bae6fd" letter-spacing="1" text-anchor="middle">OWLF VOODOO</text>
+      </svg>
+    `.trim();
+  }
+
+  // 32. Cercle des Légendes Yautja (Hunting Grounds)
+  if (id.includes('legends_circle') || id.includes('yautja_legends')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-legends" role="img" aria-label="Insigne Légendes Yautja">
+        <polygon points="40,6 74,25 74,65 40,76 6,65 6,25" fill="#1c1917" stroke="#eab308" stroke-width="2.5" />
+        <circle cx="40" cy="38" r="14" fill="#451a03" stroke="#facc15" stroke-width="2" />
+        <polygon points="40,28 44,36 52,38 46,44 48,52 40,48 32,52 34,44 28,38 36,36" fill="#facc15" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fef08a" letter-spacing="1" text-anchor="middle">YAUTJA LEGENDS</text>
+      </svg>
+    `.trim();
+  }
+
+  // 33. Marines UAS Endeavor (Aliens: Fireteam Elite)
+  if (id.includes('endeavor_marines')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-endeavor" role="img" aria-label="Insigne UAS Endeavor">
+        <polygon points="40,8 72,24 72,56 40,72 8,56 8,24" fill="#0f172a" stroke="#3b82f6" stroke-width="2.5" />
+        <path d="M26 48 L40 26 L54 48 Z" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2" />
+        <circle cx="40" cy="40" r="4" fill="#93c5fd" />
+        <text x="40" y="66" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#bfdbfe" letter-spacing="1" text-anchor="middle">ENDEAVOR</text>
+      </svg>
+    `.trim();
+  }
+
+  // 34. Essaim Rouge Monica (Aliens: Fireteam Elite)
+  if (id.includes('pathogen_swarm') || id.includes('katanga_pathogen')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-monica" role="img" aria-label="Insigne Essaim Monica">
+        <circle cx="40" cy="40" r="36" fill="#1c0505" stroke="#ef4444" stroke-width="2.5" />
+        <path d="M28 26 Q40 14 52 26 Q56 48 40 58 Q24 48 28 26 Z" fill="#7f1d1d" stroke="#ef4444" stroke-width="2" />
+        <circle cx="40" cy="34" r="5" fill="#fca5a5" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fca5a5" letter-spacing="1" text-anchor="middle">MONICA SWARM</text>
+      </svg>
+    `.trim();
+  }
   return getYautjaClanLogo(size);
 }
 

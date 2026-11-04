@@ -1488,7 +1488,704 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
         trophy: 'Lames Scimitars d\'Avant-Bras de Chopper'
       }
     ]
+  },
+  // 22. Expédition des Trappeurs Français & Bûcherons — Grandes Plaines 1719 (Prey 2022)
+  {
+    id: 'squad_prey_french_voyageurs_1719',
+    name: "Expédition des Trappeurs Français & Bûcherons — Grandes Plaines 1719",
+    shortName: 'Trappeurs Français 1719 (4 Voyageurs)',
+    category: 'HUMAN_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Prey (2022, Dan Trachtenberg)',
+    biomeId: 'jungle',
+    recommendedBiome: 'Grandes Plaines — Forêt & Campement des Trappeurs',
+    description: 'Contingent de trappeurs et bûcherons français impitoyables armés de mousquets, de pistolets à silex et de pièges à loups géants.',
+    tactics: 'Embuscade à base de pièges à mâchoires cachés dans la boue, tirs de volée au mousquet et assaut au couperet lourd.',
+    totalHonorReward: 4800,
+    soloVariantId: 'alien_base_big_beard_voyageur_1719',
+    members: [
+      {
+        id: 'big_beard',
+        name: "Capitaine 'Grosse Barbe' (Meneur du Camp)",
+        role: 'Commandant de Tir & Chasse Lourde',
+        weapon: "Pistolet à Silex Double Canon & Couperet d'Équarrissage",
+        hp: 280,
+        armor: 20,
+        trophy: 'Mousquet Français Gravé & Toison de Castor'
+      },
+      {
+        id: 'raphael_adolini',
+        name: 'Raphael Adolini (Navigateur & Traducteur Italien)',
+        role: 'Navigateur Télémétrique & Pisteur',
+        weapon: 'Pistolet à Silex Miquelet Adolini 1715 & Dague de Marin',
+        hp: 220,
+        armor: 15,
+        trophy: 'Pistolet à Silex Gravé Raphael Adolini 1715'
+      },
+      {
+        id: 'trapper_arbalest',
+        name: 'Trappeur Arbalétrier des Forêts',
+        role: "Tireur d'Affût à Pointe Barbelée",
+        weapon: 'Arbalète de Chasse à Carreaux Barbelés',
+        hp: 200,
+        armor: 12,
+        trophy: 'Carquois en Cuir Brut & Cordon de Tendon'
+      },
+      {
+        id: 'bear_trap_layer',
+        name: "Poseur de Pièges d'Acier",
+        role: 'Contrôle de Zone & Piégeage Lourd',
+        weapon: "Pièges à Mâchoires d'Ours Dentelées & Hachette",
+        hp: 210,
+        armor: 14,
+        trophy: "Mâchoire de Piège d'Ours en Acier Trempé"
+      }
+    ]
+  },
+
+  // 23. Détenus Pénitentiaires de Fiorina 161 (Alien³ 1992)
+  {
+    id: 'squad_alien3_fiorina_inmates_1992',
+    name: "Collectif des Prisonniers de Fiorina 'Fury' 161 (Survivants Réformés)",
+    shortName: 'Détenus de Fiorina 161 (4 Résistants)',
+    category: 'HUMAN_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien³ (1992, David Fincher)',
+    biomeId: 'hive_lv426',
+    recommendedBiome: "Fiorina 'Fury' 161 — Fonderie & Dédale de Conduits",
+    description: 'Prisonniers et gardiens réformés sans armes à feu de la colonie minière et pénitentiaire Fiorina 161, utilisant torches, solvants et conduits métalliques.',
+    tactics: 'Appât mobile dans les corridors de coulée de plomb fondu, dispersion par les sas sous-pression et torches de solvant.',
+    totalHonorReward: 5000,
+    soloVariantId: 'alien_base_dillon_fiorina_161',
+    members: [
+      {
+        id: 'dillon_preacher',
+        name: 'Dillon (Prédicateur & Meneur des Détenus)',
+        role: 'Meneur Charismatique & Mêlée Lourde',
+        weapon: 'Barre à Mine en Fonte & Torche Haute Pression',
+        hp: 310,
+        armor: 15,
+        trophy: 'Croix Métallique Soudée de Fiorina 161'
+      },
+      {
+        id: 'clemens_doctor',
+        name: 'Dr. Jonathan Clemens (Médecin de Bord Déchu)',
+        role: 'Soutien Médical & Diagnostic Vital',
+        weapon: 'Seringues de Chlorhydrate & Scalpel Chirurgical',
+        hp: 190,
+        armor: 10,
+        trophy: 'Trousse Médicale Hermétique de Fiorina'
+      },
+      {
+        id: 'morse_inmate',
+        name: 'Robert Morse (Dernier Témoin Pénitentiaire)',
+        role: 'Opérateur de Conduits & Manœuvres de Sas',
+        weapon: 'Clé à Molette Lourde & Extincteur à Poudre',
+        hp: 210,
+        armor: 12,
+        trophy: 'Livre Pénitentiaire des Témoins de Fury'
+      },
+      {
+        id: 'golic_cultist',
+        name: 'Walter Golic (Fasciné par le Dragon)',
+        role: 'Éclaireur Halluciné & Briseur de Verrous',
+        weapon: 'Couteau de Cuisine Pénitentiaire & Tisonnier',
+        hp: 200,
+        armor: 10,
+        trophy: 'Camisole de Confinement de Fiorina 161'
+      }
+    ]
+  },
+
+  // 24. Commando Weyland Dog Catchers — Fiorina 161 (Alien³ 1992)
+  {
+    id: 'squad_alien3_weyland_dog_catchers',
+    name: "Commando d'Intervention Weyland-Yutani 'Dog Catchers' — Fiorina 161",
+    shortName: 'Dog Catchers Weyland (4 Opérateurs)',
+    category: 'WEYLAND_YUTANI',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien³ (1992, David Fincher)',
+    biomeId: 'hive_lv426',
+    recommendedBiome: 'Fiorina 161 — Hangar de la Navette de Récupération',
+    description: "Équipe d'intervention tactique en combinaison biohazard blindée escortant Michael Bishop pour capturer la Reine embryonnaire.",
+    tactics: 'Tirs de harpons de confinement cryogénique, filets d\'isolation cellulaire et tirs précis de pistolets mitrailleurs tactiques.',
+    totalHonorReward: 5400,
+    soloVariantId: 'alien_base_aaron_85_fiorina',
+    members: [
+      {
+        id: 'michael_bishop_leader',
+        name: 'Michael Bishop (Représentant Weyland-Yutani)',
+        role: 'Commandant Médical Corporatiste',
+        weapon: 'Pistolet d\'Insémination Cryo & Mallette Stase',
+        hp: 270,
+        armor: 30,
+        trophy: 'Badge Haute Autorité Bio-Armes Weyland-Yutani'
+      },
+      {
+        id: 'dog_catcher_commando',
+        name: 'Fusilier Biohazard Weyland',
+        role: 'Tireur d\'Assaut en Combinaison Blindée',
+        weapon: 'Carabine Tactique VP-70 & Filet Haute Résistance',
+        hp: 260,
+        armor: 35,
+        trophy: 'Casque Biohazard pressurisé Weyland-Yutani'
+      },
+      {
+        id: 'cryo_handler',
+        name: 'Technicien de Cage Cryo-Stase',
+        role: 'Neutralisation Cryogénique',
+        weapon: 'Canister de Gaz Cryogénique Haute Densité',
+        hp: 240,
+        armor: 28,
+        trophy: 'Module Thermique de Confinement d\'Embryon'
+      },
+      {
+        id: 'aaron_superintendent',
+        name: "Surintendant Adjoint Aaron '85'",
+        role: 'Contrôle de Sécurité Pénitentiaire',
+        weapon: 'Clé à Molette en Acier Forgé & Taser Lourd',
+        hp: 230,
+        armor: 18,
+        trophy: "Matricule de Sécurité '85' de Fiorina"
+      }
+    ]
+  },
+
+  // 25. Équipage Scientifique USCSS Prometheus — LV-223 (Prometheus 2012)
+  {
+    id: 'squad_prometheus_expedition_2093',
+    name: "Équipage d'Exploration Scientifique USCSS Prometheus — LV-223",
+    shortName: 'Expédition Prometheus 2093 (4 Explorateurs)',
+    category: 'HUMAN_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Prometheus (2012, Ridley Scott)',
+    biomeId: 'yautja_prime',
+    recommendedBiome: 'LV-223 — Pyramide des Ingénieurs & Chambre des Urnes',
+    description: "Équipe d'archéologues et de mercenaires de la mission Weyland explorant le temple des Ingénieurs sur LV-223.",
+    tactics: "Reconnaissance par drones spectrographes 3D ('Pup'), tirs de fusils à pompe tactiques et lances-flammes d\'urgence.",
+    totalHonorReward: 5500,
+    soloVariantId: 'alien_base_elizabeth_shaw_archaeologist',
+    members: [
+      {
+        id: 'elizabeth_shaw',
+        name: 'Dr. Elizabeth Shaw (Archéologue Sacrificielle)',
+        role: 'Pisteuse d\'Artefacts & Survivante',
+        weapon: 'Hachette de Géologie & Pistolet Pliant Weyland',
+        hp: 260,
+        armor: 20,
+        trophy: 'Croix Chrétienne Suspendue du Dr. Shaw'
+      },
+      {
+        id: 'charlie_holloway',
+        name: 'Dr. Charlie Holloway (Archéologue Contaminé)',
+        role: "Éclaireur d'Avant-Garde & Détecteur",
+        weapon: "Fusil à Pompe Tactique d'Exploration & Fusées",
+        hp: 240,
+        armor: 18,
+        trophy: 'Casque Pressurisé Fissuré de Scaphandre'
+      },
+      {
+        id: 'janek_captain',
+        name: "Capitaine Janek (Commandant de l'USCSS Prometheus)",
+        role: 'Soutien Tactique & Sacrifice de Collision',
+        weapon: 'Pistolet Mitrailleur Lourd Weyland & Détonateur',
+        hp: 270,
+        armor: 22,
+        trophy: "Accordéon Ancestral du Capitaine Janek"
+      },
+      {
+        id: 'mercenary_vickers_guard',
+        name: 'Garde de Sécurité Privée Vickers',
+        role: 'Tireur de Protection Rapprochée',
+        weapon: 'Carabine Modulaire Weyland-Yutani & Taser Lourd',
+        hp: 250,
+        armor: 30,
+        trophy: 'Badge de Sécurité Privée Weyland Corporation'
+      }
+    ]
+  },
+
+  // 26. Caste des Ingénieurs Biologiques Sacrificiels — Temple LV-223 (Prometheus 2012)
+  {
+    id: 'squad_prometheus_engineer_awakening',
+    name: "Caste des Ingénieurs Biologiques Sacrificiels — Temple LV-223",
+    shortName: 'Ingénieurs de LV-223 (3 Géants)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Prometheus (2012, Ridley Scott)',
+    biomeId: 'yautja_prime',
+    recommendedBiome: 'LV-223 — Chambre du Pilote & Salle de Navigation',
+    description: "Pilotes et prêtres colossaux en bio-armure d'exosquelette réveillés de leur stase millénaire pour accomplir l'anéantissement de la Terre.",
+    tactics: 'Force cinétique brute dévastatrice, décharges d\'énergie céphalique, diffusion de pathogène noir mutagène.',
+    totalHonorReward: 7000,
+    soloVariantId: 'prey_engineer_juggernaut_pilot',
+    members: [
+      {
+        id: 'last_engineer_pilot',
+        name: 'Dernier Ingénieur Éveillé (Pilote du Juggernaut)',
+        role: 'Colosse de Bio-Armure & Combat Brut',
+        weapon: 'Bio-Armure Exosquelette & Poings Cinétiques',
+        hp: 550,
+        armor: 55,
+        trophy: "Casque Trompe Éléphantine d'Ingénieur Spatiale"
+      },
+      {
+        id: 'sacrificial_architect',
+        name: 'Architecte de la Genèse Sacrificielle',
+        role: 'Canalisateur de Pathogène Noir A0-3959X',
+        weapon: 'Urne Noire Brûlante de Mutagène & Flûte Tellurique',
+        hp: 480,
+        armor: 45,
+        trophy: 'Coupe de Cérémonie Sacrificielle Noire'
+      },
+      {
+        id: 'trilobite_guardian',
+        name: 'Garde du Corps Ingénieur Augmenté',
+        role: 'Sentinelle Lourde de Stase',
+        weapon: 'Glaive Biologique d\'Alliage Inconnu & Visière',
+        hp: 500,
+        armor: 50,
+        trophy: "Plaque Pectorale Biomorphe d'Ingénieur"
+      }
+    ]
+  },
+
+  // 27. Équipe de Reconnaissance USCSS Covenant — Planète 4 (Alien: Covenant 2017)
+  {
+    id: 'squad_covenant_colonists_2104',
+    name: "Équipe de Reconnaissance USCSS Covenant — Planète 4 (Origae-6)",
+    shortName: 'Éclaireurs Covenant 2104 (4 Colons)',
+    category: 'HUMAN_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: Covenant (2017, Ridley Scott)',
+    biomeId: 'genna_deathworld',
+    recommendedBiome: 'Planète 4 — Vallée des Morts & Forêt de Blé Hybride',
+    description: "Membres de l'équipe d'atterrissage du Covenant découvrant le temple funéraire et les spores de néomorphes.",
+    tactics: "Tirs de couverture au fusil d\'assaut Thales, tirs de suppression au fusil de précision et déploiement de fusées éclairantes.",
+    totalHonorReward: 5200,
+    soloVariantId: 'alien_base_daniels_branson_terraforming_lead',
+    members: [
+      {
+        id: 'daniels_branson',
+        name: 'Daniels Branson (Spécialiste Terraformation)',
+        role: 'Tireuse de Précision & Survivante',
+        weapon: "Carabine d'Assaut Thales F90 & Clé d'Escalade",
+        hp: 270,
+        armor: 22,
+        trophy: "Clou d'Ancrage de Maison de Forêt Origae-6"
+      },
+      {
+        id: 'walter_synthetic',
+        name: 'Walter One (Synthétique de Protection Avancée)',
+        role: 'Soutien Biomécanique & Réflexes Augmentés',
+        weapon: 'Fusil Tactique Bullpup & Couteau Céramique',
+        hp: 340,
+        armor: 30,
+        trophy: "Puce d'Identité Synaptique Walter Weyland"
+      },
+      {
+        id: 'lopope_sergeant',
+        name: 'Sergent Lope (Chef de la Sécurité Militaire)',
+        role: 'Tireur d\'Assaut Lourd & Protection Rapprochée',
+        weapon: "Fusil d'Assaut Lourd & Pistolet Automatique",
+        hp: 260,
+        armor: 28,
+        trophy: 'Insigne de Sécurité Militaire USCSS Covenant'
+      },
+      {
+        id: 'tennessee_pilot',
+        name: 'Tennessee Faris (Pilote de la Navette de Secours)',
+        role: 'Support Incendiaire & Balistique',
+        weapon: 'Fusil de Chasse Calibre 12 & Pistolet de Détresse',
+        hp: 240,
+        armor: 16,
+        trophy: 'Chapeau de Cowboy Aviateur de Tennessee'
+      }
+    ]
+  },
+
+  // 28. Meute de Néomorphes & David 8 — Nécropole (Alien: Covenant 2017)
+  {
+    id: 'squad_covenant_neomorph_david_pack',
+    name: "Meute de Néomorphes & David 8 — Nécropole de la Cité des Ingénieurs",
+    shortName: 'Meute Néomorphes de David (4 Entités)',
+    category: 'XENOMORPH_HORDE',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: Covenant (2017, Ridley Scott)',
+    biomeId: 'genna_deathworld',
+    recommendedBiome: 'Nécropole de David 8 — Cité en Ruines & Laboratoire',
+    description: "David 8 dans son laboratoire de génétique entouré de Néomorphes albinos jaillissant des ombres pour déchiqueter les intrus.",
+    tactics: 'Harposition vocale par David, bonds véloces des néomorphes juvéniles et charge de l\'alpha à crête dorsale.',
+    totalHonorReward: 6300,
+    soloVariantId: 'prey_synthetic_david_8',
+    members: [
+      {
+        id: 'david_8_master',
+        name: 'David 8 (Maître Généticien Démiurge)',
+        role: "Meneur Télépathique & Créateur d'Horreurs",
+        weapon: "Bistouri en Verre d'Ingénieur & Flûte d'Harmonisation",
+        hp: 360,
+        armor: 35,
+        trophy: 'Carnet de Croquis Anatomiques de David 8'
+      },
+      {
+        id: 'neomorph_alpha_adult',
+        name: 'Néomorphe Alpha Adulte (Albinos Carnassier)',
+        role: 'Assaut Félin Rapide & Morsure Cervicale',
+        weapon: 'Mâchoires Fendues Pharyngiennes & Griffes Pâles',
+        hp: 340,
+        armor: 25,
+        trophy: 'Crâne Albinos Translucide de Néomorphe'
+      },
+      {
+        id: 'neomorph_juvenile_stalker',
+        name: 'Néomorphe Juvénile Émergent (Bloodburster)',
+        role: 'Attaque Surprise Furtive',
+        weapon: 'Crête Dorsale Tranchante & Vitesse Foudroyante',
+        hp: 230,
+        armor: 15,
+        trophy: 'Pointe Caudale Tranchante de Bloodburster'
+      },
+      {
+        id: 'pathogen_spore_carrier',
+        name: 'Pustule Mutante Porteuse de Spores Noires',
+        role: 'Dispersion Toxique & Contamination Aérienne',
+        weapon: 'Nuage de Micro-Spores Mutagènes Inhalables',
+        hp: 200,
+        armor: 10,
+        trophy: 'Capsule Végétale Noire de Spores Pathogènes'
+      }
+    ]
+  },
+
+  // 29. Équipage de Récupération du Corbelan IV — Station Renaissance (Alien: Romulus 2024)
+  {
+    id: 'squad_romulus_corbelan_scavengers_2142',
+    name: 'Équipage de Récupération du Corbelan IV — Station Renaissance (2142)',
+    shortName: 'Mineurs du Corbelan (4 Récupérateurs)',
+    category: 'HUMAN_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: Romulus (2024, Fede Alvarez)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiome: 'Station Renaissance — Sas Romulus & Modules Cryogéniques',
+    description: "Groupe de jeunes travailleurs de la colonie minière Jackson's Star explorant l'épave de la station Renaissance pour s'évader vers Yvaga.",
+    tactics: 'Tirs de saturation automatique au fusil F44AA avec visée asservie, verrouillage de portes sas étanches et décharges d\'électrochoc.',
+    totalHonorReward: 5300,
+    soloVariantId: 'alien_base_rain_carradine_romulus_rebel',
+    members: [
+      {
+        id: 'rain_carradine',
+        name: 'Rain Carradine (Survivante au Fusil F44AA)',
+        role: 'Tireuse Asservie de Pointe & Évasion',
+        weapon: 'Fusil à Impulsion F44AA à Ciblage Automatique',
+        hp: 270,
+        armor: 25,
+        trophy: "Pendentif Fossilisé de Jackson's Star"
+      },
+      {
+        id: 'andy_nd5_synthetic',
+        name: 'Andy (Synthétique Weyland ND-5 Directive Réassignée)',
+        role: 'Bouclier Corporel & Force Brute Cybernétique',
+        weapon: 'Mains Cybernétiques Hydrauliques & Clé d\'Urgence',
+        hp: 380,
+        armor: 40,
+        trophy: 'Module de Directive Corporatiste Weyland ND-5'
+      },
+      {
+        id: 'bjorn_cattle_prod',
+        name: 'Bjorn (Mineur Rebelle Agressif)',
+        role: 'Mêlée Électrique & Étourdissement',
+        weapon: 'Pique de Mineur Électrochoc Industrielle Modifiée',
+        hp: 240,
+        armor: 16,
+        trophy: "Batterie d'Électrochoc Haute Tension Jackson"
+      },
+      {
+        id: 'tyler_scavenger',
+        name: 'Tyler (Navigateur et Chef de Bord)',
+        role: 'Éclaireur & Opérateur de Sas Thermiques',
+        weapon: 'Pistolet Lance-Fusées Industriel & Torche Laser',
+        hp: 230,
+        armor: 18,
+        trophy: 'Transpondeur Orbital du Cargo Corbelan IV'
+      }
+    ]
+  },
+
+  // 30. Horreurs du Laboratoire Romulus & The Offspring (Alien: Romulus 2024)
+  {
+    id: 'squad_romulus_renaissance_offspring_hive',
+    name: 'Horreurs du Laboratoire Romulus & The Offspring — Station Renaissance',
+    shortName: 'Ruche Romulus & Rejeton (4 Monstres)',
+    category: 'XENOMORPH_HORDE',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: Romulus (2024, Fede Alvarez)',
+    biomeId: 'hive_lv426',
+    recommendedBiome: 'Station Renaissance — Laboratoire Z-01 & Baie de Chargement',
+    description: "L'horreur génétique suprême 'The Offspring' enfantée par injection du composé noir Z-01, assistée par les Facehuggers décongelés et le synthétique Rook.",
+    tactics: 'Attaques déchiquetantes et morsures d\'une hauteur vertigineuse, lâchers de Facehuggers cryogénisés et tirs de directives de Rook.',
+    totalHonorReward: 6600,
+    soloVariantId: 'alien_base_rook_romulus_android',
+    members: [
+      {
+        id: 'the_offspring',
+        name: 'The Offspring (Hybride Humain-Ingénieur-Xénomorphe)',
+        role: 'Apex Géant Carnassier & Allonge Cauchemardesque',
+        weapon: 'Dents Humanoïdes Cliquetantes, Griffes Démesurées & Queue',
+        hp: 520,
+        armor: 45,
+        trophy: 'Crâne Humanoïde Allongé du Rejeton Z-01'
+      },
+      {
+        id: 'rook_science_officer',
+        name: 'Officier Scientifique Rook (Synthétique ND-5)',
+        role: 'Contrôleur de Système & Ordre Spécial 937',
+        weapon: 'Pistolet Électrique de Laboratoire & Commandes Sas',
+        hp: 290,
+        armor: 30,
+        trophy: 'Éprouvette Cryogénique Scellée de Composé Z-01'
+      },
+      {
+        id: 'cryo_facehugger_alpha',
+        name: 'Facehugger Décongelé des Réserves Romulus',
+        role: 'Implantation Furtive & Saut Véloce',
+        weapon: 'Tentacules d\'Étranglement & Ovipositeur Caustique',
+        hp: 110,
+        armor: 5,
+        trophy: 'Doigts Chitineux Réfrigérés de Facehugger'
+      },
+      {
+        id: 'xeno_chrysalis_drone',
+        name: 'Drone Xénomorphe Régénéré du Sas Romulus',
+        role: 'Traqueur de Plafond & Attaque Acide',
+        weapon: 'Double Mâchoire Téléscopique & Sang Corrosif Pur',
+        hp: 310,
+        armor: 30,
+        trophy: "Crête Lisse d'Ébène de Drone Romulus"
+      }
+    ]
+  },
+
+  // 31. Fireteam d'Élite OWLF 'Voodoo' & Dutch 2025 (Predator: Hunting Grounds 2020)
+  {
+    id: 'squad_phg_fireteam_voodoo_2025',
+    name: "Fireteam d'Élite OWLF 'Voodoo' & Dutch — Opérations Tropicales 2025",
+    shortName: 'Fireteam OWLF Dutch 2025 (4 Spécialistes)',
+    category: 'HUMAN_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Hunting Grounds (2020, IllFonic)',
+    biomeId: 'jungle',
+    recommendedBiome: 'Jungle Tropicale — Camps de Guerilla & Installations OWLF',
+    description: "L'escouade tactique d'élite de l'OWLF menée par le Major Dutch Schaefer augmenté de tissus Yautja pour neutraliser les chasseurs extraterrestres.",
+    tactics: 'Boue thermique intégrale, mines de détection de cloaking, saturation au fusil lourd Hammerhead et fusils de sniper SAW.',
+    totalHonorReward: 6200,
+    soloVariantId: 'alien_base_dutch_2025_owlf',
+    members: [
+      {
+        id: 'dutch_schaefer_2025',
+        name: "Major Alan 'Dutch' Schaefer (Consultant Augmenté OWLF)",
+        role: 'Commandant de Chasse & Vétéran Anti-Predator',
+        weapon: 'Fusil d\'Assaut Prototype QR-CF & Poing Amélioré',
+        hp: 390,
+        armor: 35,
+        trophy: "Enregistreur d'Opérations Tactiques Dutch OWLF"
+      },
+      {
+        id: 'assault_specialist',
+        name: 'Spécialiste Assaut Lourd Fireteam',
+        role: 'Saturation Balistique & Dispersion',
+        weapon: 'Fusil d\'Assaut Hammerhead & Lance-Grenades 40mm',
+        hp: 280,
+        armor: 30,
+        trophy: 'Plaque Tactique de Poitrine OWLF Fireteam'
+      },
+      {
+        id: 'recon_sniper',
+        name: "Tireur d'Élite de Reconnaissance Thermique",
+        role: 'Tir Perforant Haute Portée & Détection Cloak',
+        weapon: 'Fusil de Précision SAW 50 Calibre & Viseur Thermique',
+        hp: 240,
+        armor: 22,
+        trophy: 'Capteur Thermique Infrarouge Haute Définition'
+      },
+      {
+        id: 'support_engineer',
+        name: 'Ingénieur Support de Confinement',
+        role: 'Déploiement de Balises IEM & Trousse Médicale',
+        weapon: 'Pistolet Mitrailleur PDW & Mines de Détection IEM',
+        hp: 260,
+        armor: 26,
+        trophy: 'Balise de Brouillage Thermique OWLF'
+      }
+    ]
+  },
+
+  // 32. Cercle des Légendes Yautja Ancestrales (Predator: Hunting Grounds 2020)
+  {
+    id: 'squad_phg_yautja_legends_circle',
+    name: "Cercle des Légendes Yautja Ancestrales — Sanctuaire d'Honneur",
+    shortName: 'Légendes Yautja (3 Maîtres de Chasse)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Predator: Hunting Grounds (2020, IllFonic)',
+    biomeId: 'yautja_prime',
+    recommendedBiome: 'Yautja Prime — Sanctuaire des Légendes & Colonnes d\'Armes',
+    description: "Trois des plus grands chasseurs de l\'histoire Yautja : Kaail l\'Alpha originel, la Reine Cleopatra du Nil et le Samouraï d'Honneur.",
+    tactics: 'Assauts coordonnés alternant faux chitineuse géante, lancers de disque solaire pharaonique et duels au katana Yautja.',
+    totalHonorReward: 7500,
+    soloVariantId: 'alien_base_alpha_predator_kaail',
+    members: [
+      {
+        id: 'alpha_predator_kaail',
+        name: "Kaail — L'Alpha Predator (Père de la Rébellion Hish)",
+        role: 'Colosse d\'Insurrection & Force Primordiale',
+        weapon: 'Faux Osseuse Chitineuse & Armure Exosquelette Amangi',
+        hp: 580,
+        armor: 55,
+        trophy: "Masque d'Exosquelette d'Alpha Predator Kaail"
+      },
+      {
+        id: 'cleopatra_huntress',
+        name: 'Cleopatra Predator (Chasseresse Souveraine d\'Égypte)',
+        role: 'Vitesse Solaire & Précision Tranchante',
+        weapon: 'Disque Intelligent Solaire & Khépesh d\'Or Yautja',
+        hp: 460,
+        armor: 45,
+        trophy: 'Diadème Pharaonique Solaire d\'Or Massif'
+      },
+      {
+        id: 'samurai_predator_master',
+        name: 'Samurai Predator (Maître du Bushido Yautja)',
+        role: 'Duel au Katana & Lame Rapide',
+        weapon: 'Katana Yautja Trempé dans l\'Acide & Armure Laquée',
+        hp: 480,
+        armor: 48,
+        trophy: 'Katana Cérémonial de Maître Samurai Yautja'
+      }
+    ]
+  },
+
+  // 33. Escouade de Fer de l'UAS Endeavor (Aliens: Fireteam Elite 2021)
+  {
+    id: 'squad_afe_endeavor_marines_2202',
+    name: "Escouade de Fer de l'UAS Endeavor — Conflit Katanga LV-895 (2202)",
+    shortName: 'Marines Endeavor 2202 (4 Vétérans)',
+    category: 'USCM_COLONIAL_MARINES',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Fireteam Elite (2021, Cold Iron Studios)',
+    biomeId: 'hive_lv426',
+    recommendedBiome: "Station Katanga & Ruines LV-895 — Baies d'Accrochage",
+    description: "Escouade d'élite des Colonial Marines de l'UAS Endeavor déployée pour contenir l'infestation xénomorphe sur la station orbitale Katanga.",
+    tactics: 'Tourelles sentinelles déployables 360°, micro-roquettes de démolition, munitions surchargées incendiaires et drones d\'assistance.',
+    totalHonorReward: 6000,
+    soloVariantId: 'alien_base_herrera_endeavor_commander',
+    members: [
+      {
+        id: 'herrera_commander',
+        name: 'Sergent-Major Olivia Herrera (Commandante de Feu)',
+        role: 'Coordination Tactique & Tir Lourd',
+        weapon: 'Carabine d\'Assaut Krampus M42A3 & Viseur d\'Endeavor',
+        hp: 310,
+        armor: 32,
+        trophy: 'Casque Tactique de Commandement UAS Endeavor'
+      },
+      {
+        id: 'gunner_heavy_specialist',
+        name: 'Artilleur Lourd Spécialiste Overclock',
+        role: 'Saturation Lourde & Élimination de Blindage',
+        weapon: 'Mitrailleuse Lourde Smartgun Type 99 & Mini-Roquettes',
+        hp: 300,
+        armor: 35,
+        trophy: 'Boîtier de Munitions Électronique Smartgun'
+      },
+      {
+        id: 'technician_turret_master',
+        name: 'Technicien Ingénieur de Déploiement',
+        role: 'Fortification & Tourelles Automatiques',
+        weapon: 'Tourelle Sentinelle Portable UA 571-F & Fusil à Pompe',
+        hp: 270,
+        armor: 28,
+        trophy: 'Unité Centrale de Tourelle Sentinelle Portative'
+      },
+      {
+        id: 'doc_combat_medic',
+        name: 'Infirmier de Combat de Terrain',
+        role: 'Station Médicale Portative & Suppression',
+        weapon: 'Fusil Mitrailleur Kramer & Station de Soin Déployable',
+        hp: 260,
+        armor: 26,
+        trophy: 'Module de Sérum Médical Haute Densité USCM'
+      }
+    ]
+  },
+
+  // 34. Essaim Muté du Pathogène de Katanga & Reine Monica (Aliens: Fireteam Elite 2021)
+  {
+    id: 'squad_afe_katanga_pathogen_swarm',
+    name: 'Essaim Muté du Pathogène de Katanga & Reine Monica — LV-895',
+    shortName: 'Essaim Rouge Monica (4 Monstres)',
+    category: 'XENOMORPH_HORDE',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Fireteam Elite (2021, Cold Iron Studios)',
+    biomeId: 'hive_lv426',
+    recommendedBiome: 'Station Katanga — Cœur de Ruche & Raffinerie Mutée',
+    description: "Meute cauchemardesque de Xénomorphes mutés par le liquide noir chimique A0-3959X sur LV-895, guidée par le Praetorian mutant Monica.",
+    tactics: 'Attaques suicides de Bursters explosifs acides, harcèlement aérien des Spitters et charge blindée du Praetorian rouge.',
+    totalHonorReward: 6700,
+    soloVariantId: 'alien_base_monica_leon_895',
+    members: [
+      {
+        id: 'monica_praetorian_queen',
+        name: 'Monica (Praetorian Muté Rouge Écarlate)',
+        role: 'Brute Blindée Corrosive & Hurlement de Ralliement',
+        weapon: 'Crête Rouge Blindée, Jet d\'Acide Pyrogène & Pilonnage',
+        hp: 560,
+        armor: 52,
+        trophy: 'Crête Écarlate Cristallisée de Monica LV-895'
+      },
+      {
+        id: 'pathogen_spitter',
+        name: 'Cracheur Acide Muté (Spitter LV-895)',
+        role: 'Tir d\'Artillerie Acide à Longue Portée',
+        weapon: 'Glandes d\'Acide Surchauffé & Salve Corrosive',
+        hp: 280,
+        armor: 20,
+        trophy: 'Glande Salivaire Acide sous Pression de Spitter'
+      },
+      {
+        id: 'pathogen_burster',
+        name: 'Éclateur Suicidaire à Spores d\'Acide (Burster)',
+        role: 'Charge Kamikaze & Détonation d\'Acide en Zone',
+        weapon: 'Poches d\'Acide Pulmonaires Prêtes à la Rupture',
+        hp: 190,
+        armor: 10,
+        trophy: 'Poche Pulmonaire de Gaz Acide Instable'
+      },
+      {
+        id: 'pathogen_stalker',
+        name: 'Rôdeur d\'Ombre Mutagène (Stalker)',
+        role: 'Camouflage Bio-Ombre & Frappe Furtive',
+        weapon: 'Carapace Réfléchissante Sombre & Griffes Osseuses',
+        hp: 310,
+        armor: 25,
+        trophy: 'Fragment de Chitine Noire Évoluée par le Pathogène'
+      }
+    ]
   }
+
 ]);
 
 export function getSquadById(squadId) {

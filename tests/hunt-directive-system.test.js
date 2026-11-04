@@ -58,6 +58,19 @@ test('les douze directives et leurs collections imbriquées sont immuables', () 
     'squad_concrete_jungle_borgia_syndicate',
     'squad_avp_young_bloods_trio',
     'squad_betty_mercenaries_1997',
+    'squad_prey_french_voyageurs_1719',
+    'squad_alien3_fiorina_inmates_1992',
+    'squad_alien3_weyland_dog_catchers',
+    'squad_prometheus_expedition_2093',
+    'squad_prometheus_engineer_awakening',
+    'squad_covenant_colonists_2104',
+    'squad_covenant_neomorph_david_pack',
+    'squad_romulus_corbelan_scavengers_2142',
+    'squad_romulus_renaissance_offspring_hive',
+    'squad_phg_fireteam_voodoo_2025',
+    'squad_phg_yautja_legends_circle',
+    'squad_afe_endeavor_marines_2202',
+    'squad_afe_katanga_pathogen_swarm',
   ]);
   assert.ok(Object.isFrozen(HUNT_DIRECTIVES));
 

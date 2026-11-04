@@ -2551,3 +2551,21 @@ export class HuntNPC {
 }
 
 export default HuntNPC;
+
+// Résolution du profil d'arme pour tout PNJ ou membre d'escouade
+export function getNpcWeaponProfile(npcType) {
+  const type = String(npcType || '').toLowerCase();
+  if (type.includes('smartgun')) return 'npc_wep_m56_smartgun';
+  if (type.includes('pulse') || type.includes('marines') || type.includes('hicks')) return 'npc_wep_m41a_pulse_rifle';
+  if (type.includes('gunner') && type.includes('jungle')) return 'npc_wep_minigun_ol_painless';
+  if (type.includes('scout') && type.includes('jungle')) return 'npc_wep_m16a1_m203_dutch';
+  if (type.includes('trapper') && type.includes('jungle')) return 'npc_wep_comanche_bow_naru';
+  if (type.includes('cryo') || type.includes('owlf')) return 'npc_wep_owlf_cryo_blaster';
+  if (type.includes('cartel')) return 'npc_wep_desert_eagle_50ae';
+  if (type.includes('subway')) return 'npc_wep_spas12_shotgun';
+  if (type.includes('weyland_expedition') || type.includes('bouvetoya')) return 'npc_wep_avp_anchor_shotgun';
+  if (type.includes('national_guard')) return 'npc_wep_avpr_m4a1_national_guard';
+  if (type.includes('combat_synthetic') || type.includes('working_joe')) return 'npc_wep_seegson_stun_baton';
+  if (type.includes('stargazer')) return 'npc_wep_blaser_r93_sniper';
+  return 'npc_wep_m41a_pulse_rifle';
+}

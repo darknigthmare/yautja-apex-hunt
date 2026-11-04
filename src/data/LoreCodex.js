@@ -39,7 +39,17 @@ export const LORE_SOURCES = Object.freeze({
   avpPreyOmnibus: { title: 'Aliens vs. Predator: Prey — omnibus Titan Books', tier: 'LICENSED_EU', url: 'https://titanbooks.com/8792-the-complete-aliens-vs-predator-omnibus/' },
   predatorBadBloodComics: { title: 'Predator: Bad Blood — catalogue Dark Horse', tier: 'LICENSED_EU', url: 'https://images.darkhorse.com/common/salestools/catalogs/DH_Backlist_2009.pdf' },
   lostTribeDesigns: { title: 'Predator 2 — Lost Tribe, designs documentés par NECA', tier: 'LICENSED_SCREEN_DESIGN', url: 'https://store.necaonline.com/blogs/news/predators-introducing-the-lost-tribe-from-our-series-6-action-figures' },
-  wolfArsenalDesigns: { title: 'AVP:R — arsenal du Wolf documenté par NECA', tier: 'LICENSED_SCREEN_DESIGN', url: 'https://necaonline.com/2011/03/the-predators-deadly-arsenal/' }
+  wolfArsenalDesigns: { title: 'AVP:R — arsenal du Wolf documenté par NECA', tier: 'LICENSED_SCREEN_DESIGN', url: 'https://necaonline.com/2011/03/the-predators-deadly-arsenal/' },
+  alien1979: { title: 'Alien (1979)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien' },
+  alien3_1992: { title: 'Alien³ (1992)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien-3' },
+  alienResurrection1997: { title: 'Alien: Resurrection (1997)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien-resurrection' },
+  prometheus2012: { title: 'Prometheus (2012)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/prometheus' },
+  alienCovenant2017: { title: 'Alien: Covenant (2017)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien-covenant' },
+  alienRomulus2024: { title: 'Alien: Romulus (2024)', tier: 'SCREEN', url: 'https://www.20thcenturystudios.com/movies/alien-romulus' },
+  alienIsolation2014: { title: 'Alien: Isolation (2014)', tier: 'LICENSED_EU', url: 'https://www.alienisolation.com' },
+  aliensFireteamElite2021: { title: 'Aliens: Fireteam Elite (2021)', tier: 'LICENSED_EU', url: 'https://www.aliensfireteamelite.com' },
+  aliensDarkDescent2023: { title: 'Aliens: Dark Descent (2023)', tier: 'LICENSED_EU', url: 'https://www.focus-entmt.com/en/games/aliens-dark-descent' },
+  predatorConcreteJungle2005: { title: 'Predator: Concrete Jungle (2005)', tier: 'LICENSED_EU', url: 'https://store.necaonline.com/products/predator-concrete-jungle-scarface-ultimate-7-figure' }
 });
 
 const freezeEntries = (entries) => Object.freeze(entries.map((entry) => Object.freeze({
@@ -49,6 +59,54 @@ const freezeEntries = (entries) => Object.freeze(entries.map((entry) => Object.f
 })));
 
 export const LORE_CODEX_ENTRIES = freezeEntries([
+  {
+    id: 'science-pathogene-noir-a03959x', entryType: 'codex', category: 'xenomorphes', title: 'Le Pathogène Noir (Chemical A0-3959X.91 & Composé Z-01)',
+    summary: 'Agent mutagène primordial des Ingénieurs capable de réécrire le génome de toute forme de vie en monstruosités biomécaniques.',
+    body: 'Découvert dans les urnes cylindriques des temples de LV-223 dans Prometheus, le Chemical A0-3959X.91 est un liquide noir visqueux déstabilisateur d’ADN. Manipulé par David 8 sur la Planète 4 pour engendrer les premiers Néomorphes et proto-Xénomorphes, il est synthétisé sous forme dérivée cryogénique Z-01 sur la station Renaissance dans Alien: Romulus.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['prometheus2012', 'alienCovenant2017', 'alienRomulus2024']
+  },
+  {
+    id: 'culture-hierarchie-rangs-clans-yautja', entryType: 'codex', category: 'culture', title: 'Hiérarchie, Rangs de Clan et Arbitrage Yautja',
+    summary: 'Organisation clanique stricte : Un-Blooded, Young Blood, Blooded, Élite, Anciens et Arbitres traquant les Bad Bloods.',
+    body: 'La culture Yautja repose sur une méritocratie martiale sacrée. Les Sans-Sang (Un-Blooded) s’entraînent sur Yautja Prime avant le rite du premier sang (Young Blood). Une fois marqués de l’acide xénomorphe (Blooded), ils accèdent aux chasses interstellaires libres. Les Guerriers d’Élite et les Maîtres Anciens (Elders) président le Conseil clanique et mandatent des Arbitres (Enforcers) pour châtier sans merci les renégats dishonorables (Bad Bloods).',
+    sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['predator2', 'avp2004', 'predators2010', 'huntingGrounds']
+  },
+  {
+    id: 'technologie-arsenal-colonial-marines-uscm', entryType: 'codex', category: 'technologie', title: 'Doctrine & Arsenal du Corps des Marines Coloniaux (USCM)',
+    summary: 'Équipement militaire lourd d’intervention planétaire : M41A Pulse Rifle, M56 Smartgun, détecteurs de mouvement M314 et blindés APC.',
+    body: 'Le Corps des Marines Coloniaux des États-Unis (USCM) constitue la force de frappe d’assaut rapide de l’humanité. Leur équipement emblématique comprend le fusil d’assaut à impulsion M41A tirant des munitions sans étui de 10mm explosives doublé d’un lance-grenades 30mm, le système de mitrailleuse gyro-stabilisée M56 Smartgun asservi à un viseur infrarouge, les tourelles sentinelles automatisées UA 571-C et les navettes de largage UD-4L Cheyenne déployant le blindé M577 APC.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['aliens1986', 'aliensFireteamElite2021']
+  },
+  {
+    id: 'science-generations-synthetiques-androides', entryType: 'codex', category: 'technologie', title: 'Lignées d’Androïdes & Synthétiques Cybernétiques',
+    summary: 'Évolution des personnes artificielles : Hyperdyne Ash, Bishop 341-B, David 8, Walter, Call (Auton), Working Joes et Andy ND-5.',
+    body: 'Les synthétiques humanoïdes accompagnent toutes les missions spatiales majeures. Dès le modèle secret Ash (Hyperdyne 120-A/2) programmé pour sacrifier l’équipage du Nostromo, l’ingénierie progresse vers des modèles empathiques comme Bishop (modèle 341-B), des démiurges mégalomanes comme David 8, des protecteurs fiables comme Walter et Andy ND-5, des automates industriels rudimentaires et brutaux comme les Working Joes de Seegson sur Sébastopol, jusqu’aux Autons (synthétiques conçus par d’autres synthétiques) comme Annalee Call.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['alien1979', 'aliens1986', 'alienResurrection1997', 'prometheus2012', 'alienIsolation2014', 'alienRomulus2024']
+  },
+  {
+    id: 'culture-ordre-special-937-weyland-yutani', entryType: 'codex', category: 'culture', title: 'L’Ordre Spécial 937 & l’Impératif Corporatiste XX121',
+    summary: 'Directive corporatiste absolue accordant la priorité totale à la récupération d’organismes extraterrestres au détriment des équipages.',
+    body: '« Priorité numéro un. Intercepter organisme pour analyse. Toutes les autres priorités, y compris la survie de l’équipage, sont secondaires. » Ce mot d’ordre dicté par la Weyland-Yutani traverse l’histoire spatiale. La compagnie, en rivalité féroce avec Seegson Industries, la Borgia Corporation et Prodigy Corp, considère le spécimen XX121 et la technologie Yautja comme le sommet absolu de la recherche biomédicale et militaire.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['alien1979', 'aliens1986', 'alienRomulus2024', 'predatorConcreteJungle2005']
+  },
+  {
+    id: 'technologie-flotte-vaisseaux-mothership-juggernaut', entryType: 'codex', category: 'technologie', title: 'Architecture Navale : Croiseurs Stellaires & Vaisseaux Mères',
+    summary: 'Nefs mères Yautja (Jag’d’ja Atoll), Juggernauts en croissant des Ingénieurs, transporteurs Conestoga et cargos stellaires.',
+    body: 'Les chasseurs Yautja sillonnent le cosmos à bord de vaisseaux-mères massifs équipés de baies de stase, de chambres d’armement et de capsules de descente atmosphérique. Ils croisent les gigantesques transporteurs d’urnes en croissant (Juggernaut) abandonnés par les Ingénieurs sur LV-223 et LV-426, ainsi que les vaisseaux industriels humains : le cargo de raffinage USCSS Nostromo et le croiseur lourd USCM USS Sulaco de classe Conestoga.',
+    sourceTier: 'SCREEN', relatedTier: 'AVP_SCREEN', isOriginal: false, sources: ['predator1987', 'predator2', 'aliens1986', 'avp2004', 'prometheus2012']
+  },
+  {
+    id: 'culture-fonderie-fiorina-161-dragon', entryType: 'codex', category: 'lieu', title: 'Colonie Minière Fiorina 161 & Incident du « Dragon » (2179)',
+    summary: 'Complexe carcéral et fonderie désaffectée balayée par les tempêtes, théâtre de la traque du Runner quadrupède né d’un hôte canin.',
+    body: 'Fiorina « Fury » 161 est une ancienne colonie pénitentiaire de haute sécurité abritant des prisonniers atteints du syndrome chromosomique double Y. Dépourvus d’armes à feu suite à la fermeture des forges, les résidents et Ellen Ripley ont piégé le Runner xénomorphe (surnommé le Dragon) dans le moule de coulée en déversant des tonnes de plomb fondu avant de le pulvériser par choc thermique à l’eau glacée.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['alien3_1992']
+  },
+  {
+    id: 'science-station-renaissance-romulus-remus', entryType: 'codex', category: 'lieu', title: 'Station Spatiale Renaissance : Modules Romulus & Remus',
+    summary: 'Station de recherche orbitale désaffectée de Weyland-Yutani où furent synthétisés les Facehuggers cryogéniques et le composé Z-01.',
+    body: 'Composée de deux modules distincts (Remus, dédié à l’ingénierie et au cryo-confinement, et Romulus, dédié à la génétique avancée et à l’Ordre Spécial 937), la station Renaissance a récupéré les restes du Big Chap dérivant dans l’espace après la destruction du Nostromo. Les scientifiques y ont extrait la souche d’ADN xénomorphe purifiée avant que l’installation ne soit submergée et n’entre en trajectoire de collision avec les anneaux planétaires de Jackson’s Star.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['alienRomulus2024']
+  },
   {
     id: 'culture-code-de-la-chasse', entryType: 'codex', category: 'culture', title: 'Le code de la chasse',
     summary: 'Les Yautja recherchent des adversaires capables de résister et transforment leurs victoires en preuves de valeur.',

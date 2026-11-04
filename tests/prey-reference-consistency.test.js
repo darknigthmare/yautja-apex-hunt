@@ -9,7 +9,7 @@ import { CROSSOVER_UNIVERSE_ENCOUNTERS } from '../src/data/CrossoverUniverseEnco
 
 test('all archive and universe records share the physical scale shown by the catalogue', () => {
   const all = [...CANON_PREY_CATALOG, ...MULTIVERSE_CROSSOVER_PREY, ...CROSSOVER_UNIVERSE_ENCOUNTERS];
-  assert.equal(all.length, 560);
+  assert.equal(all.length, 721);
   assert.equal(new Set(all.map(p => p.id)).size, all.length);
   for (const prey of all) {
     const tier = PREY_SCALE_TIERS[prey.scale];
