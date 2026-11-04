@@ -2688,6 +2688,132 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'suwa_exo_commander', name: 'Commandant Kenshin (Garde Suwa)', role: 'Chef de la Sécurité en Exo-Armure', weapon: 'Canon à Faisceau Photonique Lourd & Lame Vibrante', hp: 510, armor: 60, trophy: 'Casque Cyber-Samouraï de la Corporation Suwa' },
       { id: 'suwa_bio_handler', name: 'Technicien des Cuves Xéno', role: 'Opérateur de Stase du Vaisseau Englouti', weapon: 'Fusil Électromagnétique IEM & Lance-Cryo', hp: 410, armor: 45, trophy: 'Clé d\'Activation de la Soute du XIVe Siècle' }
     ]
+  },
+  {
+    id: 'squad_london_1896_edward_soames',
+    name: 'Brigade de Scotland Yard & Capitaine Edward Soames — Whitechapel (1896)',
+    shortName: 'Scotland Yard 1896 (4 Hommes)',
+    category: 'LAW_ENFORCEMENT',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Nemesis (Comics Dark Horse 1896)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiome: 'Londres Victorien & Smog (1896)',
+    description: 'La brigade d\'enquête criminelle victorienne menée par le Capitaine Soames traquant le tueur rituel de Whitechapel dans les égouts et la brume londonienne.',
+    tactics: 'Tirs de barrage au gros calibre .455 Webley, charges au sabre d\'officier et battues au sifflet dans le brouillard.',
+    totalHonorReward: 3900,
+    soloVariantId: 'prey_jungle_hunter_1987',
+    members: [
+      { id: 'capt_edward_soames', name: 'Capitaine Edward Soames', role: 'Officier d\'Infanterie Vétéran & Limier', weapon: 'Revolver Webley .455 & Sabre d\'Infanterie', hp: 480, armor: 40, trophy: 'Montre à Gousset en Argent du Capitaine Soames' },
+      { id: 'insp_reid_scotland', name: 'Inspecteur Joseph Reid', role: 'Enquêteur Principal de Whitechapel', weapon: 'Fusil Martini-Henry & Menottes en Acier', hp: 410, armor: 35, trophy: 'Carnet d\'Autopsies Fissuré de Whitechapel 1896' },
+      { id: 'dr_watson_coroner', name: 'Dr Watson (Médecin Légiste)', role: 'Chirurgien Militaire de Terrain', weapon: 'Scalpel d\'Autopsie & Pistolet Derringer', hp: 350, armor: 25, trophy: 'Trousse Chirurgicale en Cuir Victorienne' },
+      { id: 'constable_bobby', name: 'Agent de Police Bobby', role: 'Patrouilleur Nocturne de la Tamise', weapon: 'Matraque en Bois d\'Ébène & Sifflet d\'Alerte', hp: 380, armor: 30, trophy: 'Casque Custodian Bombé de la Police Métropolitaine' }
+    ]
+  },
+  {
+    id: 'squad_south_china_sea_pirates_1998',
+    name: 'Mercenaires des Spratleys & Pirates de Mer de Chine — Bear (1998)',
+    shortName: 'Mercenaires Spratleys (4 Soldats)',
+    category: 'MERCENARY_PIRATES',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: South China Sea (Roman Paul A. Carter 1998)',
+    biomeId: 'jungle',
+    recommendedBiome: 'Atoll des Spratleys & Mangroves (1998)',
+    description: 'La troupe de mercenaires et pirates retranchée sur un atoll des îles Spratleys sous le typhon, confrontée au carnage d\'un chasseur Yautja solitaire.',
+    tactics: 'Tirs de suppression au RPK, snipes longue portée au Dragunov dans la pluie et charges à la machette.',
+    totalHonorReward: 4300,
+    soloVariantId: 'alien_base_royce_mercenaire_2010',
+    members: [
+      { id: 'bear_mercenary', name: 'Bear (Chef Mercenaire)', role: 'Colosse d\'Infanterie Lourde', weapon: 'Mitrailleuse RPK & Machette de Jungle', hp: 550, armor: 50, trophy: 'Ceinturon de Cartouches Ébréché du Colosse Bear' },
+      { id: 'capt_tran_pirate', name: 'Capitaine Tran', role: 'Tireur d\'Élite des Marais', weapon: 'Fusil Sniper Dragunov SVD & Lunette PSO-1', hp: 410, armor: 35, trophy: 'Boussole Nautique en Laiton de la Mer de Chine' },
+      { id: 'nguyen_demolitions', name: 'Artilleur Nguyen', role: 'Expert Sabotage & Roquettes', weapon: 'Lance-Roquettes RPG-7 & Pistolet Tokarev', hp: 430, armor: 40, trophy: 'Roquette Inerte RPG-7 Gravée au Couteau' },
+      { id: 'mangrove_pirate_scout', name: 'Pisteur de Mangrove', role: 'Éclaireur des Palétuviers', weapon: 'Fusil Saiga Calibre 12 & Harpon de Chasse', hp: 370, armor: 30, trophy: 'Dents de Crocodile de Mer en Collier de Pêcheur' }
+    ]
+  },
+  {
+    id: 'squad_genocide_grant_xeno_zip_2190',
+    name: 'Corps Expéditionnaire du Cargo Grant & Chimistes Xeno-Zip (2190)',
+    shortName: 'Expédition Grant (4 Spécialistes)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Genocide (Comics Dark Horse 1991)',
+    biomeId: 'hive_lv426',
+    recommendedBiome: 'Front de Ruche Rouge & Noire',
+    description: 'L\'équipe de mercenaires et scientifiques infiltrant Xenomorph Prime en pleine guerre civile des ruches pour moissonner la Gelée Royale rouge.',
+    tactics: 'Vitesse surhumaine sous stimulant Xeno-Zip, tirs d\'assaut au M42B et extraction d\'échantillons acides par lance-cryo.',
+    totalHonorReward: 4600,
+    soloVariantId: 'prey_colonial_marine_heavy',
+    members: [
+      { id: 'daniel_grant', name: 'Daniel Grant (Commandant)', role: 'Chef d\'Expédition & Explorateur', weapon: 'Carabine Commando M42B & Auto-Injecteur Xeno-Zip', hp: 490, armor: 50, trophy: 'Fiole Scellée de Gelée Royale Rouge Pure' },
+      { id: 'dr_jillian_ohara', name: 'Dr Jillian O\'Hara', role: 'Biochimiste Spécialiste Xeno-Zip', weapon: 'Injecteur Cryogénique & Pistolet Smart', hp: 360, armor: 30, trophy: 'Seringue Motorisée de Prélèvement d\'Ovocyte Royal' },
+      { id: 'xeno_zip_berserker', name: 'Fantassin Dopé Xeno-Zip', role: 'Soldat d\'Assaut en Furie Métabolique', weapon: 'Double Fusil à Pompe Lourd & Doses Surchargées', hp: 540, armor: 55, trophy: 'Harnais d\'Injection Trachéale Surchargé de Xeno-Zip' },
+      { id: 'grant_extractor_pilot', name: 'Pilote d\'Évacuation Hendrix', role: 'Soutien Balistique & Balises', weapon: 'Pistolet Mitrailleur VP70 & Grenades IEM', hp: 390, armor: 40, trophy: 'Casque de Vol Pressurisé du Transporteur Grant' }
+    ]
+  },
+  {
+    id: 'squad_cold_forge_rb323_science_2179',
+    name: 'Division de Recherche Clandestine Cold Forge — Station RB-323 (2179)',
+    shortName: 'Cold Forge RB-323 (4 Chercheurs)',
+    category: 'SYNTHETIC_PACK',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: The Cold Forge (Roman Canon Alex White 2018)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiome: 'Station Orbitale RB-323',
+    description: 'Le commandement scientifique clandestin de la station orbitale RB-323 supervisant les chimères Snatchers sous le contrôle du Dr Marsalis et de Dorian Sudler.',
+    tactics: 'Décharges bio-électriques paralysantes, armes de poing à fléchettes neurotoxiques et assauts coordonnés par téléprésence synthétique.',
+    totalHonorReward: 4400,
+    soloVariantId: 'prey_weyland_combat_android',
+    members: [
+      { id: 'dorian_sudler_auditor', name: 'Dorian Sudler (Vérificateur)', role: 'Agent Exécuteur Weyland-Yutani', weapon: 'Pistolet à Aiguilles Neurotoxiques & Taser 80 kV', hp: 460, armor: 45, trophy: 'Insigne d\'Accréditation Secrète Weyland-Yutani Special Bio' },
+      { id: 'blue_marsalis_marcus', name: 'Dr Blue Marsalis (Avatar Marcus)', role: 'Neurobiologiste en Téléprésence Synthétique', weapon: 'Châssis Synthétique Marcus & Scanner Neural', hp: 530, armor: 55, trophy: 'Interface Neuro-Synaptique de Téléprésence de Marsalis' },
+      { id: 'cold_forge_officer', name: 'Capitaine de Sécurité RB-323', role: 'Garde de Confinement Haute Sécurité', weapon: 'Fusil d\'Assaut Modulaire Weyland & Bouclier Choc', hp: 440, armor: 50, trophy: 'Matricule Gravé de la Station Clandestine Cold Forge' },
+      { id: 'snatcher_technician', name: 'Technicien de Manipulation Snatcher', role: 'Manipulateur de Cuves d\'Incubation', weapon: 'Gantelet Haute Tension & Pince Cryo', hp: 380, armor: 35, trophy: 'Pince de Manipulation Cryo à Facehuggers Snatcher' }
+    ]
+  },
+  {
+    id: 'squad_bunda_war_machiko_clan_2194',
+    name: 'Chasseurs d\'Honneur Yautja de Bunda & Machiko Noguchi (2194)',
+    shortName: 'Clan Noguchi Bunda (4 Guerriers)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator: War (Comics Dark Horse 1995)',
+    biomeId: 'ryushi_desert',
+    recommendedBiome: 'Colonie Minière de Bunda',
+    description: 'Le clan d\'honneur Yautja de Top Knot traquant sur le monde aride de Bunda aux côtés de Machiko Noguchi avant la scission éthique finale.',
+    tactics: 'Salves d\'arc composite Yautja, charges coordonnées aux doubles wristblades et tirs lourds de canons à plasma à focalisation large.',
+    totalHonorReward: 5600,
+    soloVariantId: 'alien_base_alpha_predator_kaail',
+    members: [
+      { id: 'machiko_bunda_warrior', name: 'Machiko Noguchi (Da\'dtou-di)', role: 'Humaine Sang-Marqué & Initiée', weapon: 'Lames de Poignet Cérémoniales & Arc Composite', hp: 580, armor: 55, trophy: 'Marque de Clan Graffée sur le Front de Machiko' },
+      { id: 'top_knot_leader', name: 'Top Knot (Chef de Meute)', role: 'Seigneur de Chasse Yautja Vénérable', weapon: 'Glaive Royal Anti-Acide & Plasmacaster', hp: 760, armor: 75, trophy: 'Crâne de Reine Xénomorphe Ciselé du Chef Top Knot' },
+      { id: 'shorty_aggressive', name: 'Shorty (Guerrier Agressif)', role: 'Chasseur Sang-Froid Sans Pitié', weapon: 'Doubles Lames Écorcheuses & Lance-Filet Lourd', hp: 630, armor: 60, trophy: 'Masque d\'Airain Fendu par un Coup de Griffe' },
+      { id: 'dabpoi_stalker', name: 'Dab\'poi (Pisteur Vétéran)', role: 'Maître Éclaireur de Meute', weapon: 'Combi-Stick Perforant & Mines à Plasma', hp: 600, armor: 55, trophy: 'Balise de Guidage Tactique du Clan de Bunda' }
+    ]
+  },
+  {
+    id: 'squad_primal_hunt_ancient_lv1201_2002',
+    name: 'Gardiens du Sanctuaire de l\'Artefact — Ancient & Iron Bears (LV-1201)',
+    shortName: 'Gardiens LV-1201 (4 Champions)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator 2: Primal Hunt (Sierra / Monolith 2002)',
+    biomeId: 'hive_lv426',
+    recommendedBiome: 'Ruines Souterraines de LV-1201',
+    description: 'L\'Ancient Predator tiré d\'un sommeil de cinq siècles par le bris du pod de stase, allié de circonstance contre les mercenaires de Dunya et l\'essaim.',
+    tactics: 'Tirs de barrage au canon portatif 20mm HEAP, ondes de choc de l\'artefact Ingénieur et duel à la lance de stase antique.',
+    totalHonorReward: 5400,
+    soloVariantId: 'prey_hish_qu_ten_ancient',
+    members: [
+      { id: 'ancient_lv1201_hunter', name: 'Ancient Predator (Éveillé de Stase)', role: 'Maître Chasseur Millénaire de LV-1201', weapon: 'Lance Antique de Stase & Canon Plasmique d\'Épaule', hp: 750, armor: 75, trophy: 'Cristal d\'Activation du Pod de Stase de LV-1201' },
+      { id: 'dunya_iron_bear', name: 'Caporal Dunya (Mercenaire)', role: 'Tireuse Lourde des Iron Bears', weapon: 'Canon Lourd Portatif 20mm HEAP & Grenades', hp: 500, armor: 55, trophy: 'Écusson Brodé des Mercenaires Iron Bears de LV-1201' },
+      { id: 'iron_bear_commando', name: 'Commando Lourd Iron Bear', role: 'Fantassin de Rupture de Blindage', weapon: 'Fusil d\'Assaut à Roquettes 15mm & Cuirasse', hp: 470, armor: 55, trophy: 'Viseur Électronique Fêlé des Ruines de LV-1201' },
+      { id: 'pod_custodian_synth', name: 'Synthétique de Maintenance POD-9', role: 'Androïde de Sécurité du Complexe', weapon: 'Torche de Découpe Plasma & Pulsar IEM', hp: 490, armor: 50, trophy: 'Circuit Imprimé Logique du Régulateur de Stase' }
+    ]
   }
 ]);
 

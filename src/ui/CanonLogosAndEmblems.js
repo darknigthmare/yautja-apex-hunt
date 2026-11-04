@@ -1856,6 +1856,66 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  if (id.includes('london_1896_edward_soames')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-london1896" role="img" aria-label="Insigne Scotland Yard 1896">
+        <circle cx="40" cy="40" r="36" fill="#18181b" stroke="#38bdf8" stroke-width="2.5" />
+        <path d="M24 20 L56 20 L50 60 L40 68 L30 60 Z" fill="#0f172a" stroke="#7dd3fc" stroke-width="2" />
+        <circle cx="40" cy="38" r="8" fill="#bae6fd" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#bae6fd" letter-spacing="1" text-anchor="middle">LONDON 1896</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('south_china_sea_pirates')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-spratley" role="img" aria-label="Insigne Mercenaires Spratleys 1998">
+        <circle cx="40" cy="40" r="36" fill="#052e16" stroke="#22c55e" stroke-width="2.5" />
+        <polygon points="40,14 62,32 54,62 26,62 18,32" fill="#14532d" stroke="#86efac" stroke-width="2" />
+        <circle cx="40" cy="40" r="6" fill="#facc15" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#86efac" letter-spacing="1" text-anchor="middle">SPRATLEY 98</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('genocide_grant_xeno_zip')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-grant" role="img" aria-label="Insigne Expédition Grant Genocide">
+        <circle cx="40" cy="40" r="36" fill="#3b0764" stroke="#e11d48" stroke-width="2.5" />
+        <polygon points="40,12 60,30 40,66 20,30" fill="#be123c" stroke="#fda4af" stroke-width="2" />
+        <circle cx="40" cy="34" r="5" fill="#fef08a" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fda4af" letter-spacing="1" text-anchor="middle">XENO-ZIP 2190</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('cold_forge_rb323')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-coldforge" role="img" aria-label="Insigne Station Cold Forge RB-323">
+        <circle cx="40" cy="40" r="36" fill="#022c22" stroke="#06b6d4" stroke-width="2.5" />
+        <rect x="24" y="24" width="32" height="32" rx="4" fill="#042f2e" stroke="#2dd4bf" stroke-width="2" />
+        <circle cx="40" cy="40" r="6" fill="#a7f3d0" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#2dd4bf" letter-spacing="1" text-anchor="middle">RB-323 FORGE</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('bunda_war_machiko')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-bundawar" role="img" aria-label="Insigne Clan Bunda Machiko">
+        <circle cx="40" cy="40" r="36" fill="#450a0a" stroke="#f59e0b" stroke-width="2.5" />
+        <polygon points="40,10 64,28 54,62 40,70 26,62 16,28" fill="#78350f" stroke="#fcd34d" stroke-width="2" />
+        <circle cx="40" cy="38" r="8" fill="#ef4444" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fcd34d" letter-spacing="1" text-anchor="middle">BUNDA WAR</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('primal_hunt_ancient')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-primalhunt" role="img" aria-label="Insigne Sanctuaire LV-1201 Primal Hunt">
+        <circle cx="40" cy="40" r="36" fill="#0f172a" stroke="#8b5cf6" stroke-width="2.5" />
+        <polygon points="40,8 70,30 58,66 22,66 10,30" fill="#2e1065" stroke="#c4b5fd" stroke-width="2" />
+        <circle cx="40" cy="38" r="7" fill="#67e8f9" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#c4b5fd" letter-spacing="1" text-anchor="middle">LV-1201 POD</text>
+      </svg>
+    `.trim();
+  }
   if (id.includes('lv742_kainde_amedha')) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-lv742" role="img" aria-label="Insigne Sanctuaire LV-742">

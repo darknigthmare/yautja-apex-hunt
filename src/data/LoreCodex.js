@@ -526,6 +526,78 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     summary: 'La mécanique du réflexe ADN xénomorphe appliquée à la biologie Yautja et la hiérarchie supérieure des méga-ruches.',
     body: 'Grâce au transfert horizontal de gènes (« réflexe ADN »), un embryon xénomorphe hérite des traits dominants de son hôte. Lorsqu’un Facehugger féconde un Yautja, il donne naissance au « Predalien » (Abomination) : un géant doté de mandibules externes, de dreads chitineux et d’une force physique supérieure à celle d’un chasseur en armure. Dans sa forme royale (comme Chet à Gunnison en 2007), le Predalien contourne même le cycle de l’œuf en implantant directement plusieurs embryons dans la gorge des hôtes.',
     sourceTier: 'AVP_SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['avpRequiem2007', 'avpOriginalComics'], universe: 'AVP'
+  },
+  {
+    id: 'predator-chronique-nemesis-londres-1896-jack-soames', entryType: 'codex', category: 'culture', title: 'Le Tueur de Whitechapel (Predator: Nemesis 1896) : Capitaine Edward Soames & le Smog de Londres',
+    summary: 'La traque d’un Yautja solitaire dépeçant l’aristocratie dans les ruelles brumeuses de l’Angleterre victorienne par l’aïeul de Jaya Soames.',
+    body: 'En plein hiver victorien de 1896, une série de meurtres rituels sauvages terrifie Londres. Les cadavres écorchés suspendus aux arches des ponts de la Tamise rappellent les atrocités de Jack l’Éventreur huit ans plus tôt. Mandaté par le Premier Ministre, le capitaine Edward Soames (ancien officier d’infanterie au Bengale) découvre qu’un chasseur Yautja camouflé utilise le brouillard de charbon de Whitechapel pour traquer les meilleurs bretteurs de la ville avant de le défier dans les catacombes du métro londonien.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-chronique-mer-de-chine-1998-spratly-pirates', entryType: 'codex', category: 'lieu', title: 'L’Enfer des Spratleys (Predator: South China Sea 1998) : Pirates, Guérilla & Chasseur Solitaire',
+    summary: 'Le carnage insulaire de la Mer de Chine méridionale opposant les mercenaires de Bear, des pirates birmans et un chasseur implacable.',
+    body: 'Sur un îlot reculé de l’archipel des Spratleys submergé par la mousson, une équipe disparate de mercenaires multinationaux menée par le colosse Bear et des pirates locaux prend en otage un navire cambodgien. Au cœur de la nuit tropicale, un chasseur Yautja solitaire transforme l’île en abattoir, éliminant un à un les combattants lourdement armés dans les mangroves inondées et les bunkers abandonnés de la Seconde Guerre mondiale.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['predator1987', 'avpOriginalComics'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-culture-adolini-1715-raphael-golden-angel', entryType: 'codex', category: 'culture', title: 'Le Serment Pirate de 1715 (Predator: 1718) : Raphael Adolini & l’Ange Doré (Greyback)',
+    summary: 'L’origine du pistolet à silex légendaire remis à Mike Harrigan en 1997 : le duel de pirates aux Caraïbes entre Adolini et le jeune Greyback.',
+    body: 'En 1715, sur une crique sauvage des Bermudes, le capitaine corsaire Raphael Adolini fait face à la mutinerie de son équipage pour un coffre d’or ecclésiastique. Un jeune guerrier Yautja (qui deviendra plus tard l’Ancien Greyback sous le titre de Golden Angel) observe la scène et choisit de combattre dos à dos avec le capitaine loyal. Mortellement blessé dans le dos par un mutin agonisant, Adolini remet son pistolet à silex gravé « Raphael Adolini 1715 » au chasseur avec son dernier souffle : « Take it ».',
+    sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['predator2', 'huntingGrounds'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-science-linguistique-glyphes-cliquetis-mandibulaires', entryType: 'codex', category: 'technologie', title: 'Linguistique & Numération Yautja : Cliquetis Mandibulaires, Glyphes Angulaires & Base-8',
+    summary: 'La sémiotique et la phonétique extraterrestre : communication bio-acoustique sous-mandibulaire et ordinateurs hexadécimaux des gantelets.',
+    body: 'La langue orale Yautja est composée de grondements gutturaux, de rugissements d’intimidation et de séquences de cliquetis précis produits par le frottement des quatre mandibules externes. Cette communication complexe permet de transmettre des intentions martiales ou des ordres de traque inaudibles pour les mammifères. Leur écriture se compose de tirets et de points gravés en angles vifs (cunéiformes spatiaux), tandis que leurs chronomètres d’autodestruction et systèmes de visée reposent sur une arithmétique octale et hexadécimale.',
+    sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['predator1987', 'predator2', 'avp2004'], universe: 'PREDATOR'
+  },
+  {
+    id: 'alien-chronique-genocide-ruche-rouge-guerre-civile-xeno-zip', entryType: 'codex', category: 'xenomorphes', title: 'La Guerre Civile des Ruches (Aliens: Genocide 1991) : Ruche Rouge, Reine Noire & Xeno-Zip',
+    summary: 'La scission génétique sur Xenomorph Prime entre les Xénomorphes classiques et la sous-espèce rouge, et l’extraction de la Gelée Royale.',
+    body: 'À la suite de la destruction de la Reine-Mère dans Earth War, une guerre civile biologique sans merci éclate sur Xenomorph Prime entre deux factions : la Ruche Noire orthodoxe et une sous-espèce mutante écarlate (la Ruche Rouge) née d’une mutation récessive. Profitant de cette guerre fratricide, l’expédition humaine du cargo Grant infiltre la planète pour moissonner la Gelée Royale rouge et synthétiser le « Xeno-Zip », un puissant stimulant dopant militaire commercialisé illégalement sur Terre.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['aliens1986', 'avpOriginalComics'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-chronique-cold-forge-station-rb323-snatcher-marsalis', entryType: 'codex', category: 'lieu', title: 'Le Complexe Clandestin de la Cold Forge (Station RB-323 2179) : Chimères Snatchers & Dr Marsalis',
+    summary: 'Le laboratoire spatial secret Weyland-Yutani de recherche biomécanique avancée, le massacre de la station et le spécimen Snatcher.',
+    body: 'Dans les profondeurs de l’espace profond, la station orbitale RB-323 (« The Cold Forge ») abrite les expérimentations les plus clandestines de la division des armes biologiques de la Weyland-Yutani. La neurobiologiste tétraplégique Blue Marsalis y pilote à distance un androïde synthétique pour étudier une souche mutante de Facehugger (« Snatcher ») capable de féconder n’importe quel hôte par contact cutané. Lorsque l’auditeur impitoyable Dorian Sudler déclenche un protocole de purge, la station plonge dans un cauchemar de résine.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['alien1979', 'aliens1986'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-technologie-armures-berserker-max-combat-exosquelettes', entryType: 'codex', category: 'technologie', title: 'Exo-Blindages d’Intervention Lourde (Aliens: Berserker 1992) : Les Combinaisons M.A.X.',
+    summary: 'La technologie des armures d’assaut motorisées MAX conçues pour affronter physiquement les hordes d’Aliens au corps à corps.',
+    body: 'Consciente de la vulnérabilité des fantassins légers face au sang acide et aux assauts de masse, la division d’armement militaire Armat a développé le projet M.A.X. (Mobile Armored Strike Suit). Ces armures d’assaut hermétiques de trois mètres de haut sont renforcées de blindage composite au titane-bore résistant à l’acide moléculaire et équipées de canons rotatifs jumelés, de lance-roquettes intégrés et de pinces hydrauliques capables de broyer la boîte crânienne d’un Guerrier Xénomorphe.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['aliens1986', 'avpOriginalComics'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-culture-music-of-spears-culte-symphonie-xeno', entryType: 'codex', category: 'culture', title: 'La Symphonie de la Terreur (Aliens: Music of the Spears 1996) : Damon Henderson & Chants de Ruche',
+    summary: 'L’obsession sonore d’un compositeur de New York enregistrant les cris ultrasoniques et râles d’agonie du Xénomorphe pour créer l’opéra ultime.',
+    body: 'Dans la mégalopole décadente de Manhattan du XXIIIe siècle, le compositeur d’avant-garde Damon Henderson s’associe à des contrebandiers pour se procurer un Xénomorphe vivant baptisé « Mozart ». Enfermé dans une cage acoustique insonorisée, l’extraterrestre est torturé pour que ses hurlements ultrasoniques, le frottement de sa chitine et le grésillement de son sang corrosif soient captés par des microphones stellaires, donnant naissance à la « Symphonie de la Ruche », œuvre maudite provoquant l’hystérie collective.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['aliens1986', 'avpOriginalComics'], universe: 'ALIEN'
+  },
+  {
+    id: 'avp-chronique-bunda-war-machiko-rupture-clan-2194', entryType: 'codex', category: 'culture', title: 'La Rupture de Bunda (Aliens vs. Predator: War 1995) : Machiko Noguchi Face au Clan',
+    summary: 'La rupture tragique de la première humaine adoptée par les Yautja lorsque son clan choisit de massacrer des civils humains sans défense.',
+    body: 'Pendant près de deux années terriennes, Machiko Noguchi vit, traque et saigne aux côtés du clan du chef Top Knot sous le respect de son nom de sang Da\'dtou-di. Mais sur la planète minière de Bunda, le clan encercle une colonie humaine assiégée par les Xénomorphes. Lorsque les jeunes guerriers Yautja se mettent à abattre délibérément des ouvriers désarmés et des enfants, Machiko se révolte : violant son serment de meute, elle retourne ses armes contre ses frères Yautja pour sauver ses semblables.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'avpPreyOmnibus'], universe: 'AVP'
+  },
+  {
+    id: 'avp-chronique-trois-mondes-three-world-war-alliance-marines', entryType: 'codex', category: 'culture', title: 'La Triple Guerre Mondiale (AVP: Three World War 2010) : L’Alliance Sacrée Contre les Killer',
+    summary: 'L’appel d’urgence des Marines Coloniaux à Machiko Noguchi pour sceller un pacte militaire formel avec les clans Yautja civilisés.',
+    body: 'Lorsque le renégat Killer Clan commence à ravager les mondes coloniaux avec son armée de Xénomorphes en laisse, ni l’USCM ni les clans Yautja traditionnels ne peuvent l’emporter séparément. Le Corps des Marines Coloniaux retrouve alors Machiko Noguchi sur son monde de retraite pour négocier une trêve historique. À bord d’un cuirassé Yautja, Machiko et le capitaine d’un clan noble signent le premier traité de coopération militaire humain-Yautja de l’histoire interstellaire.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'aliens1986'], universe: 'AVP'
+  },
+  {
+    id: 'avp-chronique-lv1201-pod-stase-temporelle-primal-hunt-2002', entryType: 'codex', category: 'lieu', title: 'Le Sanctuaire Temporel de LV-1201 (AVP2: Primal Hunt 2002) : L’Artefact Ingénieur & le Pod',
+    summary: 'La découverte d’un artefact millénaire capable de repousser les Xénomorphes et le réveil d’un chasseur Ancient piégé 500 ans dans un champ de stase.',
+    body: 'Cinq siècles avant les événements d’AvP2 sur la colonie de LV-1201, un noble chasseur Yautja nommé Ancient découvre dans les ruines souterraines un artefact Ingénieur capable de générer un champ de répulsion psychique contre l’espèce XX121. En activant le dispositif, une onde de confinement le scelle dans une stase temporelle inviolable. En 2220, la mercenaire Dunya des Iron Bears brise le champ de force, réveillant le maître chasseur au cœur d’une station submergée par une Reine furieuse.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'aliens1986'], universe: 'AVP'
+  },
+  {
+    id: 'avp-culture-deadliest-species-big-mama-caryn-delacroix', entryType: 'codex', category: 'culture', title: 'La Reine Guerrière « Big Mama » & Caryn Delacroix (AVP: Deadliest of the Species 1993)',
+    summary: 'L’épopée transhumaniste de Chris Claremont : la matriarche Yautja Big Mama protégeant Caryn Delacroix et son fœtus hybride.',
+    body: 'Dans la fresque mythique de Chris Claremont (Deadliest of the Species), l’aristocrate terrienne Caryn Delacroix est traquée par des cartels transhumanistes et l’I.A. omnipotente Toy. Elle est recueillie par « Big Mama », une imposante guerrière Yautja femelle qui défie les lois patriarcales de sa société pour nouer un pacte protecteur viscéral avec l’humaine. Vêtue d’une armure cybernétique cérémonielle, Big Mama massacre les assassins corporatistes et les Xénomorphes génétiquement modifiés.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'predator2'], universe: 'AVP'
   }
 ]);
 // IDs match the values already used by the planet selector.

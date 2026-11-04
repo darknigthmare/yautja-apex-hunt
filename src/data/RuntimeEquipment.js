@@ -426,6 +426,38 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     sourceTier: 'LICENSED_EU', sources: Object.freeze(['avp2004', 'huntingGrounds']), behavior: 'spear',
     modifiers: Object.freeze({ damageMultiplier: 1.34, energyRegenMultiplier: 1.3, throwVelocityMultiplier: 1.3 }),
   }),
+  Object.freeze({
+    id: 'variant_kok_viking_broadaxe', armorPresetId: 'kok_viking_hunter', baseWeaponId: 'wristblades', name: 'Grande Hache Barbelée du Viking Predator (841)',
+    sourceTier: 'SCREEN', sources: Object.freeze(['killerOfKillers']), behavior: 'melee_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.38, knockbackBonus: 8, armorCrackChance: 0.4 }),
+  }),
+  Object.freeze({
+    id: 'variant_kok_wartime_kamikaze_harpoon', armorPresetId: 'kok_wartime_hunter', baseWeaponId: 'speargun', name: 'Harpon Perforant Pneumatique Pacifique 1942',
+    sourceTier: 'SCREEN', sources: Object.freeze(['killerOfKillers']), behavior: 'precision_bolt',
+    modifiers: Object.freeze({ damageMultiplier: 1.35, projectileSpeedMultiplier: 1.3, headshotBonus: 0.45 }),
+  }),
+  Object.freeze({
+    id: 'variant_emissary_military_pulse_carbine', armorPresetId: 'emissary_hg', baseWeaponId: 'plasmacaster_single', name: 'Canon d\'Épaule Hybride Militaire de l\'Emissary',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['thePredator2018', 'huntingGrounds']), behavior: 'plasma',
+    modifiers: Object.freeze({ damageMultiplier: 1.3, projectileSpeedMultiplier: 1.35, cooldownMultiplier: 0.9 }),
+  }),
+  Object.freeze({
+    id: 'variant_mr_black_compound_scythe', armorPresetId: 'mr_black_hg', baseWeaponId: 'combi_stick', name: 'Faux de Chasse Massive de Mr. Black (Berserker Leader)',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predators2010', 'huntingGrounds']), behavior: 'spear_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.4, cleaveArcMultiplier: 1.35, staggerBonus: 0.45 }),
+  }),
+  Object.freeze({
+    id: 'variant_father_hg_ancestral_blade', armorPresetId: 'father_hg', baseWeaponId: 'wristblades', name: 'Lame Ancestrale Millénaire du Father Predator',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGroundsUpdates', 'huntingGrounds']), behavior: 'blade',
+    modifiers: Object.freeze({ damageMultiplier: 1.36, parryAngleMultiplier: 1.4, honorGainMultiplier: 1.35 }),
+  }),
+  Object.freeze({
+    id: 'variant_deadend_heavy_combi', armorPresetId: 'deadend_fanfilm', baseWeaponId: 'combi_stick', name: 'Combi-Stick de Combat Urbain Sombre (Dead End)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['predator1987', 'predator2']), behavior: 'spear',
+    modifiers: Object.freeze({ damageMultiplier: 1.32, rangeMultiplier: 1.25, criticalChanceMultiplier: 1.25 }),
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avp2004', 'huntingGrounds']), behavior: 'spear',
+    modifiers: Object.freeze({ damageMultiplier: 1.34, energyRegenMultiplier: 1.3, throwVelocityMultiplier: 1.3 }),
+  }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);
 
