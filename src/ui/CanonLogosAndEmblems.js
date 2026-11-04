@@ -1796,6 +1796,66 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  if (id.includes('ny_detective_john_schaefer')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-nyschaefer" role="img" aria-label="Insigne Détective John Schaefer NYPD">
+        <circle cx="40" cy="40" r="36" fill="#0c1526" stroke="#eab308" stroke-width="2.5" />
+        <polygon points="40,12 56,22 52,54 40,66 28,54 24,22" fill="#1e3a8a" stroke="#fde047" stroke-width="2" />
+        <circle cx="40" cy="36" r="6" fill="#fef08a" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fef08a" letter-spacing="1" text-anchor="middle">NYPD SCHAEFER</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('killer_clan_bad_blood')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-killerclan" role="img" aria-label="Insigne Clan Killer Bad Blood">
+        <circle cx="40" cy="40" r="36" fill="#1f0707" stroke="#dc2626" stroke-width="2.5" />
+        <polygon points="24,16 40,30 56,16 50,58 40,66 30,58" fill="#7f1d1d" stroke="#f87171" stroke-width="2" />
+        <circle cx="34" cy="38" r="3" fill="#fef08a" />
+        <circle cx="46" cy="38" r="3" fill="#fef08a" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fca5a5" letter-spacing="1" text-anchor="middle">KILLER CLAN</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('out_of_shadows_marion')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-marion" role="img" aria-label="Insigne Mineurs DSMO Marion LV-178">
+        <circle cx="40" cy="40" r="36" fill="#1c1409" stroke="#f59e0b" stroke-width="2.5" />
+        <polygon points="40,14 62,38 40,62 18,38" fill="#78350f" stroke="#fcd34d" stroke-width="2" />
+        <circle cx="40" cy="38" r="6" fill="#38bdf8" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fde68a" letter-spacing="1" text-anchor="middle">DSMO MARION</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('upp_space_commandos')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-upp" role="img" aria-label="Insigne Commandos Spatiaux UPP">
+        <circle cx="40" cy="40" r="36" fill="#210909" stroke="#ef4444" stroke-width="2.5" />
+        <polygon points="40,12 47,30 66,30 51,42 56,60 40,49 24,60 29,42 14,30 33,30" fill="#b91c1c" stroke="#fde047" stroke-width="2" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fde047" letter-spacing="1" text-anchor="middle">UPP COMMANDOS</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('life_and_death_hasdrubal')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-hasdrubal" role="img" aria-label="Insigne Peloton USS Hasdrubal">
+        <circle cx="40" cy="40" r="36" fill="#0d1a12" stroke="#10b981" stroke-width="2.5" />
+        <rect x="22" y="20" width="36" height="36" rx="5" fill="#064e3b" stroke="#6ee7b7" stroke-width="2" />
+        <path d="M28 48 L40 26 L52 48 Z" fill="#a7f3d0" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#a7f3d0" letter-spacing="1" text-anchor="middle">USS HASDRUBAL</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('avp_eternal_suwa')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-suwa" role="img" aria-label="Insigne Syndicat Gideon Suwa Tokyo">
+        <circle cx="40" cy="40" r="36" fill="#170d26" stroke="#c084fc" stroke-width="2.5" />
+        <circle cx="40" cy="38" r="18" fill="#4c1d95" stroke="#e9d5ff" stroke-width="2" />
+        <polygon points="40,24 52,46 28,46" fill="#facc15" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#e9d5ff" letter-spacing="1" text-anchor="middle">SUWA TOKYO 98</text>
+      </svg>
+    `.trim();
+  }
   if (id.includes('lv742_kainde_amedha')) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-lv742" role="img" aria-label="Insigne Sanctuaire LV-742">

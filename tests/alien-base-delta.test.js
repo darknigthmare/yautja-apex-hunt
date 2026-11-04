@@ -16,7 +16,7 @@ test('Changed record requires manual review and does not claim a dirty commit',(
  assert.equal(d.policy.noAutomaticDeletion,true);
 });
 test('Source hash uses current file bytes rather than historic constant',()=>{
- assert.equal(gitBlobShaForFile('src/data/RuntimeEquipment.js'),'901587f41ed4f5254cac80d1f844fd27a0cd2c8c');
+ assert.equal(gitBlobShaForFile('src/data/RuntimeEquipment.js'),'fc1835c160e944fa3ed0245011a285cd3524e648');
  assert.throws(()=>gitBlobShaForFile('../package.json'),/Unsafe source path/);
 });
 

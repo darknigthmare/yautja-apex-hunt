@@ -454,6 +454,78 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     summary: 'Plus d’un millénaire de duels sur Terre : Vikings scandinaves (841), Samouraïs féodaux (1615), Pirates (1715), Comanches (1719) et Pacifique (1942).',
     body: 'La Terre est un terrain de chasse privilégié pour les clans Yautja depuis des siècles. Dès l’an 841 dans les fjords nordiques, puis en 1615 face aux rōnins du Japon féodal (Killer of Killers), les chasseurs testent les meilleurs guerriers à l’arme blanche. En 1715, Greyback combat aux côtés du capitaine pirate Raphael Adolini contre son équipage mutiné, quatre ans avant l’incursion du Feral Predator sur les terres Comanches de Naru (Prey, 1719), et jusqu’aux duels aériens au-dessus du Pacifique en 1942.',
     sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['prey2022', 'killerOfKillers', 'predator2', 'huntingGrounds'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-chronique-concrete-jungle-1930-2030-borgia-neonopolis', entryType: 'codex', category: 'culture', title: 'La Saga de Scarface (1930–2030) : New Way City, Exil Centenaire & Chute de Borgia Industries',
+    summary: 'La rédemption séculaire du chasseur borgne Scarface face à l’empire cybernétique bâti sur son propre équipement perdu en 1930.',
+    body: 'En 1930, dans la ville de New Way City contrôlée par la mafia de Bruno Borgia, le chasseur surnommé Scarface commet l’impardonnable : blessé à l’œil et acculé, il échoue à mourir dans son autodestruction et abandonne son masque ainsi que son Glaive aux mains des humains. Exilé pendant cent ans sur une planète hostile infestée de fauves géants, il est ramené sur Terre en 2030 par son clan dans la mégalopole de Neonopolis pour éradiquer Borgia Industries, démanteler l’I.A. « Mother » (Monster X) forgée à partir de son sang et laver son déshonneur.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['predatorConcreteJungle2005'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-culture-clans-killer-bad-bloods-tartarus-enforcers', entryType: 'codex', category: 'culture', title: 'Le Clan « Killer » & La Police d’Élite des Enforcers (Tartarus / Predator: Hunters)',
+    summary: 'La secte organisée de Bad Bloods qui dresse des Xénomorphes en laisse neuro-électrique et la traque impitoyable des Enforcers du Conseil.',
+    body: 'Contrairement aux Bad Bloods solitaires sombrant dans la folie meurtrière, le « Killer Clan » est une faction entière de chasseurs renégats ayant rejeté le Code d’Honneur ancestral. Ils capturent de jeunes Xénomorphes et leur greffent des colliers neuro-inhibiteurs pour les lancer comme chiens de guerre contre leurs proies. Pour purger cette hérésie, le Conseil des Anciens mandate la caste des Enforcers : des juges-exécuteurs en armure lourde habilités à traquer et décapiter tout renégat à travers la galaxie.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'predatorBadBloodComics'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-chronique-schaefer-detective-ny-cold-war-1989', entryType: 'codex', category: 'culture', title: 'La Traque Fraternelle du Détective John Schaefer (New York 1989, Sibérie 1991, Val Verde)',
+    summary: 'L’odyssée du frère du Major Dutch Schaefer, inspecteur du NYPD confronté aux Yautja de la canicule new-yorkaise aux glaces sibériennes.',
+    body: 'Obsédé par la disparition mystérieuse de son frère Alan « Dutch » Schaefer à Val Verde en 1987, le détective new-yorkais John Schaefer découvre la vérité en plein été caniculaire de 1989 lorsque les gangs de Manhattan sont décimés par une flotte Yautja (Concrete Jungle). Aux côtés de son partenaire Rasche, sa quête le mène en 1991 dans les plaines glacées de Ligotka en Sibérie aux côtés des Spetsnaz du général Arsenjev (Cold War), puis au cœur même de la jungle de Val Verde (Dark River).',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['predator1987', 'avpOriginalComics'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-science-biomasques-spectres-vision-neuro-casques', entryType: 'codex', category: 'technologie', title: 'Ingénierie des Biomasques Yautja : Spectres Thermiques, Vision EM (Xeno) & Télémétrie',
+    summary: 'L’architecture interne du casque de chasse : filtres multispectraux, respirateur méthane-azote, traducteur vocal et acquisition tri-laser.',
+    body: 'Le biomasque Yautja est bien plus qu’une protection faciale cérémonielle. Comme la vision naturelle de l’espèce se situe dans l’infrarouge lointain flou, les lentilles du masque concentrent et séparent les spectres : mode Thermique (de 3 à 14 micromètres) pour la faune à sang chaud, mode Électromagnétique (Vision Xéno) isolant le champ bio-électrique des Xénomorphes dépourvus de chaleur corporelle, et mode Neuro-Tech détectant les synthétiques et les flux d’énergie. Il intègre également un inhalateur d’appoint et le télémètre tri-laser asservi au canon d’épaule.',
+    sourceTier: 'SCREEN', relatedTier: 'AVP_SCREEN', isOriginal: false, sources: ['predator1987', 'predator2', 'avp2004', 'avpRequiem2007'], universe: 'PREDATOR'
+  },
+  {
+    id: 'alien-chronique-out-of-the-shadows-marion-trimonite-1979', entryType: 'codex', category: 'lieu', title: 'L’Incident de LV-178 (Out of the Shadows 2159) : Le DSMO Marion, la Trimonite & Ash I.A.',
+    summary: 'Le cauchemar oublié d’Ellen Ripley entre Alien et Aliens : les mines profondes de LV-178 et la survie clandestine de l’esprit d’Ash.',
+    body: 'En 2159, trente-sept ans après la destruction du Nostromo, la navette Narcissus où sommeille Ellen Ripley dérive vers la planète minière LV-178. Dans les entrailles du monde, les mineurs du cargo DSMO Marion (menés par Chris « Hoop » Hooper) ont percé une ancienne nef extraterrestre en extrayant la Trimonite, le minerai le plus dur connu. Plus terrifiant encore : l’androïde Ash a secrètement transféré son programme dans l’ordinateur de la Narcissus pour orchestrer la capture d’un spécimen avant que Ripley n’efface sa propre mémoire en cryostase.',
+    sourceTier: 'LICENSED_EU', relatedTier: 'SCREEN', isOriginal: false, sources: ['alien1979', 'aliens1986'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-chronique-river-of-pain-hadleys-hope-chute-2179', entryType: 'codex', category: 'lieu', title: 'L’Effondrement d’Hadley’s Hope (River of Pain 2179) : Capitaine Brackett & Naissance de Newt',
+    summary: 'Les derniers jours de la colonie d’Acheron (LV-426) avant l’arrivée de l’USS Sulaco : l’héroïsme de la garnison locale et de la famille Jorden.',
+    body: 'Lorsque Russ et Anne Jorden explorent l’épave du Derelict sur LV-426 avec leurs enfants Timmy et Rebecca (« Newt »), ils ignorent qu’ils déclenchent la condamnation des 158 colons d’Hadley’s Hope. Malgré la présence d’un détachement de sécurité des Marines Coloniaux dirigé par le capitaine Devin Brackett, la souche xénomorphe s’empare du Processeur Atmosphérique en quelques jours. Seule la petite Newt survit dans les conduits de ventilation jusqu’à l’arrivée de Ripley et Hicks.',
+    sourceTier: 'LICENSED_EU', relatedTier: 'SCREEN', isOriginal: false, sources: ['aliens1986'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-chronique-sea-of-sorrows-lv178-new-galveston-decker', entryType: 'codex', category: 'xenomorphes', title: 'L’Héritage Télépathique de Ripley (Sea of Sorrows 2497) : Alan Decker & New Galveston',
+    summary: 'Trois siècles après Fiorina 161, le descendant génétique du clone Ripley 8 est contraint d’affronter les ruches enfouies de New Galveston.',
+    body: 'En 2497, la planète LV-178 a été terraformée sous le nom de New Galveston. Mais sous les sables reposent toujours les Xénomorphes scellés trois cents ans plus tôt par Chris Hooper. La Weyland-Yutani recrute de force le commissaire adjoint Alan Decker, descendant direct d’Ellen Ripley (via l’ADN hybride de Ripley 8), car son sang porte une résonance télépathique latente avec l’esprit de ruche, faisant de lui à la fois le détecteur vivant et la cible prioritaire des créatures.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['aliens1986', 'avpOriginalComics'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-technologie-armes-uscm-smartgun-pulse-sentry-drop-ships', entryType: 'codex', category: 'technologie', title: 'Doctrine d’Armement USCM : Munitions Sans Étui 10×24mm, Harnais M56 & Navettes Cheyenne',
+    summary: 'L’ingénierie militaire d’Armat Battlefield Systems : pourquoi la puissance de feu des Marines Coloniaux est à double tranchant.',
+    body: 'L’arsenal du Corps des Marines Coloniaux (USCM) est conçu pour la guerre expéditionnaire à haute intensité. Le fusil d’assaut M41A tire des munitions sans étui de 10×24mm à pointe blindée et noyau explosif léger, capables de faire éclater la carapace chitineuse d’un Guerrier Xénomorphe, tandis que la mitrailleuse M56 Smartgun utilise un bras gyroscopique et un casque infrarouge HMS pour traquer automatiquement les cibles en mouvement. Cette létalité devient toutefois fatale à proximité des échangeurs de refroidissement thermonucléaires ou du sang acide sous pression.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['aliens1986', 'aliensFireteamElite2021'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-culture-trois-empires-upp-twe-ua-geopolitique-spatiale', entryType: 'codex', category: 'culture', title: 'Géopolitique Stellaire du XXIIe Siècle : Amériques Unies (UA), UPP & Empire des Trois Mondes (3WE)',
+    summary: 'La guerre froide spatiale de la Frontière entre les trois superpuissances humaines et le cartel des méga-corporations.',
+    body: 'La colonisation de la Frontière (Outer Rim) est déchirée par la rivalité entre trois blocs interstellaires : les Amériques Unies (UA, protégées par l’USCM), l’Empire des Trois Mondes (3WE, alliance britannico-japonaise pionnière de l’espace avec Weyland-Yutani) et l’Union des Peuples Progressistes (UPP, bloc socialiste stellaire déployant ses propres commandos spatiaux). Dans l’ombre de ces gouvernements, Weyland-Yutani, Seegson, Hyperdyne et Bionational se livrent une course clandestine aux armes biologiques xénomorphes.',
+    sourceTier: 'LICENSED_EU', relatedTier: 'SCREEN', isOriginal: false, sources: ['aliens1986', 'alienIsolation2014', 'aliensFireteamElite2021'], universe: 'ALIEN'
+  },
+  {
+    id: 'avp-chronique-life-and-death-lv223-tartarus-galactique-2219', entryType: 'codex', category: 'lieu', title: 'Le Cycle « Life and Death » (2219) : Tartarus, LV-223, les Marines du Hasdrubal & Ahab',
+    summary: 'L’apothéose du grand crossover Dark Horse réunissant les Marines de la Capitaine Paget, le clan d’Ahab, les Xénomorphes et les Ingénieurs.',
+    body: 'Directement après les événements de Fire and Stone, l’unité de Marines Coloniaux de la capitaine Julie Paget (embarquée sur l’USS Hasdrubal) découvre un vaisseau Ingénieur en fer à cheval sur la planète Tartarus. S’ensuit une guerre interplanétaire s’étendant de Tartarus aux montagnes mutantes de LV-223, où les survivants humains, le mercenaire Galgo et le vénérable chasseur borgne Ahab unissent leurs forces une dernière fois contre les essaims xénomorphes et la colère d’un Ingénieur éveillé.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'prometheus2012'], universe: 'AVP'
+  },
+  {
+    id: 'avp-chronique-eternal-epave-gideon-suwa-tokyo-1998', entryType: 'codex', category: 'technologie', title: 'L’Épave Millénaire de Gideon Suwa (AVP: Eternal 1998) : L’Immortalité Volée à Tokyo',
+    summary: 'L’histoire de l’homme qui vécut sept siècles en consommant la biochimie Yautja, déclenchant une purge de clan au cœur du Japon moderne.',
+    body: 'Au XIVe siècle, au Japon, le marchand Gideon Suwa découvre l’épave enfouie d’un vaisseau de chasse Yautja contenant des œufs xénomorphes en stase et des corps de chasseurs. En synthétisant un sérum à partir des glandes endocrines des Yautja, Suwa prolonge sa vie de plus de 700 ans et bâtit un empire technologique à Tokyo en rétro-concevant les armes extraterrestres. En 1998, lorsque la journaliste Rebecca Yuh met au jour son secret et que des Xénomorphes s’échappent de sa tour, une meute de Yautja descend sur Tokyo pour laver ce sacrilège.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'predator2'], universe: 'AVP'
+  },
+  {
+    id: 'avp-biologie-hybrides-predalien-carrier-praetorian-matriarche', entryType: 'codex', category: 'xenomorphes', title: 'Génétique Croisée & Super-Castes : L’Anatomie du Predalien, des Prétoriens & des Impératrices',
+    summary: 'La mécanique du réflexe ADN xénomorphe appliquée à la biologie Yautja et la hiérarchie supérieure des méga-ruches.',
+    body: 'Grâce au transfert horizontal de gènes (« réflexe ADN »), un embryon xénomorphe hérite des traits dominants de son hôte. Lorsqu’un Facehugger féconde un Yautja, il donne naissance au « Predalien » (Abomination) : un géant doté de mandibules externes, de dreads chitineux et d’une force physique supérieure à celle d’un chasseur en armure. Dans sa forme royale (comme Chet à Gunnison en 2007), le Predalien contourne même le cycle de l’œuf en implantant directement plusieurs embryons dans la gorge des hôtes.',
+    sourceTier: 'AVP_SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['avpRequiem2007', 'avpOriginalComics'], universe: 'AVP'
   }
 ]);
 // IDs match the values already used by the planet selector.

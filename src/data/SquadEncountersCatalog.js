@@ -180,7 +180,7 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
     description: 'La section de Marines Coloniaux envoyée enquêter sur la rupture de contact de la colonie minière Hadley\'s Hope.',
     tactics: 'Balayage au détecteur de mouvement M314, tir de saturation aux Smartguns M56 jumelés et couloirs de feu au lance-flammes M240.',
     totalHonorReward: 5800,
-    soloVariantId: 'alien_base_dwayne_hicks_corporal',
+    soloVariantId: 'alien_base_william_hudson_private',
     members: [
       {
         id: 'apone',
@@ -2366,7 +2366,7 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
     description: 'Bataillon de secours de l\'USS Sephora déployé sur LV-426 pour enquêter sur la disparition du Sulaco et briser le blocus Weyland-Yutani.',
     tactics: 'Formation en carré USCM, tirs de fusil à impulsion M41A Mk2, minigun lourd et déploiement de tourelles.',
     totalHonorReward: 3700,
-    soloVariantId: 'alien_base_dwayne_hicks_corporal',
+    soloVariantId: 'alien_base_william_hudson_private',
     members: [
       { id: 'winter', name: 'Caporal Christopher Winter', role: 'Chef d\'Escouade Sephora', weapon: 'M41A Pulse Rifle Mk2 & Fusil à Pompe Hicks', hp: 390, armor: 40, trophy: 'Plaque d\'Identification USCM de l\'USS Sephora' },
       { id: 'oneal', name: 'Soldat Peter O\'Neal', role: 'Appui Mitrailleuse Lourde', weapon: 'M56 Smartgun & Minigun Rotatif M90', hp: 440, armor: 50, trophy: 'Casque Tactique Optique du Soldat O\'Neal' },
@@ -2561,6 +2561,132 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'blazer_predator', name: 'Blazer Predator (Caste Thermique)', role: 'Incinérateur Lourd en Exo-Armure', weapon: 'Doubles Canons Thermiques à Faisceau de Lave', hp: 660, armor: 70, trophy: 'Buse Thermique en Platine d\'Armure Blazer' },
       { id: 'hydra_predator', name: 'Hydra Predator (Caste Artillerie)', role: 'Bombardier Multi-Ogives', weapon: 'Lance-Missiles Dorsal Guidé Hydra & Glaive', hp: 640, armor: 65, trophy: 'Module de Verrouillage Multi-Cibles Hydra' },
       { id: 'stalker_lv742', name: 'Stalker Predator (LV-742)', role: 'Tireur d\'Élite Longue Portée', weapon: 'Fusil-Harpon Balistique Lourd & Camouflage', hp: 530, armor: 50, trophy: 'Carquois de Fléchettes en Tungstène de LV-742' }
+    ]
+  },
+  {
+    id: 'squad_ny_detective_john_schaefer_1989',
+    name: 'Brigade Criminelle NYPD & Détective John Schaefer — Canicule (1989)',
+    shortName: 'Détective Schaefer NYPD (4 Agents)',
+    category: 'LAW_ENFORCEMENT',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Concrete Jungle / Cold War (Comics Dark Horse 1989-1991)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiome: 'Manhattan Sous Canicule (1989)',
+    description: 'Le frère du Major Dutch Schaefer, inspecteur du NYPD acharné, épaulé par son coéquipier Rasche et le général russe Arsenjev.',
+    tactics: 'Tirs d\'arrêt au calibre 12 scié, embuscades urbaines dans les ruelles et utilisation d\'armes Yautja capturées.',
+    totalHonorReward: 4200,
+    soloVariantId: 'alien_base_major_dutch_schaefer_1987',
+    members: [
+      { id: 'john_schaefer_89', name: 'Détective John Schaefer', role: 'Inspecteur Vétéran NYPD & Frère de Dutch', weapon: 'Calibre 12 Scié Ithaca 37 & Colt Python .357', hp: 510, armor: 45, trophy: 'Insigne de Détective NYPD Ébréché de John Schaefer' },
+      { id: 'det_rasche', name: 'Inspecteur Rasche', role: 'Partenaire Fidèle de la Criminelle', weapon: 'Fusil d\'Assaut M16A2 & Revolver de Service', hp: 420, armor: 40, trophy: 'Holster d\'Épaule Cuir de l\'Inspecteur Rasche' },
+      { id: 'capt_phillips_nypd', name: 'Capitaine Phillips (SWAT NYPD)', role: 'Commandant d\'Intervention Tactique', weapon: 'Pistolet-Mitrailleur H&K MP5 & Bouclier', hp: 440, armor: 50, trophy: 'Casque Balistique Fendu du SWAT de Manhattan' },
+      { id: 'gen_arsenjev_ally', name: 'Colonel Nikolai Arsenjev', role: 'Officier de Liaison Spetsnaz GRU', weapon: 'Fusil d\'Assaut AK-74M & Lance-Grenades GP-25', hp: 460, armor: 50, trophy: 'Étoile Soviétique de la Campagne de Ligotka' }
+    ]
+  },
+  {
+    id: 'squad_killer_clan_bad_blood_pack',
+    name: 'Meute Hérétique du Clan « Killer » & Xénomorphes Asservis',
+    shortName: 'Clan Killer Bad Bloods (4 Renégats)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Hunters / AVP: Three World War (Comics Dark Horse)',
+    biomeId: 'jungle',
+    recommendedBiome: 'Jungle Insulaire &Avant-Poste du Clan Killer',
+    description: 'Faction organisée de Bad Bloods ayant trahi le Code d\'Honneur pour dresser des Xénomorphes captifs en laisse neuro-électrique.',
+    tactics: 'Lâcher de Xénomorphes d\'assaut sous collier électrique suivi de tirs de barrage plasma sans discernement.',
+    totalHonorReward: 5300,
+    soloVariantId: 'alien_base_alpha_predator_kaail',
+    members: [
+      { id: 'killer_chieftain', name: 'Chef de Guerre du Clan Killer', role: 'Seigneur Bad Blood en Armure d\'Os', weapon: 'Glaive Dentelé Empoisonné & Canon Plasma Lourd', hp: 690, armor: 70, trophy: 'Biomasque à Cornes Rouges du Clan Killer' },
+      { id: 'killer_beastmaster', name: 'Dompteur Xéno Bad Blood', role: 'Maître-Chien Neuro-Cybernétique', weapon: 'Collier d\'Asservissement Xéno & Fouet Électrique', hp: 580, armor: 55, trophy: 'Émetteur Neuro-Inhibiteur Dorsal du Dompteur' },
+      { id: 'killer_flayer', name: 'Écorcheur Renégat Killer', role: 'Assassin Frénétique de Corps à Corps', weapon: 'Doubles Lames Crantées & Filet Tranchant', hp: 560, armor: 50, trophy: 'Trophée Humain Profané du Clan Killer' },
+      { id: 'leashed_xeno_drone', name: 'Xénomorphe d\'Attaque Enchaîné', role: 'Bête de Guerre Lobotomisée', weapon: 'Griffes Chitinisées, Queue Faux & Sang Acide', hp: 520, armor: 45, trophy: 'Crâne Xénomorphe Cerclé d\'Acier Neuro-Conducteur' }
+    ]
+  },
+  {
+    id: 'squad_out_of_shadows_marion_miners_2159',
+    name: 'Survivants du DSMO Marion — Chris "Hoop" Hooper & LV-178 (2159)',
+    shortName: 'Mineurs DSMO Marion (4 Survivants)',
+    category: 'CIVILIAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: Out of the Shadows (Roman Canon Tim Lebbon 2014)',
+    biomeId: 'hive_lv426',
+    recommendedBiome: 'Mines de Trimonite de LV-178',
+    description: 'L\'équipage minier du cargo DSMO Marion ayant combattu dans les profondeurs de LV-178 aux côtés d\'Ellen Ripley contre l\'essaim et l\'I.A. d\'Ash.',
+    tactics: 'Utilisation d\'outils de découpe thermique à Trimonite, charges sismiques minières et verrouillage de galeries.',
+    totalHonorReward: 3400,
+    soloVariantId: 'prey_weyland_combat_android',
+    members: [
+      { id: 'chris_hooper', name: 'Chris "Hoop" Hooper', role: 'Chef Ingénieur Minier du Marion', weapon: 'Découpeur Thermique à Arc de Trimonite', hp: 410, armor: 40, trophy: 'Fragment Pur de Trimonite Brut de LV-178' },
+      { id: 'kasyanov_eng', name: 'Ingénieure Kasyanov', role: 'Spécialiste Forages & Explosifs', weapon: 'Lance-Charges Sismiques & Pistolet Industriel', hp: 360, armor: 35, trophy: 'Détonateur Sismique des Puits de LV-178' },
+      { id: 'capt_jordan_marion', name: 'Capitaine Lucy Jordan', role: 'Commandante de la Navette d\'Extraction', weapon: 'Fusil à Pompe de Sécurité Orbitale', hp: 350, armor: 30, trophy: 'Journal de Bord Crypté du DSMO Marion' },
+      { id: 'baxter_miner', name: 'Chef de Sécurité Baxter', role: 'Garde Minier en Exosquelette Léger', weapon: 'Rivet Gun Haute Pression & Torche Plasma', hp: 390, armor: 45, trophy: 'Casque de Mineur Fendu des Galeries Profondes' }
+    ]
+  },
+  {
+    id: 'squad_upp_space_commandos_2184',
+    name: 'Escouade d\'Assaut Spatiale de l\'UPP — Commissaire Volkov (2184)',
+    shortName: 'Commandos Spatiaux UPP (4 Soldats)',
+    category: 'COLONIAL_MARINES',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: The Roleplaying Game — Union of Progressive Peoples',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiome: 'Station Spatiale Frontière de l\'UPP',
+    description: 'Unité d\'élite des Forces Spatiales de l\'Union des Peuples Progressistes (UPP) déployée pour sécuriser les stations de la Frontière.',
+    tactics: 'Feu de suppression au fusil AK-4047, grenades thermobariques soviéto-spatiales et discipline idéologique inflexible.',
+    totalHonorReward: 4100,
+    soloVariantId: 'alien_base_william_hudson_private',
+    members: [
+      { id: 'commissar_volkov', name: 'Commissaire Politique Volkov', role: 'Commandant Tactique de la Sécurité d\'État UPP', weapon: 'Fusil d\'Assaut AK-4047 & Pistolet Makarov Spatial', hp: 430, armor: 50, trophy: 'Étoile Vermeille de Commissaire Spatial de l\'UPP' },
+      { id: 'upp_heavy_gunner', name: 'Artilleur Lourd Kovalenko', role: 'Spécialiste Mitrailleuse Orbitale', weapon: 'Mitrailleuse Lourde UPP PKP-Spatial 12.7mm', hp: 480, armor: 60, trophy: 'Bande de Munitions Tungstène de l\'UPP' },
+      { id: 'upp_void_sapper', name: 'Sapeur Spetsnaz Zaitsev', role: 'Expert Brèche & Décontamination Thermique', weapon: 'Lance-Flammes Lourd UPP & Mines Magnétiques', hp: 420, armor: 50, trophy: 'Masque Respiratoire Pressurisé des Commandos UPP' },
+      { id: 'upp_combat_synth', name: 'Synthétique d\'État Série-Soyouz', role: 'Androïde Militaire Blindé de l\'UPP', weapon: 'Fusil de Précision SVD-Spatial & Matraque Choc', hp: 490, armor: 55, trophy: 'Noyau Logique Cybergénétique Série-Soyouz' }
+    ]
+  },
+  {
+    id: 'squad_life_and_death_hasdrubal_marines_2219',
+    name: 'Peloton USCM de l\'USS Hasdrubal & Capitaine Julie Paget (2219)',
+    shortName: 'Peloton USS Hasdrubal (4 Vétérans)',
+    category: 'COLONIAL_MARINES',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator / Aliens vs. Predator: Life and Death (Dark Horse 2016)',
+    biomeId: 'genna_deathworld',
+    recommendedBiome: 'Jungle de Tartarus & Cratère LV-223',
+    description: 'Le détachement héroïque des Marines Coloniaux de la capitaine Julie Paget ayant forgé un pacte de sang avec le chasseur Ahab contre les Ingénieurs.',
+    tactics: 'Formation défensive en carré, tirs concentrés de M41A Mk2 et appui balistique lourd au Smartgun.',
+    totalHonorReward: 4600,
+    soloVariantId: 'alien_base_william_hudson_private',
+    members: [
+      { id: 'capt_julie_paget', name: 'Capitaine Julie Paget', role: 'Commandante de Compagnie USS Hasdrubal', weapon: 'Carabine M41A Mk2 & Lance-Grenades Incendiaire', hp: 470, armor: 55, trophy: 'Plaques d\'Identité USCM de la Capitaine Paget' },
+      { id: 'sgt_roth_hasdrubal', name: 'Sergent d\'Artillerie Roth', role: 'Sous-Officier Vétéran USCM', weapon: 'Mitrailleuse Gyro-Stabilisée M56 Smartgun', hp: 500, armor: 60, trophy: 'Bras Articulé de Smartgun de la Campagne de Tartarus' },
+      { id: 'corp_mishima', name: 'Caporal K. Mishima', role: 'Éclaireur & Opérateur Détecteur de Mouvement', weapon: 'Fusil à Pompe M37A2 & Grenades Frag M40', hp: 410, armor: 45, trophy: 'Détecteur de Mouvement Fissuré sur LV-223' },
+      { id: 'pvt_howard_medic', name: 'Soldat Infirmière Howard', role: 'Médecin de Combat de Première Ligne', weapon: 'Carabine M41A & Injecteur Stimulant de Survie', hp: 390, armor: 45, trophy: 'Trousse Chirurgicale Militaire de l\'USS Hasdrubal' }
+    ]
+  },
+  {
+    id: 'squad_avp_eternal_suwa_syndicate_1998',
+    name: 'Empire Cyber-Immortel de Gideon Suwa & Rebecca Yuh — Tokyo (1998)',
+    shortName: 'Syndicat Suwa Tokyo (4 Cibles)',
+    category: 'MERCENARY_PIRATES',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator: Eternal (Comics Dark Horse 1998)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiome: 'Tour Cybernétique Suwa (Tokyo 1998)',
+    description: 'Le milliardaire vieux de sept siècles Gideon Suwa et sa garde prétorienne équipée d\'exosquelettes et d\'armes lasers rétro-conçues à partir d\'une épave Yautja.',
+    tactics: 'Verrouillage par tourelles lasers rétro-conçues, armures assistées lourdes et lâcher d\'urgence de Xénomorphes captifs.',
+    totalHonorReward: 4800,
+    soloVariantId: 'prey_weyland_combat_android',
+    members: [
+      { id: 'gideon_suwa_1998', name: 'Gideon Suwa (L\'Immortel de 700 Ans)', role: 'Patriarche Pillard de Technologie Yautja', weapon: 'Exosquelette Royal & Canon Laser Yautja Rétro-Conçu', hp: 590, armor: 65, trophy: 'Flacon de Sérum Cardiaque Yautja de Gideon Suwa' },
+      { id: 'rebecca_yuh', name: 'Rebecca Yuh', role: 'Journaliste d\'Investigation & Survivante', weapon: 'Pistolet Automatique 9mm & Caméra Thermique', hp: 340, armor: 25, trophy: 'Disque Optique des Archives Secrètes de l\'Épave' },
+      { id: 'suwa_exo_commander', name: 'Commandant Kenshin (Garde Suwa)', role: 'Chef de la Sécurité en Exo-Armure', weapon: 'Canon à Faisceau Photonique Lourd & Lame Vibrante', hp: 510, armor: 60, trophy: 'Casque Cyber-Samouraï de la Corporation Suwa' },
+      { id: 'suwa_bio_handler', name: 'Technicien des Cuves Xéno', role: 'Opérateur de Stase du Vaisseau Englouti', weapon: 'Fusil Électromagnétique IEM & Lance-Cryo', hp: 410, armor: 45, trophy: 'Clé d\'Activation de la Soute du XIVe Siècle' }
     ]
   }
 ]);

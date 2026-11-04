@@ -392,6 +392,36 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     modifiers: Object.freeze({ damageMultiplier: 1.38, criticalChanceMultiplier: 1.3, armorPierceMultiplier: 1.3 }),
   }),
   Object.freeze({
+    id: 'variant_gladiator_hg_trident_net', armorPresetId: 'gladiator_hg', baseWeaponId: 'netgun', name: 'Filet Barbelé d\'Arène & Trident du Gladiator Predator',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'crowd_control_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.28, snareDurationMultiplier: 1.4, bleedDurationSeconds: 4 }),
+  }),
+  Object.freeze({
+    id: 'variant_exalted_hg_golden_spear', armorPresetId: 'exalted_hg', baseWeaponId: 'combi_stick', name: 'Lance Aurique Sacrée de l\'Exalted Predator',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'spear',
+    modifiers: Object.freeze({ damageMultiplier: 1.35, honorGainMultiplier: 1.3, throwDamageMultiplier: 1.35 }),
+  }),
+  Object.freeze({
+    id: 'variant_witch_hg_curse_bow', armorPresetId: 'witch_hg', baseWeaponId: 'yautja_bow', name: 'Arc d\'Os Maléfique de la Witch Predator',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'charged_arrow',
+    modifiers: Object.freeze({ damageMultiplier: 1.26, poisonDurationSeconds: 5, stealthDrainReduction: 0.3 }),
+  }),
+  Object.freeze({
+    id: 'variant_jotun_hg_frost_maul', armorPresetId: 'jotun_hg', baseWeaponId: 'wristblades', name: 'Fendoir Polaire Nordique du Jotun Predator',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds', 'killerOfKillers']), behavior: 'melee_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.4, knockbackBonus: 10, slowEffectMultiplier: 1.25 }),
+  }),
+  Object.freeze({
+    id: 'variant_bionic_hg_cyber_caster', armorPresetId: 'bionic_hg', baseWeaponId: 'plasmacaster_single', name: 'Canon à Plasma Bionique Surchargé',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds', 'predator2']), behavior: 'plasma',
+    modifiers: Object.freeze({ damageMultiplier: 1.33, lockSpeedMultiplier: 1.45, energyCostMultiplier: 0.88 }),
+  }),
+  Object.freeze({
+    id: 'variant_cyborg_yautja_hydraulic_blades', armorPresetId: 'cyborg_yautja', baseWeaponId: 'wristblades', name: 'Lames Hydrauliques Haute Fréquence du Cyborg Predator',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['predatorConcreteJungle2005', 'huntingGrounds']), behavior: 'melee_fast',
+    modifiers: Object.freeze({ damageMultiplier: 1.32, attackSpeedMultiplier: 1.3, armorPierceMultiplier: 1.35 }),
+  }),
+  Object.freeze({
     id: 'variant_anubis_hg_jackal_staff', armorPresetId: 'anubis_hg', baseWeaponId: 'combi_stick', name: 'Sceptre Solaire Pyramidal d\'Anubis',
     sourceTier: 'LICENSED_EU', sources: Object.freeze(['avp2004', 'huntingGrounds']), behavior: 'spear',
     modifiers: Object.freeze({ damageMultiplier: 1.34, energyRegenMultiplier: 1.3, throwVelocityMultiplier: 1.3 }),
