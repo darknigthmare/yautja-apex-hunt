@@ -24,7 +24,7 @@ test('Twenty additional Alien archives are non-playable, sourced, and unique in 
 });
 test('Export candidate preserves 731 local names/source refs but excludes gameplay balance',()=>{
  const candidate=buildAlienBaseCandidateExport();
- assert.equal(candidate.entries.length,955);
+ assert.equal(candidate.entries.length,973);
  assert.ok(candidate.entries.every(e=>e.researchOnly&&e.admission==='RESEARCH_ONLY'&&e.reference?.blobSha&&e.canonExact===false));
  for(const x of candidate.entries){for(const f of ['baseHonor','threatStars','damage','sizeMeters','maxHealth','moveSpeed'])assert.ok(!Object.hasOwn(x,f),x.id);}
  assert.equal(candidate.counts.prey,361);assert.equal(candidate.counts.skins,50);

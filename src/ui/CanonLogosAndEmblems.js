@@ -1746,6 +1746,66 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  if (id.includes('lost_tribe_1997')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-losttribe" role="img" aria-label="Insigne Lost Tribe 1997">
+        <circle cx="40" cy="40" r="36" fill="#1e1508" stroke="#f59e0b" stroke-width="2.5" />
+        <polygon points="40,12 58,28 52,58 40,66 28,58 22,28" fill="#78350f" stroke="#fcd34d" stroke-width="2" />
+        <circle cx="40" cy="36" r="7" fill="#fef08a" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fde68a" letter-spacing="1" text-anchor="middle">LOST TRIBE 97</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('pine_barrens_cia')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-ciapines" role="img" aria-label="Insigne CIA Pine Barrens">
+        <circle cx="40" cy="40" r="36" fill="#0d1912" stroke="#22c55e" stroke-width="2.5" />
+        <polygon points="40,14 48,32 66,32 52,44 57,62 40,50 23,62 28,44 14,32 32,32" fill="#14532d" stroke="#86efac" stroke-width="1.5" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#bbf7d0" letter-spacing="1" text-anchor="middle">PINE BARRENS</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('prodigy_tactical')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-prodigy" role="img" aria-label="Insigne Prodigy Corp 2120">
+        <circle cx="40" cy="40" r="36" fill="#071921" stroke="#06b6d4" stroke-width="2.5" />
+        <ellipse cx="40" cy="38" rx="18" ry="22" fill="#164e63" stroke="#67e8f9" stroke-width="2" />
+        <circle cx="40" cy="38" r="6" fill="#a5f3fc" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#cffafe" letter-spacing="1" text-anchor="middle">PRODIGY 2120</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('usm_auriga')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-auriga" role="img" aria-label="Insigne Garnison USM Auriga">
+        <circle cx="40" cy="40" r="36" fill="#0f172a" stroke="#3b82f6" stroke-width="2.5" />
+        <rect x="22" y="20" width="36" height="36" rx="6" fill="#1e3a8a" stroke="#93c5fd" stroke-width="2" />
+        <text x="40" y="43" font-family="'Orbitron', sans-serif" font-size="14" font-weight="900" fill="#eff6ff" text-anchor="middle">8</text>
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#bfdbfe" letter-spacing="1" text-anchor="middle">USM AURIGA</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('capcom_avp_sanjose')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-sanjose" role="img" aria-label="Insigne Alliance San Jose 1994">
+        <circle cx="40" cy="40" r="36" fill="#171026" stroke="#facc15" stroke-width="2.5" />
+        <line x1="20" y1="58" x2="60" y2="18" stroke="#38bdf8" stroke-width="3.5" />
+        <line x1="20" y1="18" x2="60" y2="58" stroke="#ef4444" stroke-width="3.5" />
+        <circle cx="40" cy="38" r="8" fill="#fef08a" stroke="#ca8a04" stroke-width="2" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fef08a" letter-spacing="1" text-anchor="middle">SAN JOSE 1994</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('lv742_kainde_amedha')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-lv742" role="img" aria-label="Insigne Sanctuaire LV-742">
+        <circle cx="40" cy="40" r="36" fill="#230b04" stroke="#f97316" stroke-width="2.5" />
+        <polygon points="40,12 62,56 18,56" fill="#7c2d12" stroke="#fdba74" stroke-width="2" />
+        <circle cx="40" cy="40" r="7" fill="#fef08a" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#fed7aa" letter-spacing="1" text-anchor="middle">SHRINE LV-742</text>
+      </svg>
+    `.trim();
+  }
   return getYautjaClanLogo(size);
 }
 

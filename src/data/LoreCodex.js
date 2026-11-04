@@ -382,6 +382,78 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     summary: 'Les armes d’honneur échangées entre guerriers humains et Anciens Yautja à travers les siècles et la survie cybernétique de Dutch.',
     body: 'Lorsqu’un humain triomphe d’un Yautja en combat singulier loyal, les Anciens honorent le vainqueur en lui remettant une relique historique. Le pistolet à silex « Raphael Adolini 1715 » passe ainsi de Naru (1719) à Greyback qui l’offre à Mike Harrigan en 1997. De même, des sabres de samouraï, des haches vikings et des médailles militaires ornent les nefs claniques. Enfin, le Major Alan « Dutch » Schaefer, infusé d’un sérum d’ADN Yautja stabilisé, poursuit sa traque à la tête de l’OWLF jusqu’en 2025.',
     sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['predator2', 'prey2022', 'killerOfKillers', 'huntingGrounds'], universe: 'PREDATOR'
+  },
+  {
+    id: 'alien-xenomorphes-castes-mutantes-fireteam-pathogene', entryType: 'codex', category: 'xenomorphes', title: 'Castes Mutantes & Souches Pathogènes : Prowler, Burster, Spitter & Crusher',
+    summary: 'Les spécialisations morphologiques de combat d’Aliens: Colonial Marines et Fireteam Elite : artillerie acide, béliers blindés et kamikazes.',
+    body: 'Sous la pression des armes lourdes de l’USCM ou du mutagène A0-3959X, les ruches développent des castes spécialisées redoutables. Le Crusher possède une crête frontale calcifiée impénétrable aux balles de 10mm, capable de renverser un blindé. Le Spitter projette des salves d’acide pressurisé à longue distance, tandis que les Boilers et Bursters transforment leur propre carapace en bombe biologique corrosive à la mort. Les Prowlers quadrupèdes tendent des embuscades fulgurantes depuis les conduits.',
+    sourceTier: 'LICENSED_EU', relatedTier: 'SCREEN', isOriginal: false, sources: ['aliens1986', 'aliensFireteamElite2021', 'aliensDarkDescent2023'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-technologie-hypersommeil-cryostase-syndrome', entryType: 'codex', category: 'technologie', title: 'Cryostase & Hypersommeil Spatial : Chambres de Stase & Amnésie de Réveil',
+    summary: 'La technologie indispensable aux voyages FTL de la Frontière : suspension métabolique, « Cryo-Sickness » et vulnérabilité en stase.',
+    body: 'Bien que les moteurs à déplacement tachyonique permettent de dépasser la vitesse de la lumière, les traversées interstellaires durent des mois, voire des décennies. Les équipages voyagent donc nus ou en combinaison légère dans des sarcophages d’hypersommeil remplis de gaz stabilisateur. Un réveil brutal provoque le « mal de stase » (désorientation, nausées, amnésie temporaire), tandis qu’une brèche de confinement transforme la salle d’hypersommeil en garde-manger sans défense pour les Facehuggers.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['alien1979', 'aliens1986', 'alien3_1992', 'prometheus2012', 'alienCovenant2017'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-culture-colonies-frontiere-terraformation-atmo', entryType: 'codex', category: 'lieu', title: 'Terraformation « Shake ’n’ Bake » & Processeurs Atmosphériques',
+    summary: 'L’ingénierie planétaire lourde de Weyland-Yutani : réacteurs à fusion géants convertissant les mondes morts en colonies minières.',
+    body: 'Surnommées colonies « Shake ’n’ Bake » par la Weyland-Yutani, des implantations comme Hadley’s Hope sur LV-426 reposent sur de titanesques Processeurs Atmosphériques alimentés par fusion thermonucléaire. Ces tours monumentales aspirent le méthane et le dioxyde de carbone primordiaux pour rejeter un air respirable en quelques décennies. Leurs sous-sols humides et surchauffés constituent toutefois l’incubateur thermique idéal pour l’établissement d’un nid royal xénomorphe.',
+    sourceTier: 'SCREEN', isOriginal: false, sources: ['aliens1986', 'alienRomulus2024'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-science-xenoborg-juggernaut-synthetiques-combat', entryType: 'codex', category: 'technologie', title: 'Cyber-Xénomorphes (Xenoborgs), Sentinelles Weyland & Drones F44AA',
+    summary: 'Les armes biomécaniques de la division Bio-Weapons : Xénomorphes cyber-asservis à canons lasers et synthétiques militaires blindés.',
+    body: 'Dans sa quête d’asservissement de l’organisme XX121, la Weyland-Yutani a expérimenté la lobotomie cybernétique sur des Drones adultes pour créer le « Xenoborg » : un monstre greffé de servomoteurs en titane et de doubles canons lasers oculaires, chargé de défendre les complexes secrets. Parallèlement, la compagnie déploie des escouades de synthétiques de combat insensibles à la peur et aux spores pathogènes pour éliminer tout témoin humain.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'aliensFireteamElite2021'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-chronique-terre-guerre-earth-war-prodigy', entryType: 'codex', category: 'culture', title: 'Incursion Terrestre : Le Siège de la Terre (Earth War) & Prodigy Corp',
+    summary: 'La peur suprême d’Ellen Ripley devenue réalité dans les chroniques Earth War et l’essor des méta-humains de Prodigy Corp (2120).',
+    body: '« Si une seule de ces choses arrive ici, ce sera la fin de tout. » Dans la fresque Dark Horse Earth War (Earth Hive, Nightmare Asylum, Female War), des fanatiques et militaires imprudents introduisent l’espèce XX121 sur Terre, forçant l’humanité à abandonner ses mégapoles avant la contre-offensive menée pour capturer la Reine-Mère. En amont chronologique (2120, Alien: Earth), la corporation Prodigy de Boy Kavalier tente déjà de percer les secrets de l’immortalité synthétique face au premier crash extraterrestre sur le sol terrien.',
+    sourceTier: 'LICENSED_EU', relatedTier: 'SCREEN', isOriginal: false, sources: ['aliens1986', 'avpOriginalComics'], universe: 'ALIEN'
+  },
+  {
+    id: 'avp-technologie-artefacts-hybrides-armures-anti-acide', entryType: 'codex', category: 'technologie', title: 'Forge Xéno-Yautja : Boucliers de Crâne, Lances d’Acide & Alliages Trempés',
+    summary: 'La métallurgie de chasse Yautja : distinction entre l’acier brut des Non-Sang et l’alliage noble anti-acide des Élites, et forge de trophées.',
+    body: 'Lors du rite de Bouvetøya (AVP 2004), les lames de poignet et le filet de Celtic fondent sous le sang acide de Grid Alien, car les Jeunes Sangs doivent prouver leur valeur avec un équipement non traité. À l’inverse, les chasseurs Sang-Marqués (Blooded) et les Anciens forgent leurs armes dans un alliage stellaire totalement insensible à la corrosion moléculaire. En cas de perte de leur équipement, ils façonnent sur place des boucliers dans le dôme crânien d’un Guerrier et des lances terminées par une pointe caudale xénomorphe.',
+    sourceTier: 'AVP_SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['avp2004', 'avpRequiem2007', 'avpOriginalComics'], universe: 'AVP'
+  },
+  {
+    id: 'avp-chronique-capcom-arcade-sanjose-1994-schaefer', entryType: 'codex', category: 'culture', title: 'La Guerre de San Jose (AVP 1994) : Linn Kurosawa & Major Dutch Cyborg',
+    summary: 'L’alliance militaire et martiale de la côte californienne : la lieutenante Linn Kurosawa et Dutch Schaefer cyber-augmenté aux côtés des Yautja.',
+    body: 'Dans le classique Alien vs. Predator (Capcom 1994), la ville californienne de San Jose est submergée par une infestation xénomorphe orchestrée par le général renégat Bush pour le compte de la Weyland-Yutani. Acculés, la lieutenante cyber-martiale Linn Kurosawa (maniant le katana) et le Major Dutch Schaefer (équipé d’un bras bionique lourd à canon plasma-vulcan) s’allient à deux chasseurs Yautja nobles (Hunter et Warrior) pour détruire la Reine et faire exploser le cuirassé militaire en orbite.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'predator1987'], universe: 'AVP'
+  },
+  {
+    id: 'avp-chronique-extinction-lv742-clan-kainde-amedha', entryType: 'codex', category: 'lieu', title: 'Le Conflit de LV-742 (AVP: Extinction) : Clans Hydres, Blazers & Ravagers',
+    summary: 'La guerre planétaire ouverte sur LV-742 entre un Sanctuaire Militaire Yautja, l’USCM et une souche royale de Ravagers et Carriers.',
+    body: 'Sur la planète luxuriante et volcanique LV-742, les trois espèces les plus meurtrières de la galaxie se livrent une guerre totale. La ruche déploie des Carriers transportant six Facehuggers sur leur dos et d’immenses Ravagers dont les bras sont remplacés par des faux organiques tranchant le titane. Pour défendre leur Sanctuaire ancestral (Shrine), les Yautja mobilisent leurs castes militaires lourdes : les Blazers aux doubles canons thermiques et les Hydras à salves de missiles guidés.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'aliens1986'], universe: 'AVP'
+  },
+  {
+    id: 'avp-culture-kainde-amedha-philosophie-proie-parfaite', entryType: 'codex', category: 'culture', title: '« Kainde Amedha » (Viande Dure) : Philosophie Yautja de la Proie Parfaite',
+    summary: 'L’éthique religieuse et martiale liant les Yautja aux Xénomorphes : pourquoi le Serpent incarne le miroir d’honneur absolu du Chasseur.',
+    body: 'Dans la langue Yautja, l’humain est appelé « Pyode Amedha » (Viande Molle) en raison de sa fragilité physique compensée par la ruse et les armes à feu. À l’opposé, le Xénomorphe est vénéré sous le nom de « Kainde Amedha » (Viande Dure). Incorruptible, dépourvu de peur, d’avidité ou d’armes lâches à distance, chaque Xénomorphe combat jusqu’à la mort avec ses seules griffes, sa queue et son sang acide, offrant au chasseur Yautja le duel pur par excellence.',
+    sourceTier: 'LICENSED_EU', relatedTier: 'AVP_SCREEN', isOriginal: false, sources: ['avpOriginalComics', 'avpPreyOmnibus', 'avp2004'], universe: 'AVP'
+  },
+  {
+    id: 'predator-culture-lost-tribe-1997-greyback-pantheon', entryType: 'codex', category: 'culture', title: 'La Tribu Perdue de 1997 (Lost Tribe) : Le Panthéon de l’Ancien Greyback',
+    summary: 'Les dix maîtres chasseurs du vaisseau de Los Angeles (Predator 2) : Greyback, Shaman, Boar, Borg, Snake, Scout, Stalker, Guardian et Ram.',
+    body: 'Lorsque le lieutenant Mike Harrigan pénètre dans la nef souterraine de Los Angeles en 1997 après avoir vaincu le City Hunter, il se retrouve encerclé par la « Lost Tribe » dirigée par l’Ancien Greyback (Golden Angel). Chaque membre de ce clan nomade possède une spécialisation séculaire : Shaman le mystique visionnaire, Boar le traqueur brutal en armure osseuse, Borg le pionnier cybernétique, Snake le lanceur de disques furtif, Scout le tireur longue portée et Guardian le porteur du canon lourd.',
+    sourceTier: 'SCREEN', relatedTier: 'LICENSED_SCREEN_DESIGN', isOriginal: false, sources: ['predator2', 'lostTribeDesigns'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-technologie-arsenal-lourd-blazer-hydra-spear', entryType: 'codex', category: 'technologie', title: 'Castes Militaires Yautja : Blazers Thermiques, Hydres & Armures de Guerre',
+    summary: 'La doctrine de guerre ouverte des clans Yautja lorsque la chasse rituelle cède la place à l’éradication planétaire ou spatiale.',
+    body: 'Le Code d’Honneur impose au chasseur solitaire de calibrer son équipement sur celui de sa proie. Mais lorsqu’une infestation menace un monde sacré ou qu’une faction humaine dérobe la technologie des Anciens, les clans déploient leur caste militaire. Ces guerriers revêtent des exo-armures intégrales hermétiques et emploient des canons thermiques doubles projetant des faisceaux de lave plasmique, des lanceurs multi-ogives Hydra et des glaives énergétiques lourds.',
+    sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'huntingGrounds', 'predatorConcreteJungle2005'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-chronique-1715-pirates-vikings-samourais-eres', entryType: 'codex', category: 'culture', title: 'Les Chasses Séculaires à Travers l’Histoire Humaine (841 – 1942)',
+    summary: 'Plus d’un millénaire de duels sur Terre : Vikings scandinaves (841), Samouraïs féodaux (1615), Pirates (1715), Comanches (1719) et Pacifique (1942).',
+    body: 'La Terre est un terrain de chasse privilégié pour les clans Yautja depuis des siècles. Dès l’an 841 dans les fjords nordiques, puis en 1615 face aux rōnins du Japon féodal (Killer of Killers), les chasseurs testent les meilleurs guerriers à l’arme blanche. En 1715, Greyback combat aux côtés du capitaine pirate Raphael Adolini contre son équipage mutiné, quatre ans avant l’incursion du Feral Predator sur les terres Comanches de Naru (Prey, 1719), et jusqu’aux duels aériens au-dessus du Pacifique en 1942.',
+    sourceTier: 'SCREEN', relatedTier: 'LICENSED_EU', isOriginal: false, sources: ['prey2022', 'killerOfKillers', 'predator2', 'huntingGrounds'], universe: 'PREDATOR'
   }
 ]);
 // IDs match the values already used by the planet selector.

@@ -366,6 +366,36 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     sourceTier: 'LICENSED_EU', sources: Object.freeze(['predators2010', 'huntingGrounds']), behavior: 'melee_heavy',
     modifiers: Object.freeze({ damageMultiplier: 1.3, restraintBreakBonus: 0.5, rageDamageBonus: 0.25 }),
   }),
+  Object.freeze({
+    id: 'variant_warrior_lost_tribe_heavy_maul', armorPresetId: 'warrior_lost_tribe', baseWeaponId: 'combi_stick', name: 'Lance de Choc Crantée du Warrior (Lost Tribe 1990)',
+    sourceTier: 'LICENSED_SCREEN_DESIGN', sources: Object.freeze(['predator2', 'lostTribeDesigns']), behavior: 'spear',
+    modifiers: Object.freeze({ damageMultiplier: 1.3, staggerBonus: 0.4, meleeReachMultiplier: 1.25 }),
+  }),
+  Object.freeze({
+    id: 'variant_armored_lost_tribe_twin_plasma', armorPresetId: 'armored_lost_tribe', baseWeaponId: 'plasmacaster_single', name: 'Canon d\'Épaule Blindé Haute Densité du Lost Predator (1990)',
+    sourceTier: 'LICENSED_SCREEN_DESIGN', sources: Object.freeze(['predator2', 'lostTribeDesigns']), behavior: 'plasma',
+    modifiers: Object.freeze({ damageMultiplier: 1.32, blastRadiusMultiplier: 1.2, overheatResistanceBonus: 0.35 }),
+  }),
+  Object.freeze({
+    id: 'variant_amazon_hg_royal_glaive', armorPresetId: 'amazon_hg', baseWeaponId: 'glaive', name: 'Glaive Matriarcal d\'Airain de l\'Amazon Predator',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'blade',
+    modifiers: Object.freeze({ damageMultiplier: 1.36, cleaveArcMultiplier: 1.3, honorGainMultiplier: 1.25 }),
+  }),
+  Object.freeze({
+    id: 'variant_pirate_hg_cutlass_blade', armorPresetId: 'pirate_hg', baseWeaponId: 'wristblades', name: 'Sabre d\'Abordage & Lames Corsaires du Pirate Predator (1715)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['predator2', 'huntingGrounds']), behavior: 'melee_fast',
+    modifiers: Object.freeze({ damageMultiplier: 1.26, parryCounterMultiplier: 1.4, bleedDurationSeconds: 4 }),
+  }),
+  Object.freeze({
+    id: 'variant_oni_hg_demon_odachi', armorPresetId: 'oni_hg', baseWeaponId: 'wristblades', name: 'Odachi Démoniaque du Chasseur Oni',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'melee_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.38, criticalChanceMultiplier: 1.3, armorPierceMultiplier: 1.3 }),
+  }),
+  Object.freeze({
+    id: 'variant_anubis_hg_jackal_staff', armorPresetId: 'anubis_hg', baseWeaponId: 'combi_stick', name: 'Sceptre Solaire Pyramidal d\'Anubis',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avp2004', 'huntingGrounds']), behavior: 'spear',
+    modifiers: Object.freeze({ damageMultiplier: 1.34, energyRegenMultiplier: 1.3, throwVelocityMultiplier: 1.3 }),
+  }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);
 

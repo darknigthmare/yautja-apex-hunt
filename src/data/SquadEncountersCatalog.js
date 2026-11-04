@@ -2436,6 +2436,132 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'derrick_foster', name: 'Capitaine Angela Foster', role: 'Chef d\'Expédition du Geryon', weapon: 'Carabine de Sécurité & Torche Thermique', hp: 350, armor: 30, trophy: 'Enregistreur de Vol Noir du Vaisseau Geryon' },
       { id: 'elden_mutated', name: 'Elden (Synthétique Muté A0-3959X)', role: 'Hybride Biomécanique Enragé', weapon: 'Griffes Organo-Métalliques & Force Surhumaine', hp: 580, armor: 55, trophy: 'Noyau Cortical Cristallisé par le Mutagène Noir' }
     ]
+  },
+  {
+    id: 'squad_lost_tribe_1997_greyback_elders',
+    name: 'Panthéon de la Tribu Perdue (1997) — L\'Ancien Greyback & ses Champions',
+    shortName: 'Lost Tribe 1997 (4 Maîtres)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator 2 (1990, Stephen Hopkins)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiome: 'Nef Souterraine de Los Angeles 1997',
+    description: 'Le cercle intérieur des maîtres chasseurs de la Lost Tribe entourant l\'Ancien Greyback dans la salle des trophées du vaisseau.',
+    tactics: 'Duel codifié d\'honneur : bâton cérémonial de Shaman, doubles lames de Boar, disques de Snake et épée d\'Ancien.',
+    totalHonorReward: 5300,
+    soloVariantId: 'alien_base_alpha_predator_kaail',
+    members: [
+      { id: 'greyback_elder', name: 'Greyback (Golden Angel Elder)', role: 'Ancien Patriarche de la Lost Tribe', weapon: 'Épée Cérémoniale & Pistolet Adolini 1715', hp: 740, armor: 75, trophy: 'Médaillon Ancestral de Commandement de Greyback' },
+      { id: 'shaman_mystic', name: 'Shaman Predator', role: 'Mystique & Visionnaire du Clan', weapon: 'Bâton Rituel Gravé & Faucille d\'Os', hp: 580, armor: 50, trophy: 'Collier de Crânes & Plumes Rituelles du Chaman' },
+      { id: 'boar_enforcer', name: 'Boar Predator', role: 'Traqueur de Choc Lourd', weapon: 'Doubles Lames Brise-Os & Canon Épaule', hp: 640, armor: 65, trophy: 'Défenses de Sanglier Stellaire du Masque de Boar' },
+      { id: 'snake_phantom', name: 'Snake Predator', role: 'Maître des Disques Furtifs', weapon: 'Double Smart Disc Silencieux & Filet', hp: 560, armor: 55, trophy: 'Lentille Reptilienne Thermique de Snake' }
+    ]
+  },
+  {
+    id: 'squad_pine_barrens_cia_hunters_1993',
+    name: 'Détachement Spécial CIA de Pine Barrens — Agent John Trent (1993)',
+    shortName: 'CIA Pine Barrens (4 Agents)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Bad Blood (Comics Dark Horse 1993)',
+    biomeId: 'jungle',
+    recommendedBiome: 'Marais de Pine Barrens (New Jersey)',
+    description: 'Survivants des forces spéciales et agents de la CIA dirigés par John Trent pour contenir le carnage du Bad Blood dans les marais.',
+    tactics: 'Embuscades dans le brouillard, mines antipersonnel Claymore et tirs d\'arrêt au gros calibre .454 Casull.',
+    totalHonorReward: 3400,
+    soloVariantId: 'alien_base_george_dillon_cia',
+    members: [
+      { id: 'john_trent', name: 'Agent Spécial John Trent', role: 'Survivant & Chef d\'Opération CIA', weapon: 'Carabine M16A2 & Revolver .454 Casull', hp: 400, armor: 35, trophy: 'Plaque Fédérale Tachée de Sang de John Trent' },
+      { id: 'cia_marksman', name: 'Tireur CIA Callahan', role: 'Sniper de Brouillard', weapon: 'Fusil M24 SWS à Lunette Infrarouge', hp: 330, armor: 25, trophy: 'Lunette Thermique de Nuit AN/PVS-4' },
+      { id: 'cia_heavy', name: 'Sergent Miller (Béret Vert)', role: 'Soutien Démolition', weapon: 'Mitrailleuse M60E3 & Mines Claymore', hp: 390, armor: 40, trophy: 'Béret Vert Déchiré des Marais du New Jersey' },
+      { id: 'pine_tracker', name: 'Pisteur Local Roscoe', role: 'Guide des Marécages', weapon: 'Fusil de Chasse Calibre 10 & Pièges à Loup', hp: 320, armor: 20, trophy: 'Lanterne Tempête Brisée de Pine Barrens' }
+    ]
+  },
+  {
+    id: 'squad_alien_earth_prodigy_tactical_2120',
+    name: 'Force d\'Intervention Prodigy Corp & Hybride Wendy — Terre (2120)',
+    shortName: 'Prodigy Corp Terre (4 Unités)',
+    category: 'SYNTHETIC_PACK',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: Earth (Série FX 2025, Noah Hawley)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiome: 'Complexe Insulaire Prodigy (Terre)',
+    description: 'L\'unité d\'élite de Boy Kavalier entourant Wendy, première méta-humaine synthétique, et son mentor androïde Kirsh lors du crash orbital.',
+    tactics: 'Boucliers bio-électriques, décharges d\'arc paralysantes et coordination synaptique entre synthétiques et humains.',
+    totalHonorReward: 4100,
+    soloVariantId: 'prey_weyland_combat_android',
+    members: [
+      { id: 'wendy_hybrid', name: 'Wendy (Prototypage Méta-Humain)', role: 'Hybride Conscience Humaine / Corps Synthétique', weapon: 'Lame Tactique Haute Fréquence & Impulsion', hp: 480, armor: 45, trophy: 'Médaillon Neural de Transfert de Conscience Prodigy' },
+      { id: 'kirsh_mentor', name: 'Kirsh (Synthétique Mentor)', role: 'Superviseur Scientifique & Tactique', weapon: 'Fusil à Arc Bio-Électrique 120 kV', hp: 520, armor: 55, trophy: 'Processeur Optique Argenté de Kirsh' },
+      { id: 'prodigy_captain', name: 'Capitaine de Sécurité Hermit', role: 'Commandant d\'Intervention Terrestre', weapon: 'Carabine Bullpup Prodigy & Grenades IEM', hp: 380, armor: 40, trophy: 'Écusson Doré de la Garde de Boy Kavalier' },
+      { id: 'prodigy_specialist', name: 'Spécialiste Bio-Confinement', role: 'Unité de Capture Xéno', weapon: 'Filet Électromagnétique & Lance-Cryo', hp: 360, armor: 35, trophy: 'Cylindre d\'Échantillon du Crash Terrien 2120' }
+    ]
+  },
+  {
+    id: 'squad_usm_auriga_perez_science_2381',
+    name: 'Garnison Militaire USM Auriga — Général Perez & Dr Wren (2381)',
+    shortName: 'Garnison USM Auriga (4 Officiers)',
+    category: 'COLONIAL_MARINES',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: Resurrection (1997, Jean-Pierre Jeunet)',
+    biomeId: 'hive_lv426',
+    recommendedBiome: 'Vaisseau Médical USM Auriga',
+    description: 'Le commandement militaire et scientifique de l\'United Systems Military responsable du clonage d\'Ellen Ripley et de l\'élevage xénomorphe.',
+    tactics: 'Tirs de barrage au fusil Lacrima 99, verrouillage de sas pressurisés et utilisation de gaz cryo-létal.',
+    totalHonorReward: 3600,
+    soloVariantId: 'alien_base_william_hudson_private',
+    members: [
+      { id: 'gen_perez', name: 'Général Martin Perez', role: 'Commandant Suprême de l\'USM Auriga', weapon: 'Pistolet Lourd d\'Officier USM & Grenades', hp: 390, armor: 40, trophy: 'Épaulettes Étoilées tâchées d\'Acide du Général Perez' },
+      { id: 'dr_wren', name: 'Dr Mason Wren', role: 'Directeur du Programme de Clonage', weapon: 'Pistolet Compact Dissimulé & Fusil Lacrima', hp: 340, armor: 25, trophy: 'Carte d\'Accès Codée des Cages de Clones 1-8' },
+      { id: 'distephano', name: 'Soldat Vincent DiStephano', role: 'Fantassin Lourd USM', weapon: 'Fusil d\'Assaut USM Lacrima 99 & Pompe', hp: 410, armor: 45, trophy: 'Casque Blindé Standard de l\'United Systems Military' },
+      { id: 'dr_gediman', name: 'Dr Jonathan Gediman', role: 'Xéno-Biologiste Fanatique', weapon: 'Diffuseur d\'Azote Liquide Punitive', hp: 310, armor: 20, trophy: 'Buse de Punition Cryogénique des Cellules de l\'Auriga' }
+    ]
+  },
+  {
+    id: 'squad_capcom_avp_sanjose_alliance_1994',
+    name: 'Alliance de San Jose — Major Dutch Cyborg & Lt. Linn Kurosawa (1994)',
+    shortName: 'Alliance San Jose 1994 (4 Héros)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien vs. Predator (Capcom Arcade 1994)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiome: 'San Jose Infesté (Californie)',
+    description: 'Le quatuor mythique du jeu d\'arcade Capcom : Dutch Schaefer cybernétique et Linn Kurosawa combattant épaule contre épaule avec deux Yautja nobles.',
+    tactics: 'Combos d\'arts martiaux Ki, barrages de canon-bras Vulcan et salves croisées de lances Naginata et Smartguns.',
+    totalHonorReward: 5400,
+    soloVariantId: 'alien_base_major_dutch_schaefer_cyborg',
+    members: [
+      { id: 'dutch_cyborg_94', name: 'Major Dutch Schaefer (Cyborg)', role: 'Colosse Bionique USCM', weapon: 'Canon-Bras Cybernétique Plasma-Vulcan', hp: 650, armor: 70, trophy: 'Servomoteur Hydraulique du Bras Bionique de Dutch' },
+      { id: 'linn_kurosawa', name: 'Lieutenante Linn Kurosawa', role: 'Maître Sabreuse Cyborg du 13e Corps', weapon: 'Katana Haute Fréquence & Pistolet Rapide', hp: 520, armor: 50, trophy: 'Garde de Katana (Tsuba) Gravée de Linn Kurosawa' },
+      { id: 'capcom_warrior', name: 'Predator Warrior (San Jose)', role: 'Vétéran Lancier Yautja', weapon: 'Naginata Combi-Stick & Canon d\'Épaule', hp: 680, armor: 65, trophy: 'Pointe de Naginata Cérémoniale de San Jose' },
+      { id: 'capcom_hunter', name: 'Predator Hunter (San Jose)', role: 'Chasseur Agile au Disque', weapon: 'Smart Disc Tranchant & Lames de Poignet', hp: 620, armor: 60, trophy: 'Biomasque Bronze Classique de l\'Alliance de 1994' }
+    ]
+  },
+  {
+    id: 'squad_lv742_kainde_amedha_shrine_2003',
+    name: 'Garde Sacrée du Sanctuaire de LV-742 — Blazer, Hydra & Ancien (2003)',
+    shortName: 'Sanctuaire LV-742 (4 Castes)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens Versus Predator: Extinction (EA / Zono 2003)',
+    biomeId: 'yautja_prime',
+    recommendedBiome: 'Sanctuaire Volcanique de LV-742',
+    description: 'La force militaire lourde Yautja mobilisée sur LV-742 pour défendre le Shrine sacré contre les Ravagers xénomorphes et l\'USCM.',
+    tactics: 'Barrage d\'artillerie de missiles Hydra, faisceaux thermiques continus Blazer et bénédiction psychique du Shrine Keeper.',
+    totalHonorReward: 5200,
+    soloVariantId: 'prey_predalien_abomination',
+    members: [
+      { id: 'shrine_ancient', name: 'Ancien Gardien du Sanctuaire', role: 'Commandant Spirituel & Martial', weapon: 'Sceptre Lancier Millénaire & Disque Solaire', hp: 720, armor: 75, trophy: 'Relique Sacrée du Sanctuaire de LV-742' },
+      { id: 'blazer_predator', name: 'Blazer Predator (Caste Thermique)', role: 'Incinérateur Lourd en Exo-Armure', weapon: 'Doubles Canons Thermiques à Faisceau de Lave', hp: 660, armor: 70, trophy: 'Buse Thermique en Platine d\'Armure Blazer' },
+      { id: 'hydra_predator', name: 'Hydra Predator (Caste Artillerie)', role: 'Bombardier Multi-Ogives', weapon: 'Lance-Missiles Dorsal Guidé Hydra & Glaive', hp: 640, armor: 65, trophy: 'Module de Verrouillage Multi-Cibles Hydra' },
+      { id: 'stalker_lv742', name: 'Stalker Predator (LV-742)', role: 'Tireur d\'Élite Longue Portée', weapon: 'Fusil-Harpon Balistique Lourd & Camouflage', hp: 530, armor: 50, trophy: 'Carquois de Fléchettes en Tungstène de LV-742' }
+    ]
   }
 ]);
 
