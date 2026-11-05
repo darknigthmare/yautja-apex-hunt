@@ -4,6 +4,7 @@ import { audioSynth } from './AudioSynthesizer.js';
 import { captureBaseMaterials, overrideMaterials, restoreBaseMaterials } from './utils/materialState.js';
 import { getRuntimeTexture } from './utils/runtimeTextures.js';
 import { forwardRayIntersectsSphere, resolveSegmentSphereImpact } from './utils/projectileCollision.js';
+import { getVisualBounds } from './utils/worldScale.js';
 
 export class MegafaunaBoss {
   constructor(scene) {
@@ -145,7 +146,7 @@ export class MegafaunaBoss {
     }
     const clubGeo = new THREE.OctahedronGeometry(1.6, 3);
     const club = new THREE.Mesh(clubGeo, bodyMat);
-    club.position.set(0, 1.5, -14.5);
+    club.position.set(0, 1.6, -14.5);
     tailGroup.add(club);
 
     bossGroup.add(tailGroup);
@@ -188,7 +189,7 @@ export class MegafaunaBoss {
     club.position.set(0, 0, 2.2);
     tailProp.add(club);
     tailProp.position.copy(this.getTailWorldPosition());
-    tailProp.position.y = 0.5;
+    tailProp.position.y = this.position.y - getVisualBounds(tailProp, { local: true }).min.y;
     tailProp.userData.isCarveable = true;
     tailProp.userData.carved = false;
     tailProp.userData.trophyType = 'GOLIATH_SEVERED_TAIL_CLUB';
@@ -221,31 +222,19 @@ export class MegafaunaBoss {
 
     // 1. Weakpoint: Core
     const corePos = this.getCoreWorldPosition();
-    if (
-      resolveSegmentSphereImpact(start, projectilePosition, corePos, 3.8 + safeRadius)
-      || forwardRayIntersectsSphere(start, projectilePosition, corePos, 3.8 + safeRadius)
-    ) {
-      return corePos;
-    }
+    const hitCore = resolveSegmentSphereImpact(start, projectilePosition, corePos, 3.8 + safeRadius);
+    if (hitCore) return corePos;
 
     // 2. Horn / Head
     const hornPos = this.getHornWorldPosition();
-    if (
-      resolveSegmentSphereImpact(start, projectilePosition, hornPos, 4.2 + safeRadius)
-      || forwardRayIntersectsSphere(start, projectilePosition, hornPos, 4.2 + safeRadius)
-    ) {
-      return hornPos;
-    }
+    const hitHorn = resolveSegmentSphereImpact(start, projectilePosition, hornPos, 4.2 + safeRadius);
+    if (hitHorn) return hornPos;
 
     // 3. Tail
     if (this.tailIntact) {
       const tailPos = this.getTailWorldPosition();
-      if (
-        resolveSegmentSphereImpact(start, projectilePosition, tailPos, 5.0 + safeRadius)
-        || forwardRayIntersectsSphere(start, projectilePosition, tailPos, 5.0 + safeRadius)
-      ) {
-        return tailPos;
-      }
+      const hitTail = resolveSegmentSphereImpact(start, projectilePosition, tailPos, 5.0 + safeRadius);
+      if (hitTail) return tailPos;
     }
 
     // 4. Main Torso
@@ -267,6 +256,7 @@ export class MegafaunaBoss {
     if (distanceToCore < 3.8) {
       finalDamage *= 2.5;
       this.coreExposed = true;
+      this.stamina = Math.max(0, this.stamina - amount * 0.75);
     }
 
     const legacyHead = this.mesh.position.clone().add(new THREE.Vector3(0, 7.8, 7.5));
@@ -276,9 +266,11 @@ export class MegafaunaBoss {
     );
     if (distanceToHead < 4.2 && this.hornIntact) {
       this.hornHealth -= amount;
+      this.stamina = Math.max(0, this.stamina - amount * 0.5);
       if (this.hornHealth <= 0) {
         this.hornIntact = false;
         if (this.hornMesh) this.hornMesh.visible = false;
+        this.stamina = Math.max(0, this.stamina - 200);
         audioSynth.playMonsterRoar();
       }
     }
@@ -290,10 +282,12 @@ export class MegafaunaBoss {
     );
     if (distanceToTail < 5.2 && this.tailIntact) {
       this.tailHealth -= amount;
+      this.stamina = Math.max(0, this.stamina - amount * 0.5);
       if (this.tailHealth <= 0) {
         this.tailIntact = false;
         if (this.tailMesh) this.tailMesh.visible = false;
         this.spawnSeveredTail();
+        this.stamina = Math.max(0, this.stamina - 250);
         audioSynth.playMonsterRoar();
       }
     }
@@ -302,11 +296,14 @@ export class MegafaunaBoss {
 
     if (this.health <= this.maxHealth * 0.5 && !this.isEnraged) {
       this.isEnraged = true;
+      this.isExhausted = false;
+      this.stamina = this.maxStamina;
       audioSynth.playMonsterRoar();
     }
 
     if (this.health <= 0) {
       this.isDead = true;
+      this.isToppled = false;
       audioSynth.playMonsterRoar();
     }
   }
@@ -324,6 +321,16 @@ export class MegafaunaBoss {
   update(delta, playerPos, isPlayerCloaked) {
     if (this.isDead) return;
 
+    if (this.isToppled) {
+      this.toppleTimer = Math.max(0, this.toppleTimer - delta);
+      this.aiState = 'toppled';
+      if (this.toppleTimer === 0) {
+        this.isToppled = false;
+        this.aiState = 'chase';
+      }
+      return;
+    }
+
     if (this.isNetted) {
       this.netTimer -= delta;
       if (this.netTimer <= 0) this.isNetted = false;
@@ -333,7 +340,18 @@ export class MegafaunaBoss {
     this.attackCooldown = Math.max(0, this.attackCooldown - delta);
     this.footstepCooldown = Math.max(0, this.footstepCooldown - delta);
 
-    const distToPlayer = this.position.distanceTo(playerPos);
+    // Stamina depletion & exhaustion cycle
+    if (!this.isEnraged && !this.isToppled) {
+      this.stamina = Math.max(0, this.stamina - delta * (this.aiState === 'charge' ? 35 : 12));
+      if (this.stamina === 0 && !this.isExhausted) {
+        this.isExhausted = true;
+        audioSynth.playMonsterFatiguePant?.();
+      } else if (this.stamina > 350) {
+        this.isExhausted = false;
+      }
+    }
+
+    const distToPlayer = playerPos?.isVector3 ? this.position.distanceTo(playerPos) : Infinity;
     let effectiveDetectionRadius = isPlayerCloaked ? 25.0 : 180.0;
 
     if (distToPlayer < effectiveDetectionRadius) {
@@ -351,14 +369,15 @@ export class MegafaunaBoss {
         if (distToPlayer < 9.0) {
           this.aiState = 'attack_claw';
           audioSynth.playMonsterRoar();
-          this.attackCooldown = 2.5;
+          this.attackCooldown = this.isExhausted ? 3.5 : 2.5;
         } else if (distToPlayer > 20.0 && distToPlayer < 45.0) {
           this.aiState = 'charge';
-          this.attackCooldown = 4.0;
+          this.attackCooldown = this.isExhausted ? 5.5 : 4.0;
         }
       }
 
       let speed = this.isEnraged ? this.enragedSpeed : this.moveSpeed;
+      if (this.isExhausted) speed *= 0.6;
       if (this.aiState === 'charge') speed *= 1.8;
 
       if (distToPlayer > 6.0) {
@@ -380,5 +399,20 @@ export class MegafaunaBoss {
     }
 
     this.mesh.position.copy(this.position);
+  }
+
+  canCarve() {
+    return this.isDead && !this.isCarved;
+  }
+
+  carveTrophy() {
+    if (!this.isDead || this.isCarved) return null;
+    this.isCarved = true;
+    return {
+      trophyType: 'GOLIATH_HEAVY_HORN_CREST',
+      name: 'Corne Frontale de Goliath',
+      category: 'megafauna_carcass',
+      honor: 1200,
+    };
   }
 }

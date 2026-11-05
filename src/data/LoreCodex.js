@@ -49,6 +49,7 @@ export const LORE_SOURCES = Object.freeze({
   alienIsolation2014: { title: 'Alien: Isolation (2014)', tier: 'LICENSED_EU', url: 'https://www.alienisolation.com' },
   aliensFireteamElite2021: { title: 'Aliens: Fireteam Elite (2021)', tier: 'LICENSED_EU', url: 'https://www.aliensfireteamelite.com' },
   aliensDarkDescent2023: { title: 'Aliens: Dark Descent (2023)', tier: 'LICENSED_EU', url: 'https://www.focus-entmt.com/en/games/aliens-dark-descent' },
+  comicsDarkHorse1989: { title: 'Dark Horse Comics — Aliens / Predator / AVP Canon (1989-2020)', tier: 'LICENSED_EU', url: 'https://digital.darkhorse.com' },
   predatorConcreteJungle2005: { title: 'Predator: Concrete Jungle (2005)', tier: 'LICENSED_EU', url: 'https://store.necaonline.com/products/predator-concrete-jungle-scarface-ultimate-7-figure' }
 });
 
@@ -743,6 +744,163 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     summary: 'La jurisprudence du Conseil Suprême : maintien des traités inter-claniques et sentences contre les prévaricateurs.',
     body: 'Le Conseil des Anciens constitue la plus haute juridiction de la civilisation Yautja. Composé exclusivement de guerriers ayant survécu à plus de cinq siècles de chasses légendaires et arborant des dizaines de cicatrices de sang acide, le Conseil veille au respect inflexible des Lois de la Chasse. C\'est ce conclave qui déclare les déchéances d\'honneur, affrète les navires punitifs des Enforcers pour traquer les Bad Bloods renégats, et ratifie exceptionnellement les pactes de trêve sacrée avec les champions d\'autres espèces ayant mérité le droit de vivre.',
     sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['predatorLore', 'avpPrey1994', 'avpThreeWorldWar2010'], universe: 'AVP'
+  }
+,
+  {
+    id: 'lore_predator_dark_river_1996',
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'Chronique 1996 — Predator: Dark River & la Traque Fluviale de John Schaefer',
+    summary: 'L\'affrontement en Amazonie entre le détective John Schaefer et le Chasseur fluvial vengeur de la jungle sud-américaine.',
+    body: 'Faisant suite aux événements sanglants de New York et de la guerre froide sibérienne, Predator: Dark River plonge l\'inspecteur John Schaefer au cœur du bassin amazonien. Hanté par le souvenir de son frère Alan « Dutch » Schaefer disparu, John remonte les cours d\'eau tropicaux et découvre qu\'un nouveau Chasseur d\'élite a élu domicile dans la canopée équatoriale. Cette traque impitoyable le long du fleuve noir met aux prises les techniques de survie primitives de Schaefer avec les pièges aquatiques, les filets en fil de rasoir et le plasmacaster du prédateur solitaire, culminant dans un duel brutal au milieu des rapides et des bancs de boue toxique.',
+    content: 'Faisant suite aux événements sanglants de New York et de la guerre froide sibérienne, Predator: Dark River plonge l\'inspecteur John Schaefer au cœur du bassin amazonien. Hanté par le souvenir de son frère Alan « Dutch » Schaefer disparu, John remonte les cours d\'eau tropicaux et découvre qu\'un nouveau Chasseur d\'élite a élu domicile dans la canopée équatoriale. Cette traque impitoyable le long du fleuve noir met aux prises les techniques de survie primitives de Schaefer avec les pièges aquatiques, les filets en fil de rasoir et le plasmacaster du prédateur solitaire, culminant dans un duel brutal au milieu des rapides et des bancs de boue toxique.',
+    sourceTier: 'EXPANDED_LORE',
+    isOriginal: false,
+    sources: ['comicsDarkHorse1989', 'predatorArchives', 'predatorLore'],
+    universe: 'PREDATOR'
+  },
+  {
+    id: 'lore_predator_nemesis_1896',
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'Chronique 1896 — Predator: Nemesis & la Brume Sanglante de Whitechapel',
+    summary: 'La traque victorienne à Londres par l\'inspecteur Edward Soames contre le Démon de la Brume décapitant les bas-fonds.',
+    body: 'En plein cœur de l\'époque victorienne, l\'épaisse purée de pois londonienne dissimule les crimes d\'une créature surnommée le « Démon de Whitechapel ». Dans Predator: Nemesis, l\'inspecteur Edward Soames de Scotland Yard, vétéran décoré de la campagne du Soudan, mène l\'enquête sur des décapitations rituelles et des écorchements suspendus sous les ponts de la Tamise. Convaincu que ces atrocités surpassent les assassinats de Jack l\'Éventreur, Soames découvre qu\'un Yautja d\'époque victorienne chasse les plus redoutables bretteurs et criminels de la pègre londonienne dans le dédale des égouts et des quais embrumés, défiant la police de Sa Majesté armée de revolvers Webley et de sabres de cavalerie.',
+    content: 'En plein cœur de l\'époque victorienne, l\'épaisse purée de pois londonienne dissimule les crimes d\'une créature surnommée le « Démon de Whitechapel ». Dans Predator: Nemesis, l\'inspecteur Edward Soames de Scotland Yard, vétéran décoré de la campagne du Soudan, mène l\'enquête sur des décapitations rituelles et des écorchements suspendus sous les ponts de la Tamise. Convaincu que ces atrocités surpassent les assassinats de Jack l\'Éventreur, Soames découvre qu\'un Yautja d\'époque victorienne chasse les plus redoutables bretteurs et criminels de la pègre londonienne dans le dédale des égouts et des quais embrumés, défiant la police de Sa Majesté armée de revolvers Webley et de sabres de cavalerie.',
+    sourceTier: 'EXPANDED_LORE',
+    isOriginal: false,
+    sources: ['comicsDarkHorse1989', 'predatorArchives', 'predatorLore'],
+    universe: 'PREDATOR'
+  },
+  {
+    id: 'lore_predator_xenogenesis_2002',
+    entryType: 'codex',
+    category: 'technologie',
+    title: 'Technologie Militaire 2002 — Cyber-Harpon Yautja & Cyborgs de Xenogenesis',
+    summary: 'L\'assimilation de cybernétique lourde et de neuro-implants dans l\'arsenal Yautja face aux commandos mercenaires augmentés.',
+    body: 'Dans le futur proche dépeint par la saga Predator: Xenogenesis, la guerre entre factions corporatistes privées et escouades Yautja franchit un cap technologique irréversible. Pour contrer des commandos d\'élite humains lourdement augmentés de prothèses myoélectriques et de blindages composites sous-cutanés, certains chasseurs Yautja adoptent des cyber-harpons à induction électrostatique et des lanceurs de micro-câbles neuro-paralysants. Ces armes chirurgicales transpercent les blindages céramiques des cyborgs et court-circuitent leurs systèmes nerveux cybernétiques avant que le trophée crânien et sa colonne vertébrale bardée de titane ne soient arrachés dans un rituel d\'honneur adapté à l\'ère transhumaniste.',
+    content: 'Dans le futur proche dépeint par la saga Predator: Xenogenesis, la guerre entre factions corporatistes privées et escouades Yautja franchit un cap technologique irréversible. Pour contrer des commandos d\'élite humains lourdement augmentés de prothèses myoélectriques et de blindages composites sous-cutanés, certains chasseurs Yautja adoptent des cyber-harpons à induction électrostatique et des lanceurs de micro-câbles neuro-paralysants. Ces armes chirurgicales transpercent les blindages céramiques des cyborgs et court-circuitent leurs systèmes nerveux cybernétiques avant que le trophée crânien et sa colonne vertébrale bardée de titane ne soient arrachés dans un rituel d\'honneur adapté à l\'ère transhumaniste.',
+    sourceTier: 'EXPANDED_LORE',
+    isOriginal: false,
+    sources: ['comicsDarkHorse1989', 'predatorLore', 'predatorXenogenesis1999'],
+    universe: 'PREDATOR'
+  },
+  {
+    id: 'lore_predator_hunting_grounds_owls_2020',
+    entryType: 'codex',
+    category: 'culture',
+    title: 'Dossier OWLF 2020 — Protocole Stargazer & les Enregistrements de Dutch (2025)',
+    summary: 'Les bandes magnétiques classifiées du major Dutch Schaefer documentant trois décennies de traque Yautja et les manipulations d\'OWLF.',
+    body: 'Les archives sonores d\'OWLF (Other World Life Forms Taskforce) révèlent le sort véridique du major Alan « Dutch » Schaefer après le massacre de Val Verde en 1987. Sauvé in extremis des retombées de l\'autodestruction nucléaire du Jungle Hunter, Dutch passe des décennies à traquer clandestinement les incursions Yautja à travers le globe, subissant des injections régulières d\'ADN Yautja purifié fournies par l\'organisation Stargazer pour ralentir son vieillissement cellulaire. Ses cassettes audio enregistrées en 2025 analysent froidement la physiologie des clans prédateurs, leurs hiérarchies martiales, l\'émergence des Super-Predators et la menace de militarisation des technologies Yautja par les gouvernements humains corrompus.',
+    content: 'Les archives sonores d\'OWLF (Other World Life Forms Taskforce) révèlent le sort véridique du major Alan « Dutch » Schaefer après le massacre de Val Verde en 1987. Sauvé in extremis des retombées de l\'autodestruction nucléaire du Jungle Hunter, Dutch passe des décennies à traquer clandestinement les incursions Yautja à travers le globe, subissant des injections régulières d\'ADN Yautja purifié fournies par l\'organisation Stargazer pour ralentir son vieillissement cellulaire. Ses cassettes audio enregistrées en 2025 analysent froidement la physiologie des clans prédateurs, leurs hiérarchies martiales, l\'émergence des Super-Predators et la menace de militarisation des technologies Yautja par les gouvernements humains corrompus.',
+    sourceTier: 'EXPANDED_LORE',
+    isOriginal: false,
+    sources: ['huntingGrounds', 'predatorHuntingGrounds', 'huntingGroundsUpdates'],
+    universe: 'PREDATOR'
+  },
+  {
+    id: 'lore_alien_infiltrator_pala_2021',
+    entryType: 'codex',
+    category: 'xenomorphes',
+    title: 'Station Pala 2021 — Dr. Timothy Hoenikker & les Souches de Pathogène Noir',
+    summary: 'Les expériences mutagènes désastreuses menées sur la station de recherche Pala précédant le cataclysme d\'Aliens: Fireteam Elite.',
+    body: 'Dans le roman préquelle Alien: Infiltrator (Alex White, 2021), la station orbitale de recherche Pala de Weyland-Yutani devient le théâtre d\'une catastrophe biochimique majeure. Sous la supervision du Dr. Timothy Hoenikker, les biologistes corporatistes tentent de stabiliser des échantillons du mutagène noir (l\'accélérateur d\'ADN de la planète LV-223 / 4) en l\'inoculant à différentes formes de vie extraterrestre et à des embryons Xénomorphes. Les anomalies génétiques qui en résultent — Bursters explosifs, Spitters à neurotoxine acide et Pathogen Mutants — brisent les protocoles de quarantaine du sous-sol 4, exterminant les chercheurs et transformant la station en un enfer biologique autonome que l\'USCM Endeavor devra plus tard assainir.',
+    content: 'Dans le roman préquelle Alien: Infiltrator (Alex White, 2021), la station orbitale de recherche Pala de Weyland-Yutani devient le théâtre d\'une catastrophe biochimique majeure. Sous la supervision du Dr. Timothy Hoenikker, les biologistes corporatistes tentent de stabiliser des échantillons du mutagène noir (l\'accélérateur d\'ADN de la planète LV-223 / 4) en l\'inoculant à différentes formes de vie extraterrestre et à des embryons Xénomorphes. Les anomalies génétiques qui en résultent — Bursters explosifs, Spitters à neurotoxine acide et Pathogen Mutants — brisent les protocoles de quarantaine du sous-sol 4, exterminant les chercheurs et transformant la station en un enfer biologique autonome que l\'USCM Endeavor devra plus tard assainir.',
+    sourceTier: 'EXPANDED_LORE',
+    isOriginal: false,
+    sources: ['aliensFireteamElite2021', 'alienTechManual', 'comicsDarkHorse1989'],
+    universe: 'ALIEN'
+  },
+  {
+    id: 'lore_aliens_labyrinth_church_1993',
+    entryType: 'codex',
+    category: 'biologie',
+    title: 'Chronique 1993 — Aliens: Labyrinth, la Folie du Dr. Paul Church & Ruche Innominata',
+    summary: 'L\'exploration psychologique terrifiante de la structure sociale xénomorphe par le survivant traumatisé de la station Innominata.',
+    body: 'Chef-d\'œuvre psychologique écrit par Jim Woodring et illustré par Kilian Plunkett, Aliens: Labyrinth explore les traumatismes ultimes causés par les Xénomorphes. Sur la station spatiale de recherche Innominata, le Dr. Paul Church dirige des expériences de vivisection cruelles et obsessionnelles sur des ruches captives. Rescapé miraculeux d\'un transporteur militaire où des Xénomorphes l\'avaient maintenu captif pendant des semaines au milieu de cadavres liquéfiés, Church a acquis une compréhension intime et dépravée du comportement collectif des créatures, cherchant à percer le lien synaptique qui lie chaque drone à sa Reine pour démontrer que l\'horreur xénomorphe est un miroir des instincts les plus sadiques de l\'humanité.',
+    content: 'Chef-d\'œuvre psychologique écrit par Jim Woodring et illustré par Kilian Plunkett, Aliens: Labyrinth explore les traumatismes ultimes causés par les Xénomorphes. Sur la station spatiale de recherche Innominata, le Dr. Paul Church dirige des expériences de vivisection cruelles et obsessionnelles sur des ruches captives. Rescapé miraculeux d\'un transporteur militaire où des Xénomorphes l\'avaient maintenu captif pendant des semaines au milieu de cadavres liquéfiés, Church a acquis une compréhension intime et dépravée du comportement collectif des créatures, cherchant à percer le lien synaptique qui lie chaque drone à sa Reine pour démontrer que l\'horreur xénomorphe est un miroir des instincts les plus sadiques de l\'humanité.',
+    sourceTier: 'EXPANDED_LORE',
+    isOriginal: false,
+    sources: ['comicsDarkHorse1989', 'alienTechManual', 'aliens1986'],
+    universe: 'ALIEN'
+  },
+  {
+    id: 'lore_alien_river_of_pain_hadley_2014',
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'Chronique 2014 — Chute de Hadley\'s Hope & le Sacrifice du Capitaine Brackett',
+    summary: 'Le récit canonique de l\'infestation fatale d\'Acheron (LV-426) et des derniers jours héroïques des colons de Hadley\'s Hope.',
+    body: 'Rédigé par Christopher Golden dans la trilogie canonique 20th Century Fox / Titan Books, Alien: River of Pain raconte les semaines précédant l\'arrivée de l\'USS Sulaco sur Acheron LV-426. Suite à la découverte du Derelict par les prospecteurs Newt et ses parents, les Facehuggers se propagent dans le complexe de traitement atmosphérique. Le capitaine Demian Brackett et le détachement colonial de marines tentent désespérément de fortifier les coursives, de secourir les familles de mineurs et de contenir les assauts répétés des guerriers xénomorphes émergeant des conduits de ventilation. Leur résistance désespérée s\'achève dans un bain de sang et d\'acide sous les yeux terrorisés de la jeune Rebecca « Newt » Jorden.',
+    content: 'Rédigé par Christopher Golden dans la trilogie canonique 20th Century Fox / Titan Books, Alien: River of Pain raconte les semaines précédant l\'arrivée de l\'USS Sulaco sur Acheron LV-426. Suite à la découverte du Derelict par les prospecteurs Newt et ses parents, les Facehuggers se propagent dans le complexe de traitement atmosphérique. Le capitaine Demian Brackett et le détachement colonial de marines tentent désespérément de fortifier les coursives, de secourir les familles de mineurs et de contenir les assauts répétés des guerriers xénomorphes émergeant des conduits de ventilation. Leur résistance désespérée s\'achève dans un bain de sang et d\'acide sous les yeux terrorisés de la jeune Rebecca « Newt » Jorden.',
+    sourceTier: 'EXPANDED_LORE',
+    isOriginal: false,
+    sources: ['aliens1986', 'uscmTechnicalManual', 'comicsDarkHorse1989'],
+    universe: 'ALIEN'
+  },
+  {
+    id: 'lore_alien_phalanx_ataegina_2020',
+    entryType: 'codex',
+    category: 'culture',
+    title: 'Planète Ataegina 2020 — Alien: Phalanx & la Guerre Médiévale des Ahklun',
+    summary: 'L\'affrontement épique entre des clans humains féodaux et les hordes de « Démons Noirs » Xénomorphes sur Ataegina.',
+    body: 'Écrit par Scott Sigler, Alien: Phalanx transpose l\'univers Alien dans un contexte sociétal néo-médiéval unique. Sur la planète recluse d\'Ataegina, les vestiges de colonies humaines oubliées survivent au sommet de citadelles fortifiées creusées dans des pitons rocheux, les montagnes de l\'Île de Lemnos. Les terres basses sont infestées par les « Ahklun » — des démons xénomorphes à carapace d\'ébène dont le sang brûle la roche et dissout le fer. Privés de technologie moderne, les guerriers spartiates d\'Ataegina forment des phalanges disciplinées équipées de boucliers en cuir de bête trempé, de lances d\'obsidienne volcanique non altérable par l\'acide et de poix enflammée, développant des tactiques de mêlée viscérales pour terrasser les monstres.',
+    content: 'Écrit par Scott Sigler, Alien: Phalanx transpose l\'univers Alien dans un contexte sociétal néo-médiéval unique. Sur la planète recluse d\'Ataegina, les vestiges de colonies humaines oubliées survivent au sommet de citadelles fortifiées creusées dans des pitons rocheux, les montagnes de l\'Île de Lemnos. Les terres basses sont infestées par les « Ahklun » — des démons xénomorphes à carapace d\'ébène dont le sang brûle la roche et dissout le fer. Privés de technologie moderne, les guerriers spartiates d\'Ataegina forment des phalanges disciplinées équipées de boucliers en cuir de bête trempé, de lances d\'obsidienne volcanique non altérable par l\'acide et de poix enflammée, développant des tactiques de mêlée viscérales pour terrasser les monstres.',
+    sourceTier: 'EXPANDED_LORE',
+    isOriginal: false,
+    sources: ['alienTechManual', 'comicsDarkHorse1989', 'aliens1986'],
+    universe: 'ALIEN'
+  },
+  {
+    id: 'lore_avp_extinction_z01_2003',
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'Guerre de LV-742 — Le Clan Z-01 Yautja face aux Xénomorphes K-Series',
+    summary: 'La campagne punitive du clan d\'élite Z-01 et les abominations génétiques de la souche K-Series créées par Kadinsky.',
+    body: 'Dans Aliens versus Predator: Extinction (2003), le clan Yautja Z-01 est déployé sur le monde frontière LV-742 pour neutraliser l\'infamie commise par le Dr. Samuel Kadinsky. Ce biologiste renégat de Weyland-Yutani a hybridé le génome Xénomorphe avec des souches synthétiques pour concevoir les Xénomorphes K-Series : des bêtes mutantes à peau jaunâtre, immunisées aux neurotoxines et dotées de glandes acides sous pression extrême. Face à ces créatures non reconnues par les lois sacrées de la chasse et aux assauts de la compagnie mercenaire des Iron Bears, les Anciens du Clan Z-01 mobilisent leurs Maîtres Lanciers, Disc Masters et Hydra-Casters pour purger la planète dans les flammes.',
+    content: 'Dans Aliens versus Predator: Extinction (2003), le clan Yautja Z-01 est déployé sur le monde frontière LV-742 pour neutraliser l\'infamie commise par le Dr. Samuel Kadinsky. Ce biologiste renégat de Weyland-Yutani a hybridé le génome Xénomorphe avec des souches synthétiques pour concevoir les Xénomorphes K-Series : des bêtes mutantes à peau jaunâtre, immunisées aux neurotoxines et dotées de glandes acides sous pression extrême. Face à ces créatures non reconnues par les lois sacrées de la chasse et aux assauts de la compagnie mercenaire des Iron Bears, les Anciens du Clan Z-01 mobilisent leurs Maîtres Lanciers, Disc Masters et Hydra-Casters pour purger la planète dans les flammes.',
+    sourceTier: 'EXPANDED_LORE',
+    isOriginal: false,
+    sources: ['avpExtinction2003', 'avpOriginalComics', 'comicsDarkHorse1989'],
+    universe: 'AVP'
+  },
+  {
+    id: 'lore_avp_sand_trap_1998',
+    entryType: 'codex',
+    category: 'xenomorphes',
+    title: 'Chronique 1998 — AVP: Sand Trap & les Nids Fossoyeurs des Sables',
+    summary: 'La chasse cauchemardesque dans les mers de dunes désertiques où les facehuggers s\'enfouissent comme des scorpions géants.',
+    body: 'Paru dans le Dark Horse Extra #1-4 en 1998, le récit AVP: Sand Trap met en scène l\'adaptation terrifiante du cycle parasitaire xénomorphe aux biomes de désert hyper-aride. Dans ces étendues de sable mouvant et de canyons venteux, les Reines adaptent leurs couvées en enfouissant les œufs sous un mètre de poussière de silicate. Les Facehuggers développent un comportement de prédateur-embuscade semblable à celui des scorpions et des araignées trappes, jaillissant du sol sablonneux à la moindre vibration causée par les bottes d\'un soldat ou le pas furtif d\'un guerrier Yautja. Pour survivre, les chasseurs doivent analyser la résonance tellurique et saturer le sol de mines à impulsion plasma.',
+    content: 'Paru dans le Dark Horse Extra #1-4 en 1998, le récit AVP: Sand Trap met en scène l\'adaptation terrifiante du cycle parasitaire xénomorphe aux biomes de désert hyper-aride. Dans ces étendues de sable mouvant et de canyons venteux, les Reines adaptent leurs couvées en enfouissant les œufs sous un mètre de poussière de silicate. Les Facehuggers développent un comportement de prédateur-embuscade semblable à celui des scorpions et des araignées trappes, jaillissant du sol sablonneux à la moindre vibration causée par les bottes d\'un soldat ou le pas furtif d\'un guerrier Yautja. Pour survivre, les chasseurs doivent analyser la résonance tellurique et saturer le sol de mines à impulsion plasma.',
+    sourceTier: 'EXPANDED_LORE',
+    isOriginal: false,
+    sources: ['avpOriginalComics', 'comicsDarkHorse1989', 'predatorLore'],
+    universe: 'AVP'
+  },
+  {
+    id: 'lore_avp_war_machiko_ryushi_1995',
+    entryType: 'codex',
+    category: 'culture',
+    title: 'Chronique 1995 — AVP: War & le Ralliement Trans-Espèce de Machiko Noguchi',
+    summary: 'L\'épopée tragique de Machiko Noguchi, chassant parmi les Yautja avant la grande rébellion d\'honneur sur Bunda.',
+    body: 'Dans la trilogie culte de Randy Stradley, AVP: War marque l\'apogée et la déchirure du destin de Machiko Noguchi. Marquée sur le front du symbole de clan par Dachande (Broken Tusk) sur Ryushi, Machiko a chassé pendant plus d\'un an au sein de la horde Yautja de Top-Knot, maîtrisant le Naginata, le camouflage optique et les rigueurs du code Khalyndic. Cependant, lors d\'une expédition de massacre sur la planète Bunda où des civils humains sont parqués comme bétail de reproduction pour les Xénomorphes, Machiko refuse de tolérer le meurtre d\'innocents désarmés. Réaffirmant son humanité tout en conservant son honneur de guerrière Yautja, elle retourne ses lames contre ses compagnons de clan dans une insurrection héroïque.',
+    content: 'Dans la trilogie culte de Randy Stradley, AVP: War marque l\'apogée et la déchirure du destin de Machiko Noguchi. Marquée sur le front du symbole de clan par Dachande (Broken Tusk) sur Ryushi, Machiko a chassé pendant plus d\'un an au sein de la horde Yautja de Top-Knot, maîtrisant le Naginata, le camouflage optique et les rigueurs du code Khalyndic. Cependant, lors d\'une expédition de massacre sur la planète Bunda où des civils humains sont parqués comme bétail de reproduction pour les Xénomorphes, Machiko refuse de tolérer le meurtre d\'innocents désarmés. Réaffirmant son humanité tout en conservant son honneur de guerrière Yautja, elle retourne ses lames contre ses compagnons de clan dans une insurrection héroïque.',
+    sourceTier: 'EXPANDED_LORE',
+    isOriginal: false,
+    sources: ['avpWar1995', 'avpPreyOmnibus', 'avpOriginalComics'],
+    universe: 'AVP'
+  },
+  {
+    id: 'lore_avp_deadliest_of_the_species_1993',
+    entryType: 'codex',
+    category: 'culture',
+    title: 'Chronique 1993 — Deadliest of the Species, Caryn Delacroix & Big Mama Yautja',
+    summary: 'L\'alliance iconique entre la fugitive Caryn Delacroix, l\'IA holographique Toy et la redoutable chasseresse Big Mama.',
+    body: 'Rédigé par le légendaire Chris Claremont et somptueusement peint par Jackson Guice, Aliens vs. Predator: Deadliest of the Species se déroule dans les mégapoles orbitales décadentes du 22e siècle. L\'aristocrate fugitive Caryn Delacroix, guidée par une intelligence artificielle renégate nommée Toy, forge une alliance sans précédent avec « Big Mama » — une imposante femelle Yautja dotée d\'une armure cérémonielle dorée et d\'un sens aigu de la justice martiale. Ensemble, cette coalition improbable affronte les commandos cyborgs du conglomérat Montcalm-Delacroix et des nuées de Xénomorphes génétiquement altérés, brisant tous les tabous inter-espèces pour vaincre la corruption corporatiste.',
+    content: 'Rédigé par le légendaire Chris Claremont et somptueusement peint par Jackson Guice, Aliens vs. Predator: Deadliest of the Species se déroule dans les mégapoles orbitales décadentes du 22e siècle. L\'aristocrate fugitive Caryn Delacroix, guidée par une intelligence artificielle renégate nommée Toy, forge une alliance sans précédent avec « Big Mama » — une imposante femelle Yautja dotée d\'une armure cérémonielle dorée et d\'un sens aigu de la justice martiale. Ensemble, cette coalition improbable affronte les commandos cyborgs du conglomérat Montcalm-Delacroix et des nuées de Xénomorphes génétiquement altérés, brisant tous les tabous inter-espèces pour vaincre la corruption corporatiste.',
+    sourceTier: 'EXPANDED_LORE',
+    isOriginal: false,
+    sources: ['avpDeadliestOfTheSpecies1993', 'avpOriginalComics', 'comicsDarkHorse1989'],
+    universe: 'AVP'
   }
 ]);
 // IDs match the values already used by the planet selector.

@@ -1036,6 +1036,151 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     heroSquadId: 'squad_extinction_council_veterans_lv742',
     villainSquadId: 'squad_killer_clan_bad_blood_pack'
   }
+,
+  {
+    id: 'map_amazon_dark_river_basin',
+    name: 'Bassin Fluvial de l\'Amazone — Fleuve Noir & Canopée Sauvage (1996)',
+    originMedia: 'Predator: Dark River (Dark Horse Comics 1996)',
+    universe: 'PREDATOR',
+    releaseYear: 1996,
+    biomeId: 'jungle',
+    recommendedBiomeLabel: 'Bassin Fluvial de l\'Amazone (Dark River 1996)',
+    environmentSummary: 'Réseau fluvial équatorial étouffant : bancs de sable, rapides tumultueux, canopée impénétrable et nids de sangsues tropicales où John Schaefer traque son frère.',
+    tacticalSectors: [
+      'Rapides du Fleuve Noir',
+      'Canopée Supérieure Tropicale',
+      'Campement Fluvial de la Guérilla',
+      'Bancs de Boue Toxique des Marais'
+    ],
+    environmentalHazards: [
+      'Rapides à contre-courant violent',
+      'Bancs de boue gluante ralentissant les déplacements',
+      'Brume tropicale réduisant la vision infrarouge'
+    ],
+    keyPreyIds: ['alien_base_royce_mercenaire_2010', 'prey_jungle_hunter_1987'],
+    heroSquadId: 'squad_dark_river_amazon_patrol',
+    villainSquadId: 'squad_killer_clan_bad_blood_pack'
+  },
+  {
+    id: 'map_whitechapel_fog_alleys',
+    name: 'Whitechapel 1896 — Ruelles Brumeuses & Docks de la Tamise (1896)',
+    originMedia: 'Predator: Nemesis (Dark Horse Comics 1997)',
+    universe: 'PREDATOR',
+    releaseYear: 1997,
+    biomeId: 'los_angeles_1997',
+    recommendedBiomeLabel: 'Ruelles de Whitechapel sous la Brume (Nemesis 1896)',
+    environmentSummary: 'Dédale urbain victorien baigné d\'une purée de pois étouffante : pavés glissants, quais de la Tamise, entrepôts frigorifiques et ponts ferroviaires de briques sombres.',
+    tacticalSectors: [
+      'Quais de Déchargement de la Tamise',
+      'Allées Pavées Étroites de Whitechapel',
+      'Entrepôt Frigorifique Abandonné',
+      'Toitures d\'Ardoise et Clochetons'
+    ],
+    environmentalHazards: [
+      'Épaisse purée de pois londonienne obstruant la visée',
+      'Pavés boueux glissants déséquilibrant les courses',
+      'Fuites de vapeur industrielle des conduites d\'usines'
+    ],
+    keyPreyIds: ['alien_base_mike_harrigan_lapd', 'prey_jungle_hunter_1987'],
+    heroSquadId: 'squad_whitechapel_constabulary_guard',
+    villainSquadId: 'squad_p2_cartel_king_willie_posse'
+  },
+  {
+    id: 'map_pala_station_sublevel_4',
+    name: 'Station Pala — Laboratoires Souterrains & Sous-Sol 4 (2021)',
+    originMedia: 'Alien: Infiltrator (Titan Books 2021)',
+    universe: 'ALIEN',
+    releaseYear: 2021,
+    biomeId: 'space_hulk',
+    recommendedBiomeLabel: 'Laboratoires Souterrains de Pala (Infiltrator 2021)',
+    environmentSummary: 'Complexe de recherche biomédicale secret de Weyland-Yutani contaminé par le mutagène noir : cuves pressurisées bréchées et couloirs de quarantaine.',
+    tacticalSectors: [
+      'Cuves Cryogéniques du Mutagène Noir',
+      'Sas de Confinement Sous-Sol 4',
+      'Laboratoire de Vivisection Dr. Hoenikker',
+      'Conduits de Ventilation de Décontamination'
+    ],
+    environmentalHazards: [
+      'Fuites d\'aérosols mutagènes provoquant des mutations rapides',
+      'Chambres sous dépression d\'air automatique',
+      'Fils haute tension dénudés et sols électrifiés'
+    ],
+    keyPreyIds: ['prey_xeno_warrior', 'prey_weyland_combat_android'],
+    heroSquadId: 'squad_pala_station_security_detail',
+    villainSquadId: 'squad_afe_katanga_pathogen_swarm'
+  },
+  {
+    id: 'map_hadleys_hope_perimeter',
+    name: 'Hadley\'s Hope — Périmètre Fortifié & Complexe Minier (2014)',
+    originMedia: 'Alien: River of Pain (Titan Books 2014)',
+    universe: 'ALIEN',
+    releaseYear: 2014,
+    biomeId: 'hive_lv426',
+    recommendedBiomeLabel: 'Périmètre Fortifié de Hadley\'s Hope (River of Pain 2014)',
+    environmentSummary: 'Colonie minière d\'Acheron LV-426 en état de siège : sas blindés éventrés, barricades de caisses d\'approvisionnement et nid de traitement atmosphérique.',
+    tacticalSectors: [
+      'Barricades des Sas d\'Accès Sub-Surface',
+      'Salle de Contrôle du Processeur d\'Atmosphère',
+      'Couloirs des Quartiers Résidentiels Miniers',
+      'Hangar du Blindé de Transport M577'
+    ],
+    environmentalHazards: [
+      'Tempêtes de poussière de silicate corrosif',
+      'Écoulements d\'acide xénomorphe résiduel dans les grilles',
+      'Vannes de surpression thermique explosives'
+    ],
+    keyPreyIds: ['alien_base_william_hudson_private', 'prey_xeno_warrior'],
+    heroSquadId: 'squad_hadleys_hope_colonial_militia',
+    villainSquadId: 'squad_charon_kleist_rogue_swarm'
+  },
+  {
+    id: 'map_lv742_iron_bear_redoubt',
+    name: 'LV-742 — Redoute Fortifiée des Iron Bears & Canyons Rocailleux (2003)',
+    originMedia: 'Aliens versus Predator: Extinction (EA / Zono 2003)',
+    universe: 'AVP',
+    releaseYear: 2003,
+    biomeId: 'desert',
+    recommendedBiomeLabel: 'Redoute des Mercenaires Iron Bears (Extinction 2003)',
+    environmentSummary: 'Bastion fortifié d\'artillerie lourde déployé par la compagnie mercenaire des Iron Bears au milieu des ravins arides de LV-742 et des nids K-Series.',
+    tacticalSectors: [
+      'Batterie de Canons Gauss Lourds Automatisés',
+      'Défilé Rocailleux des Canyons Écarlates',
+      'Avant-Poste de Surveillance Kadinsky',
+      'Périmètre de Clôtures Laser Haute Énergie'
+    ],
+    environmentalHazards: [
+      'Barrages d\'artillerie électromagnétique aveugles',
+      'Chutes de blocs de grès instables dans les défilés',
+      'Geysers de gaz soufré surchauffé'
+    ],
+    keyPreyIds: ['prey_colonial_marine_heavy', 'prey_xeno_warrior'],
+    heroSquadId: 'squad_iron_bear_uscm_battalion',
+    villainSquadId: 'squad_kseries_cloned_xeno_pack'
+  },
+  {
+    id: 'map_ataegina_citadel_ruins',
+    name: 'Ataegina — Citadelle de Lemnos & Pitons Rocheux Féodaux (2020)',
+    originMedia: 'Alien: Phalanx (Titan Books 2020 / AVP Hunt)',
+    universe: 'AVP',
+    releaseYear: 2020,
+    biomeId: 'temple',
+    recommendedBiomeLabel: 'Ruines de la Citadelle d\'Ataegina (Phalanx 2020)',
+    environmentSummary: 'Forteresse médiévale perchée au sommet d\'une aiguille rocheuse sur la planète Ataegina, théâtre d\'affrontements viscéraux entre phalanges humaines et démons Ahklun.',
+    tacticalSectors: [
+      'Parapet des Sentinelles d\'Obsidienne',
+      'Chausse-Trappes et Fosses de Poix Enflammée',
+      'Cavernes Inférieures des Nids d\'Ahklun',
+      'Grande Cour de la Citadelle de Lemnos'
+    ],
+    environmentalHazards: [
+      'Précipices vertigineux le long des falaises abruptes',
+      'Braseros et rigoles de poix bouillante',
+      'Projections de débris d\'obsidienne acérés'
+    ],
+    keyPreyIds: ['alien_base_royce_mercenaire_2010', 'prey_xeno_warrior'],
+    heroSquadId: 'squad_ataegina_spear_phalanx',
+    villainSquadId: 'squad_kseries_cloned_xeno_pack'
+  }
 ]);
 
 // =========================================================================
@@ -2027,6 +2172,91 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     wieldedBy: 'Maître de Guerre Ancien Yautja, Disc Masters',
     yautjaCounterplay: 'Salves autoguidées dévastatrices : briser le verrouillage au camouflage optique et contourner rapidement.',
     description: 'Artillerie d\'épaule tactique lourde déployée par les armées de Yautja Prime pour raser les ruches mutantes de LV-742.'
+  }
+,
+  {
+    id: 'weapon_dark_river_machete_flint',
+    name: 'Machete d\'Ébranchage & Pièges Fluviaux d\'Amazonie (1996)',
+    universe: 'PREDATOR',
+    faction: 'Guérilla Amazonienne / John Schaefer (1996)',
+    originMedia: 'Predator: Dark River (Dark Horse Comics 1996)',
+    caliber: 'Lame d\'acier trempé 55cm & pieux en silex taillé',
+    damageType: 'slashing_bleed',
+    effectiveRangeMeters: 4,
+    rateOfFire: 'Frappes manuelles vives & déclenchement de trappes',
+    wieldedBy: 'Guérilleros d\'Amazonie, John Schaefer',
+    yautjaCounterplay: 'Mêlée vive et pièges de lianes : sauter sur les perchoirs hauts et pilonner au plasmacaster.',
+    description: 'Lourde machete de jungle combinée à des pièges de pieux aiguisés déployés le long du fleuve noir amazonien.'
+  },
+  {
+    id: 'weapon_nemesis_webley_revolver',
+    name: 'Revolver d\'Ordonnance Webley .455 de la Police Victorienne (1896)',
+    universe: 'PREDATOR',
+    faction: 'Scotland Yard / Détective Edward Soames (1896)',
+    originMedia: 'Predator: Nemesis (Dark Horse Comics 1997)',
+    caliber: '.455 Webley Mk II à ogive de plomb mou',
+    damageType: 'kinetic_ballistic',
+    effectiveRangeMeters: 35,
+    rateOfFire: 'Coup par coup, barillet rotatif 6 coups',
+    wieldedBy: 'Inspecteur Edward Soames, Constabulary Guard',
+    yautjaCounterplay: 'Impact balistique lourd à courte portée : dévier les balles au blindage et neutraliser au shuriken.',
+    description: 'Revolver militaire de gros calibre à brisure déployé par les inspecteurs de Scotland Yard dans les ruelles brumeuses de Whitechapel.'
+  },
+  {
+    id: 'weapon_pala_tranq_dart_rifle',
+    name: 'Carabine à Fléchettes Sédatives & Neurotoxine Weyland-Yutani (Pala)',
+    universe: 'ALIEN',
+    faction: 'Sécurité de la Station Pala / Weyland-Yutani (2021)',
+    originMedia: 'Alien: Infiltrator (Titan Books 2021)',
+    caliber: 'Micro-fléchettes hypodermiques à peptide neuro-inhibiteur',
+    damageType: 'toxic_sedative',
+    effectiveRangeMeters: 45,
+    rateOfFire: 'Semi-automatique, chargeur 15 fléchettes pneumatiques',
+    wieldedBy: 'Gardes de Quarantaine Pala, Équipe de Confinement Hoenikker',
+    yautjaCounterplay: 'Neurotoxines paralysantes : activer le masque étanche et éliminer les tireurs à distance au canon plasma.',
+    description: 'Arme de neutralisation non létale conçue pour maîtriser les sujets mutants et les spécimens infectés par le pathogène noir sans endommager les tissus.'
+  },
+  {
+    id: 'weapon_phalanx_obsidian_spear',
+    name: 'Lance de Guerre en Obsidienne & Cuir Bouilli d\'Ataegina (2020)',
+    universe: 'ALIEN',
+    faction: 'Guerriers de Lemnos / Phalange d\'Ataegina (2020)',
+    originMedia: 'Alien: Phalanx (Titan Books 2020)',
+    caliber: 'Fer de lance taillé en obsidienne volcanique pure (résistant à l\'acide)',
+    damageType: 'piercing_acidproof',
+    effectiveRangeMeters: 6,
+    rateOfFire: 'Estocs de phalange coordonnés en mur de boucliers',
+    wieldedBy: 'Hoplites d\'Ataegina, Guerriers de Lemnos',
+    yautjaCounterplay: 'Mur de lances impénétrable de front : flanquer par le haut ou lancer le combistick en perforation.',
+    description: 'Lances taillées dans l\'obsidienne vitreuse des volcans d\'Ataegina, totalement insensibles au sang acide des démons Ahklun.'
+  },
+  {
+    id: 'weapon_extinction_iron_bear_gauss',
+    name: 'Canon Gauss Lourd Antimatière des Mercenaires Iron Bears (LV-742)',
+    universe: 'AVP',
+    faction: 'Compagnie Mercenaire Iron Bears (LV-742 2203)',
+    originMedia: 'Aliens versus Predator: Extinction (EA / Zono 2003)',
+    caliber: 'Flechettes d\'uranium appauvri à propulsion électromagnétique 30mm',
+    damageType: 'heavy_gauss_kinetic',
+    effectiveRangeMeters: 110,
+    rateOfFire: 'Salves magnétiques cadencées à 180 rpm',
+    wieldedBy: 'Artilleurs Lourds Iron Bears, Commandos Vétérans',
+    yautjaCounterplay: 'Tirs cinétiques hyper-véloces traversant les couverts légers : esquiver en zig-zag et fermer la distance.',
+    description: 'Système d\'artillerie électromagnétique portable déployé par les Iron Bears pour déchirer les exo-carapaces des reines et des guerriers Yautja.'
+  },
+  {
+    id: 'weapon_kseries_acid_tail_spurt',
+    name: 'Dards Caudaux & Jets d\'Acide Sous Pression K-Series (LV-742)',
+    universe: 'AVP',
+    faction: 'Ruche Mutante K-Series du Dr. Kadinsky (2203)',
+    originMedia: 'Aliens versus Predator: Extinction (EA / Zono 2003)',
+    caliber: 'Projections d\'acide fluorosulfurique mutant & barbillons chitineux',
+    damageType: 'mutant_hyper_acid',
+    effectiveRangeMeters: 25,
+    rateOfFire: 'Pression continue & fouettements de dard caudal',
+    wieldedBy: 'Xénomorphes K-Series Drones, Spitters Génétiques',
+    yautjaCounterplay: 'Acide hautement réactif rongeant le métal : maintenir une garde hermétique et incinérer au plasma.',
+    description: 'Organe de projection acide muté issu des hybridations de Kadinsky, capable d\'asperger de l\'acide volatil à longue distance.'
   }
 ]);
 

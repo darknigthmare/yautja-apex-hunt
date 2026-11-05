@@ -2490,3 +2490,738 @@ export function getCraftsmanshipItemSvg(recipeId, size = 56) {
       `.trim();
   }
 }
+
+
+/**
+ * Calcul déterministe d'un hash entier pour garantir des IDs uniques et isolés dans les balises SVG.
+ */
+function hashCode(str) {
+  let hash = 0;
+  const s = String(str || '');
+  for (let i = 0; i < s.length; i++) {
+    hash = ((hash << 5) - hash) + s.charCodeAt(i);
+    hash |= 0;
+  }
+  return hash;
+}
+
+/**
+ * Icône vectorielle SVG distincte pour chaque catégorie de cible, armement et secteur tactique.
+ * @param {string} category Nom de la catégorie (MILITARY, SECURITY, MERCENARY, CARTEL, SCIENTIFIC, TRIBAL, SPECIAL_OPS, CIVILIANS, FAUNA, ARSENAL, BIOME, CODEX, etc.)
+ * @param {number} size Dimension en pixels (défaut 16)
+ * @returns {string} Markup SVG
+ */
+export function getCategoryIconSvg(category = '', size = 16) {
+  const cat = String(category || '').trim().toUpperCase();
+
+  // 1. MILITARY (COMMANDO, MARINES, USCM)
+  if (cat.includes('MILITARY') || cat.includes('COMMANDO') || cat.includes('MARINE') || cat.includes('USCM')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-military" role="img" aria-label="Catégorie Militaire">
+        <polygon points="12,2 14.5,7 20,7.5 16,11.5 17.5,17 12,14.2 6.5,17 8,11.5 4,7.5 9.5,7" fill="#ffd54f" />
+        <path d="M4 17 L12 22 L20 17 M4 19.5 L12 24.5 L20 19.5" fill="none" stroke="#64b5f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `.trim();
+  }
+
+  // 2. SECURITY & LAW ENFORCEMENT
+  if (cat.includes('SECURITY') || cat.includes('LAW') || cat.includes('POLICE') || cat.includes('ENFORCEMENT')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-security" role="img" aria-label="Catégorie Sécurité">
+        <path d="M12 2 L20 5 V11 C20 16.5 16.5 21 12 22 C7.5 21 4 16.5 4 11 V5 Z" fill="#0d2438" stroke="#00e5ff" stroke-width="1.6" />
+        <polygon points="12,7 13.5,10.5 17,11 14.5,13.5 15,17 12,15.2 9,17 9.5,13.5 7,11 10.5,10.5" fill="#ffd700" />
+      </svg>
+    `.trim();
+  }
+
+  // 3. MERCENARY & SYNDICATES
+  if (cat.includes('MERCENARY') || cat.includes('SYNDICATE') || cat.includes('PIRATE')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-mercenary" role="img" aria-label="Catégorie Mercenaire">
+        <path d="M5 19 L19 5 M19 19 L5 5" stroke="#ff7043" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="12" cy="10" r="5" fill="#1b242e" stroke="#ffab00" stroke-width="1.5"/>
+        <circle cx="10" cy="9.5" r="1.2" fill="#ffab00"/><circle cx="14" cy="9.5" r="1.2" fill="#ffab00"/>
+        <rect x="10.5" y="13" width="3" height="2" rx="0.5" fill="#ffab00"/>
+      </svg>
+    `.trim();
+  }
+
+  // 4. CARTEL & CRIME
+  if (cat.includes('CARTEL') || cat.includes('CRIME') || cat.includes('GANG')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-cartel" role="img" aria-label="Catégorie Cartel">
+        <path d="M12 2 L12 17 M9 6 L15 6 M9 10 L15 10 M12 22 L12 18" stroke="#ff3d00" stroke-width="2" stroke-linecap="round"/>
+        <path d="M7 7 Q 12 12, 17 7 Q 12 18, 7 14" fill="none" stroke="#d50000" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="12" cy="4" r="1.4" fill="#ff1744"/>
+      </svg>
+    `.trim();
+  }
+
+  // 5. SCIENTIFIC & CORPORATE (WEYLAND, CREW)
+  if (cat.includes('SCIENTIFIC') || cat.includes('WEYLAND') || cat.includes('SPACESHIP') || cat.includes('CORPORATE') || cat.includes('SCIENCE')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-scientific" role="img" aria-label="Catégorie Scientifique">
+        <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(30 12 12)" fill="none" stroke="#00e5ff" stroke-width="1.5"/>
+        <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(-30 12 12)" fill="none" stroke="#00e5ff" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="2.5" fill="#ffd700"/>
+      </svg>
+    `.trim();
+  }
+
+  // 6. TRIBAL & WAR PARTIES
+  if (cat.includes('TRIBAL') || cat.includes('WAR_PARTY') || cat.includes('RITUAL')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-tribal" role="img" aria-label="Catégorie Tribale">
+        <polygon points="12,2 17,9 14,14 12,22 10,14 7,9" fill="#2d1c0b" stroke="#ff9100" stroke-width="1.6" stroke-linejoin="round"/>
+        <line x1="12" y1="2" x2="12" y2="22" stroke="#ffd54f" stroke-width="1.2"/>
+        <line x1="8" y1="11" x2="16" y2="11" stroke="#ff3d00" stroke-width="1.5"/>
+        <line x1="9" y1="15" x2="15" y2="15" stroke="#ff3d00" stroke-width="1.5"/>
+      </svg>
+    `.trim();
+  }
+
+  // 7. SPECIAL_OPS & STEALTH
+  if (cat.includes('SPECIAL_OPS') || cat.includes('SPEC_OPS') || cat.includes('STEALTH') || cat.includes('BLACK_OPS')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-special-ops" role="img" aria-label="Catégorie Opérations Spéciales">
+        <circle cx="12" cy="12" r="8" fill="none" stroke="#00e676" stroke-width="1.4" stroke-dasharray="2,2"/>
+        <polygon points="12,6 17,16 7,16" fill="none" stroke="#76ff03" stroke-width="1.8" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="2" fill="#ff1744"/>
+        <line x1="12" y1="2" x2="12" y2="6" stroke="#00e676" stroke-width="1.5"/>
+        <line x1="12" y1="18" x2="12" y2="22" stroke="#00e676" stroke-width="1.5"/>
+        <line x1="2" y1="12" x2="6" y2="12" stroke="#00e676" stroke-width="1.5"/>
+        <line x1="18" y1="12" x2="22" y2="12" stroke="#00e676" stroke-width="1.5"/>
+      </svg>
+    `.trim();
+  }
+
+  // 8. CIVILIANS & SURVIVORS
+  if (cat.includes('CIVILIAN') || cat.includes('SURVIVOR')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-civilians" role="img" aria-label="Catégorie Civils">
+        <circle cx="12" cy="6" r="3" fill="#80d8ff"/>
+        <path d="M6 18 C6 14, 9 12, 12 12 C15 12, 18 14, 18 18" fill="none" stroke="#80d8ff" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M3 21 L8 21 L10 18 L12 23 L14 19 L16 21 L21 21" fill="none" stroke="#ff5252" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `.trim();
+  }
+
+  // 9. FAUNA & BEASTS
+  if (cat.includes('FAUNA') || cat.includes('BEAST') || cat.includes('OUTCAST')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-fauna" role="img" aria-label="Catégorie Faune">
+        <path d="M6 4 Q 8 13 5 20 M12 3 Q 13 13 11 21 M18 5 Q 18 13 17 19" fill="none" stroke="#ff5252" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+    `.trim();
+  }
+
+  // 10. ARSENAL & WEAPONS
+  if (cat.includes('ARSENAL') || cat.includes('WEAPON') || cat.includes('BALLISTIC')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-arsenal" role="img" aria-label="Catégorie Arsenal">
+        <path d="M10 3 L14 3 L14 6 L10 6 Z M9 6 L15 6 L15 17 L9 17 Z M8 17 L16 17 L16 20 L8 20 Z" fill="#ffd54f" stroke="#ff8f00" stroke-width="1"/>
+        <circle cx="12" cy="11.5" r="7.5" fill="none" stroke="#00e5ff" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <line x1="12" y1="2" x2="12" y2="21" stroke="#00e5ff" stroke-width="0.8"/>
+        <line x1="2" y1="11.5" x2="22" y2="11.5" stroke="#00e5ff" stroke-width="0.8"/>
+      </svg>
+    `.trim();
+  }
+
+  // 11. BIOME & MAPS
+  if (cat.includes('BIOME') || cat.includes('MAP') || cat.includes('TERRITORY')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-biome" role="img" aria-label="Catégorie Biome">
+        <circle cx="12" cy="12" r="8.5" fill="#041b1d" stroke="#00e5ff" stroke-width="1.5"/>
+        <ellipse cx="12" cy="12" rx="8.5" ry="3.5" fill="none" stroke="#80cbc4" stroke-width="1.2"/>
+        <line x1="12" y1="3.5" x2="12" y2="20.5" stroke="#80cbc4" stroke-width="1.2"/>
+        <path d="M6 9 Q 12 6, 18 11 M5 15 Q 12 18, 19 14" fill="none" stroke="#00e676" stroke-width="1.2"/>
+      </svg>
+    `.trim();
+  }
+
+  // 12. CODEX & LORE
+  if (cat.includes('CODEX') || cat.includes('LORE') || cat.includes('ARCHIVE')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-codex" role="img" aria-label="Catégorie Codex">
+        <polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="#0a192f" stroke="#64ffda" stroke-width="1.6" stroke-linejoin="round"/>
+        <line x1="12" y1="2" x2="12" y2="22" stroke="#64ffda" stroke-width="1"/>
+        <line x1="3" y1="7" x2="12" y2="12" stroke="#64ffda" stroke-width="1"/>
+        <line x1="21" y1="7" x2="12" y2="12" stroke="#64ffda" stroke-width="1"/>
+        <circle cx="12" cy="12" r="2" fill="#ffd700"/>
+      </svg>
+    `.trim();
+  }
+
+  // 13. YAUTJA / HONOR CLAN / SUPER PREDATORS
+  if (cat.includes('PREDATOR') || cat.includes('YAUTJA') || cat.includes('HONOR')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-yautja" role="img" aria-label="Catégorie Yautja">
+        <circle cx="12" cy="5" r="2.2" fill="#ff1744"/>
+        <circle cx="6" cy="17" r="2.2" fill="#ff1744"/>
+        <circle cx="18" cy="17" r="2.2" fill="#ff1744"/>
+        <polygon points="12,5 6,17 18,17" fill="none" stroke="#ff5252" stroke-width="1.2" stroke-dasharray="2,2"/>
+      </svg>
+    `.trim();
+  }
+
+  // 14. XENOMORPH
+  if (cat.includes('XENO')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-xeno" role="img" aria-label="Catégorie Xénomorphe">
+        <path d="M4 14 C4 8, 10 4, 18 5 C22 5.5, 23 8, 20 10 C16 12, 14 15, 9 16 C6 16.5, 4 16, 4 14 Z" fill="#1b2e10" stroke="#76ff03" stroke-width="1.5"/>
+        <path d="M8 14 L12 14 M7 12 L10 12" stroke="#ccff90" stroke-width="1.2"/>
+      </svg>
+    `.trim();
+  }
+
+  // 15. SYNTHETIC
+  if (cat.includes('SYNTH')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-synthetic" role="img" aria-label="Catégorie Synthétique">
+        <circle cx="12" cy="11" r="7" fill="#081e2b" stroke="#00e5ff" stroke-width="1.5"/>
+        <circle cx="9.5" cy="10" r="1.4" fill="#ffffff"/>
+        <circle cx="14.5" cy="10" r="1.4" fill="#ffffff"/>
+        <path d="M12 4 V7 M12 15 V18 M5 11 H8 M16 11 H19" stroke="#80d8ff" stroke-width="1.4"/>
+      </svg>
+    `.trim();
+  }
+
+  // DEFAULT
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-default" role="img" aria-label="Catégorie Tactique">
+      <polygon points="12,3 21,12 12,21 3,12" fill="#0d1b2a" stroke="#ffd700" stroke-width="1.5"/>
+      <circle cx="12" cy="12" r="2.8" fill="#ff5252"/>
+    </svg>
+  `.trim();
+}
+
+/**
+ * Miniature vectorielle SVG tactique haute fidélité pour chaque carte / territoire média.
+ * Intègre grille holographique, radar orbital, courbes de niveau et colorimétrie adaptée au biome.
+ * @param {Object|string} map Objet carte média ou identifiant de biome
+ * @returns {string} Markup SVG tactique
+ */
+export function getMapMiniatureSvg(map) {
+  const mapObj = typeof map === 'object' && map !== null ? map : { id: String(map || 'map_unknown') };
+  const biomeId = String(mapObj.biomeId || mapObj.id || '').toLowerCase();
+  const name = String(mapObj.name || 'Secteur Tactique Inconnu');
+  const sectorsCount = Array.isArray(mapObj.tacticalSectors) ? mapObj.tacticalSectors.length : 4;
+  const uid = 'map-hud-' + Math.abs(hashCode(mapObj.id || name));
+
+  // Thème colorimétrique diégétique selon le biome
+  let theme = {
+    primary: '#00e676',
+    secondary: '#1b5e20',
+    dark: '#03140a',
+    accent: '#76ff03',
+    label: 'JUNGLE HUMIDE'
+  };
+
+  if (biomeId.includes('los_angeles') || biomeId.includes('urban') || biomeId.includes('gunnison')) {
+    theme = {
+      primary: '#ff3d00',
+      secondary: '#bf360c',
+      dark: '#1f0703',
+      accent: '#ffab00',
+      label: 'SECTEUR URBAIN FLIR'
+    };
+  } else if (biomeId.includes('antarctic') || biomeId.includes('bouvetoya') || biomeId.includes('arctic')) {
+    theme = {
+      primary: '#00e5ff',
+      secondary: '#01579b',
+      dark: '#021324',
+      accent: '#80d8ff',
+      label: 'CRYO PYRAMIDE -40°C'
+    };
+  } else if (biomeId.includes('hive') || biomeId.includes('lv426') || biomeId.includes('derelict')) {
+    theme = {
+      primary: '#88ff00',
+      secondary: '#33691e',
+      dark: '#0e1f04',
+      accent: '#ccff90',
+      label: 'RUCHES BIO-ACIDE'
+    };
+  } else if (biomeId.includes('space') || biomeId.includes('stargazer') || biomeId.includes('nostromo') || biomeId.includes('temple')) {
+    theme = {
+      primary: '#00b4d8',
+      secondary: '#023e8a',
+      dark: '#031726',
+      accent: '#90e0ef',
+      label: 'COMPLEXE ORBITAL'
+    };
+  } else if (biomeId.includes('desert') || biomeId.includes('ryushi')) {
+    theme = {
+      primary: '#ffb300',
+      secondary: '#e65100',
+      dark: '#211302',
+      accent: '#ffe082',
+      label: 'DÉSERT ARIDE SOLAIRE'
+    };
+  } else if (biomeId.includes('yautja') || biomeId.includes('genna')) {
+    theme = {
+      primary: '#ff1744',
+      secondary: '#880e4f',
+      dark: '#210307',
+      accent: '#ffd700',
+      label: 'YAUTJA PRIME CITADELLE'
+    };
+  }
+
+  // Topographie / courbes de niveau spécifiques
+  let topographyPath = '';
+  if (biomeId.includes('jungle')) {
+    topographyPath = `
+      <path d="M0,58 Q 30,42 60,52 T 120,40" fill="none" stroke="${theme.primary}" stroke-width="1.2" opacity="0.65" />
+      <path d="M0,66 Q 40,54 80,62 T 120,50" fill="none" stroke="${theme.primary}" stroke-width="0.8" opacity="0.4" />
+      <path d="M10,25 Q 45,15 75,32 T 120,18" fill="none" stroke="${theme.accent}" stroke-width="0.9" stroke-dasharray="3,2" opacity="0.55" />
+      <path d="M5,72 C 35,60 55,68 85,55 C 105,46 115,50 120,48" fill="none" stroke="${theme.accent}" stroke-width="1.8" opacity="0.75" />
+    `;
+  } else if (biomeId.includes('los_angeles') || biomeId.includes('urban') || biomeId.includes('gunnison')) {
+    topographyPath = `
+      <path d="M10,68 L50,42 L90,62 L120,44" fill="none" stroke="${theme.primary}" stroke-width="1.2" opacity="0.7" />
+      <path d="M25,58 L45,46 L70,60" fill="none" stroke="${theme.accent}" stroke-width="1.4" opacity="0.6" />
+      <rect x="42" y="32" width="16" height="14" fill="none" stroke="${theme.primary}" stroke-width="1" opacity="0.8" />
+      <rect x="74" y="44" width="22" height="16" fill="none" stroke="${theme.primary}" stroke-width="0.8" opacity="0.5" />
+      <circle cx="50" cy="39" r="3" fill="${theme.accent}" opacity="0.8" />
+    `;
+  } else if (biomeId.includes('antarctic') || biomeId.includes('bouvetoya')) {
+    topographyPath = `
+      <polygon points="60,18 96,64 24,64" fill="none" stroke="${theme.primary}" stroke-width="1.5" opacity="0.85" />
+      <line x1="33" y1="52" x2="87" y2="52" stroke="${theme.accent}" stroke-width="1" opacity="0.7" />
+      <line x1="42" y1="40" x2="78" y2="40" stroke="${theme.accent}" stroke-width="1" opacity="0.7" />
+      <line x1="51" y1="29" x2="69" y2="29" stroke="${theme.accent}" stroke-width="1" opacity="0.7" />
+      <line x1="60" y1="18" x2="60" y2="64" stroke="${theme.primary}" stroke-width="1" stroke-dasharray="2,2" opacity="0.6" />
+    `;
+  } else if (biomeId.includes('hive') || biomeId.includes('lv426')) {
+    topographyPath = `
+      <path d="M20,68 Q 60,24 100,68" fill="none" stroke="${theme.primary}" stroke-width="1.6" opacity="0.8" />
+      <path d="M32,68 Q 60,36 88,68" fill="none" stroke="${theme.accent}" stroke-width="1.2" opacity="0.65" />
+      <path d="M44,68 Q 60,48 76,68" fill="none" stroke="${theme.primary}" stroke-width="0.9" opacity="0.5" />
+      <circle cx="60" cy="30" r="3.5" fill="${theme.accent}" opacity="0.75" />
+      <circle cx="45" cy="54" r="2" fill="${theme.primary}" />
+      <circle cx="75" cy="54" r="2" fill="${theme.primary}" />
+    `;
+  } else {
+    topographyPath = `
+      <path d="M5,35 Q 35,20 65,38 T 115,28" fill="none" stroke="${theme.primary}" stroke-width="1.2" opacity="0.65" />
+      <path d="M5,52 Q 45,38 75,58 T 115,48" fill="none" stroke="${theme.primary}" stroke-width="0.9" opacity="0.45" />
+      <rect x="36" y="28" width="48" height="26" fill="none" stroke="${theme.accent}" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.6" />
+    `;
+  }
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80" class="tactical-map-miniature" role="img" aria-label="Miniature tactique de la carte ${name}">
+      <defs>
+        <linearGradient id="bg-${uid}" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="${theme.dark}" stop-opacity="0.95" />
+          <stop offset="100%" stop-color="#020508" stop-opacity="0.98" />
+        </linearGradient>
+        <linearGradient id="radar-sweep-${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="${theme.primary}" stop-opacity="0.45" />
+          <stop offset="70%" stop-color="${theme.primary}" stop-opacity="0.08" />
+          <stop offset="100%" stop-color="${theme.primary}" stop-opacity="0" />
+        </linearGradient>
+        <pattern id="grid-${uid}" width="10" height="10" patternUnits="userSpaceOnUse">
+          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="${theme.primary}" stroke-width="0.35" opacity="0.22" />
+        </pattern>
+        <filter id="glow-${uid}" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="1.5" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      <!-- Fond cartographique & Grille diégétique -->
+      <rect width="120" height="80" fill="url(#bg-${uid})" />
+      <rect width="120" height="80" fill="url(#grid-${uid})" />
+
+      <!-- Relief & Topographie du Biome -->
+      <g class="terrain-topography">
+        ${topographyPath}
+      </g>
+
+      <!-- Radar Orbital & Système de Balayage Holographique -->
+      <g class="orbital-radar" filter="url(#glow-${uid})">
+        <circle cx="60" cy="42" r="34" fill="none" stroke="${theme.primary}" stroke-width="0.6" stroke-dasharray="3,3" opacity="0.4" />
+        <circle cx="60" cy="42" r="22" fill="none" stroke="${theme.primary}" stroke-width="0.8" opacity="0.5" />
+        <circle cx="60" cy="42" r="10" fill="none" stroke="${theme.primary}" stroke-width="0.9" opacity="0.65" />
+        <line x1="60" y1="8" x2="60" y2="76" stroke="${theme.primary}" stroke-width="0.5" opacity="0.35" />
+        <line x1="20" y1="42" x2="100" y2="42" stroke="${theme.primary}" stroke-width="0.5" opacity="0.35" />
+        <path d="M60,42 L88,22 A34,34 0 0,0 60,8 Z" fill="url(#radar-sweep-${uid})" />
+        <circle cx="76" cy="26" r="2" fill="${theme.accent}" />
+        <circle cx="76" cy="26" r="4.5" fill="none" stroke="${theme.accent}" stroke-width="0.6" opacity="0.8" />
+        <circle cx="44" cy="52" r="1.6" fill="${theme.primary}" />
+      </g>
+
+      <!-- Waypoints tactiques -->
+      <polygon points="32,32 35,28 38,32 35,36" fill="${theme.accent}" opacity="0.85" />
+      <polygon points="86,52 89,48 92,52 89,56" fill="${theme.accent}" opacity="0.85" />
+
+      <!-- Barre d'en-tête de télémétrie HUD -->
+      <rect x="0" y="0" width="120" height="11" fill="#000000" fill-opacity="0.65" />
+      <line x1="0" y1="11" x2="120" y2="11" stroke="${theme.primary}" stroke-width="0.5" opacity="0.5" />
+      <text x="6" y="8" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="800" fill="${theme.primary}" letter-spacing="0.5">SCAN // ${theme.label}</text>
+      <text x="114" y="8" font-family="'Rajdhani', sans-serif" font-size="5" font-weight="700" fill="#cfd8dc" text-anchor="end">ORBIT 840KM</text>
+
+      <!-- Télémétrie inférieure -->
+      <rect x="0" y="69" width="120" height="11" fill="#000000" fill-opacity="0.65" />
+      <line x1="0" y1="69" x2="120" y2="69" stroke="${theme.primary}" stroke-width="0.5" opacity="0.5" />
+      <text x="6" y="77" font-family="'Rajdhani', sans-serif" font-size="5" font-weight="600" fill="#90a4ae">SECT. ACTIFS : ${sectorsCount}</text>
+      <text x="114" y="77" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="800" fill="${theme.accent}" text-anchor="end">▲ GRID ACQ</text>
+
+      <!-- Coins tactiques (Corner Brackets) -->
+      <path d="M3,8 L3,3 L8,3" fill="none" stroke="${theme.primary}" stroke-width="1.3" />
+      <path d="M112,3 L117,3 L117,8" fill="none" stroke="${theme.primary}" stroke-width="1.3" />
+      <path d="M3,72 L3,77 L8,77" fill="none" stroke="${theme.primary}" stroke-width="1.3" />
+      <path d="M112,77 L117,77 L117,72" fill="none" stroke="${theme.primary}" stroke-width="1.3" />
+    </svg>
+  `.trim();
+}
+
+/**
+ * Miniature vectorielle SVG blueprint / silhouette technique pour chaque arme PNJ ou variante Yautja.
+ * Représente le schéma mécanique, calibre, réticule de visée et composants balistiques ou cristaux plasma.
+ * @param {Object} weapon Objet arme
+ * @returns {string} Markup SVG technique blueprint
+ */
+export function getWeaponMiniatureSvg(weapon) {
+  const wep = typeof weapon === 'object' && weapon !== null ? weapon : { id: 'unknown_weapon', name: 'Arme Inconnue' };
+  const isYautja = Boolean(wep.armorPresetId || wep.baseWeaponId || (wep.sources && wep.sources.some(s => String(s).toLowerCase().includes('avp') || String(s).toLowerCase().includes('predator'))));
+  const id = String(wep.id || '').toLowerCase();
+  const baseId = String(wep.baseWeaponId || '').toLowerCase();
+  const name = String(wep.name || '').toLowerCase();
+  const caliber = String(wep.caliber || (isYautja ? 'Technologie Plasma / Duralumin' : 'Standard 10mm'));
+  const uid = 'wep-sch-' + Math.abs(hashCode(wep.id || name));
+
+  let theme = {
+    primary: '#00e5ff',
+    secondary: '#0077b6',
+    dark: '#031422',
+    accent: '#80d8ff',
+    grid: '#07253d',
+    type: 'BLUEPRINT // USCM-ORDNANCE'
+  };
+
+  if (isYautja) {
+    theme = {
+      primary: '#ff3d00',
+      secondary: '#b71c1c',
+      dark: '#1e0503',
+      accent: '#ffd700',
+      grid: '#330a06',
+      type: 'YAUTJA // ARSENAL SACRÉ'
+    };
+  } else if (wep.faction === 'OWLF' || wep.faction === 'MERCENARY' || wep.damageType === 'ballistic' || caliber.includes('NATO') || caliber.includes('12 Gauge') || caliber.includes('Magnum')) {
+    theme = {
+      primary: '#ffb300',
+      secondary: '#bf360c',
+      dark: '#1c1003',
+      accent: '#ffe082',
+      grid: '#2b1a05',
+      type: 'BALLISTIQUE // CALIBRE'
+    };
+  }
+
+  let weaponSilhouette = '';
+
+  if (baseId.includes('wristblades') || id.includes('wristblade') || name.includes('lame') || name.includes('scimitar')) {
+    weaponSilhouette = `
+      <rect x="14" y="26" width="22" height="20" rx="3" fill="#1b1d24" stroke="${theme.primary}" stroke-width="1.4" />
+      <line x1="20" y1="26" x2="20" y2="46" stroke="${theme.accent}" stroke-width="1" />
+      <line x1="28" y1="26" x2="28" y2="46" stroke="${theme.accent}" stroke-width="1" />
+      <polygon points="36,29 104,27 110,31 92,34 36,34" fill="#2d3748" stroke="${theme.primary}" stroke-width="1.3" />
+      <line x1="40" y1="31.5" x2="98" y2="29" stroke="${theme.accent}" stroke-width="1" />
+      <polygon points="36,38 98,40 104,44 88,46 36,44" fill="#2d3748" stroke="${theme.primary}" stroke-width="1.3" />
+      <line x1="40" y1="41" x2="92" y2="42" stroke="${theme.accent}" stroke-width="1" />
+      <circle cx="106" cy="29" r="2.2" fill="${theme.accent}" />
+      <circle cx="100" cy="42" r="2.2" fill="${theme.accent}" />
+    `;
+  } else if (baseId.includes('plasmacaster') || id.includes('plasmacaster') || name.includes('plasma') || name.includes('canon')) {
+    weaponSilhouette = `
+      <rect x="18" y="38" width="16" height="16" rx="2" fill="#1b1d24" stroke="${theme.primary}" stroke-width="1.3" />
+      <circle cx="26" cy="46" r="4" fill="none" stroke="${theme.accent}" stroke-width="1.2" />
+      <path d="M26,38 L36,26 L52,26" fill="none" stroke="${theme.primary}" stroke-width="2.5" stroke-linecap="round" />
+      <rect x="50" y="20" width="34" height="14" rx="3" fill="#263238" stroke="${theme.primary}" stroke-width="1.4" />
+      <rect x="54" y="23" width="8" height="8" rx="1" fill="${theme.accent}" opacity="0.8" />
+      <line x1="68" y1="17" x2="68" y2="20" stroke="${theme.primary}" stroke-width="1.5" />
+      <line x1="74" y1="17" x2="74" y2="20" stroke="${theme.primary}" stroke-width="1.5" />
+      <line x1="80" y1="17" x2="80" y2="20" stroke="${theme.primary}" stroke-width="1.5" />
+      <polygon points="84,21 98,24 98,30 84,33" fill="#37474f" stroke="${theme.primary}" stroke-width="1.2" />
+      <circle cx="102" cy="27" r="2.5" fill="#ff1744" />
+      <circle cx="98" cy="24" r="1.3" fill="#ff1744" />
+      <circle cx="98" cy="30" r="1.3" fill="#ff1744" />
+    `;
+  } else if (baseId.includes('combistick') || id.includes('combistick') || name.includes('lance') || name.includes('spear')) {
+    weaponSilhouette = `
+      <line x1="12" y1="52" x2="108" y2="20" stroke="${theme.primary}" stroke-width="3" stroke-linecap="round" />
+      <line x1="52" y1="39" x2="68" y2="33.5" stroke="${theme.accent}" stroke-width="4.5" />
+      <polygon points="108,20 94,18 100,28 116,17" fill="#cfd8dc" stroke="${theme.primary}" stroke-width="1.2" />
+      <polygon points="12,52 26,54 20,44 4,55" fill="#cfd8dc" stroke="${theme.primary}" stroke-width="1.2" />
+      <circle cx="116" cy="17" r="2" fill="${theme.accent}" />
+    `;
+  } else if (baseId.includes('smartdisc') || id.includes('disc') || name.includes('disque')) {
+    weaponSilhouette = `
+      <ellipse cx="60" cy="36" rx="36" ry="16" fill="#1b242e" stroke="${theme.primary}" stroke-width="1.8" />
+      <ellipse cx="60" cy="36" rx="24" ry="10" fill="none" stroke="${theme.accent}" stroke-width="1.2" stroke-dasharray="3,2" />
+      <circle cx="52" cy="36" r="3" fill="#03080e" stroke="${theme.primary}" stroke-width="1" />
+      <circle cx="68" cy="36" r="3" fill="#03080e" stroke="${theme.primary}" stroke-width="1" />
+      <path d="M24,36 L18,33 M96,36 L102,33 M60,20 L60,14 M60,52 L60,58" stroke="${theme.accent}" stroke-width="2" stroke-linecap="round" />
+    `;
+  } else if (id.includes('pulse_rifle') || name.includes('pulse rifle') || name.includes('m41a')) {
+    weaponSilhouette = `
+      <polygon points="20,44 32,44 36,36 74,36 76,30 102,30 104,36 76,36 74,44 56,44 52,52 44,52 46,44 20,44" fill="#263238" stroke="${theme.primary}" stroke-width="1.3" />
+      <path d="M38,30 L42,20 L72,20 L76,30" fill="none" stroke="${theme.primary}" stroke-width="1.5" />
+      <line x1="76" y1="33" x2="108" y2="33" stroke="${theme.primary}" stroke-width="2" />
+      <rect x="70" y="38" width="28" height="5" rx="1" fill="#37474f" stroke="${theme.accent}" stroke-width="1" />
+      <rect x="42" y="38" width="9" height="5" rx="1" fill="#110000" stroke="#ff1744" stroke-width="0.8" />
+      <text x="46.5" y="42" font-family="'Orbitron', monospace" font-size="3.2" font-weight="900" fill="#ff1744" text-anchor="middle">95</text>
+      <path d="M50,44 L54,58 L48,59 L45,44" fill="#1b242e" stroke="${theme.primary}" stroke-width="1" />
+    `;
+  } else if (id.includes('smartgun') || name.includes('smartgun') || name.includes('m56')) {
+    weaponSilhouette = `
+      <rect x="48" y="28" width="52" height="10" rx="2" fill="#212121" stroke="${theme.primary}" stroke-width="1.3" />
+      <circle cx="56" cy="33" r="1.5" fill="${theme.accent}" /><circle cx="64" cy="33" r="1.5" fill="${theme.accent}" />
+      <circle cx="72" cy="33" r="1.5" fill="${theme.accent}" /><circle cx="80" cy="33" r="1.5" fill="${theme.accent}" />
+      <rect x="100" y="27" width="8" height="12" fill="#37474f" stroke="${theme.primary}" stroke-width="1.2" />
+      <path d="M20,48 L32,38 L48,38" fill="none" stroke="${theme.primary}" stroke-width="2.5" />
+      <circle cx="32" cy="38" r="3" fill="#ff5252" />
+      <line x1="42" y1="36" x2="38" y2="48" stroke="${theme.accent}" stroke-width="2" />
+    `;
+  } else if (id.includes('minigun') || name.includes('painless') || name.includes('m134')) {
+    weaponSilhouette = `
+      <rect x="22" y="28" width="24" height="16" rx="2" fill="#212529" stroke="${theme.primary}" stroke-width="1.3" />
+      <path d="M24,28 L30,18 L40,18 L42,28" fill="none" stroke="${theme.accent}" stroke-width="2" />
+      <line x1="46" y1="30" x2="108" y2="30" stroke="${theme.primary}" stroke-width="1.5" />
+      <line x1="46" y1="33" x2="108" y2="33" stroke="${theme.accent}" stroke-width="1.5" />
+      <line x1="46" y1="36" x2="108" y2="36" stroke="${theme.primary}" stroke-width="1.5" />
+      <line x1="46" y1="39" x2="108" y2="39" stroke="${theme.accent}" stroke-width="1.5" />
+      <line x1="46" y1="42" x2="108" y2="42" stroke="${theme.primary}" stroke-width="1.5" />
+      <rect x="66" y="28" width="4" height="16" fill="${theme.primary}" />
+      <rect x="88" y="28" width="4" height="16" fill="${theme.primary}" />
+      <rect x="104" y="28" width="5" height="16" fill="${theme.accent}" />
+    `;
+  } else if (name.includes('shotgun') || name.includes('pompe') || name.includes('spas') || name.includes('ithaca')) {
+    weaponSilhouette = `
+      <line x1="38" y1="31" x2="104" y2="31" stroke="${theme.primary}" stroke-width="2.5" />
+      <line x1="48" y1="36" x2="98" y2="36" stroke="${theme.primary}" stroke-width="2" />
+      <rect x="58" y="34" width="18" height="5" rx="1" fill="${theme.accent}" stroke="${theme.primary}" stroke-width="1" />
+      <polygon points="20,44 38,44 48,34 38,30 20,38" fill="#2d3748" stroke="${theme.primary}" stroke-width="1.3" />
+    `;
+  } else if (name.includes('sniper') || name.includes('précision') || name.includes('barrett')) {
+    weaponSilhouette = `
+      <line x1="36" y1="34" x2="102" y2="34" stroke="${theme.primary}" stroke-width="2" />
+      <polygon points="102,31 110,30 110,38 102,37" fill="${theme.accent}" stroke="${theme.primary}" stroke-width="1" />
+      <rect x="42" y="22" width="28" height="6" rx="1" fill="#1a202c" stroke="${theme.primary}" stroke-width="1.2" />
+      <line x1="46" y1="28" x2="48" y2="34" stroke="${theme.primary}" stroke-width="1.5" />
+      <line x1="64" y1="28" x2="62" y2="34" stroke="${theme.primary}" stroke-width="1.5" />
+      <circle cx="42" cy="25" r="3" fill="${theme.accent}" opacity="0.8" />
+      <line x1="82" y1="35" x2="74" y2="52" stroke="${theme.primary}" stroke-width="1.4" />
+      <line x1="82" y1="35" x2="90" y2="52" stroke="${theme.primary}" stroke-width="1.4" />
+      <polygon points="14,46 36,44 38,34 26,34 16,40" fill="#2d3748" stroke="${theme.primary}" stroke-width="1.2" />
+    `;
+  } else {
+    weaponSilhouette = `
+      <polygon points="22,46 38,46 44,36 84,36 88,32 104,32 104,36 86,38 78,46 54,46 50,56 42,56 44,46 22,46" fill="#2d3748" stroke="${theme.primary}" stroke-width="1.3" />
+      <line x1="86" y1="34" x2="108" y2="34" stroke="${theme.accent}" stroke-width="2" />
+      <rect x="52" y="28" width="22" height="4" rx="1" fill="#1a202c" stroke="${theme.primary}" stroke-width="1" />
+    `;
+  }
+
+  const cleanCaliber = caliber.length > 28 ? caliber.slice(0, 26) + '…' : caliber;
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 70" class="tactical-weapon-miniature" role="img" aria-label="Schéma technique de l'arme ${wep.name}">
+      <defs>
+        <linearGradient id="bg-${uid}" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="${theme.dark}" stop-opacity="0.95" />
+          <stop offset="100%" stop-color="#02070e" stop-opacity="0.98" />
+        </linearGradient>
+        <pattern id="grid-${uid}" width="8" height="8" patternUnits="userSpaceOnUse">
+          <path d="M 8 0 L 0 0 0 8" fill="none" stroke="${theme.primary}" stroke-width="0.35" opacity="0.18" />
+        </pattern>
+        <filter id="glow-${uid}" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="1.2" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      <rect width="120" height="70" fill="url(#bg-${uid})" />
+      <rect width="120" height="70" fill="url(#grid-${uid})" />
+
+      <g class="ballistic-reticle" opacity="0.35">
+        <circle cx="60" cy="35" r="26" fill="none" stroke="${theme.primary}" stroke-width="0.6" stroke-dasharray="2,2" />
+        <circle cx="60" cy="35" r="14" fill="none" stroke="${theme.primary}" stroke-width="0.8" />
+        <line x1="60" y1="6" x2="60" y2="64" stroke="${theme.primary}" stroke-width="0.5" />
+        <line x1="15" y1="35" x2="105" y2="35" stroke="${theme.primary}" stroke-width="0.5" />
+      </g>
+
+      <g class="weapon-blueprint" filter="url(#glow-${uid})">
+        ${weaponSilhouette}
+      </g>
+
+      <line x1="18" y1="14" x2="102" y2="14" stroke="${theme.accent}" stroke-width="0.6" opacity="0.6" />
+      <line x1="18" y1="12" x2="18" y2="16" stroke="${theme.accent}" stroke-width="0.8" />
+      <line x1="102" y1="12" x2="102" y2="16" stroke="${theme.accent}" stroke-width="0.8" />
+      <text x="60" y="12" font-family="'Rajdhani', sans-serif" font-size="4.8" font-weight="700" fill="${theme.accent}" text-anchor="middle" letter-spacing="0.5">${cleanCaliber}</text>
+
+      <rect x="0" y="58" width="120" height="12" fill="#000000" fill-opacity="0.75" />
+      <line x1="0" y1="58" x2="120" y2="58" stroke="${theme.primary}" stroke-width="0.5" opacity="0.5" />
+      <text x="6" y="66" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="800" fill="${theme.primary}" letter-spacing="0.5">${theme.type}</text>
+      <text x="114" y="66" font-family="'Rajdhani', sans-serif" font-size="5" font-weight="700" fill="#cfd8dc" text-anchor="end">${wep.effectiveRangeMeters ? wep.effectiveRangeMeters + 'M PORTÉE' : 'CADENCE OPTIMALE'}</text>
+
+      <path d="M3,7 L3,3 L7,3" fill="none" stroke="${theme.primary}" stroke-width="1.2" />
+      <path d="M113,3 L117,3 L117,7" fill="none" stroke="${theme.primary}" stroke-width="1.2" />
+      <path d="M3,63 L3,67 L7,67" fill="none" stroke="${theme.primary}" stroke-width="1.2" />
+      <path d="M113,67 L117,67 L117,63" fill="none" stroke="${theme.primary}" stroke-width="1.2" />
+    </svg>
+  `.trim();
+}
+
+/**
+ * Miniature vectorielle d'escouade tactique en formation d'assaut.
+ * Intègre les silhouettes des membres en formation chevron/wedge, visières HUD luminescentes,
+ * réticules d'acquisition de cible, insignes et télémétrie de menace.
+ * @param {Object} squad Objet escouade
+ * @returns {string} Markup SVG tactique
+ */
+export function getSquadMiniatureSvg(squad) {
+  const sq = typeof squad === 'object' && squad !== null ? squad : { id: 'unknown_squad', name: 'Escouade Inconnue' };
+  const total = sq.totalMembers || (Array.isArray(sq.members) ? sq.members.length : 5);
+  const cat = String(sq.category || '').toUpperCase();
+  const uid = 'sqd-hud-' + Math.abs(hashCode(sq.id || sq.name || 'squad'));
+
+  let theme = {
+    primary: '#00e5ff',
+    secondary: '#0077b6',
+    visor: '#ffd700',
+    dark: '#03121f',
+    label: 'FORMATION EN V // ASSAUT'
+  };
+
+  if (cat.includes('CARTEL') || cat.includes('CRIME')) {
+    theme = {
+      primary: '#ff3d00',
+      secondary: '#b71c1c',
+      visor: '#ff1744',
+      dark: '#1c0603',
+      label: 'MEUTE DE COMBAT // HOSTILE'
+    };
+  } else if (cat.includes('MERCENARY') || cat.includes('SYNDICATE')) {
+    theme = {
+      primary: '#ffab00',
+      secondary: '#e65100',
+      visor: '#ffd54f',
+      dark: '#1a1002',
+      label: 'SYNDICAT // CONTRAT SANG'
+    };
+  } else if (cat.includes('TRIBAL') || cat.includes('FAUNA')) {
+    theme = {
+      primary: '#76ff03',
+      secondary: '#2e7d32',
+      visor: '#ffff00',
+      dark: '#0a1a05',
+      label: 'TROUPEAU RITUEL // PISTE'
+    };
+  } else if (cat.includes('PREDATOR') || cat.includes('HONOR')) {
+    theme = {
+      primary: '#ff1744',
+      secondary: '#880e4f',
+      visor: '#ffd700',
+      dark: '#1f0307',
+      label: 'CLAN YAUTJA // CHASSE ROYALE'
+    };
+  }
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 75" class="tactical-squad-miniature" role="img" aria-label="Formation tactique de l'escouade ${sq.name}">
+      <defs>
+        <linearGradient id="bg-${uid}" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="${theme.dark}" stop-opacity="0.95" />
+          <stop offset="100%" stop-color="#02060c" stop-opacity="0.98" />
+        </linearGradient>
+        <pattern id="grid-${uid}" width="10" height="10" patternUnits="userSpaceOnUse">
+          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="${theme.primary}" stroke-width="0.35" opacity="0.18" />
+        </pattern>
+        <filter id="glow-${uid}" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="1.3" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      <rect width="120" height="75" fill="url(#bg-${uid})" />
+      <rect width="120" height="75" fill="url(#grid-${uid})" />
+
+      <path d="M15,62 A55,55 0 0,1 105,62" fill="none" stroke="${theme.primary}" stroke-width="0.6" stroke-dasharray="3,3" opacity="0.4" />
+      <path d="M30,62 A38,38 0 0,1 90,62" fill="none" stroke="${theme.primary}" stroke-width="0.8" opacity="0.5" />
+
+      <g class="squad-formation" filter="url(#glow-${uid})">
+        <!-- 1. LEADER AU CENTRE EN POINTE AVANT -->
+        <g class="operative-leader" transform="translate(60, 24)">
+          <polygon points="0,-10 -3.5,-15 3.5,-15" fill="${theme.visor}" />
+          <ellipse cx="0" cy="0" rx="5.5" ry="5.5" fill="#1b2533" stroke="${theme.primary}" stroke-width="1.1" />
+          <line x1="-3.5" y1="0.5" x2="3.5" y2="0.5" stroke="${theme.visor}" stroke-width="1.6" stroke-linecap="round" />
+          <polygon points="-7.5,6 7.5,6 6,20 -6,20" fill="#111822" stroke="${theme.primary}" stroke-width="0.9" />
+          <line x1="2" y1="8" x2="14" y2="2" stroke="${theme.primary}" stroke-width="1.8" stroke-linecap="round" />
+          <rect x="11" y="0" width="6" height="2" fill="${theme.accent || theme.primary}" />
+        </g>
+
+        <!-- 2. FLANC GAUCHE -->
+        <g class="operative-left-flank" transform="translate(36, 33)">
+          <polygon points="0,-8 -3,-12 3,-12" fill="${theme.primary}" opacity="0.8" />
+          <ellipse cx="0" cy="0" rx="5" ry="5" fill="#151e29" stroke="${theme.primary}" stroke-width="1" />
+          <line x1="-3" y1="0.5" x2="3" y2="0.5" stroke="${theme.visor}" stroke-width="1.4" stroke-linecap="round" />
+          <polygon points="-6.5,5 6.5,5 5,18 -5,18" fill="#0f151e" stroke="${theme.primary}" stroke-width="0.8" />
+          <line x1="-2" y1="8" x2="-12" y2="2" stroke="${theme.primary}" stroke-width="1.6" />
+        </g>
+
+        <!-- 3. FLANC DROIT -->
+        <g class="operative-right-flank" transform="translate(84, 33)">
+          <polygon points="0,-8 -3,-12 3,-12" fill="${theme.primary}" opacity="0.8" />
+          <ellipse cx="0" cy="0" rx="5" ry="5" fill="#151e29" stroke="${theme.primary}" stroke-width="1" />
+          <line x1="-3" y1="0.5" x2="3" y2="0.5" stroke="${theme.visor}" stroke-width="1.4" stroke-linecap="round" />
+          <polygon points="-6.5,5 6.5,5 5,18 -5,18" fill="#0f151e" stroke="${theme.primary}" stroke-width="0.8" />
+          <line x1="2" y1="8" x2="14" y2="3" stroke="${theme.primary}" stroke-width="1.6" />
+        </g>
+
+        <!-- 4. ARRIÈRE-GARDE GAUCHE -->
+        ${total >= 4 ? `
+          <g class="operative-rear-left" transform="translate(18, 42)">
+            <ellipse cx="0" cy="0" rx="4.5" ry="4.5" fill="#111822" stroke="${theme.primary}" stroke-width="0.8" />
+            <line x1="-2.5" y1="0" x2="2.5" y2="0" stroke="${theme.visor}" stroke-width="1.2" />
+            <polygon points="-5,5 5,5 4,16 -4,16" fill="#0c1017" stroke="${theme.primary}" stroke-width="0.7" />
+          </g>
+        ` : ''}
+
+        <!-- 5. ARRIÈRE-GARDE DROITE -->
+        ${total >= 5 ? `
+          <g class="operative-rear-right" transform="translate(102, 42)">
+            <ellipse cx="0" cy="0" rx="4.5" ry="4.5" fill="#111822" stroke="${theme.primary}" stroke-width="0.8" />
+            <line x1="-2.5" y1="0" x2="2.5" y2="0" stroke="${theme.visor}" stroke-width="1.2" />
+            <polygon points="-5,5 5,5 4,16 -4,16" fill="#0c1017" stroke="${theme.primary}" stroke-width="0.7" />
+          </g>
+        ` : ''}
+      </g>
+
+      <g class="tri-laser-lock" opacity="0.9">
+        <circle cx="58" cy="20" r="1.8" fill="#ff1744" />
+        <circle cx="62" cy="20" r="1.8" fill="#ff1744" />
+        <circle cx="60" cy="16" r="1.8" fill="#ff1744" />
+        <polygon points="58,20 62,20 60,16" fill="none" stroke="#ff1744" stroke-width="0.6" stroke-dasharray="1.5,1.5" />
+      </g>
+
+      <rect x="0" y="0" width="120" height="11" fill="#000000" fill-opacity="0.65" />
+      <line x1="0" y1="11" x2="120" y2="11" stroke="${theme.primary}" stroke-width="0.5" opacity="0.5" />
+      <text x="6" y="8" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="800" fill="${theme.primary}" letter-spacing="0.5">${theme.label}</text>
+      <text x="114" y="8" font-family="'Rajdhani', sans-serif" font-size="5" font-weight="700" fill="${theme.visor}" text-anchor="end">[ ${total} COMBATTANTS ]</text>
+
+      <rect x="0" y="63" width="120" height="12" fill="#000000" fill-opacity="0.75" />
+      <line x1="0" y1="63" x2="120" y2="63" stroke="${theme.primary}" stroke-width="0.5" opacity="0.5" />
+      <text x="6" y="71" font-family="'Rajdhani', sans-serif" font-size="5" font-weight="600" fill="#cfd8dc">${cat}</text>
+      <text x="114" y="71" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="800" fill="#ff5252" text-anchor="end">CIBLES VERROUILLÉES</text>
+
+      <path d="M3,7 L3,3 L7,3" fill="none" stroke="${theme.primary}" stroke-width="1.2" />
+      <path d="M113,3 L117,3 L117,7" fill="none" stroke="${theme.primary}" stroke-width="1.2" />
+      <path d="M3,67 L3,71 L7,71" fill="none" stroke="${theme.primary}" stroke-width="1.2" />
+      <path d="M113,71 L117,71 L117,67" fill="none" stroke="${theme.primary}" stroke-width="1.2" />
+    </svg>
+  `.trim();
+}

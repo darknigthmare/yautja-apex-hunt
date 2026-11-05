@@ -65,6 +65,8 @@ export const NPC_PHYSICAL_PROFILES = Object.freeze({
   genna_grazer: profile(2),
   genna_sporeback: profile(2.1),
   clan_sentry_drone: profile(0.9, 'width'),
+  megafauna: profile(5.5, 'height'),
+  goliath: profile(5.5, 'height'),
 });
 
 const HUMAN_REFERENCE = profile(1.8);

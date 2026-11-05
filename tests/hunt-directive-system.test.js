@@ -113,6 +113,14 @@ test('les douze directives et leurs collections imbriquées sont immuables', () 
     'squad_stronghold_ernst_jeri_syndicate',
     'squad_ryushi_vault_archaeologists_mercs',
     'squad_extinction_council_veterans_lv742',
+    'squad_dark_river_amazon_patrol',
+    'squad_whitechapel_constabulary_guard',
+    'squad_pala_station_security_detail',
+    'squad_hadleys_hope_colonial_militia',
+    'squad_ataegina_spear_phalanx',
+    'squad_iron_bear_uscm_battalion',
+    'squad_kseries_cloned_xeno_pack',
+    'squad_machiko_ryushi_retinue',
   ]);
   assert.ok(Object.isFrozen(HUNT_DIRECTIVES));
 

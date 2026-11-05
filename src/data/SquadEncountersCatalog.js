@@ -3080,6 +3080,183 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'council_harpooner_elite', name: 'Harponneur d\'Élite du Clan', role: 'Tireur d\'Arrêt Anti-Ravagers', weapon: 'Harponneur Lourd Perforant à Pointe Barbelée', hp: 620, armor: 65, trophy: 'Pointe de Harpon Gravée au Sang de Reine Ravager' }
     ]
   }
+,
+  {
+    id: 'squad_dark_river_amazon_patrol',
+    name: 'Patrouille Fluviale de l\'Amazone — Pisteurs & Guérilleros (1996)',
+    universe: 'PREDATOR',
+    shortName: 'Amazon Patrol (4 Pisteurs)',
+    category: 'MERCENARY_SYNDICATE',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Dark River (Dark Horse Comics 1996)',
+    biomeId: 'jungle',
+    recommendedBiomeLabel: 'Bassin Fluvial de l\'Amazone (Dark River 1996)',
+    description: 'Pisteurs d\'élite de la jungle sud-américaine et vétérans de guérilla épaulant John Schaefer dans sa traque fluviale.',
+    tactics: 'Embuscades aquatiques, tirs de harcèlement sous la canopée et pièges de pieux en silex camouflés.',
+    totalHonorReward: 4800,
+    soloVariantId: 'alien_base_royce_mercenaire_2010',
+    members: [
+      { id: 'dark_river_lead_tracker', name: 'Chef Pisteur Amazonien', role: 'Éclaireur Fluvial', weapon: 'Machete d\'Ébranchage & Carabine Chasse', weaponId: 'weapon_dark_river_machete_flint', vitalityRatio: 1.0, hp: 520, armor: 35, trophy: 'Collier de Dents de Caïman Noir & Silex Fluvial' },
+      { id: 'dark_river_trap_specialist', name: 'Artificier des Marécages', role: 'Poseur de Pièges', weapon: 'Pieux en Silex & Fusil Calibre 12', weaponId: 'weapon_dark_river_machete_flint', vitalityRatio: 0.9, hp: 480, armor: 40, trophy: 'Déclencheur de Piège Fluvial en Liane Tressée' },
+      { id: 'dark_river_heavy_gunner', name: 'Mitrailleur de Canot Fluvial', role: 'Appui Feu Lourd', weapon: 'Mitrailleuse RPD Modifiée', weaponId: 'npc_wep_minigun_ol_painless', vitalityRatio: 1.1, hp: 560, armor: 50, trophy: 'Bande Munitions Tambour Blindée du Fleuve' },
+      { id: 'dark_river_jungle_sniper', name: 'Tireur d\'Élite de la Canopée', role: 'Tireur Embusqué', weapon: 'Fusil de Précision Mauser Tropical', weaponId: 'weapon_dark_river_machete_flint', vitalityRatio: 0.85, hp: 440, armor: 30, trophy: 'Lunette de Visée de Canopée en Laiton Équatoriale' }
+    ]
+  },
+  {
+    id: 'squad_whitechapel_constabulary_guard',
+    name: 'Garde Constabulaire de Whitechapel — Détachement de Scotland Yard (1896)',
+    universe: 'PREDATOR',
+    shortName: 'Whitechapel Guard (4 Policiers)',
+    category: 'LAW_ENFORCEMENT',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Nemesis (Dark Horse Comics 1997)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiomeLabel: 'Ruelles de Whitechapel sous la Brume (Nemesis 1896)',
+    description: 'Officiers et inspecteurs aguerris de Scotland Yard conduits par Edward Soames pour chasser le Démon de la Brume.',
+    tactics: 'Rondes serrées lanterne au poing, tirs de barrage au gros calibre Webley et encerclement méthodique des quais.',
+    totalHonorReward: 4600,
+    soloVariantId: 'alien_base_mike_harrigan_lapd',
+    members: [
+      { id: 'whitechapel_chief_inspector', name: 'Inspecteur Edward Soames', role: 'Commandant de la Brigade', weapon: 'Revolver Webley .455 & Sabre d\'Officier', weaponId: 'weapon_nemesis_webley_revolver', vitalityRatio: 1.2, hp: 600, armor: 45, trophy: 'Insigne Émaillé d\'Ordonnance de Scotland Yard 1896' },
+      { id: 'whitechapel_sergeant_lantern', name: 'Sergent de Quart à Lanterne', role: 'Éclaireur Nocturne', weapon: 'Lanterne Sourde & Matraque en Palissandre', weaponId: 'weapon_nemesis_webley_revolver', vitalityRatio: 0.95, hp: 500, armor: 40, trophy: 'Lanterne de Brume Londonienne en Cuivre Frappé' },
+      { id: 'whitechapel_marksman_constable', name: 'Agent Tireur de Précision', role: 'Tireur d\'Appui Urbain', weapon: 'Fusil Martini-Henry Réglementaire', weaponId: 'weapon_nemesis_webley_revolver', vitalityRatio: 0.9, hp: 480, armor: 35, trophy: 'Cartouchière en Cuir Noirçi de la Tamise' },
+      { id: 'whitechapel_riot_enforcer', name: 'Agent de Choc des Docks', role: 'Brise-Foule des Quais', weapon: 'Fusil de Chasse Double Canon & Bouclier de Bois', weaponId: 'weapon_nemesis_webley_revolver', vitalityRatio: 1.1, hp: 550, armor: 50, trophy: 'Sifflet d\'Alarme en Argent des Quais de Londres' }
+    ]
+  },
+  {
+    id: 'squad_pala_station_security_detail',
+    name: 'Escouade de Sécurité et de Quarantaine de la Station Pala (2021)',
+    universe: 'ALIEN',
+    shortName: 'Pala Detail (4 Gardes Quarantaine)',
+    category: 'MERCENARY_SYNDICATE',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: Infiltrator (Titan Books 2021)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Laboratoires Souterrains de Pala (Infiltrator 2021)',
+    description: 'Garde prétorienne corporatiste Weyland-Yutani affectée au confinement des sujets mutants du pathogène noir sur Pala.',
+    tactics: 'Injections de fléchettes sédatives longue portée, dispersion de neurotoxines et verrouillage de coursives pressurisées.',
+    totalHonorReward: 5000,
+    soloVariantId: 'prey_weyland_combat_android',
+    members: [
+      { id: 'pala_containment_captain', name: 'Capitaine de Quarantaine Weyland', role: 'Officier de Confinement', weapon: 'Carabine à Fléchettes Sédatives & Taser Lourd', weaponId: 'weapon_pala_tranq_dart_rifle', vitalityRatio: 1.1, hp: 580, armor: 60, trophy: 'Passe de Sécurité Alpha Sous-Sol 4 Weyland-Yutani' },
+      { id: 'pala_biochem_operator', name: 'Opérateur Bio-Chimique de Pala', role: 'Contrôleur de Pathogène', weapon: 'Lanceur d\'Aérosol Neuro-Inhibiteur', weaponId: 'weapon_pala_tranq_dart_rifle', vitalityRatio: 0.9, hp: 490, armor: 50, trophy: 'Fiole Scellée de Mutagène Noir Dérivé Z-01' },
+      { id: 'pala_synthetic_warden', name: 'Gardien Synthétique Modèle W-7', role: 'Sentinelle Bionique', weapon: 'Fusil Hypodermique Automatique & Pistolet Électrique', weaponId: 'weapon_pala_tranq_dart_rifle', vitalityRatio: 1.25, hp: 650, armor: 70, trophy: 'Noyau Mémoire Synthétique Décontaminé de Pala' },
+      { id: 'pala_tactical_specialist', name: 'Spécialiste Confinement Lourd', role: 'Neutralisateur de Mutants', weapon: 'Carabine à Fléchettes Sédatives & Fusil à Impulsion', weaponId: 'weapon_pala_tranq_dart_rifle', vitalityRatio: 1.0, hp: 530, armor: 55, trophy: 'Casque Pressurisé Anti-Spore de la Station Pala' }
+    ]
+  },
+  {
+    id: 'squad_hadleys_hope_colonial_militia',
+    name: 'Milice Coloniale et Survivants de Hadley\'s Hope (2014)',
+    universe: 'ALIEN',
+    shortName: 'Hadley Militia (4 Colons & Marines)',
+    category: 'CIVILIAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: River of Pain (Titan Books 2014)',
+    biomeId: 'hive_lv426',
+    recommendedBiomeLabel: 'Périmètre Fortifié de Hadley\'s Hope (River of Pain 2014)',
+    description: 'Dernier carré de colons armés et de marines de garnison luttant désespérément contre l\'infestation sur Acheron LV-426.',
+    tactics: 'Tirs de barrage depuis les barricades de caisses, emploi de chalumeaux industriels et de fusils à impulsion Armat.',
+    totalHonorReward: 5200,
+    soloVariantId: 'alien_base_william_hudson_private',
+    members: [
+      { id: 'hadley_captain_brackett', name: 'Capitaine Demian Brackett', role: 'Commandant des Opérations Coloniales', weapon: 'Armat M41A Pulse Rifle & Grenades HE', weaponId: 'npc_wep_m41a_pulse_rifle', vitalityRatio: 1.2, hp: 620, armor: 65, trophy: 'Plaque d\'Identité Militaire du Capitaine Brackett' },
+      { id: 'hadley_mining_engineer', name: 'Ingénieur d\'Extraction Minier', role: 'Spécialiste Forage', weapon: 'Découpeur Plasma Industriel Portatif', weaponId: 'npc_wep_m41a_pulse_rifle', vitalityRatio: 0.95, hp: 510, armor: 45, trophy: 'Visière Thermique de Foreur d\'Acheron LV-426' },
+      { id: 'hadley_militia_rifleman', name: 'Colon Fusilier Volontaire', role: 'Défenseur de Barricade', weapon: 'Fusil d\'Assaut M4A3 & Pistolet 9mm', weaponId: 'npc_wep_m41a_pulse_rifle', vitalityRatio: 0.9, hp: 470, armor: 40, trophy: 'Badge de Citoyen de la Colonie Freeland Hadley' },
+      { id: 'hadley_heavy_support', name: 'Canonnier de Garnison USCM', role: 'Artilleur Mobile', weapon: 'Smartgun M56 & Harnais de Stabilisation', weaponId: 'npc_wep_m56_smartgun', vitalityRatio: 1.15, hp: 590, armor: 60, trophy: 'Harnais de Visée Connecté du Smartgunner de Hadley' }
+    ]
+  },
+  {
+    id: 'squad_ataegina_spear_phalanx',
+    name: 'Phalange des Guerriers d\'Obsidienne d\'Ataegina (2020)',
+    universe: 'ALIEN',
+    shortName: 'Lemnos Phalanx (4 Lanciers Féodaux)',
+    category: 'TRIBAL_WAR_PARTY',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: Phalanx (Titan Books 2020)',
+    biomeId: 'bouvetoya_pyramid',
+    recommendedBiomeLabel: 'Ruines de la Citadelle d\'Ataegina (Phalanx 2020)',
+    description: 'Légion d\'élite spartiate de l\'île de Lemnos maniant lances d\'obsidienne et cuirasse de bête contre les démons Ahklun.',
+    tactics: 'Formation de phalange impénétrable, estocs d\'obsidienne insensibles à l\'acide et projections de poix enflammée.',
+    totalHonorReward: 5400,
+    soloVariantId: 'alien_base_royce_mercenaire_2010',
+    members: [
+      { id: 'ataegina_polemarch', name: 'Polémarque de Lemnos', role: 'Maître de la Phalange', weapon: 'Grande Lance d\'Obsidienne & Pavois de Cuir Bouilli', weaponId: 'weapon_phalanx_obsidian_spear', vitalityRatio: 1.25, hp: 650, armor: 60, trophy: 'Heaume Cérémonial d\'Airain Incrusté d\'Obsidienne' },
+      { id: 'ataegina_shield_bearer', name: 'Porteur de Bouclier d\'Airain', role: 'Défenseur de Ligne', weapon: 'Lance d\'Obsidienne Courte & Bouclier Rond Renforcé', weaponId: 'weapon_phalanx_obsidian_spear', vitalityRatio: 1.1, hp: 580, armor: 65, trophy: 'Bouclier Spartiate Trempé au Sang de Démon Ahklun' },
+      { id: 'ataegina_pitch_hurler', name: 'Lanceur de Poix Enflammée', role: 'Artilleur Incendiaire', weapon: 'Javelots d\'Obsidienne & Jarres de Poix Goudronnée', weaponId: 'weapon_phalanx_obsidian_spear', vitalityRatio: 0.9, hp: 480, armor: 40, trophy: 'Jarre de Poix Volcanique Pyrogène d\'Ataegina' },
+      { id: 'ataegina_vanguard_spearman', name: 'Lancier d\'Assaut de Crête', role: 'Chasseur de Monstre', weapon: 'Pique d\'Obsidienne Barbelée à Double Tranchant', weaponId: 'weapon_phalanx_obsidian_spear', vitalityRatio: 1.0, hp: 520, armor: 50, trophy: 'Collier de Pointes d\'Obsidienne Taillées à la Main' }
+    ]
+  },
+  {
+    id: 'squad_iron_bear_uscm_battalion',
+    name: 'Bataillon de Choc des Iron Bears — Mercenaires USCM (LV-742)',
+    universe: 'AVP',
+    shortName: 'Iron Bears (4 Vétérans Lourds)',
+    category: 'COLONIAL_MARINES',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens versus Predator: Extinction (EA / Zono 2003)',
+    biomeId: 'ryushi_desert',
+    recommendedBiomeLabel: 'Redoute des Mercenaires Iron Bears (Extinction 2003)',
+    description: 'Compagnie mercenaire de vétérans coloniaux réputée pour sa puissance de feu phénoménale et ses canons de siège gauss.',
+    tactics: 'Pilonnage d\'artillerie électromagnétique, tirs d\'uranium perforant à longue portée et couverture anti-blindage.',
+    totalHonorReward: 5800,
+    soloVariantId: 'prey_colonial_marine_heavy',
+    members: [
+      { id: 'iron_bear_heavy_gunner', name: 'Canonnier Gauss des Iron Bears', role: 'Artilleur Lourd Électromagnétique', weapon: 'Canon Gauss Lourd Antimatière & Exosquelette', weaponId: 'weapon_extinction_iron_bear_gauss', vitalityRatio: 1.3, hp: 680, armor: 75, trophy: 'Bobine Magnétique Haute Énergie de Canon Gauss' },
+      { id: 'iron_bear_commando_sergeant', name: 'Sergent Vétéran des Iron Bears', role: 'Chef de Section Tactique', weapon: 'Carabine Magnétique Légère & Lance-Grenades', weaponId: 'weapon_extinction_iron_bear_gauss', vitalityRatio: 1.1, hp: 580, armor: 65, trophy: 'Écusson Brodé de l\'Ours de Fer en Titane Trempé' },
+      { id: 'iron_bear_combat_medic', name: 'Médecin de Combat Blindé', role: 'Soutien Vital de Bataillon', weapon: 'Fusil à Pompe Automatique & Injecteur de Stim', weaponId: 'npc_wep_m41a_pulse_rifle', vitalityRatio: 0.95, hp: 520, armor: 55, trophy: 'Trousse Médicale Pressurisée de Bataillon d\'Assaut' },
+      { id: 'iron_bear_sniper_spotter', name: 'Tireur Électrostatique Perforant', role: 'Éclaireur d\'Interdiction', weapon: 'Fusil Sniper Gauss 20mm Hyper-Véloce', weaponId: 'weapon_extinction_iron_bear_gauss', vitalityRatio: 0.9, hp: 490, armor: 45, trophy: 'Module Télémétrique de Sniper Gauss des Iron Bears' }
+    ]
+  },
+  {
+    id: 'squad_kseries_cloned_xeno_pack',
+    name: 'Meute Clonée des Xénomorphes K-Series du Dr. Kadinsky (2203)',
+    universe: 'AVP',
+    shortName: 'K-Series Pack (4 Xénos Mutants)',
+    category: 'XENO_INFESTATION',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens versus Predator: Extinction (EA / Zono 2003)',
+    biomeId: 'hive_lv426',
+    recommendedBiomeLabel: 'Caldeira Volcanique de LV-742 (Extinction 2203)',
+    description: 'Sous-espèce mutante de xénomorphes à carapace jaune créée par manipulation génétique illégale sur LV-742.',
+    tactics: 'Jets d\'acide volatil sous haute pression, charges furieuses et résistance accrue aux neurotoxines et aux décharges plasma.',
+    totalHonorReward: 5600,
+    soloVariantId: 'prey_xeno_warrior',
+    members: [
+      { id: 'kseries_alpha_spitter', name: 'Spitter Alpha Mutant K-Series', role: 'Artilleur Acide Caustique', weapon: 'Dards Caudaux & Jets d\'Acide Volatil Sous Pression', weaponId: 'weapon_kseries_acid_tail_spurt', vitalityRatio: 1.25, hp: 640, armor: 65, trophy: 'Glande Gastrique d\'Acide Hyper-Concentré K-Series' },
+      { id: 'kseries_ravager_strain', name: 'Drone Ravager Génétique', role: 'Trancheur de Mêlée Féroce', weapon: 'Lames de Faux Chitineuses & Mâchoire Pharyngienne', weaponId: 'weapon_kseries_acid_tail_spurt', vitalityRatio: 1.15, hp: 600, armor: 70, trophy: 'Faux Chitineuse Dorsale de Ravager Génétique' },
+      { id: 'kseries_flank_stalker', name: 'Rôdeur Embusqué K-Series', role: 'Traqueur Furtif des Gorges', weapon: 'Griffes Préhensiles & Fouet Caudal Épineux', weaponId: 'weapon_kseries_acid_tail_spurt', vitalityRatio: 0.9, hp: 500, armor: 50, trophy: 'Crâne Jaunâtre à Nervures Translucides K-Series' },
+      { id: 'kseries_carrier_drone', name: 'Porteur de Nids K-Series', role: 'Vecteur d\'Infestation Rapide', weapon: 'Glandes de Projection Caudale & Mâchoire Acide', weaponId: 'weapon_kseries_acid_tail_spurt', vitalityRatio: 1.05, hp: 550, armor: 55, trophy: 'Sac Ovipositeur Génétiquement Altéré par Kadinsky' }
+    ]
+  },
+  {
+    id: 'squad_machiko_ryushi_retinue',
+    name: 'Suite Martiale de Machiko Noguchi sur Ryushi & Bunda (1995)',
+    universe: 'AVP',
+    shortName: 'Machiko Retinue (4 Chasseurs d\'Honneur)',
+    category: 'HONOR_CLAN',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator: War (Dark Horse Comics 1995)',
+    biomeId: 'ryushi_desert',
+    recommendedBiomeLabel: 'Désert de Silicate de Ryushi (AVP: War 1995)',
+    description: 'Cercle de compagnons d\'honneur Yautja et combattants d\'élite respectant la marque de clan gravée sur Machiko par Dachande.',
+    tactics: 'Duels au Naginata, projections de shurikens cérémoniaux et attaques combinées coordonnées sous camouflage optique.',
+    totalHonorReward: 6200,
+    soloVariantId: 'prey_young_blood_initiate',
+    members: [
+      { id: 'machiko_da_ishii_warrior', name: 'Machiko Noguchi (Da\'dtou-di)', role: 'Chasseresse Trans-Espèce Marquée', weapon: 'Naginata Yautja Cérémonial & Masque Optique de Dachande', weaponId: 'npc_wep_yautja_naginata_plasma', vitalityRatio: 1.3, hp: 700, armor: 70, trophy: 'Marque de Clan Gravée au Sang de Reine sur le Front' },
+      { id: 'top_knot_veteran_hunter', name: 'Vétéran du Clan de Top-Knot', role: 'Garde d\'Honneur Yautja', weapon: 'Combistick Télescopique & Plasmacaster d\'Épaule', weaponId: 'npc_wep_yautja_naginata_plasma', vitalityRatio: 1.2, hp: 650, armor: 75, trophy: 'Tresse Cérémoniale d\'Ancien du Clan de Top-Knot' },
+      { id: 'ryushi_blooded_young_blood', name: 'Jeune Sang Sanglant de Ryushi', role: 'Assaillant Agile', weapon: 'Doubles Lames de Poignet & Smart Disc', weaponId: 'npc_wep_yautja_naginata_plasma', vitalityRatio: 1.0, hp: 560, armor: 60, trophy: 'Disque Intelligent Gravé du Sceau de Ryushi' },
+      { id: 'bunda_rebel_tactician', name: 'Éclaireur Dissident de Bunda', role: 'Pisteur Embusqué', weapon: 'Fusil Harponneur & Filet de Câbles Invisibles', weaponId: 'npc_wep_yautja_naginata_plasma', vitalityRatio: 0.95, hp: 530, armor: 55, trophy: 'Gantelet Informatique reprogrammé pour la Rébellion' }
+    ]
+  }
 ]);
 
 export function getSquadById(squadId) {

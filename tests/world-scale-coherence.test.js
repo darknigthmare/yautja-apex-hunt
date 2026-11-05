@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import * as THREE from 'three';
-import { HuntNPC, AVAILABLE_HUNT_NPC_ARCHETYPES, HUNT_NPC_LOD_PROFILES } from '../src/entities/HuntNPC.js';
+import { HuntNPC, AVAILABLE_HUNT_NPC_ARCHETYPES, HUNT_NPC_LOD_PROFILES, HUNT_NPC_FSM_STATES } from '../src/entities/HuntNPC.js';
+import { MegafaunaBoss } from '../src/MegafaunaBoss.js';
 import { CANON_PREY_CATALOG } from '../src/data/PreyTaxonomyAndCrossoverCatalog.js';
 import { WORLD_UNITS_PER_METER, metersToWorldUnits, getVisualBounds, NPC_PHYSICAL_PROFILES } from '../src/utils/worldScale.js';
 
@@ -97,4 +98,210 @@ test('ranged signals originate at the scaled weapon instead of the actor feet', 
     const turned = npc.update(0, { player: { position: new THREE.Vector3(14, 5, -7) } }).find(signal => signal.projectile);
     assert.ok(turned?.projectile.origin.distanceTo(origin) < 1e-6, 'a stationary shooter must turn the visible weapon toward its target');
   } finally { npc.dispose(); }
+});
+
+test('canonical 1:1 creature dimensions strictly conform to lore specifications', () => {
+  // Predator nominal stature: 2.4m -> 7.2 world units
+  assert.equal(WORLD_UNITS_PER_METER, 3);
+  assert.ok(Math.abs(metersToWorldUnits(2.4) - 7.2) < 1e-12);
+  
+  // Drone Xenomorph: 2.1m -> 6.3 world units
+  assert.equal(NPC_PHYSICAL_PROFILES.xeno_drone.meters, 2.1);
+  assert.ok(Math.abs(metersToWorldUnits(NPC_PHYSICAL_PROFILES.xeno_drone.meters) - 6.3) < 1e-12);
+
+  // Warrior Xenomorph: 2.3m -> 6.9 world units
+  assert.equal(NPC_PHYSICAL_PROFILES.xeno_warrior.meters, 2.3);
+  assert.ok(Math.abs(metersToWorldUnits(NPC_PHYSICAL_PROFILES.xeno_warrior.meters) - 6.9) < 1e-12);
+
+  // Runner Xenomorph: 2.1m standing, pose ratio 0.55 -> ~1.155m quadruped wither height
+  assert.equal(NPC_PHYSICAL_PROFILES.xeno_runner.meters, 2.1);
+  assert.equal(NPC_PHYSICAL_PROFILES.xeno_runner.poseRatio, 0.55);
+  const runnerWitherMeters = NPC_PHYSICAL_PROFILES.xeno_runner.meters * NPC_PHYSICAL_PROFILES.xeno_runner.poseRatio;
+  assert.ok(Math.abs(runnerWitherMeters - 1.155) < 1e-4);
+
+  // Facehugger: 0.9m length
+  assert.equal(NPC_PHYSICAL_PROFILES.xeno_facehugger.meters, 0.9);
+  assert.equal(NPC_PHYSICAL_PROFILES.xeno_facehugger.dimension, 'length');
+
+  // Hell Hound / tracker: 1.4m
+  assert.equal(NPC_PHYSICAL_PROFILES.hunting_hound.meters, 1.4);
+  assert.equal(NPC_PHYSICAL_PROFILES.hell_hound_alpha.meters, 1.4);
+
+  // Armored War Hound: 1.1m
+  assert.equal(NPC_PHYSICAL_PROFILES.modified_predator_hound.meters, 1.1);
+
+  // Human reference: 1.8m -> 5.4 world units
+  const humanNpc = new HuntNPC('human_fireteam');
+  try {
+    const bounds = getVisualBounds(humanNpc.mesh);
+    const height = bounds.max.y - bounds.min.y;
+    assert.ok(Math.abs(height - 5.4) < 1e-4);
+  } finally { humanNpc.dispose(); }
+
+  // Megafauna / Goliath: 5.5m in certified profiles
+  assert.equal(NPC_PHYSICAL_PROFILES.megafauna.meters, 5.5);
+  assert.equal(NPC_PHYSICAL_PROFILES.goliath.meters, 5.5);
+  assert.equal(metersToWorldUnits(5.5), 16.5);
+});
+
+test('MegafaunaBoss: perfect terrain contact, multi-part hitboxes, exhaustion, topple and carving', () => {
+  const scene = new THREE.Scene();
+  const boss = new MegafaunaBoss(scene);
+  try {
+    // 1. Terrain clamping
+    boss.position.set(25, 8.5, -45);
+    boss.mesh.position.copy(boss.position);
+    boss.mesh.updateMatrixWorld(true);
+    const bounds = getVisualBounds(boss.mesh);
+    assert.ok(Math.abs(bounds.min.y - 8.5) < 0.04, `MegafaunaBoss minY=${bounds.min.y} should clamp to 8.5`);
+
+    // 2. Multi-part hitboxes (core, horn, tail)
+    const corePos = boss.getCoreWorldPosition();
+    const hornPos = boss.getHornWorldPosition();
+    const tailPos = boss.getTailWorldPosition();
+    assert.ok(corePos.isVector3 && hornPos.isVector3 && tailPos.isVector3);
+
+    // Finite projectile collision: distant projectile does not hit prematurely
+    const distantStart = hornPos.clone().add(new THREE.Vector3(0, 0, 75));
+    const distantEnd = distantStart.clone().add(new THREE.Vector3(0, 0, -2));
+    assert.equal(boss.resolveProjectileImpact(distantEnd, 0.1, distantStart), null);
+
+    // Direct hit on horn
+    assert.ok(boss.resolveProjectileImpact(hornPos, 0.5, hornPos));
+
+    // Severed tail trophy contact with terrain
+    const tailProp = boss.spawnSeveredTail();
+    assert.ok(tailProp?.isGroup);
+    assert.ok(Math.abs(getVisualBounds(tailProp).min.y - 8.5) < 1e-4, 'Severed tail must rest on terrain');
+    assert.equal(tailProp.userData.isCarveable, true);
+
+    // 3. Topple state & duration recovery in update
+    boss.triggerTopple(3.0);
+    assert.equal(boss.isToppled, true);
+    assert.equal(boss.aiState, 'toppled');
+    boss.update(1.5, new THREE.Vector3(25, 8.5, -40), false);
+    assert.equal(boss.isToppled, true);
+    assert.equal(boss.aiState, 'toppled');
+    boss.update(1.6, new THREE.Vector3(25, 8.5, -40), false);
+    assert.equal(boss.isToppled, false);
+    assert.equal(boss.aiState, 'chase');
+
+    // 4. Stamina and exhaustion
+    boss.stamina = 0;
+    boss.update(0.1, new THREE.Vector3(25, 8.5, -40), false);
+    assert.equal(boss.isExhausted, true);
+
+    // Enrage clears exhaustion and restores stamina
+    boss.takeDamage(boss.maxHealth * 0.6, boss.position);
+    assert.equal(boss.isEnraged, true);
+    assert.equal(boss.isExhausted, false);
+    assert.equal(boss.stamina, boss.maxStamina);
+
+    // 5. Carving ritual
+    assert.equal(boss.canCarve(), false);
+    boss.takeDamage(boss.maxHealth * 2, boss.position);
+    assert.equal(boss.isDead, true);
+    assert.equal(boss.canCarve(), true);
+    const trophy = boss.carveTrophy();
+    assert.ok(trophy && trophy.trophyType);
+    assert.equal(boss.canCarve(), false);
+  } finally { boss.dispose(); }
+});
+
+test('HuntNPC FSM transitions across all 8 canonical modern AAA states', () => {
+  assert.deepEqual(HUNT_NPC_FSM_STATES, [
+    'patrol',
+    'alert',
+    'investigate',
+    'stalk',
+    'engage',
+    'flank',
+    'wounded_retreat',
+    'cover',
+  ]);
+
+  const npc = new HuntNPC('human_fireteam', { ambient: true });
+  try {
+    assert.equal(npc.fsmState, 'patrol');
+    assert.equal(npc.mesh.userData.fsmState, 'patrol');
+
+    for (const state of HUNT_NPC_FSM_STATES) {
+      assert.equal(npc.transitionTo(state, `testing_${state}`), true);
+      assert.equal(npc.fsmState, state);
+      assert.equal(npc.mesh.userData.fsmState, state);
+    }
+
+    assert.throws(() => npc.transitionTo('non_existent_state'), /Invalid HuntNPC FSM state/);
+  } finally { npc.dispose(); }
+});
+
+test('PNJs react diegetically to acoustic events (plasma shots, roars, footsteps)', () => {
+  const rifleman = new HuntNPC('stargazer_rifleman', { position: new THREE.Vector3(0, 0, 0) });
+  const soldier = new HuntNPC('human_fireteam', { position: new THREE.Vector3(0, 0, 0) });
+  const xeno = new HuntNPC('xeno_drone', { position: new THREE.Vector3(0, 0, 0) });
+
+  try {
+    // 1. Footstep sound -> investigate
+    const footstepOrigin = new THREE.Vector3(12, 0, 0);
+    assert.equal(rifleman.hearSound('footsteps', footstepOrigin), true);
+    assert.equal(rifleman.fsmState, 'investigate');
+    assert.equal(rifleman.mesh.userData.investigatingLure, true);
+
+    // 2. Plasma shot sound -> cover for rifleman, alert for soldier, stalk for xeno
+    const plasmaOrigin = new THREE.Vector3(45, 0, 0);
+    assert.equal(rifleman.hearSound('plasma_shot', plasmaOrigin), true);
+    assert.equal(rifleman.fsmState, 'cover');
+
+    assert.equal(soldier.hearSound('plasma_shot', plasmaOrigin), true);
+    assert.equal(soldier.fsmState, 'alert');
+
+    assert.equal(xeno.hearSound('plasma_shot', plasmaOrigin), true);
+    assert.equal(xeno.fsmState, 'stalk');
+
+    // 3. Yautja Roar sound -> panic retreat for critically wounded human
+    soldier.health = 20; // < 45%
+    const roarOrigin = new THREE.Vector3(50, 0, 0);
+    assert.equal(soldier.hearSound('yautja_roar', roarOrigin), true);
+    assert.equal(soldier.fsmState, 'wounded_retreat');
+
+    // 4. Distant sound beyond hearing radius is ignored
+    const farSound = new THREE.Vector3(200, 0, 0);
+    assert.equal(soldier.hearSound('footsteps', farSound), false);
+  } finally {
+    rifleman.dispose();
+    soldier.dispose();
+    xeno.dispose();
+  }
+});
+
+test('Xenomorphs execute pounce telegraphs and react to pain and dismemberment', () => {
+  const xeno = new HuntNPC('xeno_drone', { position: new THREE.Vector3(0, 0, 0) });
+  const player = { position: new THREE.Vector3(0, 0, 6.5), isCloaked: false };
+
+  try {
+    // 1. Pounce telegraph
+    const signals = xeno.update(0.1, { player });
+    const telegraph = signals.find(s => s.type === 'telegraph' && s.attackKind === 'pounce');
+    assert.ok(telegraph, 'Xenomorph must telegraph pounce when in leap range');
+    assert.equal(xeno.mesh.userData.isTelegraphingPounce, true);
+    assert.equal(xeno.fsmState, 'stalk');
+
+    // Complete windup and pounce travel
+    xeno.update(0.4, { player });
+    assert.equal(xeno.mesh.userData.isTelegraphingPounce, false);
+
+    // 2. Pain reaction on heavy damage
+    const hit = xeno.takeDamage(35);
+    assert.equal(hit.damage, 35);
+    assert.equal(xeno.mesh.userData.painReaction, true);
+    assert.equal(xeno.mesh.userData.isFlinching, true);
+
+    // 3. Severe damage triggers dismemberment and acid spray
+    xeno.takeDamage(50); // HP drops below 40%
+    assert.equal(xeno.mesh.userData.dismembered, true);
+    assert.equal(xeno.mesh.userData.tailSevered, true);
+    assert.equal(xeno.mesh.userData.acidSplash, true);
+  } finally {
+    xeno.dispose();
+  }
 });

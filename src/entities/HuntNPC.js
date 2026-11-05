@@ -2,6 +2,17 @@ import * as THREE from 'three';
 import { refineNpcVisual } from '../utils/characterDetail.js';
 import { applyNpcWorldScale, getVisualBounds } from '../utils/worldScale.js';
 
+export const HUNT_NPC_FSM_STATES = Object.freeze([
+  'patrol',
+  'alert',
+  'investigate',
+  'stalk',
+  'engage',
+  'flank',
+  'wounded_retreat',
+  'cover',
+]);
+
 export const HUNT_NPC_TEXTURES = Object.freeze({
   xeno_drone: '/assets/textures/xeno-carapace.webp',
   hunting_hound: '/assets/textures/hunting-hound-hide.webp',
@@ -1715,6 +1726,9 @@ export class HuntNPC {
     this.lureTimer = 0;
     this._isCharging = false;
     this.chargeWindupTimer = 0;
+    this._painFlinchTimer = 0;
+    this._pounceTelegraphTimer = 0;
+    this._isPouncing = false;
 
     const texture = loadSharedTexture(HUNT_NPC_TEXTURES[this.type]);
     this.mesh = meshFactories[this.type](texture);
@@ -1798,11 +1812,124 @@ export class HuntNPC {
     this.patrolTimer = 0;
     this._patrolCycle = 0;
     this.ambientState = this.ambient ? 'patrol' : 'hostile';
+    this.fsmState = this.ambient ? 'patrol' : (this._ambushState === 'concealed' ? 'stalk' : 'engage');
     this.mesh.userData.ambient = this.ambient;
     this.mesh.userData.ambientState = this.ambientState;
+    this.mesh.userData.fsmState = this.fsmState;
     this.mesh.userData.territoryCenter = this.territoryCenter.clone();
     this.mesh.userData.patrolRadius = this.patrolRadius;
     this.mesh.userData.leashRadius = this.leashRadius;
+  }
+
+  transitionTo(nextState, reason = '') {
+    if (!HUNT_NPC_FSM_STATES.includes(nextState)) {
+      throw new Error(`Invalid HuntNPC FSM state: ${nextState}`);
+    }
+    this.fsmState = nextState;
+    this.mesh.userData.fsmState = nextState;
+    this.mesh.userData.fsmTransitionReason = reason;
+
+    if (nextState === 'patrol') {
+      if (this.ambient && this.ambientState !== 'return') {
+        this.ambientState = 'patrol';
+        this.mesh.userData.ambientState = 'patrol';
+      }
+    } else if (nextState === 'investigate') {
+      this.ambientState = 'investigate';
+      this.mesh.userData.ambientState = 'investigate';
+    } else if (nextState === 'engage') {
+      if (this.ambient) {
+        this.ambientState = 'chase';
+        this.mesh.userData.ambientState = 'chase';
+      } else {
+        this.ambientState = 'hostile';
+        this.mesh.userData.ambientState = 'hostile';
+      }
+      this.mesh.userData.tacticalState = 'engage';
+    } else if (nextState === 'cover') {
+      this.mesh.userData.tacticalState = this._inCover ? 'in_cover' : 'seek_cover';
+    } else if (nextState === 'wounded_retreat') {
+      this.mesh.userData.tacticalState = 'flee';
+    } else if (nextState === 'flank') {
+      this.mesh.userData.tacticalState = 'flank';
+    } else if (nextState === 'stalk') {
+      this.mesh.userData.tacticalState = 'stalk';
+    } else if (nextState === 'alert') {
+      this.mesh.userData.tacticalState = 'alert';
+    }
+    return true;
+  }
+
+  hearSound(soundTypeOrOptions, positionArg, intensityArg = 1.0, durationArg = 4.0) {
+    if (this._disposed || this.isDead) return false;
+    let soundType = 'footsteps';
+    let position = positionArg;
+    let intensity = intensityArg;
+    let duration = durationArg;
+
+    if (typeof soundTypeOrOptions === 'string') {
+      soundType = soundTypeOrOptions;
+    } else if (typeof soundTypeOrOptions === 'object' && soundTypeOrOptions !== null) {
+      soundType = soundTypeOrOptions.soundType ?? soundTypeOrOptions.type ?? 'footsteps';
+      position = soundTypeOrOptions.position ?? positionArg;
+      intensity = soundTypeOrOptions.intensity ?? soundTypeOrOptions.volume ?? 1.0;
+      duration = soundTypeOrOptions.duration ?? durationArg;
+    }
+
+    if (!position) return false;
+    const soundPos = position.isVector3 ? position : new THREE.Vector3(position.x ?? 0, position.y ?? 0, position.z ?? 0);
+    const dist = this.position.distanceTo(soundPos);
+
+    let hearingRadius = 25.0;
+    const normType = String(soundType).toLowerCase();
+    if (normType.includes('plasma') || normType.includes('caster')) {
+      hearingRadius = 75.0;
+    } else if (normType.includes('roar') || normType.includes('screech')) {
+      hearingRadius = 85.0;
+    } else if (normType.includes('explosion') || normType.includes('bomb')) {
+      hearingRadius = 100.0;
+    }
+    hearingRadius *= Math.max(0.2, Number(intensity) || 1.0);
+
+    if (dist > hearingRadius) return false;
+
+    this.mesh.userData.lastHeardSound = {
+      soundType: normType,
+      position: soundPos.clone(),
+      distance: dist,
+      timestamp: Date.now(),
+    };
+
+    this.lurePosition ??= new THREE.Vector3();
+    this.lurePosition.copy(soundPos);
+    this.lurePosition.y = this.position.y;
+    this.lureTimer = Math.max(this.lureTimer, duration);
+    this.mesh.userData.investigatingLure = true;
+
+    const isHumanoid = this.lodProfile?.family === 'humanoid';
+    const isXeno = this.lodProfile?.family === 'xeno' || this.lodProfile?.family === 'facehugger';
+
+    if (normType.includes('plasma') || normType.includes('roar')) {
+      if (isHumanoid) {
+        const healthRatio = this.maxHealth > 0 ? this.health / this.maxHealth : 1;
+        if (healthRatio < 0.45) {
+          this.transitionTo('wounded_retreat', 'sound_panic');
+        } else if (this.behaviorKind === 'cover_burst' || this._coverTarget || this.coverSearchRange > 0) {
+          this.transitionTo('cover', 'sound_incoming_fire');
+          this._inCover = false;
+        } else {
+          this.transitionTo('alert', 'sound_detection');
+        }
+      } else if (isXeno) {
+        this.transitionTo('stalk', 'sound_stalking');
+      } else {
+        this.transitionTo('alert', 'sound_detection');
+      }
+    } else {
+      this.transitionTo('investigate', 'sound_investigation');
+    }
+
+    return true;
   }
 
   getAimPoint(target = new THREE.Vector3()) {
@@ -2199,6 +2326,12 @@ export class HuntNPC {
 
     this._updateVisualLod(player);
     const dt = Math.max(0, Number(delta) || 0);
+    if (this._painFlinchTimer > 0) {
+      this._painFlinchTimer = Math.max(0, this._painFlinchTimer - dt);
+      if (this._painFlinchTimer === 0) {
+        this.mesh.userData.isFlinching = false;
+      }
+    }
     if (this.isNetted) {
       this._isCharging = false;
       this.chargeWindupTimer = 0;
@@ -2223,12 +2356,37 @@ export class HuntNPC {
     const lureActive = this.lureTimer > 0 && this.lurePosition?.isVector3;
     const playerPosition = getPlayerPosition(player);
     let targetPosition = lureActive ? this.lurePosition : playerPosition;
+    let shouldEngagePlayer = false;
     if (!lureActive && this.ambient) {
-      const shouldEngagePlayer = this._updateAmbient(dt, playerPosition, signals);
-      if (!shouldEngagePlayer) return signals;
+      shouldEngagePlayer = this._updateAmbient(dt, playerPosition, signals);
+      if (!shouldEngagePlayer) {
+        this.transitionTo('patrol', 'ambient_patrol');
+        return signals;
+      }
       targetPosition = playerPosition;
     }
-    if (!targetPosition) return signals;
+    if (!targetPosition) {
+      this.transitionTo('patrol', 'no_target');
+      return signals;
+    }
+
+    if (lureActive) {
+      this.transitionTo('investigate', 'investigating_lure');
+    } else if (this._inCover) {
+      this.transitionTo('cover', 'in_cover');
+    } else if (this.mesh.userData.tacticalState === 'seek_cover' || this.mesh.userData.tacticalState === 'relocate_cover') {
+      this.transitionTo('cover', 'seeking_cover');
+    } else if (this.mesh.userData.tacticalState === 'flee') {
+      this.transitionTo('wounded_retreat', 'retreating');
+    } else if (this.mesh.userData.tacticalState === 'evade' || this.mesh.userData.tacticalState === 'flank') {
+      this.transitionTo('flank', 'flanking');
+    } else if (this._ambushState === 'concealed') {
+      this.transitionTo('stalk', 'ambush_concealed');
+    } else if (this._isPouncing) {
+      this.transitionTo('stalk', 'pounce_windup');
+    } else {
+      this.transitionTo('engage', 'combat');
+    }
 
     direction.subVectors(targetPosition, this.position);
     direction.y = 0;
@@ -2274,6 +2432,31 @@ export class HuntNPC {
       this.attackCooldown = this.attackInterval;
     }
 
+    const isXenoHunter = (this.lodProfile?.family === 'xeno') && this.behaviorKind !== 'ambush_pounce';
+    if (isXenoHunter && tacticalDistance > this.attackRange && tacticalDistance <= 8.5 && this.attackCooldown === 0) {
+      if (!this._isPouncing) {
+        this._isPouncing = true;
+        this._pounceTelegraphTimer = 0.35;
+        this.mesh.userData.isTelegraphingPounce = true;
+        this.transitionTo('stalk', 'pounce_preparation');
+        signals.push({
+          type: 'telegraph',
+          sourceId: this.id,
+          sourceType: this.type,
+          attackKind: 'pounce',
+          duration: 0.35,
+          message: `${this.name} s'arc-boute et prépare son bond mortel.`,
+        });
+        return signals;
+      }
+    }
+    if (this._isPouncing && this._pounceTelegraphTimer > 0) {
+      this._pounceTelegraphTimer = Math.max(0, this._pounceTelegraphTimer - dt);
+      if (tacticalDistance > 0.0001) this.mesh.rotation.y = Math.atan2(direction.x, direction.z);
+      if (this._pounceTelegraphTimer > 0) return signals;
+      this.mesh.userData.isTelegraphingPounce = false;
+    }
+
     const shouldCharge = this.attackKind === 'charge'
       && tacticalDistance > this.attackRange
       && tacticalDistance <= this.chargeRange;
@@ -2304,7 +2487,8 @@ export class HuntNPC {
     if (tacticalDistance > this.attackRange && tacticalDistance > 0.0001) {
       const ambushMultiplier = this.behaviorKind === 'ambush_pounce' && this._ambushState === 'pounce'
         ? this.ambushSpeedMultiplier : 1;
-      const movementSpeed = this.speed * (shouldCharge ? this.chargeMultiplier : 1) * ambushMultiplier;
+      const pounceSpeedMultiplier = this._isPouncing ? 2.2 : 1;
+      const movementSpeed = this.speed * (shouldCharge ? this.chargeMultiplier : 1) * ambushMultiplier * pounceSpeedMultiplier;
       const travel = Math.min(tacticalDistance - this.attackRange, movementSpeed * dt);
       direction.normalize();
       this.position.addScaledVector(direction, Math.max(0, travel));
@@ -2341,6 +2525,10 @@ export class HuntNPC {
       this._ambushState = 'engaged';
       this.mesh.userData.ambushState = this._ambushState;
       this.mesh.userData.tacticalState = 'engage';
+    }
+    if (this._isPouncing) {
+      signal.pounce = true;
+      this._isPouncing = false;
     }
 
     if (this.status || this.damageType === 'corrosion') {
@@ -2428,7 +2616,7 @@ export class HuntNPC {
     return { restored, health: this.health, maxHealth: this.maxHealth };
   }
 
-  takeDamage(amount) {
+  takeDamage(amount, hitPosition) {
     if (this._disposed || this.isDead) {
       return { damage: 0, killed: this.isDead, remainingHealth: this.health };
     }
@@ -2436,6 +2624,29 @@ export class HuntNPC {
     const damage = Math.max(0, Number(amount) || 0);
     this.health = Math.max(0, this.health - damage);
     this.mesh.userData.healthRatio = this.maxHealth > 0 ? this.health / this.maxHealth : 0;
+
+    let painReaction = false;
+    if (damage >= 22 || (this.maxHealth > 0 && damage >= this.maxHealth * 0.2)) {
+      painReaction = true;
+      this._painFlinchTimer = 0.35;
+      this.mesh.userData.isFlinching = true;
+      this.mesh.userData.painReaction = true;
+    }
+
+    let dismembered = false;
+    const isXeno = this.lodProfile?.family === 'xeno' || this.type.startsWith('xeno_');
+    if (isXeno && this.health > 0 && this.health <= this.maxHealth * 0.4 && !this.mesh.userData.dismembered) {
+      dismembered = true;
+      this.mesh.userData.dismembered = true;
+      this.mesh.userData.tailSevered = true;
+      this.mesh.userData.acidSplash = true;
+      this.mesh.traverse((child) => {
+        if (child.name?.includes('tail') || child.userData?.physicalPart === 'tail') {
+          child.visible = false;
+        }
+      });
+    }
+
     if (damage > 0 && this.behaviorKind === 'ambush_pounce' && this._ambushState === 'concealed') {
       this._ambushState = 'pounce';
       this._ambushTimer = 0;
@@ -2449,6 +2660,14 @@ export class HuntNPC {
       this._coverSide *= -1;
       this.mesh.userData.tacticalState = 'relocate_cover';
     }
+
+    const isHumanoid = this.lodProfile?.family === 'humanoid';
+    if (this.health > 0 && this.health <= this.maxHealth * 0.35) {
+      if (isHumanoid || this.behaviorKind === 'evasive_prey') {
+        this.transitionTo('wounded_retreat', 'critical_damage');
+      }
+    }
+
     if (this.health === 0) {
       this.isDead = true;
       this.isNetted = false;

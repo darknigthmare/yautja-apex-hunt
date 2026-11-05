@@ -78,6 +78,10 @@ import {
   renderFactionEmblem,
   getCraftsmanshipItemSvg,
   getSquadLogo,
+  getMapMiniatureSvg,
+  getWeaponMiniatureSvg,
+  getSquadMiniatureSvg,
+  getCategoryIconSvg,
 } from './ui/CanonLogosAndEmblems.js';
 import { SQUAD_ENCOUNTERS, getSquadById } from './data/SquadEncountersCatalog.js';
 import {
@@ -2889,6 +2893,10 @@ export class Game {
 
     const renderSquadCard = (squad) => `
       <article class="taxonomy-card squad-card" data-prey-id="${squad.id}" data-squad-id="${squad.id}">
+        <div class="card-miniature-box squad-miniature">
+          ${getSquadMiniatureSvg(squad)}
+          <div class="miniature-corner-tag">${squad.category}</div>
+        </div>
         <div class="taxonomy-card-header">
           <div style="display:flex; align-items:center; gap:8px;">
             <div class="taxonomy-faction-icon" style="flex-shrink:0;">${getSquadLogo(squad.id, 28)}</div>
@@ -2900,9 +2908,9 @@ export class Game {
           <span class="spec-tag reward-tag">+${squad.totalHonorReward} PTS</span>
         </div>
         <div class="taxonomy-meta-row">
-          <span class="scale-tag scale-moyen">GROUPE (${squad.totalMembers} CIBLES)</span>
-          <span class="faction-badge faction-human">${squad.category}</span>
-          <span class="sector-badge" style="background:#263238; color:#80d8ff; padding:2px 6px; font-size:10px; border-radius:3px;">${squad.recommendedBiome}</span>
+          <span class="scale-tag scale-moyen" style="display:inline-flex; align-items:center; gap:4px;">${getCategoryIconSvg(squad.category, 12)} GROUPE (${squad.totalMembers} CIBLES)</span>
+          <span class="faction-badge faction-human" style="display:inline-flex; align-items:center; gap:4px;">${getCategoryIconSvg(squad.category, 11)} ${squad.category}</span>
+          <span class="sector-badge" style="background:#263238; color:#80d8ff; padding:2px 6px; font-size:10px; border-radius:3px; display:inline-flex; align-items:center; gap:4px;">${getCategoryIconSvg('BIOME', 11)} ${squad.recommendedBiome}</span>
         </div>
         <p style="font-size:12px; color:#cfd8dc; margin:0; line-height:1.4;">${squad.description}</p>
         <div style="font-size:11px; color:#ffab91;">
@@ -2924,15 +2932,22 @@ export class Game {
 
     const renderMapCard = (map) => `
       <article class="taxonomy-card map-card" data-map-id="${map.id}">
+        <div class="card-miniature-box map-miniature">
+          ${getMapMiniatureSvg(map)}
+          <div class="miniature-corner-tag">${map.universe}</div>
+        </div>
         <div class="taxonomy-card-header">
-          <div>
-            <h5 class="taxonomy-card-title">🗺️ ${map.name}</h5>
-            <span class="taxonomy-card-source">${map.originMedia} (${map.releaseYear})</span>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="taxonomy-faction-icon" style="flex-shrink:0;">${getCategoryIconSvg('BIOME', 24)}</div>
+            <div>
+              <h5 class="taxonomy-card-title">${map.name}</h5>
+              <span class="taxonomy-card-source">${map.originMedia} (${map.releaseYear})</span>
+            </div>
           </div>
           <span class="spec-tag reward-tag" style="background:#003747; color:#80d8ff;">${map.recommendedBiomeLabel}</span>
         </div>
         <div class="taxonomy-meta-row">
-          <span class="scale-tag" style="background:#1b263b; color:#90caf9;">BIOME : ${map.biomeId.toUpperCase()}</span>
+          <span class="scale-tag" style="background:#1b263b; color:#90caf9; display:inline-flex; align-items:center; gap:4px;">${getCategoryIconSvg('BIOME', 11)} BIOME : ${map.biomeId.toUpperCase()}</span>
           <span class="faction-badge faction-yautja">${map.universe}</span>
         </div>
         <p style="font-size:12px; color:#cfd8dc; margin:0; line-height:1.4;">${map.environmentSummary}</p>
@@ -2955,17 +2970,25 @@ export class Game {
 
     const renderWeaponCard = (weapon) => {
       const isYautja = Boolean(weapon.armorPresetId || weapon.baseWeaponId);
+      const categoryIcon = getCategoryIconSvg(isYautja ? 'PREDATOR' : (weapon.faction || 'ARSENAL'), 22);
       return `
         <article class="taxonomy-card weapon-card" data-weapon-id="${weapon.id}">
+          <div class="card-miniature-box weapon-miniature">
+            ${getWeaponMiniatureSvg(weapon)}
+            <div class="miniature-corner-tag">${isYautja ? 'YAUTJA' : (weapon.caliber ? 'CALIBRE' : 'ORDNANCE')}</div>
+          </div>
           <div class="taxonomy-card-header">
-            <div>
-              <h5 class="taxonomy-card-title">${isYautja ? '⚡' : '🔫'} ${weapon.name}</h5>
-              <span class="taxonomy-card-source">${weapon.originMedia || (weapon.sources ? weapon.sources.join(', ') : 'Arsenal Yautja')}</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div class="taxonomy-faction-icon" style="flex-shrink:0;">${categoryIcon}</div>
+              <div>
+                <h5 class="taxonomy-card-title">${weapon.name}</h5>
+                <span class="taxonomy-card-source">${weapon.originMedia || (weapon.sources ? weapon.sources.join(', ') : 'Arsenal Yautja')}</span>
+              </div>
             </div>
             <span class="spec-tag reward-tag" style="background:${isYautja ? '#b71c1c' : '#1e3a8a'}; color:#fff;">${isYautja ? 'ARME YAUTJA' : (weapon.faction || 'PNJ')}</span>
           </div>
           <div class="taxonomy-meta-row">
-            <span class="scale-tag" style="background:#263238; color:#ffd54f;">${isYautja ? ('BASE : ' + (weapon.baseWeaponId || 'wristblades').toUpperCase()) : ('CALIBRE : ' + (weapon.caliber || 'Standard'))}</span>
+            <span class="scale-tag" style="background:#263238; color:#ffd54f; display:inline-flex; align-items:center; gap:4px;">${getCategoryIconSvg('ARSENAL', 11)} ${isYautja ? ('BASE : ' + (weapon.baseWeaponId || 'wristblades').toUpperCase()) : ('CALIBRE : ' + (weapon.caliber || 'Standard'))}</span>
             <span class="faction-badge ${isYautja ? 'faction-yautja' : 'faction-human'}">${weapon.universe || (isYautja ? 'PREDATOR' : 'TACTIQUE')}</span>
           </div>
           <p style="font-size:12px; color:#cfd8dc; margin:0; line-height:1.4;">${weapon.description || ('Variante exclusive liée au preset d\'armure ' + (weapon.armorPresetId || 'Yautja') + '.')}</p>

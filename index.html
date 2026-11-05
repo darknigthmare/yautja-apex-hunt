@@ -26,6 +26,146 @@
   <link rel="stylesheet" href="src/content-pass.css">
   <link rel="stylesheet" href="src/ui/equipment.css">
   <link rel="stylesheet" href="src/ui/ship.css">
+  <style>
+    /* ==========================================================================
+       AAA Modern Diegetic HUD, Miniature Boxes & Tactical Aesthetics
+       Predator / Weyland-Yutani / USCM Glassmorphism, Scanlines & Holographic Tech
+       ========================================================================== */
+    .card-miniature-box {
+      position: relative;
+      width: 100%;
+      border-radius: 6px;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(8, 14, 24, 0.95) 0%, rgba(3, 6, 12, 0.98) 100%);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      box-shadow: inset 0 0 14px rgba(0, 229, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.6);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card-miniature-box svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 140px;
+      shape-rendering: geometricPrecision;
+      text-rendering: geometricPrecision;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+    }
+
+    /* Scanline tactique diegetique */
+    .card-miniature-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0) 0px,
+        rgba(0, 0, 0, 0) 2px,
+        rgba(0, 229, 255, 0.035) 2px,
+        rgba(0, 229, 255, 0.035) 4px
+      );
+      z-index: 2;
+      opacity: 0.85;
+    }
+
+    /* Reflet holographique d'angle */
+    .card-miniature-box::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.07) 0%,
+        rgba(255, 255, 255, 0) 45%,
+        rgba(0, 0, 0, 0.3) 100%
+      );
+      z-index: 3;
+    }
+
+    /* Micro-bordures néon thématiques par variante */
+    .card-miniature-box.map-miniature {
+      border-color: rgba(0, 230, 118, 0.35);
+      box-shadow: inset 0 0 16px rgba(0, 230, 118, 0.12), 0 4px 18px rgba(0, 0, 0, 0.65);
+    }
+
+    .card-miniature-box.squad-miniature {
+      border-color: rgba(0, 229, 255, 0.35);
+      box-shadow: inset 0 0 16px rgba(0, 229, 255, 0.12), 0 4px 18px rgba(0, 0, 0, 0.65);
+    }
+
+    .card-miniature-box.weapon-miniature {
+      border-color: rgba(255, 171, 0, 0.35);
+      box-shadow: inset 0 0 16px rgba(255, 171, 0, 0.12), 0 4px 18px rgba(0, 0, 0, 0.65);
+    }
+
+    /* Survol interactif de la carte */
+    .taxonomy-card:hover .card-miniature-box svg {
+      transform: scale(1.025);
+      filter: brightness(1.08);
+    }
+
+    .taxonomy-card:hover .card-miniature-box.map-miniature {
+      border-color: #00e676;
+      box-shadow: inset 0 0 20px rgba(0, 230, 118, 0.25), 0 0 16px rgba(0, 230, 118, 0.35);
+    }
+
+    .taxonomy-card:hover .card-miniature-box.squad-miniature {
+      border-color: #00e5ff;
+      box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.25), 0 0 16px rgba(0, 229, 255, 0.35);
+    }
+
+    .taxonomy-card:hover .card-miniature-box.weapon-miniature {
+      border-color: #ffd54f;
+      box-shadow: inset 0 0 20px rgba(255, 213, 79, 0.25), 0 0 16px rgba(255, 213, 79, 0.35);
+    }
+
+    /* Badge d'angle holographique */
+    .miniature-corner-tag {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      z-index: 4;
+      background: rgba(3, 7, 14, 0.88);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #e0e6ed;
+      font-family: 'Orbitron', monospace, sans-serif;
+      font-size: 8.5px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      padding: 2px 7px;
+      border-radius: 3px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+      text-transform: uppercase;
+    }
+
+    /* Icônes de catégories intégrées et badges */
+    .category-icon {
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 4px rgba(0, 229, 255, 0.3));
+    }
+
+    .taxonomy-card-header .taxonomy-faction-icon {
+      filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.35));
+    }
+
+    /* Ajustement responsive des cartes */
+    .taxonomy-card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(14, 20, 30, 0.92) 0%, rgba(8, 12, 18, 0.96) 100%);
+      border: 1px solid rgba(120, 140, 160, 0.3);
+      backdrop-filter: blur(8px);
+    }
+  </style>
+
 
 </head>
 <body class="app-shell">
