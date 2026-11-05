@@ -107,6 +107,12 @@ test('les douze directives et leurs collections imbriquées sont immuables', () 
     'squad_nightmare_asylum_spears_command',
     'squad_deadliest_caryn_big_mama_clan',
     'squad_three_world_war_machiko_uscm',
+    'squad_xenogenesis_spearhead_mercenaries_1999',
+    'squad_blood_feud_samurai_clan_1993',
+    'squad_berserker_max_exosuit_team_1995',
+    'squad_stronghold_ernst_jeri_syndicate',
+    'squad_ryushi_vault_archaeologists_mercs',
+    'squad_extinction_council_veterans_lv742',
   ]);
   assert.ok(Object.isFrozen(HUNT_DIRECTIVES));
 

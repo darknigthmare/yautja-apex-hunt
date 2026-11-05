@@ -488,6 +488,36 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'spear_heavy',
     modifiers: Object.freeze({ damageMultiplier: 1.18, rangeMultiplier: 1.25, stunDurationMultiplier: 1.2 }),
   }),
+  Object.freeze({
+    id: 'variant_valkyrie_hg_norse_battle_axe', armorPresetId: 'valkyrie_hg', baseWeaponId: 'combi_stick', name: 'Hache de Bataille Nordique de Valkyrie',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'spear_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.22, parryAngleMultiplier: 1.35, criticalChanceMultiplier: 1.15 }),
+  }),
+  Object.freeze({
+    id: 'variant_samurai_yautja_nodachi_greatsword', armorPresetId: 'samurai_yautja', baseWeaponId: 'combi_stick', name: 'Grand Nodachi Électro-Forgé du Samouraï Yautja',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'spear',
+    modifiers: Object.freeze({ damageMultiplier: 1.2, rangeMultiplier: 1.25, attackSpeedMultiplier: 1.1 }),
+  }),
+  Object.freeze({
+    id: 'variant_berserker_2010_brute_cleaver', armorPresetId: 'berserker_2010', baseWeaponId: 'wristblades', name: 'Tranchoir Brutal de Super Predator Berserker',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predators2010']), behavior: 'blade',
+    modifiers: Object.freeze({ damageMultiplier: 1.25, bleedDamageMultiplier: 1.3, attackSpeedMultiplier: 0.95 }),
+  }),
+  Object.freeze({
+    id: 'variant_city_hunter_speargun_urban_sniper', armorPresetId: 'city_1990', baseWeaponId: 'speargun', name: 'Fusil à Fléchettes Urbain Télescopique (1990)',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predator2']), behavior: 'precision_bolt',
+    modifiers: Object.freeze({ damageMultiplier: 1.18, rangeMultiplier: 1.3, projectileSpeedMultiplier: 1.25 }),
+  }),
+  Object.freeze({
+    id: 'variant_cleopatra_hg_pharaoh_khopesh', armorPresetId: 'cleopatra_hg', baseWeaponId: 'combi_stick', name: 'Khopesh Cérémonial Égyptien de Cléopâtre',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'spear_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.2, parryAngleMultiplier: 1.25, honorGainMultiplier: 1.25 }),
+  }),
+  Object.freeze({
+    id: 'variant_viking_yautja_round_shield_axes', armorPresetId: 'viking_yautja', baseWeaponId: 'wristblades', name: 'Bouclier Rond Runique et Hachettes Barbares',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'blade',
+    modifiers: Object.freeze({ damageMultiplier: 1.16, parryAngleMultiplier: 1.4, blockDamageAbsorptionMultiplier: 1.3 }),
+  }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);
 

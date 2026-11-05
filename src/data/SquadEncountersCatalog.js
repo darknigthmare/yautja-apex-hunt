@@ -2947,6 +2947,139 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'heavy_smartgunner_cooper', name: 'Canonnier Lourd Cooper', role: 'Tireur d\'Appui USCM', weapon: 'Mitrailleuse Lourde M56 Smartgun avec Harnais Autotrack', hp: 510, armor: 55, trophy: 'Tambour de Munitions 10×24mm Usé des Tranchées' }
     ]
   }
+,
+  {
+    id: 'squad_xenogenesis_spearhead_mercenaries_1999',
+    name: 'Commandos Cybernétiques de Spearhead Industries (1999)',
+    universe: 'PREDATOR',
+    shortName: 'Cyber-Commandos Spearhead (4 Soldats)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Xenogenesis (Comics Dark Horse 1999)',
+    biomeId: 'jungle',
+    recommendedBiomeLabel: 'Base Cyber-Militaire Spearhead & Jungle (1999)',
+    description: 'L\'escouade de mercenaires cybernétiques d\'élite sous contrat Spearhead, équipés de fusils cryogéniques Sub-Zero pour capturer des chasseurs extraterrestres.',
+    tactics: 'Jets continus d\'azote liquide cryogénique, tirs de suppression au laser et balayages radars thermiques.',
+    totalHonorReward: 4800,
+    soloVariantId: 'alien_base_royce_mercenaire_2010',
+    members: [
+      { id: 'mason_spearhead_lead', name: 'Capitaine Mason (Cyber-Commando)', role: 'Commandant d\'Assaut Cryo', weapon: 'Fusil Cryogénique Sub-Zero & Pistolet Laser', hp: 520, armor: 55, trophy: 'Insigne Cybernétique Doré de Spearhead Industries' },
+      { id: 'vasquez_cyber_specialist', name: 'Spécialiste Vasquez (Bionique)', role: 'Opératrice de Verrouillage Thermique', weapon: 'Carabine Laser Haute Fréquence & Visière Sub-Zero', hp: 440, armor: 45, trophy: 'Module Oculaire Cyber-Sensoriel de Vasquez' },
+      { id: 'jackson_heavy_gunner', name: 'Canonnier Lourd Jackson', role: 'Fantassin d\'Appui Lourd Cryo', weapon: 'Canon Cryo Rotatif Lourd & Cuirasse Renforcée', hp: 550, armor: 60, trophy: 'Valve de Décharge Cryogénique en Acier Trempé' },
+      { id: 'alvarez_demolitions', name: 'Artilleur Alvarez', role: 'Expert Pièges & Charges Thermiques', weapon: 'Lance-Grenades Magnétiques & Shotgun de Combat', hp: 430, armor: 40, trophy: 'Détonateur Électronique d\'Amorçage de Spearhead' }
+    ]
+  },
+  {
+    id: 'squad_blood_feud_samurai_clan_1993',
+    name: 'Lignée Martiale du Maître Aveugle Juta — Mont Fuji (1993)',
+    universe: 'PREDATOR',
+    shortName: 'Guerriers du Mont Fuji (4 Maîtres)',
+    category: 'HUMAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Blood Feud (Comics Dark Horse 1993)',
+    biomeId: 'jungle',
+    recommendedBiomeLabel: 'Sanctuaire Enneigé du Mont Fuji & Bambouseraie (1993)',
+    description: 'Le maître sabreur aveugle Juta et ses disciples guerriers défendant le temple ancestral du Mont Fuji contre la vengeance d\'un chasseur Yautja.',
+    tactics: 'Duels fulgurants d\'estoc au sabre forgé Muramasa, tirs de volée d\'arc Yumi silencieux et embuscades de fumée.',
+    totalHonorReward: 5000,
+    soloVariantId: 'canon249_duelliste_feodal_samourai',
+    members: [
+      { id: 'juta_blind_master', name: 'Maître Juta (Sabreur Aveugle)', role: 'Grand Maître d\'Armes Sacré', weapon: 'Katana Ancestral Muramasa Forgé & Sens Auditif Ultime', hp: 500, armor: 35, trophy: 'Bandeau de Soie Blanche Ensanglanté du Maître Juta' },
+      { id: 'kenji_shinobi_shadow', name: 'Kenji (Ombre Shinobi)', role: 'Assassin Invisible des Forêts de Bambous', weapon: 'Lames Jumelles Tanto & Shurikens Empoisonnés', hp: 410, armor: 30, trophy: 'Masque Démoniaque Oni en Bois d\'Ébène Gravé' },
+      { id: 'tatsu_ronin_archer', name: 'Tatsu (Archer Ronin)', role: 'Tireur d\'Élite Traditionnel', weapon: 'Grand Arc Yumi & Flèches d\'Airain Perforantes', hp: 430, armor: 35, trophy: 'Corde de Soie et Gant de Tir d\'Archerie Noble' },
+      { id: 'sohei_monk_guardian', name: 'Moine Guerrier Sohei', role: 'Gardien Sacré du Temple', weapon: 'Naginata d\'Honneur & Clochettes Soniques de Répulsion', hp: 470, armor: 40, trophy: 'Rosaire Bouddhiste en Bois de Cèdre Millénaire' }
+    ]
+  },
+  {
+    id: 'squad_berserker_max_exosuit_team_1995',
+    name: 'Escouade de Choc Berserker — Exosquelette MAX (2195)',
+    universe: 'ALIEN',
+    shortName: 'Commando Berserker MAX (4 Titans)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Berserker (Comics Dark Horse 1995)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Épave du Cargo Militaire Nemesis (Berserker 2195)',
+    description: 'L\'escouade de choc des Marines Berserker, pilotée par le colosse Ellis dans son exosquelette mécanisé MAX sous cocktail de stimulants de furie.',
+    tactics: 'Charges destructrices de blindage au vérin hydraulique, tirs de plasma lourd et tirs de couverture automatique.',
+    totalHonorReward: 5400,
+    soloVariantId: 'prey_colonial_marine_heavy',
+    members: [
+      { id: 'ellis_max_exosuit_pilot', name: 'Sergent Ellis (Exosquelette MAX)', role: 'Colosse Bionique Mécanisé', weapon: 'Canon Plasma Lourd MAX & Poings Hydrauliques Broyeurs', hp: 760, armor: 85, trophy: 'Blindage Facial de l\'Exosquelette de Combat MAX' },
+      { id: 'lori_berserker_commander', name: 'Commandante Lori', role: 'Tacticienne de Percée Kamikaze', weapon: 'Carabine d\'Assaut Modifiée M41A & Grenades au Phosphore', hp: 490, armor: 50, trophy: 'Insigne Militaire d\'Unité Spéciale Berserker' },
+      { id: 'machida_demolitions_gunner', name: 'Canonnier Machida', role: 'Soutien Lourd & Incendiaire', weapon: 'Lance-Flammes Industriel Haute Pression & Armat M41A', hp: 480, armor: 50, trophy: 'Buse de Décharge Calcinée du Lance-Flammes' },
+      { id: 'stim_medic_kline', name: 'Dr. Kline (Médecin Neuro-Stim)', role: 'Administrateur de Cocktail de Furie', weapon: 'Injecteur Pneumatique de Stimulants & Pistolet VP-70', hp: 420, armor: 35, trophy: 'Fiole Scellée de Cocktail Neuro-Stimulant Berserker' }
+    ]
+  },
+  {
+    id: 'squad_stronghold_ernst_jeri_syndicate',
+    name: 'Syndicat Clandestin du Dr. Ernst & Drone Synthétique Jeri (2194)',
+    universe: 'ALIEN',
+    shortName: 'Forteresse Ernst & Jeri (4 Combattants)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Stronghold (Comics Dark Horse 1994)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Biosphère Clandestine du Dr. Ernst (Stronghold 2194)',
+    description: 'Le généticien renégat Dr. Lucien Ernst et sa garde de sécurité, accompagnés de Jeri, l\'incroyable drone synthétique xénomorphe armé d\'un fusil.',
+    tactics: 'Tirs de barrage de fusil à pompe de combat par Jeri, décharges neurotoxiques et assauts coordonnés de synthétiques d\'assaut.',
+    totalHonorReward: 5200,
+    soloVariantId: 'prey_weyland_combat_android',
+    members: [
+      { id: 'jeri_synthetic_xeno', name: 'Jeri (Xénomorphe Synthétique)', role: 'Infiltrateur Bionique Cynique', weapon: 'Fusil à Pompe Calibre 12 Automatique & Électro-Taser', hp: 580, armor: 60, trophy: 'Cigare Fumé en Titane et Unité Vocale de Jeri' },
+      { id: 'dr_lucien_ernst', name: 'Dr. Lucien Ernst (Généticien)', role: 'Maître d\'Œuvre des Synthétiques', weapon: 'Injecteur d\'Acide Neutralisant & Pistolet de Sécurité', hp: 430, armor: 35, trophy: 'Journal de Recherche Génétique du Dr. Ernst' },
+      { id: 'steele_bionic_commander', name: 'Commandant Bionique Steele', role: 'Chef de la Garde Corporatiste', weapon: 'Fusil d\'Assaut Bullpup 10mm & Lame Vibrante', hp: 500, armor: 50, trophy: 'Prothèse de Bras Cybernétique de Combat de Steele' },
+      { id: 'security_synth_alpha', name: 'Synthétique de Sécurité Alpha', role: 'Garde Rapprochée Programmée', weapon: 'Mitraillette Légère à Impulsion & Bouclier Anti-Émeute', hp: 470, armor: 50, trophy: 'Module Logique de Contrôle de Sécurité de Grant Corp' }
+    ]
+  },
+  {
+    id: 'squad_ryushi_vault_archaeologists_mercs',
+    name: 'Consortium d\'Exploration des Cryptes de Ryushi (2192)',
+    universe: 'AVP',
+    shortName: 'Archéologues & Mercs Ryushi (4 Explorateurs)',
+    category: 'HUMAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator: Prey / Sand Trap (Comics Dark Horse 1994)',
+    biomeId: 'ryushi_desert',
+    recommendedBiomeLabel: 'Cryptes des Sables de Ryushi & Failles Volcaniques',
+    description: 'L\'expédition scientifique et mercenaire pénétrant les catacombes Yautja sous les sables de Ryushi, réveillant les ruches endormies et les défenses antiques.',
+    tactics: 'Tirs de lasers de découpe sismique, grenades incendiaires dans les boyaux et tirs croisés d\'armes coloniales.',
+    totalHonorReward: 5100,
+    soloVariantId: 'alien_base_big_beard_voyageur_1719',
+    members: [
+      { id: 'dr_donald_perkins', name: 'Dr. Donald Perkins (Xéno-Archéologue)', role: 'Chef de l\'Expédition Scientifique', weapon: 'Laser Sismique de Forage & Scanner de Ruines', hp: 420, armor: 35, trophy: 'Stèle Holographique Traduite des Cryptes de Ryushi' },
+      { id: 'capt_oneill_mercenary', name: 'Capitaine O\'Neill (Mercenaire)', role: 'Commandant de la Sécurité Clandestine', weapon: 'Carabine Lourde M42B & Couteau de Combat en Céramique', hp: 490, armor: 45, trophy: 'Plaque d\'Identification Militaire Burinée d\'O\'Neill' },
+      { id: 'kowalski_seismic_driller', name: 'Foreur Sismique Kowalski', role: 'Spécialiste Rupture de Parois', weapon: 'Marteau Pneumatique Sismique & Charges Explosives', hp: 460, armor: 40, trophy: 'Mèche de Foreuse au Diamant Synthétique de Ryushi' },
+      { id: 'weyland_android_sentry', name: 'Androïde de Soutien Géologique', role: 'Analyseur de Réseau Souterrain', weapon: 'Torche à Plasma Minier & Électro-Barrière Portative', hp: 480, armor: 50, trophy: 'Circuit d\'Analyse Topographique Androïde Wey-Yu' }
+    ]
+  },
+  {
+    id: 'squad_extinction_council_veterans_lv742',
+    name: 'Vétérans du Conseil Suprême Yautja de LV-742 (2203)',
+    universe: 'AVP',
+    shortName: 'Armée du Conseil LV-742 (4 Vétérans)',
+    category: 'HONOR_CLAN',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens versus Predator: Extinction (EA / Zono 2003)',
+    biomeId: 'hive_lv426',
+    recommendedBiomeLabel: 'Caldeira Volcanique de LV-742 (Extinction 2203)',
+    description: 'L\'élite punitive dépêchée par le Conseil Suprême de Yautja Prime pour éradiquer les souches de xénomorphes mutants du Dr. Kadinsky sur LV-742.',
+    tactics: 'Salves dévastatrices d\'Hydra-Caster à tête chercheuse, lancers de disques multiples soniques et harponnages de foule.',
+    totalHonorReward: 6000,
+    soloVariantId: 'alien_base_alpha_predator_kaail',
+    members: [
+      { id: 'council_ancient_war_master', name: 'Maître de Guerre Ancien (Conseil Yautja)', role: 'Seigneur Militaire Suprême', weapon: 'Lanceur Hydra-Caster Multi-Plasmique & Grand Combistick', hp: 800, armor: 85, trophy: 'Sceau d\'Ordonnance Punitive du Conseil des Anciens' },
+      { id: 'disc_master_champion', name: 'Disc Master Champion', role: 'Maître du Disque Sonique Téléguidé', weapon: 'Double Lance-Disques Magnétique & Lames de Poignet', hp: 650, armor: 70, trophy: 'Disque Sonique Cérémonial de Maître Champion de LV-742' },
+      { id: 'hydra_scout_vanguard', name: 'Éclaireur d\'Assaut Hydra', role: 'Artilleur de Saturation Rapide', weapon: 'Micro-Hydra Caster Portatif & Fusil à Filet Renforcé', hp: 580, armor: 60, trophy: 'Capteur Thermique Multi-Cible de l\'Hydra Scout' },
+      { id: 'council_harpooner_elite', name: 'Harponneur d\'Élite du Clan', role: 'Tireur d\'Arrêt Anti-Ravagers', weapon: 'Harponneur Lourd Perforant à Pointe Barbelée', hp: 620, armor: 65, trophy: 'Pointe de Harpon Gravée au Sang de Reine Ravager' }
+    ]
+  }
 ]);
 
 export function getSquadById(squadId) {

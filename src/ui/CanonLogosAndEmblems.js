@@ -1981,6 +1981,69 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  if (id.includes('xenogenesis') || id.includes('spearhead')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-spearhead" role="img" aria-label="Insigne Spearhead Xenogenesis 1999">
+        <polygon points="40,8 72,28 72,60 40,74 8,60 8,28" fill="#0b132b" stroke="#00b4d8" stroke-width="2.5" />
+        <path d="M 40 18 L 40 52 M 24 35 L 40 52 L 56 35" stroke="#90e0ef" stroke-width="3" stroke-linecap="round" fill="none" />
+        <circle cx="40" cy="52" r="4.5" fill="#caf0f8" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="900" fill="#00b4d8" letter-spacing="1" text-anchor="middle">SPEARHEAD</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('blood_feud') || id.includes('juta')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-bloodfeud" role="img" aria-label="Insigne Samouraï Blood Feud Mont Fuji 1993">
+        <circle cx="40" cy="40" r="36" fill="#1c0b0b" stroke="#e63946" stroke-width="2.5" />
+        <circle cx="40" cy="40" r="16" fill="#e63946" opacity="0.85" />
+        <line x1="16" y1="64" x2="64" y2="16" stroke="#f1faee" stroke-width="3" stroke-linecap="round" />
+        <line x1="20" y1="64" x2="68" y2="16" stroke="#a8dadc" stroke-width="1.2" />
+        <text x="40" y="74" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#e63946" letter-spacing="1" text-anchor="middle">FUJI 1993</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('berserker_max') || id.includes('exosuit')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-berserkermax" role="img" aria-label="Insigne Exosquelette MAX Berserker 2195">
+        <rect x="12" y="12" width="56" height="56" rx="8" fill="#1b1a17" stroke="#f77f00" stroke-width="2.8" />
+        <polygon points="40,20 60,34 54,62 26,62 20,34" fill="#d62828" stroke="#fcbf49" stroke-width="1.8" />
+        <circle cx="40" cy="42" r="7" fill="#eae2b7" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#fcbf49" letter-spacing="1" text-anchor="middle">MAX BERSERK</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('stronghold') || id.includes('jeri')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-jeri" role="img" aria-label="Insigne Jeri Stronghold 2194">
+        <circle cx="40" cy="40" r="36" fill="#0b1d13" stroke="#52b788" stroke-width="2.5" />
+        <path d="M 28 32 Q 40 18 52 32 Q 48 56 40 60 Q 32 56 28 32 Z" fill="#1b4332" stroke="#74c69d" stroke-width="1.6" />
+        <circle cx="36" cy="34" r="2.5" fill="#d8f3dc" />
+        <circle cx="44" cy="34" r="2.5" fill="#d8f3dc" />
+        <line x1="40" y1="46" x2="56" y2="44" stroke="#e9d8a6" stroke-width="2.5" stroke-linecap="round" />
+        <text x="40" y="74" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#52b788" letter-spacing="1" text-anchor="middle">JERI 2194</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('sand_trap') || id.includes('ryushi_vault')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-ryushivault" role="img" aria-label="Insigne Cryptes Ryushi 2192">
+        <polygon points="40,8 72,68 8,68" fill="#2b1408" stroke="#f4a261" stroke-width="2.5" />
+        <circle cx="40" cy="45" r="14" fill="#4a210a" stroke="#e76f51" stroke-width="1.8" />
+        <polygon points="40,35 48,50 32,50" fill="#f4a261" />
+        <text x="40" y="74" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="900" fill="#f4a261" letter-spacing="1" text-anchor="middle">RYUSHI VAULT</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('extinction_council') || id.includes('lv742')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-extinctioncouncil" role="img" aria-label="Insigne Conseil Extinction LV-742">
+        <circle cx="40" cy="40" r="36" fill="#140a24" stroke="#b5179e" stroke-width="2.5" />
+        <polygon points="40,12 66,28 66,56 40,68 14,56 14,28" fill="#3a0ca3" stroke="#f72585" stroke-width="1.8" />
+        <circle cx="40" cy="40" r="8" fill="#4cc9f0" stroke="#f72585" stroke-width="1.5" />
+        <text x="40" y="74" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="900" fill="#f72585" letter-spacing="1" text-anchor="middle">LV-742 COUNCIL</text>
+      </svg>
+    `.trim();
+  }
   if (id.includes('lv742_kainde_amedha')) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-lv742" role="img" aria-label="Insigne Sanctuaire LV-742">

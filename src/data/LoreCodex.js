@@ -671,6 +671,79 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     body: 'Dans toute l\'histoire des contacts entre l\'humanité et les Yautjas, nul être n\'a exercé une telle influence que Machiko Noguchi. Simple administratrice d\'un avant-poste minier terrien sur la planète aride de Ryushi en 2190, elle fait preuve d\'un courage inébranlable lors de l\'éclosion de la Ruche et gagne le respect du grand chasseur Dachande (« Broken Tusk »). Scarifiée sur le front de la marque sacrée de sang acide avant la mort de son mentor, elle est baptisée « Da\'dtou-di » (Celle qui est Petite mais Mortelle) et admise au sein du clan de Top Knot. Durant des années de pérégrinations stellaires, elle apprend à manier le combistick et l\'arc cérémonial, devenant le pont légendaire entre l\'humanité et la culture des chasseurs.',
     sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['avpPrey1994', 'avpWar1995', 'avpThreeWorldWar2010'], universe: 'AVP'
   }
+,
+  {
+    id: 'predator-chronique-xenogenesis-spearhead-cyber-mercenaires-1999', entryType: 'codex', category: 'chroniques', title: 'Chronique 1999 — Projet Spearhead : Les Cyber-Mercenaires & la Traque Sub-Zero',
+    summary: 'La traque impitoyable menée par les commandos cybernétiques de Spearhead Industries face aux Yautjas augmentés.',
+    body: 'À l\'aube du XXIe siècle, le consortium militaire privé Spearhead Industries déploie en Amérique du Sud une escouade de mercenaires sur-équipés dotés d\'armures cryogéniques et d\'implants neuraux Sub-Zero. Leur mission : capturer vivants des spécimens de prédateurs extraterrestres pour en rétro-ingénierer les alliages et les canons plasma. Mais les Yautjas dépêchent sur place des guerriers d\'élite vétérans qui retournent la technologie humaine contre ses inventeurs, tendant des embuscades thermiques et démantelant les blindages cybernétiques membre par membre dans un affrontement technologique sans pitié.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['predatorXenogenesis1999'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-chronique-blood-feud-samourai-juta-vengeance-japon', entryType: 'codex', category: 'chroniques', title: 'Chronique Mont Fuji — Blood Feud : Le Duel du Sabreur Aveugle Juta & le Yautja',
+    summary: 'Le combat singulier dans les neiges du Japon entre le maître aveugle Juta et le chasseur lié par une dette de sang.',
+    body: 'Dans les pentes boisées et les temples silencieux du Mont Fuji, une lignée de sabreurs perpétue depuis des siècles la mémoire d\'un chasseur Yautja vaincu lors de l\'ère féodale. Le maître aveugle Juta, dont les sens surdéveloppés perçoivent les infimes vibrations d\'air causées par le camouflage optique, est traqué par un descendant du guerrier extraterrestre venu laver l\'affront ancestral. Ce duel rituel d\'honneur, disputé dans un bosquet de bambous battu par le vent d\'hiver, scelle l\'une des confrontations les plus poétiques et mortelles entre la discipline martiale du sabre japonais et le code de combat Yautja.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['predatorBloodFeud1993'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-biologie-sang-luminescent-physiologie-organes-doubles', entryType: 'codex', category: 'biologie', title: 'Physiologie Yautja — Le Sang Phosphorescent, Organes Doubles & Régénération',
+    summary: 'Anatomie interne des chasseurs : hémolymphe luminescente vert-jaune, système respiratoire adapté et redondance vitale.',
+    body: 'L\'organisme Yautja présente des adaptations physiologiques exceptionnelles : leur sang vert-jaune phosphorescent est composé d\'hémocyanine enrichie en composés de phosphore et en agents coagulants hyperactifs, conférant une luminescence caractéristique lors des hémorragies et une neutralisation rapide des hémorragies superficielles. Leurs organes vitaux essentiels (cœurs secondaires, poumons à triple lobe et nœuds lymphatiques démultipliés) possèdent une redondance anatomique complète permettant au guerrier de continuer à courir, sauter et frapper même après avoir subi des traumatismes balistiques ou thoraciques mortels pour tout vertébré terrestre.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['predator1987', 'predator2', 'predatorLore'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-sociologie-castes-femelles-matriarches-eleveuses', entryType: 'codex', category: 'culture', title: 'Société Yautja — Rôle des Femelles, Grandes Matriarches & Gouvernance Clanique',
+    summary: 'L\'ordre social matriarcal de Yautja Prime : les mères de clan, la transmission des lignées et les rituels de descendance.',
+    body: 'Derrière la façade guerrière masculine des expéditions de chasse stellaires se dresse l\'autorité suprême des Grandes Matriarches de Yautja Prime. Physiquement plus imposantes, plus denses musculairement et dotées d\'une longévité millénaire, les femelles Yautja administrent les domaines claniques, contrôlent la répartition des territoires de chasse planétaires et sélectionnent rigoureusement les reproducteurs parmi les chasseurs ayant ramené les trophées les plus prestigieux. Nul patriarche ou Seigneur de Guerre ne peut engager l\'honneur de son clan sans l\'approbation formelle de la Matriarche régnante.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['avpPrey1994', 'avpDeadliestOfTheSpecies1993', 'predatorLore'], universe: 'PREDATOR'
+  },
+  {
+    id: 'alien-chronique-berserker-exosquelette-max-pilote-ellis-1995', entryType: 'codex', category: 'chroniques', title: 'Chronique 1995 — Projet Berserker : L\'Exosquelette MAX & les Troupes Suicides',
+    summary: 'Le programme militaire clandestin Berserker : exosquelettes pressurisés MAX et escouades kamikazes de nettoyage de ruche.',
+    body: 'Conçu pour briser le verrou psychologique paralysant les soldats confrontés aux nids d\'Aliens, le programme Berserker dote des condamnés militaires volontaires d\'exosquelettes de combat MAX lourdement blindés et d\'injecteurs continus de « Berserker Cocktail », une substance neuro-stimulante annihilant la peur et la douleur. Piloté par le sergent Ellis, l\'exosquelette MAX broie les Xénomorphes à mains nues et les pulvérise au canon à plasma lourd. Cependant, la dégradation mentale causée par les stimulants transforme souvent le pilote en une furie incontrôlable massacrant alliés et ennemis dans les entrailles des spatiocargos contaminés.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['aliensBerserker1995'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-chronique-stronghold-jeri-xeno-synthetique-dr-ernst-1994', entryType: 'codex', category: 'chroniques', title: 'Chronique 1994 — Forteresse Ernst : Jeri, le Premier Drone Xénomorphe Synthétique',
+    summary: 'L\'audacieuse création du Dr. Lucien Ernst : un Xénomorphe cybernétique doué de parole, de dérision et de conscience.',
+    body: 'Dans sa station forteresse isolée, le généticien renégat Dr. Lucien Ernst réalise une prouesse scientifique inédite : concevoir un synthétique anthropomorphe à l\'apparence extérieure rigoureusement identique à un drone Xénomorphe adulte, mais doté d\'un réseau neural cybernétique sophistiqué, de modules vocaux et d\'un sens de l\'humour cynique. Baptisé « Jeri », ce drone synthétique fume des cigares, manie des fusils d\'assaut et infiltre les ruches biologiques grâce à ses phéromones de synthèse pour saboter les matriarches de l\'intérieur, démontrant que l\'esprit humain peut apprivoiser l\'horreur biologique.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['aliensStronghold1994'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-technologie-derelict-navigation-ingenieurs-cartes-stellaires', entryType: 'codex', category: 'technologie', title: 'Cosmologie des Architectes — Les Vaisseaux Derelict & les Cartes Galactiques',
+    summary: 'L\'astronavigation des Ingénieurs : orbes holographiques planétaires, cartographie de l\'espace lointain et biomorphisme.',
+    body: 'Les astronefs des Ingénieurs (la célèbre classe « Croissant » ou Derelict de LV-426 et LV-223) utilisent une technologie de pilotage neuro-organique sans aucun équivalent humain. Installé dans le fauteuil du Space Jockey asservi à sa combinaison biomécanique pressurisée, le navigateur pilote l\'appareil via une interface d\'ondes acoustiques et d\'harmoniques lumineuses. L\'Orrery holographique de la passerelle projette des cartes stellaires tridimensionnelles couvrant des millions de systèmes planétaires, révélant que les Ingénieurs ensemencent et purgent des mondes biotiques depuis des centaines de millions d\'années.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['alien1979', 'prometheus2012', 'alienCovenant'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-culture-conglomérats-weyland-seegson-grant-hyperdyne', entryType: 'codex', category: 'culture', title: 'Guerre Corporatiste — L\'Hégémonie Weyland face aux Rivaux Seegson & Grant Corp',
+    summary: 'La rivalité économique et industrielle sans merci entre les corporations majeures de la Frontière spatiale.',
+    body: 'L\'exploration et l\'exploitation des étoiles ne sont pas le fait des gouvernements, mais de mégacorporations titanesques en guerre perpétuelle de brevets et de territoires. Si la Weyland-Yutani domine le transport interstellaire, la terraformation et la division bio-militaire, d\'autres acteurs majeurs contestent son hégémonie : Seegson Corporation (célèbre pour la station Sevastopol et les androïdes Working Joes économiques), Grant Corporation (spécialisée dans la pharmacologie extrême et le Xeno-Zip) et Hyperdyne Systems (créatrice des synthétiques militaires de combat). Cette compétition industrielle féroce sacrifie régulièrement des colonies entières sur l\'autel de la rentabilité.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['alienIsolation2014', 'aliensGenocide1991', 'aliensStronghold1994'], universe: 'ALIEN'
+  },
+  {
+    id: 'avp-chronique-ryushi-souterrains-temple-sables-vestiges', entryType: 'codex', category: 'chroniques', title: 'Chronique Ryushi — Les Catacombes Sous les Sables & l\'Héritage de Dachande',
+    summary: 'L\'exploration des cryptes enfouies sous le désert de Ryushi et la mémoire du chef de clan Broken Tusk.',
+    body: 'Bien après les événements tragiques de la colonie de Prosperity Wells sur Ryushi, des expéditions archéologiques clandestines découvrent que la plaine désertique abrite un réseau cyclopéen de temples souterrains Yautja datant de plus de deux mille ans. Ces sanctuaires, préservés sous des dunes de poussière de silicate rouge, renferment les fresques sculptées des chasses ancestrales contre les reines Xénomorphes et les chambres d\'incinération rituelle où les maîtres d\'armes du clan de Broken Tusk préparaient les épreuves d\'initiation des Jeunes Sangs.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['avpPrey1994', 'avpWar1995'], universe: 'AVP'
+  },
+  {
+    id: 'avp-chronique-extinction-guerre-trois-especes-lv742-2003', entryType: 'codex', category: 'chroniques', title: 'Chronique 2003 — Extinction LV-742 : L\'Insurrection Kadinsky & les Ravagers',
+    summary: 'La guerre totale sur LV-742 : les manipulations génétiques du Dr. Kadinsky et la réponse punitive des clans Yautja.',
+    body: 'Sur la planète hostile LV-742, le scientifique renégat Dr. Kadinsky parvient à altérer le génome xénomorphe pour créer des castes mutantes monstrueuses : les Ravagers à lames de faux géantes, les Spitters à acide corrosif longue portée et les Carriers capables de transporter des dizaines de Facehuggers vivants. Face à cette profanation de la faune sacrée, le Conseil Suprême Yautja mobilise une flotte de guerre entière dirigée par des Seigneurs de Clan Anciens, ordonnant l\'extermination méthodique des installations de recherche humaines et la purification des ruches modifiées.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['avpExtinction2003'], universe: 'AVP'
+  },
+  {
+    id: 'avp-technologie-arsenal-extinction-hydra-caster-discmaster', entryType: 'codex', category: 'technologie', title: 'Ingénierie Militaire LV-742 — L\'Armurerie Lourde Hydra-Caster & Lance-Disques',
+    summary: 'Les armes de guerre de masse déployées par les clans Yautja lors des conflits de grande envergure.',
+    body: 'Lorsque les chasseurs Yautja ne mènent pas une simple initiation individuelle mais une guerre clanique punitive de masse, ils abandonnent les restrictions cérémonielles pour déployer leur arsenal de destruction militaire lourde. L\'Hydra-Caster, monté sur double rotule d\'épaule, tire des salves simultanées de micro-sphères plasma à tête chercheuse thermique capables d\'annihiler des nuées de Xénomorphes en plein bond. Les Disc Masters déploient quant à eux des lanceurs magnétiques projetant des disques intelligents à rotation sonique qui décapitent des rangées entières de soldats avant de revenir dans leur chargeur automatisé.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['avpExtinction2003'], universe: 'AVP'
+  },
+  {
+    id: 'avp-sociologie-clans-anciens-veterans-conseil-yautja-prime', entryType: 'codex', category: 'culture', title: 'Haute Autorité Yautja — Le Conseil des Anciens & les Arbitres de Yautja Prime',
+    summary: 'La jurisprudence du Conseil Suprême : maintien des traités inter-claniques et sentences contre les prévaricateurs.',
+    body: 'Le Conseil des Anciens constitue la plus haute juridiction de la civilisation Yautja. Composé exclusivement de guerriers ayant survécu à plus de cinq siècles de chasses légendaires et arborant des dizaines de cicatrices de sang acide, le Conseil veille au respect inflexible des Lois de la Chasse. C\'est ce conclave qui déclare les déchéances d\'honneur, affrète les navires punitifs des Enforcers pour traquer les Bad Bloods renégats, et ratifie exceptionnellement les pactes de trêve sacrée avec les champions d\'autres espèces ayant mérité le droit de vivre.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['predatorLore', 'avpPrey1994', 'avpThreeWorldWar2010'], universe: 'AVP'
+  }
 ]);
 // IDs match the values already used by the planet selector.
 export const HUNT_LOCATIONS = freezeEntries([

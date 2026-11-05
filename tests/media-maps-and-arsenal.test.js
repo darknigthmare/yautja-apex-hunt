@@ -35,16 +35,16 @@ test('le catalogue des univers contient exactement PREDATOR, ALIEN et AVP', () =
 });
 
 test('le catalogue des cartes contient les 30 cartes canoniques réparties sur les 3 univers', () => {
-  assert.equal(MEDIA_MAPS_CATALOG.length, 60);
+  assert.equal(MEDIA_MAPS_CATALOG.length, 66);
   assert.ok(Object.isFrozen(MEDIA_MAPS_CATALOG));
 
   const predatorMaps = getMediaMapsByUniverse('PREDATOR');
   const alienMaps = getMediaMapsByUniverse('ALIEN');
   const avpMaps = getMediaMapsByUniverse('AVP');
 
-  assert.equal(predatorMaps.length, 20, '20 cartes pour l\'univers Predator');
-  assert.equal(alienMaps.length, 22, '22 cartes pour l\'univers Alien');
-  assert.equal(avpMaps.length, 18, '18 cartes pour l\'univers AVP');
+  assert.equal(predatorMaps.length, 22, '22 cartes pour l\'univers Predator');
+  assert.equal(alienMaps.length, 24, '24 cartes pour l\'univers Alien');
+  assert.equal(avpMaps.length, 20, '20 cartes pour l\'univers AVP');
 
   const mapIds = new Set();
   for (const map of MEDIA_MAPS_CATALOG) {
@@ -83,16 +83,16 @@ test('le catalogue des cartes contient les 30 cartes canoniques réparties sur l
 });
 
 test('le catalogue d\'arsenal PNJ contient les 34 armes emblématiques de chaque média', () => {
-  assert.equal(NPC_ARSENAL_CATALOG.length, 64);
+  assert.equal(NPC_ARSENAL_CATALOG.length, 70);
   assert.ok(Object.isFrozen(NPC_ARSENAL_CATALOG));
 
   const predatorWeps = getNpcWeaponsByUniverse('PREDATOR');
   const alienWeps = getNpcWeaponsByUniverse('ALIEN');
   const avpWeps = getNpcWeaponsByUniverse('AVP');
 
-  assert.equal(predatorWeps.length, 22, '22 armes pour l\'univers Predator');
-  assert.equal(alienWeps.length, 25, '25 armes pour l\'univers Alien');
-  assert.equal(avpWeps.length, 17, '17 armes pour l\'univers AVP');
+  assert.equal(predatorWeps.length, 24, '24 armes pour l\'univers Predator');
+  assert.equal(alienWeps.length, 27, '27 armes pour l\'univers Alien');
+  assert.equal(avpWeps.length, 19, '19 armes pour l\'univers AVP');
 
   const wepIds = new Set();
   for (const wep of NPC_ARSENAL_CATALOG) {
@@ -126,7 +126,7 @@ test('le catalogue d\'arsenal PNJ contient les 34 armes emblématiques de chaque
 });
 
 test('les 30 variantes d\'armes Yautja liées aux presets sont actives et immuables', () => {
-  assert.equal(ARMOR_PRESET_WEAPON_VARIANTS.length, 60);
+  assert.equal(ARMOR_PRESET_WEAPON_VARIANTS.length, 66);
   assert.ok(Object.isFrozen(ARMOR_PRESET_WEAPON_VARIANTS));
 
   const variantIds = new Set();
@@ -155,7 +155,7 @@ test('les 30 variantes d\'armes Yautja liées aux presets sont actives et immuab
 });
 
 test('le catalogue du Lore Codex contient les 42 dossiers répartis sur les 3 univers', () => {
-  assert.equal(LORE_CODEX_ENTRIES.length, 102);
+  assert.equal(LORE_CODEX_ENTRIES.length, 114);
   assert.ok(Object.isFrozen(LORE_CODEX_ENTRIES));
 
   const byU = { PREDATOR: 0, ALIEN: 0, AVP: 0 };
@@ -176,7 +176,7 @@ test('le catalogue du Lore Codex contient les 42 dossiers répartis sur les 3 un
     byU[universe]++;
   }
 
-  assert.equal(byU.PREDATOR, 44);
-  assert.equal(byU.ALIEN, 33);
-  assert.equal(byU.AVP, 25);
+  assert.equal(byU.PREDATOR, 48);
+  assert.equal(byU.ALIEN, 37);
+  assert.equal(byU.AVP, 29);
 });
