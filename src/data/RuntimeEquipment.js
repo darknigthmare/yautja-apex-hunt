@@ -458,6 +458,36 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     sourceTier: 'LICENSED_EU', sources: Object.freeze(['avp2004', 'huntingGrounds']), behavior: 'spear',
     modifiers: Object.freeze({ damageMultiplier: 1.34, energyRegenMultiplier: 1.3, throwVelocityMultiplier: 1.3 }),
   }),
+  Object.freeze({
+    id: 'variant_jungle_1987_dual_wristblades', armorPresetId: 'jungle_1987', baseWeaponId: 'wristblades', name: 'Lames Télescopiques de Val Verde (1987)',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predator1987']), behavior: 'blade',
+    modifiers: Object.freeze({ damageMultiplier: 1.15, attackSpeedMultiplier: 1.12, criticalChanceMultiplier: 1.1 }),
+  }),
+  Object.freeze({
+    id: 'variant_elder_1990_flintlock_adolini_1718', armorPresetId: 'elder_lost_tribe', baseWeaponId: 'plasmacaster_single', name: 'Pistolet à Silex Raphaël Adolini 1718 d\'Honneur',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predator2']), behavior: 'plasma',
+    modifiers: Object.freeze({ damageMultiplier: 1.25, rangeMultiplier: 1.18, cooldownMultiplier: 1.2 }),
+  }),
+  Object.freeze({
+    id: 'variant_scar_avp_scythe_wristblades', armorPresetId: 'scar_avp', baseWeaponId: 'wristblades', name: 'Lames Doubles Cérémoniales de Scar (Bouvetøya)',
+    sourceTier: 'AVP_SCREEN', sources: Object.freeze(['avp2004']), behavior: 'blade',
+    modifiers: Object.freeze({ damageMultiplier: 1.14, rangeMultiplier: 1.2, attackSpeedMultiplier: 1.08 }),
+  }),
+  Object.freeze({
+    id: 'variant_falconer_katana_parry_blade', armorPresetId: 'falconer_2010', baseWeaponId: 'combi_stick', name: 'Lame d\'Estoc Rituelle pour le Duel de Falconer (2010)',
+    sourceTier: 'SCREEN', sources: Object.freeze(['predators2010']), behavior: 'spear',
+    modifiers: Object.freeze({ damageMultiplier: 1.16, parryAngleMultiplier: 1.3, attackSpeedMultiplier: 1.05 }),
+  }),
+  Object.freeze({
+    id: 'variant_feral_bolt_gun_magnetic', armorPresetId: 'feral_2022', baseWeaponId: 'plasmacaster_single', name: 'Fusil à Flèches Rétractables Magnétique Feral (1719)',
+    sourceTier: 'SCREEN', sources: Object.freeze(['prey2022']), behavior: 'precision_bolt',
+    modifiers: Object.freeze({ damageMultiplier: 1.2, criticalChanceMultiplier: 1.25, projectileSpeedMultiplier: 1.2 }),
+  }),
+  Object.freeze({
+    id: 'variant_pirate_hg_boarding_harpoon_hook', armorPresetId: 'pirate_hg', baseWeaponId: 'combi_stick', name: 'Harpon d\'Abordage et Grappin d\'Écumeur Yautja',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'spear_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.18, rangeMultiplier: 1.25, stunDurationMultiplier: 1.2 }),
+  }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);
 

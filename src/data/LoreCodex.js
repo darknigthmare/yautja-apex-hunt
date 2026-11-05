@@ -598,6 +598,78 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     summary: 'L’épopée transhumaniste de Chris Claremont : la matriarche Yautja Big Mama protégeant Caryn Delacroix et son fœtus hybride.',
     body: 'Dans la fresque mythique de Chris Claremont (Deadliest of the Species), l’aristocrate terrienne Caryn Delacroix est traquée par des cartels transhumanistes et l’I.A. omnipotente Toy. Elle est recueillie par « Big Mama », une imposante guerrière Yautja femelle qui défie les lois patriarcales de sa société pour nouer un pacte protecteur viscéral avec l’humaine. Vêtue d’une armure cybernétique cérémonielle, Big Mama massacre les assassins corporatistes et les Xénomorphes génétiquement modifiés.',
     sourceTier: 'LICENSED_EU', isOriginal: false, sources: ['avpOriginalComics', 'predator2'], universe: 'AVP'
+  },
+  {
+    id: 'predator-chronique-1718-andolini-angel-flintlock-greyback', entryType: 'codex', category: 'chroniques', title: 'Chronique 1718 — Raphael Andolini, le Pistolet d\'Or & l\'Honneur de Greyback',
+    summary: 'L\'affrontement aux Caraïbes en 1718 entre le pirate Raphael Andolini et le chasseur Golden Angel (futur Elder Greyback).',
+    body: 'En 1718, sur la côte de Guinée, le capitaine pirate Raphael Andolini fait face à une mutinerie de son équipage pour un coffre d\'or volé dans une église. Dissimulé dans la canopée, le jeune Yautja « Golden Angel » observe le duel. Admirant la bravoure et le sens de l\'honneur d\'Andolini qui défend son premier maître blessé, le chasseur descend et combat à ses côtés dos à dos contre les mutins. Mortellement blessé par une balle traîtresse dans le dos, Andolini remet son pistolet à silex gravé « Raphael Andolini 1718 » au chasseur dans son dernier souffle en lui disant : « Take it ». Trois siècles plus tard, à Los Angeles en 1997, ce même chasseur devenu l\'Ancien Greyback transmettra cette arme relique au lieutenant Mike Harrigan en hommage guerrier.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['predator1718', 'predator2'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-chronique-primal-alaska-1997-toundra-traque-grizzly', entryType: 'codex', category: 'chroniques', title: 'Chronique Alaska 1997 — Toundra Boréale, Traque Polaire & les Grands Fauves',
+    summary: 'L\'expédition de chasse solitaire dans les étendues sauvages d\'Alaska face aux grizzlys titans et rangers boréaux.',
+    body: 'Dans les étendues glacées de la chaîne des Aléoutiennes en Alaska, un chasseur solitaire atterrit pour tester son endurance face au froid polaire et à la faune féroce du Grand Nord. Dépouillé de la plupart de ses armes plasma pour préserver l\'authenticité de la chasse, il affronte un grizzly mâle colossal de plus de 800 kilos dans une lutte au corps à corps sans merci. Les gardes forestiers et les pisteurs inuits qui découvrent les carcasses démembrées comprennent qu\'une entité extraterrestre vénère la force brute de la mégafaune terrestre, chassant dans le blizzard sans trace thermique.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['predatorPrimal1997'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-science-vaisseaux-chasse-furtivite-hyperpropulsion', entryType: 'codex', category: 'technologie', title: 'Science & Flottes — Vaisseaux Mères Yautja, Navettes de Débarquement & Hyperespace',
+    summary: 'L\'architecture spatiale Yautja : coques organiques réfractaires, propulsion supraluminique à distorsion et modules de stase.',
+    body: 'Les nefs stellaires Yautja défient les conceptions des empires humains. Dotées de structures externes composites inspirées des exosquelettes de Léviathans galactiques, ces vaisseaux allient une furtivité radar et spectrale intégrale à des réacteurs à matière noire capables de franchir des milliers d\'années-lumière sans balise de relais. À l\'intérieur, les hangars abritent des capsules de descente balistique mono-place et des navettes de chasse munies de blindages ablatiques supportant les rentrées atmosphériques violentes. Le cœur du vaisseau contient le Saint des Saints : la salle des trophées claniques et les consoles d\'archivage holographique retraçant les exploits des maîtres disparus.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['predatorLore', 'predatorHuntingGrounds'], universe: 'PREDATOR'
+  },
+  {
+    id: 'predator-culture-code-yautja-regles-chasse-proies-desarmees', entryType: 'codex', category: 'culture', title: 'Culture & Lois Sacrées — L\'Interdiction du Meurtre Facile & le Jugement des Sans-Honneur',
+    summary: 'Les dogmes fondamentaux du Code d\'Honneur Yautja : immunité des proies gestantes, des malades et des êtres sans défense.',
+    body: 'Le code d\'honneur n\'est pas une simple morale : c\'est le ciment ontologique de la civilisation Yautja. Tuer une proie désarmée, enceinte, enfantine ou affaiblie par une pathologie terminale constitue le crime suprême de « Meurtre Éhonté » et condamne immédiatement le contrevenant au statut d\'infâme Bad Blood. À l\'inverse, une proie qui prouve sa valeur au combat en tuant un membre de la meute ou en se battant jusqu\'à son dernier souffle sans supplier reçoit le salut d\'adieu, un présent d\'honneur (une arme rituelle) et la garantie que le clan épargnera sa vie. Tout Yautja vaincu incapable d\'assurer son extraction doit activer le compte à rebours de son autodestruction micro-nucléaire pour sanctifier son sang et priver l\'ennemi de sa technologie.',
+    sourceTier: 'PREDATOR_SCREEN', isOriginal: false, sources: ['predator1987', 'predator2', 'predators2010'], universe: 'PREDATOR'
+  },
+  {
+    id: 'alien-chronique-defiance-zula-hendricks-davis01-cuirasse-europa', entryType: 'codex', category: 'chroniques', title: 'Chronique 2137 — La Mutinerie de l\'Europa : Zula Hendricks & Davis 01',
+    summary: 'La croisade clandestine de la fusilière Zula Hendricks et du synthétique Davis 01 pour saboter les recherches Weyland-Yutani.',
+    body: 'Blessée grièvement à la colonne vertébrale lors d\'un crash et équipée d\'un exosquelette de soutien neural, la Marine Coloniale Zula Hendricks est assignée à bord du cuirassé de recherche USCSS Europa. Flanquée de Davis 01, un modèle synthétique Weyland-Yutani ayant développé une conscience morale et un sens aigu de la loyauté fraternelle, Zula découvre que la corporation capture délibérément des ouvriers et des colons pour inoculer le pathogène noir et les Facehuggers. Bravant les ordres de l\'état-major et pourchassée par les troupes de sécurité, Hendricks et Davis détournent l\'armement lourd du navire pour purger systématiquement chaque couveuse orbitale avant qu\'un spécimen n\'atteigne les Amériques Unies.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['aliensDefianceComics', 'aliensResistance'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-chronique-nightmare-asylum-spears-armee-xeno-dressage', entryType: 'codex', category: 'chroniques', title: 'Chronique 2192 — Le Projet Fou du Général Spears & l\'Asile des Cauchemars',
+    summary: 'La mégalomanie du général Spears : conditionner une armée de Xénomorphes dociles pour reprendre la Terre infestée.',
+    body: 'Tandis que la Terre est ravagée par les ruches xénomorphes dans la continuité des comics classiques (Earth War), le général renégat Thomas Spears s\'isole sur un avant-poste spatial lointain baptisé « Nightmare Asylum ». Persuadé que la punition biologique et les drogues neurales permettront de domestiquer l\'organisme parfait, Spears bâtit des arènes de torture où des soldats condamnés servent d\'appâts pour inculquer aux drones le respect de son uniforme militaire. Mais l\'esprit de ruche et la férocité de la Reine ne se soumettent à aucun conditionnement humain : dès que Spears relâche son « armée d\'élite » sur la Terre, les Xénomorphes massacrent sans distinction troupes corporatistes et civils, dévorant le général dans son propre centre de commandement.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['aliensNightmareAsylum1989'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-biologie-acide-moleculaire-corrosion-pression-organique', entryType: 'codex', category: 'biologie', title: 'Xénobiologie Avancée — L\'Acide Moléculaire, Métabolisme Fluorhydrique & Barrières',
+    summary: 'Étude physico-chimique du sang acide xénomorphe : viscosité pressurisée, dissolution exothermique et résistance des chitines Yautja.',
+    body: 'Le système circulatoire du Xénomorphe ne contient ni hémoglobine ni lymphe terrestre, mais une solution pressurisée d\'acide fluorhydrique et d\'hydrosilicates organiques sous tension colloïdale. Lors d\'une blessure balistique ou tranchante, l\'acide jaillit à plusieurs mètres sous l\'effet de spasmes artériels violents, provoquant une réaction de dépolymérisation exothermique instantanée capable de ronger plusieurs ponts de coque en titane ou de dissoudre une combinaison spatiale renforcée en moins de trois secondes. Seuls certains alliages nobles extraterrestres forgés par les métallurgistes Yautja (cuirasses cérémonielles trempées et lames électro-plaquées) présentent une neutralité catalytique empêchant la dégradation immédiate du métal.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['alien1979', 'aliens1986', 'alienTechManual'], universe: 'ALIEN'
+  },
+  {
+    id: 'alien-sociologie-marines-coloniaux-doctrine-corps-expeditionnaire', entryType: 'codex', category: 'culture', title: 'Militaria USCM — Doctrine Opérationnelle du Corps des Marines Coloniaux',
+    summary: 'Organisation, doctrine de déploiement et psychologie de combat du United States Colonial Marine Corps (USCM).',
+    body: 'Bras armé des Amériques Unies dans les secteurs de la Bordure Extérieure, l\'USCM a été forgé pour maintenir l\'ordre corporatiste et mater les insurrections coloniales avant de devenir le premier rempart de l\'humanité contre les horreurs biomécaniques de l\'espace profond. Déployés par escouades compactes à bord de frégates d\'assaut classe Conestoga, les Marines s\'appuient sur une puissance de feu dévastatrice : fusils à impulsion Armat M41A avec lance-grenades sous canon de 30mm, mitrailleuses lourdes asservies M56 Smartgun et tourelles de défense périmétrique UA 571-C. Malgré leur entraînement d\'élite et leur cynisme de vétérans de la Frontière, la doctrine conventionnelle s\'effondre systématiquement face aux embuscades silencieuses et à la terreur psychologique de la Ruche.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['aliens1986', 'uscmTechnicalManual'], universe: 'ALIEN'
+  },
+  {
+    id: 'avp-chronique-deadliest-caryn-big-mama-skyliner-1993', entryType: 'codex', category: 'chroniques', title: 'Chronique 2195 — Mégalopole Skyliner : L\'Alliance Delacroix & la Chasseresse Big Mama',
+    summary: 'La fresque transhumaniste de Chris Claremont : pacte protecteur entre Caryn Delacroix et la chasseresse Yautja Big Mama.',
+    body: 'Dans la mégalopole orbitale Skyliner en 2195, Caryn Delacroix est au centre d\'un complot cybernétique orchestré par son époux tyrannique Lucien Delacroix et l\'intelligence artificielle Toy. Pourchassée par des commandos d\'hybrides blancs et des Xénomorphes synthétiques, Caryn est sauvée par « Big Mama », une imposante chasseresse Yautja femelle vétéran. Rompant avec les préjugés et les rivalités inter-espèces, Big Mama reconnaît en Caryn une flamme combattante indomptable. Équipée d\'un combistick à décharge ionique et de bio-blindages renforcés, la guerrière extraterrestre protège la jeune femme à travers les spires de verre de la station, massacrant les escouades corporatistes dans une symphonie de rage et de loyauté fraternelle.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['avpDeadliestOfTheSpecies1993'], universe: 'AVP'
+  },
+  {
+    id: 'avp-chronique-three-world-war-caparis-vii-front-machiko-2010', entryType: 'codex', category: 'chroniques', title: 'Chronique 2198 — Three World War : La Guerre Suprême des Trois Espèces sur Caparis VII',
+    summary: 'L\'apogée de la saga de Randy Stradley : l\'alliance tripartite entre Machiko Noguchi, l\'USCM et le Clan des Chasseurs d\'Honneur.',
+    body: 'Sur la planète coloniale Caparis VII en 2198, le cauchemar prend une dimension planétaire : le Clan Yautja « Killer » a asservi des milliers de Xénomorphes grâce à des colliers d\'électro-stimulation neurale et s\'en sert d\'armes biologiques terroristes pour ravager les mondes civilisés. Face à cette profanation absolue du Code d\'Honneur et à l\'anéantissement imminent des colonies humaines, Machiko Noguchi sort de sa retraite pour convaincre le Conseil des Anciens Yautja et l\'état-major de l\'USCM de sceller une alliance sacrée. Dans les tranchées boueuses de Caparis VII, des Marines Coloniaux armés de fusils à impulsion et des guerriers Yautja combattent côte à côte dans une fraternité d\'armes inédite contre la horde rouge et noire des renégats.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['avpThreeWorldWar2010'], universe: 'AVP'
+  },
+  {
+    id: 'avp-genetique-hybrides-blancs-mutations-delacroix-lucien', entryType: 'codex', category: 'biologie', title: 'Bio-Génétique Clandestine — Les Hybrides Blancs & les Chimères de Lucien Delacroix',
+    summary: 'Les expériences d\'hybridation illicite : croisement génétique de l\'ADN humain, yautja et xénomorphe.',
+    body: 'Obsédé par le rêve d\'accéder à l\'immortalité biologique et d\'éradiquer la vulnérabilité humaine, le magnat Lucien Delacroix utilise les ressources de son consortium pour croiser l\'ADN d\'embryons humains avec le génome réactif du Xénomorphe et des fragments tissulaires Yautja. Les créatures résultantes, baptisées « Hybrides Blancs » (White Hybrids), possèdent un derme blanc ivoire dépourvu d\'écailles, une musculature surdéveloppée, une intelligence tactique supérieure et la capacité d\'utiliser des armes à feu conventionnelles tout en sécrétant de l\'acide caustique. Considérées comme une hérésie biologique suprême tant par les matriarches xénomorphes que par les clans Yautja, ces abominations ont été traquées et purgées avec une férocité méthodique.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['avpDeadliestOfTheSpecies1993'], universe: 'AVP'
+  },
+  {
+    id: 'avp-philosophie-machiko-noguchi-la-femme-qui-chassait-avec-les-dieux', entryType: 'codex', category: 'culture', title: 'Héroïsme Trans-Espèce — Da\'dtou-di : Machiko Noguchi, l\'Humaine Reconnue par les Chasseurs',
+    summary: 'Le destin hors du commun de Machiko Noguchi : de directrice de Ryushi à guerrière d\'élite initiée parmi les étoiles.',
+    body: 'Dans toute l\'histoire des contacts entre l\'humanité et les Yautjas, nul être n\'a exercé une telle influence que Machiko Noguchi. Simple administratrice d\'un avant-poste minier terrien sur la planète aride de Ryushi en 2190, elle fait preuve d\'un courage inébranlable lors de l\'éclosion de la Ruche et gagne le respect du grand chasseur Dachande (« Broken Tusk »). Scarifiée sur le front de la marque sacrée de sang acide avant la mort de son mentor, elle est baptisée « Da\'dtou-di » (Celle qui est Petite mais Mortelle) et admise au sein du clan de Top Knot. Durant des années de pérégrinations stellaires, elle apprend à manier le combistick et l\'arc cérémonial, devenant le pont légendaire entre l\'humanité et la culture des chasseurs.',
+    sourceTier: 'EXPANDED_LORE', isOriginal: false, sources: ['avpPrey1994', 'avpWar1995', 'avpThreeWorldWar2010'], universe: 'AVP'
   }
 ]);
 // IDs match the values already used by the planet selector.

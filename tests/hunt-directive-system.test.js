@@ -101,6 +101,12 @@ test('les douze directives et leurs collections imbriquées sont immuables', () 
     'squad_cold_forge_rb323_science_2179',
     'squad_bunda_war_machiko_clan_2194',
     'squad_primal_hunt_ancient_lv1201_2002',
+    'squad_pirates_raphael_andolini_1718',
+    'squad_alaska_primal_rangers_1997',
+    'squad_defiance_zula_hendricks_fireteam',
+    'squad_nightmare_asylum_spears_command',
+    'squad_deadliest_caryn_big_mama_clan',
+    'squad_three_world_war_machiko_uscm',
   ]);
   assert.ok(Object.isFrozen(HUNT_DIRECTIVES));
 

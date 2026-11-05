@@ -1916,6 +1916,71 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  if (id.includes('andolini') || id.includes('1718')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-andolini" role="img" aria-label="Insigne Flibuste 1718 Raphael Andolini">
+        <circle cx="40" cy="40" r="36" fill="#1b120c" stroke="#ffd700" stroke-width="2.5" />
+        <path d="M 24 56 L 56 24 M 24 24 L 56 56" stroke="#ffb300" stroke-width="3" stroke-linecap="round" />
+        <circle cx="40" cy="36" r="11" fill="#2d1c08" stroke="#ffe082" stroke-width="1.8" />
+        <circle cx="36" cy="34" r="2.5" fill="#ffe082" />
+        <circle cx="44" cy="34" r="2.5" fill="#ffe082" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="5" font-weight="900" fill="#ffd700" letter-spacing="1" text-anchor="middle">ANDOLINI 1718</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('alaska') || id.includes('primal_rangers')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-alaska" role="img" aria-label="Insigne Rangers Alaska 1997">
+        <polygon points="40,8 72,68 8,68" fill="#0d2818" stroke="#52b788" stroke-width="2.5" />
+        <path d="M 40 28 L 52 52 L 44 52 L 55 64 L 25 64 L 36 52 L 28 52 Z" fill="#2d6a4f" stroke="#74c69d" stroke-width="1.2" />
+        <circle cx="40" cy="36" r="3" fill="#d8f3dc" />
+        <text x="40" y="75" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="#74c69d" letter-spacing="1" text-anchor="middle">ALASKA '97</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('defiance') || id.includes('zula_hendricks')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-defiance" role="img" aria-label="Insigne Defiance USCSS Europa 2137">
+        <rect x="12" y="12" width="56" height="56" rx="6" fill="#0a192f" stroke="#00e5ff" stroke-width="2.2" />
+        <circle cx="40" cy="40" r="18" fill="none" stroke="#64ffda" stroke-width="1.8" stroke-dasharray="3,2" />
+        <path d="M 28 52 L 40 24 L 52 52 M 32 44 L 48 44" stroke="#00e5ff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+        <circle cx="40" cy="40" r="4" fill="#64ffda" />
+        <text x="40" y="74" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#64ffda" letter-spacing="1" text-anchor="middle">DEFIANCE 2137</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('nightmare_asylum') || id.includes('spears')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-spears" role="img" aria-label="Insigne Nightmare Asylum Spears">
+        <polygon points="40,10 68,26 68,54 40,70 12,54 12,26" fill="#2b0909" stroke="#ff3d00" stroke-width="2.5" />
+        <polygon points="40,20 58,30 58,50 40,60 22,50 22,30" fill="#140404" stroke="#ff6e40" stroke-width="1.2" />
+        <path d="M 40 26 L 40 46 M 30 36 L 50 36" stroke="#ff3d00" stroke-width="3" stroke-linecap="round" />
+        <circle cx="40" cy="40" r="6" fill="#ffab91" />
+        <text x="40" y="76" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#ff6e40" letter-spacing="1" text-anchor="middle">SPEARS 2192</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('deadliest') || id.includes('big_mama')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-bigmama" role="img" aria-label="Insigne Big Mama Skyliner 2195">
+        <circle cx="40" cy="40" r="36" fill="#1a0022" stroke="#ea80fc" stroke-width="2.5" />
+        <polygon points="40,14 49,30 67,30 53,42 58,59 40,48 22,59 27,42 13,30 31,30" fill="#4a148c" stroke="#e040fb" stroke-width="1.6" />
+        <circle cx="40" cy="38" r="6" fill="#f3e5f5" stroke="#ea80fc" stroke-width="1.5" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#ea80fc" letter-spacing="1" text-anchor="middle">BIG MAMA 2195</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('three_world_war') || id.includes('caparis')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-threeworldwar" role="img" aria-label="Insigne Three World War Caparis VII">
+        <polygon points="40,8 72,64 8,64" fill="#1a1c23" stroke="#00e676" stroke-width="2.5" />
+        <circle cx="40" cy="44" r="14" fill="#003318" stroke="#69f0ae" stroke-width="1.8" />
+        <path d="M 40 20 L 40 44 M 26 54 L 40 44 M 54 54 L 40 44" stroke="#00e676" stroke-width="2.5" stroke-linecap="round" />
+        <circle cx="40" cy="44" r="5" fill="#b9f6ca" />
+        <text x="40" y="74" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#69f0ae" letter-spacing="1" text-anchor="middle">CAPARIS VII</text>
+      </svg>
+    `.trim();
+  }
   if (id.includes('lv742_kainde_amedha')) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-lv742" role="img" aria-label="Insigne Sanctuaire LV-742">

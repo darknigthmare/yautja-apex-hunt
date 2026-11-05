@@ -13,7 +13,7 @@ import { getSquadLogo } from '../src/ui/CanonLogosAndEmblems.js';
 import { resolveSimulationSelection } from '../src/gameplay/SimulationHuntRuntime.js';
 
 test('le catalogue des escouades contient les 40 groupes légendaires canoniques (héros & antagonistes)', () => {
-  assert.equal(SQUAD_ENCOUNTERS.length, 64);
+  assert.equal(SQUAD_ENCOUNTERS.length, 70);
   assert.ok(Object.isFrozen(SQUAD_ENCOUNTERS));
 
   const expectedSquadIds = [
@@ -81,6 +81,12 @@ test('le catalogue des escouades contient les 40 groupes légendaires canoniques
     'squad_cold_forge_rb323_science_2179',
     'squad_bunda_war_machiko_clan_2194',
     'squad_primal_hunt_ancient_lv1201_2002',
+    'squad_pirates_raphael_andolini_1718',
+    'squad_alaska_primal_rangers_1997',
+    'squad_defiance_zula_hendricks_fireteam',
+    'squad_nightmare_asylum_spears_command',
+    'squad_deadliest_caryn_big_mama_clan',
+    'squad_three_world_war_machiko_uscm',
   ];
 
   assert.deepEqual(SQUAD_ENCOUNTERS.map((s) => s.id), expectedSquadIds);
@@ -163,7 +169,7 @@ test('les fonctions d’interrogation et de filtrage d’escouade sont fonctionn
   assert.equal(commandos[0].id, 'squad_dutch_val_verde_1987');
 
   const allSquads = filterSquadsByCategory('all');
-  assert.equal(allSquads.length, 64);
+  assert.equal(allSquads.length, 70);
 });
 
 test('chaque escouade génère un insigne vectoriel SVG valide', () => {

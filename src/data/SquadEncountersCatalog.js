@@ -2814,6 +2814,138 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'iron_bear_commando', name: 'Commando Lourd Iron Bear', role: 'Fantassin de Rupture de Blindage', weapon: 'Fusil d\'Assaut à Roquettes 15mm & Cuirasse', hp: 470, armor: 55, trophy: 'Viseur Électronique Fêlé des Ruines de LV-1201' },
       { id: 'pod_custodian_synth', name: 'Synthétique de Maintenance POD-9', role: 'Androïde de Sécurité du Complexe', weapon: 'Torche de Découpe Plasma & Pulsar IEM', hp: 490, armor: 50, trophy: 'Circuit Imprimé Logique du Régulateur de Stase' }
     ]
+  },
+  {
+    id: 'squad_pirates_raphael_andolini_1718',
+    name: 'Équipage Pirate du Capitaine Raphael Andolini (1718)',
+    universe: 'PREDATOR',
+    shortName: 'Pirates d\'Andolini 1718 (4 Boucaniers)',
+    category: 'HUMAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: 1718 (Comics Dark Horse 1996)',
+    biomeId: 'jungle',
+    recommendedBiome: 'Crique Tropicale & Plage des Flibustiers (1718)',
+    description: 'Le capitaine Raphael Andolini et ses officiers rebelles affrontant une mutinerie sanglante dans une crique sauvage, observés par le jeune chasseur Yautja.',
+    tactics: 'Tirs de pistolets à silex de salve, charges furieuses au sabre d\'abordage et grenades de poudre noire rudimentaires.',
+    totalHonorReward: 4400,
+    soloVariantId: 'alien_base_big_beard_voyageur_1719',
+    members: [
+      { id: 'andolini_captain', name: 'Capitaine Raphael Andolini', role: 'Capitaine Corsaire d\'Honneur', weapon: 'Pistolet à Silex d\'Or 1718 & Sabre d\'Abordage', hp: 480, armor: 35, trophy: 'Boussole Navale en Argent Gravée du Capitaine Andolini' },
+      { id: 'perez_first_mate', name: 'Maître Perez', role: 'Second d\'Équipage Loyal', weapon: 'Sabre d\'Abordage Double & Tromblon de Calibre', hp: 420, armor: 30, trophy: 'Ceinturon de Cuir Tanné aux Armes de Guinée' },
+      { id: 'vane_cannoneer', name: 'Canonnier Vane', role: 'Artilleur de Pont Lourd', weapon: 'Grenades de Poudre Noire & Hachette de Bord', hp: 400, armor: 25, trophy: 'Mèche Lente et Boutefeu d\'Artillerie Navale' },
+      { id: 'quartermaster_smee', name: 'Boucannier Pistolier Smee', role: 'Pistolier Flibustier des Criques', weapon: 'Paires de Pistolets de Mer & Dague de Botte', hp: 380, armor: 20, trophy: 'Pièce de Huit Espagnole Percée en Amulette' }
+    ]
+  },
+  {
+    id: 'squad_alaska_primal_rangers_1997',
+    name: 'Garde Forestière & Rangers de l\'Alaska Wilderness (1997)',
+    universe: 'PREDATOR',
+    shortName: 'Rangers de l\'Arctique (4 Traqueurs)',
+    category: 'HUMAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Primal (Comics Dark Horse 1997)',
+    biomeId: 'jungle',
+    recommendedBiome: 'Toundra Boréale & Forêts Glacées d\'Alaska (1997)',
+    description: 'L\'escouade de rangers et pisteurs inuits luttant contre les prédateurs des glaces et le chasseur extraterrestre dans le blizzard.',
+    tactics: 'Tirs lourds au .45-70 à percussion, pièges à ours dissimulés sous la neige et charges territoriales dévastatrices.',
+    totalHonorReward: 4600,
+    soloVariantId: 'alien_base_royce_mercenaire_2010',
+    members: [
+      { id: 'maccallister_ranger_chief', name: 'Ranger en Chef MacCallister', role: 'Commandant des Gardes Boréaux', weapon: 'Carabine Marlin .45-70 Guide Gun & Couteau de Survie', hp: 500, armor: 40, trophy: 'Insigne Émaillé des Rangers de l\'Alaska Wilderness' },
+      { id: 'nanook_inuit_tracker', name: 'Pisteur Arctique Nanook', role: 'Éclaireur des Banquises et Toundras', weapon: 'Fusil de Précision à Lunette & Harpon Boréal', hp: 420, armor: 30, trophy: 'Collier en Dents d\'Ours Polaire et Tendons' },
+      { id: 'vance_wildlife_vet', name: 'Docteur Vance (Vétérinaire)', role: 'Soutien Médical & Fléchettes Sédatives', weapon: 'Fusil Tranquillisant Haute Pression & Calibre 12', hp: 390, armor: 25, trophy: 'Seringue d\'Extraction de Toxines d\'Alaska' },
+      { id: 'kodiak_grizzly_alpha', name: 'Grizzly Mâle Alpha des Aléoutiennes', role: 'Colosse Territorial Félin', weapon: 'Griffes Éventreuses de 15cm & Mâchoire Broyeuse', hp: 620, armor: 45, trophy: 'Crâne Massif du Grand Grizzly de l\'Alaska' }
+    ]
+  },
+  {
+    id: 'squad_defiance_zula_hendricks_fireteam',
+    name: 'Escouade Clandestine USCM & Synthétique Davis 01 (2137)',
+    universe: 'ALIEN',
+    shortName: 'Équipe Defiance Europa (4 Rebelles)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Defiance (Comics Dark Horse 2016-2019)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiome: 'Cuirassé USCSS Europa & Sas Orbitaux (2137)',
+    description: 'La fusilière insurgée Zula Hendricks et le synthétique Davis 01 en mission secrète pour détruire les spécimens biologiques de Weyland-Yutani.',
+    tactics: 'Tirs de barrage coordonnés au fusil à impulsion, verrouillage de sas à distance et charges explosives de démolition.',
+    totalHonorReward: 4900,
+    soloVariantId: 'alien_base_zula_hendricks_defiance_marine',
+    members: [
+      { id: 'zula_hendricks_marine', name: 'Fusilière Zula Hendricks', role: 'Marine Coloniale en Exosquelette Spinal', weapon: 'Armat M41A Pulse Rifle Modifié & Dague USCM', hp: 480, armor: 45, trophy: 'Plaque d\'Identification Martiale de Zula Hendricks' },
+      { id: 'davis01_synthetic_specops', name: 'Davis 01 (Synthétique Autonome)', role: 'Tacticien de Rupture Weyland Reconditionné', weapon: 'Carabine Lourde M42A & Outil de Piratage Neural', hp: 540, armor: 55, trophy: 'Puce Synaptique d\'Émancipation de Davis 01' },
+      { id: 'dr_hollis_field_surgeon', name: 'Dr. Hollis (Médecin de Bord)', role: 'Chirurgienne de Confinement Biologique', weapon: 'Pistolet Sédatif VP-70 & Scanner Bio-Toxique', hp: 390, armor: 30, trophy: 'Injecteur d\'Anti-Acide d\'Urgence de l\'USCSS Europa' },
+      { id: 'defiance_uscm_trooper', name: 'Commando Insurgé USCM', role: 'Fusilier d\'Appui Lourd', weapon: 'Mitrailleuse Légère M56 & Visière Thermique', hp: 460, armor: 50, trophy: 'Casque Fêlé de Marine Rebelle de l\'Europa' }
+    ]
+  },
+  {
+    id: 'squad_nightmare_asylum_spears_command',
+    name: 'État-Major Militaire Insurgé du Général Spears (2192)',
+    universe: 'ALIEN',
+    shortName: 'Commandement Nightmare Spears (4 Officiers)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Nightmare Asylum (Comics Dark Horse 1989-1990)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiome: 'Base Secrète du Général Spears (Nightmare Asylum)',
+    description: 'Le général Thomas Spears et sa garde prétorienne conditionnant des hordes de Xénomorphes dociles pour reprendre la Terre dévastée.',
+    tactics: 'Faisceaux d\'énergie à particules lourdes, décharges d\'aiguillons neuro-électriques et saturation au tir automatique.',
+    totalHonorReward: 5100,
+    soloVariantId: 'prey_colonial_marine_heavy',
+    members: [
+      { id: 'general_thomas_spears', name: 'Général Thomas Spears', role: 'Stratège Militaire Fanatique', weapon: 'Fusil à Particules Prototype & Pistolet d\'Officier', hp: 520, armor: 50, trophy: 'Épaulette Étoilée Ensanglantée du Général Spears' },
+      { id: 'col_alistair_strike_lead', name: 'Colonel Alistair', role: 'Commandant des Opérations Tactiques', weapon: 'Carabine Automatique de Précision & Grenades IEM', hp: 470, armor: 50, trophy: 'Moniteur Portatif de Fréquence Neurale Xéno' },
+      { id: 'synth_bueller_reconditioned', name: 'Synthétique Bueller (Reconditionné)', role: 'Garde du Corps Bionique Cybernétique', weapon: 'Mitrailleur de Soutien Lourd 10mm & Blindage Coque', hp: 560, armor: 60, trophy: 'Unité Centrale Bionique du Modèle Bueller' },
+      { id: 'asylum_handler_trooper', name: 'Dresseur Militaire de Spécimens', role: 'Spécialiste Confinement Électrique', weapon: 'Aiguillon Neural 120 kV & Pistolet Mitrailleur', hp: 430, armor: 40, trophy: 'Collier Électrique de Dressage Xénomorphe Fêlé' }
+    ]
+  },
+  {
+    id: 'squad_deadliest_caryn_big_mama_clan',
+    name: 'Alliance Skyliner — Caryn Delacroix & Chasseresse Big Mama (2195)',
+    universe: 'AVP',
+    shortName: 'Clan Skyliner & Big Mama (4 Combattants)',
+    category: 'HONOR_CLAN',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator: Deadliest of the Species (Comics Dark Horse 1993)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiome: 'Cité Céleste Skyliner de Lucien Delacroix (2195)',
+    description: 'La matriarche guerrière Yautja Big Mama et Caryn Delacroix unies pour briser les conspirations corporatistes et exterminer les Hybrides Blancs.',
+    tactics: 'Estocs surpuissants au combistick électro-plaqué, tirs d\'impulsion holographiques et contre-attaques acrobatiques.',
+    totalHonorReward: 5600,
+    soloVariantId: 'alien_base_alpha_predator_kaail',
+    members: [
+      { id: 'big_mama_huntress_yautja', name: 'Big Mama (Matriarche Chasseresse)', role: 'Maître Guerrière Yautja d\'Honneur', weapon: 'Combistick Électro-Plaqué & Canon Plasma d\'Épaule', hp: 780, armor: 80, trophy: 'Biomasque Cérémonial Doré de la Matriarche Big Mama' },
+      { id: 'caryn_delacroix_rebel', name: 'Caryn Delacroix', role: 'Aristocrate Rebelle Transhumaniste', weapon: 'Fusil à Impulsion Skyliner & Dague Cérémoniale Yautja', hp: 460, armor: 40, trophy: 'Bague de Sceau de la Famille Delacroix de Skyliner' },
+      { id: 'toy_synthetic_ai_drone', name: 'Toy (Synthétique Télépathique)', role: 'Avatar Holographique de Soutien', weapon: 'Projecteur d\'Ondes Électromagnétiques & Faisceau Laser', hp: 440, armor: 45, trophy: 'Matrice Cristalline de l\'Intelligence Artificielle Toy' },
+      { id: 'white_hybrid_vanguard', name: 'Guerrier Hybride Blanc Renégat', role: 'Mutant Génétique Rallié à l\'Honneur', weapon: 'Griffes Acérées & Fusil d\'Assaut Corporatiste 10mm', hp: 580, armor: 55, trophy: 'Segment de Carapace Blanche de l\'Hybride Albinos' }
+    ]
+  },
+  {
+    id: 'squad_three_world_war_machiko_uscm',
+    name: 'Front de Guerre Caparis VII — Coalition Noguchi & Marines (2198)',
+    universe: 'AVP',
+    shortName: 'Coalition Caparis VII (4 Légendes)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator: Three World War (Comics Dark Horse 2010)',
+    biomeId: 'hive_lv426',
+    recommendedBiome: 'Champs de Bataille Tripartites de Caparis VII (2198)',
+    description: 'L\'alliance historique entre Machiko Noguchi, le corps des Marines Coloniaux et les chasseurs Yautja face au Clan Killer renégat.',
+    tactics: 'Tirs combinés cinétiques et plasmiques, assauts coordonnés aux lames de poignet et frappes de saturation au Smartgun.',
+    totalHonorReward: 5800,
+    soloVariantId: 'alien_base_major_dutch_schaefer_1987',
+    members: [
+      { id: 'machiko_noguchi_commander', name: 'Machiko Noguchi (Da\'dtou-di)', role: 'Commandante Suprême de la Coalition', weapon: 'Combo Fusil Pulse M41A2 & Micro-Plasmacaster Yautja', hp: 550, armor: 60, trophy: 'Médaillon de Commandement de l\'Alliance de Caparis VII' },
+      { id: 'sgt_sereda_uscm_veteran', name: 'Sergent Sereda', role: 'Vétéran Tactique des Marines Coloniaux', weapon: 'Fusil à Impulsion M41A avec Lance-Grenades 30mm', hp: 480, armor: 50, trophy: 'Plaque d\'Honneur Martiale USCM Gravée au Sang' },
+      { id: 'allied_clan_blade_master', name: 'Maître des Lames Yautja Allié', role: 'Champion Élite du Clan d\'Honneur', weapon: 'Combistick Double Tranchant & Disque Intelligent', hp: 740, armor: 75, trophy: 'Dague Cérémoniale d\'Amitié Inter-Espèces de Caparis VII' },
+      { id: 'heavy_smartgunner_cooper', name: 'Canonnier Lourd Cooper', role: 'Tireur d\'Appui USCM', weapon: 'Mitrailleuse Lourde M56 Smartgun avec Harnais Autotrack', hp: 510, armor: 55, trophy: 'Tambour de Munitions 10×24mm Usé des Tranchées' }
+    ]
   }
 ]);
 
