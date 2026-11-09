@@ -1,4 +1,4 @@
-import { getCraftsmanshipItemSvg } from './CanonLogosAndEmblems.js';
+import { getCraftsmanshipItemSvg, getCraftCardMiniatureSvg } from './CanonLogosAndEmblems.js';
 
 const number = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 2 });
 const escape = value => String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -63,6 +63,7 @@ function cardMarkup(recipe, view) {
     ? `<dl class="craft-active-stats">${view.activeStats.map(stat => `<div><dt>${escape(stat.label)}</dt><dd>${escape(stat.value)}</dd></div>`).join('')}</dl>`
     : '<p class="craft-no-active-bonus">Pièce de collection · aucun bonus de chasse actif.</p>';
   return `<article class="craft-recipe-card${view.crafted ? ' card-crafted' : ''}${view.equipped ? ' card-equipped' : ''}" data-card-recipe="${id}" aria-labelledby="${id}-title">
+    <div class="card-miniature-box craft-miniature">${getCraftCardMiniatureSvg(recipe)}</div>
     <div class="craft-card-header"><div class="craft-svg-box" aria-hidden="true">${getCraftsmanshipItemSvg(recipe.id, 44)}</div><div class="craft-card-title">
       <h4 id="${id}-title">${escape(recipe.name)}</h4><span class="craft-source-status">${escape(view.sourceLabel)}</span></div></div>
     ${originLabel ? `<p class="craft-origin-kicker">Inspiration : ${escape(originLabel)}</p>` : ''}

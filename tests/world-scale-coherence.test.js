@@ -384,6 +384,7 @@ test('HuntNPC getProceduralPostureTelemetry and lastDiegeticCue track FSM states
     assert.equal(flankTelemetry.state, 'flank');
     assert.equal(flankTelemetry.lastDiegeticCue, 'tactical_flank_maneuver');
     assert.ok(flankTelemetry.torsoPitchRad >= 0.25, 'torso must lean forward during flank');
+    assert.ok(typeof flankTelemetry.flankStrideRatio === 'number' && flankTelemetry.flankStrideRatio > 0, 'flankStrideRatio must be a positive ratio during flank');
 
     // 4. Wounded retreat state: limping gait & wounded_retreat_limp cue
     rifleman.takeDamage(110); // drops below 35% HP
@@ -549,4 +550,94 @@ test('MegafaunaBoss.getBossDiegeticTelemetry reports canonical 5.5m scale and li
   } finally {
     boss.dispose();
   }
+});
+
+test('Vague 11 canonical NPC weapons resolve to rich ballistic and acoustic profiles', () => {
+  const vague11Weapons = [
+    {
+      id: 'wpn_spratly_pirate_rpg7',
+      archetype: 'shoulder_rpg7_rocket',
+      damage: 52,
+      rangeM: 100,
+      soundRadiusM: 110,
+      projectileColor: 0xff5500,
+    },
+    {
+      id: 'wpn_bolderji_mercenary_magnum',
+      archetype: 'heavy_magnum_revolver',
+      damage: 42,
+      rangeM: 42,
+      soundRadiusM: 82,
+      projectileColor: 0xffca3a,
+    },
+    {
+      id: 'wpn_stronghold_jeri_disruptor',
+      archetype: 'synthetic_pulse_disruptor',
+      damage: 28,
+      rangeM: 65,
+      soundRadiusM: 55,
+      projectileColor: 0x00f0ff,
+    },
+    {
+      id: 'wpn_cold_forge_taser_drone_prod',
+      archetype: 'neuro_electric_shock_prod',
+      damage: 24,
+      rangeM: 12,
+      soundRadiusM: 26,
+      projectileColor: 0x48cae4,
+    },
+    {
+      id: 'wpn_duel_uss_ryushi_flamethrower',
+      archetype: 'pressurized_napalm_flamethrower',
+      damage: 38,
+      rangeM: 35,
+      soundRadiusM: 65,
+      projectileColor: 0xff4d00,
+    },
+    {
+      id: 'wpn_web_magnetic_riveter',
+      archetype: 'magnetic_coil_riveter',
+      damage: 35,
+      rangeM: 45,
+      soundRadiusM: 60,
+      projectileColor: 0x48bfe3,
+    },
+  ];
+
+  for (const expected of vague11Weapons) {
+    const profile = getNpcWeaponProfile(expected.id);
+    assert.ok(profile && typeof profile === 'object', `${expected.id} must resolve to a profile object`);
+    assert.equal(profile.id, expected.id);
+    assert.equal(profile.archetype, expected.archetype);
+    assert.equal(profile.damage, expected.damage);
+    assert.equal(profile.rangeM, expected.rangeM);
+    assert.equal(profile.soundRadiusM, expected.soundRadiusM);
+    assert.equal(profile.projectileColor, expected.projectileColor);
+    assert.ok(profile.cooldown > 0, `${expected.id} must have non-zero cooldown`);
+    assert.ok(typeof profile.cadence === 'string' && profile.cadence.length > 0);
+  }
+});
+
+test('AudioSynthesizer procedural Vague 11 SFX methods execute safely in headless Node environment', () => {
+  const rocket = audioSynth.playRpgRocketLaunchWhoosh();
+  assert.ok(rocket && rocket.event === 'rpg_rocket_launch_whoosh');
+  assert.ok(rocket.launchWhooshEndHz > rocket.launchWhooshStartHz);
+  assert.ok(rocket.exhaustWhistleEndHz > rocket.exhaustWhistleStartHz);
+  assert.ok(rocket.durationSeconds > 0);
+  assert.equal(rocket.played, false);
+
+  const flame = audioSynth.playHeavyFlamethrowerRoar();
+  assert.ok(flame && flame.event === 'heavy_flamethrower_roar');
+  assert.ok(flame.roarCutoffHz > 0);
+  assert.ok(flame.hissHighpassHz > flame.roarCutoffHz);
+  assert.ok(flame.subRumbleHz > 0);
+  assert.ok(flame.durationSeconds > 0);
+  assert.equal(flame.played, false);
+
+  const riveter = audioSynth.playMagneticRiveterThud();
+  assert.ok(riveter && riveter.event === 'magnetic_riveter_thud');
+  assert.ok(riveter.capacitorWhineEndHz > riveter.capacitorWhineStartHz);
+  assert.ok(riveter.thudImpactStartHz > riveter.thudImpactEndHz);
+  assert.ok(riveter.durationSeconds > 0);
+  assert.equal(riveter.played, false);
 });

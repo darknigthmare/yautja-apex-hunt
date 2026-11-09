@@ -578,6 +578,36 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics', 'avpPreyOmnibus']), behavior: 'returning_disc',
     modifiers: Object.freeze({ damageMultiplier: 1.35, projectileSpeedMultiplier: 1.25, returnSpeedMultiplier: 1.2 }),
   }),
+  Object.freeze({
+    id: 'yautja_wpn_south_china_sea_spear', armorPresetId: 'pirate_hg', baseWeaponId: 'combistick', name: 'Lance d’Abordage Volcanique des Spratleys (Predator: South China Sea 2008)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['predatorArchives', 'predator2', 'comicsDarkHorse1989']), behavior: 'spear_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.35, bleedDamagePerSecond: 28, throwVelocityMultiplier: 1.2 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_forever_midnight_plasma_blade', armorPresetId: 'berserker_2010', baseWeaponId: 'wrist_blades', name: 'Lames de Frénésie Thermique de Bolder’ji (Predator: Forever Midnight 2006)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['predatorArchives', 'predators2010', 'comicsDarkHorse1989']), behavior: 'melee_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.4, attackSpeedMultiplier: 1.25, rageGainMultiplier: 1.3 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_stronghold_emp_shuriken', armorPresetId: 'fugitive_2018', baseWeaponId: 'smart_disc', name: 'Chakram Disrupteur EMP de Maboushe (Aliens: Stronghold 1994)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['comicsDarkHorse1989', 'aliens1986']), behavior: 'returning_disc',
+    modifiers: Object.freeze({ damageMultiplier: 1.3, empStunDurationSeconds: 3.5, returnSpeedMultiplier: 1.25 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_sea_sorrows_heavy_caster', armorPresetId: 'guardian_lost_tribe', baseWeaponId: 'plasmacaster_single', name: 'Canon Lourd à Résonance de Trimonite (Alien: Sea of Sorrows 2014)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['aliens1986', 'alien1979', 'comicsDarkHorse1989']), behavior: 'plasma',
+    modifiers: Object.freeze({ damageMultiplier: 1.45, splashRadiusMultiplier: 1.35, cooldownMultiplier: 1.15 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_duel_predalien_bone_harpoon', armorPresetId: 'celtic_avp', baseWeaponId: 'speargun', name: 'Harpon d’Ostéite Hybride Predalien (AVP: Duel 1995)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics', 'avpPreyOmnibus', 'comicsDarkHorse1989']), behavior: 'precision_bolt',
+    modifiers: Object.freeze({ damageMultiplier: 1.38, penetrationMultiplier: 1.4, acidBleedDps: 22 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_web_shock_whip', armorPresetId: 'wolf_avpr', baseWeaponId: 'whip_thorns', name: 'Fouet d’Arrimage Électromagnétique de The Web (AVP: The Web 1999)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics', 'comicsDarkHorse1989']), behavior: 'whip',
+    modifiers: Object.freeze({ damageMultiplier: 1.32, rangeMultiplier: 1.3, shockDurationSeconds: 2.5 }),
+  }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);
 

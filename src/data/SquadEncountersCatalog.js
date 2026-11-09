@@ -3544,6 +3544,150 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'ryushi_settler_mechanic', name: 'Mécanicien de Tracteur Foster', role: 'Défenseur de Hangar Agricole', weapon: 'Harpon Pneumatique & Chalumeau d\'Atelier', weaponId: 'wpn_ryushi_ranch_harpoon_gun', vitalityRatio: 1.0, hp: 520, armor: 40, trophy: 'Outil de Découpe Hydraulique de Ryushi' },
       { id: 'ryushi_settler_scout', name: 'Pisteur des Plaines Kenji', role: 'Sentinelle des Enclos Extérieurs', weapon: 'Harpon Léger & Fusées Éclairantes', weaponId: 'wpn_ryushi_ranch_harpoon_gun', vitalityRatio: 0.95, hp: 510, armor: 35, trophy: 'Boussole Magnétique des Soleils Jumeaux' }
     ]
+  },
+  {
+    id: 'squad_pred_spratly_pirates',
+    name: 'Bande de Flibuste des Îles Spratleys (2008)',
+    universe: 'PREDATOR',
+    shortName: 'Pirates des Spratleys (4 Combattants)',
+    category: 'CRIME_CARTEL',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: South China Sea (2008)',
+    biomeId: 'jungle',
+    recommendedBiomeLabel: 'Atoll Volcanique des Spratleys (2008)',
+    primaryMapId: 'map_pred_spratly_volcanic_island',
+    weaponLoadout: ['wpn_spratly_pirate_rpg7'],
+    description: 'Flottille de flibustiers et mercenaires retranchés sur un atoll volcanique, armés de RPG-7 et de fusils automatiques.',
+    tactics: 'Tirs de barrage de roquettes RPG-7 depuis les ponts suspendus et tirs croisés d’armes automatiques dans la mangrove.',
+    totalHonorReward: 5400,
+    soloVariantId: 'alien_base_galgo_helder_smuggler',
+    members: [
+      { id: 'spratly_pirate_captain', name: 'Capitaine Nguyen Le Borgne', role: 'Commandant de la Flottille', weapon: 'RPG-7 Modifié & Machette de Jungle', weaponId: 'wpn_spratly_pirate_rpg7', vitalityRatio: 1.25, hp: 650, armor: 55, trophy: 'Sabre d’Abordage et Bandoulière de Roquettes' },
+      { id: 'spratly_pirate_gunner', name: 'Artilleur Chen le Pyromane', role: 'Tireur de Roquettes Lourd', weapon: 'RPG-7 Antichar & Pistolet Automatique', weaponId: 'wpn_spratly_pirate_rpg7', vitalityRatio: 1.15, hp: 580, armor: 45, trophy: 'Optique de Visée Nocturne de Roquette' },
+      { id: 'spratly_pirate_trapper', name: 'Trappeur de Mangrove Somchai', role: 'Poseur de Pièges & Éclaireur', weapon: 'Fusil Automatique & Pièges à Loup', weaponId: 'wpn_spratly_pirate_rpg7', vitalityRatio: 1.0, hp: 530, armor: 40, trophy: 'Collier de Crocs de Fauve des Spratleys' },
+      { id: 'spratly_pirate_lookout', name: 'Guetteur de vigie Bao', role: 'Sentinelle des Ponts Suspendus', weapon: 'Carabine de Précision & Fusées Signal', weaponId: 'wpn_spratly_pirate_rpg7', vitalityRatio: 0.95, hp: 500, armor: 35, trophy: 'Jumelles de Marine Maritimes Abrasées' }
+    ]
+  },
+  {
+    id: 'squad_pred_bolderji_mercs',
+    name: 'Mercenaires de la Caldeira de Bolder’ji (2006)',
+    universe: 'PREDATOR',
+    shortName: 'Mercenaires Castaneda (4 Gardes)',
+    category: 'MERCENARY_SYNDICATE',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Forever Midnight (2006)',
+    biomeId: 'yautja_prime',
+    recommendedBiomeLabel: 'Caldeira de Bolder’ji (2006)',
+    primaryMapId: 'map_pred_bolderji_caldera',
+    weaponLoadout: ['wpn_bolderji_mercenary_magnum'],
+    description: 'Unité de sécurité privée de la corporation Castaneda équipée de revolvers lourds .500 Magnum patrouillant autour des puits magmatiques.',
+    tactics: 'Tirs d’arrêt puissants au calibre lourd, utilisation de grenades assourdissantes et repli vers les consoles blindées.',
+    totalHonorReward: 5600,
+    soloVariantId: 'alien_base_royce_mercenaire_2010',
+    members: [
+      { id: 'bolderji_commander_vance', name: 'Commandant de Sécurité Vance', role: 'Chef d’Escouade de Castaneda', weapon: 'Revolver .500 Magnum & Bouclier Anti-Émeute', weaponId: 'wpn_bolderji_mercenary_magnum', vitalityRatio: 1.3, hp: 680, armor: 60, trophy: 'Plaque d’Identification Castaneda Inc.' },
+      { id: 'bolderji_enforcer_karl', name: 'Exécuteur Karl le Briseur', role: 'Spécialiste de Répression Lourde', weapon: 'Revolver .500 Magnum Jumelé', weaponId: 'wpn_bolderji_mercenary_magnum', vitalityRatio: 1.15, hp: 600, armor: 50, trophy: 'Ceinturon de Munitions .500 semi-blindées' },
+      { id: 'bolderji_technician_tara', name: 'Technicienne Armée Tara', role: 'Opératrice Géothermique de Défense', weapon: 'Magnum de Poing & Chalumeau Géothermique', weaponId: 'wpn_bolderji_mercenary_magnum', vitalityRatio: 1.0, hp: 540, armor: 45, trophy: 'Clé de Déverrouillage des Vannes Magma' },
+      { id: 'bolderji_scout_morris', name: 'Éclaireur Géothermique Morris', role: 'Pisteur des Fumerolles', weapon: 'Magnum Léger & Détecteur Thermique', weaponId: 'wpn_bolderji_mercenary_magnum', vitalityRatio: 0.95, hp: 510, armor: 40, trophy: 'Visière Thermique Filtrante Anti-Soufre' }
+    ]
+  },
+  {
+    id: 'squad_alien_stronghold_sec_drones',
+    name: 'Droïdes & Escorte Cybernétique de Maboushe (1994)',
+    universe: 'ALIEN',
+    shortName: 'Escorte Ernst & Jeri (4 Unités)',
+    category: 'SYNTHETIC_PACK',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Stronghold (1994)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Forteresse Maboushe du Dr Ernst (1994)',
+    primaryMapId: 'map_alien_stronghold_ernst_lab',
+    weaponLoadout: ['wpn_stronghold_jeri_disruptor'],
+    description: 'Section de synthétiques de protection et sentinelles cybernétiques commandée par le xéno-synthétique Jeri au cœur du complexe Ernst.',
+    tactics: 'Émissions coordonnées d’ondes EMP pour paralyser les systèmes ennemis, tirs concentrés et charges au corps-à-corps insensible.',
+    totalHonorReward: 5800,
+    soloVariantId: 'alien_base_jeri_synthetic_xeno_cigar',
+    members: [
+      { id: 'stronghold_jeri_infiltrator', name: 'Jeri (Forme d’Escorte de Combat)', role: 'Synthétique d’Infiltration & Meneur', weapon: 'Émetteur Disrupteur EMP & Cigare Calciné', weaponId: 'wpn_stronghold_jeri_disruptor', vitalityRatio: 1.35, hp: 700, armor: 65, trophy: 'Boîtier Vocal Cybernétique & Cigare de Jeri' },
+      { id: 'stronghold_sentinel_alpha', name: 'Sentinelle de Sécurité Alpha-01', role: 'Garde de Confinement Robotique', weapon: 'Disrupteur Haute Fréquence & Matraque Choc', weaponId: 'wpn_stronghold_jeri_disruptor', vitalityRatio: 1.15, hp: 610, armor: 55, trophy: 'Module d’Asservissement Cybernétique' },
+      { id: 'stronghold_sentinel_beta', name: 'Sentinelle de Sécurité Beta-02', role: 'Unité d’Interception Tactique', weapon: 'Disrupteur Directionnel & Blindage Titane', weaponId: 'wpn_stronghold_jeri_disruptor', vitalityRatio: 1.05, hp: 570, armor: 50, trophy: 'Batterie à Décharge Rapide EMP' },
+      { id: 'stronghold_lab_synth_tech', name: 'Androïde Médical d’Assistance Ernst', role: 'Support Bio-Analytique', weapon: 'Injecteur d’Acide & Émetteur EMP Portatif', weaponId: 'wpn_stronghold_jeri_disruptor', vitalityRatio: 0.95, hp: 520, armor: 40, trophy: 'Échantillonneur Hermétique de Tégument Xéno' }
+    ]
+  },
+  {
+    id: 'squad_alien_lv178_miners',
+    name: 'Brigade Minière de New Galveston LV-178 (2014)',
+    universe: 'ALIEN',
+    shortName: 'Foreurs de LV-178 (4 Mineurs)',
+    category: 'CIVILIAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: Sea of Sorrows (2014)',
+    biomeId: 'hive_lv426',
+    recommendedBiomeLabel: 'Mines de Trimonite LV-178 (2014)',
+    primaryMapId: 'map_alien_lv178_trimonite_mines',
+    weaponLoadout: ['wpn_cold_forge_taser_drone_prod'],
+    description: 'Équipe de foreurs de fond de New Galveston armée de piques taser industrielles et d’outils lourds de concassage.',
+    tactics: 'Blocage des boyaux étroits avec des piques taser, pose de charges de concassage et tirs d’étourdissement en formation défensive.',
+    totalHonorReward: 5500,
+    soloVariantId: 'alien_base_tyler_romulus_miner',
+    members: [
+      { id: 'lv178_foreman_decker', name: 'Contremaître de Chantier Decker', role: 'Meneur des Équipes de Fond', weapon: 'Pique Taser Haute Tension & Foreuse Manuelle', weaponId: 'wpn_cold_forge_taser_drone_prod', vitalityRatio: 1.25, hp: 660, armor: 55, trophy: 'Casque de Mineur Renforcé avec Visière Trimonite' },
+      { id: 'lv178_drill_operator_mikhail', name: 'Opérateur de Foreuse Mikhail', role: 'Piqueur de Trimonite Lourde', weapon: 'Pique Taser Lourde & Marteau Pneumatique', weaponId: 'wpn_cold_forge_taser_drone_prod', vitalityRatio: 1.15, hp: 600, armor: 50, trophy: 'Burin en Carbure de Trimonite Brute' },
+      { id: 'lv178_demolition_sara', name: 'Dynamiteuse de Veine Sara', role: 'Artificière de Cavité Souterraine', weapon: 'Pique Taser Légère & Détonateur Minier', weaponId: 'wpn_cold_forge_taser_drone_prod', vitalityRatio: 1.0, hp: 540, armor: 40, trophy: 'Ceinture d’Allumeurs Pyrotechniques' },
+      { id: 'lv178_shaft_scout_kofi', name: 'Éclaireur de Puits Kofi', role: 'Sentinelle des Galeries Profondes', weapon: 'Pique Taser & Lampe Stroboscopique', weaponId: 'wpn_cold_forge_taser_drone_prod', vitalityRatio: 0.95, hp: 510, armor: 35, trophy: 'Détecteur de Gaz de Fissure Minier' }
+    ]
+  },
+  {
+    id: 'squad_avp_uss_ryushi_marines',
+    name: 'Section de Nettoyage de l’USS Ryushi (1995)',
+    universe: 'AVP',
+    shortName: 'Marines de l’USS Ryushi (4 Soldats)',
+    category: 'COLONIAL_MARINES',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator: Duel (1995)',
+    biomeId: 'genna_deathworld',
+    recommendedBiomeLabel: 'Cales de l’USS Ryushi (1995)',
+    primaryMapId: 'map_avp_uss_ryushi_cargo_hold',
+    weaponLoadout: ['wpn_duel_uss_ryushi_flamethrower'],
+    description: 'Section de choc du Corps des Marines Coloniaux dépêchée sur l’USS Ryushi et dotée de lance-flammes pour purger les cales infestées par le Predalien.',
+    tactics: 'Projection de nappes de feu continues pour acculer les cibles, tirs de couverture au fusil d’assaut et fermeture méthodique des cloisons.',
+    totalHonorReward: 5900,
+    soloVariantId: 'alien_base_christopher_winter_marine',
+    members: [
+      { id: 'ryushi_marine_lieutenant_judd', name: 'Lieutenant Judd de l’USS Ryushi', role: 'Officier d’Intervention Rapprochée', weapon: 'Lance-Flammes M240B & Pistolet VP70', weaponId: 'wpn_duel_uss_ryushi_flamethrower', vitalityRatio: 1.3, hp: 690, armor: 60, trophy: 'Casque M10 de Lieutenant USCM avec Caméra Tactique' },
+      { id: 'ryushi_marine_flamer_garcia', name: 'Caporal Incendiaire Garcia', role: 'Spécialiste de Purge Thermique', weapon: 'Lance-Flammes Lourd M240B & Réservoir Dorsal', weaponId: 'wpn_duel_uss_ryushi_flamethrower', vitalityRatio: 1.15, hp: 620, armor: 55, trophy: 'Brûleur au Phosphore Modifié M240B' },
+      { id: 'ryushi_marine_rifleman_nash', name: 'Fusilier de Soutien Nash', role: 'Tireur d’Appui Couverture', weapon: 'Lance-Flammes Compact & Baïonnette', weaponId: 'wpn_duel_uss_ryushi_flamethrower', vitalityRatio: 1.05, hp: 560, armor: 50, trophy: 'Gilet Pare-Éclats Blindé M3 Personnalisé' },
+      { id: 'ryushi_marine_medic_chen', name: 'Infirmier de Combat Chen', role: 'Support Médical & Décontamination', weapon: 'Lance-Flammes Léger & Trousse Stimpack', weaponId: 'wpn_duel_uss_ryushi_flamethrower', vitalityRatio: 0.95, hp: 520, armor: 40, trophy: 'Injecteur d’Antitoxine Acide USCM' }
+    ]
+  },
+  {
+    id: 'squad_avp_web_shipyard_riggers',
+    name: 'Brigade de Monteurs Sidérurgistes de The Web (1999)',
+    universe: 'AVP',
+    shortName: 'Monteurs de The Web (4 Sidérurgistes)',
+    category: 'CIVILIAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator: The Web (1999)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiomeLabel: 'Chantier Spatial The Web (1999)',
+    primaryMapId: 'map_avp_orbital_web_shipyard',
+    weaponLoadout: ['wpn_web_magnetic_riveter'],
+    description: 'Équipe de monteurs en apesanteur de la station The Web armée de riveteuses magnétiques lourdes et opérant sur les poutrelles géantes.',
+    tactics: 'Tirs en rafale de rivets magnétiques perforants depuis les échafaudages supérieurs et manœuvres d’encerclement par câbles de suspension.',
+    totalHonorReward: 5700,
+    soloVariantId: 'alien_base_johner_mercenary_betty',
+    members: [
+      { id: 'web_master_rigger_orourke', name: 'Maître Monteur O’Rourke', role: 'Chef d’Échafaudage Spatial', weapon: 'Riveteuse Magnétique Lourde & Harnais de Suspension', weaponId: 'wpn_web_magnetic_riveter', vitalityRatio: 1.3, hp: 670, armor: 60, trophy: 'Harnais Magnétique de Sécurité Orbitale' },
+      { id: 'web_welder_suleiman', name: 'Soudeur de Quille Suleiman', role: 'Spécialiste de Découpe Plasma', weapon: 'Riveteuse Magnétique & Torche Industrielle', weaponId: 'wpn_web_magnetic_riveter', vitalityRatio: 1.15, hp: 610, armor: 50, trophy: 'Masque de Soudeur Spatial Filtrant Or' },
+      { id: 'web_cable_handler_yuki', name: 'Arrimeuse de Câbles Yuki', role: 'Voltigeuse de Haute Structure', weapon: 'Riveteuse Légère & Grappin Magnétique', weaponId: 'wpn_web_magnetic_riveter', vitalityRatio: 1.0, hp: 550, armor: 45, trophy: 'Grappin Magnétique de Déplacement Orbital' },
+      { id: 'web_crane_operator_piotr', name: 'Opérateur de Catapulte Piotr', role: 'Artilleur de Poutrelles', weapon: 'Riveteuse Compacte & Détonateur Pneumatique', weaponId: 'wpn_web_magnetic_riveter', vitalityRatio: 0.95, hp: 510, armor: 35, trophy: 'Console de Commande Portative de Catapulte' }
+    ]
   }
 ]);
 

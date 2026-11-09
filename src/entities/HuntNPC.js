@@ -1863,10 +1863,17 @@ export class HuntNPC {
   }
 
   _applyProceduralPosture(dt = 0, applyMeshTransforms = true) {
+    const isFlank = (this.fsmState || '') === 'flank';
+    const flankStrideRatio = isFlank
+      ? Number((1.0 + Math.sin((this._animPhase > 0 ? this._animPhase : 0.45) * 4.8) * 0.22).toFixed(3))
+      : 1.0;
+    this.flankStrideRatio = flankStrideRatio;
+
     if (dt > 0) {
-      this._animPhase += dt;
+      this._animPhase += dt * (isFlank ? flankStrideRatio : 1.0);
     }
     const telemetry = this.getProceduralPostureTelemetry();
+    telemetry.flankStrideRatio = flankStrideRatio;
     if (!applyMeshTransforms || !this._rigParts) return telemetry;
 
     const { torso, head } = this._rigParts;
@@ -1907,6 +1914,9 @@ export class HuntNPC {
       if (telemetry.isLimping) {
         const phase = this._animPhase > 0 ? this._animPhase : 0.45;
         torso.rotation.z = (torso.userData.baseRotationZ ?? 0) + Math.sin(phase * 5.0) * 0.14;
+      } else if (telemetry.state === 'flank') {
+        const phase = this._animPhase > 0 ? this._animPhase : 0.45;
+        torso.rotation.z = (torso.userData.baseRotationZ ?? 0) + Math.sin(phase * 4.8) * 0.06 * flankStrideRatio;
       } else {
         torso.rotation.z = torso.userData.baseRotationZ ?? 0;
       }
@@ -1951,11 +1961,16 @@ export class HuntNPC {
       headScanYawRad = Math.abs(rawScan) < 0.05 ? 0.22 : Number(rawScan.toFixed(4));
     }
 
+    const flankStrideRatio = state === 'flank'
+      ? Number((1.0 + Math.sin(phase * 4.8) * 0.22).toFixed(3))
+      : 1.0;
+
     return {
       state,
       strideFrequencyHz,
       torsoPitchRad,
       headScanYawRad,
+      flankStrideRatio,
       isLimping,
       isCrouchedInCover,
       isHeavyRecoil,
@@ -3108,6 +3123,26 @@ export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
   wpn_ryushi_ranch_harpoon_gun: makeWeaponBallisticProfile('wpn_ryushi_ranch_harpoon_gun', {
     damage: 32, cooldown: 1.55, rangeM: 38, soundRadiusM: 36, projectileColor: 0xc8d6e5, archetype: 'pneumatic_livestock_harpoon', cadence: 'pneumatic_tether_dart', damageType: 'kinetic_piercing',
   }),
+
+  // Vague 11 Canonical Expansion Weapons (wpn_*)
+  wpn_spratly_pirate_rpg7: makeWeaponBallisticProfile('wpn_spratly_pirate_rpg7', {
+    damage: 52, cooldown: 3.2, rangeM: 100, soundRadiusM: 110, projectileColor: 0xff5500, archetype: 'shoulder_rpg7_rocket', cadence: 'single_rocket_reload', damageType: 'explosive',
+  }),
+  wpn_bolderji_mercenary_magnum: makeWeaponBallisticProfile('wpn_bolderji_mercenary_magnum', {
+    damage: 42, cooldown: 1.35, rangeM: 42, soundRadiusM: 82, projectileColor: 0xffca3a, archetype: 'heavy_magnum_revolver', cadence: 'heavy_kinetic_punch', damageType: 'kinetic_piercing',
+  }),
+  wpn_stronghold_jeri_disruptor: makeWeaponBallisticProfile('wpn_stronghold_jeri_disruptor', {
+    damage: 28, cooldown: 0.9, rangeM: 65, soundRadiusM: 55, projectileColor: 0x00f0ff, archetype: 'synthetic_pulse_disruptor', cadence: 'ion_stun_burst', damageType: 'energy',
+  }),
+  wpn_cold_forge_taser_drone_prod: makeWeaponBallisticProfile('wpn_cold_forge_taser_drone_prod', {
+    damage: 24, cooldown: 1.1, rangeM: 12, soundRadiusM: 26, projectileColor: 0x48cae4, archetype: 'neuro_electric_shock_prod', cadence: 'stun_grapple_shock', damageType: 'energy',
+  }),
+  wpn_duel_uss_ryushi_flamethrower: makeWeaponBallisticProfile('wpn_duel_uss_ryushi_flamethrower', {
+    damage: 38, cooldown: 1.1, rangeM: 35, soundRadiusM: 65, projectileColor: 0xff4d00, archetype: 'pressurized_napalm_flamethrower', cadence: 'continuous_flame_spray', damageType: 'thermal',
+  }),
+  wpn_web_magnetic_riveter: makeWeaponBallisticProfile('wpn_web_magnetic_riveter', {
+    damage: 35, cooldown: 0.85, rangeM: 45, soundRadiusM: 60, projectileColor: 0x48bfe3, archetype: 'magnetic_coil_riveter', cadence: 'pneumatic_steel_bolt', damageType: 'kinetic_piercing',
+  }),
 });
 
 function resolveNpcRoleWeaponId(npcType) {
@@ -3129,7 +3164,13 @@ function resolveNpcRoleWeaponId(npcType) {
   if (type.includes('romulus')) return 'wpn_romulus_f44aa_pulse_rifle';
   if (type.includes('berserker_max')) return 'wpn_berserker_max_autocannon';
   if (type.includes('tusk_acid') || type.includes('killer_clan')) return 'wpn_killer_clan_tusk_acid_spitter';
+  if (type.includes('duel') || (type.includes('flamethrower') && type.includes('ryushi'))) return 'wpn_duel_uss_ryushi_flamethrower';
   if (type.includes('ryushi') || type.includes('harpoon')) return 'wpn_ryushi_ranch_harpoon_gun';
+  if (type.includes('spratly') || type.includes('rpg7')) return 'wpn_spratly_pirate_rpg7';
+  if (type.includes('bolderji') || type.includes('magnum')) return 'wpn_bolderji_mercenary_magnum';
+  if (type.includes('jeri') || type.includes('disruptor')) return 'wpn_stronghold_jeri_disruptor';
+  if (type.includes('cold_forge') || type.includes('taser_drone') || type.includes('drone_prod')) return 'wpn_cold_forge_taser_drone_prod';
+  if (type.includes('riveter') || type.includes('magnetic_riveter')) return 'wpn_web_magnetic_riveter';
   return 'npc_wep_m41a_pulse_rifle';
 }
 
@@ -3206,6 +3247,31 @@ export function getNpcWeaponProfile(npcTypeOrWeaponId, options = {}) {
   if (raw.includes('hunting_rifle')) {
     return makeWeaponBallisticProfile(raw || 'wpn_generic_hunting_rifle', {
       damage: 36, cooldown: 1.75, rangeM: 140, soundRadiusM: 92, projectileColor: 0xffe066, archetype: 'bolt_action_hunting_rifle', cadence: 'bolt_action_single', damageType: 'ballistic',
+    });
+  }
+  if (raw.includes('rpg') || raw.includes('rocket')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_rpg7', {
+      damage: 52, cooldown: 3.2, rangeM: 100, soundRadiusM: 110, projectileColor: 0xff5500, archetype: 'shoulder_rpg7_rocket', cadence: 'single_rocket_reload', damageType: 'explosive',
+    });
+  }
+  if (raw.includes('magnum')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_magnum', {
+      damage: 42, cooldown: 1.35, rangeM: 42, soundRadiusM: 82, projectileColor: 0xffca3a, archetype: 'heavy_magnum_revolver', cadence: 'heavy_kinetic_punch', damageType: 'kinetic_piercing',
+    });
+  }
+  if (raw.includes('disruptor')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_disruptor', {
+      damage: 28, cooldown: 0.9, rangeM: 65, soundRadiusM: 55, projectileColor: 0x00f0ff, archetype: 'synthetic_pulse_disruptor', cadence: 'ion_stun_burst', damageType: 'energy',
+    });
+  }
+  if (raw.includes('prod')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_shock_prod', {
+      damage: 24, cooldown: 1.1, rangeM: 12, soundRadiusM: 26, projectileColor: 0x48cae4, archetype: 'neuro_electric_shock_prod', cadence: 'stun_grapple_shock', damageType: 'energy',
+    });
+  }
+  if (raw.includes('riveter')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_riveter', {
+      damage: 35, cooldown: 0.85, rangeM: 45, soundRadiusM: 60, projectileColor: 0x48bfe3, archetype: 'magnetic_coil_riveter', cadence: 'pneumatic_steel_bolt', damageType: 'kinetic_piercing',
     });
   }
   return makeWeaponBallisticProfile(raw || 'npc_wep_m41a_pulse_rifle', {

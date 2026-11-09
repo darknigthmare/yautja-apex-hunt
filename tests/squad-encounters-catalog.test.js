@@ -13,7 +13,7 @@ import { getSquadLogo } from '../src/ui/CanonLogosAndEmblems.js';
 import { resolveSimulationSelection } from '../src/gameplay/SimulationHuntRuntime.js';
 
 test('le catalogue des escouades contient les 40 groupes légendaires canoniques (héros & antagonistes)', () => {
-  assert.equal(SQUAD_ENCOUNTERS.length, 96);
+  assert.equal(SQUAD_ENCOUNTERS.length, 102);
   assert.ok(Object.isFrozen(SQUAD_ENCOUNTERS));
 
   const expectedSquadIds = [
@@ -113,6 +113,12 @@ test('le catalogue des escouades contient les 40 groupes légendaires canoniques
     'squad_alien_genocide_red_drones',
     'squad_avp_killer_clan_wardogs',
     'squad_avp_ryushi_chigusa_settlers',
+    'squad_pred_spratly_pirates',
+    'squad_pred_bolderji_mercs',
+    'squad_alien_stronghold_sec_drones',
+    'squad_alien_lv178_miners',
+    'squad_avp_uss_ryushi_marines',
+    'squad_avp_web_shipyard_riggers',
   ];
 
   assert.deepEqual(SQUAD_ENCOUNTERS.map((s) => s.id), expectedSquadIds);
@@ -195,7 +201,7 @@ test('les fonctions d’interrogation et de filtrage d’escouade sont fonctionn
   assert.equal(commandos[0].id, 'squad_dutch_val_verde_1987');
 
   const allSquads = filterSquadsByCategory('all');
-  assert.equal(allSquads.length, 96);
+  assert.equal(allSquads.length, 102);
 });
 
 test('chaque escouade génère un insigne vectoriel SVG valide', () => {

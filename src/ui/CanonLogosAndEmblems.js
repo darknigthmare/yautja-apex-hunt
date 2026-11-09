@@ -2012,7 +2012,7 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
-  if (id.includes('stronghold') || id.includes('jeri')) {
+  if (id.includes('jeri') || (id.includes('stronghold') && !id.includes('sec_drones') && !id.includes('stronghold_sec'))) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-jeri" role="img" aria-label="Insigne Jeri Stronghold 2194">
         <circle cx="40" cy="40" r="36" fill="#0b1d13" stroke="#52b788" stroke-width="2.5" />
@@ -2342,6 +2342,103 @@ export function getSquadLogo(squadId, size = 64) {
         <path d="M18,52 Q40,36 62,52" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
         <polygon points="40,40 46,50 34,50" fill="#ca8a04" stroke="#fde047" stroke-width="1.2" />
         <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="900" fill="#bae6fd" letter-spacing="0.8" text-anchor="middle">CHIGUSA RYUSHI</text>
+      </svg>
+    `.trim();
+  }
+
+  // --- ESCADRONS VAGUE 11 (Prompt & Expansions) ---
+  if (id.includes('spratly') || id.includes('spratly_pirates')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-spratly" role="img" aria-label="Insigne Pirates Spratly 1888">
+        <circle cx="40" cy="40" r="36" fill="#08181c" stroke="#14b8a6" stroke-width="2.5" />
+        <!-- Plume volcanique en arrière-plan -->
+        <path d="M40,32 Q32,20 36,12 Q44,8 48,16 Q44,24 40,32 Z" fill="#475569" opacity="0.6" />
+        <path d="M42,28 Q36,18 42,14 Q46,12 45,20 Z" fill="#f97316" opacity="0.4" />
+        <!-- Palmiers tropicaux croisés -->
+        <path d="M22,46 Q28,32 36,36 M22,46 Q30,38 34,44 M22,46 Q26,42 30,48" stroke="#10b981" stroke-width="1.6" fill="none" stroke-linecap="round" />
+        <path d="M58,46 Q52,32 44,36 M58,46 Q50,38 46,44 M58,46 Q54,42 50,48" stroke="#10b981" stroke-width="1.6" fill="none" stroke-linecap="round" />
+        <path d="M24,54 Q30,46 36,44" stroke="#78350f" stroke-width="1.8" fill="none" stroke-linecap="round" />
+        <path d="M56,54 Q50,46 44,44" stroke="#78350f" stroke-width="1.8" fill="none" stroke-linecap="round" />
+        <!-- Crâne pirate & dents Yautja -->
+        <circle cx="40" cy="36" r="10.5" fill="#0f172a" stroke="#2dd4bf" stroke-width="1.8" />
+        <circle cx="36" cy="34" r="2" fill="#2dd4bf" /><circle cx="44" cy="34" r="2" fill="#2dd4bf" />
+        <path d="M37,42 L43,42 M38,45 L42,45" stroke="#2dd4bf" stroke-width="1.2" stroke-linecap="round" />
+        <polygon points="35,39 37,41 33,42" fill="#f43f5e" /><polygon points="45,39 43,41 47,42" fill="#f43f5e" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="900" fill="#2dd4bf" letter-spacing="0.8" text-anchor="middle">SPRATLY 1888</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('bolderji') || id.includes('bolder_ji')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-bolderji" role="img" aria-label="Insigne Mercenaires Bolder'ji">
+        <circle cx="40" cy="40" r="36" fill="#220905" stroke="#ea580c" stroke-width="2.5" />
+        <!-- Caldeira volcanique et magma -->
+        <polygon points="18,52 32,30 48,30 62,52 40,58" fill="#431407" stroke="#f97316" stroke-width="1.8" />
+        <ellipse cx="40" cy="32" rx="9" ry="3.5" fill="#ef4444" stroke="#fbbf24" stroke-width="1" />
+        <path d="M36,32 Q40,24 44,32" stroke="#fef08a" stroke-width="2" fill="none" />
+        <!-- Éclair de plasma oblique (plasma bolt) -->
+        <polygon points="36,12 48,12 40,28 50,28 32,56 38,34 30,34" fill="#06b6d4" stroke="#67e8f9" stroke-width="1.2" filter="drop-shadow(0 0 3px #06b6d4)" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="900" fill="#fdba74" letter-spacing="0.8" text-anchor="middle">BOLDER'JI MERCS</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('stronghold') || id.includes('sec_drones') || id.includes('caspar_ernst')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-stronghold" role="img" aria-label="Insigne Drones Cybernétiques Stronghold">
+        <polygon points="40,6 72,22 72,58 40,74 8,58 8,22" fill="#061822" stroke="#06b6d4" stroke-width="2.5" />
+        <!-- Châssis de drone sentinelle cybernétique Dr. Ernst -->
+        <circle cx="40" cy="38" r="16" fill="#082b3a" stroke="#22d3ee" stroke-width="1.8" />
+        <circle cx="40" cy="38" r="7" fill="#0e7490" stroke="#67e8f9" stroke-width="1.5" />
+        <circle cx="40" cy="38" r="3" fill="#a5f3fc" />
+        <!-- Capteurs optiques & bras d'armement -->
+        <line x1="22" y1="38" x2="14" y2="38" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" />
+        <line x1="58" y1="38" x2="66" y2="38" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" />
+        <line x1="40" y1="20" x2="40" y2="12" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" />
+        <circle cx="26" cy="26" r="2" fill="#ef4444" /><circle cx="54" cy="26" r="2" fill="#ef4444" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.1" font-weight="900" fill="#a5f3fc" letter-spacing="0.8" text-anchor="middle">STRONGHOLD SEC</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('lv178') || id.includes('lv_178') || id.includes('galveston')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-lv178" role="img" aria-label="Insigne Mineurs Trimonite LV-178">
+        <polygon points="40,8 70,22 70,58 40,74 10,58 10,22" fill="#1e1808" stroke="#eab308" stroke-width="2.5" />
+        <!-- Pique de mineur & marteau pneumatique croisés -->
+        <path d="M24,24 L56,56 M56,24 L24,56" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" />
+        <polygon points="56,20 62,24 58,30" fill="#f59e0b" />
+        <polygon points="24,20 18,24 22,30" fill="#f59e0b" />
+        <!-- Shard de Trimonite luminescent -->
+        <polygon points="40,24 48,38 40,52 32,38" fill="#ca8a04" stroke="#fde047" stroke-width="1.6" />
+        <line x1="40" y1="24" x2="40" y2="52" stroke="#fef08a" stroke-width="1.2" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="900" fill="#fef08a" letter-spacing="0.8" text-anchor="middle">LV-178 MINERS</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('uss_ryushi') || (id.includes('ryushi') && id.includes('marine'))) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-ussryushi" role="img" aria-label="Insigne Marines Coloniaux USS Ryushi">
+        <circle cx="40" cy="40" r="36" fill="#081424" stroke="#38bdf8" stroke-width="2.5" />
+        <!-- Ailes d'intervention navale USCM et ancre de secours -->
+        <path d="M16,36 Q28,24 40,34 Q52,24 64,36 Q54,46 40,42 Q26,46 16,36 Z" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.6" />
+        <!-- Chevron Colonial Marines & balise de sauvetage -->
+        <polygon points="40,18 47,32 40,28 33,32" fill="#f59e0b" stroke="#fde047" stroke-width="1" />
+        <circle cx="40" cy="40" r="4.5" fill="#0284c7" stroke="#e0f2fe" stroke-width="1.2" />
+        <path d="M30,50 L40,56 L50,50" stroke="#38bdf8" stroke-width="2" fill="none" stroke-linecap="round" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.4" font-weight="900" fill="#bae6fd" letter-spacing="0.8" text-anchor="middle">USS RYUSHI</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('web_shipyard') || id.includes('shipyard_riggers') || (id.includes('web') && id.includes('rigger'))) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-webshipyard" role="img" aria-label="Insigne Riggers Chantier Orbital Web">
+        <polygon points="40,6 72,22 72,58 40,74 8,58 8,22" fill="#140a24" stroke="#a855f7" stroke-width="2.5" />
+        <!-- Catapulte magnétique orbitale et anneaux d'accélération -->
+        <circle cx="40" cy="38" r="17" fill="none" stroke="#c084fc" stroke-width="1.8" stroke-dasharray="4,2" />
+        <circle cx="40" cy="38" r="10" fill="#3b0764" stroke="#e879f9" stroke-width="1.4" />
+        <!-- Chevrons industriels de riggers et pinces magnétiques -->
+        <path d="M26,38 L32,38 M48,38 L54,38 M40,24 L40,30 M40,46 L40,52" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" />
+        <polygon points="40,34 44,42 36,42" fill="#facc15" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="900" fill="#e9d5ff" letter-spacing="0.8" text-anchor="middle">WEB RIGGERS</text>
       </svg>
     `.trim();
   }
@@ -4433,6 +4530,228 @@ export function getVaultCardMiniatureSvg(item = {}, collection = '') {
       <line x1="0" y1="65" x2="180" y2="65" stroke="${theme.primary}" stroke-width="0.5" opacity="0.6" />
       <text x="6" y="73" font-family="'Rajdhani', sans-serif" font-size="4.8" font-weight="700" fill="#cfd8dc">${itemName}</text>
       <text x="174" y="73" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="800" fill="${theme.primary}" text-anchor="end">${statusLabel}</text>
+    </svg>
+  `.trim();
+}
+
+/**
+ * Miniature vectorielle SVG 180x76 pour chaque carte d'artisanat / recette de trophée.
+ * Illustre l'équipement rituel Yautja forgé (bouclier, arme tranchante/hast, masque/biomasque,
+ * cuirasse de carapace, étendard de clan ou totem des ancêtres) avec des braises de forge
+ * incandescentes, des runes d'honneur géométriques et la télémétrie de blueprint rituel.
+ * @param {Object} recipe Recette de forge rituelle
+ * @returns {string} Markup SVG 180x76
+ */
+export function getCraftCardMiniatureSvg(recipe = {}) {
+  const r = typeof recipe === 'object' && recipe !== null ? recipe : { id: String(recipe || 'craft_recipe') };
+  const idStr = String(r.id || '').toLowerCase();
+  const cat = String(r.category || '').toUpperCase();
+  const name = String(r.name || r.id || 'ÉQUIPEMENT RITUEL').slice(0, 26);
+  const honorCost = Number(r.requiredHonor || 0);
+  const material = String(r.requiredTrophies?.[0] || r.requiredTrophy || 'Trophée de Chasse').slice(0, 24);
+  const uid = 'craft-mini-' + Math.abs(hashCode(r.id || r.name || cat || 'forge'));
+
+  // Déterminer le type d'équipement rituel
+  let itemType = 'weapon';
+  if (cat === 'SHIELDS' || idStr.includes('shield') || idStr.includes('egide')) {
+    itemType = 'shield';
+  } else if (cat === 'MASKS' || idStr.includes('mask') || idStr.includes('biomask') || idStr.includes('jaw')) {
+    itemType = 'mask';
+  } else if (cat === 'ARMOR' || idStr.includes('armor') || idStr.includes('cuirass') || idStr.includes('carapace')) {
+    itemType = 'armor';
+  } else if (cat === 'BANNERS' || idStr.includes('banner') || idStr.includes('totem') || idStr.includes('crest')) {
+    itemType = 'banner';
+  } else if (cat === 'WEAPONS' || idStr.includes('weapon') || idStr.includes('blade') || idStr.includes('spear') || idStr.includes('glaive') || idStr.includes('whip')) {
+    itemType = 'weapon';
+  }
+
+  // Palettes et accents selon la catégorie
+  let typeLabel = 'ARME RITUELLE';
+  let primaryCol = '#ff5722';
+  let secondaryCol = '#ffab00';
+  let emberCol = '#ff3d00';
+  let runeCol = '#ffd54f';
+  let centralArt = '';
+
+  switch (itemType) {
+    case 'shield':
+      typeLabel = 'BOUCLIER // ÉGIDE';
+      primaryCol = '#4caf50';
+      secondaryCol = '#81c784';
+      emberCol = '#ff6d00';
+      runeCol = '#aed581';
+      centralArt = `
+        <!-- Bouclier / Égide de chitine & alliage -->
+        <polygon points="90,17 114,27 118,47 90,61 62,47 66,27" fill="#142416" stroke="${primaryCol}" stroke-width="1.8" stroke-linejoin="round" />
+        <polygon points="90,23 106,31 108,45 90,54 72,45 74,31" fill="#1e3820" stroke="${secondaryCol}" stroke-width="1.2" />
+        <!-- Umbo central renforcé & fentes de déflexion acide -->
+        <circle cx="90" cy="38" r="7" fill="#0d1b0f" stroke="${runeCol}" stroke-width="1.4" />
+        <line x1="84" y1="38" x2="96" y2="38" stroke="${runeCol}" stroke-width="1.6" />
+        <line x1="90" y1="32" x2="90" y2="44" stroke="${runeCol}" stroke-width="1.6" />
+        <!-- Griffes / pointes de parade latérales -->
+        <path d="M62,35 L54,31 L64,42" fill="${secondaryCol}" opacity="0.85" />
+        <path d="M118,35 L126,31 L116,42" fill="${secondaryCol}" opacity="0.85" />
+      `;
+      break;
+
+    case 'mask':
+      typeLabel = 'BIOMASQUE // RELIQUE';
+      primaryCol = '#00e5ff';
+      secondaryCol = '#38bdf8';
+      emberCol = '#ff3d00';
+      runeCol = '#f59e0b';
+      centralArt = `
+        <!-- Biomasque sculpté en crâne de trophée -->
+        <polygon points="90,18 108,24 104,44 90,56 76,44 72,24" fill="#0c1f2b" stroke="${primaryCol}" stroke-width="1.8" stroke-linejoin="round" />
+        <!-- Visières thermiques holographiques -->
+        <polygon points="78,30 87,32 86,36 77,34" fill="#ff1744" />
+        <polygon points="102,30 93,32 94,36 103,34" fill="#ff1744" />
+        <!-- Tri-laser de ciblage intégré -->
+        <circle cx="101" cy="22" r="1.3" fill="#ff1744" />
+        <circle cx="104" cy="22" r="1.3" fill="#ff1744" />
+        <circle cx="102.5" cy="19.5" r="1.3" fill="#ff1744" />
+        <!-- Dents mandibulaires & conduits respiratoires -->
+        <path d="M83,43 L87,50 M97,43 L93,50" stroke="${secondaryCol}" stroke-width="1.4" stroke-linecap="round" />
+        <line x1="85" y1="46" x2="95" y2="46" stroke="${runeCol}" stroke-width="1.2" />
+        <!-- Anneaux dreadlocks latéraux -->
+        <circle cx="68" cy="28" r="2.5" fill="#1e293b" stroke="${runeCol}" stroke-width="1" />
+        <circle cx="112" cy="28" r="2.5" fill="#1e293b" stroke="${runeCol}" stroke-width="1" />
+      `;
+      break;
+
+    case 'armor':
+      typeLabel = 'CUIRASSE // CARAPACE';
+      primaryCol = '#0284c7';
+      secondaryCol = '#38bdf8';
+      emberCol = '#f97316';
+      runeCol = '#fbbf24';
+      centralArt = `
+        <!-- Cuirasse articulée en plaques de chitine -->
+        <polygon points="68,20 90,25 112,20 120,40 106,60 90,63 74,60 60,40" fill="#0d1f2d" stroke="${primaryCol}" stroke-width="1.8" stroke-linejoin="round" />
+        <!-- Segments pectoraux & rainures d'évacuation acide -->
+        <path d="M72,30 L90,36 L108,30" fill="none" stroke="${secondaryCol}" stroke-width="1.5" />
+        <path d="M74,40 L90,46 L106,40" fill="none" stroke="${secondaryCol}" stroke-width="1.5" />
+        <path d="M78,50 L90,54 L102,50" fill="none" stroke="${secondaryCol}" stroke-width="1.5" />
+        <!-- Noyau central d'ancrage d'honneur -->
+        <polygon points="90,33 95,40 90,47 85,40" fill="#0284c7" stroke="${runeCol}" stroke-width="1.2" />
+        <!-- Épaulettes renforcées -->
+        <polygon points="62,22 54,32 64,36" fill="#1e293b" stroke="${primaryCol}" stroke-width="1" />
+        <polygon points="118,22 126,32 116,36" fill="#1e293b" stroke="${primaryCol}" stroke-width="1" />
+      `;
+      break;
+
+    case 'banner':
+      typeLabel = 'ÉTENDARD // TOTEM CLAN';
+      primaryCol = '#eab308';
+      secondaryCol = '#fde047';
+      emberCol = '#ef4444';
+      runeCol = '#f97316';
+      centralArt = `
+        <!-- Mât de lance cérémoniel et traverse en os -->
+        <line x1="90" y1="14" x2="90" y2="64" stroke="#e2e8f0" stroke-width="2.5" stroke-linecap="round" />
+        <polygon points="90,12 94,22 86,22" fill="#ef4444" stroke="${runeCol}" stroke-width="1" />
+        <line x1="66" y1="24" x2="114" y2="24" stroke="${secondaryCol}" stroke-width="2" stroke-linecap="round" />
+        <!-- Voile de trophées / peaux d'honneur suspendues -->
+        <polygon points="70,26 110,26 104,56 90,52 76,56" fill="#291606" stroke="${primaryCol}" stroke-width="1.6" />
+        <!-- Crâne trophée monté sur le mât -->
+        <circle cx="90" cy="34" r="5" fill="#f8fafc" stroke="#475569" stroke-width="1" />
+        <circle cx="88.5" cy="33.5" r="1" fill="#0f172a" /><circle cx="91.5" cy="33.5" r="1" fill="#0f172a" />
+        <!-- Runes d'honneur gravées sur l'étoffe -->
+        <path d="M84,43 L96,43 M86,47 L94,47 M90,40 L90,50" stroke="${secondaryCol}" stroke-width="1.3" stroke-linecap="round" />
+      `;
+      break;
+
+    case 'weapon':
+    default:
+      typeLabel = 'ARME // COMBISTICK & LAME';
+      primaryCol = '#f97316';
+      secondaryCol = '#fbbf24';
+      emberCol = '#dc2626';
+      runeCol = '#fde047';
+      centralArt = `
+        <!-- Fût de Combistick / manche de glaive en alliage Yautja -->
+        <line x1="62" y1="56" x2="118" y2="20" stroke="#71717a" stroke-width="3" stroke-linecap="round" />
+        <line x1="64" y1="54" x2="80" y2="44" stroke="${secondaryCol}" stroke-width="3.5" stroke-linecap="round" />
+        <!-- Lame dentelée en queue / griffe de xénomorphe trempée -->
+        <polygon points="114,23 134,14 125,27 138,20 120,33" fill="#e4e4e7" stroke="${primaryCol}" stroke-width="1.5" stroke-linejoin="round" />
+        <!-- Pointe arrière et contrepoids de combat -->
+        <polygon points="64,55 52,63 59,51" fill="#e4e4e7" stroke="${primaryCol}" stroke-width="1.2" />
+        <!-- Anneaux d'émission énergétique & glyphes de forge -->
+        <circle cx="90" cy="38" r="3.5" fill="#ef4444" stroke="${secondaryCol}" stroke-width="1.2" />
+        <line x1="86" y1="35" x2="94" y2="41" stroke="${runeCol}" stroke-width="1.4" />
+      `;
+      break;
+  }
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" class="tactical-miniature craft-miniature-svg" viewBox="0 0 180 76" role="img" aria-label="Miniature rituelle de forge ${name}">
+      <defs>
+        <linearGradient id="craft-bg-${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#180a06" stop-opacity="0.97" />
+          <stop offset="50%" stop-color="#0f0604" stop-opacity="0.98" />
+          <stop offset="100%" stop-color="#050202" stop-opacity="0.99" />
+        </linearGradient>
+        <pattern id="craft-grid-${uid}" width="12" height="12" patternUnits="userSpaceOnUse">
+          <path d="M 12 0 L 0 0 0 12" fill="none" stroke="${primaryCol}" stroke-width="0.3" opacity="0.18" />
+        </pattern>
+        <radialGradient id="forge-glow-${uid}" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="${emberCol}" stop-opacity="0.35" />
+          <stop offset="60%" stop-color="#ea580c" stop-opacity="0.12" />
+          <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+        </radialGradient>
+        <filter id="ember-filter-${uid}" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="1.5" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      <!-- Fond foyer de forge Yautja & grille technique -->
+      <rect width="180" height="76" fill="url(#craft-bg-${uid})" />
+      <rect width="180" height="76" fill="url(#craft-grid-${uid})" />
+      <ellipse cx="90" cy="38" rx="55" ry="24" fill="url(#forge-glow-${uid})" />
+
+      <!-- Encadrement d'établi & repères de calibrage rituel -->
+      <g class="craft-blueprint-frame">
+        <rect x="4" y="11" width="172" height="54" rx="2" fill="none" stroke="${primaryCol}" stroke-width="0.7" opacity="0.4" />
+        <path d="M4,19 L4,11 L12,11 M168,11 L176,11 L176,19 M4,57 L4,65 L12,65 M168,65 L176,65 L176,57" fill="none" stroke="${secondaryCol}" stroke-width="1.6" />
+        <!-- Réticule d'alignement d'alliage -->
+        <line x1="90" y1="12" x2="90" y2="16" stroke="${primaryCol}" stroke-width="0.8" opacity="0.6" />
+        <line x1="90" y1="60" x2="90" y2="64" stroke="${primaryCol}" stroke-width="0.8" opacity="0.6" />
+        <line x1="6" y1="38" x2="10" y2="38" stroke="${primaryCol}" stroke-width="0.8" opacity="0.6" />
+        <line x1="170" y1="38" x2="174" y2="38" stroke="${primaryCol}" stroke-width="0.8" opacity="0.6" />
+      </g>
+
+      <!-- Braises incandescentes de la forge Yautja -->
+      <g class="forge-fire-embers" filter="url(#ember-filter-${uid})">
+        <circle cx="34" cy="24" r="1.6" fill="#fde047" />
+        <circle cx="48" cy="52" r="1.3" fill="${emberCol}" />
+        <circle cx="132" cy="22" r="1.8" fill="#fbbf24" />
+        <circle cx="146" cy="46" r="1.4" fill="${emberCol}" />
+        <circle cx="114" cy="56" r="1.2" fill="#fde047" />
+        <circle cx="68" cy="18" r="1" fill="#f97316" />
+      </g>
+
+      <!-- Runes d'Honneur Yautja latérales gravées au plasma -->
+      <g class="honor-runes" stroke="${runeCol}" stroke-width="1.4" stroke-linecap="round" opacity="0.85">
+        <path d="M16,24 L22,24 M16,30 L25,30 M18,36 L23,36 M16,42 L21,42 M19,48 L25,48 M17,54 L22,54" />
+        <path d="M164,24 L158,24 M164,30 L155,30 M162,36 L157,36 M164,42 L159,42 M161,48 L155,48 M163,54 L158,54" />
+      </g>
+
+      <!-- Illustration Centrale de l'Équipement Rituel -->
+      <g class="craft-item-illustration" data-craft-type="${itemType}">
+        ${centralArt}
+      </g>
+
+      <!-- Bandeaux Télémétrie Haut & Bas -->
+      <rect x="0" y="0" width="180" height="11" fill="#000000" fill-opacity="0.8" />
+      <line x1="0" y1="11" x2="180" y2="11" stroke="${primaryCol}" stroke-width="0.6" opacity="0.7" />
+      <text x="6" y="8" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="800" fill="${primaryCol}" letter-spacing="0.5">FORGE RITUELLE // ${typeLabel}</text>
+      <text x="174" y="8" font-family="'Rajdhani', sans-serif" font-size="4.8" font-weight="700" fill="${secondaryCol}" text-anchor="end">${honorCost > 0 ? `${honorCost} HONNEUR` : 'RELIC BLUEPRINT'}</text>
+
+      <rect x="0" y="65" width="180" height="11" fill="#000000" fill-opacity="0.8" />
+      <line x1="0" y1="65" x2="180" y2="65" stroke="${primaryCol}" stroke-width="0.6" opacity="0.7" />
+      <text x="6" y="73" font-family="'Rajdhani', sans-serif" font-size="4.8" font-weight="700" fill="#f5f5f5">${material}</text>
+      <text x="174" y="73" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="800" fill="${primaryCol}" text-anchor="end">CLAN CRAFT</text>
     </svg>
   `.trim();
 }

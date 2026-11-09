@@ -1792,6 +1792,312 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     keyPreyIds: ['prey_broken_tusk_dachande', 'prey_rhynth_ryushi'],
     heroSquadId: 'squad_avp_ryushi_chigusa_settlers',
     villainSquadId: null
+  },
+  {
+    id: 'map_pred_spratly_volcanic_island',
+    name: 'Îles Spratleys — Atoll Volcanique & Repaire Pirate (2008)',
+    universe: 'PREDATOR',
+    originMedia: 'Predator: South China Sea (Dark Horse / Titan Books 2008)',
+    sourceMedia: 'Predator: South China Sea (2008)',
+    sourceType: 'NOVEL',
+    releaseYear: 2008,
+    year: 2008,
+    biomeId: 'jungle',
+    biome: 'jungle',
+    recommendedBiomeLabel: 'Atoll Volcanique des Spratleys (Predator: South China Sea 2008)',
+    weather: 'Pluie de mousson tropicale torrentielle, vapeurs sulfureuses et brume maritime dense',
+    lighting: 'Lueur incandescente des coulées de lave rougeoyantes perçant la canopée nocturne détrempée',
+    verticality: 'FORTE (Pics basaltiques escarpés, ponts suspendus de corde au-dessus de la caldeira et plateformes arboricoles)',
+    destructibility: 'Baraquements en bois des pirates, réservoirs de carburant de vedettes et pontons côtiers fragiles',
+    interactables: [
+      'Système de mise à feu de la vedette côtière',
+      'Cages métalliques de fauves de contrebande',
+      'Balise radio de fortune de John Schaefer'
+    ],
+    environmentSummary: 'Un atoll volcanique isolé en mer de Chine méridionale, servant de base clandestine à des pirates lourdement armés et devenu le terrain de chasse féroce d’un Yautja impitoyable.',
+    description: 'Un atoll volcanique isolé en mer de Chine méridionale, servant de base clandestine à des pirates lourdement armés et devenu le terrain de chasse féroce d’un Yautja impitoyable.',
+    tacticalNotes: 'Les fumerolles sulfureuses brouillent les capteurs thermiques ; exploiter les ponts suspendus pour rabattre les pirates vers les ravins de lave.',
+    dimensionsM: { width: 500, length: 500, height: 60 },
+    elevationRangeM: [0, 55],
+    tacticalSectors: [
+      'Crique d’Arrimage des Vedettes Rapides',
+      'Campement Central des Pirates du Pacifique',
+      'Pentes Basaltiques & Fumerolles de la Caldeira',
+      'Gorge Tropicale du Tigre Évadé'
+    ],
+    keyLandmarks: [
+      'Épave rouillée du cargo échoué sur le récif',
+      'Cratère actif crachant des geysers de soufre',
+      'Tour de guet en bambou dominant la crique'
+    ],
+    environmentalHazards: [
+      'Coulées de lave et poches de gaz sulfureux asphyxiants',
+      'Effondrements de corniches basaltiques sous tirs de roquettes',
+      'Tigre sibérien affamé en maraude'
+    ],
+    signatureHazards: [
+      'Nuages de vapeur volcanique brûlante masquant la vision thermique',
+      'Explosions en chaîne de barils de kérosène pirate'
+    ],
+    ambientProfile: 'Grondement sourd du volcan, clapotis des vagues tropicales, cris d’oiseaux tropicaux et rugissements lointains',
+    keyPreyIds: ['alien_base_galgo_helder_smuggler', 'prey_jungle_hunter_1987'],
+    heroSquadId: 'squad_pred_spratly_pirates',
+    villainSquadId: null
+  },
+  {
+    id: 'map_pred_bolderji_caldera',
+    name: 'Bolder’ji — Fissures Volcaniques & Complexe Castaneda (2006)',
+    universe: 'PREDATOR',
+    originMedia: 'Predator: Forever Midnight (DH Press 2006)',
+    sourceMedia: 'Predator: Forever Midnight (2006)',
+    sourceType: 'NOVEL',
+    releaseYear: 2006,
+    year: 2006,
+    biomeId: 'yautja_prime',
+    biome: 'yautja_prime',
+    recommendedBiomeLabel: 'Caldeira de Bolder’ji (Predator: Forever Midnight 2006)',
+    weather: 'Tempête de cendres ignées abrasives, bourrasques thermiques torrides et ciels zébrés d’éclairs de soufre',
+    lighting: 'Rayonnement vermeil sinistre émanant des failles magmatiques contrastant avec le ciel noir de suie',
+    verticality: 'MOYENNE À FORTE (Cheminées volcaniques naturelles, passerelles métalliques minières et terrasses de basalte vitrifié)',
+    destructibility: 'Conduits de pompage géothermiques, cloisons pressurisées de Castaneda et baraquements préfabriqués',
+    interactables: [
+      'Vannes de dépressurisation géothermique',
+      'Foreuses minières lourdes automatisées',
+      'Console de commande du dôme Castaneda'
+    ],
+    environmentSummary: 'Le complexe minier pionnier de Castaneda implanté au bord d’une caldeira active sur le monde hostile de Bolder’ji, cible d’une horde de chasseurs en pleine frénésie hormonale.',
+    description: 'Le complexe minier pionnier de Castaneda implanté au bord d’une caldeira active sur le monde hostile de Bolder’ji, cible d’une horde de chasseurs en pleine frénésie hormonale.',
+    tacticalNotes: 'La chaleur extrême de la caldeira sature les visions infrarouges passives ; guetter les silhouettes sur fond de faille de lave pour ajuster les tirs de plasma.',
+    dimensionsM: { width: 550, length: 550, height: 75 },
+    elevationRangeM: [-10, 65],
+    tacticalSectors: [
+      'Dôme Minier Principal de Castaneda',
+      'Passerelles de Maintenance Géothermique',
+      'Champs de Geysers Sulfureux Supérieurs',
+      'Faille Magmatique de la Frénésie Hish'
+    ],
+    keyLandmarks: [
+      'Station de forage géothermique profonde',
+      'Entrepôt de transporteurs de minerai scellé',
+      'Autel de trophées provisoire érigé sur le promontoire de lave'
+    ],
+    environmentalHazards: [
+      'Jets soudains de vapeur surchauffée pressurisée',
+      'Pluie de scories et cendres abrasives réduisant la visibilité',
+      'Lacs de lave en fusion instantanément mortels'
+    ],
+    signatureHazards: [
+      'Éruptions mineures provoquant des ondes de choc sismiques',
+      'Surchauffe rapide des accumulateurs d’énergie Yautja'
+    ],
+    ambientProfile: 'Souffle continu des évents magmatiques, alarmes industrielles hurlantes et crépitement des braises',
+    keyPreyIds: ['alien_base_royce_mercenaire_2010', 'prey_bad_blood_warlord'],
+    heroSquadId: 'squad_pred_bolderji_mercs',
+    villainSquadId: null
+  },
+  {
+    id: 'map_alien_stronghold_ernst_lab',
+    name: 'Maboushe — Forteresse & Biosphère du Dr Ernst (1994)',
+    universe: 'ALIEN',
+    originMedia: 'Aliens: Stronghold (Dark Horse Comics 1994)',
+    sourceMedia: 'Aliens: Stronghold (1994)',
+    sourceType: 'COMIC',
+    releaseYear: 1994,
+    year: 1994,
+    biomeId: 'stargazer_blacksite',
+    biome: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Laboratoire de la Forteresse Maboushe (Aliens: Stronghold 1994)',
+    weather: 'Atmosphère intérieure climatisée stérile, buée de cryostase et condensation chimique',
+    lighting: 'Néons cliniques froids vacillants, projecteurs d’observation bleutés et gyrophares d’alerte orange',
+    verticality: 'FORTE (Passerelles d’observation suspendues au-dessus des enclos de ruche, cages ascenseurs et conduits de purge)',
+    destructibility: 'Parois en plexiglas blindé des cages de xénomorphes, consoles de surveillance et automates sentinelles',
+    interactables: [
+      'Sas de libération des sujets d’expérimentation',
+      'Diffuseurs de phéromones de neutralisation',
+      'Terminal cybernétique de Jeri'
+    ],
+    environmentSummary: 'Le sanctuaire de recherche forteresse du Dr Caspar Ernst où sont menées des hybridations cybernétiques et des élevages contrôlés de xénomorphes sous la garde du synthétique Jeri.',
+    description: 'Le sanctuaire de recherche forteresse du Dr Caspar Ernst où sont menées des hybridations cybernétiques et des élevages contrôlés de xénomorphes sous la garde du synthétique Jeri.',
+    tacticalNotes: 'Les tourelles de défense ciblent toute créature biologique non répertoriée ; pirater les consoles pour retourner l’armement automatique contre les droïdes de sécurité.',
+    dimensionsM: { width: 480, length: 480, height: 45 },
+    elevationRangeM: [0, 40],
+    tacticalSectors: [
+      'Enceinte d’Élevage Contrôlé des Spécimens XX121',
+      'Laboratoire de Cybernétique Avancée de Jeri',
+      'Poste de Commandement du Dr Caspar Ernst',
+      'Secteur des Batteries de Sentinelles Automatiques'
+    ],
+    keyLandmarks: [
+      'Bocal d’immersion géant contenant une Reine en stase artificielle',
+      'Atelier d’assemblage des synthétiques xénoformes',
+      'Sas de décontamination sous sas étanche'
+    ],
+    environmentalHazards: [
+      'Jets de gaz neurotoxique automatisés en cas de brèche',
+      'Décharges électriques issues de câbles sectionnés',
+      'Acide corrosif résiduel sur les grilles de ventilation'
+    ],
+    signatureHazards: [
+      'Tourelles de neutralisation automatique à tir asservi',
+      'Sas d’isolement verrouillant hermétiquement les sections'
+    ],
+    ambientProfile: 'Vrombissement monotone des ventilations lourdes, bips de surveillance médicale et sifflements de vapeur d’azote liquide',
+    keyPreyIds: ['alien_base_jeri_synthetic_xeno_cigar', 'prey_xeno_warrior'],
+    heroSquadId: 'squad_alien_stronghold_sec_drones',
+    villainSquadId: null
+  },
+  {
+    id: 'map_alien_lv178_trimonite_mines',
+    name: 'LV-178 New Galveston — Mines Profondes de Trimonite (2014)',
+    universe: 'ALIEN',
+    originMedia: 'Alien: Sea of Sorrows (Titan Books 2014)',
+    sourceMedia: 'Alien: Sea of Sorrows (2014)',
+    sourceType: 'NOVEL',
+    releaseYear: 2014,
+    year: 2014,
+    biomeId: 'hive_lv426',
+    biome: 'hive_lv426',
+    recommendedBiomeLabel: 'Mines de Trimonite de LV-178 (Alien: Sea of Sorrows 2014)',
+    weather: 'Tempête de sable siliceux toxique en surface, humidité poisseuse et vapeurs d’acide en galeries profondes',
+    lighting: 'Projecteurs halogènes de chantiers miniers aveuglants, bioluminescence verdâtre de la résine xénomorphe et ténèbres abyssales',
+    verticality: 'TRÈS FORTE (Puits de forage verticaux de 2 kilomètres, ascenseurs de mine à câble et gouffres de trimonite)',
+    destructibility: 'Étaiements en bois synthétique de galeries, wagonnets de transport de minerai et tuyaux d’aération d’urgence',
+    interactables: [
+      'Treuil de levage de la benne minière',
+      'Générateurs à turbine de ventilation souterraine',
+      'Charges explosives de concassage de roche'
+    ],
+    environmentSummary: 'Le réseau titanesque d’excavations minières de New Galveston sur LV-178 ayant percé le tombeau enfoui d’une ruche ancestrale dormant sous les strates de trimonite cristallisée.',
+    description: 'Le réseau titanesque d’excavations minières de New Galveston sur LV-178 ayant percé le tombeau enfoui d’une ruche ancestrale dormant sous les strates de trimonite cristallisée.',
+    tacticalNotes: 'Les cristaux de trimonite réfléchissent les tirs d’énergie de manière erratique ; attirer les essaims de drones dans les puits de forage pour exploiter la chute libre.',
+    dimensionsM: { width: 520, length: 520, height: 80 },
+    elevationRangeM: [-50, 30],
+    tacticalSectors: [
+      'Plateforme de Triage Minier de Trimonite',
+      'Galeries d’Excavation Inférieures Non Cartographiées',
+      'Crypte Ancestrale de la Ruche Millénaire',
+      'Puits Central d’Extraction Pneumatique'
+    ],
+    keyLandmarks: [
+      'Excavatrice rotative géante bloquée dans la résine durcie',
+      'Gisement cristallin géant de trimonite translucide',
+      'Fosse d’incubation de la couvée originelle'
+    ],
+    environmentalHazards: [
+      'Éboulements de roche et de trimonite acérée',
+      'Gouffres sans fond masqués par de fausses parois de résine',
+      'Poches de méthane explosif s’enflammant au plasma'
+    ],
+    signatureHazards: [
+      'Échos psioniques de la Ruche perturbant la concentration du chasseur',
+      'Ruissellements d’acide noir rongeant les protections'
+    ],
+    ambientProfile: 'Goutte-à-goutte lourd résonnant dans les cavernes, grincement métallique des câbles de treuil et cliquetis de chitine lointains',
+    keyPreyIds: ['alien_base_tyler_romulus_miner', 'prey_xeno_drone_1979'],
+    heroSquadId: 'squad_alien_lv178_miners',
+    villainSquadId: null
+  },
+  {
+    id: 'map_avp_uss_ryushi_cargo_hold',
+    name: 'USS Ryushi — Cales & Hangars de Décontamination (1995)',
+    universe: 'AVP',
+    originMedia: 'Aliens vs. Predator: Duel (Dark Horse Comics 1995)',
+    sourceMedia: 'Aliens vs. Predator: Duel (1995)',
+    sourceType: 'COMIC',
+    releaseYear: 1995,
+    year: 1995,
+    biomeId: 'genna_deathworld',
+    biome: 'genna_deathworld',
+    recommendedBiomeLabel: 'Ponts Cargo de l’USS Ryushi (AVP: Duel 1995)',
+    weather: 'Atmosphère recyclée étouffante, brouillard de fluides hydrauliques et fuites de vapeur sous pression',
+    lighting: 'Éclairage d’urgence rouge stroboscopique, gerbes d’étincelles de circuits grillés et ombres mouvantes des conteneurs',
+    verticality: 'MOYENNE (Empilements de conteneurs de fret standardisés, passerelles de grue portique et coursives techniques)',
+    destructibility: 'Caisses de matériel d’intendance militaire, conduites de carburant de dropship et verrières de cabine de pont',
+    interactables: [
+      'Commande de la grue portique de chargement lourd',
+      'Purge d’urgence du sas d’évacuation vers le vide',
+      'Armoire d’armement d’urgence des Marines'
+    ],
+    environmentSummary: 'Les cales de stockage inférieures de la frégate de sauvetage USS Ryushi où la carcasse d’un vaisseau de chasse Yautja a été halée, libérant une abomination Predalien parmi l’équipage.',
+    description: 'Les cales de stockage inférieures de la frégate de sauvetage USS Ryushi où la carcasse d’un vaisseau de chasse Yautja a été halée, libérant une abomination Predalien parmi l’équipage.',
+    tacticalNotes: 'Les couloirs étroits favorisent les embuscades à courte distance ; utiliser les conteneurs métalliques pour couper les lignes de vue du lance-flammes des Marines.',
+    dimensionsM: { width: 460, length: 460, height: 35 },
+    elevationRangeM: [-5, 25],
+    tacticalSectors: [
+      'Baie d’Arrimage du Transporteur Yautja Accidenté',
+      'Hangar de Confinement Biologique Provisoire',
+      'Atelier de Maintenance des Navettes UD-4L',
+      'Pont des Machines & Systèmes de Propulsion'
+    ],
+    keyLandmarks: [
+      'Navette Yautja éventrée entourée de rubans de quarantaine',
+      'Pont roulant magnétique bloqué avec un conteneur suspendu',
+      'Sas d’éjection directe vers l’espace stellaire'
+    ],
+    environmentalHazards: [
+      'Conduites de vapeur pressurisée fuyant à haute température',
+      'Sols glissants souillés de lubrifiant synthétique inflammable',
+      'Chute de conteneurs instables lors des secousses orbitales'
+    ],
+    signatureHazards: [
+      'Dépressurisation locale en cas de perforation de la coque',
+      'Tirs réflexes de lance-flammes embrasant l’atmosphère confinée'
+    ],
+    ambientProfile: 'Sirène d’évacuation résonnant en boucle, claquements de relais haute tension et sifflements de décompression',
+    keyPreyIds: ['alien_base_christopher_winter_marine', 'prey_broken_tusk_dachande'],
+    heroSquadId: 'squad_avp_uss_ryushi_marines',
+    villainSquadId: null
+  },
+  {
+    id: 'map_avp_orbital_web_shipyard',
+    name: 'The Web — Chantier Spatial Minier & Échafaudages Orbitaux (1999)',
+    universe: 'AVP',
+    originMedia: 'Aliens vs. Predator: The Web (Dark Horse Comics 1999)',
+    sourceMedia: 'Aliens vs. Predator: The Web (1999)',
+    sourceType: 'COMIC',
+    releaseYear: 1999,
+    year: 1999,
+    biomeId: 'los_angeles_1997',
+    biome: 'los_angeles_1997',
+    recommendedBiomeLabel: 'Chantier Spatial Orbital The Web (AVP: The Web 1999)',
+    weather: 'Vide spatial glacé en extérieur, tempêtes de micro-météorites et atmosphère industrielle raréfiée en dôme',
+    lighting: 'Éblouissement solaire direct non filtré en contraste brutal avec les ténèbres spatiales et torches à plasma de soudure',
+    verticality: 'EXTRÊME (Échafaudages en treillis s’étendant sur des kilomètres, poutrelles magnétiques sans garde-corps et nacelles suspendues)',
+    destructibility: 'Câbles de maintien de poutrelles maîtresses, panneaux solaires de chantier et cloisons d’ateliers d’ajustage',
+    interactables: [
+      'Catapulte magnétique de lancement de poutrelles',
+      'Générateur de pesanteur artificielle sectorielle',
+      'Projecteurs de soudure industrielle haute intensité'
+    ],
+    environmentSummary: 'Une station mégastructurelle de construction de vaisseaux stellaires en orbite, composée de milliers de kilomètres d’échafaudages magnétiques pris d’assaut par une meute Yautja et des xénomorphes.',
+    description: 'Une station mégastructurelle de construction de vaisseaux stellaires en orbite, composée de milliers de kilomètres d’échafaudages magnétiques pris d’assaut par une meute Yautja et des xénomorphes.',
+    tacticalNotes: 'Les variations de microgravité modifient la parabole des tirs de disque ; bondir d’une poutrelle à l’autre permet d’encercler prestement les ouvriers armés de riveteuses.',
+    dimensionsM: { width: 600, length: 600, height: 90 },
+    elevationRangeM: [-20, 70],
+    tacticalSectors: [
+      'Trame Principale des Poutrelles Magnétiques',
+      'Quai d’Assemblage de la Quille Stellaire',
+      'Poste de Contrôle des Catapultes Industrielles',
+      'Modules d’Habitation Suspendus des Équipes de Montage'
+    ],
+    keyLandmarks: [
+      'Quille monumentale d’un croiseur Conestoga en chantier',
+      'Tour de commande centrale de la structure The Web',
+      'Catapulte magnétique industrielle orientable'
+    ],
+    environmentalHazards: [
+      'Chutes mortelles dans le vide en cas de décrochage magnétique',
+      'Faisceaux de soudure laser automatisés balayant les passerelles',
+      'Arcs électriques jaillissant des bobines de sustentation'
+    ],
+    signatureHazards: [
+      'Projectiles de rivets magnétiques perforants tirés par les équipes de monteurs',
+      'Rupture soudaine du champ de pesanteur artificielle'
+    ],
+    ambientProfile: 'Vibrations métalliques profondes transmises par les structures, sifflement des tuyères de stabilisation et crépitement des arcs de soudure',
+    keyPreyIds: ['alien_base_johner_mercenary_betty', 'prey_broken_tusk_dachande'],
+    heroSquadId: 'squad_avp_web_shipyard_riggers',
+    villainSquadId: null
   }
 ]);
 
@@ -3133,6 +3439,138 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     yautjaCounterplay: 'Sectionner immédiatement le câble d\'ancrage d\'un coup de lame de poignet avant d\'être tiré vers les tireurs.',
     counterplay: 'Sectionner immédiatement le câble d\'ancrage d\'un coup de lame de poignet avant d\'être tiré vers les tireurs.',
     description: 'Outil industriel de guidage de bétail titan lourd utilisé par les éleveurs de Rhynths, converti par Machiko pour repousser les guerriers xénomorphes à distance.'
+  },
+  {
+    id: 'wpn_spratly_pirate_rpg7',
+    name: 'Lance-Roquettes Antichar RPG-7 Modifié des Pirates Spratleys (2008)',
+    universe: 'PREDATOR',
+    faction: 'Pirates & Contrebandiers de la Mer de Chine Méridionale (2008)',
+    originMedia: 'Predator: South China Sea (Dark Horse / Titan Books 2008)',
+    sourceMedia: 'Predator: South China Sea (2008)',
+    year: 2008,
+    category: 'HEAVY_EXPLOSIVE',
+    caliber: 'Roquettes HEAT de 85mm à charge creuse et shrapnel lourd',
+    damageType: 'explosive',
+    damage: 95,
+    effectiveRangeMeters: 80,
+    rangeM: 80,
+    rateOfFire: '6 cps/min à rechargement manuel par la culasse',
+    fireRate: '6 cps/min',
+    specialEffect: 'Onde de choc massive pulvérisant les couverts légers et projetant la cible au sol sous un souffle déflagrant',
+    wieldedBy: 'Pirates des îles Spratleys, Mercenaires de l’Atoll',
+    yautjaCounterplay: 'Esquiver latéralement par un saut acrobatique dès l’allumage de la tuyère ou intercepter la roquette au canon plasma en vol.',
+    counterplay: 'Esquiver latéralement par un saut acrobatique dès l’allumage de la tuyère ou intercepter la roquette au canon plasma en vol.',
+    description: 'Lanceur d’origine soviétique abondamment répandu parmi les flibustiers du Pacifique, renforcé de bandes isolantes et chargé de têtes antichars dévastatrices.'
+  },
+  {
+    id: 'wpn_bolderji_mercenary_magnum',
+    name: 'Revolver Lourd .500 Magnum des Mercenaires de Bolder’ji (2006)',
+    universe: 'PREDATOR',
+    faction: 'Sécurité Corporatiste & Mercenaires de Castaneda sur Bolder’ji (2006)',
+    originMedia: 'Predator: Forever Midnight (DH Press 2006)',
+    sourceMedia: 'Predator: Forever Midnight (2006)',
+    year: 2006,
+    category: 'HEAVY_HANDGUN',
+    caliber: 'Munitions semi-blindées .500 à pointe creuse renforcée au tungstène',
+    damageType: 'kinetic_ballistic',
+    damage: 70,
+    effectiveRangeMeters: 45,
+    rangeM: 45,
+    rateOfFire: '45 cps/min en simple action',
+    fireRate: '45 cps/min',
+    specialEffect: 'Impact cinétique brutal brisant la garde au corps-à-corps et provoquant un étourdissement momentané',
+    wieldedBy: 'Garde de sécurité Castaneda, Mercenaires de Bolder’ji',
+    yautjaCounterplay: 'Parer avec les lames de poignet blindées pour dévier les ogives ou éliminer le tireur à longue distance au combistick.',
+    counterplay: 'Parer avec les lames de poignet blindées pour dévier les ogives ou éliminer le tireur à longue distance au combistick.',
+    description: 'Arme de poing de fort calibre portée par les chefs de corvée sur les chantiers géothermiques de Bolder’ji pour stopper net les assauts de bêtes sauvages et de prédateurs.'
+  },
+  {
+    id: 'wpn_stronghold_jeri_disruptor',
+    name: 'Émetteur Disrupteur EMP Haute Fréquence de Jeri (1994)',
+    universe: 'ALIEN',
+    faction: 'Laboratoires Clandestins du Dr Ernst & Synthétique Jeri (1994)',
+    originMedia: 'Aliens: Stronghold (Dark Horse Comics 1994)',
+    sourceMedia: 'Aliens: Stronghold (1994)',
+    year: 1994,
+    category: 'ENERGY_DISRUPTOR',
+    caliber: 'Décharge d’impulsions électromagnétiques directionnelles modulées',
+    damageType: 'emp_disruptor',
+    damage: 55,
+    effectiveRangeMeters: 30,
+    rangeM: 30,
+    rateOfFire: '60 impulsions/min',
+    fireRate: '60 impulsions/min',
+    specialEffect: 'Court-circuite temporairement le camouflage optique, brouille le viseur du biomasque et draine les réserves énergétiques',
+    wieldedBy: 'Androïde Jeri, Unités sentinelles Maboushe',
+    yautjaCounterplay: 'Basculer en vision purement acoustique ou mécanique pour ignorer le brouillage optique et engager au corps-à-corps non électrifié.',
+    counterplay: 'Basculer en vision purement acoustique ou mécanique pour ignorer le brouillage optique et engager au corps-à-corps non électrifié.',
+    description: 'Dispositif expérimental conçu par le Dr Ernst et dissimulé dans le thorax synthétique de Jeri pour paralyser les drones de surveillance et neutraliser les technologies hostiles.'
+  },
+  {
+    id: 'wpn_cold_forge_taser_drone_prod',
+    name: 'Pique Taser Haute Tension Industrielle RB-323 The Cold Forge (2018)',
+    universe: 'ALIEN',
+    faction: 'Division de Confinement Spécial Weyland-Yutani de la Station RB-323 (2018)',
+    originMedia: 'Alien: The Cold Forge (Titan Books 2018)',
+    sourceMedia: 'Alien: The Cold Forge (2018)',
+    year: 2018,
+    category: 'STUN_WEAPON',
+    caliber: 'Électrodes quadruples en alliage béryllium sous 80 000 Volts pulsés',
+    damageType: 'electrical_stun',
+    damage: 50,
+    effectiveRangeMeters: 6,
+    rangeM: 6,
+    rateOfFire: '120 impulsions de contact/min',
+    fireRate: '120 impulsions/min',
+    specialEffect: 'Tétanise la musculature, réduit drastiquement la vitesse de déplacement et interrompt les attaques de mêlée',
+    wieldedBy: 'Équipes de sécurité du Dr Blue Marsalis, Gardes de la station Cold Forge',
+    yautjaCounterplay: 'Maintenir la distance avec des armes d’hast et empaler les porteurs de pique avant qu’ils n’entrent à portée de contact.',
+    counterplay: 'Maintenir la distance avec des armes d’hast et empaler les porteurs de pique avant qu’ils n’entrent à portée de contact.',
+    description: 'Arme de contention anti-émeute et de capture biologique employée sur The Cold Forge pour maîtriser les spécimens xénomorphes sans endommager leur chitine.'
+  },
+  {
+    id: 'wpn_duel_uss_ryushi_flamethrower',
+    name: 'Lance-Flammes d’Intervention Rapprochée M240B de l’USS Ryushi (1995)',
+    universe: 'AVP',
+    faction: 'Détachement d’Intervention USCM de la Frégate USS Ryushi (1995)',
+    originMedia: 'Aliens vs. Predator: Duel (Dark Horse Comics 1995)',
+    sourceMedia: 'Aliens vs. Predator: Duel (1995)',
+    year: 1995,
+    category: 'INCENDIARY_HEAVY',
+    caliber: 'Composé napalm gélifié pressurisé avec allumeur au phosphore',
+    damageType: 'incendiary',
+    damage: 80,
+    effectiveRangeMeters: 25,
+    rangeM: 25,
+    rateOfFire: 'Jet continu pressurisé (autonomie 15 secondes)',
+    fireRate: 'Jet continu',
+    specialEffect: 'Enflamme la cible, inflige des brûlures thermiques continues et illumine la zone en détruisant le camouflage thermique',
+    wieldedBy: 'Marines Coloniaux du détachement Ryushi',
+    yautjaCounterplay: 'Cibler le réservoir pressurisé dorsal du marine avec le canon à plasma pour déclencher une explosion dévastatrice.',
+    counterplay: 'Cibler le réservoir pressurisé dorsal du marine avec le canon à plasma pour déclencher une explosion dévastatrice.',
+    description: 'Variante renforcée du lance-flammes réglementaire USCM employée dans les cales de l’USS Ryushi pour purger les nids et repousser les assauts du Predalien.'
+  },
+  {
+    id: 'wpn_web_magnetic_riveter',
+    name: 'Riveteuse Magnétique Industrielle Lourde de The Web (1999)',
+    universe: 'AVP',
+    faction: 'Monteurs Sidérurgistes & Ouvriers Miniers de The Web (1999)',
+    originMedia: 'Aliens vs. Predator: The Web (Dark Horse Comics 1999)',
+    sourceMedia: 'Aliens vs. Predator: The Web (1999)',
+    year: 1999,
+    category: 'INDUSTRIAL_KINETIC',
+    caliber: 'Rivets en carbure de titane de 50mm propulsés par rail magnétique',
+    damageType: 'magnetic_kinetic',
+    damage: 75,
+    effectiveRangeMeters: 40,
+    rangeM: 40,
+    rateOfFire: '90 cps/min à alimentation par bande',
+    fireRate: '90 cps/min',
+    specialEffect: 'Perfore les blindages métalliques et cloue temporairement la cible aux parois ou poutrelles environnantes',
+    wieldedBy: 'Ouvriers du chantier spatial The Web, Monteurs d’échafaudages',
+    yautjaCounterplay: 'Se déplacer verticalement le long des câbles pour esquiver la trajectoire rectiligne des rivets et trancher l’alimentation électrique.',
+    counterplay: 'Se déplacer verticalement le long des câbles pour esquiver la trajectoire rectiligne des rivets et trancher l’alimentation électrique.',
+    description: 'Outil d’assemblage de coques spatiales converti en arme de fortune redoutable par les sidérurgistes orbitaux pour percer les carapaces xénomorphes et Yautja.'
   }
 ]);
 

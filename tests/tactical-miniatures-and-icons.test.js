@@ -13,7 +13,10 @@ import {
   getFactionLogo,
   getYautjaClanLogo,
   getVaultCardMiniatureSvg,
+  getCraftCardMiniatureSvg,
 } from '../src/ui/CanonLogosAndEmblems.js';
+import { renderTrophyCraftingGrid } from '../src/ui/TrophyCraftingView.js';
+import { TROPHY_CRAFT_RECIPES } from '../src/gameplay/YautjaTrophyCraftsmanshipForgeSystem.js';
 import { getEquipmentIconSvg } from '../src/ui/EquipmentIcons.js';
 import { MEDIA_MAPS_CATALOG, NPC_ARSENAL_CATALOG } from '../src/data/MediaMapsAndArsenalCatalog.js';
 import { SQUAD_ENCOUNTERS } from '../src/data/SquadEncountersCatalog.js';
@@ -81,9 +84,9 @@ test('getSquadMiniatureSvg génère une formation de combat tactique pour toutes
   }
 });
 
-test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague 8, Vague 9, Vague 10 et l’ensemble du catalogue sans fallback générique', () => {
+test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague 8, Vague 9, Vague 10, Vague 11 et l’ensemble du catalogue sans fallback générique', () => {
   const genericClanLogo = getYautjaClanLogo(40);
-  const vague8And9SquadIds = [
+  const vagueSquadIds = [
     // Vague 8
     'squad_pred_tartarus_clans',
     'squad_pred_crucified_clan',
@@ -107,9 +110,16 @@ test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague
     'squad_alien_genocide_red_drones',
     'squad_avp_killer_clan_wardogs',
     'squad_avp_ryushi_chigusa_settlers',
+    // Vague 11
+    'squad_pred_spratly_pirates',
+    'squad_pred_bolderji_mercs',
+    'squad_alien_stronghold_sec_drones',
+    'squad_alien_lv178_miners',
+    'squad_avp_uss_ryushi_marines',
+    'squad_avp_web_shipyard_riggers',
   ];
 
-  for (const squadId of vague8And9SquadIds) {
+  for (const squadId of vagueSquadIds) {
     const svg = getSquadLogo(squadId, 40);
     assert.ok(svg.startsWith('<svg'), `Le logo de ${squadId} doit être un SVG valide`);
     assert.notStrictEqual(svg, genericClanLogo, `L'escouade ${squadId} ne doit pas retomber sur le logo générique Yautja`);
@@ -122,6 +132,14 @@ test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague
   assert.ok(getSquadLogo('squad_alien_genocide_red_drones', 40).includes('logo-squad-reddrones'));
   assert.ok(getSquadLogo('squad_avp_killer_clan_wardogs', 40).includes('logo-squad-wardogs'));
   assert.ok(getSquadLogo('squad_avp_ryushi_chigusa_settlers', 40).includes('logo-squad-chigusa'));
+
+  // Vérification explicite des classes CSS d'insignes personnalisés Vague 11
+  assert.ok(getSquadLogo('squad_pred_spratly_pirates', 40).includes('logo-squad-spratly'));
+  assert.ok(getSquadLogo('squad_pred_bolderji_mercs', 40).includes('logo-squad-bolderji'));
+  assert.ok(getSquadLogo('squad_alien_stronghold_sec_drones', 40).includes('logo-squad-stronghold'));
+  assert.ok(getSquadLogo('squad_alien_lv178_miners', 40).includes('logo-squad-lv178'));
+  assert.ok(getSquadLogo('squad_avp_uss_ryushi_marines', 40).includes('logo-squad-ussryushi'));
+  assert.ok(getSquadLogo('squad_avp_web_shipyard_riggers', 40).includes('logo-squad-webshipyard'));
 
   for (const squad of SQUAD_ENCOUNTERS) {
     const svg = getSquadLogo(squad.id, 40);
@@ -297,16 +315,16 @@ test('getVaultCardMiniatureSvg génère une miniature vectorielle 180x76 avec en
   }
 });
 
-test('src/main.js intègre les icônes d’équipement vectorielles dans renderHuntLoadoutUI et synchronise les compteurs de filtres Vague 10', () => {
+test('src/main.js intègre les icônes d’équipement vectorielles dans renderHuntLoadoutUI et synchronise les compteurs de filtres Vague 11', () => {
   const mainSource = fs.readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
   assert.ok(mainSource.includes("import { getEquipmentIconSvg } from './ui/EquipmentIcons.js';"), 'main.js doit importer getEquipmentIconSvg');
   assert.ok(mainSource.includes('loadout-core-icon') && mainSource.includes('getEquipmentIconSvg(id, 16)'), 'main.js doit intégrer les icônes sur loadout-core-icon');
   assert.ok(mainSource.includes('loadout-item-icon') && mainSource.includes('getEquipmentIconSvg(item.id, 22)'), 'main.js doit intégrer les icônes sur loadout-item-icon');
   assert.ok(mainSource.includes('choice.append(input, icon, copy, cost)'), 'L\'icône doit être insérée avant l\'élément copy dans loadout-choice');
-  assert.ok(mainSource.includes('.squad-filter-pill') && mainSource.includes('96'), 'setupTaxonomyAndMultiverse doit synchroniser squad-filter-pill à 96');
-  assert.ok(mainSource.includes('.maps-filter-pill') && mainSource.includes('84'), 'setupTaxonomyAndMultiverse doit synchroniser maps-filter-pill à 84');
-  assert.ok(mainSource.includes('.weapons-filter-pill') && mainSource.includes('166'), 'setupTaxonomyAndMultiverse doit synchroniser weapons-filter-pill à 166');
-  assert.ok(mainSource.includes('.codex-filter-pill') && mainSource.includes('150'), 'setupTaxonomyAndMultiverse doit synchroniser codex-filter-pill à 150');
+  assert.ok(mainSource.includes('.squad-filter-pill') && mainSource.includes('102'), 'setupTaxonomyAndMultiverse doit synchroniser squad-filter-pill à 102');
+  assert.ok(mainSource.includes('.maps-filter-pill') && mainSource.includes('90'), 'setupTaxonomyAndMultiverse doit synchroniser maps-filter-pill à 90');
+  assert.ok(mainSource.includes('.weapons-filter-pill') && mainSource.includes('178'), 'setupTaxonomyAndMultiverse doit synchroniser weapons-filter-pill à 178');
+  assert.ok(mainSource.includes('.codex-filter-pill') && mainSource.includes('162'), 'setupTaxonomyAndMultiverse doit synchroniser codex-filter-pill à 162');
 });
 
 test('SharedReferenceVault intègre la miniature et l’icône de catégorie sur chaque carte de catalogue', async () => {
@@ -352,4 +370,65 @@ test('SharedReferenceVault intègre la miniature et l’icône de catégorie sur
   const iconChild = headerChild.children.find(c => c.className?.includes('content-card-category-icon'));
   assert.ok(iconChild, 'Le header doit contenir l’icône de catégorie');
   assert.ok(iconChild.innerHTML.includes('<svg'), 'L’icône de catégorie doit contenir un SVG');
+});
+
+test('getCraftCardMiniatureSvg génère une miniature vectorielle 180x76 avec braises de forge, runes et télémétrie pour toutes les recettes', () => {
+  const categories = ['SHIELDS', 'WEAPONS', 'MASKS', 'ARMOR', 'BANNERS'];
+  for (const cat of categories) {
+    const svg = getCraftCardMiniatureSvg({ id: `craft_mock_${cat.toLowerCase()}`, category: cat, name: `Équipement Test ${cat}`, requiredHonor: 2500 });
+    assert.ok(svg.startsWith('<svg'), `Doit retourner un SVG pour la catégorie ${cat}`);
+    assert.ok(svg.includes('class="tactical-miniature craft-miniature-svg"'), 'Doit avoir les classes tactical-miniature craft-miniature-svg');
+    assert.ok(svg.includes('viewBox="0 0 180 76"'), 'Doit avoir la viewBox 180x76');
+    assert.ok(svg.includes('class="forge-fire-embers"'), 'Doit intégrer les braises de forge');
+    assert.ok(svg.includes('class="honor-runes"'), 'Doit intégrer les runes d\'honneur');
+    assert.ok(svg.includes('FORGE RITUELLE'), 'Doit afficher la télémétrie de forge');
+    assert.ok(svg.includes('2500 HONNEUR'), 'Doit intégrer le coût en honneur');
+  }
+
+  for (const recipe of TROPHY_CRAFT_RECIPES) {
+    const svg = getCraftCardMiniatureSvg(recipe);
+    assert.ok(svg.includes('craft-miniature-svg'), `Recette ${recipe.id} doit générer une miniature valide`);
+    assert.ok(svg.includes('class="craft-item-illustration"'), `Recette ${recipe.id} doit intégrer l'illustration`);
+  }
+});
+
+test('renderTrophyCraftingGrid préfixe chaque carte de recette avec sa miniature craft-miniature tout en préservant le header et les actions', () => {
+  const mockGrid = {
+    id: 'trophy-crafting-grid',
+    innerHTML: '',
+    querySelectorAll() { return []; },
+    contains() { return false; },
+    ownerDocument: {
+      activeElement: null,
+      getElementById() { return null; },
+      querySelectorAll() { return []; },
+    },
+  };
+
+  const mockForge = {
+    getRecipes(category) {
+      return TROPHY_CRAFT_RECIPES.slice(0, 4);
+    },
+    isCrafted(id) { return id === TROPHY_CRAFT_RECIPES[0].id; },
+    isEquipped(id) { return id === TROPHY_CRAFT_RECIPES[0].id; },
+    canCraft(id, honor) {
+      return { canCraft: honor >= 2000, reference: { sourceStatus: 'original_adaptation' } };
+    },
+    state: { equippedItemIds: [TROPHY_CRAFT_RECIPES[0].id] },
+  };
+
+  const views = renderTrophyCraftingGrid({
+    grid: mockGrid,
+    forge: mockForge,
+    honorScore: 3000,
+    category: 'all',
+  });
+
+  assert.equal(views.length, 4, 'Doit générer 4 fiches de recettes');
+  assert.ok(mockGrid.innerHTML.includes('card-miniature-box craft-miniature'), 'La grille doit contenir card-miniature-box craft-miniature');
+  assert.ok(mockGrid.innerHTML.includes('craft-miniature-svg'), 'La miniature doit inclure le SVG craft-miniature-svg');
+  assert.ok(mockGrid.innerHTML.includes('craft-card-header'), 'Le header de carte doit être préservé');
+  assert.ok(mockGrid.innerHTML.includes('craft-svg-box'), 'La boîte d\'icône craft-svg-box doit être préservée');
+  assert.ok(mockGrid.innerHTML.includes('craft-card-title'), 'Le titre craft-card-title doit être préservé');
+  assert.ok(mockGrid.innerHTML.includes('craft-action-btn'), 'Le bouton craft-action-btn doit être préservé');
 });

@@ -36829,6 +36829,201 @@ class AudioSynthesizer {
 
     return descriptor;
   }
+
+  playRpgRocketLaunchWhoosh() {
+    const descriptor = {
+      event: 'rpg_rocket_launch_whoosh',
+      synthesis: 'pressurized_rocket_launch_propellant_whistle',
+      launchWhooshStartHz: 120,
+      launchWhooshEndHz: 480,
+      exhaustWhistleStartHz: 820,
+      exhaustWhistleEndHz: 1650,
+      durationSeconds: 0.88,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const bufferSize = Math.max(1, Math.floor(this.ctx.sampleRate * descriptor.durationSeconds));
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i += 1) data[i] = (Math.random() * 2 - 1) * 0.75;
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(descriptor.launchWhooshStartHz, now);
+    filter.frequency.exponentialRampToValueAtTime(descriptor.launchWhooshEndHz, now + 0.35);
+    filter.Q.setValueAtTime(3.2, now);
+
+    const noiseGain = this.ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.02, now);
+    noiseGain.gain.linearRampToValueAtTime(0.52, now + 0.08);
+    noiseGain.gain.exponentialRampToValueAtTime(0.002, now + descriptor.durationSeconds);
+
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(this.ctx.destination);
+    noise.start(now);
+
+    const whistleOsc = this.ctx.createOscillator();
+    const whistleGain = this.ctx.createGain();
+    whistleOsc.type = 'sawtooth';
+    whistleOsc.frequency.setValueAtTime(descriptor.exhaustWhistleStartHz, now + 0.06);
+    whistleOsc.frequency.exponentialRampToValueAtTime(descriptor.exhaustWhistleEndHz, now + 0.45);
+    whistleOsc.frequency.exponentialRampToValueAtTime(descriptor.exhaustWhistleStartHz * 0.7, now + descriptor.durationSeconds);
+
+    whistleGain.gain.setValueAtTime(0.01, now);
+    whistleGain.gain.linearRampToValueAtTime(0.28, now + 0.12);
+    whistleGain.gain.exponentialRampToValueAtTime(0.001, now + descriptor.durationSeconds);
+
+    whistleOsc.connect(whistleGain);
+    whistleGain.connect(this.ctx.destination);
+    whistleOsc.start(now + 0.06);
+    whistleOsc.stop(now + descriptor.durationSeconds + 0.02);
+
+    return descriptor;
+  }
+
+  playHeavyFlamethrowerRoar() {
+    const descriptor = {
+      event: 'heavy_flamethrower_roar',
+      synthesis: 'turbulent_liquid_napalm_roar_crackle',
+      roarCutoffHz: 720,
+      hissHighpassHz: 2600,
+      subRumbleHz: 55,
+      durationSeconds: 1.15,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const bufferSize = Math.max(1, Math.floor(this.ctx.sampleRate * descriptor.durationSeconds));
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i += 1) data[i] = (Math.random() * 2 - 1) * 0.7;
+
+    const roarSource = this.ctx.createBufferSource();
+    roarSource.buffer = buffer;
+    const roarFilter = this.ctx.createBiquadFilter();
+    roarFilter.type = 'lowpass';
+    roarFilter.frequency.setValueAtTime(descriptor.roarCutoffHz, now);
+    roarFilter.frequency.linearRampToValueAtTime(descriptor.roarCutoffHz * 0.8, now + descriptor.durationSeconds);
+    roarFilter.Q.setValueAtTime(2.5, now);
+
+    const roarGain = this.ctx.createGain();
+    roarGain.gain.setValueAtTime(0.02, now);
+    roarGain.gain.linearRampToValueAtTime(0.48, now + 0.1);
+    roarGain.gain.exponentialRampToValueAtTime(0.002, now + descriptor.durationSeconds);
+
+    roarSource.connect(roarFilter);
+    roarFilter.connect(roarGain);
+    roarGain.connect(this.ctx.destination);
+    roarSource.start(now);
+
+    const hissSource = this.ctx.createBufferSource();
+    hissSource.buffer = buffer;
+    const hissFilter = this.ctx.createBiquadFilter();
+    hissFilter.type = 'highpass';
+    hissFilter.frequency.setValueAtTime(descriptor.hissHighpassHz, now);
+    hissFilter.Q.setValueAtTime(1.8, now);
+
+    const hissGain = this.ctx.createGain();
+    hissGain.gain.setValueAtTime(0.01, now);
+    hissGain.gain.linearRampToValueAtTime(0.22, now + 0.08);
+    hissGain.gain.exponentialRampToValueAtTime(0.001, now + descriptor.durationSeconds);
+
+    hissSource.connect(hissFilter);
+    hissFilter.connect(hissGain);
+    hissGain.connect(this.ctx.destination);
+    hissSource.start(now);
+
+    const subOsc = this.ctx.createOscillator();
+    const subGain = this.ctx.createGain();
+    subOsc.type = 'triangle';
+    subOsc.frequency.setValueAtTime(descriptor.subRumbleHz, now);
+    subOsc.frequency.exponentialRampToValueAtTime(32, now + descriptor.durationSeconds);
+
+    subGain.gain.setValueAtTime(0.35, now);
+    subGain.gain.exponentialRampToValueAtTime(0.002, now + descriptor.durationSeconds);
+
+    subOsc.connect(subGain);
+    subGain.connect(this.ctx.destination);
+    subOsc.start(now);
+    subOsc.stop(now + descriptor.durationSeconds + 0.02);
+
+    return descriptor;
+  }
+
+  playMagneticRiveterThud() {
+    const descriptor = {
+      event: 'magnetic_riveter_thud',
+      synthesis: 'electro_magnetic_coil_whine_kinetic_thud',
+      capacitorWhineStartHz: 920,
+      capacitorWhineEndHz: 3100,
+      thudImpactStartHz: 170,
+      thudImpactEndHz: 34,
+      durationSeconds: 0.58,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const whineOsc = this.ctx.createOscillator();
+    const whineGain = this.ctx.createGain();
+    whineOsc.type = 'sine';
+    whineOsc.frequency.setValueAtTime(descriptor.capacitorWhineStartHz, now);
+    whineOsc.frequency.exponentialRampToValueAtTime(descriptor.capacitorWhineEndHz, now + 0.12);
+
+    whineGain.gain.setValueAtTime(0.01, now);
+    whineGain.gain.linearRampToValueAtTime(0.32, now + 0.08);
+    whineGain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+
+    whineOsc.connect(whineGain);
+    whineGain.connect(this.ctx.destination);
+    whineOsc.start(now);
+    whineOsc.stop(now + 0.15);
+
+    const thudTime = now + 0.1;
+    const thudOsc = this.ctx.createOscillator();
+    const thudGain = this.ctx.createGain();
+    thudOsc.type = 'sawtooth';
+    thudOsc.frequency.setValueAtTime(descriptor.thudImpactStartHz, thudTime);
+    thudOsc.frequency.exponentialRampToValueAtTime(descriptor.thudImpactEndHz, thudTime + 0.22);
+
+    thudGain.gain.setValueAtTime(0.62, thudTime);
+    thudGain.gain.exponentialRampToValueAtTime(0.002, thudTime + 0.28);
+
+    thudOsc.connect(thudGain);
+    thudGain.connect(this.ctx.destination);
+    thudOsc.start(thudTime);
+    thudOsc.stop(thudTime + 0.3);
+
+    const bufferSize = Math.max(1, Math.floor(this.ctx.sampleRate * 0.08));
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i += 1) data[i] = (Math.random() * 2 - 1) * 0.8;
+
+    const clickSource = this.ctx.createBufferSource();
+    clickSource.buffer = buffer;
+    const clickFilter = this.ctx.createBiquadFilter();
+    clickFilter.type = 'bandpass';
+    clickFilter.frequency.setValueAtTime(1400, thudTime);
+    clickFilter.Q.setValueAtTime(3.5, thudTime);
+
+    const clickGain = this.ctx.createGain();
+    clickGain.gain.setValueAtTime(0.4, thudTime);
+    clickGain.gain.exponentialRampToValueAtTime(0.001, thudTime + 0.08);
+
+    clickSource.connect(clickFilter);
+    clickFilter.connect(clickGain);
+    clickGain.connect(this.ctx.destination);
+    clickSource.start(thudTime);
+
+    return descriptor;
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();
