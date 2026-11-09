@@ -37024,6 +37024,220 @@ class AudioSynthesizer {
 
     return descriptor;
   }
+
+  playAntiMaterielHeavyBoreBoom() {
+    const descriptor = {
+      event: 'anti_materiel_heavy_bore_boom',
+      synthesis: 'supersonic_heavy_bore_concussion_brass_clink_mountain_echo',
+      boomFundamentalHz: 42,
+      supersonicCrackCutoffHz: 4200,
+      brassClinkHz: 2850,
+      mountainEchoDelaySeconds: 0.28,
+      durationSeconds: 1.45,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const boomOsc = this.ctx.createOscillator();
+    const boomGain = this.ctx.createGain();
+    boomOsc.type = 'triangle';
+    boomOsc.frequency.setValueAtTime(110, now);
+    boomOsc.frequency.exponentialRampToValueAtTime(descriptor.boomFundamentalHz, now + 0.35);
+
+    boomGain.gain.setValueAtTime(0.85, now);
+    boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.75);
+
+    boomOsc.connect(boomGain);
+    boomGain.connect(this.ctx.destination);
+    boomOsc.start(now);
+    boomOsc.stop(now + 0.8);
+
+    const bufferSize = Math.max(1, Math.floor(this.ctx.sampleRate * 0.25));
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i += 1) data[i] = (Math.random() * 2 - 1) * 0.9;
+
+    const crackSource = this.ctx.createBufferSource();
+    crackSource.buffer = buffer;
+    const crackFilter = this.ctx.createBiquadFilter();
+    crackFilter.type = 'lowpass';
+    crackFilter.frequency.setValueAtTime(descriptor.supersonicCrackCutoffHz, now);
+    crackFilter.Q.setValueAtTime(2.5, now);
+
+    const crackGain = this.ctx.createGain();
+    crackGain.gain.setValueAtTime(0.7, now);
+    crackGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+    crackSource.connect(crackFilter);
+    crackFilter.connect(crackGain);
+    crackGain.connect(this.ctx.destination);
+    crackSource.start(now);
+
+    const clinkTime = now + 0.22;
+    const clinkOsc = this.ctx.createOscillator();
+    const clinkGain = this.ctx.createGain();
+    clinkOsc.type = 'sine';
+    clinkOsc.frequency.setValueAtTime(descriptor.brassClinkHz, clinkTime);
+    clinkOsc.frequency.exponentialRampToValueAtTime(descriptor.brassClinkHz * 0.85, clinkTime + 0.08);
+
+    clinkGain.gain.setValueAtTime(0.28, clinkTime);
+    clinkGain.gain.exponentialRampToValueAtTime(0.001, clinkTime + 0.09);
+
+    clinkOsc.connect(clinkGain);
+    clinkGain.connect(this.ctx.destination);
+    clinkOsc.start(clinkTime);
+    clinkOsc.stop(clinkTime + 0.1);
+
+    const echoTime = now + descriptor.mountainEchoDelaySeconds;
+    const echoOsc = this.ctx.createOscillator();
+    const echoGain = this.ctx.createGain();
+    echoOsc.type = 'sine';
+    echoOsc.frequency.setValueAtTime(65, echoTime);
+    echoOsc.frequency.exponentialRampToValueAtTime(32, echoTime + 0.9);
+
+    echoGain.gain.setValueAtTime(0.3, echoTime);
+    echoGain.gain.exponentialRampToValueAtTime(0.001, echoTime + 1.15);
+
+    echoOsc.connect(echoGain);
+    echoGain.connect(this.ctx.destination);
+    echoOsc.start(echoTime);
+    echoOsc.stop(echoTime + 1.17);
+
+    return descriptor;
+  }
+
+  playMaxPlasmaRotaryBarrage() {
+    const descriptor = {
+      event: 'max_plasma_rotary_barrage',
+      synthesis: 'rotary_motor_spinup_rhythmic_plasma_pulses_inductive_hum',
+      motorSpinupStartHz: 180,
+      motorSpinupEndHz: 880,
+      plasmaPulseFreqHz: 440,
+      inductiveHumHz: 60,
+      durationSeconds: 0.95,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const motorOsc = this.ctx.createOscillator();
+    const motorGain = this.ctx.createGain();
+    motorOsc.type = 'sawtooth';
+    motorOsc.frequency.setValueAtTime(descriptor.motorSpinupStartHz, now);
+    motorOsc.frequency.exponentialRampToValueAtTime(descriptor.motorSpinupEndHz, now + 0.6);
+
+    motorGain.gain.setValueAtTime(0.02, now);
+    motorGain.gain.linearRampToValueAtTime(0.35, now + 0.15);
+    motorGain.gain.exponentialRampToValueAtTime(0.001, now + descriptor.durationSeconds);
+
+    motorOsc.connect(motorGain);
+    motorGain.connect(this.ctx.destination);
+    motorOsc.start(now);
+    motorOsc.stop(now + descriptor.durationSeconds + 0.02);
+
+    const humOsc = this.ctx.createOscillator();
+    const humGain = this.ctx.createGain();
+    humOsc.type = 'triangle';
+    humOsc.frequency.setValueAtTime(descriptor.inductiveHumHz, now);
+
+    humGain.gain.setValueAtTime(0.2, now);
+    humGain.gain.exponentialRampToValueAtTime(0.001, now + descriptor.durationSeconds);
+
+    humOsc.connect(humGain);
+    humGain.connect(this.ctx.destination);
+    humOsc.start(now);
+    humOsc.stop(now + descriptor.durationSeconds + 0.02);
+
+    const pulseOffsets = [0.15, 0.35, 0.55, 0.75];
+    for (const offset of pulseOffsets) {
+      const pTime = now + offset;
+      const pulseOsc = this.ctx.createOscillator();
+      const pulseGain = this.ctx.createGain();
+      pulseOsc.type = 'sine';
+      pulseOsc.frequency.setValueAtTime(descriptor.plasmaPulseFreqHz, pTime);
+      pulseOsc.frequency.exponentialRampToValueAtTime(descriptor.plasmaPulseFreqHz * 1.6, pTime + 0.1);
+
+      pulseGain.gain.setValueAtTime(0.4, pTime);
+      pulseGain.gain.exponentialRampToValueAtTime(0.001, pTime + 0.12);
+
+      pulseOsc.connect(pulseGain);
+      pulseGain.connect(this.ctx.destination);
+      pulseOsc.start(pTime);
+      pulseOsc.stop(pTime + 0.13);
+    }
+
+    return descriptor;
+  }
+
+  playFlechetteNeedleHiss() {
+    const descriptor = {
+      event: 'flechette_needle_hiss',
+      synthesis: 'pressurized_gas_whisper_needle_zip_monofilament_thud',
+      gasWhisperCutoffHz: 3600,
+      needleZipStartHz: 1200,
+      needleZipEndHz: 4800,
+      monofilamentThudHz: 95,
+      durationSeconds: 0.48,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const bufferSize = Math.max(1, Math.floor(this.ctx.sampleRate * 0.16));
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i += 1) data[i] = (Math.random() * 2 - 1) * 0.65;
+
+    const hissSource = this.ctx.createBufferSource();
+    hissSource.buffer = buffer;
+    const hissFilter = this.ctx.createBiquadFilter();
+    hissFilter.type = 'highpass';
+    hissFilter.frequency.setValueAtTime(descriptor.gasWhisperCutoffHz, now);
+    hissFilter.Q.setValueAtTime(2.0, now);
+
+    const hissGain = this.ctx.createGain();
+    hissGain.gain.setValueAtTime(0.02, now);
+    hissGain.gain.linearRampToValueAtTime(0.32, now + 0.03);
+    hissGain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+    hissSource.connect(hissFilter);
+    hissFilter.connect(hissGain);
+    hissGain.connect(this.ctx.destination);
+    hissSource.start(now);
+
+    const zipTime = now + 0.04;
+    const zipOsc = this.ctx.createOscillator();
+    const zipGain = this.ctx.createGain();
+    zipOsc.type = 'sine';
+    zipOsc.frequency.setValueAtTime(descriptor.needleZipStartHz, zipTime);
+    zipOsc.frequency.exponentialRampToValueAtTime(descriptor.needleZipEndHz, zipTime + 0.14);
+
+    zipGain.gain.setValueAtTime(0.24, zipTime);
+    zipGain.gain.exponentialRampToValueAtTime(0.001, zipTime + 0.16);
+
+    zipOsc.connect(zipGain);
+    zipGain.connect(this.ctx.destination);
+    zipOsc.start(zipTime);
+    zipOsc.stop(zipTime + 0.17);
+
+    const thudTime = now + 0.2;
+    const thudOsc = this.ctx.createOscillator();
+    const thudGain = this.ctx.createGain();
+    thudOsc.type = 'triangle';
+    thudOsc.frequency.setValueAtTime(descriptor.monofilamentThudHz, thudTime);
+    thudOsc.frequency.exponentialRampToValueAtTime(36, thudTime + 0.18);
+
+    thudGain.gain.setValueAtTime(0.48, thudTime);
+    thudGain.gain.exponentialRampToValueAtTime(0.001, thudTime + 0.22);
+
+    thudOsc.connect(thudGain);
+    thudGain.connect(this.ctx.destination);
+    thudOsc.start(thudTime);
+    thudOsc.stop(thudTime + 0.24);
+
+    return descriptor;
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();

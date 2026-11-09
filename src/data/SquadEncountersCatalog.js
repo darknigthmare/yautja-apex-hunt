@@ -3688,6 +3688,150 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'web_cable_handler_yuki', name: 'Arrimeuse de Câbles Yuki', role: 'Voltigeuse de Haute Structure', weapon: 'Riveteuse Légère & Grappin Magnétique', weaponId: 'wpn_web_magnetic_riveter', vitalityRatio: 1.0, hp: 550, armor: 45, trophy: 'Grappin Magnétique de Déplacement Orbital' },
       { id: 'web_crane_operator_piotr', name: 'Opérateur de Catapulte Piotr', role: 'Artilleur de Poutrelles', weapon: 'Riveteuse Compacte & Détonateur Pneumatique', weaponId: 'wpn_web_magnetic_riveter', vitalityRatio: 0.95, hp: 510, armor: 35, trophy: 'Console de Commande Portative de Catapulte' }
     ]
+  },
+  {
+    id: 'squad_pred_hunters_ii_afghan',
+    name: 'Escouade Clandestine Tyler Swain — Afghanistan (2018)',
+    universe: 'PREDATOR',
+    shortName: 'Hunters II Afghan (4 Mercenaires)',
+    category: 'MILITARY_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Hunters II (2018)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Bunkers Soviétiques d’Afghanistan (2018)',
+    primaryMapId: 'map_pred_afghan_bunker_network',
+    weaponLoadout: ['wpn_hunters_arctic_anti_materiel_50'],
+    description: 'Équipe d’intervention clandestine aguerrie menée par Tyler Swain, retranchée dans les bunkers d’altitude pour éliminer les Yautja par grand froid.',
+    tactics: 'Tirs de barrage au fusil anti-matériel depuis les hauteurs rocheuses et couverture rapprochée dans les goulots d’étranglement.',
+    totalHonorReward: 6200,
+    soloVariantId: 'alien_base_quinn_mckenna_ranger_2018',
+    members: [
+      { id: 'hunters_ii_tyler_swain', name: 'Commandant Tyler Swain', role: 'Chef de Groupe Clandestin', weapon: 'Barrett M82A1 .50 BMG & Visière Thermique', weaponId: 'wpn_hunters_arctic_anti_materiel_50', vitalityRatio: 1.35, hp: 690, armor: 65, trophy: 'Insigne Tactique d’Intervention Clandestine' },
+      { id: 'hunters_ii_farhad_scout', name: 'Éclaireur Farhad', role: 'Pisteur des Cavernes Glacées', weapon: 'Carabine de Précision Arctique & Crampons', weaponId: 'wpn_hunters_arctic_anti_materiel_50', vitalityRatio: 1.1, hp: 580, armor: 45, trophy: 'Boussole Militaire Soviétique d’Altitude' },
+      { id: 'hunters_ii_elena_heavy', name: 'Artilleuse Elena', role: 'Spécialiste Armes Lourdes de Bunker', weapon: 'Fusil Anti-Matériel .50 & Grenades Frigorigènes', weaponId: 'wpn_hunters_arctic_anti_materiel_50', vitalityRatio: 1.2, hp: 640, armor: 60, trophy: 'Plaque d’Identification Renforcée Stargazer' },
+      { id: 'hunters_ii_khalil_medic', name: 'Opérateur Khalil', role: 'Sapeur & Démolisseur de Boyaux', weapon: 'Fusil Semi-Automatique & Détonateurs Thermiques', weaponId: 'wpn_hunters_arctic_anti_materiel_50', vitalityRatio: 1.0, hp: 540, armor: 40, trophy: 'Sacoche de Détonateurs Haute Montagne' }
+    ]
+  },
+  {
+    id: 'squad_pred_hunters_iii_guatemala',
+    name: 'Syndicat du Cartel du Cénote Sacré — Guatemala (2020)',
+    universe: 'PREDATOR',
+    shortName: 'Cartel du Cénote (4 Sicarios)',
+    category: 'CRIME_CARTEL',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Hunters III (2020)',
+    biomeId: 'jungle',
+    recommendedBiomeLabel: 'Cénote Sacré Maya (2020)',
+    primaryMapId: 'map_pred_central_america_cenote',
+    weaponLoadout: ['wpn_narco_quad_drum_mg'],
+    description: 'Commandos de narcotrafiquants surarmés occupant un temple maya cénote, usant de mitrailleuses lourdes et de pièges hydrographiques.',
+    tactics: 'Saturation de zone continue à la MG42 et repli coordonné vers les passerelles surplombant le bassin central.',
+    totalHonorReward: 6000,
+    soloVariantId: 'alien_base_king_willie_voodoo_priest',
+    members: [
+      { id: 'narco_patron_santiago', name: 'El Patrón Santiago', role: 'Chef de Place du Cartel', weapon: 'MG42 Quad-Drum & Revolver Doré', weaponId: 'wpn_narco_quad_drum_mg', vitalityRatio: 1.3, hp: 660, armor: 55, trophy: 'Chapelet en Or & Cartouchière Gravée' },
+      { id: 'narco_gunner_mateo', name: 'Mitrailleur Mateo', role: 'Artilleur Lourd de Cénote', weapon: 'MG42 Surcadencée & Bande 250cps', weaponId: 'wpn_narco_quad_drum_mg', vitalityRatio: 1.15, hp: 610, armor: 50, trophy: 'Bandoulière de Cuir de Cartel Sud-Américain' },
+      { id: 'narco_trapper_chavez', name: 'Pisteur Chavez', role: 'Piégeur des Cénotes & Rivières', weapon: 'Fusil Calibre 12 & Machette de Jungle', weaponId: 'wpn_narco_quad_drum_mg', vitalityRatio: 1.0, hp: 550, armor: 40, trophy: 'Machette Damassée au Manche d’Ébène' },
+      { id: 'narco_scout_lucia', name: 'Sentinelle Lucia', role: 'Guetteuse de la Canopée', weapon: 'Carabine d’Assaut Compacte & Flare Gun', weaponId: 'wpn_narco_quad_drum_mg', vitalityRatio: 0.95, hp: 520, armor: 35, trophy: 'Jumelles Militaires Tropicalisées' }
+    ]
+  },
+  {
+    id: 'squad_alien_nemesis_berserkers',
+    name: 'Escouade Suicide M.A.X. — Station Nemesis (1995)',
+    universe: 'ALIEN',
+    shortName: 'Berserkers M.A.X. (4 Pilotes)',
+    category: 'COLONIAL_MARINES',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Berserker (1995)',
+    biomeId: 'hive_lv426',
+    recommendedBiomeLabel: 'Fonderie Nemesis (1995)',
+    primaryMapId: 'map_alien_nemesis_berserker_forge',
+    weaponLoadout: ['wpn_berserker_max_plasma_repeater'],
+    description: 'Pilotes condamnés sous neuro-drogue Berserker aux commandes de l’exosquelette lourd M.A.X., sacrifiés pour broyer les ruches xénomorphes.',
+    tactics: 'Charges frontales dévastatrices au canon plasma rotatif sans aucun souci de survie personnelle ni repli tactique.',
+    totalHonorReward: 6400,
+    soloVariantId: 'prey_colonial_marine_heavy',
+    members: [
+      { id: 'max_pilot_sergeant_creech', name: 'Sergent Creech (M.A.X. Alpha)', role: 'Pilote de Tête Exosquelette', weapon: 'Canon Rotatif Plasma & Griffes Hydrauliques', weaponId: 'wpn_berserker_max_plasma_repeater', vitalityRatio: 1.4, hp: 720, armor: 75, trophy: 'Injecteur Neuro-Stimulant Berserker Vide' },
+      { id: 'max_pilot_vance', name: 'Condamné Vance (M.A.X. Bravo)', role: 'Artilleur de Percée Sidérurgique', weapon: 'Plasma Rotary Repeater & Blindage Titane', weaponId: 'wpn_berserker_max_plasma_repeater', vitalityRatio: 1.2, hp: 650, armor: 70, trophy: 'Plaque d’Épaule Blindée M.A.X. Série 3' },
+      { id: 'max_pilot_korolenko', name: 'Pilote Korolenko', role: 'Démolisseur de Caillebotis', weapon: 'Canon Plasma Lourd & Éperon Bélier', weaponId: 'wpn_berserker_max_plasma_repeater', vitalityRatio: 1.1, hp: 600, armor: 65, trophy: 'Casque Pressurisé avec Moniteur Neuro-Synaptique' },
+      { id: 'max_pilot_santos', name: 'Opérateur Santos', role: 'Nettoyeur de Niche Thermique', weapon: 'Plasma Repeater Compact & Lance-Torches', weaponId: 'wpn_berserker_max_plasma_repeater', vitalityRatio: 1.0, hp: 560, armor: 60, trophy: 'Connecteur Neural de Commande Hydraulique' }
+    ]
+  },
+  {
+    id: 'squad_alien_shan_shen_guards',
+    name: 'Détachement de Sécurité & Décontamination de Shan Shen (2022)',
+    universe: 'ALIEN',
+    shortName: 'Gardes de Shan Shen (4 Opérateurs)',
+    category: 'MERCENARY_SYNDICATE',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: Inferno\'s Fall (2022)',
+    biomeId: 'genna_deathworld',
+    recommendedBiomeLabel: 'Raffinerie de Shan Shen (2022)',
+    primaryMapId: 'map_alien_shan_shen_refinery',
+    weaponLoadout: ['wpn_upp_ak120_infantry_carbine'],
+    description: 'Gardes industriels de l’UPP en combinaisons pressurisées déployés autour des silos de spores pour purger la raffinerie contaminée.',
+    tactics: 'Tirs de barrage échelonnés à l’AK-120 et déploiement de charges incendiaires dans les boyaux de tuyauterie.',
+    totalHonorReward: 5900,
+    soloVariantId: 'alien_base_christopher_winter_marine',
+    members: [
+      { id: 'shan_shen_captain_volkov', name: 'Capitaine Volkov', role: 'Commandant de Décontamination UPP', weapon: 'AK-120 Kalashnikov & Détecteur Spores', weaponId: 'wpn_upp_ak120_infantry_carbine', vitalityRatio: 1.25, hp: 650, armor: 60, trophy: 'Respirateur Filtrant Haut Débit UPP' },
+      { id: 'shan_shen_sergeant_chen', name: 'Sergent Chen', role: 'Fusilier d’Assaut Caseless', weapon: 'AK-120 avec Lunette IR & Baïonnette Titane', weaponId: 'wpn_upp_ak120_infantry_carbine', vitalityRatio: 1.1, hp: 590, armor: 55, trophy: 'Chargeur Télescopé Sans Étui AK-120' },
+      { id: 'shan_shen_hazmat_taras', name: 'Opérateur Hazmat Taras', role: 'Sapeur Décontaminateur', weapon: 'AK-120 Carbine & Lance-Solution Alcaline', weaponId: 'wpn_upp_ak120_infantry_carbine', vitalityRatio: 1.05, hp: 570, armor: 50, trophy: 'Combinaison Pressurisée Anti-Pathogène Éventrée' },
+      { id: 'shan_shen_sentry_mei', name: 'Sentinelle Mei', role: 'Guetteuse de Silo Chimique', weapon: 'AK-120 Raccourcie & Fusées de Détresse', weaponId: 'wpn_upp_ak120_infantry_carbine', vitalityRatio: 0.95, hp: 520, armor: 45, trophy: 'Insigne Métallique de la Garde UPP Shan Shen' }
+    ]
+  },
+  {
+    id: 'squad_avp_delacroix_samara',
+    name: 'Garde Rapprochée Harada de Caryn Delacroix — Station Samara (1993)',
+    universe: 'AVP',
+    shortName: 'Samara Harada Guard (4 Gardes)',
+    category: 'CIVILIAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'AVP: Deadliest of the Species (1993)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Spire Samara Ring (1993)',
+    primaryMapId: 'map_avp_samara_ring_habitat',
+    weaponLoadout: ['wpn_delacroix_harada_needle_pistol'],
+    description: 'Gardes d’élite cybernétiques du Zaibatsu Harada défendant le penthouse de Samara Ring avec des pistolets à aiguilles perforantes.',
+    tactics: 'Tirs de fléchettes neurotoxiques rapides en formation serrée et verrouillage des accès coupe-gorge.',
+    totalHonorReward: 6100,
+    soloVariantId: 'alien_base_alexa_lex_woods_guide',
+    members: [
+      { id: 'samara_caryn_delacroix', name: 'Caryn Delacroix', role: 'Aristocrate Fugitive & Chasseresse', weapon: 'Harada Cyber-Needle Pistol & Lame Cérémonielle', weaponId: 'wpn_delacroix_harada_needle_pistol', vitalityRatio: 1.3, hp: 670, armor: 55, trophy: 'Pendentif Holographique de l’IA Toy' },
+      { id: 'samara_harada_cyborg_kenji', name: 'Cyborg de Sécurité Kenji', role: 'Garde du Corps Augmenté', weapon: 'Double Pistolet à Fléchettes Monofilament', weaponId: 'wpn_delacroix_harada_needle_pistol', vitalityRatio: 1.2, hp: 630, armor: 65, trophy: 'Implants Oculaires Cybernétiques Harada Zaibatsu' },
+      { id: 'samara_security_reiko', name: 'Lieutenant Reiko', role: 'Tacticienne de Salon Panoramique', weapon: 'Pistolet à Aiguilles Longue Portée & Taser', weaponId: 'wpn_delacroix_harada_needle_pistol', vitalityRatio: 1.05, hp: 570, armor: 50, trophy: 'Carte Magnétique d’Accès au Penthouse Delacroix' },
+      { id: 'samara_drone_tech_shin', name: 'Technicien Shin', role: 'Opérateur de Verrous Sas Orbitaux', weapon: 'Needle Pistol Compact & Console de Piratage', weaponId: 'wpn_delacroix_harada_needle_pistol', vitalityRatio: 0.95, hp: 520, armor: 40, trophy: 'Terminal Portatif de Cryptage Zaibatsu' }
+    ]
+  },
+  {
+    id: 'squad_avp_three_world_killer_clan',
+    name: 'Meute de Chasse du Killer Clan — Caparis VII (2010)',
+    universe: 'AVP',
+    shortName: 'Killer Clan Caparis (4 Parias)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'AVP: Three World War (2010)',
+    biomeId: 'yautja_prime',
+    recommendedBiomeLabel: 'Canyon de Caparis VII (2010)',
+    primaryMapId: 'map_avp_caparis_vii_canyon',
+    weaponLoadout: ['wpn_killer_clan_blaster_carbine'],
+    description: 'Faction Yautja renégate sacrilège dressant des Xénomorphes en laisse comme meute d’attaque dans les canyons arides de Caparis VII.',
+    tactics: 'Lâcher de xénomorphes asservis au front pendant que les tireurs d’élite Bad Blood délivrent des salves de plasma instable.',
+    totalHonorReward: 6600,
+    soloVariantId: 'prey_bad_blood_warlord',
+    members: [
+      { id: 'killer_clan_warlord_kraag', name: 'Seigneur Parias Kraag', role: 'Maître de Meute Sacrilège', weapon: 'Killer Clan Blaster Carbine & Laisse Électro-Barbelée', weaponId: 'wpn_killer_clan_blaster_carbine', vitalityRatio: 1.45, hp: 750, armor: 75, trophy: 'Collier de Domestication Neuronale de Xénomorphe' },
+      { id: 'killer_clan_handler_thorrok', name: 'Dresseur Thorrok', role: 'Conducteur de Chiens de Guerre', weapon: 'Blaster Carbine Instable & Fouet Électrique', weaponId: 'wpn_killer_clan_blaster_carbine', vitalityRatio: 1.25, hp: 670, armor: 65, trophy: 'Biomasque Défiguré aux Glyphes de Banni' },
+      { id: 'killer_clan_skirmisher_vrokk', name: 'Tirailleur Vrokk', role: 'Embusqué des Parois Rocheuses', weapon: 'Carbine Blaster Légère & Dagues d’Os Xéno', weaponId: 'wpn_killer_clan_blaster_carbine', vitalityRatio: 1.1, hp: 610, armor: 55, trophy: 'Lame Courbe Forgée dans une Queue de Xéno' },
+      { id: 'killer_clan_trapper_drakkh', name: 'Trappeur Drakkh', role: 'Poseur de Pièges Électro-Barbelés', weapon: 'Tromblon Plasma de Rebut & Filet Épineux', weaponId: 'wpn_killer_clan_blaster_carbine', vitalityRatio: 1.0, hp: 560, armor: 50, trophy: 'Maillon de Chaîne en Acier Trempé Caparis' }
+    ]
   }
 ]);
 

@@ -1728,6 +1728,8 @@ export class HuntNPC {
     this.chargeWindupTimer = 0;
     this._painFlinchTimer = 0;
     this._recoilFlinchTimer = 0;
+    this._suppressionTimer = 0;
+    this._closePlasmaTimer = 0;
     this._pounceTelegraphTimer = 0;
     this._isPouncing = false;
     this.lastDiegeticCue = null;
@@ -1864,8 +1866,23 @@ export class HuntNPC {
 
   _applyProceduralPosture(dt = 0, applyMeshTransforms = true) {
     const isFlank = (this.fsmState || '') === 'flank';
+    const isUnderSuppression = Boolean(
+      this._suppressionTimer > 0 ||
+      this.isSuppressed ||
+      this._underSuppression ||
+      this.mesh?.userData?.isSuppressed ||
+      this.lastDiegeticCue === 'cover_suppression_crouch' ||
+      this.mesh?.userData?.tacticalState === 'evade'
+    );
+    const isClosePlasma = Boolean(
+      this._closePlasmaTimer > 0 ||
+      this.isClosePlasma ||
+      this._underClosePlasma ||
+      this.mesh?.userData?.isUnderPlasmaFire
+    );
+    const suppressionMultiplier = (isUnderSuppression || isClosePlasma) ? 1.25 : 1.0;
     const flankStrideRatio = isFlank
-      ? Number((1.0 + Math.sin((this._animPhase > 0 ? this._animPhase : 0.45) * 4.8) * 0.22).toFixed(3))
+      ? Number(((1.0 + Math.sin((this._animPhase > 0 ? this._animPhase : 0.45) * 4.8) * 0.22) * suppressionMultiplier).toFixed(3))
       : 1.0;
     this.flankStrideRatio = flankStrideRatio;
 
@@ -1908,7 +1925,7 @@ export class HuntNPC {
         torso.position.y = baseY - 0.04;
         torso.rotation.x = (torso.userData.baseRotationX ?? 0) - 0.18;
       } else {
-        torso.position.y = baseY;
+        torso.position.y = (isUnderSuppression || isClosePlasma) ? baseY - 0.06 : baseY;
         torso.rotation.x = (torso.userData.baseRotationX ?? 0) + pitchOffset;
       }
       if (telemetry.isLimping) {
@@ -1916,7 +1933,9 @@ export class HuntNPC {
         torso.rotation.z = (torso.userData.baseRotationZ ?? 0) + Math.sin(phase * 5.0) * 0.14;
       } else if (telemetry.state === 'flank') {
         const phase = this._animPhase > 0 ? this._animPhase : 0.45;
-        torso.rotation.z = (torso.userData.baseRotationZ ?? 0) + Math.sin(phase * 4.8) * 0.06 * flankStrideRatio;
+        torso.rotation.z = (torso.userData.baseRotationZ ?? 0) + Math.sin(phase * 4.8) * 0.06 * flankStrideRatio + (telemetry.lateralEvasionAngleRad ?? 0);
+      } else if (telemetry.lateralEvasionAngleRad) {
+        torso.rotation.z = (torso.userData.baseRotationZ ?? 0) + telemetry.lateralEvasionAngleRad;
       } else {
         torso.rotation.z = torso.userData.baseRotationZ ?? 0;
       }
@@ -1930,6 +1949,20 @@ export class HuntNPC {
     const isLimping = state === 'wounded_retreat' || (this.maxHealth > 0 && (this.health / this.maxHealth) <= 0.35);
     const isCrouchedInCover = state === 'cover' || Boolean(this._inCover);
     const isHeavyRecoil = Boolean(this._recoilFlinchTimer > 0 || this.lastDiegeticCue === 'heavy_recoil_flinch');
+    const isUnderSuppression = Boolean(
+      this._suppressionTimer > 0 ||
+      this.isSuppressed ||
+      this._underSuppression ||
+      this.mesh?.userData?.isSuppressed ||
+      this.lastDiegeticCue === 'cover_suppression_crouch' ||
+      this.mesh?.userData?.tacticalState === 'evade'
+    );
+    const isClosePlasma = Boolean(
+      this._closePlasmaTimer > 0 ||
+      this.isClosePlasma ||
+      this._underClosePlasma ||
+      this.mesh?.userData?.isUnderPlasmaFire
+    );
 
     const strideMap = {
       patrol: 1.2,
@@ -1941,7 +1974,8 @@ export class HuntNPC {
       wounded_retreat: 1.45,
       cover: 0.85,
     };
-    const strideFrequencyHz = strideMap[state] ?? 1.5;
+    const baseStride = strideMap[state] ?? 1.5;
+    const strideFrequencyHz = (isUnderSuppression || isClosePlasma) ? Number((baseStride * 1.2).toFixed(2)) : baseStride;
 
     let torsoPitchRad = 0.04;
     if (state === 'stalk') torsoPitchRad = 0.34;
@@ -1961,9 +1995,17 @@ export class HuntNPC {
       headScanYawRad = Math.abs(rawScan) < 0.05 ? 0.22 : Number(rawScan.toFixed(4));
     }
 
-    const flankStrideRatio = state === 'flank'
-      ? Number((1.0 + Math.sin(phase * 4.8) * 0.22).toFixed(3))
+    const baseFlankRatio = state === 'flank'
+      ? (1.0 + Math.sin(phase * 4.8) * 0.22)
       : 1.0;
+    const suppressionMultiplier = (isUnderSuppression || isClosePlasma) ? 1.25 : 1.0;
+    const flankStrideRatio = state === 'flank'
+      ? Number((baseFlankRatio * suppressionMultiplier).toFixed(3))
+      : 1.0;
+
+    const lateralEvasionAngleRad = (isUnderSuppression || isClosePlasma || this.mesh?.userData?.tacticalState === 'evade')
+      ? Number((Math.sin(phase * 5.4) * 0.16 * (this._evadeSide || 1)).toFixed(4))
+      : 0;
 
     return {
       state,
@@ -1974,6 +2016,9 @@ export class HuntNPC {
       isLimping,
       isCrouchedInCover,
       isHeavyRecoil,
+      isUnderSuppression,
+      isClosePlasma,
+      lateralEvasionAngleRad,
       lastDiegeticCue: this.lastDiegeticCue,
     };
   }
@@ -1982,6 +2027,22 @@ export class HuntNPC {
     this._recoilFlinchTimer = Math.max(0.1, Number(duration) || 0.35);
     this.mesh.userData.isRecoilFlinching = true;
     this._recordDiegeticCue('heavy_recoil_flinch');
+    this._applyProceduralPosture(0, true);
+    return true;
+  }
+
+  triggerSuppression(duration = 2.5) {
+    this._suppressionTimer = Math.max(this._suppressionTimer, Number(duration) || 2.5);
+    this.mesh.userData.isSuppressed = true;
+    this._recordDiegeticCue('cover_suppression_crouch');
+    this._applyProceduralPosture(0, true);
+    return true;
+  }
+
+  triggerClosePlasmaFire(duration = 2.5) {
+    this._closePlasmaTimer = Math.max(this._closePlasmaTimer, Number(duration) || 2.5);
+    this.mesh.userData.isUnderPlasmaFire = true;
+    this._recordDiegeticCue('plasma_evasion_flinch');
     this._applyProceduralPosture(0, true);
     return true;
   }
@@ -2514,6 +2575,18 @@ export class HuntNPC {
       this._recoilFlinchTimer = Math.max(0, this._recoilFlinchTimer - dt);
       if (this._recoilFlinchTimer === 0) {
         this.mesh.userData.isRecoilFlinching = false;
+      }
+    }
+    if (this._suppressionTimer > 0) {
+      this._suppressionTimer = Math.max(0, this._suppressionTimer - dt);
+      if (this._suppressionTimer === 0) {
+        this.mesh.userData.isSuppressed = false;
+      }
+    }
+    if (this._closePlasmaTimer > 0) {
+      this._closePlasmaTimer = Math.max(0, this._closePlasmaTimer - dt);
+      if (this._closePlasmaTimer === 0) {
+        this.mesh.userData.isUnderPlasmaFire = false;
       }
     }
     if (this.isNetted) {
@@ -3143,6 +3216,26 @@ export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
   wpn_web_magnetic_riveter: makeWeaponBallisticProfile('wpn_web_magnetic_riveter', {
     damage: 35, cooldown: 0.85, rangeM: 45, soundRadiusM: 60, projectileColor: 0x48bfe3, archetype: 'magnetic_coil_riveter', cadence: 'pneumatic_steel_bolt', damageType: 'kinetic_piercing',
   }),
+
+  // Vague 12 Canonical Expansion Weapons (wpn_*)
+  wpn_hunters_arctic_anti_materiel_50: makeWeaponBallisticProfile('wpn_hunters_arctic_anti_materiel_50', {
+    damage: 55, cooldown: 2.5, rangeM: 140, soundRadiusM: 120, projectileColor: 0xffeeaa, archetype: 'anti_materiel_sniper', cadence: 'slow_semi_auto', damageType: 'kinetic_piercing',
+  }),
+  wpn_narco_quad_drum_mg: makeWeaponBallisticProfile('wpn_narco_quad_drum_mg', {
+    damage: 26, cooldown: 0.6, rangeM: 65, soundRadiusM: 95, projectileColor: 0xffaa00, archetype: 'quad_drum_heavy_mg', cadence: 'continuous_burst', damageType: 'ballistic',
+  }),
+  wpn_berserker_max_plasma_repeater: makeWeaponBallisticProfile('wpn_berserker_max_plasma_repeater', {
+    damage: 48, cooldown: 1.0, rangeM: 75, soundRadiusM: 90, projectileColor: 0x00d4ff, archetype: 'rotary_plasma_repeater', cadence: 'rotary_plasma_spinup', damageType: 'energy',
+  }),
+  wpn_upp_ak120_infantry_carbine: makeWeaponBallisticProfile('wpn_upp_ak120_infantry_carbine', {
+    damage: 27, cooldown: 0.75, rangeM: 55, soundRadiusM: 70, projectileColor: 0xffdd55, archetype: 'caseless_assault_carbine', cadence: 'three_round_burst', damageType: 'ballistic',
+  }),
+  wpn_delacroix_harada_needle_pistol: makeWeaponBallisticProfile('wpn_delacroix_harada_needle_pistol', {
+    damage: 30, cooldown: 0.8, rangeM: 30, soundRadiusM: 25, projectileColor: 0x9b5de5, archetype: 'monofilament_needle_pistol', cadence: 'high_precision_needle', damageType: 'neurotoxin',
+  }),
+  wpn_killer_clan_blaster_carbine: makeWeaponBallisticProfile('wpn_killer_clan_blaster_carbine', {
+    damage: 44, cooldown: 1.25, rangeM: 60, soundRadiusM: 85, projectileColor: 0xff2244, archetype: 'salvaged_blaster_carbine', cadence: 'erratic_energy_burst', damageType: 'energy',
+  }),
 });
 
 function resolveNpcRoleWeaponId(npcType) {
@@ -3171,6 +3264,12 @@ function resolveNpcRoleWeaponId(npcType) {
   if (type.includes('jeri') || type.includes('disruptor')) return 'wpn_stronghold_jeri_disruptor';
   if (type.includes('cold_forge') || type.includes('taser_drone') || type.includes('drone_prod')) return 'wpn_cold_forge_taser_drone_prod';
   if (type.includes('riveter') || type.includes('magnetic_riveter')) return 'wpn_web_magnetic_riveter';
+  if (type.includes('anti_materiel') || type.includes('arctic_sniper') || type.includes('m82')) return 'wpn_hunters_arctic_anti_materiel_50';
+  if (type.includes('quad_drum') || (type.includes('narco') && type.includes('mg'))) return 'wpn_narco_quad_drum_mg';
+  if (type.includes('plasma_repeater') || (type.includes('berserker') && type.includes('repeater'))) return 'wpn_berserker_max_plasma_repeater';
+  if (type.includes('ak120') || type.includes('upp')) return 'wpn_upp_ak120_infantry_carbine';
+  if (type.includes('needle') || type.includes('delacroix') || type.includes('harada')) return 'wpn_delacroix_harada_needle_pistol';
+  if (type.includes('blaster_carbine') || (type.includes('killer_clan') && type.includes('blaster'))) return 'wpn_killer_clan_blaster_carbine';
   return 'npc_wep_m41a_pulse_rifle';
 }
 
@@ -3272,6 +3371,36 @@ export function getNpcWeaponProfile(npcTypeOrWeaponId, options = {}) {
   if (raw.includes('riveter')) {
     return makeWeaponBallisticProfile(raw || 'wpn_generic_riveter', {
       damage: 35, cooldown: 0.85, rangeM: 45, soundRadiusM: 60, projectileColor: 0x48bfe3, archetype: 'magnetic_coil_riveter', cadence: 'pneumatic_steel_bolt', damageType: 'kinetic_piercing',
+    });
+  }
+  if (raw.includes('anti_materiel') || raw.includes('m82')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_hunters_arctic_anti_materiel_50', {
+      damage: 55, cooldown: 2.5, rangeM: 140, soundRadiusM: 120, projectileColor: 0xffeeaa, archetype: 'anti_materiel_sniper', cadence: 'slow_semi_auto', damageType: 'kinetic_piercing',
+    });
+  }
+  if (raw.includes('quad_drum')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_narco_quad_drum_mg', {
+      damage: 26, cooldown: 0.6, rangeM: 65, soundRadiusM: 95, projectileColor: 0xffaa00, archetype: 'quad_drum_heavy_mg', cadence: 'continuous_burst', damageType: 'ballistic',
+    });
+  }
+  if (raw.includes('plasma_repeater')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_berserker_max_plasma_repeater', {
+      damage: 48, cooldown: 1.0, rangeM: 75, soundRadiusM: 90, projectileColor: 0x00d4ff, archetype: 'rotary_plasma_repeater', cadence: 'rotary_plasma_spinup', damageType: 'energy',
+    });
+  }
+  if (raw.includes('ak120') || raw.includes('upp')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_upp_ak120_infantry_carbine', {
+      damage: 27, cooldown: 0.75, rangeM: 55, soundRadiusM: 70, projectileColor: 0xffdd55, archetype: 'caseless_assault_carbine', cadence: 'three_round_burst', damageType: 'ballistic',
+    });
+  }
+  if (raw.includes('needle') || raw.includes('harada')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_delacroix_harada_needle_pistol', {
+      damage: 30, cooldown: 0.8, rangeM: 30, soundRadiusM: 25, projectileColor: 0x9b5de5, archetype: 'monofilament_needle_pistol', cadence: 'high_precision_needle', damageType: 'neurotoxin',
+    });
+  }
+  if (raw.includes('blaster_carbine')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_killer_clan_blaster_carbine', {
+      damage: 44, cooldown: 1.25, rangeM: 60, soundRadiusM: 85, projectileColor: 0xff2244, archetype: 'salvaged_blaster_carbine', cadence: 'erratic_energy_burst', damageType: 'energy',
     });
   }
   return makeWeaponBallisticProfile(raw || 'npc_wep_m41a_pulse_rifle', {

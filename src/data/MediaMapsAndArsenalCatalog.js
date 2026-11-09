@@ -2098,6 +2098,312 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     keyPreyIds: ['alien_base_johner_mercenary_betty', 'prey_broken_tusk_dachande'],
     heroSquadId: 'squad_avp_web_shipyard_riggers',
     villainSquadId: null
+  },
+  {
+    id: 'map_pred_afghan_bunker_network',
+    name: 'Afghanistan — Réseau de Bunkers & Grottes Glacées (2018)',
+    universe: 'PREDATOR',
+    originMedia: 'Predator: Hunters II',
+    sourceMedia: 'Predator: Hunters II (2018)',
+    sourceType: 'COMIC',
+    releaseYear: 2018,
+    year: 2018,
+    biomeId: 'stargazer_blacksite',
+    biome: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Installation Souterraine Stargazer',
+    weather: 'Tempête de neige d\'altitude en extérieur et humidité glaciale dans les boyaux',
+    lighting: 'Lanterne rouge militaire de secours et obscurité totale des grottes naturelles',
+    verticality: 'ÉLEVÉE (Puits d\'aération soviétiques, escaliers taillés dans le roc et crêtes rocheuses)',
+    destructibility: 'Caisses d\'armement soviétiques, cloisons de béton fissuré et stalactites de glace',
+    interactables: [
+      'Générateur diesel de secours Stargazer',
+      'Sas blindé de bunker soviétique',
+      'Projecteur halogène de périmètre'
+    ],
+    environmentSummary: 'Complexe de grottes d\'altitude fortifié par des bunkers soviétiques occupés par Stargazer, où les mercenaires de Tyler Swain traquent un Yautja invisible par températures négatives.',
+    description: 'Complexe de grottes d\'altitude fortifié par des bunkers soviétiques occupés par Stargazer, où les mercenaires de Tyler Swain traquent un Yautja invisible par températures négatives.',
+    tacticalNotes: 'La vision thermique Yautja est perturbée par le froid glacial ambiant ; exploiter les couloirs étroits pour coincer les patrouilles avec des tirs d\'interdiction.',
+    dimensionsM: { width: 500, length: 500, height: 60 },
+    elevationRangeM: [-25, 35],
+    tacticalSectors: [
+      'Bunker de Commandement Soviétique Désaffecté',
+      'Galerie des Grottes Glacées Inférieures',
+      'Poste Avancé Stargazer',
+      'Piste d\'Atterrissage en Haute Altitude'
+    ],
+    keyLandmarks: [
+      'Porte blindée de bunker anti-atomique',
+      'Épave d\'hélicoptère Mil Mi-24 encastrée dans la neige',
+      'Faille géologique gelée'
+    ],
+    environmentalHazards: [
+      'Stalactites instables susceptibles de s\'effondrer',
+      'Crevasses glissantes masquées par la neige',
+      'Conduites de gaz de chauffage fuyant à haute pression'
+    ],
+    signatureHazards: [
+      'Vent thermique violent déséquilibrant sur les passerelles extérieures',
+      'Tirs d\'arrêt au fusil lourd anti-matériel .50 BMG'
+    ],
+    ambientProfile: 'Bourrasques de neige hurlantes, cliquetis de générateurs usés et réverbération caverneuse des coups de feu',
+    keyPreyIds: ['alien_base_quinn_mckenna_ranger_2018', 'prey_colonial_marine_heavy'],
+    heroSquadId: 'squad_pred_hunters_ii_afghan',
+    villainSquadId: null
+  },
+  {
+    id: 'map_pred_central_america_cenote',
+    name: 'Guatemala — Cénote Précolombien & Dépôt Narco (2020)',
+    universe: 'PREDATOR',
+    originMedia: 'Predator: Hunters III',
+    sourceMedia: 'Predator: Hunters III (2020)',
+    sourceType: 'COMIC',
+    releaseYear: 2020,
+    year: 2020,
+    biomeId: 'jungle',
+    biome: 'jungle',
+    recommendedBiomeLabel: 'Jungle & Grottes Sacrées Maya',
+    weather: 'Pluie tropicale torrentielle, brume aquatique et chaleur étouffante au fond du cénote',
+    lighting: 'Puits de lumière zénithale perçant la voûte effondrée et flambeaux de camp de cartel',
+    verticality: 'ÉLEVÉE (Parois calcaires verticales de 40 mètres, lianes géantes et terrasses du temple enfoui)',
+    destructibility: 'Palissades en bois de camp narco, caisses de munitions et stèles maya millénaires',
+    interactables: [
+      'Pompe d\'évacuation d\'eau motorisée',
+      'Treuil de hissage pour barques',
+      'Générateur de campement de cartel'
+    ],
+    environmentSummary: 'Cénote calcaire effondré servant de cache d\'armes au cartel et de temple rituel Yautja, relié par un réseau de rivières souterraines piégées.',
+    description: 'Cénote calcaire effondré servant de cache d\'armes au cartel et de temple rituel Yautja, relié par un réseau de rivières souterraines piégées.',
+    tacticalNotes: 'L\'eau profonde désactive le camouflage optique en cas d\'immersion totale ; bondir d\'arbre en corniche permet de dominer les positions de tir du cartel.',
+    dimensionsM: { width: 450, length: 450, height: 70 },
+    elevationRangeM: [-35, 35],
+    tacticalSectors: [
+      'Bassin Central du Cénote Calcaire',
+      'Campement & Dépôt d\'Armes du Cartel',
+      'Terrasse du Sanctuaire Maya Enfoui',
+      'Galeries Subaquatiques & Réseau d\'Infiltration'
+    ],
+    keyLandmarks: [
+      'Autel sacrificiel précolombien orné de glyphes Yautja',
+      'Chute d\'eau alimentant le bassin central',
+      'Ponton d\'amarrage des barques narco'
+    ],
+    environmentalHazards: [
+      'Courants subaquatiques violents aspirants',
+      'Sols calcaires polis glissants',
+      'Brumes de condensation occultant le relief'
+    ],
+    signatureHazards: [
+      'Rafales continues de mitrailleuse MG42 lourde depuis le mirador',
+      'Pièges à pieux hydrographiques ancestraux'
+    ],
+    ambientProfile: 'Grondement sourd de la cascade, croassements d\'amphibiens et échos stridents des balles ricochant sur la pierre',
+    keyPreyIds: ['alien_base_king_willie_voodoo_priest', 'prey_weyland_combat_android'],
+    heroSquadId: 'squad_pred_hunters_iii_guatemala',
+    villainSquadId: null
+  },
+  {
+    id: 'map_alien_nemesis_berserker_forge',
+    name: 'Station Nemesis — Hangar M.A.X. & Fonderie Désaffectée (1995)',
+    universe: 'ALIEN',
+    originMedia: 'Aliens: Berserker',
+    sourceMedia: 'Aliens: Berserker (1995)',
+    sourceType: 'COMIC',
+    releaseYear: 1995,
+    year: 1995,
+    biomeId: 'hive_lv426',
+    biome: 'hive_lv426',
+    recommendedBiomeLabel: 'Station Minière Pressurisée & Ruche Métallique',
+    weather: 'Atmosphère industrielle surchauffée chargée de micro-particules de scories et vapeur toxique',
+    lighting: 'Lueurs orangées de métal en fusion coulant dans les rigoles et gyrophares industriels ambrés',
+    verticality: 'MOYENNE (Nacelles de coulée suspendues, ponts roulants sidérurgiques et fosses de coulée)',
+    destructibility: 'Cuves de scories refroidies, passerelles en caillebotis métalliques et tubulures de gaz',
+    interactables: [
+      'Commande de la benne de scories en fusion',
+      'Purge des conduites de refroidissement cryogénique',
+      'Baie de recharge de l\'armure M.A.X.'
+    ],
+    environmentSummary: 'Complexe sidérurgique orbital ravagé par un essaim xénomorphe et défendu par l\'armure MAX, avec ses hauts-fourneaux désaffectés et ses nids biomécaniques incrustés.',
+    description: 'Complexe sidérurgique orbital ravagé par un essaim xénomorphe et défendu par l\'armure MAX, avec ses hauts-fourneaux désaffectés et ses nids biomécaniques incrustés.',
+    tacticalNotes: 'La chaleur des rigoles de fonte masque les signatures infrarouges ; attirer les guerriers xénomorphes sous les jets de vapeur pour neutraliser leur agilité.',
+    dimensionsM: { width: 480, length: 480, height: 45 },
+    elevationRangeM: [-10, 35],
+    tacticalSectors: [
+      'Hangar de Maintenance de l\'Exosquelette M.A.X.',
+      'Halle de Coulée des Hauts-Fourneaux',
+      'Ruche Métallique Infiltrée dans les Trémies',
+      'Galerie des Compresseurs Pneumatiques'
+    ],
+    keyLandmarks: [
+      'Châssis d\'armure assistée M.A.X. éventré sur son berceau',
+      'Creuset géant de fonte suspendu par des chaînes',
+      'Cocon de résine xénomorphe englobant les conduits principaux'
+    ],
+    environmentalHazards: [
+      'Éclaboussures de scories en fusion incandescentes',
+      'Jets de vapeur haute pression intermittents',
+      'Poutrelles corrodées par l\'acide cédant sous le poids'
+    ],
+    signatureHazards: [
+      'Tirs de canon rotatif à plasma lourd balayant les coursives',
+      'Plaques d\'acide de guerriers démembrés perforant les caillebotis'
+    ],
+    ambientProfile: 'Bourdonnement lourd des transformateurs électriques, sifflement des soupapes de décharge et crissements chitineux de l\'essaim',
+    keyPreyIds: ['prey_xeno_warrior', 'prey_colonial_marine_heavy'],
+    heroSquadId: 'squad_alien_nemesis_berserkers',
+    villainSquadId: null
+  },
+  {
+    id: 'map_alien_shan_shen_refinery',
+    name: 'Shan Shen — Raffinerie Minière & Silos de Spores (2022)',
+    universe: 'ALIEN',
+    originMedia: 'Alien: Inferno\'s Fall',
+    sourceMedia: 'Alien: Inferno\'s Fall (2022)',
+    sourceType: 'NOVEL',
+    releaseYear: 2022,
+    year: 2022,
+    biomeId: 'genna_deathworld',
+    biome: 'genna_deathworld',
+    recommendedBiomeLabel: 'Raffinerie Chimique & Périmètre Toxique',
+    weather: 'Brouillard toxique teinté de suie noire, retombées d\'aérosols mutagènes et vent chimique âcre',
+    lighting: 'Éclairage industriel blafard perçant péniblement les nappes de brume et torches de dégazage',
+    verticality: 'ÉLEVÉE (Tours de craquage géantes de 50m, silos de stockage cylindriques et tuyauteries interconnectées)',
+    destructibility: 'Vannes de purge chimique, passerelles de maintenance en aluminium et conduites de condensat',
+    interactables: [
+      'Valve de purge thermique d\'urgence',
+      'Sas de surpression de silo à spores',
+      'Station de décontamination chimique UPP'
+    ],
+    environmentSummary: 'Tours de craquage industriel et silos souterrains contaminés par l\'agent noir pathogène, où patrouillent des gardes de sécurité et des runners infectés.',
+    description: 'Tours de craquage industriel et silos souterrains contaminés par l\'agent noir pathogène, où patrouillent des gardes de sécurité et des runners infectés.',
+    tacticalNotes: 'Les vapeurs de l\'agent noir dégradent progressivement les boucliers ; monter sur les cuves supérieures pour maintenir l\'avantage visuel et canarder à longue portée.',
+    dimensionsM: { width: 520, length: 520, height: 65 },
+    elevationRangeM: [-15, 50],
+    tacticalSectors: [
+      'Silos de Stockage des Spores Pathogènes',
+      'Tour de Craquage Chimique Principale',
+      'Gare de Chargement des Wagons-Citernes',
+      'Périmètre de Quarantaine des Gardes UPP'
+    ],
+    keyLandmarks: [
+      'Batterie de quatre silos cylindriques noircis par le pathogène',
+      'Torche de dégazage crachant une flamme verte',
+      'Sas de décontamination mobile UPP percuté par un tracteur'
+    ],
+    environmentalHazards: [
+      'Poches d\'aérosols mutagènes provoquant des dégâts continus',
+      'Fuites de solvants chimiques corrosifs au sol',
+      'Fumerolles toxiques réduisant brutalement la visibilité'
+    ],
+    signatureHazards: [
+      'Charges explosives de décontamination posées par les gardes UPP',
+      'Ruées supersoniques de Xénomorphes Runners infectés'
+    ],
+    ambientProfile: 'Souffle continu des brûleurs industriels, alarmes de fuite chimique modulées et crépitements de compteur geiger',
+    keyPreyIds: ['prey_xeno_runner', 'alien_base_christopher_winter_marine'],
+    heroSquadId: 'squad_alien_shan_shen_guards',
+    villainSquadId: null
+  },
+  {
+    id: 'map_avp_samara_ring_habitat',
+    name: 'Station Orbitale Samara — Penthouse Delacroix & Noyau Hive (1993)',
+    universe: 'AVP',
+    originMedia: 'AVP: Deadliest of the Species',
+    sourceMedia: 'AVP: Deadliest of the Species (1993)',
+    sourceType: 'COMIC',
+    releaseYear: 1993,
+    year: 1993,
+    biomeId: 'stargazer_blacksite',
+    biome: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Spire Orbitale Haute Société & Ruche Infiltrée',
+    weather: 'Atmosphère pressurisée de luxe régulée, parfum d\'orchidées synthétiques mêlé à l\'odeur d\'ozone et d\'acide',
+    lighting: 'Lustres en cristal holographiques, baies vitrées donnant sur le vide spatial et reflets dorés d\'ornements',
+    verticality: 'ÉLEVÉE (Escaliers monumentaux en marbre, balcons d\'atrium sur trois étages et puits d\'ascenseur rapide)',
+    destructibility: 'Sculptures d\'art moderne, baies vitrées blindées, cloisons de bois précieux et fontaines',
+    interactables: [
+      'Console de sécurité du Toyo Harada Zaibatsu',
+      'Ascenseur panoramique express du penthouse',
+      'Verrouillage d\'urgence du dôme de verre'
+    ],
+    environmentSummary: 'Jardins suspendus et couloirs de luxe transformés en abattoir par l\'essaim et Big Mama, opposant l\'opulence aristocratique à la barbarie xénomorphe.',
+    description: 'Jardins suspendus et couloirs de luxe transformés en abattoir par l\'essaim et Big Mama, opposant l\'opulence aristocratique à la barbarie xénomorphe.',
+    tacticalNotes: 'Les surfaces réfléchissantes trompent les capteurs de visée ; utiliser les balcons supérieurs pour des plongeons au glaive dévastateurs sur les prétoriens.',
+    dimensionsM: { width: 550, length: 550, height: 50 },
+    elevationRangeM: [0, 50],
+    tacticalSectors: [
+      'Atrium Monumental du Penthouse Delacroix',
+      'Jardins Suspendus & Bosquets d\'Orchidées',
+      'Galerie Privée des Collections d\'Armes Harada',
+      'Noyau Hive Dissimulé dans les Gaines Techniques'
+    ],
+    keyLandmarks: [
+      'Baie vitrée colossale ouvrant sur la Terre et l\'anneau orbital',
+      'Fontaine de marbre noir souillée de sang acide',
+      'Trône d\'apparat de Toyo Harada aux conduits cybernétiques'
+    ],
+    environmentalHazards: [
+      'Dépressurisation partielle en cas d\'impact lourd sur les verrières',
+      'Courts-circuits des projecteurs holographiques luxueux',
+      'Chutes mortelles dans le vide de l\'atrium'
+    ],
+    signatureHazards: [
+      'Tirs de fléchettes cybernétiques perforantes des gardes Harada',
+      'Charge lourde de prétoriens xénomorphes à carapace renforcée'
+    ],
+    ambientProfile: 'Musique classique étouffée jouée par des automates blessés, bris de verre réguliers et crépitements d\'arcs laser',
+    keyPreyIds: ['prey_praetorian_obsidian_armored', 'alien_base_alexa_lex_woods_guide'],
+    heroSquadId: 'squad_avp_delacroix_samara',
+    villainSquadId: null
+  },
+  {
+    id: 'map_avp_caparis_vii_canyon',
+    name: 'Caparis VII — Faille Minérale & Enclos des Chiens de Guerre (2010)',
+    universe: 'AVP',
+    originMedia: 'AVP: Three World War',
+    sourceMedia: 'AVP: Three World War (2010)',
+    sourceType: 'COMIC',
+    releaseYear: 2010,
+    year: 2010,
+    biomeId: 'yautja_prime',
+    biome: 'yautja_prime',
+    recommendedBiomeLabel: 'Canyon Rocheux & Avant-Poste Killer Clan',
+    weather: 'Chaleur minérale accablante, poussière de grès abrasive et bourrasques sèches balayant la gorge',
+    lighting: 'Lumière zénithale crue du soleil binaire projetant des ombres tranchées et torches de campement barbare',
+    verticality: 'ÉLEVÉE (Falaises ocres abruptes, corniches rocheuses escarpées et ponts de cordes suspendus)',
+    destructibility: 'Palissades en os et métal de rebut, cages de contention de xénomorphes et rochers branlants',
+    interactables: [
+      'Treuil de libération des enclos de xénomorphes',
+      'Baliste de plasma improvisée du Killer Clan',
+      'Réservoir d\'eau saumâtre de garnison'
+    ],
+    environmentSummary: 'Tranchée géologique aride où le Killer Clan dresse des xénomorphes captifs comme meute de guerre, jalonnée d\'enclos barbelés et de postes de guet.',
+    description: 'Tranchée géologique aride où le Killer Clan dresse des xénomorphes captifs comme meute de guerre, jalonnée d\'enclos barbelés et de postes de guet.',
+    tacticalNotes: 'La poussière en suspension atténue l\'efficacité du canon plasma ; utiliser les corniches en hauteur pour intercepter les chiens de guerre avant leur ruée.',
+    dimensionsM: { width: 580, length: 580, height: 75 },
+    elevationRangeM: [-20, 55],
+    tacticalSectors: [
+      'Gorge Inférieure & Faille d\'Érosion',
+      'Enclos de Domestication des Xénomorphes',
+      'Bastion Perché du Killer Clan',
+      'Plateau Rocailleux des Duels de Clan'
+    ],
+    keyLandmarks: [
+      'Pylône d\'ossements géant dressé à l\'entrée de l\'enclos',
+      'Cage en titane abritant une meute enchaînée',
+      'Carapace de vaisseau de largage écrasé servant de forge'
+    ],
+    environmentalHazards: [
+      'Éboulements de roches instables provoqués par les détonations',
+      'Pièges barbelés à aiguilles électrifiées',
+      'Précipices vertigineux le long des sentiers de falaise'
+    ],
+    signatureHazards: [
+      'Meute de guerriers xénomorphes asservis fonçant de concert',
+      'Tirs de tromblons à plasma lourd des guerriers Bad Blood'
+    ],
+    ambientProfile: 'Hurlements rauques de molosses de guerre, cliquetis de chaînes barbelées sous tension et sifflements du vent dans les failles',
+    keyPreyIds: ['prey_xeno_warrior', 'prey_hell_hound_tracker'],
+    heroSquadId: 'squad_avp_three_world_killer_clan',
+    villainSquadId: null
   }
 ]);
 
@@ -3571,6 +3877,138 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     yautjaCounterplay: 'Se déplacer verticalement le long des câbles pour esquiver la trajectoire rectiligne des rivets et trancher l’alimentation électrique.',
     counterplay: 'Se déplacer verticalement le long des câbles pour esquiver la trajectoire rectiligne des rivets et trancher l’alimentation électrique.',
     description: 'Outil d’assemblage de coques spatiales converti en arme de fortune redoutable par les sidérurgistes orbitaux pour percer les carapaces xénomorphes et Yautja.'
+  },
+  {
+    id: 'wpn_hunters_arctic_anti_materiel_50',
+    name: 'Barrett M82A1 .50 BMG Anti-Matériel d\'Altitude (2018)',
+    universe: 'PREDATOR',
+    faction: 'Stargazer / Hunters PMC (2018)',
+    originMedia: 'Predator: Hunters II',
+    sourceMedia: 'Predator: Hunters II (2018)',
+    year: 2018,
+    category: 'KINETIC_HEAVY_SNIPER',
+    caliber: 'Munition perforante perforatrice de blindage .50 BMG (12.7x99mm)',
+    damageType: 'kinetic_armor_piercing',
+    damage: 95,
+    effectiveRangeMeters: 180,
+    rangeM: 180,
+    rateOfFire: 'Semi-automatique (30 cps/min)',
+    fireRate: '30 cps/min',
+    specialEffect: 'Perce les protections biomécaniques et interrompt temporairement l\'occultation optique Yautja',
+    wieldedBy: 'Tireurs d\'élite Stargazer et vétérans de l\'équipe Tyler Swain',
+    yautjaCounterplay: 'Se dissimuler derrière des formations rocheuses épaisses et neutraliser le tireur avec le lance-harpon ou le combi-stick avant qu\'il n\'aligne sa lunette thermique.',
+    counterplay: 'Se dissimuler derrière des formations rocheuses épaisses et neutraliser le tireur avec le lance-harpon ou le combi-stick avant qu\'il n\'aligne sa lunette thermique.',
+    description: 'Fusil lourd anti-matériel longue portée modifié pour les conditions polaires afghanes, capable de traverser les plaques de blindage Yautja à grande distance.'
+  },
+  {
+    id: 'wpn_narco_quad_drum_mg',
+    name: 'MG42 Quad-Drum Cartel Heavy Gun (2020)',
+    universe: 'PREDATOR',
+    faction: 'Guatemalan Cartel Syndicate (2020)',
+    originMedia: 'Predator: Hunters III',
+    sourceMedia: 'Predator: Hunters III (2020)',
+    year: 2020,
+    category: 'KINETIC_RAPID_MACHINEGUN',
+    caliber: '7.92x57mm Mauser haute vélocité à bande continue en camembert',
+    damageType: 'kinetic_saturation',
+    damage: 65,
+    effectiveRangeMeters: 75,
+    rangeM: 75,
+    rateOfFire: '1200 cps/min',
+    fireRate: '1200 cps/min',
+    specialEffect: 'Sature la zone d\'un mur de plomb, brisant les couverts légers et désorientant la cible sous le volume de feu',
+    wieldedBy: 'Artilleurs lourds du cartel guatémaltèque',
+    yautjaCounterplay: 'Attendre la surchauffe du canon ou le rechargement du tambour pour bondir depuis la canopée et décapiter l\'artilleur au disque de combat.',
+    counterplay: 'Attendre la surchauffe du canon ou le rechargement du tambour pour bondir depuis la canopée et décapiter l\'artilleur au disque de combat.',
+    description: 'Mitrailleuse historique restaurée et surcadencée par les armuriers du cartel avec des tambours haute capacité, utilisée pour faucher les assauts dans la jungle.'
+  },
+  {
+    id: 'wpn_berserker_max_plasma_repeater',
+    name: 'M.A.X. Exo-Suit Plasma Rotary Repeater (1995)',
+    universe: 'ALIEN',
+    faction: 'Berserker Suicide Squad (1995)',
+    originMedia: 'Aliens: Berserker',
+    sourceMedia: 'Aliens: Berserker (1995)',
+    year: 1995,
+    category: 'PLASMA_ROTARY_CANNON',
+    caliber: 'Cartouches à plasma super-chauffé focalisé par confinement magnétique',
+    damageType: 'plasma_thermal',
+    damage: 88,
+    effectiveRangeMeters: 60,
+    rangeM: 60,
+    rateOfFire: '600 impulsions plasma/min',
+    fireRate: '600 impulsions/min',
+    specialEffect: 'Vitrie les carapaces chitineuses et inflige des brûlures de zone désintégrant l\'acide xénomorphe',
+    wieldedBy: 'Pilotes condamnés de l\'exosquelette blindé M.A.X.',
+    yautjaCounterplay: 'Tirer dans le réservoir de fluide de refroidissement dorsal de l\'armure avec le canon à plasma pour provoquer l\'explosion interne de la combinaison.',
+    counterplay: 'Tirer dans le réservoir de fluide de refroidissement dorsal de l\'armure avec le canon à plasma pour provoquer l\'explosion interne de la combinaison.',
+    description: 'Canon rotatif expérimental couplé au réacteur de l\'exosquelette M.A.X., crachant des salves denses de plasma incandescent pour nettoyer les ruches en milieu confiné.'
+  },
+  {
+    id: 'wpn_upp_ak120_infantry_carbine',
+    name: 'UPP AK-120 Kalashnikov Caseless Carbine (2022)',
+    universe: 'ALIEN',
+    faction: 'Union of Progressive Peoples (2022)',
+    originMedia: 'Alien: Colony War',
+    sourceMedia: 'Alien: Colony War (2022)',
+    year: 2022,
+    category: 'KINETIC_ASSAULT_CARBINE',
+    caliber: 'Munition sans étui 5.45x39mm télescopée à propulseur solide',
+    damageType: 'kinetic_penetrating',
+    damage: 58,
+    effectiveRangeMeters: 80,
+    rangeM: 80,
+    rateOfFire: '750 cps/min',
+    fireRate: '750 cps/min',
+    specialEffect: 'Fiabilité totale en milieu sous vide et poussiéreux, tirs précis en rafales courtes de trois coups',
+    wieldedBy: 'Troupes de choc spatiales et commandos de l\'UPP',
+    yautjaCounterplay: 'Manoeuvrer par les conduits supérieurs pour déjouer le tir croisé discipliné de l\'escouade UPP et les attaquer au corps à corps.',
+    counterplay: 'Manoeuvrer par les conduits supérieurs pour déjouer le tir croisé discipliné de l\'escouade UPP et les attaquer au corps à corps.',
+    description: 'Carabine d\'infanterie spatiale standard de l\'Union des Peuples Progressistes, robuste et fiable dans les pires environnements contaminés.'
+  },
+  {
+    id: 'wpn_delacroix_harada_needle_pistol',
+    name: 'Harada Cyber-Needle Flechette Pistol (1993)',
+    universe: 'AVP',
+    faction: 'Toyo Harada Zaibatsu (1993)',
+    originMedia: 'AVP: Deadliest of the Species',
+    sourceMedia: 'AVP: Deadliest of the Species (1993)',
+    year: 1993,
+    category: 'CYBERNETIC_FLECHETTE',
+    caliber: 'Fléchettes en céramique et monofilament empoisonnées à la neurotoxine synthétique',
+    damageType: 'flechette_neurotoxin',
+    damage: 70,
+    effectiveRangeMeters: 45,
+    rangeM: 45,
+    rateOfFire: 'Tir semi-automatique rapide (180 cps/min)',
+    fireRate: '180 cps/min',
+    specialEffect: 'Perce les interstices d\'armure et ralentit la motricité de la cible en attaquant son système nerveux',
+    wieldedBy: 'Caryn Delacroix, Agents secrets du Zaibatsu Harada',
+    yautjaCounterplay: 'Activer la grille de défense énergétique ou dévier les fléchettes légères avec le combi-stick avant d\'engager l\'opérateur.',
+    counterplay: 'Activer la grille de défense énergétique ou dévier les fléchettes légères avec le combi-stick avant d\'engager l\'opérateur.',
+    description: 'Pistolet de poing compact haut de gamme tirant des grappes de micro-fléchettes monomoléculaires conçues pour paralyser instantanément les cibles organiques.'
+  },
+  {
+    id: 'wpn_killer_clan_blaster_carbine',
+    name: 'Killer Clan Scavenged Blaster Carbine (2010)',
+    universe: 'AVP',
+    faction: 'Renegade Killer Clan (2010)',
+    originMedia: 'AVP: Three World War',
+    sourceMedia: 'AVP: Three World War (2010)',
+    year: 2010,
+    category: 'YAUTJA_HYBRID_BLASTER',
+    caliber: 'Décharges de plasma instable alimentées par cellules énergétiques pillées',
+    damageType: 'plasma_kinetic_unstable',
+    damage: 82,
+    effectiveRangeMeters: 65,
+    rangeM: 65,
+    rateOfFire: '240 impulsions instables/min',
+    fireRate: '240 impulsions/min',
+    specialEffect: 'Explosions de plasma chaotiques créant des éclats métalliques déchirants au point d\'impact',
+    wieldedBy: 'Guerriers renégats du Killer Clan sur Caparis VII',
+    yautjaCounterplay: 'Exploiter l\'instabilité de l\'arme pour la surcharger à distance avec un projectile électromagnétique du filet de combat.',
+    counterplay: 'Exploiter l\'instabilité de l\'arme pour la surcharger à distance avec un projectile électromagnétique du filet de combat.',
+    description: 'Carabine blaster forgée à partir de pièces d\'armement Yautja pillées et modifiées de manière sacrilège par les renégats du Killer Clan.'
   }
 ]);
 

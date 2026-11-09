@@ -1358,7 +1358,7 @@ export function getSquadLogo(squadId, size = 64) {
   }
 
   // 12. Super Predators Berserkers (Predators 2010)
-  if (id.includes('berserkers') || id.includes('super_clan')) {
+  if ((id.includes('berserkers') && !id.includes('nemesis')) || id.includes('super_clan')) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-berserker" role="img" aria-label="Insigne Clan Berserker">
         <circle cx="40" cy="40" r="35" fill="#1a0505" stroke="#d50000" stroke-width="2.5" />
@@ -2321,7 +2321,7 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
-  if (id.includes('avp_killer_clan_wardogs') || id.includes('killer_clan') || id.includes('wardogs')) {
+  if (id.includes('avp_killer_clan_wardogs') || (id.includes('killer_clan') && !id.includes('three_world')) || id.includes('wardogs')) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-wardogs" role="img" aria-label="Insigne Chiens de Guerre Killer Clan">
         <polygon points="40,8 70,22 70,58 40,74 10,58 10,22" fill="#1a120c" stroke="#ea580c" stroke-width="2.5" />
@@ -2439,6 +2439,183 @@ export function getSquadLogo(squadId, size = 64) {
         <path d="M26,38 L32,38 M48,38 L54,38 M40,24 L40,30 M40,46 L40,52" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" />
         <polygon points="40,34 44,42 36,42" fill="#facc15" />
         <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="900" fill="#e9d5ff" letter-spacing="0.8" text-anchor="middle">WEB RIGGERS</text>
+      </svg>
+    `.trim();
+  }
+
+  // --- ESCADRONS VAGUE 12 (Prompt & Expansions) ---
+  if (id.includes('hunters_ii_afghan') || (id.includes('hunters') && id.includes('afghan')) || id.includes('afghan')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-afghan" role="img" aria-label="Insigne Predator Hunters II Afghanistan">
+        <!-- Fond circulaire glace & roche -->
+        <circle cx="40" cy="40" r="36" fill="#08131d" stroke="#38bdf8" stroke-width="2.5" />
+        <!-- Aiguilles de glace / Frost spikes arrière-plan -->
+        <polygon points="40,8 43,22 37,22" fill="#7dd3fc" opacity="0.7" />
+        <polygon points="18,18 25,28 20,29" fill="#bae6fd" opacity="0.6" />
+        <polygon points="62,18 60,29 55,28" fill="#bae6fd" opacity="0.6" />
+        <!-- Pics escarpés montagneux afghans (crags) -->
+        <polygon points="12,54 28,26 44,54" fill="#1e293b" stroke="#64748b" stroke-width="1.2" />
+        <polygon points="28,26 34,36 28,38 24,34" fill="#f1f5f9" />
+        <polygon points="32,54 50,22 68,54" fill="#0f172a" stroke="#64748b" stroke-width="1.2" />
+        <polygon points="50,22 56,32 50,35 45,30" fill="#f1f5f9" />
+        <polygon points="24,54 40,32 56,54" fill="#1e293b" opacity="0.85" />
+        <!-- Spicules de givre inférieurs -->
+        <path d="M16,52 L22,46 L28,52 M52,52 L58,46 L64,52" stroke="#38bdf8" stroke-width="1.4" fill="none" />
+        <!-- Réticule de sniper & visée télémétrique -->
+        <circle cx="40" cy="38" r="17" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,2" />
+        <circle cx="40" cy="38" r="7" fill="none" stroke="#ef4444" stroke-width="1.2" />
+        <line x1="18" y1="38" x2="62" y2="38" stroke="#ef4444" stroke-width="1.4" stroke-linecap="round" />
+        <line x1="40" y1="16" x2="40" y2="60" stroke="#ef4444" stroke-width="1.4" stroke-linecap="round" />
+        <circle cx="40" cy="38" r="2.2" fill="#ef4444" />
+        <!-- Graduations de visée sniper (elevation ticks) -->
+        <line x1="40" y1="26" x2="44" y2="26" stroke="#38bdf8" stroke-width="1.2" />
+        <line x1="40" y1="32" x2="43" y2="32" stroke="#38bdf8" stroke-width="1.2" />
+        <line x1="40" y1="44" x2="43" y2="44" stroke="#38bdf8" stroke-width="1.2" />
+        <line x1="40" y1="50" x2="44" y2="50" stroke="#38bdf8" stroke-width="1.2" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.1" font-weight="900" fill="#7dd3fc" letter-spacing="0.8" text-anchor="middle">HUNTERS AFGHAN</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('hunters_iii_guatemala') || (id.includes('hunters') && id.includes('guatemala')) || id.includes('guatemala')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-guatemala" role="img" aria-label="Insigne Predator Hunters III Guatemala">
+        <!-- Fond circulaire forêt maya -->
+        <circle cx="40" cy="40" r="36" fill="#041a10" stroke="#10b981" stroke-width="2.5" />
+        <!-- Pyramide à degrés maya stylisée (stepped pyramid glyph) -->
+        <polygon points="36,16 44,16 46,20 34,20" fill="#065f46" stroke="#34d399" stroke-width="1" />
+        <polygon points="32,20 48,20 51,26 29,26" fill="#047857" stroke="#34d399" stroke-width="1" />
+        <polygon points="27,26 53,26 57,33 23,33" fill="#065f46" stroke="#34d399" stroke-width="1" />
+        <polygon points="21,33 59,33 63,41 17,41" fill="#044e3b" stroke="#34d399" stroke-width="1" />
+        <!-- Escalier central du temple -->
+        <line x1="40" y1="16" x2="40" y2="41" stroke="#a7f3d0" stroke-width="1.8" />
+        <!-- Machettes de jungle croisées (crossed jungle machetes) -->
+        <path d="M16,56 L54,20 L58,23 L22,60 Z" fill="#94a3b8" stroke="#f1f5f9" stroke-width="1" />
+        <path d="M16,56 L12,61 L15,64 L19,59 Z" fill="#78350f" />
+        <path d="M64,56 L26,20 L22,23 L58,60 Z" fill="#94a3b8" stroke="#f1f5f9" stroke-width="1" />
+        <path d="M64,56 L68,61 L65,64 L61,59 Z" fill="#78350f" />
+        <!-- Crâne de jade sculpté (green jade skull) -->
+        <ellipse cx="40" cy="38" rx="10" ry="11" fill="#10b981" stroke="#a7f3d0" stroke-width="1.6" />
+        <path d="M34,44 L46,44 L43,50 L37,50 Z" fill="#059669" stroke="#a7f3d0" stroke-width="1.2" />
+        <!-- Orbites et glyphes de jade -->
+        <circle cx="36" cy="36" r="2.8" fill="#022c22" /><circle cx="44" cy="36" r="2.8" fill="#022c22" />
+        <polygon points="40,40 38,43 42,43" fill="#022c22" />
+        <line x1="39" y1="46" x2="39" y2="49" stroke="#022c22" stroke-width="1" />
+        <line x1="41" y1="46" x2="41" y2="49" stroke="#022c22" stroke-width="1" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.1" font-weight="900" fill="#6ee7b7" letter-spacing="0.8" text-anchor="middle">GUATEMALA '20</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('nemesis_berserkers') || (id.includes('nemesis') && id.includes('berserker'))) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-nemesisberserkers" role="img" aria-label="Insigne Nemesis Berserkers MAX Exosquelette">
+        <!-- Châssis blindé hexagonal lourd -->
+        <polygon points="40,6 72,22 72,58 40,74 8,58 8,22" fill="#140909" stroke="#ea580c" stroke-width="2.5" />
+        <!-- Flammes et cœur de réacteur en fusion (blazing reactor forge) -->
+        <circle cx="40" cy="38" r="17" fill="#431407" stroke="#f97316" stroke-width="1.8" />
+        <path d="M34,44 Q40,24 46,44 Q40,34 34,44 Z" fill="#ef4444" opacity="0.8" />
+        <circle cx="40" cy="38" r="8" fill="#fbbf24" opacity="0.9" />
+        <circle cx="40" cy="38" r="4" fill="#fffbeb" />
+        <!-- Visière cybernétique lourde M.A.X. (cyber-visor) -->
+        <polygon points="26,24 54,24 58,34 22,34" fill="#1f2937" stroke="#ef4444" stroke-width="1.8" />
+        <rect x="25" y="27" width="30" height="4.5" rx="1" fill="#dc2626" />
+        <line x1="27" y1="29.2" x2="53" y2="29.2" stroke="#fef2f2" stroke-width="1.2" />
+        <!-- Dents et grille en fer industriel (industrial iron teeth) -->
+        <path d="M26,45 L54,45 L50,56 L30,56 Z" fill="#334155" stroke="#94a3b8" stroke-width="1.4" />
+        <polygon points="31,45 33,52 35,45" fill="#f1f5f9" />
+        <polygon points="37,45 39,53 41,45" fill="#f1f5f9" />
+        <polygon points="43,45 45,53 47,45" fill="#f1f5f9" />
+        <polygon points="34,56 36,49 38,56" fill="#cbd5e1" />
+        <polygon points="40,56 42,49 44,56" fill="#cbd5e1" />
+        <polygon points="46,56 48,49 50,56" fill="#cbd5e1" />
+        <!-- Blindage et rivets hydrauliques -->
+        <circle cx="16" cy="28" r="1.8" fill="#ea580c" /><circle cx="64" cy="28" r="1.8" fill="#ea580c" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.0" font-weight="900" fill="#fdba74" letter-spacing="0.8" text-anchor="middle">NEMESIS M.A.X.</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('shan_shen_guards') || id.includes('shan_shen')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-shanshen" role="img" aria-label="Insigne Gardes Bio-Confinement Shan Shen">
+        <!-- Fond circulaire zone de confinement pétrochimique -->
+        <circle cx="40" cy="40" r="36" fill="#140f04" stroke="#eab308" stroke-width="2.5" />
+        <!-- Volutes de spores toxiques (spore cloud plumes) -->
+        <path d="M24,34 Q20,20 32,18 Q40,14 44,22 Q54,18 56,28 Q62,34 52,38 Q42,42 30,38 Z" fill="#581c87" opacity="0.5" />
+        <circle cx="28" cy="24" r="3" fill="#a855f7" opacity="0.7" />
+        <circle cx="50" cy="22" r="3.5" fill="#c084fc" opacity="0.6" />
+        <circle cx="38" cy="18" r="2.2" fill="#4ade80" opacity="0.8" />
+        <!-- Derrick de raffinerie industrielle (refinery derrick) -->
+        <line x1="40" y1="14" x2="30" y2="52" stroke="#94a3b8" stroke-width="1.8" />
+        <line x1="40" y1="14" x2="50" y2="52" stroke="#94a3b8" stroke-width="1.8" />
+        <line x1="33" y1="40" x2="47" y2="40" stroke="#94a3b8" stroke-width="1.4" />
+        <line x1="35" y1="30" x2="45" y2="30" stroke="#94a3b8" stroke-width="1.4" />
+        <line x1="37" y1="20" x2="43" y2="20" stroke="#94a3b8" stroke-width="1.4" />
+        <line x1="33" y1="40" x2="45" y2="30" stroke="#64748b" stroke-width="1" />
+        <line x1="47" y1="40" x2="35" y2="30" stroke="#64748b" stroke-width="1" />
+        <!-- Losange de danger bio-confinement (hazard diamond) -->
+        <polygon points="40,24 55,39 40,54 25,39" fill="#18181b" stroke="#f59e0b" stroke-width="2" />
+        <polygon points="40,28 51,39 40,50 29,39" fill="#713f12" opacity="0.8" />
+        <!-- Trèfle biohazard stylisé -->
+        <circle cx="40" cy="35" r="3.2" fill="#facc15" />
+        <circle cx="36" cy="42" r="3.2" fill="#facc15" />
+        <circle cx="44" cy="42" r="3.2" fill="#facc15" />
+        <circle cx="40" cy="39" r="2" fill="#18181b" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.1" font-weight="900" fill="#fef08a" letter-spacing="0.8" text-anchor="middle">SHAN SHEN GUARD</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('delacroix_samara') || (id.includes('samara') && id.includes('delacroix')) || id.includes('samara')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-delacroixsamara" role="img" aria-label="Insigne Delacroix Station Orbitale Samara">
+        <!-- Fond circulaire espace orbital & pourpre zaibatsu -->
+        <circle cx="40" cy="40" r="36" fill="#0d061c" stroke="#eab308" stroke-width="2.5" />
+        <!-- Arche d'habitat en anneau orbital Samara (orbital ring habitat arch) -->
+        <path d="M14,46 C16,22 64,22 66,46" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
+        <path d="M16,46 C18,25 62,25 64,46" fill="none" stroke="#bae6fd" stroke-width="1.2" stroke-dasharray="3,2" />
+        <rect x="36" y="22" width="8" height="4" rx="1" fill="#0284c7" stroke="#e0f2fe" stroke-width="1" />
+        <circle cx="28" cy="27" r="1.5" fill="#facc15" /><circle cx="52" cy="27" r="1.5" fill="#facc15" />
+        <!-- Silhouette Big Mama Predator (bio-masque couronné & dreadlocks) -->
+        <path d="M34,32 L46,32 L50,46 L40,56 L30,46 Z" fill="#2e1065" stroke="#ec4899" stroke-width="1.6" />
+        <!-- Dreadlocks de Big Mama & perles d'honneur dorées -->
+        <path d="M30,36 C24,42 22,52 26,58 M50,36 C56,42 58,52 54,58" stroke="#a21caf" stroke-width="2" fill="none" stroke-linecap="round" />
+        <circle cx="24" cy="48" r="1.5" fill="#facc15" /><circle cx="56" cy="48" r="1.5" fill="#facc15" />
+        <!-- Fentes de vision de Big Mama -->
+        <line x1="35" y1="38" x2="38" y2="41" stroke="#f43f5e" stroke-width="1.5" />
+        <line x1="45" y1="38" x2="42" y2="41" stroke="#f43f5e" stroke-width="1.5" />
+        <!-- Blason doré zaibatsu Delacroix (gold zaibatsu crest) -->
+        <polygon points="40,46 45,52 40,58 35,52" fill="#eab308" stroke="#fef08a" stroke-width="1" />
+        <polygon points="40,49 43,52 40,55 37,52" fill="#713f12" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.0" font-weight="900" fill="#fde047" letter-spacing="0.8" text-anchor="middle">SAMARA DELACROIX</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('three_world_killer_clan') || (id.includes('three_world') && id.includes('killer'))) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-threeworldkiller" role="img" aria-label="Insigne Killer Clan Three World War">
+        <!-- Bouclier de guerre octogonal Killer Clan -->
+        <polygon points="40,6 72,20 72,60 40,74 8,60 8,20" fill="#180404" stroke="#dc2626" stroke-width="2.5" />
+        <!-- Chaînes de bio-cage de capture xéno (bio-cage chains) -->
+        <path d="M14,24 L24,34 M66,24 L56,34 M14,56 L24,46 M66,56 L56,46" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" />
+        <circle cx="19" cy="29" r="2.5" fill="none" stroke="#cbd5e1" stroke-width="1.2" />
+        <circle cx="61" cy="29" r="2.5" fill="none" stroke="#cbd5e1" stroke-width="1.2" />
+        <circle cx="19" cy="51" r="2.5" fill="none" stroke="#cbd5e1" stroke-width="1.2" />
+        <circle cx="61" cy="51" r="2.5" fill="none" stroke="#cbd5e1" stroke-width="1.2" />
+        <!-- Collier à pointes barbelé (spiked collar) -->
+        <ellipse cx="40" cy="52" rx="18" ry="6" fill="#334155" stroke="#94a3b8" stroke-width="1.4" />
+        <polygon points="26,52 22,57 27,55" fill="#f87171" />
+        <polygon points="34,55 33,61 37,57" fill="#f87171" />
+        <polygon points="46,55 47,61 43,57" fill="#f87171" />
+        <polygon points="54,52 58,57 53,55" fill="#f87171" />
+        <!-- Crâne sanguinaire à défenses acérées (blood-red jagged tusk skull) -->
+        <polygon points="32,18 40,24 48,18 52,36 40,48 28,36" fill="#7f1d1d" stroke="#ef4444" stroke-width="1.8" />
+        <!-- Défenses recourbées massives (jagged tusks) -->
+        <path d="M28,34 Q20,38 22,48 Q26,44 30,40 Z" fill="#fee2e2" stroke="#ef4444" stroke-width="1" />
+        <path d="M52,34 Q60,38 58,48 Q54,44 50,40 Z" fill="#fee2e2" stroke="#ef4444" stroke-width="1" />
+        <!-- Cornes et orbites démoniaques -->
+        <polygon points="32,18 26,12 30,22" fill="#b91c1c" />
+        <polygon points="48,18 54,12 50,22" fill="#b91c1c" />
+        <circle cx="35" cy="32" r="3" fill="#000000" /><circle cx="45" cy="32" r="3" fill="#000000" />
+        <circle cx="35" cy="32" r="1.2" fill="#f87171" /><circle cx="45" cy="32" r="1.2" fill="#f87171" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.1" font-weight="900" fill="#fca5a5" letter-spacing="0.8" text-anchor="middle">KILLER CLAN 3WW</text>
       </svg>
     `.trim();
   }

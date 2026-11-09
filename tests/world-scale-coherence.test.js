@@ -414,6 +414,19 @@ test('HuntNPC getProceduralPostureTelemetry and lastDiegeticCue track FSM states
     assert.equal(recoilTelemetry.isHeavyRecoil, true);
     assert.equal(recoilTelemetry.lastDiegeticCue, 'heavy_recoil_flinch');
     assert.ok(rifleman._rigParts.torso.rotation.x < 0, 'torso must pitch backward on heavy recoil');
+
+    // 7. Heavy suppression & close-range plasma fire: lateral evasion & amplified flanking stride
+    rifleman.triggerSuppression(2.5);
+    rifleman.transitionTo('flank', 'suppression_flank');
+    const suppressedFlank = rifleman.getProceduralPostureTelemetry();
+    assert.equal(suppressedFlank.isUnderSuppression, true);
+    assert.ok(suppressedFlank.flankStrideRatio > flankTelemetry.flankStrideRatio, 'flanking stride must accelerate under heavy suppression');
+    assert.ok(suppressedFlank.lateralEvasionAngleRad !== 0, 'lateral evasion angle must be non-zero under suppression');
+
+    rifleman.triggerClosePlasmaFire(2.5);
+    const plasmaTelemetry = rifleman.getProceduralPostureTelemetry();
+    assert.equal(plasmaTelemetry.isClosePlasma, true);
+    assert.ok(plasmaTelemetry.lateralEvasionAngleRad !== 0, 'lateral evasion angle must react to close plasma fire');
   } finally {
     rifleman.dispose();
     xeno.dispose();
@@ -640,4 +653,97 @@ test('AudioSynthesizer procedural Vague 11 SFX methods execute safely in headles
   assert.ok(riveter.thudImpactStartHz > riveter.thudImpactEndHz);
   assert.ok(riveter.durationSeconds > 0);
   assert.equal(riveter.played, false);
+});
+
+test('Vague 12 canonical NPC weapons resolve to rich ballistic and acoustic profiles', () => {
+  const vague12Weapons = [
+    {
+      id: 'wpn_hunters_arctic_anti_materiel_50',
+      archetype: 'anti_materiel_sniper',
+      damage: 55,
+      rangeM: 140,
+      soundRadiusM: 120,
+      projectileColor: 0xffeeaa,
+    },
+    {
+      id: 'wpn_narco_quad_drum_mg',
+      archetype: 'quad_drum_heavy_mg',
+      damage: 26,
+      rangeM: 65,
+      soundRadiusM: 95,
+      projectileColor: 0xffaa00,
+    },
+    {
+      id: 'wpn_berserker_max_plasma_repeater',
+      archetype: 'rotary_plasma_repeater',
+      damage: 48,
+      rangeM: 75,
+      soundRadiusM: 90,
+      projectileColor: 0x00d4ff,
+    },
+    {
+      id: 'wpn_upp_ak120_infantry_carbine',
+      archetype: 'caseless_assault_carbine',
+      damage: 27,
+      rangeM: 55,
+      soundRadiusM: 70,
+      projectileColor: 0xffdd55,
+    },
+    {
+      id: 'wpn_delacroix_harada_needle_pistol',
+      archetype: 'monofilament_needle_pistol',
+      damage: 30,
+      rangeM: 30,
+      soundRadiusM: 25,
+      projectileColor: 0x9b5de5,
+    },
+    {
+      id: 'wpn_killer_clan_blaster_carbine',
+      archetype: 'salvaged_blaster_carbine',
+      damage: 44,
+      rangeM: 60,
+      soundRadiusM: 85,
+      projectileColor: 0xff2244,
+    },
+  ];
+
+  for (const expected of vague12Weapons) {
+    const profile = getNpcWeaponProfile(expected.id);
+    assert.ok(profile && typeof profile === 'object', `${expected.id} must resolve to a profile object`);
+    assert.equal(profile.id, expected.id);
+    assert.equal(profile.archetype, expected.archetype);
+    assert.equal(profile.damage, expected.damage);
+    assert.equal(profile.rangeM, expected.rangeM);
+    assert.equal(profile.soundRadiusM, expected.soundRadiusM);
+    assert.equal(profile.projectileColor, expected.projectileColor);
+    assert.ok(profile.cooldown > 0, `${expected.id} must have non-zero cooldown`);
+    assert.ok(typeof profile.cadence === 'string' && profile.cadence.length > 0);
+  }
+});
+
+test('AudioSynthesizer procedural Vague 12 SFX methods execute safely in headless Node environment', () => {
+  const boom = audioSynth.playAntiMaterielHeavyBoreBoom();
+  assert.ok(boom && boom.event === 'anti_materiel_heavy_bore_boom');
+  assert.ok(boom.boomFundamentalHz > 0);
+  assert.ok(boom.supersonicCrackCutoffHz > boom.boomFundamentalHz);
+  assert.ok(boom.brassClinkHz > 0);
+  assert.ok(boom.mountainEchoDelaySeconds > 0);
+  assert.ok(boom.durationSeconds > 0);
+  assert.equal(boom.played, false);
+
+  const barrage = audioSynth.playMaxPlasmaRotaryBarrage();
+  assert.ok(barrage && barrage.event === 'max_plasma_rotary_barrage');
+  assert.ok(barrage.motorSpinupEndHz > barrage.motorSpinupStartHz);
+  assert.ok(barrage.plasmaPulseFreqHz > 0);
+  assert.ok(barrage.inductiveHumHz > 0);
+  assert.ok(barrage.durationSeconds > 0);
+  assert.equal(barrage.played, false);
+
+  const flechette = audioSynth.playFlechetteNeedleHiss();
+  assert.ok(flechette && flechette.event === 'flechette_needle_hiss');
+  assert.ok(flechette.gasWhisperCutoffHz > 0);
+  assert.ok(flechette.needleZipEndHz > flechette.needleZipStartHz);
+  assert.ok(flechette.monofilamentThudHz > 0);
+  assert.ok(flechette.durationSeconds > 0);
+  assert.equal(flechette.played, false);
 });

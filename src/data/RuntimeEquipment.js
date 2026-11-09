@@ -608,6 +608,36 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics', 'comicsDarkHorse1989']), behavior: 'whip',
     modifiers: Object.freeze({ damageMultiplier: 1.32, rangeMultiplier: 1.3, shockDurationSeconds: 2.5 }),
   }),
+  Object.freeze({
+    id: 'yautja_wpn_berserker_wrist_shredder', armorPresetId: 'berserker_2010', baseWeaponId: 'wristblades', name: 'Lames Déchiqueteuses Hydrauliques de Nemesis (Aliens: Berserker 1995)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['comicsDarkHorse1989', 'aliens1986']), behavior: 'rapid_claw',
+    modifiers: Object.freeze({ damageMultiplier: 1.42, hydraulicImpactBonus: 28, bleedDps: 24 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_big_mama_ceremonial_naginata', armorPresetId: 'cleopatra_hg', baseWeaponId: 'glaive', name: 'Naginata Cérémonielle Dorée de Big Mama (AVP: Deadliest of the Species 1993)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics', 'comicsDarkHorse1989']), behavior: 'glaive',
+    modifiers: Object.freeze({ damageMultiplier: 1.48, energyConduitCutBonus: 32, reachMultiplier: 1.35 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_killer_clan_dark_burner', armorPresetId: 'mr_black_hg', baseWeaponId: 'plasmacaster_single', name: 'Brûleur Obscur Surchargé du Killer Clan (AVP: Three World War 2010)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics', 'comicsDarkHorse1989']), behavior: 'plasma',
+    modifiers: Object.freeze({ damageMultiplier: 1.52, thermalSplashRadiusMultiplier: 1.45, thermalBurnDps: 30 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_theta_hunting_scythe', armorPresetId: 'feral_2022', baseWeaponId: 'combi_stick', name: 'Faucille de Traque Composite de Theta (Predator: The Last Hunt 2023)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['predatorArchives', 'thePredator2018']), behavior: 'spear_thrust',
+    modifiers: Object.freeze({ damageMultiplier: 1.36, criticalStrikeMultiplier: 1.55, armorBypassRatio: 0.35 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_three_world_war_hound_leash', armorPresetId: 'tracker_2010', baseWeaponId: 'whip_thorns', name: 'Laisse Électro-Filamentaire de Domestication (AVP: Three World War 2010)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics', 'comicsDarkHorse1989']), behavior: 'whip',
+    modifiers: Object.freeze({ damageMultiplier: 1.34, neuralShockDurationSeconds: 3.2, snareRadiusMultiplier: 1.25 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_inferno_pyro_disc', armorPresetId: 'city_1990', baseWeaponId: 'smart_disc', name: 'Disque Incendiaire aux Deux Injecteurs de Thermite (Alien: Inferno\'s Fall 2022)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['aliensFireteamElite2021', 'comicsDarkHorse1989']), behavior: 'returning_disc',
+    modifiers: Object.freeze({ damageMultiplier: 1.44, thermiteBurnDps: 28, dualThermiteInjectors: true }),
+  }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);
 

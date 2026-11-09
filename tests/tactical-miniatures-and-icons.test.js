@@ -84,7 +84,7 @@ test('getSquadMiniatureSvg génère une formation de combat tactique pour toutes
   }
 });
 
-test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague 8, Vague 9, Vague 10, Vague 11 et l’ensemble du catalogue sans fallback générique', () => {
+test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague 8, Vague 9, Vague 10, Vague 11, Vague 12 et l’ensemble du catalogue sans fallback générique', () => {
   const genericClanLogo = getYautjaClanLogo(40);
   const vagueSquadIds = [
     // Vague 8
@@ -117,12 +117,20 @@ test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague
     'squad_alien_lv178_miners',
     'squad_avp_uss_ryushi_marines',
     'squad_avp_web_shipyard_riggers',
+    // Vague 12
+    'squad_pred_hunters_ii_afghan',
+    'squad_pred_hunters_iii_guatemala',
+    'squad_alien_nemesis_berserkers',
+    'squad_alien_shan_shen_guards',
+    'squad_avp_delacroix_samara',
+    'squad_avp_three_world_killer_clan',
   ];
 
   for (const squadId of vagueSquadIds) {
     const svg = getSquadLogo(squadId, 40);
     assert.ok(svg.startsWith('<svg'), `Le logo de ${squadId} doit être un SVG valide`);
     assert.notStrictEqual(svg, genericClanLogo, `L'escouade ${squadId} ne doit pas retomber sur le logo générique Yautja`);
+    assert.ok(!svg.includes('logo-squad-custom-'), `L'escouade ${squadId} ne doit pas retomber sur le fallback custom générique`);
   }
 
   // Vérification explicite des classes CSS d'insignes personnalisés Vague 10
@@ -140,6 +148,14 @@ test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague
   assert.ok(getSquadLogo('squad_alien_lv178_miners', 40).includes('logo-squad-lv178'));
   assert.ok(getSquadLogo('squad_avp_uss_ryushi_marines', 40).includes('logo-squad-ussryushi'));
   assert.ok(getSquadLogo('squad_avp_web_shipyard_riggers', 40).includes('logo-squad-webshipyard'));
+
+  // Vérification explicite des classes CSS d'insignes personnalisés Vague 12
+  assert.ok(getSquadLogo('squad_pred_hunters_ii_afghan', 40).includes('logo-squad-afghan'));
+  assert.ok(getSquadLogo('squad_pred_hunters_iii_guatemala', 40).includes('logo-squad-guatemala'));
+  assert.ok(getSquadLogo('squad_alien_nemesis_berserkers', 40).includes('logo-squad-nemesisberserkers'));
+  assert.ok(getSquadLogo('squad_alien_shan_shen_guards', 40).includes('logo-squad-shanshen'));
+  assert.ok(getSquadLogo('squad_avp_delacroix_samara', 40).includes('logo-squad-delacroixsamara'));
+  assert.ok(getSquadLogo('squad_avp_three_world_killer_clan', 40).includes('logo-squad-threeworldkiller'));
 
   for (const squad of SQUAD_ENCOUNTERS) {
     const svg = getSquadLogo(squad.id, 40);
@@ -315,16 +331,16 @@ test('getVaultCardMiniatureSvg génère une miniature vectorielle 180x76 avec en
   }
 });
 
-test('src/main.js intègre les icônes d’équipement vectorielles dans renderHuntLoadoutUI et synchronise les compteurs de filtres Vague 11', () => {
+test('src/main.js intègre les icônes d’équipement vectorielles dans renderHuntLoadoutUI et synchronise les compteurs de filtres Vague 12', () => {
   const mainSource = fs.readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
   assert.ok(mainSource.includes("import { getEquipmentIconSvg } from './ui/EquipmentIcons.js';"), 'main.js doit importer getEquipmentIconSvg');
   assert.ok(mainSource.includes('loadout-core-icon') && mainSource.includes('getEquipmentIconSvg(id, 16)'), 'main.js doit intégrer les icônes sur loadout-core-icon');
   assert.ok(mainSource.includes('loadout-item-icon') && mainSource.includes('getEquipmentIconSvg(item.id, 22)'), 'main.js doit intégrer les icônes sur loadout-item-icon');
   assert.ok(mainSource.includes('choice.append(input, icon, copy, cost)'), 'L\'icône doit être insérée avant l\'élément copy dans loadout-choice');
-  assert.ok(mainSource.includes('.squad-filter-pill') && mainSource.includes('102'), 'setupTaxonomyAndMultiverse doit synchroniser squad-filter-pill à 102');
-  assert.ok(mainSource.includes('.maps-filter-pill') && mainSource.includes('90'), 'setupTaxonomyAndMultiverse doit synchroniser maps-filter-pill à 90');
-  assert.ok(mainSource.includes('.weapons-filter-pill') && mainSource.includes('178'), 'setupTaxonomyAndMultiverse doit synchroniser weapons-filter-pill à 178');
-  assert.ok(mainSource.includes('.codex-filter-pill') && mainSource.includes('162'), 'setupTaxonomyAndMultiverse doit synchroniser codex-filter-pill à 162');
+  assert.ok(mainSource.includes('.squad-filter-pill') && mainSource.includes('108'), 'setupTaxonomyAndMultiverse doit synchroniser squad-filter-pill à 108');
+  assert.ok(mainSource.includes('.maps-filter-pill') && mainSource.includes('96'), 'setupTaxonomyAndMultiverse doit synchroniser maps-filter-pill à 96');
+  assert.ok(mainSource.includes('.weapons-filter-pill') && mainSource.includes('184'), 'setupTaxonomyAndMultiverse doit synchroniser weapons-filter-pill à 184');
+  assert.ok(mainSource.includes('.codex-filter-pill') && mainSource.includes('174'), 'setupTaxonomyAndMultiverse doit synchroniser codex-filter-pill à 174');
 });
 
 test('SharedReferenceVault intègre la miniature et l’icône de catégorie sur chaque carte de catalogue', async () => {
