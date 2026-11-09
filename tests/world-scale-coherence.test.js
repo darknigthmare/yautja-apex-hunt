@@ -406,6 +406,13 @@ test('HuntNPC getProceduralPostureTelemetry and lastDiegeticCue track FSM states
     xeno.takeDamage(50);
     assert.equal(xeno.lastDiegeticCue, 'xeno_acid_spray');
     assert.equal(xeno.getProceduralPostureTelemetry().lastDiegeticCue, 'xeno_acid_spray');
+
+    // 6. Heavy weapon recoil recovery flinch: backward torso tilt & heavy_recoil_flinch cue
+    rifleman.triggerHeavyRecoilFlinch(0.35);
+    const recoilTelemetry = rifleman.getProceduralPostureTelemetry();
+    assert.equal(recoilTelemetry.isHeavyRecoil, true);
+    assert.equal(recoilTelemetry.lastDiegeticCue, 'heavy_recoil_flinch');
+    assert.ok(rifleman._rigParts.torso.rotation.x < 0, 'torso must pitch backward on heavy recoil');
   } finally {
     rifleman.dispose();
     xeno.dispose();
@@ -427,6 +434,95 @@ test('AudioSynthesizer procedural Vague 9 SFX methods execute safely in headless
   assert.ok(ping && ping.event === 'acoustic_alert_ping');
   assert.ok(ping.primaryPingHz > 0);
   assert.ok(ping.durationSeconds > 0);
+});
+
+test('Vague 10 canonical NPC weapons resolve to rich ballistic and acoustic profiles', () => {
+  const vague10Weapons = [
+    {
+      id: 'wpn_nakai_desert_hunting_rifle',
+      archetype: 'bolt_action_hunting_rifle',
+      damage: 36,
+      rangeM: 140,
+      soundRadiusM: 92,
+      projectileColor: 0xffe066,
+    },
+    {
+      id: 'wpn_adolini_flintlock_1715',
+      archetype: 'black_powder_flintlock',
+      damage: 38,
+      rangeM: 20,
+      soundRadiusM: 85,
+      projectileColor: 0xffaa44,
+    },
+    {
+      id: 'wpn_romulus_f44aa_pulse_rifle',
+      archetype: 'smart_pulse_rifle',
+      damage: 22,
+      rangeM: 75,
+      soundRadiusM: 70,
+      projectileColor: 0xff4d6d,
+    },
+    {
+      id: 'wpn_berserker_max_autocannon',
+      archetype: 'heavy_motorized_autocannon',
+      damage: 46,
+      rangeM: 125,
+      soundRadiusM: 115,
+      projectileColor: 0xff3b00,
+    },
+    {
+      id: 'wpn_killer_clan_tusk_acid_spitter',
+      archetype: 'bio_pressurized_acid_spitter',
+      damage: 29,
+      rangeM: 28,
+      soundRadiusM: 44,
+      projectileColor: 0x70e000,
+    },
+    {
+      id: 'wpn_ryushi_ranch_harpoon_gun',
+      archetype: 'pneumatic_livestock_harpoon',
+      damage: 32,
+      rangeM: 38,
+      soundRadiusM: 36,
+      projectileColor: 0xc8d6e5,
+    },
+  ];
+
+  for (const expected of vague10Weapons) {
+    const profile = getNpcWeaponProfile(expected.id);
+    assert.ok(profile && typeof profile === 'object', `${expected.id} must resolve to a profile object`);
+    assert.equal(profile.id, expected.id);
+    assert.equal(profile.archetype, expected.archetype);
+    assert.equal(profile.damage, expected.damage);
+    assert.equal(profile.rangeM, expected.rangeM);
+    assert.equal(profile.soundRadiusM, expected.soundRadiusM);
+    assert.equal(profile.projectileColor, expected.projectileColor);
+    assert.ok(profile.cooldown > 0, `${expected.id} must have non-zero cooldown`);
+    assert.ok(typeof profile.cadence === 'string' && profile.cadence.length > 0);
+  }
+});
+
+test('AudioSynthesizer procedural Vague 10 SFX methods execute safely in headless Node environment', () => {
+  const cryoHiss = audioSynth.playCryoFreezeHiss();
+  assert.ok(cryoHiss && cryoHiss.event === 'cryo_freeze_hiss');
+  assert.ok(cryoHiss.highpassEndHz > cryoHiss.highpassStartHz);
+  assert.ok(cryoHiss.resonanceQ > 1);
+  assert.ok(cryoHiss.durationSeconds > 0);
+  assert.equal(cryoHiss.played, false);
+
+  const autocannon = audioSynth.playHeavyAutocannonBlast();
+  assert.ok(autocannon && autocannon.event === 'heavy_autocannon_blast');
+  assert.ok(autocannon.punchStartHz > autocannon.punchEndHz);
+  assert.ok(autocannon.subBassHz > 0);
+  assert.ok(autocannon.durationSeconds > 0);
+  assert.equal(autocannon.played, false);
+
+  const flintlock = audioSynth.playFlintlockIgnitionBoom();
+  assert.ok(flintlock && flintlock.event === 'flintlock_ignition_boom');
+  assert.ok(flintlock.boomStartHz > flintlock.boomEndHz);
+  assert.ok(flintlock.flashSizzleDuration > 0);
+  assert.ok(flintlock.durationSeconds > 0);
+  assert.equal(flintlock.played, false);
 });
 
 test('MegafaunaBoss.getBossDiegeticTelemetry reports canonical 5.5m scale and live combat state', () => {

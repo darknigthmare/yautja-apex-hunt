@@ -120,6 +120,69 @@
       box-shadow: inset 0 0 16px rgba(255, 215, 0, 0.14), 0 4px 18px rgba(0, 0, 0, 0.65);
     }
 
+    .card-miniature-box.vault-miniature,
+    .vault-miniature {
+      border-color: rgba(56, 189, 248, 0.38);
+      box-shadow: inset 0 0 16px rgba(56, 189, 248, 0.14), 0 4px 18px rgba(0, 0, 0, 0.65);
+    }
+
+    .content-catalog-card:hover .card-miniature-box.vault-miniature,
+    .content-catalog-card:hover .vault-miniature {
+      border-color: #38bdf8;
+      box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.28), 0 0 16px rgba(56, 189, 248, 0.35);
+    }
+
+    .content-card-category-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 6px;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    /* Loadout item and core vector equipment icons */
+    .loadout-core-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .loadout-core-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      vertical-align: middle;
+      filter: drop-shadow(0 0 4px rgba(255, 171, 0, 0.4));
+    }
+
+    .loadout-item-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      margin-right: 8px;
+      vertical-align: middle;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: drop-shadow(0 0 4px rgba(0, 229, 255, 0.25));
+    }
+
+    .loadout-choice:hover .loadout-item-icon,
+    .loadout-choice:focus-within .loadout-item-icon {
+      border-color: #00e5ff;
+      background: rgba(0, 229, 255, 0.16);
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.35);
+      filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.5));
+    }
+
     .taxonomy-card:hover .card-miniature-box.prey-miniature {
       border-color: #76ff03;
       box-shadow: inset 0 0 20px rgba(118, 255, 3, 0.25), 0 0 16px rgba(118, 255, 3, 0.35);
@@ -1138,10 +1201,10 @@
             <button type="button" class="scale-filter-pill" data-taxonomy-filter="moyen">MOYENNES (1,8 à &lt; 3 m)</button>
             <button type="button" class="scale-filter-pill" data-taxonomy-filter="petite">PETITES (0,5 à &lt; 1,8 m)</button>
             <button type="button" class="scale-filter-pill" data-taxonomy-filter="minuscule">MINUSCULES (&lt; 0,5 m)</button>
-            <button type="button" class="scale-filter-pill squad-filter-pill" data-taxonomy-filter="squads" style="border-color:#ff5252; color:#ff8a80;">⚔️ ESCOUADES & GROUPES (90)</button>
-            <button type="button" class="scale-filter-pill maps-filter-pill" data-taxonomy-filter="maps" style="border-color:#00e5ff; color:#80d8ff;">🗺️ CARTES & SECTEURS MÉDIA (78)</button>
-            <button type="button" class="scale-filter-pill weapons-filter-pill" data-taxonomy-filter="weapons" style="border-color:#ffd700; color:#ffe57f;">🔫 ARSENAL YAUTJA & PNJ (154)</button>
-            <button type="button" class="scale-filter-pill codex-filter-pill" data-taxonomy-filter="lore" style="border-color:#69f0ae; color:#b9f6ca;">📜 CODEX & DOMAINES LORE (138)</button>
+            <button type="button" class="scale-filter-pill squad-filter-pill" data-taxonomy-filter="squads" style="border-color:#ff5252; color:#ff8a80;">⚔️ ESCOUADES & GROUPES (96)</button>
+            <button type="button" class="scale-filter-pill maps-filter-pill" data-taxonomy-filter="maps" style="border-color:#00e5ff; color:#80d8ff;">🗺️ CARTES & SECTEURS MÉDIA (84)</button>
+            <button type="button" class="scale-filter-pill weapons-filter-pill" data-taxonomy-filter="weapons" style="border-color:#ffd700; color:#ffe57f;">🔫 ARSENAL YAUTJA & PNJ (166)</button>
+            <button type="button" class="scale-filter-pill codex-filter-pill" data-taxonomy-filter="lore" style="border-color:#69f0ae; color:#b9f6ca;">📜 CODEX & DOMAINES LORE (150)</button>
             <button type="button" class="scale-filter-pill universes-filter-pill" data-taxonomy-filter="universes" style="border-color:#e040fb; color:#ea80fc;">🌌 TIROIRS PAR UNIVERS (3)</button>
           </div>
           <div class="catalogue-search" role="search" aria-label="Rechercher une proie dans l’encyclopédie">

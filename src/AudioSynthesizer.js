@@ -36665,6 +36665,170 @@ class AudioSynthesizer {
     osc.stop(now + descriptor.durationSeconds + 0.01);
     return descriptor;
   }
+
+  playCryoFreezeHiss() {
+    const descriptor = {
+      event: 'cryo_freeze_hiss',
+      synthesis: 'nitrogen_vent_highpass_sweep',
+      highpassStartHz: 1800,
+      highpassEndHz: 5800,
+      resonanceQ: 4.8,
+      durationSeconds: 0.65,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const bufferSize = Math.max(1, Math.floor(this.ctx.sampleRate * descriptor.durationSeconds));
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i += 1) data[i] = (Math.random() * 2 - 1) * 0.7;
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(descriptor.highpassStartHz, now);
+    filter.frequency.exponentialRampToValueAtTime(descriptor.highpassEndHz, now + descriptor.durationSeconds);
+    filter.Q.setValueAtTime(descriptor.resonanceQ, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.01, now);
+    gain.gain.linearRampToValueAtTime(0.38, now + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.002, now + descriptor.durationSeconds);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+    return descriptor;
+  }
+
+  playHeavyAutocannonBlast() {
+    const descriptor = {
+      event: 'heavy_autocannon_blast',
+      synthesis: 'heavy_punch_subbass_detonation',
+      punchStartHz: 185,
+      punchEndHz: 36,
+      subBassHz: 48,
+      durationSeconds: 0.72,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const punchOsc = this.ctx.createOscillator();
+    const punchGain = this.ctx.createGain();
+
+    punchOsc.type = 'sawtooth';
+    punchOsc.frequency.setValueAtTime(descriptor.punchStartHz, now);
+    punchOsc.frequency.exponentialRampToValueAtTime(descriptor.punchEndHz, now + 0.16);
+
+    punchGain.gain.setValueAtTime(0.55, now);
+    punchGain.gain.exponentialRampToValueAtTime(0.003, now + 0.22);
+
+    punchOsc.connect(punchGain);
+    punchGain.connect(this.ctx.destination);
+    punchOsc.start(now);
+    punchOsc.stop(now + 0.25);
+
+    const subOsc = this.ctx.createOscillator();
+    const subGain = this.ctx.createGain();
+
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(descriptor.subBassHz, now);
+    subOsc.frequency.exponentialRampToValueAtTime(26, now + descriptor.durationSeconds);
+
+    subGain.gain.setValueAtTime(0.48, now);
+    subGain.gain.exponentialRampToValueAtTime(0.001, now + descriptor.durationSeconds);
+
+    subOsc.connect(subGain);
+    subGain.connect(this.ctx.destination);
+    subOsc.start(now);
+    subOsc.stop(now + descriptor.durationSeconds + 0.02);
+
+    const bufferSize = Math.max(1, Math.floor(this.ctx.sampleRate * 0.24));
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i += 1) data[i] = (Math.random() * 2 - 1) * 0.8;
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(620, now);
+    filter.frequency.exponentialRampToValueAtTime(140, now + 0.24);
+    filter.Q.setValueAtTime(2.2, now);
+
+    const blastGain = this.ctx.createGain();
+    blastGain.gain.setValueAtTime(0.5, now);
+    blastGain.gain.exponentialRampToValueAtTime(0.002, now + 0.24);
+
+    noise.connect(filter);
+    filter.connect(blastGain);
+    blastGain.connect(this.ctx.destination);
+    noise.start(now);
+
+    return descriptor;
+  }
+
+  playFlintlockIgnitionBoom() {
+    const descriptor = {
+      event: 'flintlock_ignition_boom',
+      synthesis: 'black_powder_flash_boom',
+      flashSizzleDuration: 0.12,
+      boomStartHz: 150,
+      boomEndHz: 30,
+      durationSeconds: 0.85,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const flashBufferSize = Math.max(1, Math.floor(this.ctx.sampleRate * descriptor.flashSizzleDuration));
+    const flashBuffer = this.ctx.createBuffer(1, flashBufferSize, this.ctx.sampleRate);
+    const flashData = flashBuffer.getChannelData(0);
+    for (let i = 0; i < flashBufferSize; i += 1) flashData[i] = (Math.random() * 2 - 1) * 0.6;
+
+    const flashNoise = this.ctx.createBufferSource();
+    flashNoise.buffer = flashBuffer;
+
+    const flashFilter = this.ctx.createBiquadFilter();
+    flashFilter.type = 'bandpass';
+    flashFilter.frequency.setValueAtTime(3200, now);
+    flashFilter.frequency.linearRampToValueAtTime(4800, now + descriptor.flashSizzleDuration);
+    flashFilter.Q.setValueAtTime(4.0, now);
+
+    const flashGain = this.ctx.createGain();
+    flashGain.gain.setValueAtTime(0.3, now);
+    flashGain.gain.exponentialRampToValueAtTime(0.005, now + descriptor.flashSizzleDuration);
+
+    flashNoise.connect(flashFilter);
+    flashFilter.connect(flashGain);
+    flashGain.connect(this.ctx.destination);
+    flashNoise.start(now);
+
+    const boomTime = now + 0.04;
+    const boomOsc = this.ctx.createOscillator();
+    const boomGain = this.ctx.createGain();
+
+    boomOsc.type = 'triangle';
+    boomOsc.frequency.setValueAtTime(descriptor.boomStartHz, boomTime);
+    boomOsc.frequency.exponentialRampToValueAtTime(descriptor.boomEndHz, boomTime + descriptor.durationSeconds);
+
+    boomGain.gain.setValueAtTime(0.01, now);
+    boomGain.gain.setValueAtTime(0.65, boomTime);
+    boomGain.gain.exponentialRampToValueAtTime(0.001, boomTime + descriptor.durationSeconds);
+
+    boomOsc.connect(boomGain);
+    boomGain.connect(this.ctx.destination);
+    boomOsc.start(boomTime);
+    boomOsc.stop(boomTime + descriptor.durationSeconds + 0.02);
+
+    return descriptor;
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();

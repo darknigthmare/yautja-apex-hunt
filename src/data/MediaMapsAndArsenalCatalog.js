@@ -1486,6 +1486,312 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     keyPreyIds: ['prey_ahab_elder_persée', 'prey_xeno_warrior'],
     heroSquadId: 'squad_avp_perses_fire_stone_crew',
     villainSquadId: 'squad_fire_and_stone_perses_crew_2014'
+  },
+  {
+    id: 'map_pred_corpse_creek_desert',
+    name: 'Corpse Creek — Désert Aride & Canyons du Nouveau-Mexique (1991)',
+    universe: 'PREDATOR',
+    originMedia: 'Predator: Big Game (Dark Horse Comics 1991)',
+    sourceMedia: 'Predator: Big Game (1991)',
+    sourceType: 'COMIC',
+    releaseYear: 1991,
+    year: 1991,
+    biomeId: 'desert',
+    biome: 'ARID_CANYON_DESERT',
+    recommendedBiomeLabel: 'Désert de Corpse Creek & Canyons du Nouveau-Mexique (Big Game 1991)',
+    weather: 'Chaleur accablante, vents de sable desséchants et mirages thermiques',
+    lighting: 'Soleil zénithal aveuglant et ombres nettes des failles rocheuses',
+    verticality: 'ÉLEVÉE (Parois rocheuses abruptes, promontoires de grès et lits de rivières asséchés)',
+    destructibility: 'Arbustes rabougris, blocs de grès instables et débris de campement militaire',
+    interactables: [
+      'Épave du transporteur militaire calciné',
+      'Points d\'eau saumâtre sous surplomb rocheux',
+      'Générateur de secours de la base radar'
+    ],
+    environmentSummary: 'Canyons arides et failles érodées de Corpse Creek au Nouveau-Mexique, théâtre de la confrontation caniculaire entre Enoch Nakai et un chasseur Yautja.',
+    description: 'Canyons arides et failles érodées de Corpse Creek au Nouveau-Mexique, théâtre de la confrontation caniculaire entre Enoch Nakai et un chasseur Yautja.',
+    tacticalNotes: 'La chaleur ambiante perturbe les capteurs infrarouges ordinaires ; exploiter les parois verticales pour bondir en embuscade depuis les hauteurs.',
+    dimensionsM: { width: 450, length: 500, height: 85 },
+    elevationRangeM: [-15, 70],
+    tacticalSectors: [
+      'Faille de Corpse Creek & Ravin Asséché',
+      'Périmètre de la Base Radar Fortifiée',
+      'Plateau Rocheux des Aigles Navajos',
+      'Grotte d\'Embuscade d\'Enoch Nakai'
+    ],
+    keyLandmarks: [
+      'Plateau sommital des vigies Navajos',
+      'Carcasse métallique du camion radar militaire',
+      'Gorge étroite de Corpse Creek'
+    ],
+    environmentalHazards: [
+      'Tempête de poussière réduisant la portée visuelle',
+      'Éboulis de roche friable sous le poids des combattants',
+      'Rayonnement thermique caniculaire saturant la vision infra-rouge'
+    ],
+    signatureHazards: [
+      'Chaleur accablante perturbant la furtivité thermique',
+      'Poussière abrasive pour les optiques'
+    ],
+    ambientProfile: 'Hurlement sourd du vent du désert, craquements de la roche chauffée à blanc et cris lointains de rapaces',
+    keyPreyIds: ['alien_base_billy_sole_tracker', 'prey_jungle_hunter_1987'],
+    heroSquadId: 'squad_pred_nakai_corpse_creek_scouts',
+    villainSquadId: null
+  },
+  {
+    id: 'map_pred_guinea_coast_1718',
+    name: 'Côte de Guinée — Baie des Pirates & Canopée Équatoriale (1718)',
+    universe: 'PREDATOR',
+    originMedia: 'Predator: 1718 (Dark Horse Comics 1996)',
+    sourceMedia: 'Predator: 1718 (1996)',
+    sourceType: 'COMIC',
+    releaseYear: 1996,
+    year: 1718,
+    biomeId: 'jungle',
+    biome: 'TROPICAL_COAST_JUNGLE',
+    recommendedBiomeLabel: 'Côte Tropicale de Guinée & Rade Flibustière (1718)',
+    weather: 'Brume marine chaude, ressac violent et moiteur équatoriale',
+    lighting: 'Crépuscule doré perçant la canopée et reflets des feux de camp sur le sable',
+    verticality: 'MOYENNE (Falaises côtières, mâtures de navires échoués et palétuviers enchevêtrés)',
+    destructibility: 'Canots d\'embarquement de flibuste, tonneaux de poudre noire et pontons de bois vermoulu',
+    interactables: [
+      'Barils de poudre noire explosifs des corsaires',
+      'Épave du brick flibustier échoué',
+      'Sentiers d\'embuscade à travers la mangrove'
+    ],
+    environmentSummary: 'Rivage tropical de Guinée en 1718 où le capitaine corsaire Raphael Adolini et Golden Angel combattirent dos à dos contre les mutins.',
+    description: 'Rivage tropical de Guinée en 1718 où le capitaine corsaire Raphael Adolini et Golden Angel combattirent dos à dos contre les mutins.',
+    tacticalNotes: 'La poudre noire et le sable humide imposent des duels rapprochés ; privilégier la mobilité dans les branches de palétuviers pour surprendre les pirates.',
+    dimensionsM: { width: 400, length: 420, height: 45 },
+    elevationRangeM: [-5, 40],
+    tacticalSectors: [
+      'Plage des Chaloupes & Débarcadère Corsaire',
+      'Campement de la Mutinerie sous les Palmiers',
+      'Falaises Calcaires de Guinée',
+      'Mangrove Épaisse & Palétuviers Gémissants'
+    ],
+    keyLandmarks: [
+      'Carcasse éventrée du brick pirate',
+      'Autel de pierre sous le banian centenaire',
+      'Feu de signalisation sur la pointe rocheuse'
+    ],
+    environmentalHazards: [
+      'Explosions spontanées de barils de poudre noire',
+      'Sables mouvants côtiers bordant la mangrove',
+      'Marée montante isolant les promontoires rocheux'
+    ],
+    signatureHazards: [
+      'Détonations de poudre noire inflammable',
+      'Moiteur tropicale saturant les lentilles'
+    ],
+    ambientProfile: 'Ressac régulier de l\'océan Atlantique, chants de marins avinés et détonations lointaines de mousquets',
+    keyPreyIds: ['alien_base_big_beard_voyageur_1719', 'prey_feral_predator_1719'],
+    heroSquadId: 'squad_pred_adolini_guinea_pirates',
+    villainSquadId: null
+  },
+  {
+    id: 'map_alien_renaissance_romulus_module',
+    name: 'Station Renaissance — Modules Romulus & Remus en Ruine (2024)',
+    universe: 'ALIEN',
+    originMedia: 'Alien: Romulus (20th Century Studios 2024)',
+    sourceMedia: 'Alien: Romulus (2024)',
+    sourceType: 'FILM',
+    releaseYear: 2024,
+    year: 2024,
+    biomeId: 'space_hulk',
+    biome: 'ABANDONED_ORBITAL_STATION',
+    recommendedBiomeLabel: 'Complexe Spatial Renaissance — Romulus / Remus (2024)',
+    weather: 'Gravité zéro intermittente, froid du vide spatial et vapeur cryogénique toxique',
+    lighting: 'Éclairage d\'urgence pourpre et rouge de décompression, reflets sur l\'acide',
+    verticality: 'TRÈS ÉLEVÉE (Puits de décompression verticaux, sas orbitaux et conduites à micro-gravité)',
+    destructibility: 'Portes de sécurité Weyland pressurisées, conduites de liquide cryogénique et baies vitrées d\'observation',
+    interactables: [
+      'Terminaux MU/TH/UR du synthétique Rook',
+      'Purgeurs de cryogénie libérant des brumes gelées',
+      'Sas de gravité artificielle inversable'
+    ],
+    environmentSummary: 'Complexe de recherche orbital Weyland-Yutani en déshérence dérivant vers les anneaux de Jackson, infesté de Facehuggers cryogénisés et surveillé par Rook.',
+    description: 'Complexe de recherche orbital Weyland-Yutani en déshérence dérivant vers les anneaux de Jackson, infesté de Facehuggers cryogénisés et surveillé par Rook.',
+    tacticalNotes: 'Les couloirs étroits et les puits à zéro gravité obligent à anticiper les trajectoires de bond ; l\'acide ronge les passerelles métalliques.',
+    dimensionsM: { width: 360, length: 520, height: 90 },
+    elevationRangeM: [-40, 50],
+    tacticalSectors: [
+      'Laboratoire de Cryogénie des Spécimens Z-01',
+      'Baie des Navettes d\'Amarrage du Corbelan',
+      'Conduit d\'Évacuation des Purges Romulus',
+      'Module Remus & Sanctuaire de Rook'
+    ],
+    keyLandmarks: [
+      'Caisson mère d\'extraction du liquide noir Z-01',
+      'Terminal scientifique de l\'officier Rook',
+      'Sas de largage du puits de gravité zéro'
+    ],
+    environmentalHazards: [
+      'Poches de dépressurisation explosive vers le vide',
+      'Flaques d\'acide xénomorphe perçant les ponts inférieurs',
+      'Jets de liquide cryo-réfrigérant à zéro absolu'
+    ],
+    signatureHazards: [
+      'Rupture barométrique de coque orbitale',
+      'Nuages d\'acide suspendus en micro-gravité'
+    ],
+    ambientProfile: 'Klaxons de décompression étouffés, échos de sifflements de vapeur pressurisée et couinements de facehuggers',
+    keyPreyIds: ['alien_base_rain_carradine_romulus_rebel', 'prey_xeno_drone_1979'],
+    heroSquadId: 'squad_alien_renaissance_salvagers',
+    villainSquadId: null
+  },
+  {
+    id: 'map_alien_hiveworld_red_grounds',
+    name: 'Monde Natal Xénomorphe — Terres de Conflit des Ruches Rouges (1991)',
+    universe: 'ALIEN',
+    originMedia: 'Aliens: Genocide (Dark Horse Comics 1991)',
+    sourceMedia: 'Aliens: Genocide (1991)',
+    sourceType: 'COMIC',
+    releaseYear: 1991,
+    year: 1991,
+    biomeId: 'hive_lv426',
+    biome: 'XENO_HIVEWORLD_BIOME',
+    recommendedBiomeLabel: 'Monde Natal Xénomorphe — Terres Écarlates (Genocide 1991)',
+    weather: 'Atmosphère soufrée corrosive, pluies d\'acide chaud et tempêtes d\'exuvies',
+    lighting: 'Lueur écarlate volcanique, vapeurs biochimiques fluorescentes et ombre des cathédrales de résine',
+    verticality: 'EXTRÊME (Piliers biomécaniques de résine de 100m, galeries souterraines et gouffres de ponte)',
+    destructibility: 'Murs de résine vivante suintante, cocons régénérants et piliers stalagmitiques d\'os',
+    interactables: [
+      'Puits d\'extraction de Gelée Royale pure',
+      'Poches d\'œufs écarlates de la Reine Mère',
+      'Geysers de vapeur soufrée à forte poussée'
+    ],
+    environmentSummary: 'Les plaines biomécaniques cyclopéennes du monde natal Xénomorphe où s\'affrontent des millions de guerriers des ruches noire et rouge.',
+    description: 'Les plaines biomécaniques cyclopéennes du monde natal Xénomorphe où s\'affrontent des millions de guerriers des ruches noire et rouge.',
+    tacticalNotes: 'La densité des proies xénomorphes est critique ; maintenir les distances d\'engagement sur les corniches surélevées pour éviter d\'être submergé.',
+    dimensionsM: { width: 600, length: 600, height: 120 },
+    elevationRangeM: [-60, 60],
+    tacticalSectors: [
+      'Frontière de Sang entre Ruches Noire et Rouge',
+      'Sanctuaire de la Reine Mère Écarlate',
+      'Gouffre de ponte des Drones Guerriers',
+      'Champs de Résine Fossilisée d\'Extraction Xeno-Zip'
+    ],
+    keyLandmarks: [
+      'Monolithe de résine de la Reine Mère',
+      'Fosse bouillonnante de gelée royale pure',
+      'Crête osseuse des batailles génocidaires'
+    ],
+    environmentalHazards: [
+      'Chutes de stalactites d\'os et de résine acide',
+      'Geysers d\'acide tellurique hautement corrosif',
+      'Nuées aveuglantes d\'exuvies xénomorphes en combustion'
+    ],
+    signatureHazards: [
+      'Brumes d\'acide pur rongeant le métal en secondes',
+      'Pulsations bio-acoustiques désorientantes de la ruche'
+    ],
+    ambientProfile: 'Claquements incessants de mandibules chitineuses, stridulations de millions de xénomorphes et grondement tellurique',
+    keyPreyIds: ['prey_xeno_warrior', 'prey_praetorian_obsidian_armored'],
+    heroSquadId: 'squad_alien_genocide_red_drones',
+    villainSquadId: null
+  },
+  {
+    id: 'map_avp_caparis_killer_ruins',
+    name: 'Caparis VII — Ruines Médiévales & Terres du Clan Tueur (2010)',
+    universe: 'AVP',
+    originMedia: 'Aliens vs. Predator: Three World War (Dark Horse Comics 2010)',
+    sourceMedia: 'AVP: Three World War (2010)',
+    sourceType: 'COMIC',
+    releaseYear: 2010,
+    year: 2010,
+    biomeId: 'genna_deathworld',
+    biome: 'FORTIFIED_ALIEN_RUINS',
+    recommendedBiomeLabel: 'Ruines de Caparis VII — Fief du Clan Tueur (Three World War 2010)',
+    weather: 'Orages magnétiques sombres, pluies de suie et éclairs continus',
+    lighting: 'Éclairs violets déchirant le ciel, torches primitives et lueurs de canons à plasma',
+    verticality: 'ÉLEVÉE (Donjons extraterrestres fortifiés, remparts de pierre noire et fosses aux bêtes)',
+    destructibility: 'Créneaux de défense en pierre sombre, cages métalliques de xénomorphes et ponts-levis suspendus',
+    interactables: [
+      'Charnières des chenils de xénomorphes captifs',
+      'Tourelles de surveillance plasma modifiées du Killer Clan',
+      'Catapultes de carcasses d\'animaux acides'
+    ],
+    environmentSummary: 'La forteresse antique de Caparis VII où les renégats du Killer Clan dressent des xénomorphes à défenses et affrontent l\'alliance de Machiko.',
+    description: 'La forteresse antique de Caparis VII où les renégats du Killer Clan dressent des xénomorphes à défenses et affrontent l\'alliance de Machiko.',
+    tacticalNotes: 'Les chiens de guerre xénomorphes attaquent en meute coordonnée par des sifflets Yautja ; éliminer les dresseurs du Killer Clan en priorité.',
+    dimensionsM: { width: 480, length: 500, height: 75 },
+    elevationRangeM: [-20, 55],
+    tacticalSectors: [
+      'Cour d\'Entraînement des Chiens Xénomorphes',
+      'Donjon de Commandement du Seigneur Bad Blood',
+      'Fosses aux Bêtes & Chenils Barbelés',
+      'Remparts Extérieurs de Caparis'
+    ],
+    keyLandmarks: [
+      'Trône d\'ossements du chef du Clan Tueur',
+      'Enclos d\'asservissement des xénomorphes à défenses',
+      'Brèche d\'artillerie des Colonial Marines'
+    ],
+    environmentalHazards: [
+      'Arcs de plasma résiduels des armes de siège',
+      'Pièges de chaînes barbelées électrifiées',
+      'Fosses de purin acide sous les remparts'
+    ],
+    signatureHazards: [
+      'Tirs de suppression plasma à cadence lourde',
+      'Charges coordonnées de xénomorphes à défenses'
+    ],
+    ambientProfile: 'Grognements sourds de molosses extraterrestres, claquements de fouets épineux et fracas d\'artillerie plasma',
+    keyPreyIds: ['prey_bad_blood_warlord', 'prey_broken_tusk_dachande'],
+    heroSquadId: 'squad_avp_killer_clan_wardogs',
+    villainSquadId: null
+  },
+  {
+    id: 'map_avp_ryushi_chigusa_ranch',
+    name: 'Ryushi — Ranch Chigusa & Plaines à Rhynths (1990)',
+    universe: 'AVP',
+    originMedia: 'Aliens vs. Predator (Dark Horse Comics 1990)',
+    sourceMedia: 'Aliens vs. Predator (1990)',
+    sourceType: 'COMIC',
+    releaseYear: 1990,
+    year: 1990,
+    biomeId: 'ryushi_desert',
+    biome: 'ARID_RANCH_SAVANNAH',
+    recommendedBiomeLabel: 'Ranch d\'Élevage Chigusa sur Ryushi (AVP 1990)',
+    weather: 'Soleils jumeaux cuisants, bourrasques de poussière orange et nuits glaciales',
+    lighting: 'Éclat aveuglant des deux soleils sur le sol ocre et longues ombres des enclos',
+    verticality: 'FAIBLE À MOYENNE (Silos de stockage de grain, enclos métalliques à bétail et toits des habitats colons)',
+    destructibility: 'Palissades d\'enclos de Rhynths, hangars agricoles en tôle pressée et véhicules tout-terrain',
+    interactables: [
+      'Sas d\'ouverture des enclos de Rhynths géants',
+      'Générateurs solaires de la station Chigusa',
+      'Balises de détresse de Machiko Noguchi'
+    ],
+    environmentSummary: 'La colonie pastorale isolée de la Chigusa Corporation sur la planète Ryushi, arène initiale de la saga AVP entre Broken Tusk et les xénomorphes.',
+    description: 'La colonie pastorale isolée de la Chigusa Corporation sur la planète Ryushi, arène initiale de la saga AVP entre Broken Tusk et les xénomorphes.',
+    tacticalNotes: 'Les vastes plaines découvrent les tireurs ; provoquer la panique des troupeaux de Rhynths pour créer des diversions colossales contre les proies.',
+    dimensionsM: { width: 550, length: 550, height: 40 },
+    elevationRangeM: [-5, 35],
+    tacticalSectors: [
+      'Enclos Principaux des Troupeaux de Rhynths',
+      'Complexe d\'Administration de Machiko Noguchi',
+      'Ateliers de Maintenance Agricole & Hangars',
+      'Périmètre Extérieur des Terres Arides de Ryushi'
+    ],
+    keyLandmarks: [
+      'Grand Silo Central de la Corporation Chigusa',
+      'Carcasse calcinée du transporteur d\'initiation Yautja',
+      'Enceinte fortifiée du bétail hexapode'
+    ],
+    environmentalHazards: [
+      'Panique destructrice de troupeaux de Rhynths de 15 tonnes',
+      'Tempêtes de poussière ocre abrasives',
+      'Chutes de température brutales à la tombée de la nuit'
+    ],
+    signatureHazards: [
+      'Piétinement par les bêtes titanesques en déroute',
+      'Incendies de poussière agricole sous tir plasma'
+    ],
+    ambientProfile: 'Mugissements gutturaux des Rhynths géants, bourdonnement des clôtures électrifiées et sifflement du vent chaud',
+    keyPreyIds: ['prey_broken_tusk_dachande', 'prey_rhynth_ryushi'],
+    heroSquadId: 'squad_avp_ryushi_chigusa_settlers',
+    villainSquadId: null
   }
 ]);
 
@@ -2695,6 +3001,138 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     yautjaCounterplay: 'La cadence élevée sature les coursives : bondir au plafond et frapper au harpon lourd d\'Ahab.',
     counterplay: 'La cadence élevée sature les coursives : bondir au plafond et frapper au harpon lourd d\'Ahab.',
     description: 'Arme de défense embarquée standard à bord du vaisseau Perses en 2219, combinant une cadence de tir furieuse et des dards stabilisés contre les créatures mutées par le pathogène noir.'
+  },
+  {
+    id: 'wpn_nakai_desert_hunting_rifle',
+    name: 'Carabine de Chasse Lourde Désertique d\'Enoch Nakai (1991)',
+    universe: 'PREDATOR',
+    faction: 'Garde Nationale & Éclaireurs Navajos (1991)',
+    originMedia: 'Predator: Big Game (Dark Horse Comics 1991)',
+    sourceMedia: 'Predator: Big Game (1991)',
+    year: 1991,
+    category: 'BOLT_ACTION_SNIPER',
+    caliber: '.30-06 Springfield perforant chemisé acier',
+    damageType: 'ballistic_piercing',
+    damage: 88,
+    effectiveRangeMeters: 140,
+    rangeM: 140,
+    rateOfFire: '45 cps/min (culasse à verrou de précision)',
+    fireRate: '45 cps/min',
+    specialEffect: 'Précision longue portée et munitions perforantes capables d\'ébrécher le blindage d\'un biomarque',
+    wieldedBy: 'Caporal Enoch Nakai, Tireurs d\'élite de Corpse Creek',
+    yautjaCounterplay: 'La culasse manuelle crée un délai de rechargement : esquiver le premier tir et fondre au combistick.',
+    counterplay: 'La culasse manuelle crée un délai de rechargement : esquiver le premier tir et fondre au combistick.',
+    description: 'Fusil à culasse à verrou de gros calibre modifié par Enoch Nakai pour supporter la poussière fine du désert du Nouveau-Mexique et perforer les cuirasses lourdes.'
+  },
+  {
+    id: 'wpn_adolini_flintlock_1715',
+    name: 'Pistolet à Silex de Maître d\'Armes de Raphael Adolini 1715 (1996)',
+    universe: 'PREDATOR',
+    faction: 'Flibustiers & Équipage Corsaire d\'Adolini (1718)',
+    originMedia: 'Predator: 1718 (Dark Horse Comics 1996)',
+    sourceMedia: 'Predator: 1718 (1996)',
+    year: 1718,
+    category: 'ANTIQUE_FLINTLOCK',
+    caliber: 'Balle de plomb coulé calibre .60 à poudre noire noble',
+    damageType: 'blackpowder_impact',
+    damage: 110,
+    effectiveRangeMeters: 25,
+    rangeM: 25,
+    rateOfFire: '3 cps/min (rechargement manuel au canon)',
+    fireRate: '3 cps/min',
+    specialEffect: 'Impact contondant massif à très courte portée gravé « Raphael Adolini 1715 » sur la platine',
+    wieldedBy: 'Capitaine Raphael Adolini, Maîtres Canonniers de Guinée',
+    yautjaCounterplay: 'Arme à tir unique : dévier le tir au bouclier ou avec les lames de poignet avant l\'interminable rechargement.',
+    counterplay: 'Arme à tir unique : dévier le tir au bouclier ou avec les lames de poignet avant l\'interminable rechargement.',
+    description: 'Le légendaire pistolet d\'arçon à silex espagnol offert par Raphael Adolini mourant au jeune Elder Greyback après leur duel commun contre les mutins.'
+  },
+  {
+    id: 'wpn_romulus_f44aa_pulse_rifle',
+    name: 'Fusil à Impulsion d\'Assaut Guidé Weyland-Yutani F44AA (2024)',
+    universe: 'ALIEN',
+    faction: 'Sécurité Orbitale Weyland-Yutani & Colons de Jackson\'s Star (2024)',
+    originMedia: 'Alien: Romulus (20th Century Studios 2024)',
+    sourceMedia: 'Alien: Romulus (2024)',
+    year: 2024,
+    category: 'PULSE_RIFLE',
+    caliber: 'Munitions caseless 10×24mm à traçage gyroscopique',
+    damageType: 'guided_ballistic',
+    damage: 82,
+    effectiveRangeMeters: 85,
+    rangeM: 85,
+    rateOfFire: '900 cps/min en mode rafale avec visée auto-compensée',
+    fireRate: '900 cps/min',
+    specialEffect: 'Système de ciblage assisté par micro-caméra et stabilisation gyroscopique limitant les ratés contre les cibles rapides',
+    wieldedBy: 'Rain Carradine, Escouades de sécurité de la station Renaissance',
+    yautjaCounterplay: 'Le système de visée dépend d\'un verrou optique : activer le camouflage actif pour briser le verrouillage électronique.',
+    counterplay: 'Le système de visée dépend d\'un verrou optique : activer le camouflage actif pour briser le verrouillage électronique.',
+    description: 'Version expérimentale précurseur du M41A embarquant une assistance de visée auto-stabilisée conçue pour des novices en environnement orbital pressurisé.'
+  },
+  {
+    id: 'wpn_berserker_max_autocannon',
+    name: 'Autocanon Lourd Anti-Acide d\'Exosquelette M.A.X. (1995)',
+    universe: 'ALIEN',
+    faction: 'Brigades Berserker d\'Éradication de Ruches (1995)',
+    originMedia: 'Aliens: Berserker (Dark Horse Comics 1995)',
+    sourceMedia: 'Aliens: Berserker (1995)',
+    year: 1995,
+    category: 'HEAVY_AUTOCANNON',
+    caliber: 'Obus semi-blindés de 20mm hautement explosifs',
+    damageType: 'explosive_kinetic',
+    damage: 135,
+    effectiveRangeMeters: 95,
+    rangeM: 95,
+    rateOfFire: '600 cps/min à double canon rotatif',
+    fireRate: '600 cps/min',
+    specialEffect: 'Déflagration cinétique capable de pulvériser les carapaces de guerriers et prétoriens xénomorphes à l\'impact',
+    wieldedBy: 'Pilotes d\'Exosquelette M.A.X., Opérateur Ellis',
+    yautjaCounterplay: 'Le poids de l\'autocanon réduit la vitesse de pivotement : contourner le flanc de l\'exosuit et frapper les servos articulés.',
+    counterplay: 'Le poids de l\'autocanon réduit la vitesse de pivotement : contourner le flanc de l\'exosuit et frapper les servos articulés.',
+    description: 'Autocanon lourd monté sur le bras droit du blindé individuel M.A.X., calibré pour broyer les vagues de xénomorphes avant qu\'ils n\'atteignent la portée de griffe.'
+  },
+  {
+    id: 'wpn_killer_clan_tusk_acid_spitter',
+    name: 'Cracheur d\'Acide à Dards du Clan Tueur (2010)',
+    universe: 'AVP',
+    faction: 'Renégats du Clan Tueur (Killer Clan) de Caparis VII (2010)',
+    originMedia: 'Aliens vs. Predator: Three World War (Dark Horse Comics 2010)',
+    sourceMedia: 'AVP: Three World War (2010)',
+    year: 2010,
+    category: 'BIOMECHANICAL_LAUNCHER',
+    caliber: 'Poches glandulaires d\'acide xénomorphe pressurisées & dards chitineux',
+    damageType: 'acid_caustic',
+    damage: 92,
+    effectiveRangeMeters: 45,
+    rangeM: 45,
+    rateOfFire: '120 jets/min en flux continu ou salves corrosives',
+    fireRate: '120 jets/min',
+    specialEffect: 'Jet d\'acide concentré prélevé sur les chiens xénomorphes asservis, dissolvant l\'armure de combat au fil du temps',
+    wieldedBy: 'Maîtres des Bêtes du Clan Tueur, Gladiateurs Bad Blood',
+    yautjaCounterplay: 'L\'acide ronge les blindages standards : utiliser une cape à réfraction thermique ou abattre le porteur à longue distance au canon plasma.',
+    counterplay: 'L\'acide ronge les blindages standards : utiliser une cape à réfraction thermique ou abattre le porteur à longue distance au canon plasma.',
+    description: 'Arme hérétique conçue par les Bad Bloods du Killer Clan synthétisant le sang acide de leurs chiens xénomorphes esclaves dans un lanceur portatif impie.'
+  },
+  {
+    id: 'wpn_ryushi_ranch_harpoon_gun',
+    name: 'Fusil-Harpon Hydraulique à Bétail Lourd Chigusa (1990)',
+    universe: 'AVP',
+    faction: 'Éleveurs & Trappeurs de la Chigusa Corporation sur Ryushi (1990)',
+    originMedia: 'Aliens vs. Predator (Dark Horse Comics 1990)',
+    sourceMedia: 'Aliens vs. Predator (1990)',
+    year: 1990,
+    category: 'HEAVY_HARPOON',
+    caliber: 'Flèches d\'ancrage en titane avec câble de retenue sous tension',
+    damageType: 'hydraulic_piercing',
+    damage: 85,
+    effectiveRangeMeters: 60,
+    rangeM: 60,
+    rateOfFire: '30 cps/min à réarmement pneumatique',
+    fireRate: '30 cps/min',
+    specialEffect: 'Empale la cible et immobilise temporairement son déplacement grâce au câble de treuil haute résistance',
+    wieldedBy: 'Machiko Noguchi, Ranchers de la Chigusa Corporation',
+    yautjaCounterplay: 'Sectionner immédiatement le câble d\'ancrage d\'un coup de lame de poignet avant d\'être tiré vers les tireurs.',
+    counterplay: 'Sectionner immédiatement le câble d\'ancrage d\'un coup de lame de poignet avant d\'être tiré vers les tireurs.',
+    description: 'Outil industriel de guidage de bétail titan lourd utilisé par les éleveurs de Rhynths, converti par Machiko pour repousser les guerriers xénomorphes à distance.'
   }
 ]);
 

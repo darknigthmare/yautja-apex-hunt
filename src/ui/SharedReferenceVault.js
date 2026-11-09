@@ -3,6 +3,7 @@ import {MEDIA_COVERAGE_CATALOG, MEDIA_PROVENANCE_TIERS, MEDIA_RELEASE_STATUSES} 
 import {LORE_SOURCE_TIERS, LORE_SOURCES} from '../data/LoreCodex.js';
 import {getAlienRegistryForLocal,getAlienRegistryInspirationForLocal} from '../data/AlienBaseRegistryV2.js';
 import {getAlienBaseMediaByLocalId} from '../data/AlienBaseMediaV2.js';
+import {getVaultCardMiniatureSvg, getCategoryIconSvg} from './CanonLogosAndEmblems.js';
 
 const GROUPS = Object.freeze([
  {grid:'technology-catalog-grid',items:YautjaContentCatalog.technology,collection:'technology'},
@@ -55,20 +56,25 @@ function appendSource(doc,card,entry){
  }
  card.append(block);
 }
-function makeCard(doc,item,collection){
+ function makeCard(doc,item,collection){
  const media=collection==='media',status=item.runtimeStatus??item.gameCoverage?.runtimeStatus??'archive';
  const tier=item.sourceTier??item.provenanceTier??'ORIGINAL';
  const theme=media?MEDIA_PROVENANCE_TIERS[tier]:LORE_SOURCE_TIERS[tier];
  const card=element(doc,'article','content-catalog-card'+(media?' media-coverage-card':''));
  card.dataset.referenceId=item.id;
  card.style?.setProperty?.('--lore-tier-color',theme?.color??'#85c7c9');
+ const miniatureBox=element(doc,'div','card-miniature-box vault-miniature');
+ miniatureBox.innerHTML=getVaultCardMiniatureSvg(item,collection);
+ card.append(miniatureBox);
  const header=element(doc,'header','content-card-header');
+ const catIcon=element(doc,'span','content-card-category-icon');
+ catIcon.innerHTML=getCategoryIconSvg(collection.toUpperCase(),16);
  const heading=element(doc,'h4','content-card-title',item.name??item.title);
  const badges=element(doc,'div','content-card-badges');
  appendBadge(doc,badges,STATUS[status]??'ARCHIVE',STATUS[status]?status:'archive');
  appendBadge(doc,badges,theme?.shortLabel??tier,'archive');
  if(media)badges.append(element(doc,'span','media-release-status media-release-status-'+String(item.status??'').toLowerCase(),MEDIA_RELEASE_STATUSES[item.status]??item.status));
- header.append(heading,badges);card.append(header);
+ header.append(catIcon,heading,badges);card.append(header);
  if(media){
   card.append(element(doc,'small','media-coverage-meta',item.year+' · '+item.medium));
   card.append(element(doc,'small','media-coverage-continuity',item.continuity));

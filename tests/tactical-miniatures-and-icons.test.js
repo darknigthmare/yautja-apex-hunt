@@ -12,13 +12,17 @@ import {
   getSquadLogo,
   getFactionLogo,
   getYautjaClanLogo,
+  getVaultCardMiniatureSvg,
 } from '../src/ui/CanonLogosAndEmblems.js';
+import { getEquipmentIconSvg } from '../src/ui/EquipmentIcons.js';
 import { MEDIA_MAPS_CATALOG, NPC_ARSENAL_CATALOG } from '../src/data/MediaMapsAndArsenalCatalog.js';
 import { SQUAD_ENCOUNTERS } from '../src/data/SquadEncountersCatalog.js';
 import { ARMOR_PRESET_WEAPON_VARIANTS } from '../src/data/RuntimeEquipment.js';
 import { CANON_PREY_CATALOG } from '../src/data/PreyTaxonomyAndCrossoverCatalog.js';
 import { LORE_CODEX_ENTRIES } from '../src/data/LoreCodex.js';
 import { YautjaSkinsDatabase } from '../src/data/YautjaLoreDatabase.js';
+import { YautjaContentCatalog } from '../src/data/YautjaContentCatalog.js';
+import { MEDIA_COVERAGE_CATALOG } from '../src/data/MediaCoverageCatalog.js';
 import { HUDManager } from '../src/HUDManager.js';
 
 test('getCategoryIconSvg retourne un SVG valide pour toutes les catégories requises (incluant BESTIARY et LOADOUT)', () => {
@@ -77,7 +81,7 @@ test('getSquadMiniatureSvg génère une formation de combat tactique pour toutes
   }
 });
 
-test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague 8, Vague 9 et l’ensemble du catalogue sans fallback générique', () => {
+test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague 8, Vague 9, Vague 10 et l’ensemble du catalogue sans fallback générique', () => {
   const genericClanLogo = getYautjaClanLogo(40);
   const vague8And9SquadIds = [
     // Vague 8
@@ -96,6 +100,13 @@ test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague
     'squad_alien_harvest_cyber_ants',
     'squad_avp_eternal_tokyo_mercs',
     'squad_avp_perses_fire_stone_crew',
+    // Vague 10
+    'squad_pred_nakai_corpse_creek_scouts',
+    'squad_pred_adolini_guinea_pirates',
+    'squad_alien_renaissance_salvagers',
+    'squad_alien_genocide_red_drones',
+    'squad_avp_killer_clan_wardogs',
+    'squad_avp_ryushi_chigusa_settlers',
   ];
 
   for (const squadId of vague8And9SquadIds) {
@@ -103,6 +114,14 @@ test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague
     assert.ok(svg.startsWith('<svg'), `Le logo de ${squadId} doit être un SVG valide`);
     assert.notStrictEqual(svg, genericClanLogo, `L'escouade ${squadId} ne doit pas retomber sur le logo générique Yautja`);
   }
+
+  // Vérification explicite des classes CSS d'insignes personnalisés Vague 10
+  assert.ok(getSquadLogo('squad_pred_nakai_corpse_creek_scouts', 40).includes('logo-squad-nakaiscouts'));
+  assert.ok(getSquadLogo('squad_pred_adolini_guinea_pirates', 40).includes('logo-squad-adolini'));
+  assert.ok(getSquadLogo('squad_alien_renaissance_salvagers', 40).includes('logo-squad-renaissance'));
+  assert.ok(getSquadLogo('squad_alien_genocide_red_drones', 40).includes('logo-squad-reddrones'));
+  assert.ok(getSquadLogo('squad_avp_killer_clan_wardogs', 40).includes('logo-squad-wardogs'));
+  assert.ok(getSquadLogo('squad_avp_ryushi_chigusa_settlers', 40).includes('logo-squad-chigusa'));
 
   for (const squad of SQUAD_ENCOUNTERS) {
     const svg = getSquadLogo(squad.id, 40);
@@ -243,4 +262,94 @@ test('src/main.js intègre les miniatures sur renderPreyCard, renderLoreDrawerCa
   assert.ok(mainSource.includes('const uLore = LORE_CODEX_ENTRIES.filter((e) => getLoreEntryUniverse(e) === u);'));
   assert.ok(mainSource.includes('uLore.map(renderLoreDrawerCard).join'));
   assert.ok(typeof getFactionLogo('ALIEN', 20) === 'string' && getFactionLogo('ALIEN', 20).startsWith('<svg'));
+});
+
+test('getVaultCardMiniatureSvg génère une miniature vectorielle 180x76 avec encadrement holographique Weyland/Yautja pour tous les domaines du catalogue', () => {
+  const domainSamples = [
+    { item: { id: 'tech_biomask', name: 'Biomasque multispectral', runtimeStatus: 'playable' }, collection: 'technology', domain: 'technology', label: 'SCHÉMA TECHNOLOGIQUE' },
+    { item: { id: 'vehicle_dropcraft', name: 'Appareil d’insertion', runtimeStatus: 'archive' }, collection: 'vehicles', domain: 'vehicles', label: 'BLUEPRINT VÉHICULE' },
+    { item: { id: 'enemy_commando', name: 'Commando d’élite', runtimeStatus: 'encounter' }, collection: 'enemies', domain: 'enemies', label: 'PROFIL BIOLOGIQUE' },
+    { item: { id: 'event_rain_cloak', name: 'Pluie révélatrice', runtimeStatus: 'encounter' }, collection: 'levelEvents', domain: 'events', label: 'ÉVÉNEMENT COMBAT' },
+    { item: { id: 'goliath', name: 'Goliath Xeno-Akumo', runtimeStatus: 'playable' }, collection: 'huntBosses', domain: 'bosses', label: 'PROFIL APEX BOSS' },
+    { item: { id: 'support_cache', name: 'Conteneur de chasse', runtimeStatus: 'encounter' }, collection: 'support', domain: 'support', label: 'LOGISTIQUE SUPPORT' },
+    { item: { id: 'film_predator_1987', title: 'Predator', year: 1987, medium: 'Film live action' }, collection: 'media', domain: 'media', label: 'ARCHIVE MÉDIA' },
+  ];
+
+  for (const { item, collection, domain, label } of domainSamples) {
+    const svg = getVaultCardMiniatureSvg(item, collection);
+    assert.ok(svg.startsWith('<svg'), `Le SVG du domaine ${collection} doit débuter par <svg`);
+    assert.ok(svg.endsWith('</svg>'), `Le SVG du domaine ${collection} doit finir par </svg>`);
+    assert.ok(svg.includes('class="tactical-miniature vault-miniature-svg"'), `Le SVG doit inclure la classe vault-miniature-svg`);
+    assert.ok(svg.includes('viewBox="0 0 180 76"'), `Le SVG doit avoir viewBox="0 0 180 76"`);
+    assert.ok(svg.includes('class="vault-holo-frame"'), `Le SVG doit inclure l'encadrement holographique`);
+    assert.ok(svg.includes(`data-domain="${domain}"`), `Le SVG doit afficher le domaine ${domain}`);
+    assert.ok(svg.includes(label), `Le SVG doit afficher le libellé de domaine ${label}`);
+  }
+
+  // Vérification de couverture sur les éléments réels du catalogue
+  for (const item of YautjaContentCatalog.technology) {
+    const svg = getVaultCardMiniatureSvg(item, 'technology');
+    assert.ok(svg.includes('vault-miniature-svg'), `Item tech ${item.id} doit générer un SVG valide`);
+  }
+  for (const media of MEDIA_COVERAGE_CATALOG) {
+    const svg = getVaultCardMiniatureSvg(media, 'media');
+    assert.ok(svg.includes('vault-miniature-svg'), `Média ${media.id} doit générer un SVG valide`);
+  }
+});
+
+test('src/main.js intègre les icônes d’équipement vectorielles dans renderHuntLoadoutUI et synchronise les compteurs de filtres Vague 10', () => {
+  const mainSource = fs.readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
+  assert.ok(mainSource.includes("import { getEquipmentIconSvg } from './ui/EquipmentIcons.js';"), 'main.js doit importer getEquipmentIconSvg');
+  assert.ok(mainSource.includes('loadout-core-icon') && mainSource.includes('getEquipmentIconSvg(id, 16)'), 'main.js doit intégrer les icônes sur loadout-core-icon');
+  assert.ok(mainSource.includes('loadout-item-icon') && mainSource.includes('getEquipmentIconSvg(item.id, 22)'), 'main.js doit intégrer les icônes sur loadout-item-icon');
+  assert.ok(mainSource.includes('choice.append(input, icon, copy, cost)'), 'L\'icône doit être insérée avant l\'élément copy dans loadout-choice');
+  assert.ok(mainSource.includes('.squad-filter-pill') && mainSource.includes('96'), 'setupTaxonomyAndMultiverse doit synchroniser squad-filter-pill à 96');
+  assert.ok(mainSource.includes('.maps-filter-pill') && mainSource.includes('84'), 'setupTaxonomyAndMultiverse doit synchroniser maps-filter-pill à 84');
+  assert.ok(mainSource.includes('.weapons-filter-pill') && mainSource.includes('166'), 'setupTaxonomyAndMultiverse doit synchroniser weapons-filter-pill à 166');
+  assert.ok(mainSource.includes('.codex-filter-pill') && mainSource.includes('150'), 'setupTaxonomyAndMultiverse doit synchroniser codex-filter-pill à 150');
+});
+
+test('SharedReferenceVault intègre la miniature et l’icône de catégorie sur chaque carte de catalogue', async () => {
+  const { initializeSharedReferenceVault } = await import('../src/ui/SharedReferenceVault.js');
+  const appendedCards = [];
+  const fakeGrid = {
+    replaceChildren(...cards) {
+      appendedCards.push(...cards);
+    },
+  };
+
+  const fakeDoc = {
+    createElement(tag) {
+      return {
+        tag,
+        className: '',
+        dataset: {},
+        innerHTML: '',
+        textContent: '',
+        children: [],
+        style: { setProperty() {} },
+        append(...items) {
+          this.children.push(...items);
+        },
+      };
+    },
+    getElementById(id) {
+      if (id === 'technology-catalog-grid') return fakeGrid;
+      return null;
+    },
+    querySelector() { return null; },
+    querySelectorAll() { return []; },
+  };
+
+  initializeSharedReferenceVault(fakeDoc);
+  assert.ok(appendedCards.length > 0, 'Des cartes doivent être générées');
+  const firstCard = appendedCards[0];
+  const miniatureChild = firstCard.children.find(c => c.className?.includes('vault-miniature'));
+  assert.ok(miniatureChild, 'La carte doit contenir la miniature vault-miniature');
+  assert.ok(miniatureChild.innerHTML.includes('vault-miniature-svg'), 'La miniature doit inclure vault-miniature-svg');
+  const headerChild = firstCard.children.find(c => c.tag === 'header');
+  assert.ok(headerChild, 'La carte doit contenir le header');
+  const iconChild = headerChild.children.find(c => c.className?.includes('content-card-category-icon'));
+  assert.ok(iconChild, 'Le header doit contenir l’icône de catégorie');
+  assert.ok(iconChild.innerHTML.includes('<svg'), 'L’icône de catégorie doit contenir un SVG');
 });

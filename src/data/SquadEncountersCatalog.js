@@ -3400,6 +3400,150 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'perses_hull_engineer', name: 'Ingénieur de Coque Pressurisée', role: 'Spécialiste Gravité & Sas', weapon: 'SMG à Fléchettes & Découpeur Plasma Orbital', weaponId: 'wpn_perses_security_flechette_smg', vitalityRatio: 0.95, hp: 510, armor: 50, trophy: 'Clé de Déverrouillage des Nacelles du Perses' },
       { id: 'perses_medbay_guard', name: 'Garde du Bloc Biologique LV-223', role: 'Sentinelle Anti-Mutagène', weapon: 'Carabine à Fléchettes & Injecteur Décontaminant', weaponId: 'wpn_perses_security_flechette_smg', vitalityRatio: 1.0, hp: 530, armor: 50, trophy: 'Échantillon Scellé de Biomasse Noire du Perses' }
     ]
+  },
+  {
+    id: 'squad_pred_nakai_corpse_creek_scouts',
+    name: 'Éclaireurs & Soldats Navajos de Corpse Creek (1991)',
+    universe: 'PREDATOR',
+    shortName: 'Éclaireurs de Corpse Creek (4 Chasseurs)',
+    category: 'HUMAN_COMMANDO',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Big Game (Dark Horse Comics 1991)',
+    biomeId: 'desert',
+    recommendedBiomeLabel: 'Désert de Corpse Creek (Big Game 1991)',
+    primaryMapId: 'map_pred_corpse_creek_desert',
+    weaponLoadout: ['wpn_nakai_desert_hunting_rifle'],
+    description: 'La patrouille de pisteurs amérindiens et soldats d\'élite de Corpse Creek menée par le caporal Enoch Nakai dans les canyons arides du Nouveau-Mexique.',
+    tactics: 'Tirs de précision au fusil à verrou depuis les promontoires rocheux, embuscades en goulot d\'étranglement et pistage thermique.',
+    totalHonorReward: 5200,
+    soloVariantId: 'alien_base_billy_sole_tracker',
+    members: [
+      { id: 'nakai_scout_enoch', name: 'Caporal Enoch Nakai', role: 'Pisteur Navajo Vétéran', weapon: 'Carabine Lourde .30-06 & Couteau de Survie', weaponId: 'wpn_nakai_desert_hunting_rifle', vitalityRatio: 1.25, hp: 620, armor: 45, trophy: 'Amulette Traditionnelle Navajo & Douille Gravée' },
+      { id: 'nakai_scout_spotter', name: 'Observateur Militaire Cole', role: 'Guetteur Longue Portée', weapon: 'Carabine à Verrou & Jumelles Télémétriques', weaponId: 'wpn_nakai_desert_hunting_rifle', vitalityRatio: 1.05, hp: 540, armor: 40, trophy: 'Télémètre Laser Militaire de Corpse Creek' },
+      { id: 'nakai_scout_flanker', name: 'Voltigeur Miller', role: 'Tireur Flanc Rapide', weapon: 'Carabine Lourde & Grenades Fumigènes', weaponId: 'wpn_nakai_desert_hunting_rifle', vitalityRatio: 1.0, hp: 520, armor: 40, trophy: 'Insigne de la Base Radar du Nouveau-Mexique' },
+      { id: 'nakai_scout_trapper', name: 'Pisteur Adjoint Yazzie', role: 'Poseur de Pièges de Canyon', weapon: 'Carabine .30-06 & Câbles de Piégeage', weaponId: 'wpn_nakai_desert_hunting_rifle', vitalityRatio: 1.1, hp: 550, armor: 40, trophy: 'Pied-de-Biche & Étriers de Piégeage en Acier' }
+    ]
+  },
+  {
+    id: 'squad_pred_adolini_guinea_pirates',
+    name: 'Flibustiers & Maîtres Canonniers du Capitaine Adolini (1718)',
+    universe: 'PREDATOR',
+    shortName: 'Corsaires d\'Adolini (4 Flibustiers)',
+    category: 'MERCENARY_PIRATES',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: 1718 (Dark Horse Comics 1996)',
+    biomeId: 'jungle',
+    recommendedBiomeLabel: 'Côte de Guinée (Predator: 1718)',
+    primaryMapId: 'map_pred_guinea_coast_1718',
+    weaponLoadout: ['wpn_adolini_flintlock_1715'],
+    description: 'L\'état-major corsaire et les canonniers fidèles au capitaine Raphael Adolini défendant leur butin et leur honneur sur les plages guinéennes.',
+    tactics: 'Salves de mousquets et pistolets à silex à bout portant, charges furieuses au sabre d\'abordage et feux de couverture à la poudre noire.',
+    totalHonorReward: 5300,
+    soloVariantId: 'alien_base_big_beard_voyageur_1719',
+    members: [
+      { id: 'adolini_captain_raphael', name: 'Capitaine Raphael Adolini', role: 'Maître Corsaire & Gentilhomme Épéiste', weapon: 'Pistolet à Silex 1715 & Rapière d\'Acier', weaponId: 'wpn_adolini_flintlock_1715', vitalityRatio: 1.25, hp: 630, armor: 40, trophy: 'Gousset en Or & Croix Corsaire d\'Adolini' },
+      { id: 'adolini_first_mate', name: 'Maître d\'Équipage Bartolomeo', role: 'Chef des Canonniers', weapon: 'Double Pistolet à Silex & Coutelas d\'Abordage', weaponId: 'wpn_adolini_flintlock_1715', vitalityRatio: 1.15, hp: 580, armor: 35, trophy: 'Poire à Poudre Noire Gravée d\'un Crâne' },
+      { id: 'adolini_corsair_gunner', name: 'Canonnier O\'Malley', role: 'Artilleur de Bord', weapon: 'Mousquet à Silex & Hachette de Bord', weaponId: 'wpn_adolini_flintlock_1715', vitalityRatio: 1.0, hp: 530, armor: 30, trophy: 'Mèche Lente & Balle de Mousquet Calibre .60' },
+      { id: 'adolini_corsair_bosun', name: 'Gabier Santos', role: 'Sentinelle de Mâture', weapon: 'Pistolet d\'Arçon & Dague d\'Abordage', weaponId: 'wpn_adolini_flintlock_1715', vitalityRatio: 0.95, hp: 510, armor: 30, trophy: 'Longue-Vue en Cuivre Martelé de 1718' }
+    ]
+  },
+  {
+    id: 'squad_alien_renaissance_salvagers',
+    name: 'Équipe d\'Incursion de Jackson\'s Star sur Renaissance (2024)',
+    universe: 'ALIEN',
+    shortName: 'Pilleurs de Romulus (4 Colons)',
+    category: 'HUMAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Alien: Romulus (20th Century Studios 2024)',
+    biomeId: 'space_hulk',
+    recommendedBiomeLabel: 'Station Renaissance (Romulus 2024)',
+    primaryMapId: 'map_alien_renaissance_romulus_module',
+    weaponLoadout: ['wpn_romulus_f44aa_pulse_rifle'],
+    description: 'Le groupe de jeunes mineurs et recycleurs de Jackson\'s Star luttant pour leur émancipation et leur survie dans les modules délabrés de la station Renaissance.',
+    tactics: 'Tirs de couverture au fusil à impulsion F44AA, verrouillage de portes pressurisées et utilisation tactique des sas de gravité.',
+    totalHonorReward: 5400,
+    soloVariantId: 'alien_base_rain_carradine_romulus_rebel',
+    members: [
+      { id: 'romulus_rain_carradine', name: 'Rain Carradine', role: 'Tireuse de Précision F44AA', weapon: 'Fusil F44AA à Ciblage Guidé & Découpeur', weaponId: 'wpn_romulus_f44aa_pulse_rifle', vitalityRatio: 1.2, hp: 610, armor: 50, trophy: 'Module d\'Autorisation Corporatif Weyland de Rain' },
+      { id: 'romulus_andy_synth', name: 'Andy (Module ND-5 Weyland)', role: 'Protecteur Synthétique Renforcé', weapon: 'Fusil F44AA & Force Surhumaine d\'Impact', weaponId: 'wpn_romulus_f44aa_pulse_rifle', vitalityRatio: 1.35, hp: 680, armor: 65, trophy: 'Puce de Protocole Directif Rook ND-5' },
+      { id: 'romulus_tyler_miner', name: 'Tyler', role: 'Meneur d\'Incursion Minière', weapon: 'Fusil F44AA & Torche Thermique de Bord', weaponId: 'wpn_romulus_f44aa_pulse_rifle', vitalityRatio: 1.05, hp: 550, armor: 45, trophy: 'Combinaison Pressurisée Déchirée de Tyler' },
+      { id: 'romulus_bjorn_scrapper', name: 'Bjorn', role: 'Assaillant au Bâton Électrique', weapon: 'Bâton Électrifié & Fusil F44AA d\'Appui', weaponId: 'wpn_romulus_f44aa_pulse_rifle', vitalityRatio: 1.0, hp: 530, armor: 40, trophy: 'Bâton d\'Abattage Haute Tension de Jackson\'s Star' }
+    ]
+  },
+  {
+    id: 'squad_alien_genocide_red_drones',
+    name: 'Essaim de Guerre de la Ruche Rouge du Monde Natal (1991)',
+    universe: 'ALIEN',
+    shortName: 'Ruche Rouge Mutante (4 Xénomorphes)',
+    category: 'XENOMORPH_HORDE',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Genocide (Dark Horse Comics 1991)',
+    biomeId: 'hive_lv426',
+    recommendedBiomeLabel: 'Monde Natal Xénomorphe (Genocide 1991)',
+    primaryMapId: 'map_alien_hiveworld_red_grounds',
+    weaponLoadout: ['wpn_berserker_max_autocannon'],
+    description: 'L\'avant-garde écarlate de la Reine Mère, mutée et agressive, engagée dans l\'extermination de la ruche noire concurrente.',
+    tactics: 'Charges furieuses en meute écarlate, projections coordonnées d\'acide hyper-corrosif et frappes de queue perforantes.',
+    totalHonorReward: 5600,
+    soloVariantId: 'prey_xeno_warrior',
+    members: [
+      { id: 'red_drone_alpha_striker', name: 'Guerrier Rouge Alpha Écarlate', role: 'Fer de Lance de la Ruche Rouge', weapon: 'Griffes Tranchantes & Queue Perforante Acide', weaponId: 'wpn_berserker_max_autocannon', vitalityRatio: 1.3, hp: 660, armor: 70, trophy: 'Crête Chitineuse Écarlate de Guerrier Rouge' },
+      { id: 'red_drone_acid_spitter', name: 'Cracheur Rouge Caustique', role: 'Support d\'Acide Projeté', weapon: 'Glandes d\'Acide Écarlate Concentré', weaponId: 'wpn_berserker_max_autocannon', vitalityRatio: 1.1, hp: 580, armor: 60, trophy: 'Glande d\'Acide Hautement Concentrée de Genocide' },
+      { id: 'red_drone_ambush_crawler', name: 'Rôdeur Rouge des Parois', role: 'Traqueur Mural Agile', weapon: 'Double Mâchoire Pharyngienne & Serres', weaponId: 'wpn_berserker_max_autocannon', vitalityRatio: 1.05, hp: 550, armor: 55, trophy: 'Mâchoire Pharyngienne Rouge Rétractable' },
+      { id: 'red_drone_brood_protector', name: 'Sentinelle Rouge du Pondoir', role: 'Protecteur de la Reine Mère', weapon: 'Carapace Renforcée & Lames Chitineuses', weaponId: 'wpn_berserker_max_autocannon', vitalityRatio: 1.2, hp: 620, armor: 65, trophy: 'Plaque Dorsale d\'Obsidienne Teintée de Rouge' }
+    ]
+  },
+  {
+    id: 'squad_avp_killer_clan_wardogs',
+    name: 'Maîtres des Bêtes & Chiens de Guerre du Clan Tueur (2010)',
+    universe: 'AVP',
+    shortName: 'Meute du Clan Tueur (4 Assaillants)',
+    category: 'SUPER_PREDATORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator: Three World War (Dark Horse Comics 2010)',
+    biomeId: 'genna_deathworld',
+    recommendedBiomeLabel: 'Fief de Caparis VII (Three World War 2010)',
+    primaryMapId: 'map_avp_caparis_killer_ruins',
+    weaponLoadout: ['wpn_killer_clan_tusk_acid_spitter'],
+    description: 'La formation hérétique du Killer Clan maniant le cracheur d\'acide et guidant au combat des xénomorphes à défenses asservis par des laisses épineuses.',
+    tactics: 'Encerclement au fouet épineux, arrosage d\'acide caustique et lâcher de molosses xénomorphes en furie.',
+    totalHonorReward: 5700,
+    soloVariantId: 'prey_bad_blood_warlord',
+    members: [
+      { id: 'killer_clan_beastmaster_lord', name: 'Seigneur Dresseur du Clan Tueur', role: 'Commandant Hérétique Bad Blood', weapon: 'Cracheur d\'Acide & Fouet Barbelé Électrifié', weaponId: 'wpn_killer_clan_tusk_acid_spitter', vitalityRatio: 1.35, hp: 690, armor: 75, trophy: 'Masque Défiguré aux Dents de Xéno du Killer Clan' },
+      { id: 'killer_clan_tusk_hound_one', name: 'Xénomorphe Domestiqué à Défenses Alpha', role: 'Molosse de Guerre Asservi', weapon: 'Défenses Osseuses & Morsure Acide Enchaînée', weaponId: 'wpn_killer_clan_tusk_acid_spitter', vitalityRatio: 1.2, hp: 620, armor: 65, trophy: 'Collier Barbelé d\'Asservissement du Chien de Guerre' },
+      { id: 'killer_clan_acid_skirmisher', name: 'Tirailleur Corrosif Bad Blood', role: 'Soutien Chimique de Meute', weapon: 'Double Cracheur d\'Acide & Lames de Poignet', weaponId: 'wpn_killer_clan_tusk_acid_spitter', vitalityRatio: 1.15, hp: 600, armor: 65, trophy: 'Injecteur d\'Acide Barbelé du Clan Tueur' },
+      { id: 'killer_clan_tusk_hound_two', name: 'Xénomorphe Domestiqué à Défenses Traqueur', role: 'Molosse de Chasse Agile', weapon: 'Griffes Tranchantes & Fouet Caudal Barbelé', weaponId: 'wpn_killer_clan_tusk_acid_spitter', vitalityRatio: 1.1, hp: 570, armor: 60, trophy: 'Défense Cornée de Xénomorphe de Combat' }
+    ]
+  },
+  {
+    id: 'squad_avp_ryushi_chigusa_settlers',
+    name: 'Milice des Éleveurs & Défenseurs de Ryushi (1990)',
+    universe: 'AVP',
+    shortName: 'Éleveurs de Ryushi (4 Colons)',
+    category: 'CIVILIAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator (Dark Horse Comics 1990)',
+    biomeId: 'ryushi_desert',
+    recommendedBiomeLabel: 'Ranch Chigusa sur Ryushi (AVP 1990)',
+    primaryMapId: 'map_avp_ryushi_chigusa_ranch',
+    weaponLoadout: ['wpn_ryushi_ranch_harpoon_gun'],
+    description: 'L\'équipe de pionniers et ranchers de la Chigusa Corporation armée de harpons hydrauliques et luttant aux côtés de Machiko Noguchi pour sauver leur domaine.',
+    tactics: 'Tirs de harpons hydrauliques pour ancrer les cibles, tirs croisés d\'appui et barricades de matériel d\'élevage.',
+    totalHonorReward: 5300,
+    soloVariantId: 'prey_broken_tusk_dachande',
+    members: [
+      { id: 'ryushi_machiko_ranch_leader', name: 'Machiko Noguchi (Période Chigusa)', role: 'Administratrice & Meneuse de la Défense', weapon: 'Fusil-Harpon Hydraulique & Pistolet de Sécurité', weaponId: 'wpn_ryushi_ranch_harpoon_gun', vitalityRatio: 1.25, hp: 630, armor: 50, trophy: 'Badge d\'Administratrice de la Chigusa Corporation' },
+      { id: 'ryushi_chief_herder', name: 'Maître Éleveur Hiroshi', role: 'Spécialiste Conduite de Bétail Lourd', weapon: 'Harpon Hydraulique Lourd & Aiguillon Pneumatique', weaponId: 'wpn_ryushi_ranch_harpoon_gun', vitalityRatio: 1.1, hp: 560, armor: 45, trophy: 'Câble d\'Ancrage en Titane de Rhynth' },
+      { id: 'ryushi_settler_mechanic', name: 'Mécanicien de Tracteur Foster', role: 'Défenseur de Hangar Agricole', weapon: 'Harpon Pneumatique & Chalumeau d\'Atelier', weaponId: 'wpn_ryushi_ranch_harpoon_gun', vitalityRatio: 1.0, hp: 520, armor: 40, trophy: 'Outil de Découpe Hydraulique de Ryushi' },
+      { id: 'ryushi_settler_scout', name: 'Pisteur des Plaines Kenji', role: 'Sentinelle des Enclos Extérieurs', weapon: 'Harpon Léger & Fusées Éclairantes', weaponId: 'wpn_ryushi_ranch_harpoon_gun', vitalityRatio: 0.95, hp: 510, armor: 35, trophy: 'Boussole Magnétique des Soleils Jumeaux' }
+    ]
   }
 ]);
 

@@ -548,6 +548,36 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     sourceTier: 'LICENSED_EU', sources: Object.freeze(['prometheus2012', 'avpOriginalComics', 'comicsDarkHorse1989']), behavior: 'precision_bolt',
     modifiers: Object.freeze({ damageMultiplier: 1.44, armorPenetrationBonus: 0.45, projectileSpeedMultiplier: 1.3 }),
   }),
+  Object.freeze({
+    id: 'yautja_wpn_big_game_quarry_spear', armorPresetId: 'jungle_1987', baseWeaponId: 'combistick', name: 'Lance de Carrière de Corpse Creek (Predator: Big Game 1991)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['comicsDarkHorse1989', 'predatorArchives']), behavior: 'spear_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.32, rangeMultiplier: 1.25, criticalChanceMultiplier: 1.2 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_adolini_elder_cutlass', armorPresetId: 'elder_lost_tribe', baseWeaponId: 'elder_sword', name: 'Coutelas d\'Honneur de Raphael Adolini (Predator: 1718)',
+    sourceTier: 'CANON_FILM', sources: Object.freeze(['predator2', 'comicsDarkHorse1989']), behavior: 'blade',
+    modifiers: Object.freeze({ damageMultiplier: 1.38, parryAngleMultiplier: 1.3, attackSpeedMultiplier: 1.15 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_romulus_cryo_emitter', armorPresetId: 'captured_hg', baseWeaponId: 'speargun', name: 'Propulseur Cryogénique de Station Renaissance (Alien: Romulus)',
+    sourceTier: 'EXPANDED_LORE', sources: Object.freeze(['alienRomulus2024', 'huntingGrounds']), behavior: 'precision_bolt',
+    modifiers: Object.freeze({ damageMultiplier: 1.28, projectileSpeedMultiplier: 1.22, slowDurationSeconds: 3 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_berserker_hydraulic_crusher', armorPresetId: 'berserker_2010', baseWeaponId: 'wrist_blades', name: 'Broyeur Hydraulique Lourd Anti-Blindage (Aliens: Berserker 1995)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['comicsDarkHorse1989', 'aliens1986']), behavior: 'melee_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.42, armorPenetrationBonus: 0.4, bleedDurationSeconds: 4 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_three_world_war_leash_chain', armorPresetId: 'machiko_yautja', baseWeaponId: 'whip_thorns', name: 'Fouet Barbelé d\'Asservissement du Clan Tueur (AVP: Three World War)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics', 'avpPreyOmnibus']), behavior: 'whip',
+    modifiers: Object.freeze({ damageMultiplier: 1.3, rangeMultiplier: 1.25, bleedDamagePerSecond: 25 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_broken_tusk_ritual_disc', armorPresetId: 'celtic_avp', baseWeaponId: 'smart_disc', name: 'Disque Rituel Gravé de Dachande Broken Tusk (AVP: Prey 1990)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics', 'avpPreyOmnibus']), behavior: 'returning_disc',
+    modifiers: Object.freeze({ damageMultiplier: 1.35, projectileSpeedMultiplier: 1.25, returnSpeedMultiplier: 1.2 }),
+  }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);
 

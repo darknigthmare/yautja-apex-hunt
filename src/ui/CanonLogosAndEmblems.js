@@ -2270,6 +2270,81 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+
+  // --- ESCADRONS VAGUE 10 (Prompt & Expansions) ---
+  if (id.includes('pred_nakai_corpse_creek_scouts') || id.includes('nakai') || id.includes('corpse_creek')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-nakaiscouts" role="img" aria-label="Insigne Éclaireurs Nakai Corpse Creek">
+        <circle cx="40" cy="40" r="36" fill="#1c120c" stroke="#f59e0b" stroke-width="2.5" />
+        <polygon points="40,14 62,48 18,48" fill="#78350f" stroke="#fbbf24" stroke-width="1.8" />
+        <path d="M26,38 L40,24 L54,38" fill="none" stroke="#06b6d4" stroke-width="2.2" stroke-linecap="round" />
+        <circle cx="40" cy="38" r="5.5" fill="#0891b2" stroke="#67e8f9" stroke-width="1.2" />
+        <path d="M22,54 L58,54 M30,58 L50,58" stroke="#f59e0b" stroke-width="1.6" stroke-linecap="round" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="900" fill="#fde68a" letter-spacing="0.8" text-anchor="middle">NAKAI SCOUTS</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('pred_adolini_guinea_pirates') || id.includes('adolini') || id.includes('guinea_pirates')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-adolini" role="img" aria-label="Insigne Pirates Adolini 1718">
+        <circle cx="40" cy="40" r="36" fill="#0f172a" stroke="#d97706" stroke-width="2.5" />
+        <path d="M24,24 L56,52 M56,24 L24,52" stroke="#e2e8f0" stroke-width="3" stroke-linecap="round" />
+        <circle cx="40" cy="34" r="10" fill="#1e293b" stroke="#fbbf24" stroke-width="1.8" />
+        <circle cx="36" cy="33" r="2" fill="#d97706" /><circle cx="44" cy="33" r="2" fill="#d97706" />
+        <polygon points="37,42 43,42 40,46" fill="#fbbf24" />
+        <path d="M30,52 L50,52" stroke="#d97706" stroke-width="2" stroke-linecap="round" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="900" fill="#fde68a" letter-spacing="0.8" text-anchor="middle">ADOLINI 1718</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('alien_renaissance_salvagers') || id.includes('renaissance_salvagers') || (id.includes('renaissance') && id.includes('salvager'))) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-renaissance" role="img" aria-label="Insigne Récupérateurs Renaissance Romulus">
+        <polygon points="40,6 72,22 72,58 40,74 8,58 8,22" fill="#0b1726" stroke="#38bdf8" stroke-width="2.5" />
+        <circle cx="33" cy="36" r="9" fill="#0c4a6e" stroke="#7dd3fc" stroke-width="1.5" />
+        <circle cx="47" cy="36" r="9" fill="#0c4a6e" stroke="#7dd3fc" stroke-width="1.5" />
+        <path d="M28,26 L52,46 M28,46 L52,26" stroke="#eab308" stroke-width="1.6" stroke-linecap="round" />
+        <circle cx="40" cy="36" r="3.5" fill="#fde047" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="900" fill="#bae6fd" letter-spacing="0.8" text-anchor="middle">RENAISSANCE WY</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('alien_genocide_red_drones') || id.includes('genocide_red') || id.includes('red_drones')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-reddrones" role="img" aria-label="Insigne Drones Rouges Genocide">
+        <circle cx="40" cy="40" r="36" fill="#240404" stroke="#dc2626" stroke-width="2.5" />
+        <path d="M22,46 C20,32 30,16 46,16 C58,16 62,26 56,38 C52,46 44,54 36,56 C28,58 22,52 22,46 Z" fill="#7f1d1d" stroke="#ef4444" stroke-width="1.8" />
+        <path d="M28,42 Q40,32 50,40" stroke="#fca5a5" stroke-width="1.5" fill="none" stroke-linecap="round" />
+        <path d="M44,48 L54,42 L48,54 Z" fill="#dc2626" stroke="#f87171" stroke-width="1" />
+        <circle cx="42" cy="28" r="3.5" fill="#f87171" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.4" font-weight="900" fill="#fca5a5" letter-spacing="0.8" text-anchor="middle">RED GENOCIDE</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('avp_killer_clan_wardogs') || id.includes('killer_clan') || id.includes('wardogs')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-wardogs" role="img" aria-label="Insigne Chiens de Guerre Killer Clan">
+        <polygon points="40,8 70,22 70,58 40,74 10,58 10,22" fill="#1a120c" stroke="#ea580c" stroke-width="2.5" />
+        <circle cx="40" cy="38" r="14" fill="#431407" stroke="#fb923c" stroke-width="2" />
+        <path d="M26,38 L32,32 M54,38 L48,32 M32,46 L40,40 L48,46" stroke="#fdba74" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+        <polygon points="40,24 43,29 37,29" fill="#ef4444" />
+        <polygon points="40,52 43,47 37,47" fill="#ef4444" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="900" fill="#fed7aa" letter-spacing="0.8" text-anchor="middle">KILLER WARDOGS</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('avp_ryushi_chigusa_settlers') || id.includes('ryushi_chigusa') || id.includes('chigusa')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-chigusa" role="img" aria-label="Insigne Colons Chigusa Ryushi">
+        <circle cx="40" cy="40" r="36" fill="#0c1f2e" stroke="#0ea5e9" stroke-width="2.5" />
+        <circle cx="34" cy="32" r="7" fill="#0284c7" stroke="#7dd3fc" stroke-width="1.4" />
+        <circle cx="48" cy="28" r="4.5" fill="#f59e0b" stroke="#fde047" stroke-width="1.2" />
+        <path d="M18,52 Q40,36 62,52" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+        <polygon points="40,40 46,50 34,50" fill="#ca8a04" stroke="#fde047" stroke-width="1.2" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="900" fill="#bae6fd" letter-spacing="0.8" text-anchor="middle">CHIGUSA RYUSHI</text>
+      </svg>
+    `.trim();
+  }
   if (id.startsWith('squad_') && !id.includes('lv742_kainde_amedha')) {
     const cleanTag = id.replace(/^squad_(pred_|alien_|avp_)?/, '').replace(/_/g, ' ').slice(0, 14).toUpperCase();
     const h = Math.abs(hashCode(id));
@@ -2948,6 +3023,79 @@ export function getCategoryIconSvg(category = '', size = 16) {
         <circle cx="9.5" cy="10" r="1.4" fill="#ffffff"/>
         <circle cx="14.5" cy="10" r="1.4" fill="#ffffff"/>
         <path d="M12 4 V7 M12 15 V18 M5 11 H8 M16 11 H19" stroke="#80d8ff" stroke-width="1.4"/>
+      </svg>
+    `.trim();
+  }
+
+  // 16. VAULT DOMAINS (TECHNOLOGY, VEHICLES, ENEMIES, EVENTS, BOSSES, SUPPORT, MEDIA)
+  if (cat.includes('TECHNOLOGY') || cat.includes('TECH')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-technology" role="img" aria-label="Catégorie Technologie">
+        <rect x="4" y="4" width="16" height="16" rx="2" fill="#031f33" stroke="#00e5ff" stroke-width="1.5" />
+        <circle cx="12" cy="12" r="3" fill="#00e5ff" />
+        <line x1="12" y1="2" x2="12" y2="4" stroke="#00e5ff" stroke-width="1.5" />
+        <line x1="12" y1="20" x2="12" y2="22" stroke="#00e5ff" stroke-width="1.5" />
+        <line x1="2" y1="12" x2="4" y2="12" stroke="#00e5ff" stroke-width="1.5" />
+        <line x1="20" y1="12" x2="22" y2="12" stroke="#00e5ff" stroke-width="1.5" />
+      </svg>
+    `.trim();
+  }
+
+  if (cat.includes('VEHICLE')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-vehicle" role="img" aria-label="Catégorie Véhicule">
+        <polygon points="12,2 20,16 16,16 12,13 8,16 4,16" fill="#082236" stroke="#38bdf8" stroke-width="1.5" stroke-linejoin="round" />
+        <line x1="9" y1="16" x2="9" y2="21" stroke="#f97316" stroke-width="1.8" />
+        <line x1="15" y1="16" x2="15" y2="21" stroke="#f97316" stroke-width="1.8" />
+      </svg>
+    `.trim();
+  }
+
+  if (cat.includes('ENEMI') || cat.includes('ENEMY')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-enemy" role="img" aria-label="Catégorie Ennemis">
+        <circle cx="12" cy="12" r="8" fill="#1e0a0a" stroke="#ef4444" stroke-width="1.5" />
+        <polygon points="12,6 15,11 18,17 12,14 6,17 9,11" fill="#dc2626" stroke="#f87171" stroke-width="1" />
+        <circle cx="10" cy="11" r="1" fill="#fef08a" /><circle cx="14" cy="11" r="1" fill="#fef08a" />
+      </svg>
+    `.trim();
+  }
+
+  if (cat.includes('EVENT')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-event" role="img" aria-label="Catégorie Événement">
+        <polygon points="12,3 21,19 3,19" fill="#241403" stroke="#f59e0b" stroke-width="1.6" stroke-linejoin="round" />
+        <line x1="12" y1="8" x2="12" y2="13" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
+        <circle cx="12" cy="16" r="1.2" fill="#ef4444" />
+      </svg>
+    `.trim();
+  }
+
+  if (cat.includes('BOSS')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-boss" role="img" aria-label="Catégorie Boss">
+        <polygon points="12,2 15,8 21,5 18,14 12,21 6,14 3,5 9,8" fill="#240404" stroke="#ff1744" stroke-width="1.5" stroke-linejoin="round" />
+        <circle cx="12" cy="12" r="2.5" fill="#ffd700" />
+      </svg>
+    `.trim();
+  }
+
+  if (cat.includes('SUPPORT')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-support" role="img" aria-label="Catégorie Support">
+        <rect x="5" y="5" width="14" height="14" rx="3" fill="#04261b" stroke="#10b981" stroke-width="1.5" />
+        <path d="M12,8 V16 M8,12 H16" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    `.trim();
+  }
+
+  if (cat.includes('MEDIA') || cat.includes('FILM')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-media" role="img" aria-label="Catégorie Média">
+        <rect x="3" y="5" width="18" height="14" rx="2" fill="#13141f" stroke="#d4af37" stroke-width="1.5" />
+        <line x1="3" y1="9" x2="21" y2="9" stroke="#d4af37" stroke-width="1" stroke-dasharray="2,2" />
+        <line x1="3" y1="15" x2="21" y2="15" stroke="#d4af37" stroke-width="1" stroke-dasharray="2,2" />
+        <polygon points="10,10.5 15,12 10,13.5" fill="#fde047" />
       </svg>
     `.trim();
   }
@@ -4033,6 +4181,258 @@ export function getSkinMiniatureSvg(skin = {}) {
       <line x1="0" y1="65" x2="180" y2="65" stroke="${trimCol}" stroke-width="0.5" opacity="0.6" />
       <text x="6" y="73" font-family="'Rajdhani', sans-serif" font-size="4.8" font-weight="700" fill="#cfd8dc">${String(s.origin || 'Yautja Prime').slice(0, 26)}</text>
       <text x="174" y="73" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="800" fill="${visorCol}" text-anchor="end">${armorCol.toUpperCase()}</text>
+    </svg>
+  `.trim();
+}
+
+/**
+ * Miniature vectorielle SVG 180x76 pour chaque élément du Vault de Référence Partagée.
+ * Illustre le domaine du catalogue (schéma technologique, blueprint véhicule,
+ * profil de créature, événement de combat, profil de boss, ou bobine d'archive média)
+ * avec un encadrement holographique Weyland/Yautja et télémétrie diégétique.
+ * @param {Object} item Entrée du catalogue
+ * @param {string} collection Type de collection ('technology', 'vehicles', 'enemies', 'levelEvents', 'huntBosses', 'support', 'media')
+ * @returns {string} Markup SVG 180x76
+ */
+export function getVaultCardMiniatureSvg(item = {}, collection = '') {
+  const it = typeof item === 'object' && item !== null ? item : { id: String(item || 'vault_entry') };
+  const rawCol = String(collection || '').toLowerCase();
+  const idStr = String(it.id || '').toLowerCase();
+  const itemName = String(it.name || it.title || it.id || 'ÉLÉMENT CATALOGUE').slice(0, 24);
+  const uid = 'vault-mini-' + Math.abs(hashCode(it.id || it.name || it.title || rawCol || 'entry'));
+
+  // Déterminer le domaine thématique
+  let domain = 'technology';
+  if (rawCol.includes('veh') || idStr.startsWith('vehicle_')) {
+    domain = 'vehicles';
+  } else if (rawCol.includes('enemi') || rawCol.includes('enemy') || idStr.startsWith('enemy_')) {
+    domain = 'enemies';
+  } else if (rawCol.includes('event') || idStr.startsWith('event_')) {
+    domain = 'events';
+  } else if (rawCol.includes('boss') || idStr === 'goliath' || idStr.includes('boss')) {
+    domain = 'bosses';
+  } else if (rawCol.includes('supp') || idStr.startsWith('support_')) {
+    domain = 'support';
+  } else if (rawCol.includes('media') || idStr.startsWith('film_') || it.medium) {
+    domain = 'media';
+  }
+
+  let theme = {
+    primary: '#00e5ff',
+    secondary: '#38bdf8',
+    dark: '#031422',
+    accent: '#fde047',
+    label: 'SCHÉMA TECHNOLOGIQUE',
+    code: String(it.id || 'TECH-001').toUpperCase().slice(0, 16),
+  };
+
+  let centralIllustration = '';
+
+  switch (domain) {
+    case 'vehicles':
+      theme = {
+        primary: '#38bdf8',
+        secondary: '#7dd3fc',
+        dark: '#041728',
+        accent: '#f97316',
+        label: 'BLUEPRINT VÉHICULE',
+        code: String(it.id || 'VEH-001').toUpperCase().slice(0, 16),
+      };
+      centralIllustration = `
+        <!-- Châssis aérodynamique et vecteurs de poussée -->
+        <polygon points="90,16 122,34 130,48 112,46 90,42 68,46 50,48 58,34" fill="#08283f" stroke="${theme.primary}" stroke-width="1.5" stroke-linejoin="round" />
+        <line x1="90" y1="16" x2="90" y2="42" stroke="${theme.secondary}" stroke-width="1.2" stroke-dasharray="3,2" />
+        <line x1="42" y1="36" x2="138" y2="36" stroke="${theme.primary}" stroke-width="0.8" stroke-dasharray="4,3" opacity="0.5" />
+        <!-- Tuyères réacteurs -->
+        <rect x="73" y="44" width="8" height="5" rx="1" fill="#1e293b" stroke="${theme.accent}" stroke-width="1.2" />
+        <rect x="99" y="44" width="8" height="5" rx="1" fill="#1e293b" stroke="${theme.accent}" stroke-width="1.2" />
+        <polygon points="74,49 77,57 80,49" fill="${theme.accent}" opacity="0.85" />
+        <polygon points="100,49 103,57 106,49" fill="${theme.accent}" opacity="0.85" />
+        <!-- Balises de cockpit & dérive -->
+        <circle cx="90" cy="24" r="2.5" fill="#fde047" />
+        <circle cx="66" cy="36" r="1.8" fill="${theme.secondary}" />
+        <circle cx="114" cy="36" r="1.8" fill="${theme.secondary}" />
+      `;
+      break;
+
+    case 'enemies':
+      theme = {
+        primary: '#4ade80',
+        secondary: '#88ff00',
+        dark: '#051f0d',
+        accent: '#ff1744',
+        label: 'PROFIL BIOLOGIQUE',
+        code: String(it.id || 'BIO-001').toUpperCase().slice(0, 16),
+      };
+      centralIllustration = `
+        <!-- Réticule radar et silhouette bio-organique -->
+        <circle cx="90" cy="38" r="20" fill="#082b13" stroke="${theme.primary}" stroke-width="1.2" stroke-dasharray="4,2" />
+        <path d="M80,26 C84,22 96,22 100,26 C105,32 103,42 97,46 C94,49 92,51 90,52 C88,51 86,49 83,46 C77,42 75,32 80,26 Z" fill="#11401d" stroke="${theme.secondary}" stroke-width="1.5" />
+        <!-- Onde vitale EKG latérale -->
+        <path d="M38,48 L52,48 L56,41 L60,55 L64,43 L68,48 L76,48" stroke="${theme.primary}" stroke-width="1.3" fill="none" stroke-linejoin="round" />
+        <path d="M104,48 L112,48 L116,41 L120,55 L124,43 L128,48 L142,48" stroke="${theme.primary}" stroke-width="1.3" fill="none" stroke-linejoin="round" />
+        <!-- Marqueur thermique vital -->
+        <circle cx="90" cy="36" r="4.2" fill="${theme.accent}" opacity="0.85" />
+        <line x1="90" y1="28" x2="90" y2="44" stroke="${theme.accent}" stroke-width="1" />
+        <line x1="82" y1="36" x2="98" y2="36" stroke="${theme.accent}" stroke-width="1" />
+      `;
+      break;
+
+    case 'events':
+      theme = {
+        primary: '#f59e0b',
+        secondary: '#fbbf24',
+        dark: '#1e1104',
+        accent: '#ef4444',
+        label: 'ÉVÉNEMENT COMBAT',
+        code: String(it.id || 'EVENT-001').toUpperCase().slice(0, 16),
+      };
+      centralIllustration = `
+        <!-- Radar de zone et triangle de signal d'alerte -->
+        <circle cx="90" cy="38" r="22" fill="#291605" stroke="${theme.primary}" stroke-width="1.2" stroke-dasharray="3,3" />
+        <polygon points="90,19 108,49 72,49" fill="#451a03" stroke="${theme.accent}" stroke-width="1.8" stroke-linejoin="round" />
+        <line x1="90" y1="28" x2="90" y2="39" stroke="${theme.secondary}" stroke-width="2.5" stroke-linecap="round" />
+        <circle cx="90" cy="44" r="1.6" fill="${theme.secondary}" />
+        <!-- Vecteurs de déploiement tactique -->
+        <path d="M46,28 L64,35 M46,38 L68,38 M46,48 L64,41" stroke="${theme.primary}" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M134,28 L116,35 M134,38 L112,38 M134,48 L116,41" stroke="${theme.accent}" stroke-width="1.5" stroke-linecap="round" />
+      `;
+      break;
+
+    case 'bosses':
+      theme = {
+        primary: '#ef4444',
+        secondary: '#ff5252',
+        dark: '#240606',
+        accent: '#ffd700',
+        label: 'PROFIL APEX BOSS',
+        code: String(it.id || 'BOSS-001').toUpperCase().slice(0, 16),
+      };
+      centralIllustration = `
+        <!-- Verrouillage cible et couronne Apex Boss -->
+        <circle cx="90" cy="38" r="23" fill="#330808" stroke="${theme.primary}" stroke-width="1.5" />
+        <polygon points="90,17 104,27 108,44 90,55 72,44 76,27" fill="#4f0a0a" stroke="${theme.accent}" stroke-width="1.6" stroke-linejoin="round" />
+        <!-- Cornes et couronne -->
+        <path d="M76,27 L69,18 M104,27 L111,18 M83,21 L81,14 M97,21 L99,14" stroke="${theme.accent}" stroke-width="1.8" stroke-linecap="round" />
+        <!-- Cornières de visée laser -->
+        <path d="M58,24 L52,24 L52,30 M122,24 L128,24 L128,30 M58,52 L52,52 L52,46 M122,52 L128,52 L128,46" stroke="${theme.primary}" stroke-width="1.8" fill="none" />
+        <text x="90" y="41" font-family="'Orbitron', sans-serif" font-size="7" font-weight="900" fill="${theme.secondary}" text-anchor="middle">APEX</text>
+      `;
+      break;
+
+    case 'support':
+      theme = {
+        primary: '#10b981',
+        secondary: '#34d399',
+        dark: '#032015',
+        accent: '#fbbf24',
+        label: 'LOGISTIQUE SUPPORT',
+        code: String(it.id || 'SUPP-001').toUpperCase().slice(0, 16),
+      };
+      centralIllustration = `
+        <!-- Conteneur orbital et croix logistique -->
+        <rect x="75" y="21" width="30" height="34" rx="4" fill="#063523" stroke="${theme.primary}" stroke-width="1.6" />
+        <polygon points="75,25 90,16 105,25" fill="#0f5139" stroke="${theme.secondary}" stroke-width="1.4" stroke-linejoin="round" />
+        <path d="M90,29 L90,45 M82,37 L98,37" stroke="${theme.accent}" stroke-width="3.2" stroke-linecap="round" />
+        <!-- Lignes de fixation latérales -->
+        <line x1="65" y1="31" x2="75" y2="31" stroke="${theme.secondary}" stroke-width="2" stroke-linecap="round" />
+        <line x1="65" y1="43" x2="75" y2="43" stroke="${theme.secondary}" stroke-width="2" stroke-linecap="round" />
+        <line x1="105" y1="31" x2="115" y2="31" stroke="${theme.secondary}" stroke-width="2" stroke-linecap="round" />
+        <line x1="105" y1="43" x2="115" y2="43" stroke="${theme.secondary}" stroke-width="2" stroke-linecap="round" />
+      `;
+      break;
+
+    case 'media':
+      theme = {
+        primary: '#d4af37',
+        secondary: '#fde047',
+        dark: '#161305',
+        accent: '#38bdf8',
+        label: 'ARCHIVE MÉDIA',
+        code: String(it.id || 'MEDIA-001').toUpperCase().slice(0, 16),
+      };
+      centralIllustration = `
+        <!-- Pellicule cinéma 35mm et perforations -->
+        <rect x="42" y="23" width="96" height="30" rx="2" fill="#181507" stroke="${theme.primary}" stroke-width="1.6" />
+        <!-- Perforations supérieures -->
+        <rect x="46" y="25" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="56" y="25" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="66" y="25" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="76" y="25" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="86" y="25" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="96" y="25" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="106" y="25" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="116" y="25" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="126" y="25" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <!-- Perforations inférieures -->
+        <rect x="46" y="47" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="56" y="47" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="66" y="47" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="76" y="47" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="86" y="47" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="96" y="47" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="106" y="47" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="116" y="47" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <rect x="126" y="47" width="5" height="4" rx="0.6" fill="${theme.secondary}" />
+        <!-- Fenêtre centrale et bobine -->
+        <rect x="68" y="31" width="44" height="14" fill="#0b0a03" stroke="${theme.secondary}" stroke-width="1" />
+        <circle cx="90" cy="38" r="4.5" fill="none" stroke="${theme.primary}" stroke-width="1.3" />
+        <circle cx="90" cy="38" r="1.5" fill="${theme.secondary}" />
+      `;
+      break;
+
+    default: // 'technology'
+      centralIllustration = `
+        <!-- Schéma électronique et nœuds de bus holographiques -->
+        <circle cx="90" cy="38" r="15" fill="#06273f" stroke="${theme.primary}" stroke-width="1.5" />
+        <circle cx="90" cy="38" r="7.5" fill="none" stroke="${theme.accent}" stroke-width="1.2" stroke-dasharray="3,2" />
+        <circle cx="90" cy="38" r="2.8" fill="${theme.primary}" />
+        <path d="M52,38 L75,38 M105,38 L128,38 M90,23 L90,13 M90,53 L90,63" stroke="${theme.secondary}" stroke-width="1.4" stroke-linecap="round" />
+        <path d="M60,26 L73,38 L60,50 M120,26 L107,38 L120,50" stroke="${theme.primary}" stroke-width="1" fill="none" stroke-linejoin="round" />
+        <circle cx="52" cy="38" r="2" fill="${theme.accent}" />
+        <circle cx="128" cy="38" r="2" fill="${theme.accent}" />
+      `;
+      break;
+  }
+
+  const statusLabel = String(it.runtimeStatus || it.status || (it.year ? String(it.year) : 'ARCHIVE')).toUpperCase();
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" class="tactical-miniature vault-miniature-svg" viewBox="0 0 180 76" role="img" aria-label="Schéma de référence ${itemName}">
+      <defs>
+        <linearGradient id="vault-bg-${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="${theme.dark}" stop-opacity="0.96" />
+          <stop offset="100%" stop-color="#02070e" stop-opacity="0.99" />
+        </linearGradient>
+        <pattern id="vault-grid-${uid}" width="10" height="10" patternUnits="userSpaceOnUse">
+          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="${theme.primary}" stroke-width="0.3" opacity="0.2" />
+        </pattern>
+      </defs>
+
+      <rect width="180" height="76" fill="url(#vault-bg-${uid})" />
+      <rect width="180" height="76" fill="url(#vault-grid-${uid})" />
+
+      <!-- Encadrement Holographique Weyland / Yautja -->
+      <g class="vault-holo-frame">
+        <rect x="4" y="11" width="172" height="54" rx="2" fill="none" stroke="${theme.primary}" stroke-width="0.6" opacity="0.35" />
+        <path d="M4,19 L4,11 L12,11 M168,11 L176,11 L176,19 M4,57 L4,65 L12,65 M168,65 L176,65 L176,57" fill="none" stroke="${theme.secondary}" stroke-width="1.6" />
+      </g>
+
+      <!-- Illustration Centrale du Domaine -->
+      <g class="vault-domain-illustration" data-domain="${domain}">
+        ${centralIllustration}
+      </g>
+
+      <!-- Bandeaux Télémétrie Haut & Bas -->
+      <rect x="0" y="0" width="180" height="11" fill="#000000" fill-opacity="0.75" />
+      <line x1="0" y1="11" x2="180" y2="11" stroke="${theme.primary}" stroke-width="0.5" opacity="0.6" />
+      <text x="6" y="8" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="800" fill="${theme.primary}" letter-spacing="0.5">${theme.label}</text>
+      <text x="174" y="8" font-family="'Rajdhani', sans-serif" font-size="4.8" font-weight="700" fill="${theme.secondary}" text-anchor="end">${theme.code}</text>
+
+      <rect x="0" y="65" width="180" height="11" fill="#000000" fill-opacity="0.75" />
+      <line x1="0" y1="65" x2="180" y2="65" stroke="${theme.primary}" stroke-width="0.5" opacity="0.6" />
+      <text x="6" y="73" font-family="'Rajdhani', sans-serif" font-size="4.8" font-weight="700" fill="#cfd8dc">${itemName}</text>
+      <text x="174" y="73" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="800" fill="${theme.primary}" text-anchor="end">${statusLabel}</text>
     </svg>
   `.trim();
 }

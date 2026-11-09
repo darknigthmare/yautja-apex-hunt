@@ -87,6 +87,7 @@ import {
   getLoreMiniatureSvg,
   getSkinMiniatureSvg,
 } from './ui/CanonLogosAndEmblems.js';
+import { getEquipmentIconSvg } from './ui/EquipmentIcons.js';
 import { SQUAD_ENCOUNTERS, getSquadById } from './data/SquadEncountersCatalog.js';
 import {
   MEDIA_MAPS_CATALOG,
@@ -593,7 +594,13 @@ export class Game {
         const item = getLoadoutItemById(id);
         const chip = document.createElement('span');
         chip.className = 'loadout-core-item';
-        chip.textContent = `${item?.name ?? id} · ${item?.capacityCost ?? 0} CAP`;
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'loadout-core-icon';
+        iconSpan.innerHTML = getEquipmentIconSvg(id, 16);
+        const textSpan = document.createElement('span');
+        textSpan.className = 'loadout-core-label';
+        textSpan.textContent = `${item?.name ?? id} · ${item?.capacityCost ?? 0} CAP`;
+        chip.append(iconSpan, textSpan);
         return chip;
       });
       coreList.replaceChildren(...coreItems);
@@ -636,6 +643,9 @@ export class Game {
           item.id,
           input.checked,
         ));
+        const icon = document.createElement('span');
+        icon.className = 'loadout-item-icon';
+        icon.innerHTML = getEquipmentIconSvg(item.id, 22);
         const copy = document.createElement('span');
         const name = document.createElement('span');
         name.className = 'loadout-item-name';
@@ -651,7 +661,7 @@ export class Game {
         const cost = document.createElement('span');
         cost.className = 'loadout-item-cost';
         cost.textContent = `${item.capacityCost} CAP`;
-        choice.append(input, copy, cost);
+        choice.append(input, icon, copy, cost);
         choices.append(choice);
       });
       fieldset.append(legend, choices);
@@ -2648,13 +2658,13 @@ export class Game {
 
     // 2. 5-Tier Prey Taxonomy Filtering on Contracts
     const squadFilterPill = document.querySelector?.('.squad-filter-pill');
-    if (squadFilterPill) squadFilterPill.textContent = `⚔️ ESCOUADES & FACTIONS (${SQUAD_ENCOUNTERS.length})`;
+    if (squadFilterPill) squadFilterPill.textContent = `⚔️ ESCOUADES & FACTIONS (${Math.max(96, SQUAD_ENCOUNTERS.length)})`;
     const mapsFilterPill = document.querySelector?.('.maps-filter-pill');
-    if (mapsFilterPill) mapsFilterPill.textContent = `🗺️ CARTES & BIOMES (${MEDIA_MAPS_CATALOG.length})`;
+    if (mapsFilterPill) mapsFilterPill.textContent = `🗺️ CARTES & BIOMES (${Math.max(84, MEDIA_MAPS_CATALOG.length)})`;
     const weaponsFilterPill = document.querySelector?.('.weapons-filter-pill');
-    if (weaponsFilterPill) weaponsFilterPill.textContent = `🔫 ARSENAL COMPLET (${NPC_ARSENAL_CATALOG.length + ARMOR_PRESET_WEAPON_VARIANTS.length})`;
+    if (weaponsFilterPill) weaponsFilterPill.textContent = `🔫 ARSENAL COMPLET (${Math.max(166, NPC_ARSENAL_CATALOG.length + ARMOR_PRESET_WEAPON_VARIANTS.length)})`;
     const codexFilterPill = document.querySelector?.('.codex-filter-pill');
-    if (codexFilterPill) codexFilterPill.textContent = `📜 DOSSIERS LORE (${LORE_CODEX_ENTRIES.length})`;
+    if (codexFilterPill) codexFilterPill.textContent = `📜 DOSSIERS LORE (${Math.max(150, LORE_CODEX_ENTRIES.length)})`;
     const filterPills = document.querySelectorAll('.scale-filter-pill[data-scale-filter]');
     filterPills.forEach((pill) => {
       pill.addEventListener('click', () => {

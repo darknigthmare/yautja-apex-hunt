@@ -1727,6 +1727,7 @@ export class HuntNPC {
     this._isCharging = false;
     this.chargeWindupTimer = 0;
     this._painFlinchTimer = 0;
+    this._recoilFlinchTimer = 0;
     this._pounceTelegraphTimer = 0;
     this._isPouncing = false;
     this.lastDiegeticCue = null;
@@ -1869,8 +1870,20 @@ export class HuntNPC {
     if (!applyMeshTransforms || !this._rigParts) return telemetry;
 
     const { torso, head } = this._rigParts;
+    const isHeavyRecoil = Boolean(telemetry.isHeavyRecoil || this.lastDiegeticCue === 'heavy_recoil_flinch');
+
     if (head) {
       head.rotation.y = (head.userData.baseRotationY ?? 0) + telemetry.headScanYawRad;
+      if (telemetry.isCrouchedInCover) {
+        head.position.y = (head.userData.basePositionY ?? head.position.y) - 0.12;
+        head.rotation.x = (head.userData.baseRotationX ?? 0) + 0.12;
+      } else if (isHeavyRecoil) {
+        head.rotation.x = (head.userData.baseRotationX ?? 0) - 0.16;
+        head.position.y = head.userData.basePositionY ?? head.position.y;
+      } else {
+        head.position.y = head.userData.basePositionY ?? head.position.y;
+        head.rotation.x = head.userData.baseRotationX ?? 0;
+      }
     }
     if (torso) {
       const pitchOffset = (telemetry.state === 'stalk'
@@ -1880,12 +1893,16 @@ export class HuntNPC {
         || telemetry.state === 'investigate')
         ? telemetry.torsoPitchRad
         : 0;
-      torso.rotation.x = (torso.userData.baseRotationX ?? 0) + pitchOffset;
       const baseY = torso.userData.basePositionY ?? torso.position.y;
       if (telemetry.isCrouchedInCover) {
-        torso.position.y = baseY - 0.18;
+        torso.position.y = baseY - 0.22;
+        torso.rotation.x = (torso.userData.baseRotationX ?? 0) + pitchOffset + 0.08;
+      } else if (isHeavyRecoil) {
+        torso.position.y = baseY - 0.04;
+        torso.rotation.x = (torso.userData.baseRotationX ?? 0) - 0.18;
       } else {
         torso.position.y = baseY;
+        torso.rotation.x = (torso.userData.baseRotationX ?? 0) + pitchOffset;
       }
       if (telemetry.isLimping) {
         const phase = this._animPhase > 0 ? this._animPhase : 0.45;
@@ -1902,6 +1919,7 @@ export class HuntNPC {
     const phase = this._animPhase > 0 ? this._animPhase : 0.45;
     const isLimping = state === 'wounded_retreat' || (this.maxHealth > 0 && (this.health / this.maxHealth) <= 0.35);
     const isCrouchedInCover = state === 'cover' || Boolean(this._inCover);
+    const isHeavyRecoil = Boolean(this._recoilFlinchTimer > 0 || this.lastDiegeticCue === 'heavy_recoil_flinch');
 
     const strideMap = {
       patrol: 1.2,
@@ -1940,8 +1958,17 @@ export class HuntNPC {
       headScanYawRad,
       isLimping,
       isCrouchedInCover,
+      isHeavyRecoil,
       lastDiegeticCue: this.lastDiegeticCue,
     };
+  }
+
+  triggerHeavyRecoilFlinch(duration = 0.35) {
+    this._recoilFlinchTimer = Math.max(0.1, Number(duration) || 0.35);
+    this.mesh.userData.isRecoilFlinching = true;
+    this._recordDiegeticCue('heavy_recoil_flinch');
+    this._applyProceduralPosture(0, true);
+    return true;
   }
 
   getWeaponProfile() {
@@ -2468,6 +2495,12 @@ export class HuntNPC {
         this.mesh.userData.isFlinching = false;
       }
     }
+    if (this._recoilFlinchTimer > 0) {
+      this._recoilFlinchTimer = Math.max(0, this._recoilFlinchTimer - dt);
+      if (this._recoilFlinchTimer === 0) {
+        this.mesh.userData.isRecoilFlinching = false;
+      }
+    }
     if (this.isNetted) {
       this._isCharging = false;
       this.chargeWindupTimer = 0;
@@ -2725,6 +2758,18 @@ export class HuntNPC {
 
     signals.push(signal);
     this.attackCooldown = this.attackInterval;
+    const isHeavyAttack = Boolean(signal.heavy
+      || this.weaponProfile?.archetype?.includes('autocannon')
+      || this.weaponProfile?.archetype?.includes('flintlock')
+      || this.weaponProfile?.archetype?.includes('hunting_rifle')
+      || this.weaponProfile?.archetype?.includes('gauss')
+      || this.weaponProfile?.archetype?.includes('cannon')
+      || this.weaponProfile?.id?.includes('autocannon')
+      || this.weaponProfile?.id?.includes('flintlock')
+      || this.weaponProfile?.id?.includes('hunting_rifle'));
+    if (isHeavyAttack) {
+      this.triggerHeavyRecoilFlinch(0.35);
+    }
     return signals;
   }
 
@@ -3043,6 +3088,26 @@ export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
   wpn_perses_security_flechette_smg: makeWeaponBallisticProfile('wpn_perses_security_flechette_smg', {
     damage: 17, cooldown: 0.68, rangeM: 46, soundRadiusM: 54, projectileColor: 0x90e0ef, archetype: 'flechette_security_smg', cadence: 'high_rpm_flechette_burst', damageType: 'ballistic',
   }),
+
+  // Vague 10 Canonical Expansion Weapons (wpn_*)
+  wpn_nakai_desert_hunting_rifle: makeWeaponBallisticProfile('wpn_nakai_desert_hunting_rifle', {
+    damage: 36, cooldown: 1.75, rangeM: 140, soundRadiusM: 92, projectileColor: 0xffe066, archetype: 'bolt_action_hunting_rifle', cadence: 'bolt_action_single', damageType: 'ballistic',
+  }),
+  wpn_adolini_flintlock_1715: makeWeaponBallisticProfile('wpn_adolini_flintlock_1715', {
+    damage: 38, cooldown: 2.6, rangeM: 20, soundRadiusM: 85, projectileColor: 0xffaa44, archetype: 'black_powder_flintlock', cadence: 'single_shot_muzzleloader', damageType: 'impact',
+  }),
+  wpn_romulus_f44aa_pulse_rifle: makeWeaponBallisticProfile('wpn_romulus_f44aa_pulse_rifle', {
+    damage: 22, cooldown: 0.85, rangeM: 75, soundRadiusM: 70, projectileColor: 0xff4d6d, archetype: 'smart_pulse_rifle', cadence: 'fast_burst_smart_assist', damageType: 'ballistic',
+  }),
+  wpn_berserker_max_autocannon: makeWeaponBallisticProfile('wpn_berserker_max_autocannon', {
+    damage: 46, cooldown: 1.45, rangeM: 125, soundRadiusM: 115, projectileColor: 0xff3b00, archetype: 'heavy_motorized_autocannon', cadence: 'twin_autocannon_20mm', damageType: 'explosive',
+  }),
+  wpn_killer_clan_tusk_acid_spitter: makeWeaponBallisticProfile('wpn_killer_clan_tusk_acid_spitter', {
+    damage: 29, cooldown: 1.2, rangeM: 28, soundRadiusM: 44, projectileColor: 0x70e000, archetype: 'bio_pressurized_acid_spitter', cadence: 'pressurized_acid_spray', damageType: 'corrosion',
+  }),
+  wpn_ryushi_ranch_harpoon_gun: makeWeaponBallisticProfile('wpn_ryushi_ranch_harpoon_gun', {
+    damage: 32, cooldown: 1.55, rangeM: 38, soundRadiusM: 36, projectileColor: 0xc8d6e5, archetype: 'pneumatic_livestock_harpoon', cadence: 'pneumatic_tether_dart', damageType: 'kinetic_piercing',
+  }),
 });
 
 function resolveNpcRoleWeaponId(npcType) {
@@ -3059,6 +3124,12 @@ function resolveNpcRoleWeaponId(npcType) {
   if (type.includes('national_guard')) return 'npc_wep_avpr_m4a1_national_guard';
   if (type.includes('combat_synthetic') || type.includes('working_joe')) return 'npc_wep_seegson_stun_baton';
   if (type.includes('stargazer')) return 'npc_wep_blaser_r93_sniper';
+  if (type.includes('nakai')) return 'wpn_nakai_desert_hunting_rifle';
+  if (type.includes('adolini')) return 'wpn_adolini_flintlock_1715';
+  if (type.includes('romulus')) return 'wpn_romulus_f44aa_pulse_rifle';
+  if (type.includes('berserker_max')) return 'wpn_berserker_max_autocannon';
+  if (type.includes('tusk_acid') || type.includes('killer_clan')) return 'wpn_killer_clan_tusk_acid_spitter';
+  if (type.includes('ryushi') || type.includes('harpoon')) return 'wpn_ryushi_ranch_harpoon_gun';
   return 'npc_wep_m41a_pulse_rifle';
 }
 
@@ -3080,6 +3151,10 @@ export function getNpcWeaponProfile(npcTypeOrWeaponId, options = {}) {
   }
   if (NPC_WEAPON_BALLISTIC_PROFILES[`wpn_${raw}`]) {
     return NPC_WEAPON_BALLISTIC_PROFILES[`wpn_${raw}`];
+  }
+  const unaliased = raw.replace(/^npc_wep_/, 'wpn_');
+  if (NPC_WEAPON_BALLISTIC_PROFILES[unaliased]) {
+    return NPC_WEAPON_BALLISTIC_PROFILES[unaliased];
   }
 
   const mappedRoleId = resolveNpcRoleWeaponId(raw);
@@ -3111,6 +3186,26 @@ export function getNpcWeaponProfile(npcTypeOrWeaponId, options = {}) {
   if (raw.includes('baton') || raw.includes('shock') || raw.includes('stun')) {
     return makeWeaponBallisticProfile(raw || 'wpn_generic_shock', {
       damage: 18, cooldown: 0.95, rangeM: 3.5, soundRadiusM: 26, projectileColor: 0x4cc9f0, archetype: 'shock_melee', cadence: 'contact_surge', damageType: 'energy',
+    });
+  }
+  if (raw.includes('harpoon')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_harpoon', {
+      damage: 32, cooldown: 1.55, rangeM: 38, soundRadiusM: 36, projectileColor: 0xc8d6e5, archetype: 'pneumatic_livestock_harpoon', cadence: 'pneumatic_tether_dart', damageType: 'kinetic_piercing',
+    });
+  }
+  if (raw.includes('autocannon')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_autocannon', {
+      damage: 46, cooldown: 1.45, rangeM: 125, soundRadiusM: 115, projectileColor: 0xff3b00, archetype: 'heavy_motorized_autocannon', cadence: 'twin_autocannon_20mm', damageType: 'explosive',
+    });
+  }
+  if (raw.includes('flintlock')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_flintlock', {
+      damage: 38, cooldown: 2.6, rangeM: 20, soundRadiusM: 85, projectileColor: 0xffaa44, archetype: 'black_powder_flintlock', cadence: 'single_shot_muzzleloader', damageType: 'impact',
+    });
+  }
+  if (raw.includes('hunting_rifle')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_hunting_rifle', {
+      damage: 36, cooldown: 1.75, rangeM: 140, soundRadiusM: 92, projectileColor: 0xffe066, archetype: 'bolt_action_hunting_rifle', cadence: 'bolt_action_single', damageType: 'ballistic',
     });
   }
   return makeWeaponBallisticProfile(raw || 'npc_wep_m41a_pulse_rifle', {
