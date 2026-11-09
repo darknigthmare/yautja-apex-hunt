@@ -105,6 +105,36 @@
     }
 
     /* Survol interactif de la carte */
+    .card-miniature-box.prey-miniature {
+      border-color: rgba(118, 255, 3, 0.35);
+      box-shadow: inset 0 0 16px rgba(118, 255, 3, 0.12), 0 4px 18px rgba(0, 0, 0, 0.65);
+    }
+
+    .card-miniature-box.lore-miniature {
+      border-color: rgba(100, 255, 218, 0.35);
+      box-shadow: inset 0 0 16px rgba(100, 255, 218, 0.12), 0 4px 18px rgba(0, 0, 0, 0.65);
+    }
+
+    .card-miniature-box.skin-miniature {
+      border-color: rgba(255, 215, 0, 0.38);
+      box-shadow: inset 0 0 16px rgba(255, 215, 0, 0.14), 0 4px 18px rgba(0, 0, 0, 0.65);
+    }
+
+    .taxonomy-card:hover .card-miniature-box.prey-miniature {
+      border-color: #76ff03;
+      box-shadow: inset 0 0 20px rgba(118, 255, 3, 0.25), 0 0 16px rgba(118, 255, 3, 0.35);
+    }
+
+    .taxonomy-card:hover .card-miniature-box.lore-miniature,
+    .codex-card:hover .card-miniature-box.lore-miniature {
+      border-color: #64ffda;
+      box-shadow: inset 0 0 20px rgba(100, 255, 218, 0.25), 0 0 16px rgba(100, 255, 218, 0.35);
+    }
+
+    .skin-card:hover .card-miniature-box.skin-miniature {
+      border-color: #ffd700;
+      box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.25), 0 0 16px rgba(255, 215, 0, 0.35);
+    }
     .taxonomy-card:hover .card-miniature-box svg {
       transform: scale(1.025);
       filter: brightness(1.08);
@@ -1108,10 +1138,10 @@
             <button type="button" class="scale-filter-pill" data-taxonomy-filter="moyen">MOYENNES (1,8 à &lt; 3 m)</button>
             <button type="button" class="scale-filter-pill" data-taxonomy-filter="petite">PETITES (0,5 à &lt; 1,8 m)</button>
             <button type="button" class="scale-filter-pill" data-taxonomy-filter="minuscule">MINUSCULES (&lt; 0,5 m)</button>
-            <button type="button" class="scale-filter-pill squad-filter-pill" data-taxonomy-filter="squads" style="border-color:#ff5252; color:#ff8a80;">⚔️ ESCOUADES & GROUPES (76)</button>
-            <button type="button" class="scale-filter-pill maps-filter-pill" data-taxonomy-filter="maps" style="border-color:#00e5ff; color:#80d8ff;">🗺️ CARTES & SECTEURS MÉDIA (66)</button>
-            <button type="button" class="scale-filter-pill weapons-filter-pill" data-taxonomy-filter="weapons" style="border-color:#ffd700; color:#ffe57f;">🔫 ARSENAL YAUTJA & PNJ (136)</button>
-            <button type="button" class="scale-filter-pill codex-filter-pill" data-taxonomy-filter="lore" style="border-color:#69f0ae; color:#b9f6ca;">📜 CODEX & DOMAINES LORE (114)</button>
+            <button type="button" class="scale-filter-pill squad-filter-pill" data-taxonomy-filter="squads" style="border-color:#ff5252; color:#ff8a80;">⚔️ ESCOUADES & GROUPES (90)</button>
+            <button type="button" class="scale-filter-pill maps-filter-pill" data-taxonomy-filter="maps" style="border-color:#00e5ff; color:#80d8ff;">🗺️ CARTES & SECTEURS MÉDIA (78)</button>
+            <button type="button" class="scale-filter-pill weapons-filter-pill" data-taxonomy-filter="weapons" style="border-color:#ffd700; color:#ffe57f;">🔫 ARSENAL YAUTJA & PNJ (154)</button>
+            <button type="button" class="scale-filter-pill codex-filter-pill" data-taxonomy-filter="lore" style="border-color:#69f0ae; color:#b9f6ca;">📜 CODEX & DOMAINES LORE (138)</button>
             <button type="button" class="scale-filter-pill universes-filter-pill" data-taxonomy-filter="universes" style="border-color:#e040fb; color:#ea80fc;">🌌 TIROIRS PAR UNIVERS (3)</button>
           </div>
           <div class="catalogue-search" role="search" aria-label="Rechercher une proie dans l’encyclopédie">

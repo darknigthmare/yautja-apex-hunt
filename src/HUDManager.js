@@ -23,6 +23,7 @@ import {
 } from './data/RuntimeEquipment.js';
 import { getEquippedLoadoutItemIds } from './gameplay/HuntLoadoutSystem.js';
 import { getEquipmentIconSvg } from './ui/EquipmentIcons.js';
+import { getSkinMiniatureSvg, getCategoryIconSvg } from './ui/CanonLogosAndEmblems.js';
 import { getHuntCardLogo } from './ui/CanonLogosAndEmblems.js';
 import { formatWorldDistance } from './ui/distanceFormat.js';
 import { setupCatalogueBrowsers } from './ui/CatalogueBrowser.js';
@@ -586,6 +587,8 @@ export class HUDManager {
       card.setAttribute('data-skin-id', s.id);
       card.setAttribute('aria-pressed', 'false');
       card.innerHTML = `
+        <div class="card-miniature-box skin-miniature">${getSkinMiniatureSvg(s)}</div>
+        <div class="skin-card-header-icon" style="display:flex; align-items:center; gap:5px; margin-bottom:4px;">${getCategoryIconSvg('LOADOUT', 16)}</div>
         <div class="skin-title">${s.name}</div>
         <div class="skin-origin">${s.origin}</div>
         <div class="codex-tier skin-tier" title="${tier.label}">${tier.shortLabel}</div>

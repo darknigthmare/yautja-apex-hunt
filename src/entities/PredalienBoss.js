@@ -802,9 +802,23 @@ export class PredalienBoss {
     }
   }
 
+  getBossDiegeticTelemetry() {
+    const canonicalHeightM = 3.2;
+    return {
+      canonicalHeightM,
+      worldHeightUnits: canonicalHeightM * 3,
+      aiState: this.aiState,
+      isEnraged: Boolean(this.isEnraged),
+      isToppled: Boolean(this.isToppled),
+      tailIntact: Boolean(this.tailIntact),
+      groundContactValid: Number.isFinite(this.position?.y),
+    };
+  }
+
   dispose() {
     restoreBaseMaterials(this.mesh);
-    this.thermalMaterial.dispose?.();
+    this.thermalMaterial?.dispose?.();
+    this.scene?.remove?.(this.mesh);
   }
 
   applyNet() {

@@ -4,6 +4,10 @@ import * as THREE from 'three';
 import { RhynthBoss } from '../src/entities/RhynthBoss.js';
 import { VydrachBoss } from '../src/entities/VydrachBoss.js';
 import { XenomorphKingBoss } from '../src/entities/XenomorphKingBoss.js';
+import { XenomorphQueen } from '../src/entities/XenomorphQueen.js';
+import { PredalienBoss } from '../src/entities/PredalienBoss.js';
+import { GridAlienBoss } from '../src/entities/GridAlienBoss.js';
+import { KaliskBoss } from '../src/entities/KaliskBoss.js';
 import { getVisualBounds, getVisualCenter } from '../src/utils/worldScale.js';
 
 const BOSS_TYPES = [RhynthBoss, VydrachBoss, XenomorphKingBoss];
@@ -94,4 +98,41 @@ test('Vydrach wing hits consume the advertised wing health and prevent a broken-
     boss.update(0, boss.position.clone().add(new THREE.Vector3(0, 0, 35)), false);
     assert.notEqual(boss.aiState, 'aerial_dive');
   } finally { boss.dispose(); }
+});
+
+test('XenomorphQueen.spawnSeveredTail() anchors the severed tail prop relative to elevated terrain floor', () => {
+  const boss = new XenomorphQueen(new THREE.Scene());
+  try {
+    place(boss);
+    const tailPoint = boss.getTailWorldPosition();
+    const prop = boss.spawnSeveredTail();
+    assert.ok(prop, 'Severed tail prop should be created');
+    assert.ok(Math.abs(prop.position.x - tailPoint.x) < 1e-7 && Math.abs(prop.position.z - tailPoint.z) < 1e-7);
+    assert.equal(prop.position.y, boss.position.y + 0.5);
+  } finally { boss.dispose(); }
+});
+
+test('getBossDiegeticTelemetry() reports deterministic 1:1 canonical scale and combat state across all 5 apex bosses', () => {
+  const expectedSpecs = [
+    { Boss: XenomorphQueen, canonicalHeightM: 4.5 },
+    { Boss: PredalienBoss, canonicalHeightM: 3.2 },
+    { Boss: XenomorphKingBoss, canonicalHeightM: 5.0 },
+    { Boss: GridAlienBoss, canonicalHeightM: 2.6 },
+    { Boss: KaliskBoss, canonicalHeightM: 4.2 },
+  ];
+
+  for (const { Boss, canonicalHeightM } of expectedSpecs) {
+    const boss = new Boss(new THREE.Scene());
+    try {
+      place(boss);
+      const telemetry = boss.getBossDiegeticTelemetry();
+      assert.equal(telemetry.canonicalHeightM, canonicalHeightM, `${Boss.name}: canonicalHeightM mismatch`);
+      assert.ok(Math.abs(telemetry.worldHeightUnits - canonicalHeightM * 3) < 1e-9, `${Boss.name}: worldHeightUnits mismatch`);
+      assert.equal(typeof telemetry.aiState, 'string');
+      assert.equal(telemetry.isEnraged, false);
+      assert.equal(telemetry.isToppled, false);
+      assert.equal(telemetry.tailIntact, true);
+      assert.equal(telemetry.groundContactValid, true);
+    } finally { boss.dispose(); }
+  }
 });

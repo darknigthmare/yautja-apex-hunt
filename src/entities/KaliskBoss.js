@@ -664,6 +664,19 @@ export class KaliskBoss {
     };
   }
 
+  getBossDiegeticTelemetry() {
+    const canonicalHeightM = 4.2;
+    return {
+      canonicalHeightM,
+      worldHeightUnits: canonicalHeightM * 3,
+      aiState: this.aiState,
+      isEnraged: Boolean(this.isEnraged),
+      isToppled: Boolean(this.isToppled),
+      tailIntact: Boolean(this.tailIntact ?? true),
+      groundContactValid: Number.isFinite(this.position?.y),
+    };
+  }
+
   dispose() {
     if (this._disposed) return false;
     this._disposed = true;

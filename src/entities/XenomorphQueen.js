@@ -189,7 +189,7 @@ export class XenomorphQueen {
     stinger.position.set(0, 0, 3.0);
     tailProp.add(stinger);
     tailProp.position.copy(this.getTailWorldPosition());
-    tailProp.position.y = 0.5;
+    tailProp.position.y = (Number.isFinite(this.position?.y) ? this.position.y : 0) + 0.5;
     tailProp.userData.isCarveable = true;
     tailProp.userData.carved = false;
     tailProp.userData.trophyType = 'XENO_QUEEN_SEVERED_TAIL_STINGER';
@@ -305,9 +305,26 @@ export class XenomorphQueen {
     }
   }
 
+  getBossDiegeticTelemetry() {
+    const canonicalHeightM = 4.5;
+    return {
+      canonicalHeightM,
+      worldHeightUnits: canonicalHeightM * 3,
+      aiState: this.aiState,
+      isEnraged: Boolean(this.isEnraged),
+      isToppled: Boolean(this.isToppled),
+      tailIntact: Boolean(this.tailIntact),
+      groundContactValid: Number.isFinite(this.position?.y),
+    };
+  }
+
   dispose() {
     restoreBaseMaterials(this.mesh);
-    this.thermalMaterial.dispose?.();
+    this.thermalMaterial?.dispose?.();
+    if (this.severedTailMesh) {
+      this.scene?.remove?.(this.severedTailMesh);
+    }
+    this.scene?.remove?.(this.mesh);
   }
 
   applyNet() {

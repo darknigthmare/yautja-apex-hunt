@@ -1180,6 +1180,312 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     keyPreyIds: ['alien_base_royce_mercenaire_2010', 'prey_xeno_warrior'],
     heroSquadId: 'squad_ataegina_spear_phalanx',
     villainSquadId: 'squad_kseries_cloned_xeno_pack'
+  },
+  {
+    id: 'map_pred_stern_biodome_preserve',
+    name: 'Réserve Biodôme de Tyler Stern — Jungle Sous Verre & Passages Techniques (1998)',
+    universe: 'PREDATOR',
+    originMedia: 'Predator: Captive (Dark Horse Comics 1998)',
+    sourceMedia: 'Predator: Captive (1998)',
+    sourceType: 'COMIC',
+    releaseYear: 1998,
+    year: 1998,
+    biomeId: 'jungle',
+    biome: 'BIODOME_JUNGLE',
+    recommendedBiomeLabel: 'Réserve Biodôme Artificielle de Tyler Stern (Captive 1998)',
+    weather: 'Humidité tropicale artificielle contrôlée et averses programmées',
+    lighting: 'Projecteurs zénithaux halogènes et coursives d\'observation néon',
+    verticality: 'ÉLEVÉE (Canopée synthétique, passerelles d\'observation suspendues et dôme vitré)',
+    destructibility: 'Vitres blindées d\'observation, tourelles tranquillisantes et pylônes climatiques',
+    interactables: [
+      'Consoles de déverrouillage des sas de quarantaine',
+      'Générateurs de brouillard thermique du biodôme',
+      'Râteliers d\'armement Yautja confisqué au laboratoire Stern'
+    ],
+    environmentSummary: 'Vaste biosphère privée construite par le milliardaire Tyler Stern pour maintenir un Yautja en captivité, ceinturée de galeries scientifiques blindées et de pylônes haute tension.',
+    description: 'Vaste biosphère privée construite par le milliardaire Tyler Stern pour maintenir un Yautja en captivité, ceinturée de galeries scientifiques blindées et de pylônes haute tension.',
+    tacticalNotes: 'Briser les verrières d\'observation permet d\'infiltrer les coursives de sécurité et de retourner les systèmes de confinement contre les gardes de Stern.',
+    dimensionsM: { width: 320, length: 320, height: 65 },
+    elevationRangeM: [-10, 55],
+    tacticalSectors: [
+      'Cœur de la Jungle Synthétique sous Dôme',
+      'Passerelles d\'Observation Panoramiques de Tyler Stern',
+      'Laboratoire d\'Analyse Xenobiologique & Armurerie',
+      'Pylônes de Clôture Électro-Magnétique Périmétrique'
+    ],
+    keyLandmarks: [
+      'Dôme géodésique central en polymère blindé',
+      'Poste de commandement panoramique de Tyler Stern',
+      'Cascade artificielle et bassin de drainage souterrain'
+    ],
+    environmentalHazards: [
+      'Arcs électriques des clôtures de confinement haute tension',
+      'Gaz tranquillisant diffusé par les buses d\'urgence',
+      'Projecteurs de poursuite aveuglant la vision thermique'
+    ],
+    signatureHazards: [
+      'Purge neuro-sédative des secteurs d\'observation',
+      'Décharges des barrières laser périmétriques'
+    ],
+    ambientProfile: 'Bourdonnement des générateurs climatiques, cris d\'oiseaux tropicaux enregistrés et sirènes d\'alerte de brèche',
+    keyPreyIds: ['alien_base_royce_mercenaire_2010', 'prey_jungle_hunter_1987'],
+    heroSquadId: 'squad_pred_captive_preserve_guards',
+    villainSquadId: 'squad_bad_blood_renegade_pack'
+  },
+  {
+    id: 'map_pred_yellowstone_geysers_1999',
+    name: 'Yellowstone — Bassin Géothermique & Geysers de Soufre (1999)',
+    universe: 'PREDATOR',
+    originMedia: 'Predator: Homeworld (Dark Horse Comics 1999)',
+    sourceMedia: 'Predator: Homeworld (1999)',
+    sourceType: 'COMIC',
+    releaseYear: 1999,
+    year: 1999,
+    biomeId: 'jungle',
+    biome: 'GEOTHERMAL_FOREST',
+    recommendedBiomeLabel: 'Bassin des Geysers de Yellowstone (Homeworld 1999)',
+    weather: 'Vapeurs soufrées épaisses, vent froid des Rocheuses et bruine acide',
+    lighting: 'Crépuscule montagneux filtré par les colonnes de vapeur géothermique',
+    verticality: 'MOYENNE (Crêtes rocheuses, pins Douglas centenaires et passerelles de bois)',
+    destructibility: 'Passerelles touristiques en bois, croûtes minérales fragiles et cabanes de rangers',
+    interactables: [
+      'Poste radio d\'urgence des Rangers du Parc National',
+      'Vannes de dérivation géothermique',
+      'Caches d\'équipement de survie forestier'
+    ],
+    environmentSummary: 'Territoire volcanique actif du parc national de Yellowstone où les panaches de vapeur bouillante masquent les signatures infrarouges lors de la traque des trois Bad Bloods par l\'Ancien.',
+    description: 'Territoire volcanique actif du parc national de Yellowstone où les panaches de vapeur bouillante masquent les signatures infrarouges lors de la traque des trois Bad Bloods par l\'Ancien.',
+    tacticalNotes: 'Les colonnes de vapeur à 95°C saturent le spectre thermique du biomasque, forçant l\'usage de la traque acoustique et des embuscades en hauteur.',
+    dimensionsM: { width: 480, length: 440, height: 80 },
+    elevationRangeM: [0, 80],
+    tacticalSectors: [
+      'Grand Bassin Pratique des Geysers Bouillonnants',
+      'Forêt de Conifères & Crêtes d\'Observation des Rangers',
+      'Passerelles de Bois au-dessus des Sources Acides',
+      'Campement Isolé & Station Météo Géologique'
+    ],
+    keyLandmarks: [
+      'Cratère du Geyser Principal en éruption cyclique',
+      'Tour de guet incendie des Rangers de Yellowstone',
+      'Pont suspendu au-dessus du canyon soufré'
+    ],
+    environmentalHazards: [
+      'Éruptions soudaines de geysers d\'eau bouillante à haute pression',
+      'Brouillard géothermique aveuglant la vision infrarouge',
+      'Bassins d\'acide sulfurique naturel sous la croûte minérale'
+    ],
+    signatureHazards: [
+      'Geysers explosifs à cycle thermique',
+      'Poches de gaz sulfureux toxique'
+    ],
+    ambientProfile: 'Grondement sourd de la chambre magmatique, sifflements des fumerolles et vent dans les pins',
+    keyPreyIds: ['alien_base_dutch_2025_owlf', 'alien_base_alpha_predator_kaail'],
+    heroSquadId: 'squad_pred_yellowstone_rangers',
+    villainSquadId: 'squad_bad_blood_renegade_pack'
+  },
+  {
+    id: 'map_alien_charon_kleist_citadel',
+    name: 'Astéroïde Charon — Citadelle Génétique du Professeur Kleist (1993)',
+    universe: 'ALIEN',
+    originMedia: 'Aliens: Rogue (Dark Horse Comics 1993)',
+    sourceMedia: 'Aliens: Rogue (1993)',
+    sourceType: 'COMIC',
+    releaseYear: 1993,
+    year: 1993,
+    biomeId: 'stargazer_blacksite',
+    biome: 'ASTEROID_BIO_CITADEL',
+    recommendedBiomeLabel: 'Citadelle Biologique de Charon (Aliens: Rogue 1993)',
+    weather: 'Atmosphère confinée sous dôme d\'astéroïde avec fuites cryogéniques',
+    lighting: 'Éclairage chirurgical blafard et gyrophares d\'alerte rouge sang',
+    verticality: 'ÉLEVÉE (Silos d\'incubation géants, passerelles de confinement et puits de ventilation)',
+    destructibility: 'Cuves de clonage en verre renforcé, cloisons de quarantaine et générateurs de champ de force',
+    interactables: [
+      'Commandes du sas de l\'arène du King Alien',
+      'Terminaux génétiques du Professeur Ernst Kleist',
+      'Tourelles de défense interne des casernes USCM'
+    ],
+    environmentSummary: 'Complexe militaro-scientifique creusé dans l\'astéroïde Charon où le généticien Ernst Kleist a élevé le titanesque King Alien face à une ruche captive.',
+    description: 'Complexe militaro-scientifique creusé dans l\'astéroïde Charon où le généticien Ernst Kleist a élevé le titanesque King Alien face à une ruche captive.',
+    tacticalNotes: 'Les coursives étroites des laboratoires débouchent sur l\'immense fosse de contention du Roi Xénomorphe ; utiliser les grilles supérieures pour éviter les charges.',
+    dimensionsM: { width: 360, length: 400, height: 70 },
+    elevationRangeM: [-35, 35],
+    tacticalSectors: [
+      'Grande Fosse de Contention du Spécimen King Alien',
+      'Laboratoires de Génétique Hybride du Professeur Kleist',
+      'Casernes Fortifiées de la Garnison Coloniale de Charon',
+      'Nid de la Reine Captive & Conduits Thermiques'
+    ],
+    keyLandmarks: [
+      'Cuve blindée centrale brisée du King Alien',
+      'Observatoire blindé du Professeur Kleist',
+      'Rampe d\'amarrage des navettes orbitales'
+    ],
+    environmentalHazards: [
+      'Brèches de confinement libérant des vapeurs d\'azote liquide',
+      'Mares d\'acide moléculaire issues des combats entre castes xénos',
+      'Barrières électrostatiques haute tension dans les couloirs'
+    ],
+    signatureHazards: [
+      'Effondrement structurel causé par les charges du King Alien',
+      'Purge chimique neurotoxique des laboratoires'
+    ],
+    ambientProfile: 'Hurlements graves du King Alien résonnant dans la roche, alarmes de confinement et crépitements électriques',
+    keyPreyIds: ['alien_base_william_hudson_private', 'prey_xeno_warrior'],
+    heroSquadId: 'squad_alien_charon_rogue_marines',
+    villainSquadId: 'squad_charon_kleist_rogue_swarm'
+  },
+  {
+    id: 'map_alien_bellerophon_caves',
+    name: 'Bellerophon — Cavernes Bioluminescentes & Ruche de Moisson (2019)',
+    universe: 'ALIEN',
+    originMedia: 'Alien: Echo / Aliens: Hive (Roman 2019 & Comics 1992)',
+    sourceMedia: 'Alien: Echo (2019)',
+    sourceType: 'NOVEL',
+    releaseYear: 2019,
+    year: 2019,
+    biomeId: 'hive_lv426',
+    biome: 'BIOLUMINESCENT_CAVERNS',
+    recommendedBiomeLabel: 'Cavernes Bioluminescentes de Bellerophon (Echo 2019)',
+    weather: 'Brume souterraine chargée de spores lumineuses et ruissellements acides',
+    lighting: 'Lueur bleue-verte organique des champignons cavernicoles et résine xénomorphe',
+    verticality: 'ÉLEVÉE (Stalactites géantes, ponts de pierre naturels et gouffres inondés)',
+    destructibility: 'Colonnes de calcaire friable, cocons de résine et nids de cyber-fourmis moissonneuses',
+    interactables: [
+      'Balises sismiques de terraformation de la famille Shipp',
+      'Collecteurs automatisés de Gelée Royale de Mayakovsky',
+      'Ponts-levis de secours des stations de pompage'
+    ],
+    environmentSummary: 'Réseau karstique abyssal sous la colonie de Bellerophon, mêlant flore bioluminescente indigène, sécrétions de ruche xénomorphe et essaims de cyber-fourmis de récolte.',
+    description: 'Réseau karstique abyssal sous la colonie de Bellerophon, mêlant flore bioluminescente indigène, sécrétions de ruche xénomorphe et essaims de cyber-fourmis de récolte.',
+    tacticalNotes: 'L\'acoustique des cavernes amplifie le moindre bruit de pas ; privilégier les corniches calcaires en hauteur et surveiller les bassins souterrains.',
+    dimensionsM: { width: 420, length: 450, height: 90 },
+    elevationRangeM: [-60, 30],
+    tacticalSectors: [
+      'Cathédrale des Stalactites Bioluminescentes',
+      'Chambre d\'Extraction de Gelée Royale & Cyber-Fourmilière',
+      'Rivière Souterraine & Gouffre des Échos',
+      'Avant-Poste Xéno-Biologique Englouti de Bellerophon'
+    ],
+    keyLandmarks: [
+      'Arche de cristal bioluminescent surplombant l\'abîme',
+      'Silo moissonneur cybernétique de Mayakovsky',
+      'Laboratoire de terrain barricadé d\'Olivia Shipp'
+    ],
+    environmentalHazards: [
+      'Chutes de stalactites provoquées par les détonations',
+      'Spores cavernicoles brouillant les capteurs optiques',
+      'Bassins d\'eau noire dissimulant des Facehuggers amphibies'
+    ],
+    signatureHazards: [
+      'Essaims de micro-drones coupeurs au laser',
+      'Éboulements karstiques par résonance acoustique'
+    ],
+    ambientProfile: 'Gouttes d\'eau réverbérées à l\'infini, cliquetis métalliques des cyber-fourmis et sifflements xénomorphes dans l\'ombre',
+    keyPreyIds: ['prey_weyland_combat_android', 'prey_xeno_warrior'],
+    heroSquadId: 'squad_alien_harvest_cyber_ants',
+    villainSquadId: 'squad_genocide_grant_xeno_zip_2190'
+  },
+  {
+    id: 'map_avp_tokyo_eternal_penthouse',
+    name: 'Tokyo 1998 — Penthouse Cybernétique de Gideon Lee & Soute Yautja (1998)',
+    universe: 'AVP',
+    originMedia: 'Aliens vs. Predator: Eternal (Dark Horse Comics 1998)',
+    sourceMedia: 'AVP: Eternal (1998)',
+    sourceType: 'COMIC',
+    releaseYear: 1998,
+    year: 1998,
+    biomeId: 'los_angeles_1997',
+    biome: 'CYBER_METROPOLIS_TOWER',
+    recommendedBiomeLabel: 'Gratte-Ciel de Gideon Lee à Tokyo (AVP: Eternal 1998)',
+    weather: 'Pluie battante nocturne sur Tokyo et bourrasques de haute altitude',
+    lighting: 'Hologrammes publicitaires géants, néons cybernétiques et jardin zen éclairé aux lanternes',
+    verticality: 'EXTRÊME (Héliport du toit, atrium vitré sur 80 étages et chambre forte de l\'épave de 1300)',
+    destructibility: 'Parois de papier shoji blindé, baies vitrées panoramiques et vitrines de reliques Yautja',
+    interactables: [
+      'Ascenseur express menant à la chambre forte du vaisseau de 1300',
+      'Système de défense laser rétro-conçu de la corporation Lee/Suwa',
+      'Cuves de stase cryogénique contenant les œufs Xénomorphes'
+    ],
+    environmentSummary: 'Sommet du gratte-ciel ultra-sécurisé de l\'immortel Gideon Lee à Tokyo, reliant un penthouse traditionnel japonais aux laboratoires secrets abritant une épave Yautja du XIVe siècle.',
+    description: 'Sommet du gratte-ciel ultra-sécurisé de l\'immortel Gideon Lee à Tokyo, reliant un penthouse traditionnel japonais aux laboratoires secrets abritant une épave Yautja du XIVe siècle.',
+    tacticalNotes: 'Utiliser les poutrelles de l\'atrium et l\'héliport extérieur sous la pluie pour contourner les tirs de fusils à plasma rétro-conçus des mercenaires.',
+    dimensionsM: { width: 280, length: 300, height: 120 },
+    elevationRangeM: [200, 320],
+    tacticalSectors: [
+      'Penthouse Impérial & Jardin Zen sur le Toit de Tokyo',
+      'Atrium Panoramique & Passerelles de Verre Suspendues',
+      'Hangar Souterrain de l\'Épave Yautja de l\'An 1300',
+      'Laboratoire de Longévité & Armurerie Rétro-Conçue'
+    ],
+    keyLandmarks: [
+      'Carcasse fossilisée du vaisseau Yautja du XIVe siècle',
+      'Héliport corporatiste surplombant la baie de Tokyo',
+      'Salle des trophées samouraïs de Gideon Lee'
+    ],
+    environmentalHazards: [
+      'Rafales de vent violent sur les corniches extérieures du gratte-ciel',
+      'Grilles de sécurité laser à faisceau plasma rétro-conçu',
+      'Surcharge du réacteur antique de l\'épave Yautja'
+    ],
+    signatureHazards: [
+      'Tourelles automatiques à plasma inversé',
+      'Décompression et chute libre depuis les baies vitrées brisées'
+    ],
+    ambientProfile: 'Tonnerre urbain sur Tokyo, sirènes de police lointaines et bourdonnement des générateurs plasma piratés',
+    keyPreyIds: ['prey_weyland_combat_android', 'prey_jungle_hunter_1987'],
+    heroSquadId: 'squad_avp_eternal_tokyo_mercs',
+    villainSquadId: 'squad_avp_eternal_suwa_syndicate_1998'
+  },
+  {
+    id: 'map_avp_perses_fire_stone_hull',
+    name: 'Vaisseau Perses — Coque Mutée d\'Elden & Coursives en Ruine (2014)',
+    universe: 'AVP',
+    originMedia: 'Aliens vs. Predator: Fire and Stone (Dark Horse Comics 2014)',
+    sourceMedia: 'AVP: Fire and Stone (2014)',
+    sourceType: 'COMIC',
+    releaseYear: 2014,
+    year: 2014,
+    biomeId: 'genna_deathworld',
+    biome: 'MUTATED_STARSHIP_HULL',
+    recommendedBiomeLabel: 'Coque Mutée du Vaisseau Perses (Fire and Stone 2014)',
+    weather: 'Vide spatial orbital et poches de gaz mutagène noir pressurisé',
+    lighting: 'Éclairage de secours stroboscopique et bioluminescence organique noire',
+    verticality: 'ÉLEVÉE (Puits de gravité artificielle, salles des machines sur trois ponts et coque externe)',
+    destructibility: 'Conduites de refroidissement, parois biomécaniques corrompues et sas d\'évacuation',
+    interactables: [
+      'Panneaux de contrôle de gravité artificielle du Perses',
+      'Sas d\'éjection vers les nacelles de sauvetage',
+      'Armurerie de sécurité de l\'équipage du capitaine Foster'
+    ],
+    environmentSummary: 'Intérieur dévasté du vaisseau d\'exploration Perses en orbite autour de LV-223, envahi par la biomasse du pathogène noir A0-3959X sous le contrôle du synthétique muté Elden et traqué par l\'Elder Ahab.',
+    description: 'Intérieur dévasté du vaisseau d\'exploration Perses en orbite autour de LV-223, envahi par la biomasse du pathogène noir A0-3959X sous le contrôle du synthétique muté Elden et traqué par l\'Elder Ahab.',
+    tacticalNotes: 'La corruption organique du mutagène noir altère la géométrie des coursives ; exploiter les conduits techniques pour tendre des embuscades entre les Xénomorphes d\'Elden et la sécurité du bord.',
+    dimensionsM: { width: 340, length: 460, height: 60 },
+    elevationRangeM: [-30, 30],
+    tacticalSectors: [
+      'Passerelle de Commandement Corrompue par le Mutagène Noir',
+      'Salle du Réacteur Orbital & Sanctuaire d\'Elden',
+      'Quartiers de Sécurité du Perses & Armurerie de Galgo',
+      'Baie des Nacelles de Sauvetage & Brèche de Coque'
+    ],
+    keyLandmarks: [
+      'Trône biomécanique du synthétique muté Elden',
+      'Brèche d\'abordage du chasseur Elder Ahab',
+      'Cœur de propulsion ionique du vaisseau Perses'
+    ],
+    environmentalHazards: [
+      'Suintements de pathogène noir A0-3959X hautement mutagène',
+      'Fluctuations de gravité artificielle dans les coursives endommagées',
+      'Jet de plasma des conduites de propulsion éventrées'
+    ],
+    signatureHazards: [
+      'Projections d\'acide et de fluide mutagène noir',
+      'Dépressurisation brutale des compartiments de coque'
+    ],
+    ambientProfile: 'Grincements métalliques de la coque sous contrainte, pulsations organiques du mutagène et tirs de fléchettes dans les coursives',
+    keyPreyIds: ['prey_ahab_elder_persée', 'prey_xeno_warrior'],
+    heroSquadId: 'squad_avp_perses_fire_stone_crew',
+    villainSquadId: 'squad_fire_and_stone_perses_crew_2014'
   }
 ]);
 
@@ -2257,6 +2563,138 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     wieldedBy: 'Xénomorphes K-Series Drones, Spitters Génétiques',
     yautjaCounterplay: 'Acide hautement réactif rongeant le métal : maintenir une garde hermétique et incinérer au plasma.',
     description: 'Organe de projection acide muté issu des hybridations de Kadinsky, capable d\'asperger de l\'acide volatil à longue distance.'
+  },
+  {
+    id: 'wpn_stern_biodome_tranq_lance',
+    name: 'Lance Électro-Tranquillisante Haute Tension du Biodôme Stern (1998)',
+    universe: 'PREDATOR',
+    faction: 'Sécurité Privée du Biodôme de Tyler Stern (1998)',
+    originMedia: 'Predator: Captive (Dark Horse Comics 1998)',
+    sourceMedia: 'Predator: Captive (1998)',
+    year: 1998,
+    category: 'POLEARM_SEDATION',
+    caliber: 'Dards hypodermiques d\'étorphine concentrée & arc 80 000 V',
+    damageType: 'electric_sedative',
+    damage: 68,
+    effectiveRangeMeters: 18,
+    rangeM: 18,
+    rateOfFire: 'Décharge continue au contact & tir pneumatique de dard',
+    fireRate: '60 cps/min (Dards) / Continu (Arc)',
+    specialEffect: 'Draine l\'endurance et brouille temporairement le régulateur de camouflage optique Yautja',
+    wieldedBy: 'Gardes de Confinement du Biodôme Stern, Équipe de Capture',
+    yautjaCounterplay: 'Trancher la hampe isolante avec les lames de poignet ou éliminer les porteurs depuis la canopée au Smart Disc.',
+    counterplay: 'Trancher la hampe isolante avec les lames de poignet ou éliminer les porteurs depuis la canopée au Smart Disc.',
+    description: 'Arme d\'arrêt non-létale surdimensionnée développée par les laboratoires de Tyler Stern pour soumettre et anesthésier un Yautja adulte sans endommager sa biologie.'
+  },
+  {
+    id: 'wpn_yellowstone_ranger_45_70_lever',
+    name: 'Carabine à Levier .45-70 Government des Rangers de Yellowstone (1999)',
+    universe: 'PREDATOR',
+    faction: 'Service des Parcs Nationaux & Pisteurs de Yellowstone (1999)',
+    originMedia: 'Predator: Homeworld (Dark Horse Comics 1999)',
+    sourceMedia: 'Predator: Homeworld (1999)',
+    year: 1999,
+    category: 'HEAVY_LEVER_RIFLE',
+    caliber: '.45-70 Government à ogive blindée lourde 405 grains',
+    damageType: 'kinetic_heavy_impact',
+    damage: 92,
+    effectiveRangeMeters: 85,
+    rangeM: 85,
+    rateOfFire: 'Actionnement manuel rapide par levier de sous-garde (45 cps/min)',
+    fireRate: '45 cps/min',
+    specialEffect: 'Fort pouvoir d\'arrêt cinétique capable de briser les plaques d\'armure légères à moyenne portée',
+    wieldedBy: 'Rangers Vétérans de Yellowstone, Guides de Haute Montagne',
+    yautjaCounterplay: 'Exploiter les panaches de vapeur des geysers pour masquer sa silhouette et frapper pendant le réarmement du levier.',
+    counterplay: 'Exploiter les panaches de vapeur des geysers pour masquer sa silhouette et frapper pendant le réarmement du levier.',
+    description: 'Carabine de brousse robuste chambrée pour stopper les grizzlys géants des Rocheuses, utilisée en dernier recours par les rangers de Yellowstone face aux incursions Yautja.'
+  },
+  {
+    id: 'wpn_kleist_charon_shock_baton',
+    name: 'Matraque Neuro-Choc & Aiguillon de Contention de Charon (1993)',
+    universe: 'ALIEN',
+    faction: 'Garde Scientifique de Charon & Marines du Complexe Kleist (1993)',
+    originMedia: 'Aliens: Rogue (Dark Horse Comics 1993)',
+    sourceMedia: 'Aliens: Rogue (1993)',
+    year: 1993,
+    category: 'MELEE_NEURO_SHOCK',
+    caliber: 'Impulsion bio-électrique pulsée à 150 kV & revêtement anti-acide',
+    damageType: 'neuro_electric',
+    damage: 74,
+    effectiveRangeMeters: 3.5,
+    rangeM: 3.5,
+    rateOfFire: 'Impulsions nerveuses cadencées au contact',
+    fireRate: '90 frappes/min',
+    specialEffect: 'Paralyse les ganglions moteurs des drones xénomorphes et repousse les assaillants en mêlée',
+    wieldedBy: 'Escouade de Sécurité de Charon, Gardes du Professeur Ernst Kleist',
+    yautjaCounterplay: 'Ne pas s\'exposer aux barrages d\'aiguillons en couloir étroit : utiliser le lance-filet ou le canon plasma.',
+    counterplay: 'Ne pas s\'exposer aux barrages d\'aiguillons en couloir étroit : utiliser le lance-filet ou le canon plasma.',
+    description: 'Bâton de contention blindé en alliage au téflon anti-acide, conçu sur l\'astéroïde Charon pour canaliser les Xénomorphes captifs des laboratoires du professeur Kleist.'
+  },
+  {
+    id: 'wpn_mayakovsky_cyber_ant_laser',
+    name: 'Micro-Laser de Découpe des Cyber-Fourmis Moissonneuses de Mayakovsky (1992)',
+    universe: 'ALIEN',
+    faction: 'Expédition Cybernétique de Stanislaw Mayakovsky & Norbert (1992)',
+    originMedia: 'Aliens: Hive (Dark Horse Comics 1992)',
+    sourceMedia: 'Aliens: Hive (1992)',
+    year: 1992,
+    category: 'SWARM_DIRECTED_LASER',
+    caliber: 'Faisceaux lasers chirurgicaux convergents à 450 nanomètres',
+    damageType: 'thermal_surgical_laser',
+    damage: 80,
+    effectiveRangeMeters: 40,
+    rangeM: 40,
+    rateOfFire: 'Faisceau continu multi-émetteurs synchronisé par essaim',
+    fireRate: 'Continu (Essaim synchronisé)',
+    specialEffect: 'Ignore une fraction de l\'armure grâce à la focalisation thermique millimétrique de plusieurs unités cybernétiques',
+    wieldedBy: 'Cyber-Fourmis Moissonneuses, Synthétique Xéno-Mimétique Norbert',
+    yautjaCounterplay: 'Balayer l\'essaim robotique avec une onde de choc ou une mine à plasma pour désynchroniser leur réseau optique.',
+    counterplay: 'Balayer l\'essaim robotique avec une onde de choc ou une mine à plasma pour désynchroniser leur réseau optique.',
+    description: 'Système de découpe laser miniaturisé équipant les insectes robotiques de Stanislaw Mayakovsky pour trancher la résine de ruche et extraire la Gelée Royale.'
+  },
+  {
+    id: 'wpn_gideon_lee_reverse_plasma_rifle',
+    name: 'Fusil à Plasma Rétro-Conçu Type-1300 du Syndicat Gideon Lee (1998)',
+    universe: 'AVP',
+    faction: 'Mercenaires Cyber-Corporatistes de Gideon Lee / Suwa (1998)',
+    originMedia: 'Aliens vs. Predator: Eternal (Dark Horse Comics 1998)',
+    sourceMedia: 'AVP: Eternal (1998)',
+    year: 1998,
+    category: 'REVERSE_ENGINEERED_PLASMA',
+    caliber: 'Cellules à plasma Yautja rétro-conçues à confinement magnétique instable',
+    damageType: 'plasma_overcharged',
+    damage: 105,
+    effectiveRangeMeters: 75,
+    rangeM: 75,
+    rateOfFire: 'Rafales semi-automatiques de 2 orbes plasma (120 cps/min)',
+    fireRate: '120 cps/min',
+    specialEffect: 'Surchauffe les boucliers énergétiques et inflige des brûlures plasmiques persistantes',
+    wieldedBy: 'Garde Prétorienne de Gideon Lee, Mercenaires d\'Élite de Tokyo',
+    yautjaCounterplay: 'Arme hérétique volée au clan : détruire le condensateur externe par tir de précision pour provoquer une implosion.',
+    counterplay: 'Arme hérétique volée au clan : détruire le condensateur externe par tir de précision pour provoquer une implosion.',
+    description: 'Arme humaine illégale développée dans les laboratoires de Tokyo par rétro-ingénierie sur l\'épave d\'un vaisseau Yautja du XIVe siècle, considérée comme une abomination par les clans.'
+  },
+  {
+    id: 'wpn_perses_security_flechette_smg',
+    name: 'Pistolet-Mitrailleur à Fléchettes Perforantes du Vaisseau Perses (2014)',
+    universe: 'AVP',
+    faction: 'Équipage de Sécurité du Perses & Mercenaires de Galgo (2014)',
+    originMedia: 'Aliens vs. Predator: Fire and Stone (Dark Horse Comics 2014)',
+    sourceMedia: 'AVP: Fire and Stone (2014)',
+    year: 2014,
+    category: 'FLECHETTE_SMG',
+    caliber: 'Micro-fléchettes sub-calibrées en carbure de tungstène 5.7×28mm',
+    damageType: 'piercing_ballistic',
+    damage: 78,
+    effectiveRangeMeters: 50,
+    rangeM: 50,
+    rateOfFire: '950 cps/min en rafales contrôlées anti-dépressurisation',
+    fireRate: '950 cps/min',
+    specialEffect: 'Conçu pour perforer les carapaces organiques mutées sans percer les cloisons pressurisées des vaisseaux',
+    wieldedBy: 'Galgo Helder, Officiers de Sécurité du Vaisseau Perses',
+    yautjaCounterplay: 'La cadence élevée sature les coursives : bondir au plafond et frapper au harpon lourd d\'Ahab.',
+    counterplay: 'La cadence élevée sature les coursives : bondir au plafond et frapper au harpon lourd d\'Ahab.',
+    description: 'Arme de défense embarquée standard à bord du vaisseau Perses en 2219, combinant une cadence de tir furieuse et des dards stabilisés contre les créatures mutées par le pathogène noir.'
   }
 ]);
 

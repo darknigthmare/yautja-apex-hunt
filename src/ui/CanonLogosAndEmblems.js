@@ -1237,7 +1237,7 @@ export function getSquadLogo(squadId, size = 64) {
   }
 
   // 2. Section Marines Coloniaux USCM Hadley's Hope 1986
-  if (id.includes('uscm') || id.includes('hadleys')) {
+  if (id === 'squad_uscm_hadleys_hope_1986' || ((id.includes('uscm') || id.includes('hadleys')) && !id.includes('iron_bear') && !id.includes('militia'))) {
     return getUSCMLogo(size);
   }
 
@@ -2044,6 +2044,246 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  // --- ESCADRONS VAGUE 8 (Catalogue & Prompt) ---
+  if (id.includes('dark_river_amazon_patrol')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-darkriver" role="img" aria-label="Insigne Patrouille Fluviale Amazone 1996">
+        <circle cx="40" cy="40" r="36" fill="#071c15" stroke="#10b981" stroke-width="2.5" />
+        <path d="M14 46 Q28 36 40 46 T66 46" fill="none" stroke="#34d399" stroke-width="3" />
+        <polygon points="40,14 54,36 40,30 26,36" fill="#059669" stroke="#a7f3d0" stroke-width="1.5" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#6ee7b7" letter-spacing="0.8" text-anchor="middle">DARK RIVER '96</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('whitechapel_constabulary_guard')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-whitechapel" role="img" aria-label="Insigne Garde Constabulaire Whitechapel 1896">
+        <circle cx="40" cy="40" r="36" fill="#0f172a" stroke="#eab308" stroke-width="2.5" />
+        <polygon points="40,12 58,24 52,54 40,62 28,54 22,24" fill="#1e293b" stroke="#facc15" stroke-width="1.8" />
+        <circle cx="40" cy="36" r="8" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="900" fill="#fde047" letter-spacing="0.8" text-anchor="middle">SCOTLAND YARD</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('pala_station_security_detail')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-palastation" role="img" aria-label="Insigne Quarantaine Station Pala 2021">
+        <polygon points="40,6 70,22 70,58 40,74 10,58 10,22" fill="#111827" stroke="#38bdf8" stroke-width="2.5" />
+        <circle cx="40" cy="38" r="15" fill="#0369a1" stroke="#7dd3fc" stroke-width="1.8" />
+        <path d="M32 38 L48 38 M40 30 L40 46" stroke="#e0f2fe" stroke-width="3" stroke-linecap="round" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.4" font-weight="900" fill="#7dd3fc" letter-spacing="0.8" text-anchor="middle">PALA SEC-04</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('hadleys_hope_colonial_militia')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-hadleymilitia" role="img" aria-label="Insigne Milice Coloniale Hadley's Hope">
+        <circle cx="40" cy="40" r="36" fill="#172554" stroke="#60a5fa" stroke-width="2.5" />
+        <polygon points="40,14 60,48 20,48" fill="#1e3a8a" stroke="#93c5fd" stroke-width="1.8" />
+        <circle cx="40" cy="36" r="6" fill="#f59e0b" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.4" font-weight="900" fill="#bfdbfe" letter-spacing="0.8" text-anchor="middle">HADLEY MILITIA</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('ataegina_spear_phalanx')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-ataegina" role="img" aria-label="Insigne Phalange Ataegina 2020">
+        <circle cx="40" cy="40" r="36" fill="#1c1917" stroke="#f97316" stroke-width="2.5" />
+        <circle cx="40" cy="38" r="18" fill="#431407" stroke="#fb923c" stroke-width="2" />
+        <path d="M30 48 L40 24 L50 48" fill="none" stroke="#fdba74" stroke-width="3" stroke-linejoin="round" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#fed7aa" letter-spacing="0.8" text-anchor="middle">LEMNOS PHALANX</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('iron_bear_uscm_battalion')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-ironbear" role="img" aria-label="Insigne Bataillon Iron Bears USCM">
+        <polygon points="40,6 72,22 72,58 40,74 8,58 8,22" fill="#18181b" stroke="#a1a1aa" stroke-width="2.5" />
+        <polygon points="24,26 32,16 40,24 48,16 56,26 52,50 40,58 28,50" fill="#3f3f46" stroke="#f43f5e" stroke-width="1.8" />
+        <circle cx="34" cy="34" r="2.5" fill="#f43f5e" />
+        <circle cx="46" cy="34" r="2.5" fill="#f43f5e" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.6" font-weight="900" fill="#fda4af" letter-spacing="0.8" text-anchor="middle">IRON BEARS</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('kseries_cloned_xeno_pack')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-kseries" role="img" aria-label="Insigne Meute Xéno K-Series">
+        <circle cx="40" cy="40" r="36" fill="#1a2e05" stroke="#a3e635" stroke-width="2.5" />
+        <path d="M22 46 Q40 14 58 46 Q40 60 22 46 Z" fill="#365314" stroke="#bef264" stroke-width="1.8" />
+        <circle cx="40" cy="38" r="6" fill="#facc15" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.6" font-weight="900" fill="#d9f99d" letter-spacing="0.8" text-anchor="middle">K-SERIES XENO</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('machiko_ryushi_retinue')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-machiko" role="img" aria-label="Insigne Suite Martiale Machiko Noguchi">
+        <circle cx="40" cy="40" r="36" fill="#270909" stroke="#ef4444" stroke-width="2.5" />
+        <path d="M40 14 L40 58 M28 24 L52 24 M32 34 L48 34" stroke="#facc15" stroke-width="3" stroke-linecap="round" />
+        <circle cx="40" cy="24" r="14" fill="none" stroke="#f87171" stroke-width="1.5" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#fde047" letter-spacing="0.8" text-anchor="middle">DA'DTOU-DI</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('pred_tartarus_clans') || id.includes('tartarus')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-tartarus" role="img" aria-label="Insigne Clans de Tartarus">
+        <circle cx="40" cy="40" r="36" fill="#230707" stroke="#dc2626" stroke-width="2.5" />
+        <polygon points="40,12 64,54 16,54" fill="#450a0a" stroke="#f97316" stroke-width="2" />
+        <circle cx="40" cy="38" r="7" fill="#facc15" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.6" font-weight="900" fill="#fca5a5" letter-spacing="0.8" text-anchor="middle">TARTARUS CLAN</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('pred_crucified_clan') || id.includes('crucified')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-crucified" role="img" aria-label="Insigne Clan Crucifié">
+        <circle cx="40" cy="40" r="36" fill="#1c0d06" stroke="#ea580c" stroke-width="2.5" />
+        <path d="M40 12 L40 60 M20 28 L60 28" stroke="#fdba74" stroke-width="3.5" stroke-linecap="round" />
+        <circle cx="40" cy="28" r="8" fill="#7c2d12" stroke="#f97316" stroke-width="2" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#fed7aa" letter-spacing="0.8" text-anchor="middle">HONOR CRUCIBLE</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('pred_starseer_shamans') || id.includes('starseer')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-starseer" role="img" aria-label="Insigne Chamans Starseer">
+        <circle cx="40" cy="40" r="36" fill="#0f0728" stroke="#a855f7" stroke-width="2.5" />
+        <polygon points="40,12 48,30 68,30 52,42 58,60 40,48 22,60 28,42 12,30 32,30" fill="#3b0764" stroke="#e9d5ff" stroke-width="1.5" />
+        <circle cx="40" cy="38" r="5" fill="#38bdf8" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#d8b4fe" letter-spacing="0.8" text-anchor="middle">STARSEER SHAMAN</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('alien_anacharsis_sec') || id.includes('anacharsis')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-anacharsis" role="img" aria-label="Insigne Sécurité Anacharsis">
+        <polygon points="40,6 72,22 72,58 40,74 8,58 8,22" fill="#082f49" stroke="#0ea5e9" stroke-width="2.5" />
+        <rect x="26" y="24" width="28" height="28" rx="4" fill="#0c4a6e" stroke="#7dd3fc" stroke-width="1.8" />
+        <circle cx="40" cy="38" r="6" fill="#38bdf8" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.4" font-weight="900" fill="#bae6fd" letter-spacing="0.8" text-anchor="middle">ANACHARSIS SEC</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('alien_moriah_defenders') || id.includes('moriah')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-moriah" role="img" aria-label="Insigne Défenseurs de Moriah">
+        <circle cx="40" cy="40" r="36" fill="#1c1917" stroke="#f59e0b" stroke-width="2.5" />
+        <path d="M22 20 L58 20 L54 48 L40 60 L26 48 Z" fill="#451a03" stroke="#fcd34d" stroke-width="2" />
+        <polygon points="40,26 46,38 34,38" fill="#fbbf24" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#fde68a" letter-spacing="0.8" text-anchor="middle">MORIAH GUARD</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('alien_anchorpoint_guard') || id.includes('anchorpoint')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-anchorpoint" role="img" aria-label="Insigne Garde Anchorpoint">
+        <circle cx="40" cy="40" r="36" fill="#042f2e" stroke="#14b8a6" stroke-width="2.5" />
+        <circle cx="40" cy="36" r="16" fill="none" stroke="#5eead4" stroke-width="2" />
+        <path d="M40 16 L40 56 M24 36 L56 36" stroke="#99f6e4" stroke-width="2" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.4" font-weight="900" fill="#99f6e4" letter-spacing="0.8" text-anchor="middle">ANCHORPOINT</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('avp_freya_prospect_sec') || id.includes('freya_prospect')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-freyaprospect" role="img" aria-label="Insigne Sécurité Freya's Prospect">
+        <polygon points="40,6 70,22 70,58 40,74 10,58 10,22" fill="#1e1b4b" stroke="#818cf8" stroke-width="2.5" />
+        <polygon points="40,16 58,48 22,48" fill="#312e81" stroke="#c7d2fe" stroke-width="1.8" />
+        <circle cx="40" cy="38" r="5" fill="#38bdf8" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="900" fill="#c7d2fe" letter-spacing="0.8" text-anchor="middle">FREYA PROSPECT</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('avp_rage_war_armada') || id.includes('rage_war')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-ragewar" role="img" aria-label="Insigne Armada Rage War">
+        <circle cx="40" cy="40" r="36" fill="#2a0410" stroke="#f43f5e" stroke-width="2.5" />
+        <polygon points="40,10 64,46 40,38 16,46" fill="#881337" stroke="#fda4af" stroke-width="1.8" />
+        <circle cx="40" cy="48" r="6" fill="#facc15" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.6" font-weight="900" fill="#fecdd3" letter-spacing="0.8" text-anchor="middle">RAGE WAR ARMADA</text>
+      </svg>
+    `.trim();
+  }
+
+  // --- ESCADRONS VAGUE 9 (Prompt & Extensions) ---
+  if (id.includes('pred_captive_preserve_guards') || id.includes('captive_preserve')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-captivepreserve" role="img" aria-label="Insigne Gardes de la Réserve Captive">
+        <circle cx="40" cy="40" r="36" fill="#052e16" stroke="#22c55e" stroke-width="2.5" />
+        <polygon points="40,12 62,36 40,60 18,36" fill="#14532d" stroke="#86efac" stroke-width="1.8" />
+        <circle cx="40" cy="36" r="6" fill="#ef4444" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="900" fill="#bbf7d0" letter-spacing="0.8" text-anchor="middle">PRESERVE GUARD</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('pred_yellowstone_rangers') || id.includes('yellowstone')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-yellowstone" role="img" aria-label="Insigne Rangers de Yellowstone">
+        <circle cx="40" cy="40" r="36" fill="#1f1606" stroke="#eab308" stroke-width="2.5" />
+        <polygon points="18,52 34,24 46,42 54,30 64,52" fill="#422006" stroke="#fde047" stroke-width="1.8" />
+        <circle cx="40" cy="20" r="4.5" fill="#f97316" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="900" fill="#fef08a" letter-spacing="0.8" text-anchor="middle">YELLOWSTONE</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('alien_charon_rogue_marines') || id.includes('charon')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-charon" role="img" aria-label="Insigne Marines Renégats de Charon">
+        <polygon points="40,6 72,22 72,58 40,74 8,58 8,22" fill="#18091e" stroke="#d946ef" stroke-width="2.5" />
+        <circle cx="40" cy="36" r="14" fill="#4a044e" stroke="#f0abfc" stroke-width="1.8" />
+        <path d="M32 32 L48 44 M48 32 L32 44" stroke="#fdf4ff" stroke-width="2.5" stroke-linecap="round" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.4" font-weight="900" fill="#f5d0fe" letter-spacing="0.8" text-anchor="middle">CHARON ROGUES</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('alien_harvest_cyber_ants') || id.includes('cyber_ants') || id.includes('harvest')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-cyberants" role="img" aria-label="Insigne Cyber-Fourmis Harvest">
+        <circle cx="40" cy="40" r="36" fill="#042f2e" stroke="#06b6d4" stroke-width="2.5" />
+        <circle cx="40" cy="26" r="6" fill="#0891b2" stroke="#67e8f9" stroke-width="1.5" />
+        <circle cx="40" cy="38" r="5" fill="#0891b2" stroke="#67e8f9" stroke-width="1.5" />
+        <circle cx="40" cy="50" r="7" fill="#0891b2" stroke="#67e8f9" stroke-width="1.5" />
+        <path d="M26 30 L54 46 M26 46 L54 30" stroke="#a5f3fc" stroke-width="1.8" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.4" font-weight="900" fill="#a5f3fc" letter-spacing="0.8" text-anchor="middle">CYBER HARVEST</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('avp_eternal_tokyo_mercs') || id.includes('eternal_tokyo') || id.includes('tokyo_mercs')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-eternaltokyo" role="img" aria-label="Insigne Mercenaires Eternal Tokyo">
+        <circle cx="40" cy="40" r="36" fill="#1e0614" stroke="#ec4899" stroke-width="2.5" />
+        <circle cx="40" cy="36" r="14" fill="#db2777" stroke="#fbcfe8" stroke-width="1.5" />
+        <path d="M22 46 L58 26 M26 26 L54 46" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.4" font-weight="900" fill="#f9a8d4" letter-spacing="0.8" text-anchor="middle">ETERNAL TOKYO</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('avp_perses_fire_stone_crew') || id.includes('perses') || id.includes('fire_stone')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-perses" role="img" aria-label="Insigne Équipage Perses Fire & Stone">
+        <polygon points="40,6 72,22 72,58 40,74 8,58 8,22" fill="#270e04" stroke="#f97316" stroke-width="2.5" />
+        <path d="M40 16 C52 28 54 44 40 56 C26 44 28 28 40 16 Z" fill="#9a3412" stroke="#fdba74" stroke-width="1.8" />
+        <circle cx="40" cy="40" r="5" fill="#fef08a" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="900" fill="#fed7aa" letter-spacing="0.8" text-anchor="middle">PERSES CREW</text>
+      </svg>
+    `.trim();
+  }
+  if (id.startsWith('squad_') && !id.includes('lv742_kainde_amedha')) {
+    const cleanTag = id.replace(/^squad_(pred_|alien_|avp_)?/, '').replace(/_/g, ' ').slice(0, 14).toUpperCase();
+    const h = Math.abs(hashCode(id));
+    const hues = ['#00e5ff', '#ff6d00', '#76ff03', '#ffd700', '#f50057', '#d500f9'];
+    const strokeCol = hues[h % hues.length];
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-custom-${id.replace(/[^a-z0-9_-]/g, '')}" role="img" aria-label="Insigne Tactique ${cleanTag}">
+        <polygon points="40,6 70,22 70,58 40,74 10,58 10,22" fill="#0b131e" stroke="${strokeCol}" stroke-width="2.5" />
+        <circle cx="40" cy="36" r="15" fill="#132235" stroke="${strokeCol}" stroke-width="1.6" />
+        <polygon points="40,24 49,42 31,42" fill="${strokeCol}" opacity="0.85" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="900" fill="${strokeCol}" letter-spacing="0.7" text-anchor="middle">${cleanTag}</text>
+      </svg>
+    `.trim();
+  }
   if (id.includes('lv742_kainde_amedha')) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-lv742" role="img" aria-label="Insigne Sanctuaire LV-742">
@@ -2057,6 +2297,10 @@ export function getSquadLogo(squadId, size = 64) {
   return getYautjaClanLogo(size);
 }
 
+export function getFactionLogo(factionName, size = 24) {
+  return renderFactionEmblem(factionName, size);
+}
+
 export function renderFactionEmblem(factionName, size = 48) {
   if (!factionName) return getYautjaClanLogo(size);
   const name = String(factionName).toLowerCase();
@@ -2066,7 +2310,7 @@ export function renderFactionEmblem(factionName, size = 48) {
   if (name.includes('engineer') || name.includes('ingénieur') || name.includes('architecte')) {
     return getEngineerLogo(size);
   }
-  if (name.includes('xeno') || name.includes('ruche')) {
+  if (name.includes('xeno') || name.includes('ruche') || name.includes('alien')) {
     return getXenomorphHiveLogo(size);
   }
   if (name.includes('weyland') || name.includes('uscm') || name.includes('marine') || name.includes('synthétique') || name.includes('human')) {
@@ -2674,6 +2918,28 @@ export function getCategoryIconSvg(category = '', size = 16) {
     `.trim();
   }
 
+  // 14B. BESTIARY / PREY BIO-SCAN
+  if (cat.includes('BESTIARY') || cat.includes('PREY')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-bestiary" role="img" aria-label="Catégorie Bestiaire">
+        <circle cx="12" cy="12" r="9" fill="#071a12" stroke="#00e676" stroke-width="1.5" stroke-dasharray="3,1.5"/>
+        <path d="M8 7 Q10 12 7 17 M12 6 Q13 12 11 18 M16 7 Q17 12 15 17" fill="none" stroke="#76ff03" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="12" cy="12" r="2" fill="#ff1744"/>
+      </svg>
+    `.trim();
+  }
+
+  // 14C. LOADOUT / SKIN / ARMOR
+  if (cat.includes('LOADOUT') || cat.includes('SKIN') || cat.includes('ARMOR')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${size}" height="${size}" class="category-icon cat-loadout" role="img" aria-label="Catégorie Armurerie Yautja">
+        <polygon points="12,2 19,6 17,16 12,21 7,16 5,6" fill="#1f0d05" stroke="#ffd700" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M7 10 L11 11.5 L7 12.5 Z M17 10 L13 11.5 L17 12.5 Z" fill="#00e5ff"/>
+        <line x1="12" y1="5" x2="12" y2="9" stroke="#ff3d00" stroke-width="1.4"/>
+      </svg>
+    `.trim();
+  }
+
   // 15. SYNTHETIC
   if (cat.includes('SYNTH')) {
     return `
@@ -3222,6 +3488,551 @@ export function getSquadMiniatureSvg(squad) {
       <path d="M113,3 L117,3 L117,7" fill="none" stroke="${theme.primary}" stroke-width="1.2" />
       <path d="M3,67 L3,71 L7,71" fill="none" stroke="${theme.primary}" stroke-width="1.2" />
       <path d="M113,71 L117,71 L117,67" fill="none" stroke="${theme.primary}" stroke-width="1.2" />
+    </svg>
+  `.trim();
+}
+
+
+/**
+ * Miniature vectorielle SVG tactique 180x76 pour chaque proie / spécimen du Bestiaire.
+ * Affiche la silhouette bio-scan par espèce (Xenomorph/Alien, Yautja/Predator, Synthetic/Android,
+ * Engineer/Space Jockey, Megafauna/Quadruped/Beast, ou Human/Marine), la palette régime/menace,
+ * l'échelle télémétrique de hauteur (prey.heightM / prey.sizeMeters) et le réticule bio-radar.
+ * @param {Object} prey Objet proie du bestiaire
+ * @returns {string} Markup SVG 180x76
+ */
+export function getPreyMiniatureSvg(prey = {}) {
+  const p = typeof prey === 'object' && prey !== null ? prey : { id: String(prey || 'prey_unknown'), name: 'Spécimen Inconnu' };
+  const rawBlob = `${p.id || ''} ${p.name || ''} ${p.species || ''} ${p.category || ''} ${p.faction || ''} ${p.universe || ''}`.toLowerCase();
+  const dietBlob = `${p.diet || ''} ${p.threatLevel || ''} ${p.danger || ''}`.toLowerCase();
+  const heightNum = Number.isFinite(Number(p.heightM ?? p.sizeMeters)) && Number(p.heightM ?? p.sizeMeters) > 0
+    ? Number(p.heightM ?? p.sizeMeters)
+    : 2.1;
+  const heightLabel = `${heightNum.toFixed(1)}M`;
+  const barRatio = Math.max(0.18, Math.min(1, heightNum / 4.5));
+  const barHeight = Math.round(barRatio * 42);
+  const barY = 58 - barHeight;
+  const uid = 'prey-bio-' + Math.abs(hashCode(p.id || p.name || 'prey'));
+
+  let archetype = 'HUMAN_MARINE';
+  if (
+    rawBlob.includes('xeno') ||
+    rawBlob.includes('neomorph') ||
+    rawBlob.includes('deacon') ||
+    rawBlob.includes('praetorian') ||
+    rawBlob.includes('queen') ||
+    rawBlob.includes('facehugger') ||
+    rawBlob.includes('chestburster') ||
+    rawBlob.includes('predalien') ||
+    rawBlob.includes('crusher') ||
+    rawBlob.includes('runner') ||
+    rawBlob.includes('spitter') ||
+    rawBlob.includes('k-series') ||
+    rawBlob.includes('xx121')
+  ) {
+    archetype = 'XENOMORPH';
+  } else if (
+    rawBlob.includes('yautja') ||
+    rawBlob.includes('predator') ||
+    rawBlob.includes('bad_blood') ||
+    rawBlob.includes('super_predator') ||
+    rawBlob.includes('berserker') ||
+    rawBlob.includes('falconer') ||
+    rawBlob.includes('tracker') ||
+    rawBlob.includes('hish')
+  ) {
+    archetype = 'YAUTJA';
+  } else if (
+    rawBlob.includes('synth') ||
+    rawBlob.includes('android') ||
+    rawBlob.includes('working_joe') ||
+    rawBlob.includes('cyborg') ||
+    rawBlob.includes('bishop') ||
+    rawBlob.includes('david') ||
+    rawBlob.includes('walter') ||
+    rawBlob.includes('ash') ||
+    rawBlob.includes('call') ||
+    rawBlob.includes('dean') ||
+    rawBlob.includes('skynet') ||
+    rawBlob.includes('terminator') ||
+    rawBlob.includes('ed-209') ||
+    rawBlob.includes('ed209') ||
+    rawBlob.includes('combat_android')
+  ) {
+    archetype = 'SYNTHETIC';
+  } else if (
+    rawBlob.includes('engineer') ||
+    rawBlob.includes('ingénieur') ||
+    rawBlob.includes('jockey') ||
+    rawBlob.includes('mala') ||
+    rawBlob.includes('architect')
+  ) {
+    archetype = 'ENGINEER';
+  } else if (
+    rawBlob.includes('fauna') ||
+    rawBlob.includes('faune') ||
+    rawBlob.includes('megafauna') ||
+    rawBlob.includes('beast') ||
+    rawBlob.includes('quadruped') ||
+    rawBlob.includes('hellhound') ||
+    rawBlob.includes('hound') ||
+    rawBlob.includes('river_ghost') ||
+    rawBlob.includes('arachnid') ||
+    rawBlob.includes('scorpion') ||
+    rawBlob.includes('worm') ||
+    rawBlob.includes('leviathan') ||
+    rawBlob.includes('rhino') ||
+    rawBlob.includes('boar') ||
+    rawBlob.includes('caiman') ||
+    rawBlob.includes('crocodile') ||
+    rawBlob.includes('lion') ||
+    rawBlob.includes('panther') ||
+    rawBlob.includes('ape') ||
+    rawBlob.includes('mutant') ||
+    rawBlob.includes('trilobite') ||
+    rawBlob.includes('hammerpede') ||
+    rawBlob.includes('rat') ||
+    rawBlob.includes('ant')
+  ) {
+    archetype = 'MEGAFAUNA';
+  }
+
+  let palette = {
+    primary: '#29b6f6',
+    secondary: '#0288d1',
+    accent: '#ffd54f',
+    dark: '#031322',
+    scanLabel: 'BIO-SCAN // TACTICAL HUMAN'
+  };
+
+  if (archetype === 'XENOMORPH') {
+    palette = {
+      primary: '#76ff03',
+      secondary: '#00e676',
+      accent: '#ccff90',
+      dark: '#051a08',
+      scanLabel: 'BIO-SCAN // XX121 ACIDE'
+    };
+  } else if (archetype === 'YAUTJA') {
+    palette = {
+      primary: '#ff3d00',
+      secondary: '#d50000',
+      accent: '#ffd700',
+      dark: '#1f0503',
+      scanLabel: 'BIO-SCAN // YAUTJA APEX'
+    };
+  } else if (archetype === 'SYNTHETIC') {
+    palette = {
+      primary: '#00e5ff',
+      secondary: '#0097a7',
+      accent: '#e0f7fa',
+      dark: '#02161f',
+      scanLabel: 'TECH-SCAN // SYNTHÉTIQUE'
+    };
+  } else if (archetype === 'ENGINEER') {
+    palette = {
+      primary: '#b388ff',
+      secondary: '#651fff',
+      accent: '#00e5ff',
+      dark: '#0f0624',
+      scanLabel: 'ARCANE-SCAN // MALA\'KAK'
+    };
+  } else if (archetype === 'MEGAFAUNA') {
+    palette = {
+      primary: '#ff9100',
+      secondary: '#ff3d00',
+      accent: '#ffd740',
+      dark: '#1c0c02',
+      scanLabel: 'FAUNA-SCAN // MÉGAFAUNE'
+    };
+  }
+
+  if (dietBlob.includes('extrême') || dietBlob.includes('extreme') || dietBlob.includes('apex') || dietBlob.includes('reine')) {
+    palette.accent = '#ff1744';
+  }
+
+  let silhouetteSvg = '';
+  if (archetype === 'XENOMORPH') {
+    silhouetteSvg = `
+      <g class="prey-bioscan-silhouette" data-species-archetype="XENOMORPH">
+        <!-- Crâne allongé biomécanique -->
+        <path d="M58,25 C58,16 78,13 98,16 C108,18 112,22 104,26 C94,29 82,29 72,30 Z" fill="${palette.dark}" stroke="${palette.primary}" stroke-width="1.5" />
+        <path d="M64,21 C76,18 90,18 100,21" fill="none" stroke="${palette.accent}" stroke-width="0.9" opacity="0.8" />
+        <!-- Mâchoire interne pharyngienne -->
+        <line x1="58" y1="26" x2="49" y2="27" stroke="${palette.accent}" stroke-width="1.4" stroke-linecap="round" />
+        <polygon points="48,25 44,27 48,29" fill="${palette.accent}" />
+        <!-- Tubes dorsaux & Torse chitineux -->
+        <path d="M84,26 L94,16 M88,29 L99,20 M91,33 L103,26" stroke="${palette.primary}" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M72,29 C68,38 70,48 76,54 L88,52 C86,44 86,35 84,28 Z" fill="#0d2612" stroke="${palette.primary}" stroke-width="1.3" />
+        <line x1="72" y1="35" x2="84" y2="34" stroke="${palette.accent}" stroke-width="0.9" />
+        <line x1="73" y1="40" x2="85" y2="39" stroke="${palette.accent}" stroke-width="0.9" />
+        <line x1="74" y1="45" x2="86" y2="44" stroke="${palette.accent}" stroke-width="0.9" />
+        <!-- Bras griffus & Queue segmentée en lame -->
+        <path d="M72,33 L58,41 L52,38" fill="none" stroke="${palette.primary}" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M88,52 C104,56 120,52 126,38 C129,31 122,24 114,22" fill="none" stroke="${palette.primary}" stroke-width="1.8" stroke-linecap="round" />
+        <polygon points="114,22 106,19 111,26" fill="${palette.accent}" />
+      </g>
+    `;
+  } else if (archetype === 'YAUTJA') {
+    silhouetteSvg = `
+      <g class="prey-bioscan-silhouette" data-species-archetype="YAUTJA">
+        <!-- Dreadlocks & Crâne -->
+        <path d="M72,22 C64,28 62,40 64,50 M100,22 C108,28 110,40 108,50 M75,18 C67,26 66,38 68,48 M97,18 C105,26 106,38 104,48" fill="none" stroke="${palette.primary}" stroke-width="1.8" stroke-linecap="round" />
+        <!-- Biomasque Yautja -->
+        <polygon points="86,15 98,21 95,36 86,42 77,36 74,21" fill="#2a0a06" stroke="${palette.primary}" stroke-width="1.5" />
+        <polygon points="78,25 84,27 78,29" fill="${palette.accent}" />
+        <polygon points="94,25 88,27 94,29" fill="${palette.accent}" />
+        <!-- Torse cuirassé & Plasmacaster d'épaule -->
+        <polygon points="68,38 104,38 110,58 62,58" fill="#1e0805" stroke="${palette.primary}" stroke-width="1.4" />
+        <rect x="62" y="29" width="10" height="6" rx="1" fill="#37474f" stroke="${palette.accent}" stroke-width="1.1" />
+        <line x1="62" y1="32" x2="52" y2="32" stroke="${palette.accent}" stroke-width="1.8" />
+        <circle cx="96" cy="21" r="1.4" fill="#ff1744" />
+        <circle cx="99" cy="21" r="1.4" fill="#ff1744" />
+        <circle cx="97.5" cy="18.5" r="1.4" fill="#ff1744" />
+      </g>
+    `;
+  } else if (archetype === 'SYNTHETIC') {
+    silhouetteSvg = `
+      <g class="prey-bioscan-silhouette" data-species-archetype="SYNTHETIC">
+        <!-- Châssis crânien cybernétique -->
+        <ellipse cx="86" cy="26" rx="11" ry="13" fill="#06222e" stroke="${palette.primary}" stroke-width="1.5" />
+        <line x1="77" y1="25" x2="95" y2="25" stroke="${palette.accent}" stroke-width="1.8" />
+        <circle cx="82" cy="25" r="2" fill="#ffffff" />
+        <circle cx="90" cy="25" r="2" fill="#ffffff" />
+        <path d="M86,13 L86,19 M80,33 L92,33" stroke="${palette.primary}" stroke-width="1.1" />
+        <!-- Endosquelette thoracique & Servomoteurs -->
+        <polygon points="68,40 104,40 108,58 64,58" fill="#071d29" stroke="${palette.primary}" stroke-width="1.4" />
+        <circle cx="86" cy="48" r="5" fill="none" stroke="${palette.accent}" stroke-width="1.3" />
+        <circle cx="86" cy="48" r="2" fill="${palette.accent}" />
+        <line x1="72" y1="45" x2="80" y2="48" stroke="${palette.primary}" stroke-width="1.1" />
+        <line x1="100" y1="45" x2="92" y2="48" stroke="${palette.primary}" stroke-width="1.1" />
+      </g>
+    `;
+  } else if (archetype === 'ENGINEER') {
+    silhouetteSvg = `
+      <g class="prey-bioscan-silhouette" data-species-archetype="ENGINEER">
+        <!-- Heaume Space Jockey à trompe ossifiée -->
+        <ellipse cx="86" cy="25" rx="12" ry="13" fill="#160a30" stroke="${palette.primary}" stroke-width="1.6" />
+        <ellipse cx="81" cy="23" rx="3" ry="2.2" fill="${palette.accent}" />
+        <ellipse cx="91" cy="23" rx="3" ry="2.2" fill="${palette.accent}" />
+        <path d="M86,28 C86,35 80,41 73,43" fill="none" stroke="${palette.primary}" stroke-width="2.4" stroke-linecap="round" />
+        <!-- Épaulières biomécaniques monumentales -->
+        <path d="M58,58 C60,40 72,36 86,36 C100,36 112,40 114,58 Z" fill="#120726" stroke="${palette.primary}" stroke-width="1.5" />
+        <path d="M68,42 Q86,50 104,42 M72,49 Q86,56 100,49" fill="none" stroke="${palette.accent}" stroke-width="1.1" />
+      </g>
+    `;
+  } else if (archetype === 'MEGAFAUNA') {
+    silhouetteSvg = `
+      <g class="prey-bioscan-silhouette" data-species-archetype="MEGAFAUNA">
+        <!-- Silhouette de bête quadrupède / prédateur alpha à cornes et épines dorsales -->
+        <path d="M54,36 L64,26 L76,28 L104,28 L116,36 L112,52 L104,56 L102,46 L72,46 L68,56 L60,56 L62,42 Z" fill="#261103" stroke="${palette.primary}" stroke-width="1.5" stroke-linejoin="round" />
+        <!-- Cornes & Épines dorsales -->
+        <path d="M60,28 L50,18 M66,26 L58,16 M80,28 L84,20 M90,28 L94,20 M100,28 L104,21" stroke="${palette.accent}" stroke-width="1.6" stroke-linecap="round" />
+        <!-- Oeil thermique & Coeur -->
+        <circle cx="60" cy="33" r="2" fill="#ff1744" />
+        <circle cx="84" cy="36" r="4.5" fill="${palette.accent}" opacity="0.75" />
+      </g>
+    `;
+  } else {
+    silhouetteSvg = `
+      <g class="prey-bioscan-silhouette" data-species-archetype="HUMAN_MARINE">
+        <!-- Casque tactique USCM / Commando & Visière HUD -->
+        <path d="M75,24 C75,16 97,16 97,24 L99,29 L73,29 Z" fill="#0b2236" stroke="${palette.primary}" stroke-width="1.4" />
+        <rect x="77" y="25" width="18" height="4.5" rx="1" fill="${palette.accent}" opacity="0.9" />
+        <ellipse cx="86" cy="29" rx="8.5" ry="9" fill="#081a2b" stroke="${palette.primary}" stroke-width="1.2" />
+        <!-- Plastron balistique M3 & Lampe d'épaule -->
+        <polygon points="66,40 106,40 110,58 62,58" fill="#071826" stroke="${palette.primary}" stroke-width="1.4" />
+        <rect x="103" y="33" width="6" height="6" rx="1" fill="${palette.accent}" stroke="${palette.primary}" stroke-width="1" />
+        <!-- Silhouette Pulse Rifle en joue -->
+        <line x1="56" y1="48" x2="112" y2="44" stroke="${palette.accent}" stroke-width="2.2" stroke-linecap="round" />
+      </g>
+    `;
+  }
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" class="tactical-miniature prey-miniature-svg" viewBox="0 0 180 76" role="img" aria-label="Bio-scan tactique ${p.name || 'Spécimen'}">
+      <defs>
+        <linearGradient id="bg-${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="${palette.dark}" stop-opacity="0.96" />
+          <stop offset="100%" stop-color="#02060d" stop-opacity="0.99" />
+        </linearGradient>
+        <pattern id="grid-${uid}" width="9" height="9" patternUnits="userSpaceOnUse">
+          <path d="M 9 0 L 0 0 0 9" fill="none" stroke="${palette.primary}" stroke-width="0.35" opacity="0.2" />
+        </pattern>
+      </defs>
+
+      <rect width="180" height="76" fill="url(#bg-${uid})" />
+      <rect width="180" height="76" fill="url(#grid-${uid})" />
+
+      <!-- Réticule Bio-Radar Gauche/Centre -->
+      <g class="bio-radar-reticle" opacity="0.85">
+        <circle cx="26" cy="38" r="16" fill="none" stroke="${palette.primary}" stroke-width="0.9" stroke-dasharray="3,2" />
+        <circle cx="26" cy="38" r="9" fill="none" stroke="${palette.primary}" stroke-width="0.7" opacity="0.7" />
+        <circle cx="26" cy="38" r="2.5" fill="${palette.accent}" />
+        <line x1="8" y1="38" x2="44" y2="38" stroke="${palette.primary}" stroke-width="0.6" opacity="0.6" />
+        <line x1="26" y1="20" x2="26" y2="56" stroke="${palette.primary}" stroke-width="0.6" opacity="0.6" />
+        <circle cx="86" cy="38" r="25" fill="none" stroke="${palette.primary}" stroke-width="0.6" stroke-dasharray="2,2" opacity="0.45" />
+      </g>
+
+      <!-- Silhouette Bio-Scan de la Proie -->
+      ${silhouetteSvg}
+
+      <!-- Jauge Télémétrique de Hauteur (prey.heightM) -->
+      <g class="height-telemetry-bar">
+        <line x1="146" y1="16" x2="146" y2="58" stroke="${palette.primary}" stroke-width="1" opacity="0.7" />
+        <line x1="143" y1="16" x2="149" y2="16" stroke="${palette.primary}" stroke-width="1" />
+        <line x1="144" y1="30" x2="148" y2="30" stroke="${palette.primary}" stroke-width="0.7" />
+        <line x1="144" y1="44" x2="148" y2="44" stroke="${palette.primary}" stroke-width="0.7" />
+        <line x1="143" y1="58" x2="149" y2="58" stroke="${palette.primary}" stroke-width="1" />
+        <rect x="151" y="16" width="6" height="42" rx="1.5" fill="#050b12" stroke="${palette.primary}" stroke-width="0.8" opacity="0.8" />
+        <rect x="151" y="${barY}" width="6" height="${barHeight}" rx="1.2" fill="${palette.accent}" />
+        <text x="161" y="36" font-family="'Orbitron', sans-serif" font-size="4.8" font-weight="900" fill="${palette.accent}">${heightLabel}</text>
+        <text x="161" y="44" font-family="'Rajdhani', sans-serif" font-size="4.2" font-weight="700" fill="#90a4ae">HAUTEUR</text>
+      </g>
+
+      <!-- Bandeaux Télémétrie Haut & Bas -->
+      <rect x="0" y="0" width="180" height="11" fill="#000000" fill-opacity="0.7" />
+      <line x1="0" y1="11" x2="180" y2="11" stroke="${palette.primary}" stroke-width="0.5" opacity="0.55" />
+      <text x="6" y="8" font-family="'Orbitron', sans-serif" font-size="4.4" font-weight="800" fill="${palette.primary}" letter-spacing="0.5">${palette.scanLabel}</text>
+      <text x="174" y="8" font-family="'Rajdhani', sans-serif" font-size="4.8" font-weight="700" fill="${palette.accent}" text-anchor="end">${archetype}</text>
+
+      <rect x="0" y="65" width="180" height="11" fill="#000000" fill-opacity="0.75" />
+      <line x1="0" y1="65" x2="180" y2="65" stroke="${palette.primary}" stroke-width="0.5" opacity="0.55" />
+      <text x="6" y="73" font-family="'Rajdhani', sans-serif" font-size="4.8" font-weight="700" fill="#cfd8dc">${String(p.diet || p.category || 'SPÉCIMEN ACTIF').slice(0, 26).toUpperCase()}</text>
+      <text x="174" y="73" font-family="'Orbitron', sans-serif" font-size="4.4" font-weight="800" fill="${palette.accent}" text-anchor="end">HONNEUR +${p.honorValue ?? 200}</text>
+    </svg>
+  `.trim();
+}
+
+/**
+ * Miniature vectorielle SVG 180x76 pour chaque dossier d'archive du Codex Lore.
+ * Illustre un cristal de données holographique MU-TH-UR / Yautja, une télémétrie d'onde (waveform),
+ * le glyphe d'univers (PREDATOR, ALIEN ou AVP) et le motif de catégorie (CLAN, XENOMORPH, FACTION, LOCATION, HISTORY, TECHNOLOGY, etc.).
+ * @param {Object} entry Entrée du Codex Lore
+ * @returns {string} Markup SVG 180x76
+ */
+export function getLoreMiniatureSvg(entry = {}) {
+  const e = typeof entry === 'object' && entry !== null ? entry : { id: String(entry || 'lore_unknown'), title: 'Archive Classifiée' };
+  const rawBlob = `${e.id || ''} ${e.title || ''} ${e.category || ''} ${e.universe || ''}`.toLowerCase();
+  const cat = String(e.category || 'ARCHIVE').toUpperCase();
+  const uid = 'lore-holo-' + Math.abs(hashCode(e.id || e.title || 'lore'));
+
+  let universe = String(e.universe || '').toUpperCase();
+  if (!universe || (universe !== 'PREDATOR' && universe !== 'ALIEN' && universe !== 'AVP')) {
+    if (rawBlob.includes('avp') || rawBlob.includes('machiko') || rawBlob.includes('bouvet') || rawBlob.includes('ryushi') || rawBlob.includes('bg-386')) {
+      universe = 'AVP';
+    } else if (rawBlob.includes('xeno') || rawBlob.includes('weyland') || rawBlob.includes('nostromo') || rawBlob.includes('lv-426') || rawBlob.includes('uscm') || rawBlob.includes('engineer') || rawBlob.includes('seegson') || rawBlob.includes('alien')) {
+      universe = 'ALIEN';
+    } else {
+      universe = 'PREDATOR';
+    }
+  }
+
+  let theme = {
+    primary: '#ff3d00',
+    secondary: '#ffd700',
+    dark: '#1c0603',
+    terminalLabel: 'YAUTJA // CODEX CRYSTAL'
+  };
+  if (universe === 'ALIEN') {
+    theme = {
+      primary: '#00e676',
+      secondary: '#00e5ff',
+      dark: '#031911',
+      terminalLabel: 'MU-TH-UR 6000 // DATASTREAM'
+    };
+  } else if (universe === 'AVP') {
+    theme = {
+      primary: '#ffab00',
+      secondary: '#e040fb',
+      dark: '#180821',
+      terminalLabel: 'CONVERGENCE // ARCHIVE AVP'
+    };
+  }
+
+  // Glyphe d'univers à gauche
+  let universeGlyph = '';
+  if (universe === 'ALIEN') {
+    universeGlyph = `
+      <g class="lore-universe-glyph" data-universe="ALIEN" transform="translate(28, 38)">
+        <polygon points="-14,-8 -8,-8 -4,2 0,-6 4,2 8,-8 14,-8 6,8 2,8 0,2 -2,8 -6,8" fill="none" stroke="${theme.primary}" stroke-width="1.4" />
+        <circle cx="0" cy="0" r="16" fill="none" stroke="${theme.secondary}" stroke-width="0.8" stroke-dasharray="2,2" />
+      </g>
+    `;
+  } else if (universe === 'AVP') {
+    universeGlyph = `
+      <g class="lore-universe-glyph" data-universe="AVP" transform="translate(28, 38)">
+        <polygon points="0,-14 14,10 -14,10" fill="none" stroke="${theme.primary}" stroke-width="1.4" />
+        <circle cx="0" cy="2" r="5" fill="none" stroke="${theme.secondary}" stroke-width="1.3" />
+        <circle cx="0" cy="2" r="1.8" fill="${theme.primary}" />
+      </g>
+    `;
+  } else {
+    universeGlyph = `
+      <g class="lore-universe-glyph" data-universe="PREDATOR" transform="translate(28, 38)">
+        <circle cx="0" cy="-9" r="2.2" fill="${theme.primary}" />
+        <circle cx="-8" cy="7" r="2.2" fill="${theme.primary}" />
+        <circle cx="8" cy="7" r="2.2" fill="${theme.primary}" />
+        <polygon points="0,-9 -8,7 8,7" fill="none" stroke="${theme.secondary}" stroke-width="1.1" stroke-dasharray="2,1.5" />
+      </g>
+    `;
+  }
+
+  // Motif de catégorie au centre du cristal holographique
+  let categoryMotif = '';
+  if (cat.includes('CLAN') || cat.includes('HONOR') || cat.includes('YAUTJA')) {
+    categoryMotif = `<polygon points="82,25 89,38 82,51 75,38" fill="${theme.secondary}" opacity="0.85" />`;
+  } else if (cat.includes('XENO') || cat.includes('BIOLOGY') || cat.includes('FAUNA')) {
+    categoryMotif = `<path d="M74,40 C74,30 88,28 90,36 C92,42 82,46 76,44 Z" fill="none" stroke="${theme.secondary}" stroke-width="1.6" />`;
+  } else if (cat.includes('LOCATION') || cat.includes('PLANET') || cat.includes('WORLD') || cat.includes('SECTOR')) {
+    categoryMotif = `<circle cx="82" cy="38" r="8" fill="none" stroke="${theme.secondary}" stroke-width="1.4" /><ellipse cx="82" cy="38" rx="12" ry="4" fill="none" stroke="${theme.primary}" stroke-width="1" />`;
+  } else if (cat.includes('TECH') || cat.includes('ARSENAL') || cat.includes('WEAPON')) {
+    categoryMotif = `<rect x="76" y="32" width="12" height="12" rx="2" fill="none" stroke="${theme.secondary}" stroke-width="1.4" /><circle cx="82" cy="38" r="2.5" fill="${theme.primary}" />`;
+  } else {
+    categoryMotif = `<circle cx="82" cy="38" r="6" fill="none" stroke="${theme.secondary}" stroke-width="1.5" /><line x1="82" y1="28" x2="82" y2="48" stroke="${theme.primary}" stroke-width="1.2" />`;
+  }
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" class="tactical-miniature lore-miniature-svg" viewBox="0 0 180 76" role="img" aria-label="Cristal d'archive ${e.title || 'Codex'}">
+      <defs>
+        <linearGradient id="bg-${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="${theme.dark}" stop-opacity="0.96" />
+          <stop offset="100%" stop-color="#02050a" stop-opacity="0.99" />
+        </linearGradient>
+        <pattern id="grid-${uid}" width="10" height="10" patternUnits="userSpaceOnUse">
+          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="${theme.primary}" stroke-width="0.35" opacity="0.2" />
+        </pattern>
+      </defs>
+
+      <rect width="180" height="76" fill="url(#bg-${uid})" />
+      <rect width="180" height="76" fill="url(#grid-${uid})" />
+
+      <!-- Glyphe d'Univers -->
+      ${universeGlyph}
+
+      <!-- Cristal de Données Holographique & Motif de Catégorie -->
+      <g class="holo-data-crystal">
+        <polygon points="82,15 100,28 96,52 82,61 68,52 64,28" fill="#08121e" fill-opacity="0.8" stroke="${theme.primary}" stroke-width="1.5" />
+        <line x1="82" y1="15" x2="82" y2="61" stroke="${theme.secondary}" stroke-width="0.8" opacity="0.65" />
+        <line x1="64" y1="28" x2="100" y2="28" stroke="${theme.primary}" stroke-width="0.8" opacity="0.55" />
+        <line x1="68" y1="52" x2="96" y2="52" stroke="${theme.primary}" stroke-width="0.8" opacity="0.55" />
+        <g class="lore-category-motif" data-category="${cat}">
+          ${categoryMotif}
+        </g>
+      </g>
+
+      <!-- Télémétrie d'Onde (Waveform Telemetry) -->
+      <g class="waveform-telemetry">
+        <path d="M112,38 L118,38 L122,24 L126,50 L130,30 L134,45 L138,20 L142,52 L146,34 L150,42 L154,28 L158,38 L172,38" fill="none" stroke="${theme.secondary}" stroke-width="1.4" stroke-linejoin="round" />
+        <line x1="112" y1="55" x2="172" y2="55" stroke="${theme.primary}" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.7" />
+        <text x="142" y="21" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="800" fill="${theme.primary}" text-anchor="middle">${cat}</text>
+      </g>
+
+      <!-- Bandeaux Télémétrie Haut & Bas -->
+      <rect x="0" y="0" width="180" height="11" fill="#000000" fill-opacity="0.7" />
+      <line x1="0" y1="11" x2="180" y2="11" stroke="${theme.primary}" stroke-width="0.5" opacity="0.55" />
+      <text x="6" y="8" font-family="'Orbitron', sans-serif" font-size="4.4" font-weight="800" fill="${theme.primary}" letter-spacing="0.5">${theme.terminalLabel}</text>
+      <text x="174" y="8" font-family="'Rajdhani', sans-serif" font-size="4.8" font-weight="700" fill="${theme.secondary}" text-anchor="end">${universe}</text>
+
+      <rect x="0" y="65" width="180" height="11" fill="#000000" fill-opacity="0.75" />
+      <line x1="0" y1="65" x2="180" y2="65" stroke="${theme.primary}" stroke-width="0.5" opacity="0.55" />
+      <text x="6" y="73" font-family="'Rajdhani', sans-serif" font-size="4.8" font-weight="700" fill="#cfd8dc">RANG REQUIS : ${e.unlockRank ?? 1}</text>
+      <text x="174" y="73" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="800" fill="${theme.secondary}" text-anchor="end">${String(e.period || 'CANON ARCHIVE').slice(0, 18)}</text>
+    </svg>
+  `.trim();
+}
+
+/**
+ * Miniature vectorielle SVG 180x76 pour chaque armure / skin Yautja dans l'armurerie.
+ * Illustre le buste détaillé du chasseur Yautja (biomasque, dreadlocks, épaulières, plasmacaster)
+ * colorisé dynamiquement avec la palette réelle du skin (skin.palette?.armor, trim, visor, glow, skin)
+ * et un cadre de rang (tier framing).
+ * @param {Object} skin Objet skin Yautja
+ * @returns {string} Markup SVG 180x76
+ */
+export function getSkinMiniatureSvg(skin = {}) {
+  const s = typeof skin === 'object' && skin !== null ? skin : { id: String(skin || 'skin_default'), name: 'Armure Yautja' };
+  const hexFromNum = typeof s.col === 'number' ? '#' + s.col.toString(16).padStart(6, '0') : null;
+  const tier = String(s.tier || 'Blooded');
+
+  const armorCol = s.palette?.armor || hexFromNum || '#8c969e';
+  const trimCol = s.palette?.trim || (tier.toLowerCase().includes('elder') || tier.toLowerCase().includes('ancient') || tier.toLowerCase().includes('king') ? '#ffd700' : '#d4af37');
+  const visorCol = s.palette?.visor || '#ff3d00';
+  const glowCol = s.palette?.glow || '#00e5ff';
+  const skinCol = s.palette?.skin || '#4a5d3f';
+  const uid = 'skin-bust-' + Math.abs(hashCode(s.id || s.name || 'skin'));
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" class="tactical-miniature skin-miniature-svg" viewBox="0 0 180 76" role="img" aria-label="Portrait d'armure ${s.name || 'Yautja'}">
+      <defs>
+        <linearGradient id="bg-${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#140c08" stop-opacity="0.96" />
+          <stop offset="100%" stop-color="#04070d" stop-opacity="0.99" />
+        </linearGradient>
+        <pattern id="grid-${uid}" width="9" height="9" patternUnits="userSpaceOnUse">
+          <path d="M 9 0 L 0 0 0 9" fill="none" stroke="${trimCol}" stroke-width="0.35" opacity="0.2" />
+        </pattern>
+      </defs>
+
+      <rect width="180" height="76" fill="url(#bg-${uid})" />
+      <rect width="180" height="76" fill="url(#grid-${uid})" />
+
+      <!-- Cadre de Rang (Tier Framing) -->
+      <g class="skin-tier-frame" data-tier="${tier}">
+        <rect x="4" y="13" width="172" height="50" rx="3" fill="none" stroke="${trimCol}" stroke-width="1" opacity="0.55" />
+        <path d="M4,21 L4,13 L12,13 M168,13 L176,13 L176,21 M4,55 L4,63 L12,63 M168,63 L176,63 L176,55" fill="none" stroke="${glowCol}" stroke-width="1.6" />
+      </g>
+
+      <!-- Buste Yautja Dynamique (Biomasque, Dreadlocks, Cuirasse & Épaulières) -->
+      <g class="yautja-armor-bust">
+        <!-- Dreadlocks & Anneaux Cérémoniels -->
+        <path d="M72,20 C60,28 58,44 60,58 M68,25 C56,34 54,48 56,60 M108,20 C120,28 122,44 120,58 M112,25 C124,34 126,48 124,60" fill="none" stroke="#181412" stroke-width="4" stroke-linecap="round" />
+        <path d="M72,20 C60,28 58,44 60,58 M108,20 C120,28 122,44 120,58" fill="none" stroke="${trimCol}" stroke-width="1.2" stroke-dasharray="2,5" />
+
+        <!-- Cou & Peau Reptilienne Yautja -->
+        <ellipse cx="90" cy="43" rx="14" ry="8" fill="${skinCol}" stroke="${trimCol}" stroke-width="0.9" />
+
+        <!-- Épaulières Articulées & Plastron -->
+        <polygon points="48,62 56,42 78,40 90,48 102,40 124,42 132,62" fill="${armorCol}" stroke="${trimCol}" stroke-width="1.5" stroke-linejoin="round" />
+        <polygon points="74,44 90,56 106,44 102,62 78,62" fill="#151921" stroke="${trimCol}" stroke-width="1.1" />
+        <line x1="54" y1="50" x2="72" y2="48" stroke="${trimCol}" stroke-width="1.3" />
+        <line x1="126" y1="50" x2="108" y2="48" stroke="${trimCol}" stroke-width="1.3" />
+
+        <!-- Plasmacaster d'Épaule Gauche -->
+        <rect x="56" y="31" width="13" height="7" rx="1.5" fill="${armorCol}" stroke="${trimCol}" stroke-width="1.1" />
+        <circle cx="56" cy="34.5" r="2.2" fill="${glowCol}" />
+
+        <!-- Biomasque Sculpté -->
+        <polygon points="90,14 106,20 103,37 90,45 77,37 74,20" fill="${armorCol}" stroke="${trimCol}" stroke-width="1.5" stroke-linejoin="round" />
+        <line x1="90" y1="14" x2="90" y2="25" stroke="${trimCol}" stroke-width="1.3" />
+        <!-- Lentilles de Visière Luminescentes -->
+        <polygon points="78,26 87,28 86,31 77,29" fill="${visorCol}" />
+        <polygon points="102,26 93,28 94,31 103,29" fill="${visorCol}" />
+        <!-- Respirateurs Mandibulaires & Tri-Laser -->
+        <path d="M83,35 L87,41 M97,35 L93,41 M86,39 L94,39" stroke="${trimCol}" stroke-width="1.2" stroke-linecap="round" />
+        <circle cx="100" cy="21" r="1.2" fill="${glowCol}" />
+        <circle cx="103" cy="21" r="1.2" fill="${glowCol}" />
+        <circle cx="101.5" cy="18.8" r="1.2" fill="${glowCol}" />
+      </g>
+
+      <!-- Échantillons de Palette (Swatches) à Gauche -->
+      <g class="skin-palette-telemetry">
+        <rect x="10" y="20" width="7" height="7" rx="1.5" fill="${armorCol}" stroke="#ffffff" stroke-width="0.5" />
+        <rect x="10" y="30" width="7" height="7" rx="1.5" fill="${trimCol}" stroke="#ffffff" stroke-width="0.5" />
+        <rect x="10" y="40" width="7" height="7" rx="1.5" fill="${visorCol}" stroke="#ffffff" stroke-width="0.5" />
+        <rect x="10" y="50" width="7" height="7" rx="1.5" fill="${glowCol}" stroke="#ffffff" stroke-width="0.5" />
+      </g>
+
+      <!-- Bandeaux Télémétrie Haut & Bas -->
+      <rect x="0" y="0" width="180" height="11" fill="#000000" fill-opacity="0.7" />
+      <line x1="0" y1="11" x2="180" y2="11" stroke="${trimCol}" stroke-width="0.5" opacity="0.6" />
+      <text x="6" y="8" font-family="'Orbitron', sans-serif" font-size="4.4" font-weight="800" fill="${trimCol}" letter-spacing="0.5">ARMURERIE // BIOMASQUE</text>
+      <text x="174" y="8" font-family="'Rajdhani', sans-serif" font-size="4.8" font-weight="700" fill="${glowCol}" text-anchor="end">TIER : ${tier.toUpperCase()}</text>
+
+      <rect x="0" y="65" width="180" height="11" fill="#000000" fill-opacity="0.75" />
+      <line x1="0" y1="65" x2="180" y2="65" stroke="${trimCol}" stroke-width="0.5" opacity="0.6" />
+      <text x="6" y="73" font-family="'Rajdhani', sans-serif" font-size="4.8" font-weight="700" fill="#cfd8dc">${String(s.origin || 'Yautja Prime').slice(0, 26)}</text>
+      <text x="174" y="73" font-family="'Orbitron', sans-serif" font-size="4.3" font-weight="800" fill="${visorCol}" text-anchor="end">${armorCol.toUpperCase()}</text>
     </svg>
   `.trim();
 }

@@ -4,7 +4,7 @@ import { audioSynth } from './AudioSynthesizer.js';
 import { captureBaseMaterials, overrideMaterials, restoreBaseMaterials } from './utils/materialState.js';
 import { getRuntimeTexture } from './utils/runtimeTextures.js';
 import { forwardRayIntersectsSphere, resolveSegmentSphereImpact } from './utils/projectileCollision.js';
-import { getVisualBounds } from './utils/worldScale.js';
+import { getVisualBounds, metersToWorldUnits, NPC_PHYSICAL_PROFILES } from './utils/worldScale.js';
 
 export class MegafaunaBoss {
   constructor(scene) {
@@ -413,6 +413,31 @@ export class MegafaunaBoss {
       name: 'Corne Frontale de Goliath',
       category: 'megafauna_carcass',
       honor: 1200,
+    };
+  }
+
+  getBossDiegeticTelemetry() {
+    if (this.mesh && this.position?.isVector3) {
+      this.mesh.position.copy(this.position);
+      this.mesh.updateMatrixWorld(true);
+    }
+    const bounds = getVisualBounds(this.mesh);
+    const canonicalHeightM = NPC_PHYSICAL_PROFILES.megafauna?.meters ?? 5.5;
+    const worldHeightUnits = metersToWorldUnits(canonicalHeightM);
+    const groundContactValid = !bounds.isEmpty() && Math.abs(bounds.min.y - (this.position?.y ?? 0)) < 0.08;
+    let phase = this.aiState || 'roam';
+    if (this.isDead) phase = 'dead';
+    else if (this.isToppled) phase = 'toppled';
+    else if (this.isEnraged) phase = 'enraged';
+    else if (this.isExhausted) phase = 'exhausted';
+
+    return {
+      canonicalHeightM,
+      worldHeightUnits,
+      phase,
+      tailSevered: Boolean(!this.tailIntact || this.severedTailSpawned),
+      enraged: Boolean(this.isEnraged),
+      groundContactValid,
     };
   }
 }

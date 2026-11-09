@@ -78,7 +78,7 @@ export function attachCatalogueBrowser({ grid, input, clearButton, status, empty
 
 export function setupCatalogueBrowsers(document) {
   const configurations = [
-    { prefix: 'taxonomy', gridId: 'canon-taxonomy-grid', cardSelector: '[data-prey-id], [data-squad-id], [data-map-id], [data-weapon-id], .taxonomy-card', filter: '[data-taxonomy-filter]', noun: 'dossiers' },
+    { prefix: 'taxonomy', gridId: 'canon-taxonomy-grid', cardSelector: '[data-prey-id], [data-squad-id], [data-map-id], [data-weapon-id], [data-lore-id], .taxonomy-card', filter: '[data-taxonomy-filter]', noun: 'dossiers' },
     { prefix: 'multiverse', gridId: 'multiverse-roster-grid', cardSelector: '[data-crossover-select]', filter: '[data-multiverse-filter]', noun: 'dossiers' },
   ];
   return configurations.map(({ prefix, gridId, cardSelector, filter, noun }) => attachCatalogueBrowser({

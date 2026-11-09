@@ -1,8 +1,16 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import * as THREE from 'three';
-import { HuntNPC, AVAILABLE_HUNT_NPC_ARCHETYPES, HUNT_NPC_LOD_PROFILES, HUNT_NPC_FSM_STATES } from '../src/entities/HuntNPC.js';
+import {
+  HuntNPC,
+  AVAILABLE_HUNT_NPC_ARCHETYPES,
+  HUNT_NPC_LOD_PROFILES,
+  HUNT_NPC_FSM_STATES,
+  getNpcWeaponProfile,
+  NPC_WEAPON_BALLISTIC_PROFILES,
+} from '../src/entities/HuntNPC.js';
 import { MegafaunaBoss } from '../src/MegafaunaBoss.js';
+import { audioSynth } from '../src/AudioSynthesizer.js';
 import { CANON_PREY_CATALOG } from '../src/data/PreyTaxonomyAndCrossoverCatalog.js';
 import { WORLD_UNITS_PER_METER, metersToWorldUnits, getVisualBounds, NPC_PHYSICAL_PROFILES } from '../src/utils/worldScale.js';
 
@@ -303,5 +311,146 @@ test('Xenomorphs execute pounce telegraphs and react to pain and dismemberment',
     assert.equal(xeno.mesh.userData.acidSplash, true);
   } finally {
     xeno.dispose();
+  }
+});
+
+test('Vague 8 & Vague 9 canonical NPC weapons resolve to rich ballistic and acoustic profiles', () => {
+  const canonicalWeapons = [
+    'wpn_tartarus_heavy_plasma',
+    'wpn_starseer_solar_staff',
+    'wpn_anacharsis_rivet_turret',
+    'wpn_moriah_pulse_carbine',
+    'wpn_anchorpoint_incinerator_mk2',
+    'wpn_freya_mining_laser_drill',
+    'wpn_rage_war_boarding_cannon',
+    'wpn_stern_biodome_tranq_lance',
+    'wpn_yellowstone_ranger_45_70_lever',
+    'wpn_kleist_charon_shock_baton',
+    'wpn_mayakovsky_cyber_ant_laser',
+    'wpn_gideon_lee_reverse_plasma_rifle',
+    'wpn_perses_security_flechette_smg',
+    'weapon_dark_river_machete_flint',
+    'weapon_nemesis_webley_revolver',
+    'weapon_pala_tranq_dart_rifle',
+    'weapon_phalanx_obsidian_spear',
+    'weapon_extinction_iron_bear_gauss',
+    'weapon_kseries_acid_tail_spurt',
+  ];
+
+  assert.ok(Object.isFrozen(NPC_WEAPON_BALLISTIC_PROFILES));
+
+  for (const weaponId of canonicalWeapons) {
+    const profile = getNpcWeaponProfile(weaponId);
+    assert.ok(profile && typeof profile === 'object', `${weaponId} must resolve to a profile object`);
+    assert.equal(profile.id, weaponId);
+    assert.ok(profile.damage > 0, `${weaponId} must have non-zero damage`);
+    assert.ok(profile.cooldown > 0, `${weaponId} must have non-zero cooldown`);
+    assert.ok(profile.rangeM > 0, `${weaponId} must have non-zero rangeM`);
+    assert.ok(profile.soundRadiusM > 0, `${weaponId} must have non-zero soundRadiusM`);
+    assert.ok(profile.projectileColor > 0, `${weaponId} must have non-zero projectileColor`);
+    assert.ok(typeof profile.archetype === 'string' && profile.archetype.length > 0);
+    assert.ok(typeof profile.cadence === 'string' && profile.cadence.length > 0);
+  }
+});
+
+test('HuntNPC getProceduralPostureTelemetry and lastDiegeticCue track FSM states and rig transforms', () => {
+  const rifleman = new HuntNPC('stargazer_rifleman', { position: new THREE.Vector3(0, 0, 0) });
+  const xeno = new HuntNPC('xeno_drone', { position: new THREE.Vector3(0, 0, 0) });
+  const player = { position: new THREE.Vector3(0, 0, 6.5), isCloaked: false };
+
+  try {
+    const baseTorsoY = rifleman._rigParts.torso.userData.basePositionY;
+    const baseHeadYaw = rifleman._rigParts.head.userData.baseRotationY;
+
+    // 1. Investigate state: active head scan yaw oscillation & acoustic_investigate_turn cue
+    assert.equal(rifleman.hearSound('footsteps', new THREE.Vector3(10, 0, 0)), true);
+    const investigateTelemetry = rifleman.getProceduralPostureTelemetry();
+    assert.equal(investigateTelemetry.state, 'investigate');
+    assert.equal(investigateTelemetry.lastDiegeticCue, 'acoustic_investigate_turn');
+    assert.ok(Math.abs(investigateTelemetry.headScanYawRad) > 0, 'headScanYawRad must oscillate during investigate');
+    assert.ok(Math.abs(rifleman._rigParts.head.rotation.y - baseHeadYaw) > 0, '_rigParts.head must rotate during investigate');
+
+    // 2. Cover state: crouched posture & cover_suppression_crouch cue
+    assert.equal(rifleman.hearSound('plasma_shot', new THREE.Vector3(35, 0, 0)), true);
+    const coverTelemetry = rifleman.getProceduralPostureTelemetry();
+    assert.equal(coverTelemetry.state, 'cover');
+    assert.equal(coverTelemetry.isCrouchedInCover, true);
+    assert.equal(coverTelemetry.lastDiegeticCue, 'cover_suppression_crouch');
+    assert.ok(rifleman._rigParts.torso.position.y < baseTorsoY, 'torso must lower when crouched in cover');
+
+    // 3. Flank & Stalk state: predatory forward torso pitch & tactical_flank_maneuver cue
+    rifleman.transitionTo('flank', 'flanking_test');
+    const flankTelemetry = rifleman.getProceduralPostureTelemetry();
+    assert.equal(flankTelemetry.state, 'flank');
+    assert.equal(flankTelemetry.lastDiegeticCue, 'tactical_flank_maneuver');
+    assert.ok(flankTelemetry.torsoPitchRad >= 0.25, 'torso must lean forward during flank');
+
+    // 4. Wounded retreat state: limping gait & wounded_retreat_limp cue
+    rifleman.takeDamage(110); // drops below 35% HP
+    const retreatTelemetry = rifleman.getProceduralPostureTelemetry();
+    assert.equal(retreatTelemetry.state, 'wounded_retreat');
+    assert.equal(retreatTelemetry.isLimping, true);
+    assert.equal(retreatTelemetry.lastDiegeticCue, 'wounded_retreat_limp');
+
+    // 5. Xenomorph pounce telegraph, pain flinch stagger, and acid spray cues
+    xeno.update(0.1, { player });
+    assert.equal(xeno.lastDiegeticCue, 'xeno_pounce_telegraph');
+    const pounceTelemetry = xeno.getProceduralPostureTelemetry();
+    assert.equal(pounceTelemetry.state, 'stalk');
+    assert.equal(pounceTelemetry.lastDiegeticCue, 'xeno_pounce_telegraph');
+    assert.ok(pounceTelemetry.torsoPitchRad >= 0.3, 'stalking xeno leans forward predatorily');
+
+    xeno.takeDamage(35);
+    assert.equal(xeno.lastDiegeticCue, 'pain_flinch_stagger');
+
+    xeno.takeDamage(50);
+    assert.equal(xeno.lastDiegeticCue, 'xeno_acid_spray');
+    assert.equal(xeno.getProceduralPostureTelemetry().lastDiegeticCue, 'xeno_acid_spray');
+  } finally {
+    rifleman.dispose();
+    xeno.dispose();
+  }
+});
+
+test('AudioSynthesizer procedural Vague 9 SFX methods execute safely in headless Node environment', () => {
+  const screech = audioSynth.playXenoPounceScreech();
+  assert.ok(screech && screech.event === 'xeno_pounce_screech');
+  assert.ok(screech.carrierPeakHz > screech.carrierStartHz);
+  assert.ok(screech.durationSeconds > 0);
+
+  const sizzle = audioSynth.playAcidSpraySizzle();
+  assert.ok(sizzle && sizzle.event === 'xeno_acid_spray_sizzle');
+  assert.ok(sizzle.filterStartHz > sizzle.filterEndHz);
+  assert.ok(sizzle.resonanceQ > 1);
+
+  const ping = audioSynth.playAcousticAlertPing();
+  assert.ok(ping && ping.event === 'acoustic_alert_ping');
+  assert.ok(ping.primaryPingHz > 0);
+  assert.ok(ping.durationSeconds > 0);
+});
+
+test('MegafaunaBoss.getBossDiegeticTelemetry reports canonical 5.5m scale and live combat state', () => {
+  const scene = new THREE.Scene();
+  const boss = new MegafaunaBoss(scene);
+  try {
+    boss.position.set(12, 4.0, -30);
+    const initial = boss.getBossDiegeticTelemetry();
+    assert.equal(initial.canonicalHeightM, 5.5);
+    assert.equal(initial.worldHeightUnits, 16.5);
+    assert.equal(initial.phase, 'roam');
+    assert.equal(initial.tailSevered, false);
+    assert.equal(initial.enraged, false);
+    assert.equal(initial.groundContactValid, true);
+
+    // Sever tail & trigger enrage
+    boss.spawnSeveredTail();
+    boss.takeDamage(boss.maxHealth * 0.6, boss.position);
+    const enragedState = boss.getBossDiegeticTelemetry();
+    assert.equal(enragedState.tailSevered, true);
+    assert.equal(enragedState.enraged, true);
+    assert.equal(enragedState.phase, 'enraged');
+    assert.equal(enragedState.groundContactValid, true);
+  } finally {
+    boss.dispose();
   }
 });

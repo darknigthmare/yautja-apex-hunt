@@ -36531,6 +36531,140 @@ class AudioSynthesizer {
     osc.start(now);
     osc.stop(now + 0.7);
   }
+
+  // --- VAGUE 9: DIEGETIC XENOMORPH TELEGRAPH, ACID SPRAY & TACTICAL PING SFX ---
+  playXenoPounceScreech() {
+    const descriptor = {
+      event: 'xeno_pounce_screech',
+      synthesis: 'fm_screech_plus_hiss',
+      carrierStartHz: 2400,
+      carrierPeakHz: 3950,
+      fmModHz: 44,
+      durationSeconds: 0.48,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const carrier = this.ctx.createOscillator();
+    const mod = this.ctx.createOscillator();
+    const modGain = this.ctx.createGain();
+    const screechGain = this.ctx.createGain();
+
+    carrier.type = 'sawtooth';
+    carrier.frequency.setValueAtTime(descriptor.carrierStartHz, now);
+    carrier.frequency.linearRampToValueAtTime(descriptor.carrierPeakHz, now + 0.14);
+    carrier.frequency.exponentialRampToValueAtTime(980, now + descriptor.durationSeconds);
+
+    mod.type = 'sine';
+    mod.frequency.setValueAtTime(descriptor.fmModHz, now);
+    modGain.gain.setValueAtTime(320, now);
+    mod.connect(modGain);
+    modGain.connect(carrier.frequency);
+
+    screechGain.gain.setValueAtTime(0.01, now);
+    screechGain.gain.linearRampToValueAtTime(0.46, now + 0.06);
+    screechGain.gain.exponentialRampToValueAtTime(0.002, now + descriptor.durationSeconds);
+
+    carrier.connect(screechGain);
+    screechGain.connect(this.ctx.destination);
+
+    mod.start(now);
+    carrier.start(now);
+    mod.stop(now + descriptor.durationSeconds);
+    carrier.stop(now + descriptor.durationSeconds);
+
+    const bufferSize = Math.max(1, Math.floor(this.ctx.sampleRate * 0.36));
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i += 1) data[i] = (Math.random() * 2 - 1) * 0.55;
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(3400, now);
+    filter.frequency.exponentialRampToValueAtTime(1600, now + 0.36);
+    filter.Q.setValueAtTime(3.6, now);
+
+    const hissGain = this.ctx.createGain();
+    hissGain.gain.setValueAtTime(0.28, now);
+    hissGain.gain.exponentialRampToValueAtTime(0.004, now + 0.36);
+
+    noise.connect(filter);
+    filter.connect(hissGain);
+    hissGain.connect(this.ctx.destination);
+    noise.start(now);
+    return descriptor;
+  }
+
+  playAcidSpraySizzle() {
+    const descriptor = {
+      event: 'xeno_acid_spray_sizzle',
+      synthesis: 'filtered_white_noise_resonant_sweep',
+      filterStartHz: 4200,
+      filterEndHz: 850,
+      resonanceQ: 5.2,
+      durationSeconds: 0.55,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const bufferSize = Math.max(1, Math.floor(this.ctx.sampleRate * descriptor.durationSeconds));
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i += 1) data[i] = (Math.random() * 2 - 1) * 0.65;
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(descriptor.filterStartHz, now);
+    filter.frequency.exponentialRampToValueAtTime(descriptor.filterEndHz, now + descriptor.durationSeconds);
+    filter.Q.setValueAtTime(descriptor.resonanceQ, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.42, now);
+    gain.gain.exponentialRampToValueAtTime(0.003, now + descriptor.durationSeconds);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+    return descriptor;
+  }
+
+  playAcousticAlertPing() {
+    const descriptor = {
+      event: 'acoustic_alert_ping',
+      synthesis: 'tactical_motion_tracker_ping',
+      primaryPingHz: 2650,
+      harmonicEchoHz: 1980,
+      durationSeconds: 0.24,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(descriptor.primaryPingHz, now);
+    osc.frequency.exponentialRampToValueAtTime(descriptor.harmonicEchoHz, now + descriptor.durationSeconds);
+
+    gain.gain.setValueAtTime(0.01, now);
+    gain.gain.linearRampToValueAtTime(0.32, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + descriptor.durationSeconds);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + descriptor.durationSeconds + 0.01);
+    return descriptor;
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();

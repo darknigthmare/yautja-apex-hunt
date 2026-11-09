@@ -518,6 +518,36 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     sourceTier: 'LICENSED_EU', sources: Object.freeze(['huntingGrounds']), behavior: 'blade',
     modifiers: Object.freeze({ damageMultiplier: 1.16, parryAngleMultiplier: 1.4, blockDamageAbsorptionMultiplier: 1.3 }),
   }),
+  Object.freeze({
+    id: 'yautja_wpn_homeworld_ancient_spear', armorPresetId: 'elder_lost_tribe', baseWeaponId: 'combistick', name: 'Lance Ancestrale de Yellowstone de l\'Ancien (Homeworld 1999)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['comicsDarkHorse1989', 'predator2']), behavior: 'spear_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.34, rangeMultiplier: 1.28, honorGainMultiplier: 1.35 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_captive_escape_shuriken', armorPresetId: 'captured_hg', baseWeaponId: 'smart_disc', name: 'Disque-Shuriken d\'Évasion du Biodôme Stern (Captive 1998)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['comicsDarkHorse1989', 'huntingGrounds']), behavior: 'returning_disc',
+    modifiers: Object.freeze({ damageMultiplier: 1.26, projectileSpeedMultiplier: 1.32, returnSpeedMultiplier: 1.25 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_primal_alaska_wristblades', armorPresetId: 'jungle_1987', baseWeaponId: 'wrist_blades', name: 'Lames de Poignet Sauvages Brise-Grizzly d\'Alaska (Primal 1997)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['comicsDarkHorse1989', 'predator1987']), behavior: 'melee_heavy',
+    modifiers: Object.freeze({ damageMultiplier: 1.32, bleedDurationSeconds: 5, criticalChanceMultiplier: 1.22 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_eternal_1300_katana_glaive', armorPresetId: 'samurai_yautja', baseWeaponId: 'elder_sword', name: 'Lame-Katana Millénaire de l\'Épave de 1300 (AVP: Eternal 1998)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics', 'comicsDarkHorse1989']), behavior: 'blade',
+    modifiers: Object.freeze({ damageMultiplier: 1.36, parryAngleMultiplier: 1.35, attackSpeedMultiplier: 1.18 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_thrill_hunt_twin_caster', armorPresetId: 'scar_avp', baseWeaponId: 'plasma_caster', name: 'Double Canon à Plasma de Siège de Céleste (Thrill of the Hunt 2004)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['avpOriginalComics', 'comicsDarkHorse1989']), behavior: 'plasma',
+    modifiers: Object.freeze({ damageMultiplier: 1.28, projectileSpeedMultiplier: 1.22, cooldownMultiplier: 0.92 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_fire_stone_ahab_harpoon', armorPresetId: 'ahab_comic', baseWeaponId: 'speargun', name: 'Harpon Balistique d\'Abordage du Perses d\'Ahab (Fire and Stone 2014)',
+    sourceTier: 'LICENSED_EU', sources: Object.freeze(['prometheus2012', 'avpOriginalComics', 'comicsDarkHorse1989']), behavior: 'precision_bolt',
+    modifiers: Object.freeze({ damageMultiplier: 1.44, armorPenetrationBonus: 0.45, projectileSpeedMultiplier: 1.3 }),
+  }),
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);
 

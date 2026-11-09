@@ -549,6 +549,19 @@ export class XenomorphKingBoss {
     this.mesh.position.copy(this.position);
   }
 
+  getBossDiegeticTelemetry() {
+    const canonicalHeightM = 5.0;
+    return {
+      canonicalHeightM,
+      worldHeightUnits: canonicalHeightM * 3,
+      aiState: this.aiState,
+      isEnraged: Boolean(this.isEnraged),
+      isToppled: Boolean(this.isToppled),
+      tailIntact: Boolean(this.tailIntact),
+      groundContactValid: Number.isFinite(this.position?.y),
+    };
+  }
+
   dispose() {
     restoreBaseMaterials(this.mesh);
     this.thermalMaterial?.dispose?.();

@@ -1729,6 +1729,8 @@ export class HuntNPC {
     this._painFlinchTimer = 0;
     this._pounceTelegraphTimer = 0;
     this._isPouncing = false;
+    this.lastDiegeticCue = null;
+    this._animPhase = 0;
 
     const texture = loadSharedTexture(HUNT_NPC_TEXTURES[this.type]);
     this.mesh = meshFactories[this.type](texture);
@@ -1759,6 +1761,9 @@ export class HuntNPC {
     this.lodGroup = makeLowPolyNpcSilhouette(this.type, this.detailedGroup, this.lodProfile);
     this.lodGroup.name = `hunt-npc-lod:${this.id}`;
     this.detailedVisuals = [...this.detailedGroup.children];
+    this._rigParts = this._bindRigParts();
+    this.weaponId = config.weaponId || getNpcWeaponProfile(this.type);
+    this.weaponProfile = getNpcWeaponProfile(this.weaponId, { detailed: true });
     const detailedDrawCalls = countRenderableMeshes(this.detailedGroup);
     const distantDrawCalls = countRenderableMeshes(this.lodGroup);
     this.mesh.add(this.lodGroup);
@@ -1819,6 +1824,128 @@ export class HuntNPC {
     this.mesh.userData.territoryCenter = this.territoryCenter.clone();
     this.mesh.userData.patrolRadius = this.patrolRadius;
     this.mesh.userData.leashRadius = this.leashRadius;
+    this.mesh.userData.lastDiegeticCue = this.lastDiegeticCue;
+  }
+
+  _bindRigParts() {
+    const visuals = Array.isArray(this.detailedVisuals) ? this.detailedVisuals : this.mesh.children;
+    const torso = visuals.find(
+      (child) => child.isMesh && !child.isInstancedMesh && child.userData.physicalPart !== 'head',
+    ) || visuals[0] || new THREE.Object3D();
+    const head = visuals.find(
+      (child) => child.userData.physicalPart === 'head'
+        || child.name?.includes('dome')
+        || child.name?.includes('head'),
+    ) || visuals.find(
+      (child) => child !== torso && child.isMesh && !child.isInstancedMesh,
+    ) || new THREE.Object3D();
+    const tail = visuals.find(
+      (child) => child.name?.includes('tail') || child.userData?.physicalPart === 'tail',
+    ) || null;
+
+    torso.userData.basePositionY = torso.position.y;
+    torso.userData.baseRotationX = torso.rotation.x;
+    torso.userData.baseRotationZ = torso.rotation.z;
+    head.userData.basePositionY = head.position.y;
+    head.userData.baseRotationY = head.rotation.y;
+    head.userData.baseRotationX = head.rotation.x;
+
+    return { torso, head, tail };
+  }
+
+  _recordDiegeticCue(cue) {
+    if (!cue) return;
+    this.lastDiegeticCue = cue;
+    if (this.mesh?.userData) {
+      this.mesh.userData.lastDiegeticCue = cue;
+    }
+  }
+
+  _applyProceduralPosture(dt = 0, applyMeshTransforms = true) {
+    if (dt > 0) {
+      this._animPhase += dt;
+    }
+    const telemetry = this.getProceduralPostureTelemetry();
+    if (!applyMeshTransforms || !this._rigParts) return telemetry;
+
+    const { torso, head } = this._rigParts;
+    if (head) {
+      head.rotation.y = (head.userData.baseRotationY ?? 0) + telemetry.headScanYawRad;
+    }
+    if (torso) {
+      const pitchOffset = (telemetry.state === 'stalk'
+        || telemetry.state === 'flank'
+        || telemetry.state === 'cover'
+        || telemetry.state === 'wounded_retreat'
+        || telemetry.state === 'investigate')
+        ? telemetry.torsoPitchRad
+        : 0;
+      torso.rotation.x = (torso.userData.baseRotationX ?? 0) + pitchOffset;
+      const baseY = torso.userData.basePositionY ?? torso.position.y;
+      if (telemetry.isCrouchedInCover) {
+        torso.position.y = baseY - 0.18;
+      } else {
+        torso.position.y = baseY;
+      }
+      if (telemetry.isLimping) {
+        const phase = this._animPhase > 0 ? this._animPhase : 0.45;
+        torso.rotation.z = (torso.userData.baseRotationZ ?? 0) + Math.sin(phase * 5.0) * 0.14;
+      } else {
+        torso.rotation.z = torso.userData.baseRotationZ ?? 0;
+      }
+    }
+    return telemetry;
+  }
+
+  getProceduralPostureTelemetry() {
+    const state = this.fsmState || 'patrol';
+    const phase = this._animPhase > 0 ? this._animPhase : 0.45;
+    const isLimping = state === 'wounded_retreat' || (this.maxHealth > 0 && (this.health / this.maxHealth) <= 0.35);
+    const isCrouchedInCover = state === 'cover' || Boolean(this._inCover);
+
+    const strideMap = {
+      patrol: 1.2,
+      alert: 1.5,
+      investigate: 1.35,
+      stalk: 1.85,
+      engage: 2.6,
+      flank: 2.85,
+      wounded_retreat: 1.45,
+      cover: 0.85,
+    };
+    const strideFrequencyHz = strideMap[state] ?? 1.5;
+
+    let torsoPitchRad = 0.04;
+    if (state === 'stalk') torsoPitchRad = 0.34;
+    else if (state === 'flank') torsoPitchRad = 0.28;
+    else if (isCrouchedInCover) torsoPitchRad = 0.24;
+    else if (isLimping) torsoPitchRad = 0.22;
+    else if (state === 'engage') torsoPitchRad = 0.14;
+    else if (state === 'investigate') torsoPitchRad = 0.1;
+    else if (state === 'alert') torsoPitchRad = 0.06;
+
+    let headScanYawRad = 0;
+    if (state === 'investigate') {
+      const rawScan = Math.sin(phase * 4.2) * 0.52;
+      headScanYawRad = Math.abs(rawScan) < 0.08 ? 0.38 : Number(rawScan.toFixed(4));
+    } else if (state === 'alert') {
+      const rawScan = Math.sin(phase * 3.1) * 0.28;
+      headScanYawRad = Math.abs(rawScan) < 0.05 ? 0.22 : Number(rawScan.toFixed(4));
+    }
+
+    return {
+      state,
+      strideFrequencyHz,
+      torsoPitchRad,
+      headScanYawRad,
+      isLimping,
+      isCrouchedInCover,
+      lastDiegeticCue: this.lastDiegeticCue,
+    };
+  }
+
+  getWeaponProfile() {
+    return this.weaponProfile;
   }
 
   transitionTo(nextState, reason = '') {
@@ -1837,6 +1964,7 @@ export class HuntNPC {
     } else if (nextState === 'investigate') {
       this.ambientState = 'investigate';
       this.mesh.userData.ambientState = 'investigate';
+      this._recordDiegeticCue('acoustic_investigate_turn');
     } else if (nextState === 'engage') {
       if (this.ambient) {
         this.ambientState = 'chase';
@@ -1848,15 +1976,20 @@ export class HuntNPC {
       this.mesh.userData.tacticalState = 'engage';
     } else if (nextState === 'cover') {
       this.mesh.userData.tacticalState = this._inCover ? 'in_cover' : 'seek_cover';
+      this._recordDiegeticCue('cover_suppression_crouch');
     } else if (nextState === 'wounded_retreat') {
       this.mesh.userData.tacticalState = 'flee';
+      this._recordDiegeticCue('wounded_retreat_limp');
     } else if (nextState === 'flank') {
       this.mesh.userData.tacticalState = 'flank';
+      this._recordDiegeticCue('tactical_flank_maneuver');
     } else if (nextState === 'stalk') {
       this.mesh.userData.tacticalState = 'stalk';
     } else if (nextState === 'alert') {
       this.mesh.userData.tacticalState = 'alert';
     }
+    if (this._animPhase === 0) this._animPhase = 0.45;
+    this._applyProceduralPosture(0, true);
     return true;
   }
 
@@ -2326,6 +2459,9 @@ export class HuntNPC {
 
     this._updateVisualLod(player);
     const dt = Math.max(0, Number(delta) || 0);
+    if (dt > 0) {
+      this._animPhase += dt;
+    }
     if (this._painFlinchTimer > 0) {
       this._painFlinchTimer = Math.max(0, this._painFlinchTimer - dt);
       if (this._painFlinchTimer === 0) {
@@ -2409,6 +2545,15 @@ export class HuntNPC {
       { player, targetPosition, distance, allies },
       signals,
     );
+    if (this._inCover || this.mesh.userData.tacticalState === 'seek_cover') {
+      this.transitionTo('cover', 'tactical_cover');
+    } else if (this.mesh.userData.tacticalState === 'evade') {
+      this.transitionTo('flank', 'tactical_evade');
+    } else if (this.mesh.userData.tacticalState === 'flee') {
+      this.transitionTo('wounded_retreat', 'tactical_flee');
+    } else if (this.mesh.userData.tacticalState === 'ambush_windup') {
+      this._recordDiegeticCue('xeno_pounce_telegraph');
+    }
     if (behaviorHandled) return signals;
 
     direction.subVectors(targetPosition, this.position);
@@ -2439,6 +2584,7 @@ export class HuntNPC {
         this._pounceTelegraphTimer = 0.35;
         this.mesh.userData.isTelegraphingPounce = true;
         this.transitionTo('stalk', 'pounce_preparation');
+        this._recordDiegeticCue('xeno_pounce_telegraph');
         signals.push({
           type: 'telegraph',
           sourceId: this.id,
@@ -2595,6 +2741,7 @@ export class HuntNPC {
       this.ambientState = 'investigate';
       this.mesh.userData.ambientState = 'investigate';
     }
+    this.transitionTo('investigate', 'mimicry_lure');
     this._isCharging = false;
     this.chargeWindupTimer = 0;
     this.mesh.userData.isCharging = false;
@@ -2631,6 +2778,7 @@ export class HuntNPC {
       this._painFlinchTimer = 0.35;
       this.mesh.userData.isFlinching = true;
       this.mesh.userData.painReaction = true;
+      this._recordDiegeticCue('pain_flinch_stagger');
     }
 
     let dismembered = false;
@@ -2640,6 +2788,7 @@ export class HuntNPC {
       this.mesh.userData.dismembered = true;
       this.mesh.userData.tailSevered = true;
       this.mesh.userData.acidSplash = true;
+      this._recordDiegeticCue('xeno_acid_spray');
       this.mesh.traverse((child) => {
         if (child.name?.includes('tail') || child.userData?.physicalPart === 'tail') {
           child.visible = false;
@@ -2771,8 +2920,132 @@ export class HuntNPC {
 
 export default HuntNPC;
 
-// Résolution du profil d'arme pour tout PNJ ou membre d'escouade
-export function getNpcWeaponProfile(npcType) {
+const makeWeaponBallisticProfile = (
+  id,
+  {
+    damage = 16,
+    cooldown = 1.15,
+    rangeM = 60,
+    soundRadiusM = 65,
+    projectileColor = 0xffa834,
+    archetype = 'pulse_rifle',
+    cadence = 'burst',
+    damageType = 'ballistic',
+  } = {},
+) => Object.freeze({
+  id,
+  damage,
+  cooldown,
+  rangeM,
+  soundRadiusM,
+  projectileColor,
+  archetype,
+  cadence,
+  damageType,
+});
+
+export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
+  // Base & Vague 1–7 Canonical Arsenal
+  npc_wep_m41a_pulse_rifle: makeWeaponBallisticProfile('npc_wep_m41a_pulse_rifle', {
+    damage: 18, cooldown: 0.95, rangeM: 60, soundRadiusM: 72, projectileColor: 0xffb347, archetype: 'pulse_rifle', cadence: 'burst_4', damageType: 'ballistic',
+  }),
+  npc_wep_m56_smartgun: makeWeaponBallisticProfile('npc_wep_m56_smartgun', {
+    damage: 22, cooldown: 0.75, rangeM: 90, soundRadiusM: 88, projectileColor: 0xffd166, archetype: 'smartgun_heavy', cadence: 'auto_tracking', damageType: 'ballistic',
+  }),
+  npc_wep_minigun_ol_painless: makeWeaponBallisticProfile('npc_wep_minigun_ol_painless', {
+    damage: 26, cooldown: 0.65, rangeM: 120, soundRadiusM: 110, projectileColor: 0xff9f1c, archetype: 'rotary_minigun', cadence: 'rotary_3000rpm', damageType: 'ballistic',
+  }),
+  npc_wep_m16a1_m203_dutch: makeWeaponBallisticProfile('npc_wep_m16a1_m203_dutch', {
+    damage: 19, cooldown: 1.05, rangeM: 70, soundRadiusM: 82, projectileColor: 0xffbf69, archetype: 'assault_grenadier', cadence: 'burst_3_gl', damageType: 'ballistic',
+  }),
+  npc_wep_comanche_bow_naru: makeWeaponBallisticProfile('npc_wep_comanche_bow_naru', {
+    damage: 21, cooldown: 1.45, rangeM: 40, soundRadiusM: 12, projectileColor: 0x80ed99, archetype: 'stealth_bow', cadence: 'single_drawn', damageType: 'toxin',
+  }),
+  npc_wep_owlf_cryo_blaster: makeWeaponBallisticProfile('npc_wep_owlf_cryo_blaster', {
+    damage: 14, cooldown: 1.6, rangeM: 21, soundRadiusM: 38, projectileColor: 0x73dcff, archetype: 'cryo_projector', cadence: 'continuous_jet', damageType: 'cryo',
+  }),
+  npc_wep_desert_eagle_50ae: makeWeaponBallisticProfile('npc_wep_desert_eagle_50ae', {
+    damage: 24, cooldown: 1.25, rangeM: 35, soundRadiusM: 78, projectileColor: 0xffca3a, archetype: 'heavy_handgun', cadence: 'semi_heavy', damageType: 'impact',
+  }),
+  npc_wep_spas12_shotgun: makeWeaponBallisticProfile('npc_wep_spas12_shotgun', {
+    damage: 25, cooldown: 1.35, rangeM: 25, soundRadiusM: 80, projectileColor: 0xff924c, archetype: 'combat_shotgun', cadence: 'semi_scatter', damageType: 'impact',
+  }),
+  npc_wep_avp_anchor_shotgun: makeWeaponBallisticProfile('npc_wep_avp_anchor_shotgun', {
+    damage: 23, cooldown: 1.4, rangeM: 30, soundRadiusM: 76, projectileColor: 0xffa652, archetype: 'expedition_shotgun', cadence: 'pump_slug', damageType: 'impact',
+  }),
+  npc_wep_avpr_m4a1_national_guard: makeWeaponBallisticProfile('npc_wep_avpr_m4a1_national_guard', {
+    damage: 17, cooldown: 1.0, rangeM: 60, soundRadiusM: 74, projectileColor: 0xffc46b, archetype: 'tactical_carbine', cadence: 'burst_3', damageType: 'ballistic',
+  }),
+  npc_wep_seegson_stun_baton: makeWeaponBallisticProfile('npc_wep_seegson_stun_baton', {
+    damage: 15, cooldown: 1.15, rangeM: 3, soundRadiusM: 22, projectileColor: 0x65e8ff, archetype: 'shock_melee', cadence: 'melee_surge', damageType: 'energy',
+  }),
+  npc_wep_blaser_r93_sniper: makeWeaponBallisticProfile('npc_wep_blaser_r93_sniper', {
+    damage: 34, cooldown: 2.1, rangeM: 200, soundRadiusM: 95, projectileColor: 0xffee88, archetype: 'sniper_rifle', cadence: 'bolt_precision', damageType: 'ballistic',
+  }),
+
+  // Vague 8 Canonical Arsenal
+  weapon_dark_river_machete_flint: makeWeaponBallisticProfile('weapon_dark_river_machete_flint', {
+    damage: 24, cooldown: 0.9, rangeM: 4, soundRadiusM: 16, projectileColor: 0xc5d0ce, archetype: 'jungle_blade_trap', cadence: 'melee_slash', damageType: 'laceration',
+  }),
+  weapon_nemesis_webley_revolver: makeWeaponBallisticProfile('weapon_nemesis_webley_revolver', {
+    damage: 22, cooldown: 1.3, rangeM: 35, soundRadiusM: 74, projectileColor: 0xffb703, archetype: 'service_revolver', cadence: 'double_action_6', damageType: 'ballistic',
+  }),
+  weapon_pala_tranq_dart_rifle: makeWeaponBallisticProfile('weapon_pala_tranq_dart_rifle', {
+    damage: 14, cooldown: 1.2, rangeM: 45, soundRadiusM: 24, projectileColor: 0x56cfe1, archetype: 'neuro_tranq_rifle', cadence: 'semi_pneumatic', damageType: 'toxin',
+  }),
+  weapon_phalanx_obsidian_spear: makeWeaponBallisticProfile('weapon_phalanx_obsidian_spear', {
+    damage: 26, cooldown: 1.05, rangeM: 6, soundRadiusM: 18, projectileColor: 0x9d4edd, archetype: 'acidproof_phalanx_spear', cadence: 'phalanx_thrust', damageType: 'laceration',
+  }),
+  weapon_extinction_iron_bear_gauss: makeWeaponBallisticProfile('weapon_extinction_iron_bear_gauss', {
+    damage: 38, cooldown: 1.75, rangeM: 110, soundRadiusM: 96, projectileColor: 0x48bfe3, archetype: 'heavy_gauss_cannon', cadence: 'magnetic_burst', damageType: 'kinetic_piercing',
+  }),
+  weapon_kseries_acid_tail_spurt: makeWeaponBallisticProfile('weapon_kseries_acid_tail_spurt', {
+    damage: 27, cooldown: 1.15, rangeM: 25, soundRadiusM: 42, projectileColor: 0xaacc00, archetype: 'bio_acid_projector', cadence: 'pressurized_spurt', damageType: 'corrosion',
+  }),
+
+  // Vague 8 & Vague 9 Canonical Expansion Weapons (wpn_*)
+  wpn_tartarus_heavy_plasma: makeWeaponBallisticProfile('wpn_tartarus_heavy_plasma', {
+    damage: 42, cooldown: 1.85, rangeM: 95, soundRadiusM: 88, projectileColor: 0x00f5d4, archetype: 'heavy_plasma_caster', cadence: 'charged_plasma_orb', damageType: 'energy',
+  }),
+  wpn_starseer_solar_staff: makeWeaponBallisticProfile('wpn_starseer_solar_staff', {
+    damage: 36, cooldown: 1.45, rangeM: 75, soundRadiusM: 64, projectileColor: 0xffbe0b, archetype: 'solar_relic_staff', cadence: 'harmonic_solar_lance', damageType: 'energy',
+  }),
+  wpn_anacharsis_rivet_turret: makeWeaponBallisticProfile('wpn_anacharsis_rivet_turret', {
+    damage: 24, cooldown: 0.7, rangeM: 55, soundRadiusM: 84, projectileColor: 0xff7b00, archetype: 'industrial_rivet_turret', cadence: 'auto_pneumatic_salvo', damageType: 'ballistic',
+  }),
+  wpn_moriah_pulse_carbine: makeWeaponBallisticProfile('wpn_moriah_pulse_carbine', {
+    damage: 20, cooldown: 0.9, rangeM: 68, soundRadiusM: 74, projectileColor: 0xffa62b, archetype: 'colonial_pulse_carbine', cadence: 'burst_4_caseless', damageType: 'ballistic',
+  }),
+  wpn_anchorpoint_incinerator_mk2: makeWeaponBallisticProfile('wpn_anchorpoint_incinerator_mk2', {
+    damage: 28, cooldown: 1.1, rangeM: 32, soundRadiusM: 58, projectileColor: 0xff4d00, archetype: 'pressurized_incinerator', cadence: 'continuous_napalm_stream', damageType: 'thermal',
+  }),
+  wpn_freya_mining_laser_drill: makeWeaponBallisticProfile('wpn_freya_mining_laser_drill', {
+    damage: 31, cooldown: 1.25, rangeM: 42, soundRadiusM: 62, projectileColor: 0xff006e, archetype: 'industrial_mining_laser', cadence: 'continuous_thermal_beam', damageType: 'thermal',
+  }),
+  wpn_rage_war_boarding_cannon: makeWeaponBallisticProfile('wpn_rage_war_boarding_cannon', {
+    damage: 40, cooldown: 1.9, rangeM: 85, soundRadiusM: 94, projectileColor: 0xfb5607, archetype: 'heavy_boarding_cannon', cadence: 'breach_shell_salvo', damageType: 'explosive',
+  }),
+  wpn_stern_biodome_tranq_lance: makeWeaponBallisticProfile('wpn_stern_biodome_tranq_lance', {
+    damage: 16, cooldown: 1.3, rangeM: 48, soundRadiusM: 26, projectileColor: 0x72efdd, archetype: 'biodome_tranq_lance', cadence: 'pneumatic_neuro_dart', damageType: 'toxin',
+  }),
+  wpn_yellowstone_ranger_45_70_lever: makeWeaponBallisticProfile('wpn_yellowstone_ranger_45_70_lever', {
+    damage: 33, cooldown: 1.5, rangeM: 90, soundRadiusM: 86, projectileColor: 0xffd166, archetype: 'lever_action_big_bore', cadence: 'lever_repeat_45_70', damageType: 'ballistic',
+  }),
+  wpn_kleist_charon_shock_baton: makeWeaponBallisticProfile('wpn_kleist_charon_shock_baton', {
+    damage: 19, cooldown: 0.95, rangeM: 3.5, soundRadiusM: 28, projectileColor: 0x4cc9f0, archetype: 'charon_neural_baton', cadence: 'arc_discharge_strike', damageType: 'energy',
+  }),
+  wpn_mayakovsky_cyber_ant_laser: makeWeaponBallisticProfile('wpn_mayakovsky_cyber_ant_laser', {
+    damage: 25, cooldown: 0.8, rangeM: 52, soundRadiusM: 34, projectileColor: 0x80ffdb, archetype: 'cyber_ant_micro_laser', cadence: 'precision_surgical_pulse', damageType: 'energy',
+  }),
+  wpn_gideon_lee_reverse_plasma_rifle: makeWeaponBallisticProfile('wpn_gideon_lee_reverse_plasma_rifle', {
+    damage: 37, cooldown: 1.55, rangeM: 88, soundRadiusM: 79, projectileColor: 0x4895ef, archetype: 'reverse_engineered_plasma', cadence: 'overcharged_plasma_bolt', damageType: 'energy',
+  }),
+  wpn_perses_security_flechette_smg: makeWeaponBallisticProfile('wpn_perses_security_flechette_smg', {
+    damage: 17, cooldown: 0.68, rangeM: 46, soundRadiusM: 54, projectileColor: 0x90e0ef, archetype: 'flechette_security_smg', cadence: 'high_rpm_flechette_burst', damageType: 'ballistic',
+  }),
+});
+
+function resolveNpcRoleWeaponId(npcType) {
   const type = String(npcType || '').toLowerCase();
   if (type.includes('smartgun')) return 'npc_wep_m56_smartgun';
   if (type.includes('pulse') || type.includes('marines') || type.includes('hicks')) return 'npc_wep_m41a_pulse_rifle';
@@ -2787,4 +3060,60 @@ export function getNpcWeaponProfile(npcType) {
   if (type.includes('combat_synthetic') || type.includes('working_joe')) return 'npc_wep_seegson_stun_baton';
   if (type.includes('stargazer')) return 'npc_wep_blaser_r93_sniper';
   return 'npc_wep_m41a_pulse_rifle';
+}
+
+// Résolution du profil d'arme pour tout PNJ ou identifiant d'arme canonique
+export function getNpcWeaponProfile(npcTypeOrWeaponId, options = {}) {
+  const raw = String(npcTypeOrWeaponId || '').trim().toLowerCase();
+  const isDirectWeaponId = raw.startsWith('wpn_')
+    || raw.startsWith('npc_wep_')
+    || raw.startsWith('weapon_')
+    || Boolean(NPC_WEAPON_BALLISTIC_PROFILES[raw])
+    || Boolean(NPC_WEAPON_BALLISTIC_PROFILES[`wpn_${raw}`]);
+
+  if (!isDirectWeaponId && !options?.detailed) {
+    return resolveNpcRoleWeaponId(raw);
+  }
+
+  if (NPC_WEAPON_BALLISTIC_PROFILES[raw]) {
+    return NPC_WEAPON_BALLISTIC_PROFILES[raw];
+  }
+  if (NPC_WEAPON_BALLISTIC_PROFILES[`wpn_${raw}`]) {
+    return NPC_WEAPON_BALLISTIC_PROFILES[`wpn_${raw}`];
+  }
+
+  const mappedRoleId = resolveNpcRoleWeaponId(raw);
+  if (options?.detailed && NPC_WEAPON_BALLISTIC_PROFILES[mappedRoleId] && !raw.startsWith('wpn_')) {
+    return NPC_WEAPON_BALLISTIC_PROFILES[mappedRoleId];
+  }
+
+  // Fallback lore-accurate profile for any other canonical weapon identifier
+  if (raw.includes('plasma') || raw.includes('solar')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_plasma', {
+      damage: 35, cooldown: 1.5, rangeM: 85, soundRadiusM: 80, projectileColor: 0x00f5d4, archetype: 'plasma_directed', cadence: 'charged_bolt', damageType: 'energy',
+    });
+  }
+  if (raw.includes('laser')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_laser', {
+      damage: 28, cooldown: 1.1, rangeM: 55, soundRadiusM: 50, projectileColor: 0xff006e, archetype: 'laser_emitter', cadence: 'continuous_beam', damageType: 'thermal',
+    });
+  }
+  if (raw.includes('incinerator') || raw.includes('flame')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_incinerator', {
+      damage: 26, cooldown: 1.1, rangeM: 30, soundRadiusM: 58, projectileColor: 0xff4d00, archetype: 'thermal_incinerator', cadence: 'continuous_stream', damageType: 'thermal',
+    });
+  }
+  if (raw.includes('tranq') || raw.includes('dart')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_tranq', {
+      damage: 15, cooldown: 1.25, rangeM: 45, soundRadiusM: 25, projectileColor: 0x72efdd, archetype: 'tranq_projector', cadence: 'pneumatic_dart', damageType: 'toxin',
+    });
+  }
+  if (raw.includes('baton') || raw.includes('shock') || raw.includes('stun')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_generic_shock', {
+      damage: 18, cooldown: 0.95, rangeM: 3.5, soundRadiusM: 26, projectileColor: 0x4cc9f0, archetype: 'shock_melee', cadence: 'contact_surge', damageType: 'energy',
+    });
+  }
+  return makeWeaponBallisticProfile(raw || 'npc_wep_m41a_pulse_rifle', {
+    damage: 20, cooldown: 1.0, rangeM: 65, soundRadiusM: 72, projectileColor: 0xffb347, archetype: 'ballistic_firearm', cadence: 'burst', damageType: 'ballistic',
+  });
 }

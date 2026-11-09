@@ -82,6 +82,10 @@ import {
   getWeaponMiniatureSvg,
   getSquadMiniatureSvg,
   getCategoryIconSvg,
+  getFactionLogo,
+  getPreyMiniatureSvg,
+  getLoreMiniatureSvg,
+  getSkinMiniatureSvg,
 } from './ui/CanonLogosAndEmblems.js';
 import { SQUAD_ENCOUNTERS, getSquadById } from './data/SquadEncountersCatalog.js';
 import {
@@ -1056,6 +1060,11 @@ export class Game {
 
       const tier = LORE_SOURCE_TIERS[entry.sourceTier] ?? LORE_SOURCE_TIERS.ORIGINAL;
       card.style.setProperty('--lore-tier-color', tier.color);
+
+      const miniBox = document.createElement('div');
+      miniBox.className = 'card-miniature-box lore-miniature';
+      miniBox.innerHTML = getLoreMiniatureSvg(entry);
+      card.append(miniBox);
 
       const header = document.createElement('div');
       header.className = 'codex-card-header';
@@ -2638,6 +2647,14 @@ export class Game {
     }
 
     // 2. 5-Tier Prey Taxonomy Filtering on Contracts
+    const squadFilterPill = document.querySelector?.('.squad-filter-pill');
+    if (squadFilterPill) squadFilterPill.textContent = `⚔️ ESCOUADES & FACTIONS (${SQUAD_ENCOUNTERS.length})`;
+    const mapsFilterPill = document.querySelector?.('.maps-filter-pill');
+    if (mapsFilterPill) mapsFilterPill.textContent = `🗺️ CARTES & BIOMES (${MEDIA_MAPS_CATALOG.length})`;
+    const weaponsFilterPill = document.querySelector?.('.weapons-filter-pill');
+    if (weaponsFilterPill) weaponsFilterPill.textContent = `🔫 ARSENAL COMPLET (${NPC_ARSENAL_CATALOG.length + ARMOR_PRESET_WEAPON_VARIANTS.length})`;
+    const codexFilterPill = document.querySelector?.('.codex-filter-pill');
+    if (codexFilterPill) codexFilterPill.textContent = `📜 DOSSIERS LORE (${LORE_CODEX_ENTRIES.length})`;
     const filterPills = document.querySelectorAll('.scale-filter-pill[data-scale-filter]');
     filterPills.forEach((pill) => {
       pill.addEventListener('click', () => {
@@ -3012,10 +3029,11 @@ export class Game {
       else if (prey.faction === PREY_FACTIONS.FAUNA) factionClass = 'faction-fauna';
 
       return `
-        <article class="taxonomy-card" data-prey-id="${prey.id}">
+        <article class="taxonomy-card prey-card" data-prey-id="${prey.id}">
+          <div class="card-miniature-box prey-miniature">${getPreyMiniatureSvg(prey)}</div>
           <div class="taxonomy-card-header">
             <div style="display:flex; align-items:center; gap:8px;">
-              <div class="taxonomy-faction-icon" style="flex-shrink:0;">${renderFactionEmblem(prey.faction, 26)}</div>
+              <div class="taxonomy-faction-icon" style="flex-shrink:0; display:flex; align-items:center; gap:4px;">${getCategoryIconSvg('BESTIARY', 18)}${getFactionLogo(prey.universe || prey.category || prey.faction, 20)}${renderFactionEmblem(prey.faction, 26)}</div>
               <div>
                 <h5 class="taxonomy-card-title">${prey.name}</h5>
                 <span class="taxonomy-card-source">${prey.originMedia}</span>
@@ -3047,10 +3065,14 @@ export class Game {
     const renderLoreDrawerCard = (entry) => {
       const tier = LORE_SOURCE_TIERS[entry.sourceTier] ?? LORE_SOURCE_TIERS.ORIGINAL;
       return `
-        <article class="taxonomy-card lore-card" data-lore-id="${entry.id}">
+        <article class="taxonomy-card lore-card lore-drawer-card" data-lore-id="${entry.id}">
+          <div class="card-miniature-box lore-miniature">${getLoreMiniatureSvg(entry)}</div>
           <div class="taxonomy-card-header">
             <div>
-              <h5 class="taxonomy-card-title">📜 ${entry.title}</h5>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span class="lore-drawer-icons" style="display:inline-flex; align-items:center; gap:4px;">${getCategoryIconSvg('CODEX', 20)}${getFactionLogo(getLoreEntryUniverse(entry), 24)}</span>
+                <h5 class="taxonomy-card-title">📜 ${entry.title}</h5>
+              </div>
               <span class="taxonomy-card-source">${entry.category.toUpperCase()} · ${tier.label}</span>
             </div>
             <span class="spec-tag" style="background:${tier.color}; color:#000; font-weight:700;">${tier.shortLabel}</span>
@@ -3151,6 +3173,7 @@ export class Game {
           const uMaps = MEDIA_MAPS_CATALOG.filter((m) => m.universe === u);
           const uSquads = SQUAD_ENCOUNTERS.filter((s) => getSquadUniverse(s) === u);
           const uNpcWeps = NPC_ARSENAL_CATALOG.filter((w) => w.universe === u);
+          const uLore = LORE_CODEX_ENTRIES.filter((e) => getLoreEntryUniverse(e) === u);
 
           const compositeHtml = `
             <div style="grid-column: 1 / -1; margin-bottom:8px;">
@@ -3166,6 +3189,12 @@ export class Game {
               <div class="sub-drawer-heading">🔫 Arsenal Emblématique (${uNpcWeps.length})</div>
             </div>
             ${uNpcWeps.map(renderWeaponCard).join('')}
+            ${uLore.length > 0 ? `
+            <div style="grid-column: 1 / -1; margin-top:16px; margin-bottom:8px;">
+              <div class="sub-drawer-heading">📜 Dossiers Lore & Codex (${uLore.length})</div>
+            </div>
+            ${uLore.map(renderLoreDrawerCard).join('')}
+            ` : ''}
           `;
 
           return renderUniverseDrawer(u, uInfo.label + ' — ARCHIVES GLOBALES', `${uMaps.length} Cartes · ${uSquads.length} Escouades · ${uNpcWeps.length} Armes · ${uLore.length} Dossiers`, compositeHtml);

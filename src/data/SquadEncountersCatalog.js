@@ -3256,6 +3256,150 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'ryushi_blooded_young_blood', name: 'Jeune Sang Sanglant de Ryushi', role: 'Assaillant Agile', weapon: 'Doubles Lames de Poignet & Smart Disc', weaponId: 'npc_wep_yautja_naginata_plasma', vitalityRatio: 1.0, hp: 560, armor: 60, trophy: 'Disque Intelligent Gravé du Sceau de Ryushi' },
       { id: 'bunda_rebel_tactician', name: 'Éclaireur Dissident de Bunda', role: 'Pisteur Embusqué', weapon: 'Fusil Harponneur & Filet de Câbles Invisibles', weaponId: 'npc_wep_yautja_naginata_plasma', vitalityRatio: 0.95, hp: 530, armor: 55, trophy: 'Gantelet Informatique reprogrammé pour la Rébellion' }
     ]
+  },
+  {
+    id: 'squad_pred_captive_preserve_guards',
+    name: 'Brigade de Confinement du Biodôme de Tyler Stern (1998)',
+    universe: 'PREDATOR',
+    shortName: 'Gardes Biodôme Stern (4 Agents)',
+    category: 'MERCENARY_SYNDICATE',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Captive (Dark Horse Comics 1998)',
+    biomeId: 'jungle',
+    recommendedBiomeLabel: 'Réserve Biodôme Artificielle de Tyler Stern (Captive 1998)',
+    primaryMapId: 'map_pred_stern_biodome_preserve',
+    weaponLoadout: ['wpn_stern_biodome_tranq_lance', 'npc_wep_owlf_cryo_blaster'],
+    description: 'Unité de sécurité privée surentraînée du milliardaire Tyler Stern chargée de maintenir le chasseur Yautja captif sous le dôme tropical.',
+    tactics: 'Encerclement méthodique avec lances électro-tranquillisantes, saturation de gaz sédatif et verrouillage des passerelles d\'observation.',
+    totalHonorReward: 4900,
+    soloVariantId: 'alien_base_royce_mercenaire_2010',
+    members: [
+      { id: 'stern_chief_warden', name: 'Commandant de Confinement Vance', role: 'Chef de la Sécurité du Biodôme', weapon: 'Lance Électro-Tranquillisante Haute Tension & Taser', weaponId: 'wpn_stern_biodome_tranq_lance', vitalityRatio: 1.2, hp: 600, armor: 60, trophy: 'Badge Biométrique de Niveau Oméga du Biodôme Stern' },
+      { id: 'stern_sedation_lancer', name: 'Chasseur-Anesthésiste Kael', role: 'Spécialiste Capture Vivante', weapon: 'Lance Pneumatique à Étorphine & Filet Lesté', weaponId: 'wpn_stern_biodome_tranq_lance', vitalityRatio: 1.0, hp: 520, armor: 50, trophy: 'Cylindre Pressurisé d\'Étorphine Synthétique Stern' },
+      { id: 'stern_dome_spotter', name: 'Opérateur Optique de Passerelle', role: 'Coordinateur des Capteurs Thermiques', weapon: 'Carabine à Fléchettes Sédatives & Scanner Laser', weaponId: 'wpn_stern_biodome_tranq_lance', vitalityRatio: 0.9, hp: 470, armor: 40, trophy: 'Casque Télémétrique de Surveillance du Dôme' },
+      { id: 'stern_heavy_containment', name: 'Garde Blindé de Quarantaine', role: 'Bloqueur de Sas en Exosquelette Léger', weapon: 'Bouclier Électro-Magnétique & Lance Haute Tension', weaponId: 'wpn_stern_biodome_tranq_lance', vitalityRatio: 1.15, hp: 580, armor: 65, trophy: 'Plaque Thoracique Isolante Brûlée au Plasma' }
+    ]
+  },
+  {
+    id: 'squad_pred_yellowstone_rangers',
+    name: 'Patrouille des Rangers & Pisteurs de Yellowstone (1999)',
+    universe: 'PREDATOR',
+    shortName: 'Rangers Yellowstone (4 Pisteurs)',
+    category: 'LAW_ENFORCEMENT',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Predator: Homeworld (Dark Horse Comics 1999)',
+    biomeId: 'jungle',
+    recommendedBiomeLabel: 'Bassin des Geysers de Yellowstone (Homeworld 1999)',
+    primaryMapId: 'map_pred_yellowstone_geysers_1999',
+    weaponLoadout: ['wpn_yellowstone_ranger_45_70_lever'],
+    description: 'Vétérans du Service des Parcs Nationaux et guides de haute montagne pris au piège de l\'affrontement entre les trois Bad Bloods et le Yautja Ancien.',
+    tactics: 'Tirs d\'arrêt précis à la carabine .45-70 à travers le brouillard soufré, repli coordonné sur les crêtes rocheuses et fusées éclairantes.',
+    totalHonorReward: 4700,
+    soloVariantId: 'alien_base_dutch_2025_owlf',
+    members: [
+      { id: 'yellowstone_senior_ranger', name: 'Ranger Principal Cole', role: 'Vétéran de la Garde Forestière', weapon: 'Carabine à Levier .45-70 Government & Revolver .357', weaponId: 'wpn_yellowstone_ranger_45_70_lever', vitalityRatio: 1.15, hp: 570, armor: 45, trophy: 'Étoile de Bronze du Service des Parcs de Yellowstone' },
+      { id: 'yellowstone_geothermal_guide', name: 'Pisteur des Geysers Bridger', role: 'Éclaireur des Bassins Soufrés', weapon: 'Carabine .45-70 & Jumelles Thermiques de Secours', weaponId: 'wpn_yellowstone_ranger_45_70_lever', vitalityRatio: 1.0, hp: 510, armor: 40, trophy: 'Boussole Géologique Corrodée par le Soufre' },
+      { id: 'yellowstone_field_chronicler', name: 'Maya Bergstrom (Enquêtrice)', role: 'Observatrice & Tireuse de Survie', weapon: 'Fusil de Chasse Calibre 12 & Caméra Haute Vitesse', weaponId: 'wpn_yellowstone_ranger_45_70_lever', vitalityRatio: 0.85, hp: 450, armor: 30, trophy: 'Pellicule Photographique du Chasseur Ancien' },
+      { id: 'yellowstone_ridge_marksman', name: 'Garde-Chasse des Rocheuses', role: 'Tireur d\'Appui Longue Portée', weapon: 'Carabine Lourde .45-70 à Lunette & Piolet', weaponId: 'wpn_yellowstone_ranger_45_70_lever', vitalityRatio: 1.05, hp: 530, armor: 40, trophy: 'Cartouchière en Cuir de Bison de Yellowstone' }
+    ]
+  },
+  {
+    id: 'squad_alien_charon_rogue_marines',
+    name: 'Garnison Coloniale de Charon & Sécurité du Complexe Rogue (1993)',
+    universe: 'ALIEN',
+    shortName: 'Marines de Charon (4 Soldats)',
+    category: 'COLONIAL_MARINES',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Rogue (Dark Horse Comics 1993)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Citadelle Biologique de Charon (Aliens: Rogue 1993)',
+    primaryMapId: 'map_alien_charon_kleist_citadel',
+    weaponLoadout: ['wpn_kleist_charon_shock_baton', 'npc_wep_m41a_pulse_rifle'],
+    description: 'Détachement militaire et gardes de contention de l\'astéroïde Charon tentant de survivre à la fuite du King Alien du professeur Ernst Kleist.',
+    tactics: 'Barrages d\'aiguillons neuro-électriques en couloir, tirs de fusils à impulsion M41A et activation des sas blindés.',
+    totalHonorReward: 5100,
+    soloVariantId: 'alien_base_william_hudson_private',
+    members: [
+      { id: 'charon_captain_kramer', name: 'Capitaine Kramer (Garnison Charon)', role: 'Commandant Militaire de l\'Astéroïde', weapon: 'Armat M41A Pulse Rifle & Matraque Neuro-Choc', weaponId: 'wpn_kleist_charon_shock_baton', vitalityRatio: 1.2, hp: 610, armor: 65, trophy: 'Insigne de Commandement de la Citadelle Charon' },
+      { id: 'charon_containment_corporal', name: 'Caporal de Contention Vane', role: 'Maître des Sas de la Fosse Royale', weapon: 'Matraque Neuro-Choc 150 kV & Bouclier Anti-Acide', weaponId: 'wpn_kleist_charon_shock_baton', vitalityRatio: 1.1, hp: 560, armor: 60, trophy: 'Gantelet Isolant Griffé par le King Alien' },
+      { id: 'charon_bio_sentry', name: 'Spécialiste Bio-Sécurité Sterling', role: 'Opérateur des Barrières Électriques', weapon: 'Aiguillon de Contention & Fusil à Pompe M37', weaponId: 'wpn_kleist_charon_shock_baton', vitalityRatio: 0.95, hp: 500, armor: 50, trophy: 'Clé Magnétique des Cuves d\'Incubation Rogue' },
+      { id: 'charon_heavy_trooper', name: 'Artilleur de Couloir Miller', role: 'Soutien Incendiaire & Choc', weapon: 'Lance-Flammes M240 & Matraque Neuro-Choc', weaponId: 'wpn_kleist_charon_shock_baton', vitalityRatio: 1.05, hp: 540, armor: 55, trophy: 'Casque USCM Fendu des Souterrains de Charon' }
+    ]
+  },
+  {
+    id: 'squad_alien_harvest_cyber_ants',
+    name: 'Essaim Cyber-Moissonneur de Mayakovsky & Synthétique Norbert (1992)',
+    universe: 'ALIEN',
+    shortName: 'Cyber-Fourmis & Norbert (4 Unités)',
+    category: 'SYNTHETIC_PACK',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens: Hive (Dark Horse Comics 1992)',
+    biomeId: 'hive_lv426',
+    recommendedBiomeLabel: 'Cavernes Bioluminescentes de Bellerophon (Echo 2019)',
+    primaryMapId: 'map_alien_bellerophon_caves',
+    weaponLoadout: ['wpn_mayakovsky_cyber_ant_laser'],
+    description: 'Unité robotique d\'infiltration de ruche conçue par Stanislaw Mayakovsky, dirigée par l\'androïde xéno-mimétique Norbert et ses cyber-fourmis laser.',
+    tactics: 'Focalisation synchronisée de micro-lasers de découpe, camouflage phéromonal synthétique et encerclement rapide dans les boyaux de résine.',
+    totalHonorReward: 5300,
+    soloVariantId: 'prey_weyland_combat_android',
+    members: [
+      { id: 'norbert_xeno_synth', name: 'Norbert (Synthétique Xéno-Mimétique)', role: 'Unité d\'Infiltration Biomimétique', weapon: 'Micro-Laser Chirurgical & Griffes en Titane Noir', weaponId: 'wpn_mayakovsky_cyber_ant_laser', vitalityRatio: 1.25, hp: 640, armor: 70, trophy: 'Crâne Cyber-Xénomorphe Articulé de Norbert' },
+      { id: 'mayakovsky_harvester_prime', name: 'Cyber-Fourmi Moissonneuse Alpha', role: 'Drone d\'Extraction de Gelée Royale', weapon: 'Double Émetteur Laser 450nm & Mandibules d\'Acier', weaponId: 'wpn_mayakovsky_cyber_ant_laser', vitalityRatio: 1.05, hp: 540, armor: 65, trophy: 'Fiole en Quartz de Gelée Royale Pure Moissonnée' },
+      { id: 'mayakovsky_cutter_drone', name: 'Unité de Découpe Thermique Bêta', role: 'Foreur de Résine Xénomorphe', weapon: 'Faisceau Laser Continu de Découpe & Scie Circulaire', weaponId: 'wpn_mayakovsky_cyber_ant_laser', vitalityRatio: 0.95, hp: 500, armor: 60, trophy: 'Lentille de Focalisation Laser de Mayakovsky' },
+      { id: 'mayakovsky_relay_guard', name: 'Sentinelle Relais Synaptique', role: 'Coordinateur du Réseau de Moisson', weapon: 'Tourelle Micro-Laser Dorsal & Impulsion IEM', weaponId: 'wpn_mayakovsky_cyber_ant_laser', vitalityRatio: 1.0, hp: 520, armor: 60, trophy: 'Antenne de Commande Cybernétique de Stanislaw' }
+    ]
+  },
+  {
+    id: 'squad_avp_eternal_tokyo_mercs',
+    name: 'Garde Prétorienne à Plasma Rétro-Conçu de Gideon Lee — Tokyo (1998)',
+    universe: 'AVP',
+    shortName: 'Mercenaires Eternal Tokyo (4 Gardes)',
+    category: 'MERCENARY_SYNDICATE',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator: Eternal (Dark Horse Comics 1998)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiomeLabel: 'Gratte-Ciel de Gideon Lee à Tokyo (AVP: Eternal 1998)',
+    primaryMapId: 'map_avp_tokyo_eternal_penthouse',
+    weaponLoadout: ['wpn_gideon_lee_reverse_plasma_rifle'],
+    description: 'Escouade d\'élite protégeant le penthouse de Tokyo de l\'immortel Gideon Lee, armée de fusils à plasma humains rétro-conçus sur l\'épave Yautja de 1300.',
+    tactics: 'Tirs croisés de plasma surchargé depuis les passerelles de verre, verrouillage laser de l\'atrium et contre-attaques au katana thermique.',
+    totalHonorReward: 5500,
+    soloVariantId: 'prey_weyland_combat_android',
+    members: [
+      { id: 'tokyo_praetorian_leader', name: 'Capitaine Takashi (Garde Prétorienne)', role: 'Commandant de l\'Escorte de Gideon Lee', weapon: 'Fusil à Plasma Rétro-Conçu Type-1300 & Wakizashi', weaponId: 'wpn_gideon_lee_reverse_plasma_rifle', vitalityRatio: 1.25, hp: 640, armor: 70, trophy: 'Cellule d\'Énergie Yautja Piratée du Capitaine Takashi' },
+      { id: 'tokyo_plasma_heavy', name: 'Artilleur Plasma Kurosawa', role: 'Spécialiste Saturation Énergétique', weapon: 'Canon à Plasma Lourd Rétro-Conçu & Exo-Harnais', weaponId: 'wpn_gideon_lee_reverse_plasma_rifle', vitalityRatio: 1.15, hp: 600, armor: 65, trophy: 'Condensateur Magnétique Instable de Tokyo 1998' },
+      { id: 'tokyo_vault_sentinel', name: 'Sentinelle de la Soute de 1300', role: 'Gardien de l\'Épave Engloutie', weapon: 'Carabine Plasma Type-1300 & Grenades Aveuglantes', weaponId: 'wpn_gideon_lee_reverse_plasma_rifle', vitalityRatio: 1.0, hp: 530, armor: 55, trophy: 'Masque Tactique Nocturne du Penthouse de Gideon Lee' },
+      { id: 'tokyo_cyber_recon', name: 'Exécuteur Urbain Shinoda', role: 'Tireur d\'Élite d\'Héliport', weapon: 'Fusil de Précision à Plasma Rétro-Conçu', weaponId: 'wpn_gideon_lee_reverse_plasma_rifle', vitalityRatio: 0.95, hp: 500, armor: 50, trophy: 'Viseur Optique Multi-Spectre de la Tour Lee' }
+    ]
+  },
+  {
+    id: 'squad_avp_perses_fire_stone_crew',
+    name: 'Équipage de Sécurité du Vaisseau Perses & Mercenaires de Galgo (2014)',
+    universe: 'AVP',
+    shortName: 'Sécurité du Perses (4 Survivants)',
+    category: 'HUMAN_SURVIVORS',
+    scale: 'MOYEN',
+    totalMembers: 4,
+    originMedia: 'Aliens vs. Predator: Fire and Stone (Dark Horse Comics 2014)',
+    biomeId: 'genna_deathworld',
+    recommendedBiomeLabel: 'Coque Mutée du Vaisseau Perses (Fire and Stone 2014)',
+    primaryMapId: 'map_avp_perses_fire_stone_hull',
+    weaponLoadout: ['wpn_perses_security_flechette_smg'],
+    description: 'Le détachement de sécurité et les survivants armés du vaisseau Perses pris en étau entre la horde xénomorphe d\'Elden et la chasse impitoyable d\'Ahab.',
+    tactics: 'Rafales de pistolets-mitrailleurs à fléchettes dans les coursives, scellement de cloisons pressurisées et pièges de décompression.',
+    totalHonorReward: 5400,
+    soloVariantId: 'prey_ahab_elder_persée',
+    members: [
+      { id: 'perses_chief_sec_miller', name: 'Chef de Sécurité Vance du Perses', role: 'Officier de Défense du Bord', weapon: 'SMG à Fléchettes Perforantes & Fusil à Pompe', weaponId: 'wpn_perses_security_flechette_smg', vitalityRatio: 1.2, hp: 610, armor: 60, trophy: 'Enregistreur Tactique Corrompu du Vaisseau Perses' },
+      { id: 'perses_merc_enforcer', name: 'Franc-Tireur de Galgo', role: 'Mercenaire d\'Escorte Orbitale', weapon: 'Double SMG à Fléchettes 5.7mm & Charges C4', weaponId: 'wpn_perses_security_flechette_smg', vitalityRatio: 1.1, hp: 570, armor: 55, trophy: 'Chargeur Tambour de Fléchettes en Carbure' },
+      { id: 'perses_hull_engineer', name: 'Ingénieur de Coque Pressurisée', role: 'Spécialiste Gravité & Sas', weapon: 'SMG à Fléchettes & Découpeur Plasma Orbital', weaponId: 'wpn_perses_security_flechette_smg', vitalityRatio: 0.95, hp: 510, armor: 50, trophy: 'Clé de Déverrouillage des Nacelles du Perses' },
+      { id: 'perses_medbay_guard', name: 'Garde du Bloc Biologique LV-223', role: 'Sentinelle Anti-Mutagène', weapon: 'Carabine à Fléchettes & Injecteur Décontaminant', weaponId: 'wpn_perses_security_flechette_smg', vitalityRatio: 1.0, hp: 530, armor: 50, trophy: 'Échantillon Scellé de Biomasse Noire du Perses' }
+    ]
   }
 ]);
 
