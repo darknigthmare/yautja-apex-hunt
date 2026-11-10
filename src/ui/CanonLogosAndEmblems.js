@@ -3245,6 +3245,71 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  if (id.includes('dark_river')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-darkriver" role="img" aria-label="Insigne Pisteurs Dark River">
+        <polygon points="40,6 72,20 64,68 40,76 16,68 8,20" fill="#061a14" stroke="#10b981" stroke-width="2.5" />
+        <path d="M24 38 Q40 20 56 38 Q40 56 24 38 Z" fill="#047857" stroke="#34d399" stroke-width="1.8" />
+        <line x1="20" y1="60" x2="60" y2="20" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" />
+        <circle cx="40" cy="38" r="4" fill="#a7f3d0" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#6ee7b7" letter-spacing="1" text-anchor="middle">DARK RIVER</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('fleener_creek')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-fleenercreek" role="img" aria-label="Insigne Adjoints Fleener Creek">
+        <polygon points="40,8 70,24 70,56 40,74 10,56 10,24" fill="#1c1917" stroke="#f59e0b" stroke-width="2.5" />
+        <polygon points="40,22 45,34 58,35 48,44 51,56 40,49 29,56 32,44 22,35 35,34" fill="#78350f" stroke="#fbbf24" stroke-width="1.6" />
+        <circle cx="40" cy="40" r="5" fill="#fde68a" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="3.8" font-weight="900" fill="#fcd34d" letter-spacing="1" text-anchor="middle">FLEENER CRK</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('genocide_xeno_zip')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-xenozipraiders" role="img" aria-label="Insigne Pillards Xeno-Zip">
+        <polygon points="40,6 74,22 66,66 40,76 14,66 6,22" fill="#200508" stroke="#ef4444" stroke-width="2.5" />
+        <circle cx="40" cy="38" r="16" fill="#7f1d1d" stroke="#f87171" stroke-width="2" />
+        <path d="M34 26 L46 38 L36 40 L44 52" fill="none" stroke="#fef08a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#fca5a5" letter-spacing="1" text-anchor="middle">XENO-ZIP</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('harvest_mayakovsky')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-mayakovsky" role="img" aria-label="Insigne Unité Mayakovsky">
+        <polygon points="40,8 72,24 72,56 40,72 8,56 8,24" fill="#042f2e" stroke="#14b8a6" stroke-width="2.5" />
+        <circle cx="40" cy="40" r="14" fill="#134e4a" stroke="#2dd4bf" stroke-width="2" />
+        <line x1="40" y1="20" x2="40" y2="60" stroke="#99f6e4" stroke-width="2" />
+        <line x1="20" y1="40" x2="60" y2="40" stroke="#99f6e4" stroke-width="2" />
+        <circle cx="40" cy="40" r="4" fill="#f0fdfa" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="3.6" font-weight="900" fill="#ccfbf1" letter-spacing="1" text-anchor="middle">MAYAKOVSKY</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('himalaya_templar')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-himalayaguards" role="img" aria-label="Insigne Sentinelles Himalayennes">
+        <polygon points="40,6 74,22 66,66 40,76 14,66 6,22" fill="#0c1e33" stroke="#38bdf8" stroke-width="2.5" />
+        <polygon points="40,16 60,54 20,54" fill="#1e3a8a" stroke="#93c5fd" stroke-width="2" />
+        <polygon points="40,28 50,50 30,50" fill="#60a5fa" />
+        <circle cx="40" cy="38" r="4" fill="#ffffff" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="3.8" font-weight="900" fill="#bae6fd" letter-spacing="1" text-anchor="middle">HIMALAYA</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('chokehold_containment')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-chokeholdhazmat" role="img" aria-label="Insigne Hazmat Chokehold">
+        <polygon points="40,6 72,20 72,60 40,74 8,60 8,20" fill="#1e1b4b" stroke="#eab308" stroke-width="2.5" />
+        <circle cx="40" cy="40" r="16" fill="#312e81" stroke="#facc15" stroke-width="2" />
+        <polygon points="40,26 52,48 28,48" fill="#854d0e" stroke="#fef08a" stroke-width="1.8" />
+        <circle cx="40" cy="41" r="3" fill="#ffffff" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="3.8" font-weight="900" fill="#fde047" letter-spacing="1" text-anchor="middle">CHOKEHOLD</text>
+      </svg>
+    `.trim();
+  }
   if (id.startsWith('squad_') && !id.includes('lv742_kainde_amedha')) {
     const cleanTag = id.replace(/^squad_(pred_|alien_|avp_)?/, '').replace(/_/g, ' ').slice(0, 14).toUpperCase();
     const h = Math.abs(hashCode(id));

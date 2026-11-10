@@ -38021,6 +38021,135 @@ class AudioSynthesizer {
     return descriptor;
   }
 
+  playMacheteCarbineBurstFire() {
+    const descriptor = {
+      event: 'machete_carbine_burst_fire',
+      synthesis: 'amazonian_suppressed_ballistic_crack_and_blade_sheen',
+      muzzleCrackHz: 1850,
+      mechanicalSnapHz: 240,
+      durationSeconds: 0.32,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const crackOsc = this.ctx.createOscillator();
+    const crackGain = this.ctx.createGain();
+    crackOsc.type = 'sawtooth';
+    crackOsc.frequency.setValueAtTime(descriptor.muzzleCrackHz, now);
+    crackOsc.frequency.exponentialRampToValueAtTime(110, now + 0.22);
+
+    crackGain.gain.setValueAtTime(0.7, now);
+    crackGain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+    crackOsc.connect(crackGain);
+    crackGain.connect(this.ctx.destination);
+    crackOsc.start(now);
+    crackOsc.stop(now + 0.26);
+
+    const snapOsc = this.ctx.createOscillator();
+    const snapGain = this.ctx.createGain();
+    snapOsc.type = 'triangle';
+    snapOsc.frequency.setValueAtTime(descriptor.mechanicalSnapHz, now + 0.04);
+    snapOsc.frequency.exponentialRampToValueAtTime(45, now + 0.3);
+
+    snapGain.gain.setValueAtTime(0.6, now + 0.04);
+    snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+
+    snapOsc.connect(snapGain);
+    snapGain.connect(this.ctx.destination);
+    snapOsc.start(now + 0.04);
+    snapOsc.stop(now + 0.32);
+
+    return descriptor;
+  }
+
+  playGenocideRedFlamethrowerStream() {
+    const descriptor = {
+      event: 'genocide_red_flamethrower_stream',
+      synthesis: 'high_pressure_polymerized_napalm_roar_and_crackle',
+      combustionRoarHz: 120,
+      hissFlutterHz: 680,
+      durationSeconds: 0.65,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const roarOsc = this.ctx.createOscillator();
+    const roarGain = this.ctx.createGain();
+    roarOsc.type = 'sawtooth';
+    roarOsc.frequency.setValueAtTime(descriptor.combustionRoarHz, now);
+    roarOsc.frequency.exponentialRampToValueAtTime(48, now + 0.58);
+
+    roarGain.gain.setValueAtTime(0.78, now);
+    roarGain.gain.exponentialRampToValueAtTime(0.001, now + 0.62);
+
+    roarOsc.connect(roarGain);
+    roarGain.connect(this.ctx.destination);
+    roarOsc.start(now);
+    roarOsc.stop(now + 0.62);
+
+    const flutterOsc = this.ctx.createOscillator();
+    const flutterGain = this.ctx.createGain();
+    flutterOsc.type = 'triangle';
+    flutterOsc.frequency.setValueAtTime(descriptor.hissFlutterHz, now + 0.02);
+    flutterOsc.frequency.exponentialRampToValueAtTime(140, now + 0.62);
+
+    flutterGain.gain.setValueAtTime(0.55, now + 0.02);
+    flutterGain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+
+    flutterOsc.connect(flutterGain);
+    flutterGain.connect(this.ctx.destination);
+    flutterOsc.start(now + 0.02);
+    flutterOsc.stop(now + 0.65);
+
+    return descriptor;
+  }
+
+  playRiotFoamExpansiveHiss() {
+    const descriptor = {
+      event: 'riot_foam_expansive_hiss',
+      synthesis: 'crosslinking_polymer_decompression_and_splatter',
+      dischargePuffHz: 340,
+      chemicalHissHz: 3100,
+      durationSeconds: 0.42,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const hissOsc = this.ctx.createOscillator();
+    const hissGain = this.ctx.createGain();
+    hissOsc.type = 'sine';
+    hissOsc.frequency.setValueAtTime(descriptor.chemicalHissHz, now);
+    hissOsc.frequency.exponentialRampToValueAtTime(820, now + 0.38);
+
+    hissGain.gain.setValueAtTime(0.62, now);
+    hissGain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+    hissOsc.connect(hissGain);
+    hissGain.connect(this.ctx.destination);
+    hissOsc.start(now);
+    hissOsc.stop(now + 0.4);
+
+    const puffOsc = this.ctx.createOscillator();
+    const puffGain = this.ctx.createGain();
+    puffOsc.type = 'triangle';
+    puffOsc.frequency.setValueAtTime(descriptor.dischargePuffHz, now + 0.03);
+    puffOsc.frequency.exponentialRampToValueAtTime(65, now + 0.39);
+
+    puffGain.gain.setValueAtTime(0.5, now + 0.03);
+    puffGain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+
+    puffOsc.connect(puffGain);
+    puffGain.connect(this.ctx.destination);
+    puffOsc.start(now + 0.03);
+    puffOsc.stop(now + 0.42);
+
+    return descriptor;
+  }
+
 }
 
 export const audioSynth = new AudioSynthesizer();

@@ -3344,6 +3344,24 @@ export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
   wpn_gunnison_swat_tactical_m4a1: makeWeaponBallisticProfile('wpn_gunnison_swat_tactical_m4a1', {
     damage: 38, cooldown: 0.15, rangeM: 55, soundRadiusM: 75, projectileColor: 0xfacc15, archetype: 'swat_tactical_m4a1_carbine', cadence: 'rapid_tactical_burst', damageType: 'ballistic',
   }),
+  wpn_amazon_river_machete_carbine: makeWeaponBallisticProfile('wpn_amazon_river_machete_carbine', {
+    damage: 42, cooldown: 0.18, rangeM: 50, soundRadiusM: 70, projectileColor: 0xeab308, archetype: 'amazon_river_machete_carbine', cadence: 'short_controlled_burst', damageType: 'ballistic',
+  }),
+  wpn_fleener_creek_hunting_shotgun: makeWeaponBallisticProfile('wpn_fleener_creek_hunting_shotgun', {
+    damage: 65, cooldown: 1.25, rangeM: 28, soundRadiusM: 80, projectileColor: 0xf97316, archetype: 'fleener_creek_pump_shotgun', cadence: 'heavy_pellet_spread', damageType: 'ballistic',
+  }),
+  wpn_genocide_red_flamethrower: makeWeaponBallisticProfile('wpn_genocide_red_flamethrower', {
+    damage: 52, cooldown: 0.12, rangeM: 32, soundRadiusM: 65, projectileColor: 0xef4444, archetype: 'charon_m27_pressurized_flamethrower', cadence: 'continuous_incendiary_stream', damageType: 'fire',
+  }),
+  wpn_harvest_cyborg_injection_probe: makeWeaponBallisticProfile('wpn_harvest_cyborg_injection_probe', {
+    damage: 48, cooldown: 0.75, rangeM: 5, soundRadiusM: 20, projectileColor: 0x10b981, archetype: 'mayakovsky_neuro_injection_probe', cadence: 'pneumatic_rapid_thrust', damageType: 'melee',
+  }),
+  wpn_himalaya_highland_scout_rifle: makeWeaponBallisticProfile('wpn_himalaya_highland_scout_rifle', {
+    damage: 72, cooldown: 1.8, rangeM: 85, soundRadiusM: 95, projectileColor: 0x38bdf8, archetype: 'himalayan_highland_scout_rifle', cadence: 'bolt_action_precision_shot', damageType: 'ballistic',
+  }),
+  wpn_chokehold_riot_foam_launcher: makeWeaponBallisticProfile('wpn_chokehold_riot_foam_launcher', {
+    damage: 35, cooldown: 0.5, rangeM: 38, soundRadiusM: 45, projectileColor: 0xfbbf24, archetype: 'chokehold_chemical_foam_launcher', cadence: 'expansive_gel_burst', damageType: 'suppressive',
+  }),
 });
 
 function resolveNpcRoleWeaponId(npcType) {

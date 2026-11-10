@@ -4287,6 +4287,361 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     "heroSquadId": "squad_avp_gunnison_swat_survivors",
     "villainSquadId": null
   }
+,
+  {
+    "id": "map_pred_amazon_dark_river_basin",
+    "name": "Bassin de l'Amazone — Dark River (1996)",
+    "universe": "PREDATOR",
+    "originMedia": "Predator: Dark River (1996)",
+    "sourceType": "COMIC",
+    "releaseYear": 1996,
+    "year": 1992,
+    "biomeId": "jungle",
+    "biome": "TROPICAL_RIVER_BASIN",
+    "recommendedBiomeLabel": "Affluents Sauvages de l'Amazone (1992)",
+    "weather": "Pluies diluviennes de mousson, brume fluviale dense et canopée impénétrable",
+    "lighting": "Lumière diffuse filtrée par les fougères géantes et reflets dorés sur les eaux troubles",
+    "verticality": "ÉLEVÉE (Arbres séculaires reliés par des lianes maîtresses, surplombs boueux et cascades)",
+    "destructibility": "Racines géantes, huttes indigènes en bambou et pontons fluviaux pourris",
+    "interactables": [
+      "Pirogue motorisée échouée pouvant être piégée avec un détonateur thermique",
+      "Végétation urticante pouvant être tranchée pour ralentir une meute de traqueurs",
+      "Affluent rapide permettant une traversée furtive immergée sans détection thermique"
+    ],
+    "environmentSummary": "Vaste delta marécageux et méandres de fleuve où s'affrontent des commandos paramilitaires et un chasseur Yautja vengeur.",
+    "description": "Vaste delta marécageux et méandres de fleuve où s'affrontent des commandos paramilitaires et un chasseur Yautja vengeur.",
+    "tacticalNotes": "L'eau profonde désactive temporairement le camouflage optique. Utilisez les branches horizontales pour contourner les patrouilles en bateau.",
+    "dimensionsM": {
+      "width": 620,
+      "length": 620,
+      "height": 55
+    },
+    "elevationRangeM": [
+      0,
+      55
+    ],
+    "tacticalSectors": [
+      "Delta Principal & Ponton de Débarquement Paramilitaire",
+      "Crique des Marais & Banc de Piranhas Territoriaux",
+      "Campement Secret de John Schaefer dans les Ruines",
+      "Gorge de la Cascade aux Arbres Suspendus"
+    ],
+    "keyLandmarks": [
+      "Hydravion bimoteur écrasé dont l'aile sert de rampe vers la canopée",
+      "Totem de crânes de félins et de soldats érigé par le prédateur de Dark River",
+      "Grotte humide derrière le rideau de la cascade abritant une cache de matériel"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "SWAMP_QUICKSAND",
+        "description": "Zones de boue meuble réduisant drastiquement la vitesse de déplacement"
+      },
+      {
+        "type": "TORRENTIAL_RAIN",
+        "description": "Averses continues dispersant temporairement les fumigènes et traceurs thermiques"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_feral_predator_1719"
+    ],
+    "heroSquadId": "squad_pred_dark_river_military_trackers",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_pred_fleener_creek_sawmill",
+    "name": "Scierie du Comté de Fleener Creek — Kindred (1996)",
+    "universe": "PREDATOR",
+    "originMedia": "Predator: Kindred (1996)",
+    "sourceType": "COMIC",
+    "releaseYear": 1996,
+    "year": 1996,
+    "biomeId": "jungle",
+    "biome": "TEMPERATE_FOREST_SAWMILL",
+    "recommendedBiomeLabel": "Scierie de Fleener Creek (1996)",
+    "weather": "Brouillard froid de pinède, crachin d'automne et odeur de sciure humide",
+    "lighting": "Lampes halogènes de chantier industrielles clignotantes et clairières sombres",
+    "verticality": "MOYENNE (Empilements de grumes colossaux, passerelles de tri et toitures d'entrepôt)",
+    "destructibility": "Piles de planches, hangars en tôle ondulée et tapis roulants de sciage",
+    "interactables": [
+      "Banc de scie circulaire pouvant être activé pour broyer un obstacle ou découper des câbles",
+      "Chariot élévateur de grumes pouvant être percuté pour écraser des assaillants",
+      "Réservoir de carburant diesel pouvant être enflammé par un tir de plasma"
+    ],
+    "environmentSummary": "Scierie industrielle isolée au milieu des forêts d'épicéas du nord-ouest où rôdent les adjoints du shérif et un prédateur silencieux.",
+    "description": "Scierie industrielle isolée au milieu des forêts d'épicéas du nord-ouest où rôdent les adjoints du shérif et un prédateur silencieux.",
+    "tacticalNotes": "Les piles de bois offrent une couverture dense mais destructible aux armes lourdes. Tendez des embuscades depuis les toits métalliques.",
+    "dimensionsM": {
+      "width": 570,
+      "length": 570,
+      "height": 40
+    },
+    "elevationRangeM": [
+      0,
+      40
+    ],
+    "tacticalSectors": [
+      "Bâtiment Principal de Sciage & Rails de Chariot",
+      "Parc à Grumes Extérieur & Tranchées d'Écoulement",
+      "Poste de Pesée & Bureau du Contremaître Barricadé",
+      "Lisière de la Forêt de Pins aux Arbres Centenaires"
+    ],
+    "keyLandmarks": [
+      "Scie à ruban géante stationnaire au moteur diesel encore chaud",
+      "Pick-up de police du shérif de Fleener Creek aux portières criblées de plombs",
+      "Tas de grumes effondré formant un labyrinthe de troncs sciés"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "WOOD_DUST_EXPLOSION",
+        "description": "Poussière de bois en suspension pouvant s'enflammer sous un tir thermique"
+      },
+      {
+        "type": "LOG_COLLAPSE",
+        "description": "Grumes instables pouvant rouler et écraser quiconque brise leurs cales"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_young_blood_initiate"
+    ],
+    "heroSquadId": "squad_pred_fleener_creek_deputies",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_alien_genocide_charon_hives",
+    "name": "Champ de Guerre des Ruches de Charon — Aliens: Genocide (1991)",
+    "universe": "ALIEN",
+    "originMedia": "Aliens: Genocide (1991)",
+    "sourceType": "COMIC",
+    "releaseYear": 1991,
+    "year": 2190,
+    "biomeId": "hive_lv426",
+    "biome": "XENO_HOMEWORLD_WARZONE",
+    "recommendedBiomeLabel": "Mégalopole de Ruches Rouges et Noires (2190)",
+    "weather": "Pluie d'acide corrosif, nuages de spores toxiques et vapeurs biochimiques écarlates",
+    "lighting": "Bioluminescence pulsatile rouge et vert acide, lueurs de poches de plasma organique",
+    "verticality": "TRÈS ÉLEVÉE (Tours de résine cyclopéennes, arches osseuses et fosses de ponte profondes)",
+    "destructibility": "Piliers de chitine calcinée, cocons desséchés et membranes cellulaires étirées",
+    "interactables": [
+      "Poche de gelée royale Xeno-Zip pouvant être prélevée pour doper temporairement les réflexes",
+      "Pylône de sécrétion acide pouvant être percuté pour arroser une vaste zone",
+      "Œufs rouges instables pouvant être déclenchés à distance pour piéger les patrouilles"
+    ],
+    "environmentSummary": "Le monde natal des Xénomorphes déchiré par la guerre fratricide entre la caste noire classique et les mutants rouges sanguinaires.",
+    "description": "Le monde natal des Xénomorphes déchiré par la guerre fratricide entre la caste noire classique et les mutants rouges sanguinaires.",
+    "tacticalNotes": "L'air acide érode progressivement les protections. Privilégiez les frappes à distance et les arcs de plasma pour vaporiser les nids rouges.",
+    "dimensionsM": {
+      "width": 640,
+      "length": 640,
+      "height": 65
+    },
+    "elevationRangeM": [
+      0,
+      65
+    ],
+    "tacticalSectors": [
+      "Frontière des Deux Ruches & Mur de Résine Écarlate",
+      "Fosse Royale de la Matriarche Rouge Dissidente",
+      "Pylônes d'Incubation des Drones Noirs Défenseurs",
+      "Cratère de Forage d'Extraction de Xeno-Zip Humain"
+    ],
+    "keyLandmarks": [
+      "Tour de ponte colossale torsadée haute de cinquante mètres suintant d'hémolymphe",
+      "Épave de module de transport colonial détruit à demi digéré par la résine",
+      "Autel de la Reine Rouge orné de crânes de guerriers xénomorphes noirs brisés"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "CORROSIVE_ATMOSPHERE",
+        "description": "Miasmes acides causant de légers dégâts périodiques continus"
+      },
+      {
+        "type": "SWARMING_LARVAE",
+        "description": "Nids de larves rampantes explosant en projections caustiques"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_xeno_warrior"
+    ],
+    "heroSquadId": "squad_alien_genocide_xeno_zip_raiders",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_alien_harvest_mayakovsky_station",
+    "name": "Laboratoire Orbital Mayakovsky — Aliens: Harvest (1992)",
+    "universe": "ALIEN",
+    "originMedia": "Aliens: Harvest (1992)",
+    "sourceType": "COMIC",
+    "releaseYear": 1992,
+    "year": 2194,
+    "biomeId": "stargazer_blacksite",
+    "biome": "BIO_CYBERNETIC_STATION",
+    "recommendedBiomeLabel": "Station Orbitale Mayakovsky (2194)",
+    "weather": "Micro-gravité résiduelle, ventilation bourdonnante et atmosphère stérile saturée d'éther",
+    "lighting": "Néons spectraux vert pistache, écrans holographiques de neuro-monitoring et pénombre",
+    "verticality": "ÉLEVÉE (Conduits d'extraction de gelée royale, cuves suspendues et passerelles de verre)",
+    "destructibility": "Consoles de contrôle cybernétiques, câblages neuraux et cuves d'immersion",
+    "interactables": [
+      "Terminal cybernétique de Norbert permettant de déclencher un signal leurre attirant les xénos",
+      "Injecteur de fluide neuro-inhibiteur permettant d'affaiblir les proies proches",
+      "Sas étanche de laboratoire pouvant être dépressurisé pour éjecter une menace"
+    ],
+    "environmentSummary": "Station orbitale clandestine où le Dr Stanislaw Mayakovsky manipule des cyborgs biomécaniques pour récolter la gelée royale de la reine.",
+    "description": "Station orbitale clandestine où le Dr Stanislaw Mayakovsky manipule des cyborgs biomécaniques pour récolter la gelée royale de la reine.",
+    "tacticalNotes": "Les couloirs étroits favorisent les embuscades au combi-stick. Attention aux androïdes de maintenance armés de sondes chirurgicales.",
+    "dimensionsM": {
+      "width": 590,
+      "length": 590,
+      "height": 42
+    },
+    "elevationRangeM": [
+      0,
+      42
+    ],
+    "tacticalSectors": [
+      "Laboratoire de Cyber-Synthèse du Drone Norbert",
+      "Chambre d'Extraction de Gelée Royale de la Reine",
+      "Salle de Télémétrie Cérébrale & Banques de Données",
+      "Soute de Fret & Quai d'Amarrage du Cargo Infiltré"
+    ],
+    "keyLandmarks": [
+      "Châssis désossé du drone biomécanique Norbert sur son portique de maintenance",
+      "Cuve monumentale en verre blindé contenant de la gelée royale ambrée luminescente",
+      "Fauteuil chirurgical automatisé couvert d'électrodes et d'aiguilles de ponction"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "NEURO_TOXIC_VAPOR",
+        "description": "Fuites d'anesthésique réduisant temporairement la vitesse de réaction"
+      },
+      {
+        "type": "ELECTRIC_DISCHARGE",
+        "description": "Câbles à haute tension rompus délivrant des arcs paralysants au contact"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_weyland_combat_android"
+    ],
+    "heroSquadId": "squad_alien_harvest_mayakovsky_androids",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_avp_himalaya_monastery_ruins",
+    "name": "Pyramide Glacée du Monastère — AVP: Thrill of the Hunt (2004)",
+    "universe": "AVP",
+    "originMedia": "Aliens vs. Predator: Thrill of the Hunt (2004)",
+    "sourceType": "COMIC",
+    "releaseYear": 2004,
+    "year": 2004,
+    "biomeId": "bouvetoya_pyramid",
+    "biome": "ALPINE_GLACIER_TEMPLE",
+    "recommendedBiomeLabel": "Sanctuaire Himalayen sous le Blizzard (2004)",
+    "weather": "Blizzard himalayen aveuglant, tempête de neige sub-zéro et vent tourbillonnant",
+    "lighting": "Lanternes de beurre de yak vacillantes, crevasses de glace bleutées et torches plasma",
+    "verticality": "TRÈS ÉLEVÉE (Falaise à pic, marches millénaires taillées dans la glace vive et stupas)",
+    "destructibility": "Ponts de cordes himalayens, parois de séracs instables et bannières de prière",
+    "interactables": [
+      "Cloche de temple géante pouvant être frappée pour désorienter l'ouïe des proies et xénomorphes",
+      "Paroi de sérac pouvant être décrochée au canon plasma pour ensevelir une escouade",
+      "Brazier sacré de genévrier délivrant une fumée dense masquant le profil thermique"
+    ],
+    "environmentSummary": "Monastère tibétain millénaire perché au sommet de l'Himalaya recouvrant l'entrée d'une pyramide rituelle Yautja gelée.",
+    "description": "Monastère tibétain millénaire perché au sommet de l'Himalaya recouvrant l'entrée d'une pyramide rituelle Yautja gelée.",
+    "tacticalNotes": "Le blizzard glacial réduit l'acuité visuelle et les portées de tir. Utilisez les corniches escarpées pour des assassinats verticaux.",
+    "dimensionsM": {
+      "width": 600,
+      "length": 600,
+      "height": 80
+    },
+    "elevationRangeM": [
+      0,
+      80
+    ],
+    "tacticalSectors": [
+      "Cour Supérieure du Monastère & Stupas de Prière",
+      "Entrée de la Crypte Pyramidale sous le Glacier",
+      "Arête Rocheuse des Guetteurs Face au Précipice",
+      "Nécropole des Moines & Salle des Fresques Sacrées"
+    ],
+    "keyLandmarks": [
+      "Statue de Bouddha colossale taillée dans le roc recouvrant un bas-relief Yautja millénaire",
+      "Portail d'obsidienne scellé marqué des glyphes des trois masques d'initiation",
+      "Pont suspendu vertigineux au-dessus d'un gouffre sans fond battu par le blizzard"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "AVALANCHE_TRIGGER",
+        "description": "Vibrations sonores fortes risquant de déclencher des coulées de neige"
+      },
+      {
+        "type": "HYPOTHERMIC_FREEZE",
+        "description": "Froid polaire drainant lentement l'endurance de sprint hors abri"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_colonial_marine_heavy"
+    ],
+    "heroSquadId": "squad_avp_himalaya_templar_guards",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_avp_chokehold_deep_quarantine",
+    "name": "Complexe de Quarantaine Orbitale — AVP: Chokehold (2009)",
+    "universe": "AVP",
+    "originMedia": "Aliens vs. Predator: Chokehold (2009)",
+    "sourceType": "COMIC",
+    "releaseYear": 2009,
+    "year": 2198,
+    "biomeId": "stargazer_blacksite",
+    "biome": "ORBITAL_QUARANTINE_COMPLEX",
+    "recommendedBiomeLabel": "Zone de Confinement Hermétique (2198)",
+    "weather": "Dépression atmosphérique contrôlée, alarmes de quarantaine biochimique et gaz extincteur",
+    "lighting": "Éclairage d'urgence stroboscopique ambré, filtres UV stérilisants et couloirs pressurisés",
+    "verticality": "MOYENNE (Niveaux de décontamination étagés, cages d'ascenseur scellées et sas de vide)",
+    "destructibility": "Portes blindées hermétiques, cloisons en plexiglas renforcé et brumisateurs muraux",
+    "interactables": [
+      "Vanne d'asphyxie permettant de vider l'air d'une coursive pour étouffer les ennemis",
+      "Diffuseur de mousse anti-émeute bloquant temporairement les accès d'un couloir",
+      "Injecteur mural de décontaminant acide neutralisant les mares caustiques au sol"
+    ],
+    "environmentSummary": "Station orbitale hermétiquement verrouillée par un protocole Chokehold pour asphyxier une rupture de ruche avec ses occupants.",
+    "description": "Station orbitale hermétiquement verrouillée par un protocole Chokehold pour asphyxier une rupture de ruche avec ses occupants.",
+    "tacticalNotes": "Chaque sas fermé est un piège mortel. Utilisez les conduits d'aération supérieurs pour franchir les barrages de mousse anti-émeute.",
+    "dimensionsM": {
+      "width": 560,
+      "length": 560,
+      "height": 36
+    },
+    "elevationRangeM": [
+      0,
+      36
+    ],
+    "tacticalSectors": [
+      "Sas de Décontamination Alpha & Portes Hermétiques",
+      "Niveau Médical Haute Sécurité & Cuves de Quarantaine",
+      "Poste de Commande des Fluides & Vannes d'Asphyxie",
+      "Quai d'Évacuation d'Urgence aux Capsules Sabotées"
+    ],
+    "keyLandmarks": [
+      "Sas de décompression central avec baie vitrée ouverte sur le vide sidéral",
+      "Console maîtresse de quarantaine clignotant un compte à rebours d'autodestruction",
+      "Barricade de fortune formée de conteneurs pressurisés marquée du sigle Hazmat"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "OXYGEN_DEPLETION",
+        "description": "Secteurs sans oxygène drainant la réserve respiratoire de bio-masque"
+      },
+      {
+        "type": "CHEMICAL_PURGE_GAS",
+        "description": "Brumisations de gaz neutralisant infligeant des brûlures pulmonaires"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_weyland_combat_android"
+    ],
+    "heroSquadId": "squad_avp_chokehold_containment_hazmat",
+    "villainSquadId": null
+  }
 ]);
 
 // =========================================================================
@@ -6397,6 +6752,91 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     "wieldedBy": "Officiers du SWAT du comté de Gunnison retranchés dans l'hôpital",
     "yautjaCounterplay": "Attaque plongeante depuis les hauteurs et dispersion au rugissement intimidant.",
     "description": "Carabine d'assaut standard de la police d'intervention équipée d'un désignateur tactique pour le combat en milieu hospitalier confiné."
+  }
+,
+  {
+    "id": "wpn_amazon_river_machete_carbine",
+    "name": "Carabine Fluviale à Baïonnette Machette Dark River",
+    "universe": "PREDATOR",
+    "faction": "Paramilitary Jungle Trackers",
+    "originMedia": "Predator: Dark River (1996)",
+    "caliber": "7.62x39mm Perforant & Lame Machette de Jungle 45cm",
+    "damageType": "BALLISTIC_HEAVY_PIERCING",
+    "effectiveRangeMeters": 50,
+    "rateOfFire": "Rafales courtes précises (650 coups/min)",
+    "wieldedBy": "Pisteurs paramilitaires du bassin amazonien",
+    "yautjaCounterplay": "Esquive aérienne dans la canopée et tir de canon à plasma par le dessus.",
+    "description": "Carabine robuste couplée à une lourde machette forgée pour tailler la végétation amazonienne et perforer les cuirs épais au corps-à-corps."
+  },
+  {
+    "id": "wpn_fleener_creek_hunting_shotgun",
+    "name": "Fusil de Chasse Calibre 12 Remington 870 Fleener Creek",
+    "universe": "PREDATOR",
+    "faction": "Local Law Enforcement & Hunters",
+    "originMedia": "Predator: Kindred (1996)",
+    "caliber": "Calibre 12 Magnum Brenneke & Grenailles de Plomb 00-Buck",
+    "damageType": "BALLISTIC_HEAVY_KINETIC",
+    "effectiveRangeMeters": 28,
+    "rateOfFire": "Réarmement à pompe manuel (45 coups/min)",
+    "wieldedBy": "Adjoints du shérif et chasseurs du comté de Fleener Creek",
+    "yautjaCounterplay": "Déploiement du bouclier thermique ou interception au smart disc à mi-distance.",
+    "description": "Fusil à pompe américain à forte puissance d'arrêt projetant des balles de plomb lourd capables de repousser net un assaillant au contact."
+  },
+  {
+    "id": "wpn_genocide_red_flamethrower",
+    "name": "Lance-Flammes Industriel Haute Pression Charon M-27",
+    "universe": "ALIEN",
+    "faction": "Corporate Xeno-Zip Mercenaries",
+    "originMedia": "Aliens: Genocide (1991)",
+    "caliber": "Gel napalm polymérisé sous pression 400 bar & allumage thermique",
+    "damageType": "THERMAL_INCENDIARY_STREAM",
+    "effectiveRangeMeters": 32,
+    "rateOfFire": "Jet continu de nappe enflammée (autonomie 18 secondes)",
+    "wieldedBy": "Pillards mercenaires spécialisés dans la récolte de Xeno-Zip",
+    "yautjaCounterplay": "Refroidissement d'armure et tirs plasma rapides à longue distance.",
+    "description": "Lance-flammes militaire surpuissant conçu pour brûler la chitine ultra-résistante des xénomorphes rouges et calciner les nids de résine."
+  },
+  {
+    "id": "wpn_harvest_cyborg_injection_probe",
+    "name": "Sonde de Prélèvement Cyber-Neural Mayakovsky",
+    "universe": "ALIEN",
+    "faction": "Mayakovsky Cybernetics Detachment",
+    "originMedia": "Aliens: Harvest (1992)",
+    "caliber": "Aiguille pneumatique titane & seringue de neurotoxine paralysante",
+    "damageType": "MELEE_NEURO_PARALYSIS",
+    "effectiveRangeMeters": 4.5,
+    "rateOfFire": "Estocs pneumatiques cadencés (80 coups/min)",
+    "wieldedBy": "Androïdes de sécurité et techniciens cybernétiques du Dr Mayakovsky",
+    "yautjaCounterplay": "Section de la sonde au combi-stick et contre-attaque au canon d'épaule.",
+    "description": "Outil chirurgical converti en arme de corps-à-corps capable d'injecter une neurotoxine foudroyante paralysant les synapses nerveuses en quelques secondes."
+  },
+  {
+    "id": "wpn_himalaya_highland_scout_rifle",
+    "name": "Carabine de Précision de Haute Altitude Steyr Scout Himalaya",
+    "universe": "AVP",
+    "faction": "Himalayan Expedition Guards",
+    "originMedia": "Aliens vs. Predator: Thrill of the Hunt (2004)",
+    "caliber": ".308 Winchester Munitions Givreplace & Lunette Thermique 12x",
+    "damageType": "BALLISTIC_SNIPER_ARMOR_PIERCING",
+    "effectiveRangeMeters": 85,
+    "rateOfFire": "Tir au verrou de haute précision (25 coups/min)",
+    "wieldedBy": "Sentinelles d'altitude gardant les sanctuaires bouddhistes secrets",
+    "yautjaCounterplay": "Camouflage optique sous le blizzard et traque furtive par les corniches.",
+    "description": "Carabine compacte à verrou adaptée aux conditions climatiques polaires garantissant une précision chirurgicale à travers le blizzard le plus épais."
+  },
+  {
+    "id": "wpn_chokehold_riot_foam_launcher",
+    "name": "Lanceur de Mousse de Confinement Chokehold Chem-Sec",
+    "universe": "AVP",
+    "faction": "Orbital Quarantine Hazmat Unit",
+    "originMedia": "Aliens vs. Predator: Chokehold (2009)",
+    "caliber": "Polymère réticulant expansif sous pression 250 bar & canisters cryo",
+    "damageType": "DISRUPTION_ENTANGLING_FOAM",
+    "effectiveRangeMeters": 38,
+    "rateOfFire": "Projette des salves de gel visqueux polymérisant (120 salves/min)",
+    "wieldedBy": "Opérateurs de confinement biologique en combinaison Hazmat",
+    "yautjaCounterplay": "Dissolution thermique au canon à plasma et tranchant moléculaire des lames.",
+    "description": "Arme de neutralisation non-létale projetant une mousse chimique expansive durcissant en quelques fractions de seconde pour paralyser net les bio-menaces."
   }
 ]);
 

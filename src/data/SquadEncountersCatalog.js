@@ -5431,6 +5431,337 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       }
     ]
   }
+,
+  {
+    "id": "squad_pred_dark_river_military_trackers",
+    "name": "Pisteurs Militaires du Rio Negro — Dark River (1996)",
+    "universe": "PREDATOR",
+    "shortName": "Pisteurs Dark River (3 Soldats)",
+    "category": "PARAMILITARY_INSURGENTS",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Predator: Dark River (1996)",
+    "biomeId": "jungle",
+    "recommendedBiomeLabel": "Affluents Sauvages de l'Amazone (1992)",
+    "primaryMapId": "map_pred_amazon_dark_river_basin",
+    "weaponLoadout": [
+      "wpn_amazon_river_machete_carbine"
+    ],
+    "description": "Vétérans des forces spéciales et mercenaires endurcis traquant les traces de sang bioluminescent le long des berges du fleuve.",
+    "tactics": "Formation en flèche le long des berges, tirs de suppression au travers de la mangrove et assauts foudroyants à la baïonnette-machette.",
+    "totalHonorReward": 7600,
+    "soloVariantId": "prey_feral_predator_1719",
+    "members": [
+      {
+        "id": "sergeant_mendez_darkriver",
+        "name": "Sergent Chef Mendez",
+        "role": "Chef de Traque Amazonienne",
+        "weapon": "Carabine Fluviale Dark River & Lame Machette",
+        "weaponId": "wpn_amazon_river_machete_carbine",
+        "vitalityRatio": 1.5,
+        "hp": 850,
+        "armor": 70,
+        "trophy": "Machette de Combat Ébréchée Gravée de Runes Tribales"
+      },
+      {
+        "id": "tracker_da_silva",
+        "name": "Éclaireur Da Silva",
+        "role": "Pisteur de Marais & Tireur d'Appui",
+        "weapon": "Carabine Fluviale Dark River & Fumigènes",
+        "weaponId": "wpn_amazon_river_machete_carbine",
+        "vitalityRatio": 1.4,
+        "hp": 790,
+        "armor": 65,
+        "trophy": "Collier de Cartouches de 7.62mm Trempé de Boue"
+      },
+      {
+        "id": "scout_castillo",
+        "name": "Voltigeur Castillo",
+        "role": "Guetteur Fluvial Léger",
+        "weapon": "Carabine Fluviale Dark River & Dague de Poing",
+        "weaponId": "wpn_amazon_river_machete_carbine",
+        "vitalityRatio": 1.35,
+        "hp": 740,
+        "armor": 60,
+        "trophy": "Gilet Tactique Camouflage Camo-Jungle Déchiré de Griffures"
+      }
+    ]
+  },
+  {
+    "id": "squad_pred_fleener_creek_deputies",
+    "name": "Adjoints du Shérif de Fleener Creek — Kindred (1996)",
+    "universe": "PREDATOR",
+    "shortName": "Adjoints Fleener Creek (3 Hommes)",
+    "category": "LAW_ENFORCEMENT",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Predator: Kindred (1996)",
+    "biomeId": "jungle",
+    "recommendedBiomeLabel": "Scierie de Fleener Creek (1996)",
+    "primaryMapId": "map_pred_fleener_creek_sawmill",
+    "weaponLoadout": [
+      "wpn_fleener_creek_hunting_shotgun"
+    ],
+    "description": "Adjoints du shérif locaux et trappeurs de l'Oregon déployés dans la scierie brumeuse pour neutraliser un tueur d'une férocité surhumaine.",
+    "tactics": "Tirs de barrage au fusil à pompe de calibre 12, éclairage aux phares halogènes de patrouille et replis coordonnés entre les piles de bois.",
+    "totalHonorReward": 7400,
+    "soloVariantId": "prey_young_blood_initiate",
+    "members": [
+      {
+        "id": "deputy_bob_fleener",
+        "name": "Adjoint Principal Bob Mathis",
+        "role": "Commandant de la Battue",
+        "weapon": "Remington 870 Calibre 12 & Brenneke Lourd",
+        "weaponId": "wpn_fleener_creek_hunting_shotgun",
+        "vitalityRatio": 1.45,
+        "hp": 830,
+        "armor": 65,
+        "trophy": "Étoile à Cinq Branches d'Adjoint du Shérif Ensanglantée"
+      },
+      {
+        "id": "deputy_cole_fleener",
+        "name": "Adjoint Cole Harper",
+        "role": "Tireur de Battue Tactique",
+        "weapon": "Remington 870 Calibre 12 & Cartouches 00-Buck",
+        "weaponId": "wpn_fleener_creek_hunting_shotgun",
+        "vitalityRatio": 1.4,
+        "hp": 770,
+        "armor": 60,
+        "trophy": "Veste de Chasse en Flanelle aux Épaules Lacérées"
+      },
+      {
+        "id": "trapper_hank_fleener",
+        "name": "Trappeur Hank Vance",
+        "role": "Guide Forestier des Résineux",
+        "weapon": "Remington 870 Calibre 12 & Pièges à Mâchoires",
+        "weaponId": "wpn_fleener_creek_hunting_shotgun",
+        "vitalityRatio": 1.35,
+        "hp": 750,
+        "armor": 55,
+        "trophy": "Ceinture Cartouchière de Calibre 12 en Cuir Huilé"
+      }
+    ]
+  },
+  {
+    "id": "squad_alien_genocide_xeno_zip_raiders",
+    "name": "Pillards de Gelée Royale Xeno-Zip — Genocide (1991)",
+    "universe": "ALIEN",
+    "shortName": "Pillards Xeno-Zip (3 Mercenaires)",
+    "category": "CORPORATE_MERCENARIES",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens: Genocide (1991)",
+    "biomeId": "hive_lv426",
+    "recommendedBiomeLabel": "Mégalopole de Ruches Rouges et Noires (2190)",
+    "primaryMapId": "map_alien_genocide_charon_hives",
+    "weaponLoadout": [
+      "wpn_genocide_red_flamethrower"
+    ],
+    "description": "Mercenaires surarmés employés par les cartels de la drogue pour récolter la gelée royale au cœur de la guerre fratricide des ruches.",
+    "tactics": "Torrents de napalm sous pression pour calciner la chitine rouge, formation serrée en tortue ignifugée et sécurisation des poches de ponte.",
+    "totalHonorReward": 7800,
+    "soloVariantId": "prey_xeno_warrior",
+    "members": [
+      {
+        "id": "captain_daniels_genocide",
+        "name": "Capitaine Daniels",
+        "role": "Chef de Récolte Charon M-27",
+        "weapon": "Lance-Flammes Industriel M-27 & Pistolet Flare",
+        "weaponId": "wpn_genocide_red_flamethrower",
+        "vitalityRatio": 1.5,
+        "hp": 880,
+        "armor": 80,
+        "trophy": "Doseur Pneumatique d'Extraction Xeno-Zip en Titane"
+      },
+      {
+        "id": "burner_vance_genocide",
+        "name": "Artificier Vance",
+        "role": "Spécialiste de Calcination de Ruche",
+        "weapon": "Lance-Flammes Industriel M-27 & Bombonnes Napalm",
+        "weaponId": "wpn_genocide_red_flamethrower",
+        "vitalityRatio": 1.45,
+        "hp": 810,
+        "armor": 75,
+        "trophy": "Buse de Lance-Flammes Réticulée Calcinée par l'Acide"
+      },
+      {
+        "id": "extractor_reyes_genocide",
+        "name": "Opératrice Reyes",
+        "role": "Préleveuse de Gelée Royale",
+        "weapon": "Lance-Flammes Industriel M-27 & Cryo-Sonde",
+        "weaponId": "wpn_genocide_red_flamethrower",
+        "vitalityRatio": 1.4,
+        "hp": 760,
+        "armor": 70,
+        "trophy": "Fiole Scellée de Gelée Royale Écarlate Cristallisée"
+      }
+    ]
+  },
+  {
+    "id": "squad_alien_harvest_mayakovsky_androids",
+    "name": "Unité Cyber-Médicale Mayakovsky — Harvest (1992)",
+    "universe": "ALIEN",
+    "shortName": "Cyber-Unité Mayakovsky (3 Synthétiques)",
+    "category": "SYNTHETIC_INFILTRATORS",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens: Harvest (1992)",
+    "biomeId": "stargazer_blacksite",
+    "recommendedBiomeLabel": "Station Orbitale Mayakovsky (2194)",
+    "primaryMapId": "map_alien_harvest_mayakovsky_station",
+    "weaponLoadout": [
+      "wpn_harvest_cyborg_injection_probe"
+    ],
+    "description": "Synthétiques et cyborgs de laboratoire programmés par le Dr Mayakovsky pour effectuer des biopsies chirurgicales sur les xénomorphes vivants.",
+    "tactics": "Approche silencieuse sans pouls thermique, synchronisation neuronale de groupe et estocs précis visant les ganglions nerveux.",
+    "totalHonorReward": 7700,
+    "soloVariantId": "prey_weyland_combat_android",
+    "members": [
+      {
+        "id": "synth_norbert_prime",
+        "name": "Châssis Biomécanique Norbert-Proto",
+        "role": "Superviseur Chirurgical Neural",
+        "weapon": "Sonde de Prélèvement Cyber-Neural & Électrodes",
+        "weaponId": "wpn_harvest_cyborg_injection_probe",
+        "vitalityRatio": 1.55,
+        "hp": 910,
+        "armor": 85,
+        "trophy": "Unité Centrale Optique Cybernétique du Prototype Norbert"
+      },
+      {
+        "id": "synth_doc_02",
+        "name": "Unité Androïde Médicale M-02",
+        "role": "Injecteur de Neurotoxine Paralysante",
+        "weapon": "Sonde de Prélèvement Cyber-Neural & Seringues Titane",
+        "weaponId": "wpn_harvest_cyborg_injection_probe",
+        "vitalityRatio": 1.4,
+        "hp": 820,
+        "armor": 75,
+        "trophy": "Seringue Haute Pression Pneumatique en Acier Chirurgical"
+      },
+      {
+        "id": "synth_doc_03",
+        "name": "Unité Androïde Médicale M-03",
+        "role": "Stabilisateur de Champ Stérilisant",
+        "weapon": "Sonde de Prélèvement Cyber-Neural & Bistouri Statique",
+        "weaponId": "wpn_harvest_cyborg_injection_probe",
+        "vitalityRatio": 1.35,
+        "hp": 780,
+        "armor": 70,
+        "trophy": "Puce de Synchronisation Synaptique Mayakovsky Cybernetics"
+      }
+    ]
+  },
+  {
+    "id": "squad_avp_himalaya_templar_guards",
+    "name": "Gardes du Sanctuaire Himalayen — Thrill of the Hunt (2004)",
+    "universe": "AVP",
+    "shortName": "Sentinelles Himalayennes (3 Tireurs)",
+    "category": "COLONIAL_EXPEDITION",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens vs. Predator: Thrill of the Hunt (2004)",
+    "biomeId": "bouvetoya_pyramid",
+    "recommendedBiomeLabel": "Sanctuaire Himalayen sous le Blizzard (2004)",
+    "primaryMapId": "map_avp_himalaya_monastery_ruins",
+    "weaponLoadout": [
+      "wpn_himalaya_highland_scout_rifle"
+    ],
+    "description": "Sentinelles d'élite en treillis polaire postées au sommet des pics tibétains pour interdire l'accès au monastère renfermant la pyramide.",
+    "tactics": "Tirs de précision croisés depuis les corniches enneigées, surveillance infrarouge sous le blizzard et mines givrantes de détection.",
+    "totalHonorReward": 7600,
+    "soloVariantId": "prey_colonial_marine_heavy",
+    "members": [
+      {
+        "id": "sniper_tsering_himalaya",
+        "name": "Capitaine Tsering Dorje",
+        "role": "Maître Tireur des Glaciers",
+        "weapon": "Carabine Steyr Scout Himalaya .308 & Lunette Thermique",
+        "weaponId": "wpn_himalaya_highland_scout_rifle",
+        "vitalityRatio": 1.5,
+        "hp": 840,
+        "armor": 70,
+        "trophy": "Lunette Thermique Steyr Givrée Couverte de Glyphes Moines"
+      },
+      {
+        "id": "spotter_khorlo_himalaya",
+        "name": "Guetteur Khorlo",
+        "role": "Observateur & Télémétreur de Blizzard",
+        "weapon": "Carabine Steyr Scout Himalaya .308 & Télémètre Laser",
+        "weaponId": "wpn_himalaya_highland_scout_rifle",
+        "vitalityRatio": 1.4,
+        "hp": 780,
+        "armor": 65,
+        "trophy": "Piolet d'Alpinisme Tactique en Titane Trempé dans le Givre"
+      },
+      {
+        "id": "sentinel_sonam_himalaya",
+        "name": "Sentinelle Sonam",
+        "role": "Fusilier d'Arête Rocheuse",
+        "weapon": "Carabine Steyr Scout Himalaya .308 & Grenades Cryo",
+        "weaponId": "wpn_himalaya_highland_scout_rifle",
+        "vitalityRatio": 1.35,
+        "hp": 750,
+        "armor": 60,
+        "trophy": "Masque à Oxygène Polaire Camouflage Neige Déchiré"
+      }
+    ]
+  },
+  {
+    "id": "squad_avp_chokehold_containment_hazmat",
+    "name": "Équipe de Quarantaine Hazmat — Chokehold (2009)",
+    "universe": "AVP",
+    "shortName": "Hazmat Chokehold (3 Opérateurs)",
+    "category": "HAZMAT_CONTAINMENT",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens vs. Predator: Chokehold (2009)",
+    "biomeId": "stargazer_blacksite",
+    "recommendedBiomeLabel": "Zone de Confinement Hermétique (2198)",
+    "primaryMapId": "map_avp_chokehold_deep_quarantine",
+    "weaponLoadout": [
+      "wpn_chokehold_riot_foam_launcher"
+    ],
+    "description": "Opérateurs de confinement biologique en combinaison pressurisée déployés pour sceller définitivement les sas d'une éclosion extraterrestre.",
+    "tactics": "Inondation des couloirs de mousse polymérisante, tirs de harcèlement pour bloquer les sorties et verrouillage progressif des portes étanches.",
+    "totalHonorReward": 7500,
+    "soloVariantId": "prey_weyland_combat_android",
+    "members": [
+      {
+        "id": "chief_ross_hazmat",
+        "name": "Contremaître de Sécurité Ross",
+        "role": "Officier de Confinement Chimique",
+        "weapon": "Lanceur de Mousse de Confinement Chokehold & Taser Lourd",
+        "weaponId": "wpn_chokehold_riot_foam_launcher",
+        "vitalityRatio": 1.5,
+        "hp": 860,
+        "armor": 75,
+        "trophy": "Insigne de Sas de Décontamination Haute Pression Déformé"
+      },
+      {
+        "id": "operator_keller_hazmat",
+        "name": "Opérateur Keller",
+        "role": "Projecteur de Polymère Réticulant",
+        "weapon": "Lanceur de Mousse de Confinement Chokehold & Canisters Cryo",
+        "weaponId": "wpn_chokehold_riot_foam_launcher",
+        "vitalityRatio": 1.4,
+        "hp": 790,
+        "armor": 70,
+        "trophy": "Manomètre de Pression Chimique Éclaté sous l'Acide"
+      },
+      {
+        "id": "operator_sinclair_hazmat",
+        "name": "Opérateur Sinclair",
+        "role": "Verrouilleur de Sas Hermétiques",
+        "weapon": "Lanceur de Mousse de Confinement Chokehold & Chalumeau Plasma",
+        "weaponId": "wpn_chokehold_riot_foam_launcher",
+        "vitalityRatio": 1.35,
+        "hp": 740,
+        "armor": 65,
+        "trophy": "Gant Hazmat Renforcé en Caoutchouc Synthétique Plombé"
+      }
+    ]
+  }
 ]);
 
 export function getSquadById(squadId) {

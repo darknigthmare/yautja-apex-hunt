@@ -1282,3 +1282,89 @@ test('AudioSynthesizer procedural Vague 18 SFX methods execute safely in headles
   assert.ok(particle.durationSeconds > 0);
   assert.equal(particle.played, false);
 });
+
+test('Vague 19 canonical NPC weapons resolve to rich ballistic and acoustic profiles', () => {
+  const vague19Weapons = [
+    {
+      id: 'wpn_amazon_river_machete_carbine',
+      archetype: 'amazon_river_machete_carbine',
+      damage: 42,
+      rangeM: 50,
+      soundRadiusM: 70,
+      projectileColor: 0xeab308,
+    },
+    {
+      id: 'wpn_fleener_creek_hunting_shotgun',
+      archetype: 'fleener_creek_pump_shotgun',
+      damage: 65,
+      rangeM: 28,
+      soundRadiusM: 80,
+      projectileColor: 0xf97316,
+    },
+    {
+      id: 'wpn_genocide_red_flamethrower',
+      archetype: 'charon_m27_pressurized_flamethrower',
+      damage: 52,
+      rangeM: 32,
+      soundRadiusM: 65,
+      projectileColor: 0xef4444,
+    },
+    {
+      id: 'wpn_harvest_cyborg_injection_probe',
+      archetype: 'mayakovsky_neuro_injection_probe',
+      damage: 48,
+      rangeM: 5,
+      soundRadiusM: 20,
+      projectileColor: 0x10b981,
+    },
+    {
+      id: 'wpn_himalaya_highland_scout_rifle',
+      archetype: 'himalayan_highland_scout_rifle',
+      damage: 72,
+      rangeM: 85,
+      soundRadiusM: 95,
+      projectileColor: 0x38bdf8,
+    },
+    {
+      id: 'wpn_chokehold_riot_foam_launcher',
+      archetype: 'chokehold_chemical_foam_launcher',
+      damage: 35,
+      rangeM: 38,
+      soundRadiusM: 45,
+      projectileColor: 0xfbbf24,
+    },
+  ];
+
+  for (const expected of vague19Weapons) {
+    const profile = getNpcWeaponProfile(expected.id);
+    assert.ok(profile, `Le profil balistique pour ${expected.id} doit exister`);
+    assert.equal(profile.archetype, expected.archetype);
+    assert.equal(profile.damage, expected.damage);
+    assert.equal(profile.rangeM, expected.rangeM);
+    assert.equal(profile.soundRadiusM, expected.soundRadiusM);
+    assert.equal(profile.projectileColor, expected.projectileColor);
+  }
+});
+
+test('AudioSynthesizer procedural Vague 19 SFX methods execute safely in headless Node environment', () => {
+  const machete = audioSynth.playMacheteCarbineBurstFire();
+  assert.ok(machete && machete.event === 'machete_carbine_burst_fire');
+  assert.ok(machete.mechanicalSnapHz > 0);
+  assert.ok(machete.muzzleCrackHz > machete.mechanicalSnapHz);
+  assert.ok(machete.durationSeconds > 0);
+  assert.equal(machete.played, false);
+
+  const flame = audioSynth.playGenocideRedFlamethrowerStream();
+  assert.ok(flame && flame.event === 'genocide_red_flamethrower_stream');
+  assert.ok(flame.combustionRoarHz > 0);
+  assert.ok(flame.hissFlutterHz > flame.combustionRoarHz);
+  assert.ok(flame.durationSeconds > 0);
+  assert.equal(flame.played, false);
+
+  const foam = audioSynth.playRiotFoamExpansiveHiss();
+  assert.ok(foam && foam.event === 'riot_foam_expansive_hiss');
+  assert.ok(foam.dischargePuffHz > 0);
+  assert.ok(foam.chemicalHissHz > foam.dischargePuffHz);
+  assert.ok(foam.durationSeconds > 0);
+  assert.equal(foam.played, false);
+});

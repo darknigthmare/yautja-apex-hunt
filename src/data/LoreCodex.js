@@ -3107,6 +3107,294 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
       "pathogen_war"
     ],
     "locationIds": []
+  },
+  {
+    "id": "lore_pred_dark_river_verheiden_1996",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Dark River (1996 — Jungle amazonienne & quête de Dutch)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "predator1987",
+      "predator2_1990"
+    ],
+    "unlockCondition": "Retrouver la trace du campement d'Arnon Schaefer dans le bassin amazonien",
+    "summary": "Le détective John Schaefer s'enfonce dans le bassin impénétrable de l'Amazone pour retrouver son frère Dutch, affrontant un prédateur déterminé à venger le Jungle Hunter.",
+    "body": "Predator: Dark River (Mark Verheiden, 1996) prolonge la rivalité sanglante entre la lignée Schaefer et les clans Yautja. Dans les marécages et affluents sauvages de l'Amérique du Sud, la guerre psychologique et les embuscades fluviales atteignent une intensité paroxystique.",
+    "content": "Predator: Dark River (Mark Verheiden, 1996) prolonge la rivalité sanglante entre la lignée Schaefer et les clans Yautja. Dans les marécages et affluents sauvages de l'Amérique du Sud, la guerre psychologique et les embuscades fluviales atteignent une intensité paroxystique.",
+    "tags": [
+      "dark_river_1996",
+      "amazon_basin",
+      "schaefer_brothers",
+      "river_stalker",
+      "verheiden"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_pred_kindred_fleener_creek_1996",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Kindred (1996 — Comté de Fleener Creek & double traque)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "predator1987",
+      "predator2_1990"
+    ],
+    "unlockCondition": "Identifier les trophées clandestins dans la vieille scierie abandonnée",
+    "summary": "Traque croisée dans une scierie et les forêts du nord-ouest où un shérif traque un tueur en série pendant qu'un Predator évalue lequel des deux est la proie digne du trophée suprême.",
+    "body": "Predator: Kindred (Jason R. Lamb, Scott Tolson, 1996) met en scène le code d'honneur Yautja confronté à la perversité d'un assassin humain sans honneur. Le chasseur épargne les innocents pour cibler exclusivement le monstre qui sème la mort dans la communauté.",
+    "content": "Predator: Kindred (Jason R. Lamb, Scott Tolson, 1996) met en scène le code d'honneur Yautja confronté à la perversité d'un assassin humain sans honneur. Le chasseur épargne les innocents pour cibler exclusivement le monstre qui sème la mort dans la communauté.",
+    "tags": [
+      "kindred_1996",
+      "fleener_creek",
+      "serial_killer_prey",
+      "sawmill_ambush",
+      "code_of_honor"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_pred_xenogenesis_subzero_1999",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Xenogenesis (1999 — Escouade Sub-Zero & armures de capture)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "predator1987",
+      "predator2_1990"
+    ],
+    "unlockCondition": "Désactiver les pièges cryogéniques du commando d'intervention Sub-Zero",
+    "summary": "Les commandos cybernétiques de l'équipe Sub-Zero déploient des exo-blindages cryogéniques pour capturer des Yautja vivants et dérober leur technologie stellaire.",
+    "body": "Predator: Xenogenesis (Ian Edginton, Mel Rubi, 1999) explore les dérives militaristes d'entreprises privées qui tentent d'inverser le statut de prédateur et de proie en tendant des pièges technologiques complexes aux vaisseaux Yautja infiltrés.",
+    "content": "Predator: Xenogenesis (Ian Edginton, Mel Rubi, 1999) explore les dérives militaristes d'entreprises privées qui tentent d'inverser le statut de prédateur et de proie en tendant des pièges technologiques complexes aux vaisseaux Yautja infiltrés.",
+    "tags": [
+      "xenogenesis_1999",
+      "subzero_squad",
+      "cryo_capture",
+      "yautja_tech_theft",
+      "ian_edginton"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_pred_hunters_and_hunted_reavers_2018",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "The Predator: Hunters and Hunted (2018 — Opération Reavers & Fugitive)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "thePredator2018",
+      "predator1987"
+    ],
+    "unlockCondition": "Sécuriser le site de crash de la nacelle de sauvetage en Amérique centrale",
+    "summary": "Les Reavers, unité d'assaut d'élite du projet Stargazer dirigée par Roger McKenna, affrontent pour la première fois le Fugitive Predator dans la jungle d'Amérique centrale.",
+    "body": "The Predator: Hunters and Hunted (James A. Moore, roman préquelle officiel, 2018) retrace les premières tentatives de confinement tactique de Stargazer. Les protocoles de détection thermique et les munitions au phosphore se heurtent à la brutalité adaptative du Fugitive.",
+    "content": "The Predator: Hunters and Hunted (James A. Moore, roman préquelle officiel, 2018) retrace les premières tentatives de confinement tactique de Stargazer. Les protocoles de détection thermique et les munitions au phosphore se heurtent à la brutalité adaptative du Fugitive.",
+    "tags": [
+      "hunters_hunted_2018",
+      "reavers_squad",
+      "stargazer_origins",
+      "fugitive_crash",
+      "james_moore"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_earth_war_female_war_1990",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Earth War (1990 — Invasion de la Terre & vol de la Reine Mère)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "aliens1986",
+      "alien1979"
+    ],
+    "unlockCondition": "Infiltrer le nid central de la Terre dévastée aux côtés de Billie et Wilks",
+    "summary": "La Terre tombée sous le joug des ruches xénomorphes, une expédition désespérée menée par Billie et Wilks infiltre le monde d'origine alien pour enlever la Reine Mère.",
+    "body": "Aliens: Earth War / The Female War (Mark Verheiden, Steve Perry, 1990) constitue le grand final de la trilogie Dark Horse fondatrice. Le plan audacieux de faire converger toutes les ruches terrestres vers un point d'impact atomique grâce aux phéromones de la Reine Mère scelle le destin de l'humanité.",
+    "content": "Aliens: Earth War / The Female War (Mark Verheiden, Steve Perry, 1990) constitue le grand final de la trilogie Dark Horse fondatrice. Le plan audacieux de faire converger toutes les ruches terrestres vers un point d'impact atomique grâce aux phéromones de la Reine Mère scelle le destin de l'humanité.",
+    "tags": [
+      "earth_war_1990",
+      "female_war",
+      "queen_mother_theft",
+      "earth_infestation",
+      "steve_perry"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_genocide_red_swarm_1991",
+    "entryType": "codex",
+    "category": "xenomorphes",
+    "title": "Aliens: Genocide (1991 — Guerre civile des ruches & souche rouge de Charon)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "aliens1986",
+      "alien3_1992"
+    ],
+    "unlockCondition": "Récolter des échantillons de gelée royale Xeno-Zip au cœur du carnage des ruches",
+    "summary": "Schisme biologique total entre les xénomorphes noirs originels et une sous-espèce mutante rouge issue d'une reine altérée sur la planète d'origine alien.",
+    "body": "Aliens: Genocide (Mike Richardson, John Arcudi, Damon Willis, 1991) expose une guerre d'extermination totale entre deux castes xénomorphes concurrentes pour la domination de la biosphère, tandis que les mercenaires humains s'infiltrent pour récolter la gelée royale pure 'Xeno-Zip'.",
+    "content": "Aliens: Genocide (Mike Richardson, John Arcudi, Damon Willis, 1991) expose une guerre d'extermination totale entre deux castes xénomorphes concurrentes pour la domination de la biosphère, tandis que les mercenaires humains s'infiltrent pour récolter la gelée royale pure 'Xeno-Zip'.",
+    "tags": [
+      "genocide_1991",
+      "red_caste_xenos",
+      "hive_civil_war",
+      "xeno_zip_harvest",
+      "john_arcudi"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_harvest_cyborg_norbert_1992",
+    "entryType": "codex",
+    "category": "technologie",
+    "title": "Aliens: Harvest (1992 — Station cybernétique & drone biomécanique Norbert)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "alien1979",
+      "aliens1986"
+    ],
+    "unlockCondition": "Intercepter la balise télémétrique du leurre synthétique Norbert dans la ruche",
+    "summary": "Le Dr Mayakovsky déploie 'Norbert', un leurre synthétique sophistiqué déguisé en xénomorphe géant pour infiltrer le nid central et siphonner la gelée royale de la reine.",
+    "body": "Aliens: Harvest (Jerry Prosser, Kelley Jones, 1992) est une plongée macabre et baroque dans l'obsession biomédicale. Le cyborg Norbert, bourré d'explosifs et de capteurs neuraux, permet d'observer la sociologie de la ruche de l'intérieur jusqu'au dysfonctionnement inéluctable.",
+    "content": "Aliens: Harvest (Jerry Prosser, Kelley Jones, 1992) est une plongée macabre et baroque dans l'obsession biomédicale. Le cyborg Norbert, bourré d'explosifs et de capteurs neuraux, permet d'observer la sociologie de la ruche de l'intérieur jusqu'au dysfonctionnement inéluctable.",
+    "tags": [
+      "harvest_1992",
+      "cyborg_norbert",
+      "mayakovsky",
+      "royal_jelly_siphon",
+      "kelley_jones"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_defiance_zula_davis_2016",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Defiance (2016 — Cargo Europa & rébellion de Zula Hendricks)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "alien1979",
+      "aliens1986"
+    ],
+    "unlockCondition": "Repousser l'escouade d'assaut Weyland dans les sas étanches du cargo Europa",
+    "summary": "La marine coloniale blessée Zula Hendricks et l'IA synthétique Davis 01 détournent le vaisseau Europa pour éliminer méthodiquement chaque souche xénomorphe acquise par Weyland-Yutani.",
+    "body": "Aliens: Defiance (Brian Wood, Tristan Jones, 2016) explore la résistance morale d'un binôme humain-synthétique traquant les bio-armes dans les stations délaissées du secteur Tientsin, défiant à la fois les ordres de la corpo et l'infaillibilité des organismes parfaits.",
+    "content": "Aliens: Defiance (Brian Wood, Tristan Jones, 2016) explore la résistance morale d'un binôme humain-synthétique traquant les bio-armes dans les stations délaissées du secteur Tientsin, défiant à la fois les ordres de la corpo et l'infaillibilité des organismes parfaits.",
+    "tags": [
+      "defiance_2016",
+      "zula_hendricks",
+      "synthetic_davis_01",
+      "cargo_europa",
+      "brian_wood"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_sand_trap_dunes_2007",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Sand Trap (2007 — Désert de sel & embuscades à friction de sable)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "predator1987"
+    ],
+    "unlockCondition": "Neutraliser les coureurs xénomorphes émergeant des vagues de dunes de sel",
+    "summary": "Sur une planète désertique balayée par des vents de silice tranchants, des chasseurs Yautja piègent des xénomorphes enfouis sous les dunes avec des mines à résonance sonore.",
+    "body": "Aliens vs. Predator: Sand Trap (2007) détaille l'adaptation de l'armement Yautja aux environnements arides extrêmes. Le frottement du sable abrasif rend les systèmes de camouflage partiels, forçant les guerriers au corps-à-corps dans les crevasses de grès.",
+    "content": "Aliens vs. Predator: Sand Trap (2007) détaille l'adaptation de l'armement Yautja aux environnements arides extrêmes. Le frottement du sable abrasif rend les systèmes de camouflage partiels, forçant les guerriers au corps-à-corps dans les crevasses de grès.",
+    "tags": [
+      "sand_trap_2007",
+      "salt_dunes",
+      "friction_ambush",
+      "silica_winds",
+      "desert_clash"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_chokehold_quarantine_2009",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Chokehold (2009 — Confinement orbital & protocole d'asphyxie)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "aliens1986"
+    ],
+    "unlockCondition": "Forcer l'ouverture du sas de décompression dans la zone de quarantaine scellée",
+    "summary": "Siège clos dans une station de bio-recherche en détresse où une unité de confinement tente d'asphyxier un nid xénomorphe avant qu'un commando Yautja ne purge le secteur au plasma.",
+    "body": "Aliens vs. Predator: Chokehold (2009) met en scène la claustrophobie absolue d'un huis clos spatial pressurisé où chaque coursive fermée devient une chambre à gaz toxique disputée entre soldats hazmat, prédateurs et abominations xénos.",
+    "content": "Aliens vs. Predator: Chokehold (2009) met en scène la claustrophobie absolue d'un huis clos spatial pressurisé où chaque coursive fermée devient une chambre à gaz toxique disputée entre soldats hazmat, prédateurs et abominations xénos.",
+    "tags": [
+      "chokehold_2009",
+      "orbital_quarantine",
+      "hazmat_containment",
+      "gas_purge",
+      "depressurization"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_thrill_of_the_hunt_himalaya_2004",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Thrill of the Hunt (2004 — Monastère de l'Himalaya & rites millénaires)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "predator1987"
+    ],
+    "unlockCondition": "Récupérer le shuriken givrant gelé dans la crypte du temple tibétain",
+    "summary": "Au cœur des sommets glacés de l'Himalaya, une pyramide Yautja dissimulée sous un monastère tibétain réveille une colonie de xénomorphes cryogénisés lors d'un cycle de chasse rituel.",
+    "body": "Aliens vs. Predator: Thrill of the Hunt (Mike Kennedy, Roger Robinson, 2004) explore la tradition séculaire des chasses d'altitude où les Yautja utilisent le blizzard et le froid extrême pour éprouver la résistance thermique de leurs proies et perfectionner leurs shurikens givrants.",
+    "content": "Aliens vs. Predator: Thrill of the Hunt (Mike Kennedy, Roger Robinson, 2004) explore la tradition séculaire des chasses d'altitude où les Yautja utilisent le blizzard et le froid extrême pour éprouver la résistance thermique de leurs proies et perfectionner leurs shurikens givrants.",
+    "tags": [
+      "thrill_of_hunt_2004",
+      "himalayan_monastery",
+      "subzero_pyramid",
+      "tibetan_cycle",
+      "mike_kennedy"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_civilized_beasts_garza_2008",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Civilized Beasts (2008 — L'instinct sauvage & rédemption d'Elena Garza)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "predator2_1990"
+    ],
+    "unlockCondition": "Coordonner la charge de rupture avec l'enquêtrice Elena Garza dans les ruelles",
+    "summary": "Dans une cité frontière disputée, l'enquêtrice Elena Garza scelle un pacte d'honneur précaire avec un chef de clan Yautja pour éliminer une meute d'hybrides échappés d'un vivarium clandestin.",
+    "body": "Aliens vs. Predator: Civilized Beasts (Mike Kennedy, 2008) démontre que la frontière entre bête sauvage et chasseur civilisé s'efface dans la tourmente du combat. Les Yautja y reconnaissent l'esprit indomptable des guerriers humains prêts au sacrifice pour protéger leur clan.",
+    "content": "Aliens vs. Predator: Civilized Beasts (Mike Kennedy, 2008) démontre que la frontière entre bête sauvage et chasseur civilisé s'efface dans la tourmente du combat. Les Yautja y reconnaissent l'esprit indomptable des guerriers humains prêts au sacrifice pour protéger leur clan.",
+    "tags": [
+      "civilized_beasts_2008",
+      "elena_garza",
+      "hybrid_menace",
+      "border_city",
+      "honor_redemption"
+    ],
+    "locationIds": []
   }
 ]);
 // IDs match the values already used by the planet selector.
