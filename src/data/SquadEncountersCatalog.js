@@ -4439,6 +4439,337 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       }
     ]
   }
+,
+  {
+    "id": "squad_pred_dark_ages_knights",
+    "name": "Ordre des Chevaliers Templiers — Forteresse Féodale (1348)",
+    "universe": "PREDATOR",
+    "shortName": "Chevaliers Templiers (3 Paladins)",
+    "category": "PARAMILITARY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Predator: Dark Ages (1348)",
+    "biomeId": "bouvetoya_pyramid",
+    "recommendedBiomeLabel": "Château Fort d'Angleterre (1348)",
+    "primaryMapId": "map_pred_dark_ages_castle",
+    "weaponLoadout": [
+      "wpn_dark_ages_damascus_broadsword"
+    ],
+    "description": "Ordre militaire de chevaliers templiers lourdement cuirassés d'acier affrontant le démon invisible au cœur de leur forteresse anglaise.",
+    "tactics": "Formation défensive en mur de boucliers, frappes lourdes d'estoc au broadsword et jets d'huile enflammée depuis les créneaux.",
+    "totalHonorReward": 6600,
+    "soloVariantId": "prey_bad_blood_warlord",
+    "members": [
+      {
+        "id": "knight_commander_richard",
+        "name": "Commandeur Richard de Neville",
+        "role": "Grand Maître Templier de la Garnison",
+        "weapon": "Épée Bâtarde en Acier de Damas & Bouclier Pavois",
+        "weaponId": "wpn_dark_ages_damascus_broadsword",
+        "vitalityRatio": 1.5,
+        "hp": 800,
+        "armor": 85,
+        "trophy": "Croix Pectorale Templière en Or & Cotte de Mailles Forgée"
+      },
+      {
+        "id": "templar_sergeant_guillaume",
+        "name": "Frère Guillaume le Preux",
+        "role": "Duelliste de Donjon en Armure de Plates",
+        "weapon": "Épée Lourde à Deux Mains & Dague Miséricorde",
+        "weaponId": "wpn_dark_ages_damascus_broadsword",
+        "vitalityRatio": 1.4,
+        "hp": 740,
+        "armor": 75,
+        "trophy": "Gantelet d'Acier Damassé Gravé de Psaumes"
+      },
+      {
+        "id": "crossbowman_edward",
+        "name": "Arbalétrier Edward de Kent",
+        "role": "Tireur d'Élite des Meurtrières",
+        "weapon": "Arbalète Lourde en Fer & Flèches d'Acier Trempé",
+        "weaponId": "wpn_dark_ages_damascus_broadsword",
+        "vitalityRatio": 1.3,
+        "hp": 680,
+        "armor": 60,
+        "trophy": "Carquois de Cuir Bouilli & Treuil d'Arbalète Mécanique"
+      }
+    ]
+  },
+  {
+    "id": "squad_pred_siberia_spetsnaz_alpha",
+    "name": "Détachement Spetsnaz Alpha de Sibérie — Major Voronin (1991)",
+    "universe": "PREDATOR",
+    "shortName": "Spetsnaz Sibérie (3 Commandos)",
+    "category": "MILITARY_COMMANDO",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Predator: Cold War - Siberia (1991)",
+    "biomeId": "bouvetoya_pyramid",
+    "recommendedBiomeLabel": "Base Hivernale Sibérie (1991)",
+    "primaryMapId": "map_pred_siberian_tundra_outpost",
+    "weaponLoadout": [
+      "wpn_siberia_ak47_spetsnaz_carbine"
+    ],
+    "description": "Détachement de parachutistes Spetsnaz soviétiques aguerris traquant le prédateur dans le blizzard et la toundra glaciale sibérienne.",
+    "tactics": "Tirs croisés sous silencieux dans le brouillard de neige, poses de mines antipersonnel et embuscades thermiques en camouflage blanc.",
+    "totalHonorReward": 6800,
+    "soloVariantId": "prey_jungle_hunter_1987",
+    "members": [
+      {
+        "id": "major_voronin",
+        "name": "Major Youri Voronin",
+        "role": "Commandant des Forces Spéciales Alpha",
+        "weapon": "AK-47 Spetsnaz Silencieuse & Couteau de Survie NR-40",
+        "weaponId": "wpn_siberia_ak47_spetsnaz_carbine",
+        "vitalityRatio": 1.45,
+        "hp": 780,
+        "armor": 70,
+        "trophy": "Casque d'Assaut Blindé TIG K6-3 & Veste Camouflage Sibérie"
+      },
+      {
+        "id": "sergeant_pavel_morozov",
+        "name": "Sergent Pavel Morozov",
+        "role": "Fusilier Lourd de Soutien Polaire",
+        "weapon": "AK-47 Sub-Zéro & Grenades F1 Quadruples",
+        "weaponId": "wpn_siberia_ak47_spetsnaz_carbine",
+        "vitalityRatio": 1.35,
+        "hp": 720,
+        "armor": 65,
+        "trophy": "Lunette Thermique Soviétique 1PN58 & Brelage Tactique"
+      },
+      {
+        "id": "scout_dmitri_volkov",
+        "name": "Pisteur Dmitri Volkov",
+        "role": "Éclaireur des Conifères Givrés",
+        "weapon": "Carabine Silencieuse & Fusées de Détresse Arctique",
+        "weaponId": "wpn_siberia_ak47_spetsnaz_carbine",
+        "vitalityRatio": 1.3,
+        "hp": 670,
+        "armor": 55,
+        "trophy": "Raquettes de Neige Militaires en Titane & Boussole Polaire"
+      }
+    ]
+  },
+  {
+    "id": "squad_alien_earth_war_salvage",
+    "name": "Brigade de Récupération Terrestre — Général Tegler (1990)",
+    "universe": "ALIEN",
+    "shortName": "Brigade Terre Dévastée (3 Vétérans)",
+    "category": "PARAMILITARY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens: Earth War (1990)",
+    "biomeId": "hive_lv426",
+    "recommendedBiomeLabel": "Ruines de Paris Infesté (1990)",
+    "primaryMapId": "map_alien_earth_ruins_paris",
+    "weaponLoadout": [
+      "wpn_earth_war_heavy_plasma_rifle"
+    ],
+    "description": "Unité de récupération d'élite déployée dans les ruines irradiées de la Terre pour endiguer l'expansion des ruches mégapolitaines.",
+    "tactics": "Frappes massives au plasma lourd pour dissoudre les grappes résineuses, tirs de suppression soutenus et couverture mutuelle en milieu toxique.",
+    "totalHonorReward": 7600,
+    "soloVariantId": "prey_xeno_warrior",
+    "members": [
+      {
+        "id": "general_tegler",
+        "name": "Général Marcus Tegler",
+        "role": "Commandant de la Reconquête Terrestre",
+        "weapon": "Fusil à Plasma Lourd Armat M90 & Pistolet Blindé",
+        "weaponId": "wpn_earth_war_heavy_plasma_rifle",
+        "vitalityRatio": 1.55,
+        "hp": 860,
+        "armor": 85,
+        "trophy": "Plastron Militaire Irradié Gravé de l'Aigle USCM Terrestre"
+      },
+      {
+        "id": "plasma_gunner_renee",
+        "name": "Canonnier Renée Laroche",
+        "role": "Opératrice de Décharge Plasmique Lourde",
+        "weapon": "Fusil Plasma Armat M90 & Générateur Dorsal 40MW",
+        "weaponId": "wpn_earth_war_heavy_plasma_rifle",
+        "vitalityRatio": 1.4,
+        "hp": 760,
+        "armor": 75,
+        "trophy": "Condensateur de Décharge Magnétique en Alliage Cuivré"
+      },
+      {
+        "id": "sapper_korolyov",
+        "name": "Sapeur Anton Korolyov",
+        "role": "Démineur de Ruches Urbaines",
+        "weapon": "Fusil Plasma Compact & Charges Creuses Anti-Nid",
+        "weaponId": "wpn_earth_war_heavy_plasma_rifle",
+        "vitalityRatio": 1.35,
+        "hp": 710,
+        "armor": 65,
+        "trophy": "Masque à Gaz NBC Anti-Retombées Radioactives Renforcé"
+      }
+    ]
+  },
+  {
+    "id": "squad_alien_thaw_drilling_crew",
+    "name": "Équipe de Forage Cryogénique Weyland — Lune LV-695 (2023)",
+    "universe": "ALIEN",
+    "shortName": "Forage Cryo LV-695 (3 Ingénieurs)",
+    "category": "PARAMILITARY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Alien: Thaw (2023)",
+    "biomeId": "stargazer_blacksite",
+    "recommendedBiomeLabel": "Calotte Glaciaire LV-695 (2023)",
+    "primaryMapId": "map_alien_lv695_cryo_drilling_rig",
+    "weaponLoadout": [
+      "wpn_thaw_cryo_thermal_lance"
+    ],
+    "description": "Équipe d'ingénierie et de forage Weyland armée de lances thermiques de brèche pour contrer le réveil d'un nid préhistorique sous la calotte polaire.",
+    "tactics": "Jets de fusion thermique concentrés, barrages de givre sous azote liquide et verrouillage systématique des sas pressurisés.",
+    "totalHonorReward": 7100,
+    "soloVariantId": "prey_xeno_praetorian_royal",
+    "members": [
+      {
+        "id": "chief_engineer_kane_ross",
+        "name": "Ingénieur en Chef Kane Ross",
+        "role": "Superviseur du Puits de Forage Profond",
+        "weapon": "Lance Thermique LV-695 & Découpeur Plasma",
+        "weaponId": "wpn_thaw_cryo_thermal_lance",
+        "vitalityRatio": 1.45,
+        "hp": 770,
+        "armor": 75,
+        "trophy": "Casque Pressurisé de Forage Glaciaire à Visière Dorée"
+      },
+      {
+        "id": "driller_mac_mcallister",
+        "name": "Foreur Mac McAllister",
+        "role": "Opérateur de Trépan Lourd",
+        "weapon": "Lance Thermique Haute Pression & Marteau Pneumatique",
+        "weaponId": "wpn_thaw_cryo_thermal_lance",
+        "vitalityRatio": 1.4,
+        "hp": 740,
+        "armor": 70,
+        "trophy": "Trépan de Forage Diamanté Maculé de Résine Xéno"
+      },
+      {
+        "id": "cryo_tech_yuki",
+        "name": "Technicienne Cryogénique Yuki Sato",
+        "role": "Spécialiste Injection d'Azote Liquide",
+        "weapon": "Lanceur d'Azote Cryogénique & Pistolet Riveteur",
+        "weaponId": "wpn_thaw_cryo_thermal_lance",
+        "vitalityRatio": 1.3,
+        "hp": 660,
+        "armor": 60,
+        "trophy": "Manomètre Cryogénique Haute Précision Weyland-Yutani"
+      }
+    ]
+  },
+  {
+    "id": "squad_avp_lv1201_weyland_iron_guard",
+    "name": "Garde de Fer Weyland-Yutani du Pod 5 — LV-1201 (2001)",
+    "universe": "AVP",
+    "shortName": "Garde de Fer Pod 5 (3 Mercenaires)",
+    "category": "PARAMILITARY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens versus Predator 2 (2001)",
+    "biomeId": "genna_deathworld",
+    "recommendedBiomeLabel": "Modules Suspendus Pod 5 (2001)",
+    "primaryMapId": "map_avp_lv1201_forward_pods",
+    "weaponLoadout": [
+      "wpn_lv1201_grenade_launcher_m79"
+    ],
+    "description": "Garde prétorienne lourdement équipée défendant le laboratoire d'armement bio-technologique Weyland suspendu au-dessus des gouffres de LV-1201.",
+    "tactics": "Pilonnage de grenades explosives 40mm sur les passerelles suspendues, verrous électroniques de sas et tirs de suppression au-dessus du vide.",
+    "totalHonorReward": 7400,
+    "soloVariantId": "prey_weyland_combat_android",
+    "members": [
+      {
+        "id": "captain_dmitri_rykov",
+        "name": "Général Vassili Rykov",
+        "role": "Commandant de la Sécurité de LV-1201",
+        "weapon": "Lance-Grenades M79-A2 & Fusil de Combat Weyland",
+        "weaponId": "wpn_lv1201_grenade_launcher_m79",
+        "vitalityRatio": 1.5,
+        "hp": 830,
+        "armor": 85,
+        "trophy": "Exosquelette de Combat Partiel Rykov & Médaille d'Honneur"
+      },
+      {
+        "id": "grenadier_vogel",
+        "name": "Caporal Kurt Vogel",
+        "role": "Artilleur de Passerelle Suspendue",
+        "weapon": "Lance-Grenades Rotatif 40mm & Grenades Phosphore",
+        "weaponId": "wpn_lv1201_grenade_launcher_m79",
+        "vitalityRatio": 1.4,
+        "hp": 750,
+        "armor": 70,
+        "trophy": "Barillet Rotatif M79 Chromé & Ceinture de Grenades"
+      },
+      {
+        "id": "security_trooper_dunn",
+        "name": "Garde d'Élite Frank Dunn",
+        "role": "Tireur d'Appui du Pod d'Observation",
+        "weapon": "Fusil d'Assaut à Grenades & Bouclier Déployable",
+        "weaponId": "wpn_lv1201_grenade_launcher_m79",
+        "vitalityRatio": 1.35,
+        "hp": 700,
+        "armor": 65,
+        "trophy": "Badge d'Accès Sécurisé Niveau 5 Laboratoire LV-1201"
+      }
+    ]
+  },
+  {
+    "id": "squad_avp_chokehold_containment_unit",
+    "name": "Unité de Confinement de Fret Lourd — Station Chokehold (2004)",
+    "universe": "AVP",
+    "shortName": "Confinement Chokehold (3 Gardes)",
+    "category": "PARAMILITARY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens vs. Predator: Chokehold (2004)",
+    "biomeId": "stargazer_blacksite",
+    "recommendedBiomeLabel": "Station Orbitale Chokehold (2004)",
+    "primaryMapId": "map_avp_chokehold_cargo_terminal",
+    "weaponLoadout": [
+      "wpn_chokehold_tactical_riot_shotgun"
+    ],
+    "description": "Unité de sécurité pénitentiaire chargée de contenir les émeutes et les contaminations biologiques dans les soutes étanches de la station Chokehold.",
+    "tactics": "Tirs de barrage de calibre 10 en couloirs étroits, encerclement tactique entre les conteneurs et déploiement de gaz neutralisant.",
+    "totalHonorReward": 6900,
+    "soloVariantId": "prey_super_predator_berserker",
+    "members": [
+      {
+        "id": "warden_kruger",
+        "name": "Directeur Kruger",
+        "role": "Maître de Quarantaine de la Station",
+        "weapon": "Fusil à Pompe Calibre 10 Chokehold & Matraque IEM",
+        "weaponId": "wpn_chokehold_tactical_riot_shotgun",
+        "vitalityRatio": 1.45,
+        "hp": 770,
+        "armor": 75,
+        "trophy": "Passe-Partout Magnétique Pénitentiaire en Titane Brossé"
+      },
+      {
+        "id": "riot_officer_sanchez",
+        "name": "Officier Carlos Sanchez",
+        "role": "Bouclier de Brèche de Soute",
+        "weapon": "Fusil Calibre 10 Lourd & Bouclier Plexiglas Renforcé",
+        "weaponId": "wpn_chokehold_tactical_riot_shotgun",
+        "vitalityRatio": 1.35,
+        "hp": 720,
+        "armor": 70,
+        "trophy": "Visière d'Intervention Anti-Émeute Renforcée Polycarbonate"
+      },
+      {
+        "id": "cargo_guard_chen",
+        "name": "Garde de Fret Li Chen",
+        "role": "Tireur Rapide de Coursive",
+        "weapon": "Fusil à Pompe Compact & Menottes Magnétiques",
+        "weaponId": "wpn_chokehold_tactical_riot_shotgun",
+        "vitalityRatio": 1.3,
+        "hp": 670,
+        "armor": 60,
+        "trophy": "Sifflet de Décompression d'Urgence en Laiton d'Atelier"
+      }
+    ]
+  }
 ]);
 
 export function getSquadById(squadId) {

@@ -1015,3 +1015,93 @@ test('AudioSynthesizer procedural Vague 15 SFX methods execute safely in headles
   assert.equal(harpoon.played, false);
 });
 
+test('Vague 16 canonical NPC weapons resolve to rich ballistic and acoustic profiles', () => {
+  const vague16Weapons = [
+    {
+      id: 'wpn_dark_ages_damascus_broadsword',
+      archetype: 'heavy_damascus_broadsword',
+      damage: 85,
+      rangeM: 4.5,
+      soundRadiusM: 15,
+      projectileColor: 0xe0e7ff,
+    },
+    {
+      id: 'wpn_siberia_ak47_spetsnaz_carbine',
+      archetype: 'suppressed_cold_war_carbine',
+      damage: 34,
+      rangeM: 70,
+      soundRadiusM: 30,
+      projectileColor: 0xffaa44,
+    },
+    {
+      id: 'wpn_earth_war_heavy_plasma_rifle',
+      archetype: 'armat_heavy_plasma_rifle',
+      damage: 82,
+      rangeM: 90,
+      soundRadiusM: 100,
+      projectileColor: 0x00ffcc,
+    },
+    {
+      id: 'wpn_thaw_cryo_thermal_lance',
+      archetype: 'industrial_thermal_breach_lance',
+      damage: 72,
+      rangeM: 25,
+      soundRadiusM: 65,
+      projectileColor: 0xff6600,
+    },
+    {
+      id: 'wpn_lv1201_grenade_launcher_m79',
+      archetype: 'break_action_grenade_launcher',
+      damage: 95,
+      rangeM: 80,
+      soundRadiusM: 120,
+      projectileColor: 0xff3300,
+    },
+    {
+      id: 'wpn_chokehold_tactical_riot_shotgun',
+      archetype: 'gauge_10_containment_shotgun',
+      damage: 58,
+      rangeM: 35,
+      soundRadiusM: 90,
+      projectileColor: 0xffbb22,
+    },
+  ];
+
+  for (const expected of vague16Weapons) {
+    const profile = NPC_WEAPON_BALLISTIC_PROFILES[expected.id];
+    assert.ok(profile, `Le profil balistique de ${expected.id} doit exister dans NPC_WEAPON_BALLISTIC_PROFILES`);
+    assert.equal(profile.id, expected.id);
+    assert.equal(profile.archetype, expected.archetype);
+    assert.equal(profile.damage, expected.damage);
+    assert.equal(profile.rangeM, expected.rangeM);
+    assert.equal(profile.soundRadiusM, expected.soundRadiusM);
+    assert.equal(profile.projectileColor, expected.projectileColor);
+
+    const resolved = getNpcWeaponProfile(expected.id);
+    assert.equal(resolved.id, expected.id);
+    assert.equal(resolved.archetype, expected.archetype);
+  }
+});
+
+test('AudioSynthesizer procedural Vague 16 SFX methods execute safely in headless Node environment', () => {
+  const clash = audioSynth.playDamascusBroadswordClash();
+  assert.ok(clash && clash.event === 'damascus_broadsword_clash');
+  assert.ok(clash.strikeHz > 0);
+  assert.ok(clash.ringHz > clash.strikeHz);
+  assert.ok(clash.durationSeconds > 0);
+  assert.equal(clash.played, false);
+
+  const plasma = audioSynth.playHeavyPlasmaRifleDischarge();
+  assert.ok(plasma && plasma.event === 'heavy_plasma_rifle_discharge');
+  assert.ok(plasma.dischargeHz > 0);
+  assert.ok(plasma.ionizationHz > plasma.dischargeHz);
+  assert.ok(plasma.durationSeconds > 0);
+  assert.equal(plasma.played, false);
+
+  const cryo = audioSynth.playCryoDrillThermalHiss();
+  assert.ok(cryo && cryo.event === 'cryo_drill_thermal_hiss');
+  assert.ok(cryo.drillRumbleHz > 0);
+  assert.ok(cryo.steamHissHz > cryo.drillRumbleHz);
+  assert.ok(cryo.durationSeconds > 0);
+  assert.equal(cryo.played, false);
+});

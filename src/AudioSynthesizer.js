@@ -37634,6 +37634,135 @@ class AudioSynthesizer {
 
     return descriptor;
   }
+
+  playDamascusBroadswordClash() {
+    const descriptor = {
+      event: 'damascus_broadsword_clash',
+      synthesis: 'medieval_tempered_steel_resonance_and_high_ring',
+      strikeHz: 480,
+      ringHz: 3200,
+      durationSeconds: 0.75,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const strikeOsc = this.ctx.createOscillator();
+    const strikeGain = this.ctx.createGain();
+    strikeOsc.type = 'triangle';
+    strikeOsc.frequency.setValueAtTime(descriptor.strikeHz, now);
+    strikeOsc.frequency.exponentialRampToValueAtTime(120, now + 0.18);
+
+    strikeGain.gain.setValueAtTime(0.85, now);
+    strikeGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+    strikeOsc.connect(strikeGain);
+    strikeGain.connect(this.ctx.destination);
+    strikeOsc.start(now);
+    strikeOsc.stop(now + 0.25);
+
+    const ringOsc = this.ctx.createOscillator();
+    const ringGain = this.ctx.createGain();
+    ringOsc.type = 'sine';
+    ringOsc.frequency.setValueAtTime(descriptor.ringHz, now);
+    ringOsc.frequency.exponentialRampToValueAtTime(1450, now + 0.72);
+
+    ringGain.gain.setValueAtTime(0.65, now);
+    ringGain.gain.exponentialRampToValueAtTime(0.001, now + 0.75);
+
+    ringOsc.connect(ringGain);
+    ringGain.connect(this.ctx.destination);
+    ringOsc.start(now);
+    ringOsc.stop(now + 0.75);
+
+    return descriptor;
+  }
+
+  playHeavyPlasmaRifleDischarge() {
+    const descriptor = {
+      event: 'heavy_plasma_rifle_discharge',
+      synthesis: 'armat_m90_plasma_capacitor_burst_and_ionization_whine',
+      dischargeHz: 280,
+      ionizationHz: 1850,
+      durationSeconds: 0.68,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const blastOsc = this.ctx.createOscillator();
+    const blastGain = this.ctx.createGain();
+    blastOsc.type = 'sawtooth';
+    blastOsc.frequency.setValueAtTime(descriptor.dischargeHz, now);
+    blastOsc.frequency.exponentialRampToValueAtTime(45, now + 0.35);
+
+    blastGain.gain.setValueAtTime(0.9, now);
+    blastGain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+    blastOsc.connect(blastGain);
+    blastGain.connect(this.ctx.destination);
+    blastOsc.start(now);
+    blastOsc.stop(now + 0.42);
+
+    const whineOsc = this.ctx.createOscillator();
+    const whineGain = this.ctx.createGain();
+    whineOsc.type = 'sine';
+    whineOsc.frequency.setValueAtTime(descriptor.ionizationHz, now + 0.05);
+    whineOsc.frequency.exponentialRampToValueAtTime(320, now + 0.65);
+
+    whineGain.gain.setValueAtTime(0.55, now + 0.05);
+    whineGain.gain.exponentialRampToValueAtTime(0.001, now + 0.68);
+
+    whineOsc.connect(whineGain);
+    whineGain.connect(this.ctx.destination);
+    whineOsc.start(now + 0.05);
+    whineOsc.stop(now + 0.68);
+
+    return descriptor;
+  }
+
+  playCryoDrillThermalHiss() {
+    const descriptor = {
+      event: 'cryo_drill_thermal_hiss',
+      synthesis: 'sub_zero_steam_vent_and_pressurized_nitrogen_spray',
+      drillRumbleHz: 85,
+      steamHissHz: 3400,
+      durationSeconds: 0.7,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const rumbleOsc = this.ctx.createOscillator();
+    const rumbleGain = this.ctx.createGain();
+    rumbleOsc.type = 'triangle';
+    rumbleOsc.frequency.setValueAtTime(descriptor.drillRumbleHz, now);
+    rumbleOsc.frequency.linearRampToValueAtTime(55, now + 0.45);
+
+    rumbleGain.gain.setValueAtTime(0.7, now);
+    rumbleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+    rumbleOsc.connect(rumbleGain);
+    rumbleGain.connect(this.ctx.destination);
+    rumbleOsc.start(now);
+    rumbleOsc.stop(now + 0.52);
+
+    const steamOsc = this.ctx.createOscillator();
+    const steamGain = this.ctx.createGain();
+    steamOsc.type = 'sawtooth';
+    steamOsc.frequency.setValueAtTime(descriptor.steamHissHz, now + 0.02);
+    steamOsc.frequency.exponentialRampToValueAtTime(800, now + 0.68);
+
+    steamGain.gain.setValueAtTime(0.48, now + 0.02);
+    steamGain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+
+    steamOsc.connect(steamGain);
+    steamGain.connect(this.ctx.destination);
+    steamOsc.start(now + 0.02);
+    steamOsc.stop(now + 0.7);
+
+    return descriptor;
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();

@@ -1332,7 +1332,7 @@ export function getSquadLogo(squadId, size = 64) {
   }
 
   // 10. Cartel Vaudou King Willie (Predator 2)
-  if (id.includes('king_willie') || id.includes('posse')) {
+  if (id.includes('king_willie') || (id.includes('posse') && !id.includes('fleener_creek'))) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-voodoo" role="img" aria-label="Insigne Cartel Vaudou">
         <circle cx="40" cy="40" r="35" fill="#1a0022" stroke="#7b1fa2" stroke-width="2.5" />
@@ -1949,7 +1949,7 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
-  if (id.includes('nightmare_asylum') || id.includes('spears')) {
+  if (id.includes('nightmare_asylum_spears_command') || (id.includes('spears') && !id.includes('nightmare_asylum_battalion'))) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-spears" role="img" aria-label="Insigne Nightmare Asylum Spears">
         <polygon points="40,10 68,26 68,54 40,70 12,54 12,26" fill="#2b0909" stroke="#ff3d00" stroke-width="2.5" />
@@ -1981,7 +1981,7 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
-  if (id.includes('xenogenesis') || id.includes('spearhead')) {
+  if (id.includes('xenogenesis_spearhead') || (id.includes('spearhead') && !id.includes('xenogenesis_strike_cadre'))) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-spearhead" role="img" aria-label="Insigne Spearhead Xenogenesis 1999">
         <polygon points="40,8 72,28 72,60 40,74 8,60 8,28" fill="#0b132b" stroke="#00b4d8" stroke-width="2.5" />
@@ -2978,6 +2978,104 @@ export function getSquadLogo(squadId, size = 64) {
         <circle cx="48" cy="20" r="1.8" fill="#a5f3fc" opacity="0.7" />
         <circle cx="40" cy="58" r="2" fill="#a5f3fc" opacity="0.7" />
         <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#67e8f9" letter-spacing="1" text-anchor="middle">XENOGENESIS 2002</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('dark_ages_knights') || id.includes('dark_ages')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-darkages" role="img" aria-label="Insigne Ordre Templier Dark Ages">
+        <!-- Écu médiéval normand en acier damassé -->
+        <polygon points="40,6 72,16 68,54 40,76 12,54 8,16" fill="#0f172a" stroke="#cbd5e1" stroke-width="2.5" />
+        <!-- Croix pattée rouge des Chevaliers Templiers -->
+        <path d="M40 16 L44 32 L58 28 L52 40 L66 44 L50 48 L54 62 L40 54 L26 62 L30 48 L14 44 L28 40 L22 28 L36 32 Z" fill="#b91c1c" stroke="#dc2626" stroke-width="1.2" />
+        <!-- Épée bâtarde de Damas centrale au fil d'or -->
+        <line x1="40" y1="12" x2="40" y2="60" stroke="#f8fafc" stroke-width="2.2" stroke-linecap="round" />
+        <line x1="32" y1="22" x2="48" y2="22" stroke="#eab308" stroke-width="2.5" stroke-linecap="round" />
+        <circle cx="40" cy="62" r="2.5" fill="#f59e0b" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#fca5a5" letter-spacing="1" text-anchor="middle">DARK AGES 1348</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('siberia_spetsnaz') || id.includes('siberia_alpha') || id.includes('siberia')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-siberiaspetsnaz" role="img" aria-label="Insigne Spetsnaz Alpha Sibérie">
+        <!-- Blason hexagonal givré bleu arctique -->
+        <polygon points="40,6 74,24 74,56 40,74 6,56 6,24" fill="#082f49" stroke="#38bdf8" stroke-width="2.5" />
+        <!-- Flocons géométriques de blizzard sibérien -->
+        <circle cx="40" cy="40" r="28" fill="none" stroke="#0ea5e9" stroke-width="1" stroke-dasharray="3,3" opacity="0.6" />
+        <!-- Étoile soviétique des forces spéciales Spetsnaz -->
+        <polygon points="40,20 44,32 56,32 46,40 50,52 40,44 30,52 34,40 24,32 36,32" fill="#dc2626" stroke="#fbbf24" stroke-width="1.2" />
+        <!-- Baïonnette AK-47 polaire croisée de givre -->
+        <line x1="26" y1="56" x2="54" y2="24" stroke="#f1f5f9" stroke-width="2" stroke-linecap="round" />
+        <line x1="28" y1="52" x2="24" y2="56" stroke="#94a3b8" stroke-width="2" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#bae6fd" letter-spacing="1" text-anchor="middle">SPETSNAZ 1991</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('earth_war_salvage') || id.includes('earth_war')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-earthwar" role="img" aria-label="Insigne Brigade Terre Dévastée Earth War">
+        <!-- Écusson en ogive crépusculaire terre dévastée -->
+        <path d="M40 6 Q70 18 70 50 Q70 74 40 76 Q10 74 10 50 Q10 18 40 6 Z" fill="#18181b" stroke="#059669" stroke-width="2.5" />
+        <!-- Silhouette stylisée de la Tour Eiffel éventrée -->
+        <path d="M40 18 L44 56 L36 56 Z M34 42 L46 42 M32 50 L48 50" stroke="#f59e0b" stroke-width="1.8" fill="none" />
+        <!-- Décharges plasmiques Armat M90 vertes toxiques -->
+        <circle cx="40" cy="38" r="8" fill="#10b981" opacity="0.3" />
+        <polyline points="28,26 34,34 26,42 36,46" fill="none" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" />
+        <polyline points="52,26 46,34 54,42 44,46" fill="none" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#6ee7b7" letter-spacing="1" text-anchor="middle">EARTH WAR 1990</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('thaw_drilling_crew') || id.includes('thaw_drilling') || id.includes('thaw')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-thawdrilling" role="img" aria-label="Insigne Forage Cryogénique LV-695">
+        <!-- Losange industriel Weyland cryo blanc perle et bleu givre -->
+        <polygon points="40,6 74,40 40,74 6,40" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2.5" />
+        <!-- Cannelures de trépan de forage diamanté rotatif -->
+        <circle cx="40" cy="40" r="18" fill="#082f49" stroke="#94a3b8" stroke-width="2" />
+        <line x1="40" y1="24" x2="40" y2="56" stroke="#f8fafc" stroke-width="2" />
+        <line x1="24" y1="40" x2="56" y2="40" stroke="#f8fafc" stroke-width="2" />
+        <circle cx="40" cy="40" r="6" fill="#f97316" stroke="#ea580c" stroke-width="1.5" />
+        <!-- Éruptions de vapeur thermique et cristaux d'azote -->
+        <circle cx="28" cy="28" r="2" fill="#bae6fd" />
+        <circle cx="52" cy="28" r="2" fill="#bae6fd" />
+        <circle cx="28" cy="52" r="2" fill="#bae6fd" />
+        <circle cx="52" cy="52" r="2" fill="#bae6fd" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="3.8" font-weight="900" fill="#e0f2fe" letter-spacing="0.8" text-anchor="middle">THAW LV-695</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('lv1201_weyland_iron_guard') || id.includes('lv1201_iron_guard') || id.includes('lv1201')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-lv1201pod5" role="img" aria-label="Insigne Garde de Fer Pod 5 LV-1201">
+        <!-- Hexagone de surveillance blindé en titane et or Weyland -->
+        <polygon points="40,6 72,22 72,58 40,74 8,58 8,22" fill="#1e1b4b" stroke="#eab308" stroke-width="2.5" />
+        <!-- Câbles de suspension du Pod 5 au-dessus des abîmes -->
+        <line x1="24" y1="12" x2="40" y2="36" stroke="#94a3b8" stroke-width="1.5" />
+        <line x1="56" y1="12" x2="40" y2="36" stroke="#94a3b8" stroke-width="1.5" />
+        <!-- Module suspendu Pod 5 hexagonal -->
+        <polygon points="40,30 52,38 52,50 40,58 28,50 28,38" fill="#312e81" stroke="#fbbf24" stroke-width="1.8" />
+        <!-- Grenade explosive 40mm de Rykov -->
+        <circle cx="40" cy="44" r="5" fill="#ef4444" stroke="#f97316" stroke-width="1.2" />
+        <text x="40" y="69" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#fef08a" letter-spacing="1" text-anchor="middle">POD 5 LV-1201</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('chokehold_containment_unit') || id.includes('chokehold_containment') || id.includes('chokehold')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-chokehold" role="img" aria-label="Insigne Confinement Station Chokehold">
+        <!-- Octogone pénitentiaire blindé rouge confinement et noir carbo -->
+        <polygon points="26,6 54,6 74,26 74,54 54,74 26,74 6,54 6,26" fill="#1c1917" stroke="#ea580c" stroke-width="2.5" />
+        <!-- Grille de barreaux magnétiques étanches de quarantaine -->
+        <line x1="28" y1="20" x2="28" y2="60" stroke="#f97316" stroke-width="1.8" stroke-dasharray="4,2" />
+        <line x1="36" y1="16" x2="36" y2="64" stroke="#f97316" stroke-width="1.8" stroke-dasharray="4,2" />
+        <line x1="44" y1="16" x2="44" y2="64" stroke="#f97316" stroke-width="1.8" stroke-dasharray="4,2" />
+        <line x1="52" y1="20" x2="52" y2="60" stroke="#f97316" stroke-width="1.8" stroke-dasharray="4,2" />
+        <!-- Sceau de verrouillage hydraulique central -->
+        <circle cx="40" cy="40" r="10" fill="#b45309" stroke="#fbbf24" stroke-width="2" />
+        <rect x="36" y="36" width="8" height="8" fill="#fef08a" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#fed7aa" letter-spacing="1" text-anchor="middle">CHOKEHOLD 2004</text>
       </svg>
     `.trim();
   }

@@ -3216,6 +3216,368 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     "heroSquadId": "squad_avp_xenogenesis_strike_cadre",
     "villainSquadId": null
   }
+,
+  {
+    "id": "map_pred_dark_ages_castle",
+    "name": "Château Féodal — Tournoi Médiéval & Crypte Templière (1348)",
+    "universe": "PREDATOR",
+    "originMedia": "Predator: Dark Ages (1348)",
+    "sourceMedia": "Predator: Dark Ages (1348)",
+    "sourceType": "COMIC",
+    "releaseYear": 1995,
+    "year": 1348,
+    "biomeId": "bouvetoya_pyramid",
+    "biome": "HISTORIC_WARZONE",
+    "recommendedBiomeLabel": "Forteresse Médiévale — Angleterre Féodale (1348)",
+    "weather": "Brouillard épais d'automne, crachin glacé et fumée de feux de tourbe",
+    "lighting": "Torches murales à la résine crépitante et vitraux gothiques filtrant la pleine lune",
+    "verticality": "ÉLEVÉE (Donjon fortifié de 45 mètres, chemins de ronde à créneaux et douves)",
+    "destructibility": "Ponts-levis en chêne vermoulu, herses de fer forgé et échafaudages de siège",
+    "interactables": [
+      "Mécanisme de treuil de herse libérant un passage vers les douves",
+      "Chaudron de poix bouillante basculable pour créer une barrière de flammes",
+      "Reliquaire d'or templièr attirant l'attention acoustique des gardes"
+    ],
+    "environmentSummary": "Château fort féodal assiégé par une présence invisible alors que la garnison templière tente de repousser la traque au milieu des brumes de la peste.",
+    "description": "Château fort féodal assiégé par une présence invisible alors que la garnison templière tente de repousser la traque au milieu des brumes de la peste.",
+    "tacticalNotes": "Les meurtrières étroites protègent des tirs de canon d'épaule ; les toitures en ardoise sont glissantes sous la pluie.",
+    "dimensionsM": {
+      "width": 500,
+      "length": 500,
+      "height": 90
+    },
+    "elevationRangeM": [
+      0,
+      90
+    ],
+    "tacticalSectors": [
+      "Cour d'Honneur Pavée & Puits Central du Donjon",
+      "Chemin de Ronde Crénelé & Tourelles de Guet",
+      "Crypte Souterraine Voûtée des Chevaliers",
+      "Grande Salle d'Armes & Foyer Monumental"
+    ],
+    "keyLandmarks": [
+      "Donjon normand massif aux bannières de gueules déchirées",
+      "Chapelle funéraire templière aux gisants de pierre blanche",
+      "Machine de siège en bois calcinée dans la cour basse"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "PITCH_FIRE",
+        "description": "Foyers de poix liquide enflammée causant des brûlures persistantes"
+      },
+      {
+        "type": "FALLING_PORTCULLIS",
+        "description": "Herses instables pouvant écraser les combattants imprudents"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_bad_blood_warlord"
+    ],
+    "heroSquadId": "squad_pred_dark_ages_knights",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_pred_siberian_tundra_outpost",
+    "name": "Sibérie 1991 — Base Spetsnaz & Toundra Arctique (1991)",
+    "universe": "PREDATOR",
+    "originMedia": "Predator: Cold War - Siberia (1991)",
+    "sourceMedia": "Predator: Cold War (1991)",
+    "sourceType": "COMIC",
+    "releaseYear": 1991,
+    "year": 1991,
+    "biomeId": "bouvetoya_pyramid",
+    "biome": "GEOTHERMAL_FOREST",
+    "recommendedBiomeLabel": "Sibérie Arctique — Base Spetsnaz Hivernale (1991)",
+    "weather": "Blizzard sibérien à -35°C, bourrasques de neige violentes et givre instantané",
+    "lighting": "Projecteurs halogènes militaires jaunes sur mâts télescopiques et lueurs vertes d'aurore boréale",
+    "verticality": "MOYENNE (Bunkers en béton armé semi-enterrés, tas de bois et antennes radar)",
+    "destructibility": "Cabines en tôle ondulée, barbelés givrés et fûts de carburant diesel",
+    "interactables": [
+      "Groupe électrogène diesel militaire pouvant être surchargé pour un black-out",
+      "Projecteur de mirador orientable pour désorganiser le camouflage thermique",
+      "Fusée éclairante d'alerte révélant les mouvements dans le blizzard"
+    ],
+    "environmentSummary": "Complexe militaire secret perdu dans l'immensité blanche de Sibérie où des parachutistes d'élite russes affrontent un prédateur cryo-adapté.",
+    "description": "Complexe militaire secret perdu dans l'immensité blanche de Sibérie où des parachutistes d'élite russes affrontent un prédateur cryo-adapté.",
+    "tacticalNotes": "Le froid extrême réduit la vitesse de régénération énergétique ; le souffle thermique des corps est visible à plus de 100 mètres.",
+    "dimensionsM": {
+      "width": 560,
+      "length": 560,
+      "height": 70
+    },
+    "elevationRangeM": [
+      0,
+      70
+    ],
+    "tacticalSectors": [
+      "Périmètre de Clôture Électrifiée & Barbelés Givrés",
+      "Poste de Transmission Radar & Bunkers de Commandement",
+      "Dépôt de Véhicules Chenillés & Fûts de Carburant",
+      "Clairière Enneigée de la Taïga aux Conifères Pétrifiés"
+    ],
+    "keyLandmarks": [
+      "Antenne parabolique géante de détection d'alerte avancée recouverte de stalactites",
+      "Transport de troupes blindé BTR-80 écrasé contre un bloc de glace",
+      "Pylône d'éclairage oscillant sous les rafales du blizzard"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "HYPOTHERMIC_WIND",
+        "description": "Rafales de vent glacial ralentissant les mouvements de 25%"
+      },
+      {
+        "type": "FUEL_BLAST",
+        "description": "Citernes de diesel explosant sous les impacts de plasma"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_jungle_hunter_1987"
+    ],
+    "heroSquadId": "squad_pred_siberia_spetsnaz_alpha",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_alien_earth_ruins_paris",
+    "name": "Terre Dévastée — Ruines Irradiées de Paris (1990)",
+    "universe": "ALIEN",
+    "originMedia": "Aliens: Earth War (Dark Horse Comics 1990)",
+    "sourceMedia": "Aliens: Earth War (1990)",
+    "sourceType": "COMIC",
+    "releaseYear": 1990,
+    "year": 1990,
+    "biomeId": "hive_lv426",
+    "biome": "XENO_HIVEWORLD_BIOME",
+    "recommendedBiomeLabel": "Ruines de Paris — Infestation Terrestre (1990)",
+    "weather": "Ciel d'orage ocre toxique, retombées radioactives et brume acide persistante",
+    "lighting": "Feux de décombres rougeoyants et arcs électriques des lignes haute tension détruites",
+    "verticality": "TRÈS ÉLEVÉE (Carcasses d'immeubles haussmanniens éventrés, tunnels de métro et ponts effondrés)",
+    "destructibility": "Murs de briques noircis, carcasses de voitures calcinées et nids résineux",
+    "interactables": [
+      "Conduite de gaz urbain fuyante pouvant être incendiée",
+      "Wagon de métro déraillé servant d'abri de repli anti-acide",
+      "Batterie de missile anti-aérien abandonnée activable pour diversion"
+    ],
+    "environmentSummary": "La métropole européenne ravagée par des millions de xénomorphes où les décombres de monuments historiques abritent les couveuses royales.",
+    "description": "La métropole européenne ravagée par des millions de xénomorphes où les décombres de monuments historiques abritent les couveuses royales.",
+    "tacticalNotes": "La densité des structures résineuses urbaines favorise les assauts verticaux surprises ; l'environnement hautement radioactif brouille les radars.",
+    "dimensionsM": {
+      "width": 620,
+      "length": 620,
+      "height": 160
+    },
+    "elevationRangeM": [
+      0,
+      160
+    ],
+    "tacticalSectors": [
+      "Boulevard Éventré aux Carcasses d'Autocars & Barricades",
+      "Station de Métro Aérienne Convertie en Ruche Résineuse",
+      "Esplanade du Monument aux Piliers Métalliques Tordus",
+      "Crater de Frappe Nucléaire Tactique aux Braises Fumantes"
+    ],
+    "keyLandmarks": [
+      "Tour métallique monumentale brisée en son tiers supérieur servant de perchoir de reine",
+      "Hélicoptère militaire abattu fiché dans la façade d'un immeuble en ruine",
+      "Entrée monumentale de métro Art Nouveau engluée de sécrétions noires"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "RADIOACTIVE_DUST",
+        "description": "Poussières radioactives infligeant des dégâts progressifs continus"
+      },
+      {
+        "type": "STRUCTURAL_COLLAPSE",
+        "description": "Planchers de ruines s'effondrant sous le poids des explosions"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_xeno_warrior",
+      "prey_xeno_queen_matriarch"
+    ],
+    "heroSquadId": "squad_alien_earth_war_salvage",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_alien_lv695_cryo_drilling_rig",
+    "name": "Lune Glacée LV-695 — Forage Cryogénique & Nid Enfoui (2023)",
+    "universe": "ALIEN",
+    "originMedia": "Alien: Thaw (Marvel Comics 2023)",
+    "sourceMedia": "Alien: Thaw (2023)",
+    "sourceType": "COMIC",
+    "releaseYear": 2023,
+    "year": 2023,
+    "biomeId": "stargazer_blacksite",
+    "biome": "SPACE_STATION_INTERIOR",
+    "recommendedBiomeLabel": "Lune Glacée LV-695 — Complexe de Forage Weyland (2023)",
+    "weather": "Pression atmosphérique ténue, brouillard de sublimation glaciale et condensation constante",
+    "lighting": "Éclairage industriel LED blanc froid et voyants d'alarme cryogénique bleu cyan",
+    "verticality": "ÉLEVÉE (Puits de forage vertical de 200 mètres, plateformes suspendues et carottiers)",
+    "destructibility": "Vitrages blindés givrés, conduites d'azote liquide sous pression et sas thermiques",
+    "interactables": [
+      "Vanne d'azote liquide cryogénique pulvérisant un jet givrant instantané",
+      "Tête de forage géante rotative pouvant broyer les assaillants",
+      "Console de dépressurisation du sas de carottage profond"
+    ],
+    "environmentSummary": "Station de forage creusant dans la calotte glaciaire d'une lune gelée où la libération de xénomorphes emprisonnés dans les glaces sème la terreur.",
+    "description": "Station de forage creusant dans la calotte glaciaire d'une lune gelée où la libération de xénomorphes emprisonnés dans les glaces sème la terreur.",
+    "tacticalNotes": "Les jets de liquide cryogénique congèlent instantanément les membres ; la réverbération acoustique dans le puits de forage amplifie chaque pas.",
+    "dimensionsM": {
+      "width": 480,
+      "length": 480,
+      "height": 210
+    },
+    "elevationRangeM": [
+      0,
+      210
+    ],
+    "tacticalSectors": [
+      "Puits Central de Forage Profond & Trépan Diamanté",
+      "Salle des Carottes Glaciaires & Cuves Cryogéniques",
+      "Passerelle Haute d'Évacuation & Hangar des Foreuses",
+      "Module d'Habitation Pressurisé aux Parois GivField"
+    ],
+    "keyLandmarks": [
+      "Tête de forage industrielle de 15 mètres suspendue au-dessus de l'abîme de glace",
+      "Bloc de glace millénaire fracturé révélant la silhouette figée d'un drone",
+      "Sas d'isolement bio-sécurisé fendu par des griffes d'acide"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "LIQUID_NITROGEN_LEAK",
+        "description": "Fuites d'azote liquide causant un gel immédiat des articulations"
+      },
+      {
+        "type": "ICE_SHELF_DROP",
+        "description": "Fissures dans la calotte polaire créant des gouffres sans fond"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_xeno_praetorian_royal"
+    ],
+    "heroSquadId": "squad_alien_thaw_drilling_crew",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_avp_lv1201_forward_pods",
+    "name": "LV-1201 — Modules d'Observation Suspendus Pod 5 (2001)",
+    "universe": "AVP",
+    "originMedia": "Aliens versus Predator 2 (Monolith Productions / Sierra 2001)",
+    "sourceMedia": "Aliens versus Predator 2 (2001)",
+    "sourceType": "GAME",
+    "releaseYear": 2001,
+    "year": 2001,
+    "biomeId": "genna_deathworld",
+    "biome": "ASTEROID_BIO_CITADEL",
+    "recommendedBiomeLabel": "Planète LV-1201 — Pods d'Observation Weyland (2001)",
+    "weather": "Orages atmosphériques ionisants, pluie acide intermittente et vents de canyon violents",
+    "lighting": "Projecteurs jaunes industriels Weyland-Yutani et éclairs bleus illuminant les falaises",
+    "verticality": "EXTRÊME (Modules d'habitation suspendus au-dessus d'un canyon sans fond de 800 mètres)",
+    "destructibility": "Câbles de haubanage, passerelles métalliques grillagées et sas de décontamination",
+    "interactables": [
+      "Générateur de champ de force isolant temporairement une section de coursive",
+      "Plateforme d'ascenseur rapide reliant le pod d'observation au fond du canyon",
+      "Console de défense laser automatique de périmètre"
+    ],
+    "environmentSummary": "Complexe de recherche suspendu au-dessus des abîmes de LV-1201 où les Marines, les traqueurs Yautja et les xénomorphes du canyon s'affrontent pour le contrôle des pods.",
+    "description": "Complexe de recherche suspendu au-dessus des abîmes de LV-1201 où les Marines, les traqueurs Yautja et les xénomorphes du canyon s'affrontent pour le contrôle des pods.",
+    "tacticalNotes": "Une chute en dehors des passerelles suspendues est fatale ; les parois rocheuses abruptes permettent aux xénomorphes de grimper à revers.",
+    "dimensionsM": {
+      "width": 650,
+      "length": 650,
+      "height": 350
+    },
+    "elevationRangeM": [
+      0,
+      350
+    ],
+    "tacticalSectors": [
+      "Module Pod 5 Principal & Laboratoire d'Armement Weyland",
+      "Réseau de Passerelles Extérieures Suspendues au-dessus du Vide",
+      "Station d'Amarrage des Navettes de Brèche & Grue de Fret",
+      "Corniche Rocheuse Supérieure Menant aux Ruines Anciennes"
+    ],
+    "keyLandmarks": [
+      "Structure sphérique colossale du Pod 5 ancrée par d'immenses piliers d'acier",
+      "Pont suspendu de 100 mètres oscillant au vent au-dessus du gouffre",
+      "Statue Yautja ancestrale millénaire taillée à même la falaise de basalte"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "ABYSSAL_PLUNGE",
+        "description": "Chute dans le canyon sans fond causant une mort instantanée"
+      },
+      {
+        "type": "ION_LIGHTNING",
+        "description": "Arcs électriques ionisants surchargeant les circuits optiques"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_xeno_king_titan"
+    ],
+    "heroSquadId": "squad_avp_lv1201_weyland_iron_guard",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_avp_chokehold_cargo_terminal",
+    "name": "Terminal de Fret Sécurisé — Zone de Chokehold (2004)",
+    "universe": "AVP",
+    "originMedia": "Aliens vs. Predator: Chokehold (2004)",
+    "sourceMedia": "Aliens vs. Predator: Chokehold (2004)",
+    "sourceType": "COMIC",
+    "releaseYear": 2004,
+    "year": 2004,
+    "biomeId": "stargazer_blacksite",
+    "biome": "SPACE_HULK_DOCK",
+    "recommendedBiomeLabel": "Station Orbitale Chokehold — Soutes de Fret Quarantaine (2004)",
+    "weather": "Atmosphère confinée viciée, sifflement des conduits de ventilation et apesanteur partielle",
+    "lighting": "Lumière d'urgence stroboscopique ambrée et projecteurs de manutention industriels",
+    "verticality": "MOYENNE (Conteneurs de fret empilés sur 4 niveaux, ponts roulants et coursives)",
+    "destructibility": "Conteneurs pressurisés perforables, verrous magnétiques de portes et grilles",
+    "interactables": [
+      "Pont roulant motorisé déplaçable pour écraser des cibles au sol",
+      "Sas de confinement de décharge d'urgence vers le vide spatial",
+      "Système de mousse d'extinction incendiaire aveuglant les senseurs"
+    ],
+    "environmentSummary": "Labyrinthe de conteneurs de fret scellés au cœur d'une station spatiale de quarantaine où mercenaires, xénomorphes et chasseurs d'honneur s'affrontent au corps à corps.",
+    "description": "Labyrinthe de conteneurs de fret scellés au cœur d'une station spatiale de quarantaine où mercenaires, xénomorphes et chasseurs d'honneur s'affrontent au corps à corps.",
+    "tacticalNotes": "Les angles morts entre les conteneurs sont mortels ; le combat au smart-disc ricoche avec une efficacité redoutable dans les travées.",
+    "dimensionsM": {
+      "width": 440,
+      "length": 440,
+      "height": 55
+    },
+    "elevationRangeM": [
+      0,
+      55
+    ],
+    "tacticalSectors": [
+      "Travée Centrale des Conteneurs de Fret Dangereux",
+      "Poste de Surveillance Électronique Suspendu & Sas Principal",
+      "Quai de Déchargement Automatisé & Chariots Magnétiques",
+      "Zone de Quarantaine Biologique aux Sas Fracturés"
+    ],
+    "keyLandmarks": [
+      "Grue de transbordement colossale bloquée en travers de la travée principale",
+      "Conteneur de transport xénomorphe découpé de l'intérieur à l'acide",
+      "Chariot élévateur de combat blindé écrasé contre un pilier porteur"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "CARGO_CRUSH",
+        "description": "Piles de conteneurs instables pouvant s'effondrer"
+      },
+      {
+        "type": "VACUUM_DECOMPRESSION",
+        "description": "Sas défaillants aspirant l'atmosphère vers l'espace"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_super_predator_berserker"
+    ],
+    "heroSquadId": "squad_avp_chokehold_containment_unit",
+    "villainSquadId": null
+  }
 ]);
 
 // =========================================================================
@@ -5072,6 +5434,91 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     "wieldedBy": "Plongeurs de combat en scaphandre hyperbare lourd",
     "yautjaCounterplay": "Esquive tridimensionnelle dans les colonnes d'eau et découpe au trident énergétique.",
     "description": "Arme de brèche sous-marine propulsant des fléchettes profilées créant une bulle de supercavitation pour maintenir une vélocité hypersonique sous l'eau et transpercer les carapaces abyssales."
+  }
+,
+  {
+    "id": "wpn_dark_ages_damascus_broadsword",
+    "name": "Damascus Steel Crusader Broadsword",
+    "universe": "PREDATOR",
+    "faction": "Knights Templar Order",
+    "originMedia": "Predator: Dark Ages (1348)",
+    "caliber": "Lame Forgée Acier de Damas Plié 120cm",
+    "damageType": "HEAVY_STEEL_SLASH",
+    "effectiveRangeMeters": 2.4,
+    "rateOfFire": "Enchaînement d'estocs et de tailles médiévales",
+    "wieldedBy": "Chevaliers templiers et commandants de garnison féodale",
+    "yautjaCounterplay": "Parade au combi-stick renforcé et contre-dégagement par projection de lames de poignet.",
+    "description": "Épée bâtarde forgée à la main en acier de Damas feuilleté d'une robustesse exceptionnelle, capable de fendre les armures de mailles et d'entamer les blindages légers extraterrestres."
+  },
+  {
+    "id": "wpn_siberia_ak47_spetsnaz_carbine",
+    "name": "Kalashnikov AK-47 Sub-Zero Spetsnaz Carbine",
+    "universe": "PREDATOR",
+    "faction": "Soviet Spetsnaz Alpha",
+    "originMedia": "Predator: Cold War - Siberia (1991)",
+    "caliber": "7.62x39mm M43 Perforant Spécial Froid",
+    "damageType": "BALLISTIC_RAPID_PENETRATING",
+    "effectiveRangeMeters": 65,
+    "rateOfFire": "Automatique cadencé (600 coups/min)",
+    "wieldedBy": "Commandos parachutistes Spetsnaz d'élite en Sibérie",
+    "yautjaCounterplay": "Blindage dorsal Yautja et diversion thermique par fusée plasma pour désorienter les tireurs.",
+    "description": "Carabine d'assaut soviétique modifiée pour opérer sans enrayement jusqu'à -50°C, équipée d'un silencieux PBS-1 et chambrant des cartouches à noyau d'acier durci."
+  },
+  {
+    "id": "wpn_earth_war_heavy_plasma_rifle",
+    "name": "Armat M90 Heavy Siege Plasma Rifle",
+    "universe": "ALIEN",
+    "faction": "Earth Reclamation Marine Brigade",
+    "originMedia": "Aliens: Earth War (1990)",
+    "caliber": "Packs de Plasma Lourd Magnéto-Confinés 40MW",
+    "damageType": "SUPERHEATED_PLASMA_DISCHARGE",
+    "effectiveRangeMeters": 80,
+    "rateOfFire": "Semi-automatique lourd à refroidissement forcé (90 coups/min)",
+    "wieldedBy": "Troupiers de siège et vétérans de la reconquête de la Terre",
+    "yautjaCounterplay": "Réflecteur d'énergie plasmique de poignet et frappe éclair au fouet avant stabilisation du tir.",
+    "description": "Fusil lourd militaire de dernière ligne projetant des sphères de plasma à très haute température capables de désintégrer les prétoriens et de vaporiser les carapaces blindées."
+  },
+  {
+    "id": "wpn_thaw_cryo_thermal_lance",
+    "name": "LV-695 Core Cryo-Thermal Drilling Lance",
+    "universe": "ALIEN",
+    "faction": "Weyland Ice Drilling Contractors",
+    "originMedia": "Alien: Thaw (2023)",
+    "caliber": "Jet Thermique à Gaz Ionisé & Azote Supercritique",
+    "damageType": "THERMAL_DRILL_FUSION",
+    "effectiveRangeMeters": 8,
+    "rateOfFire": "Flux thermique continu haute pression",
+    "wieldedBy": "Ingénieurs de forage cryogénique de la lune LV-695",
+    "yautjaCounterplay": "Attaque à longue portée au combi-stick ou tir de plasma pour percer le réservoir pressurisé.",
+    "description": "Outil industriel lourd conçu pour forer les calottes de glace les plus dures, capable de faire fondre instantanément la roche ou la chitine xénomorphe par fusion thermique directe."
+  },
+  {
+    "id": "wpn_lv1201_grenade_launcher_m79",
+    "name": "Armat M79-A2 Multi-Round Grenade Launcher",
+    "universe": "AVP",
+    "faction": "Weyland Iron Guards Pod 5",
+    "originMedia": "Aliens versus Predator 2 (2001)",
+    "caliber": "Grenades Explosives & Phosphore 40mm",
+    "damageType": "HEAVY_EXPLOSIVE_CONCUSSION",
+    "effectiveRangeMeters": 70,
+    "rateOfFire": "Barillet rotatif semi-automatique (6 coups, 120 coups/min)",
+    "wieldedBy": "Gardes d'élite et mercenaires de sécurité sur LV-1201",
+    "yautjaCounterplay": "Saut d'esquive acrobatique d'arbre en passerelle et tir plasma réflexe pour intercepter les projectiles lents en vol.",
+    "description": "Lance-grenades d'appui lourd à barillet rotatif délivrant un tapis de déflagrations explosives et incendiaires dévastatrices dans les passerelles et coursives du complexe suspendu."
+  },
+  {
+    "id": "wpn_chokehold_tactical_riot_shotgun",
+    "name": "Chokehold 10-Gauge Tactical Riot Shotgun",
+    "universe": "AVP",
+    "faction": "Station Quarantine Enforcement",
+    "originMedia": "Aliens vs. Predator: Chokehold (2004)",
+    "caliber": "Calibre 10 Magnum Balle Cuirassée & Chevrotine Dense",
+    "damageType": "KINETIC_SHOCK_CONCUSSION",
+    "effectiveRangeMeters": 30,
+    "rateOfFire": "Pompe rapide renforcée (150 coups/min)",
+    "wieldedBy": "Gardiens pénitentiaires de quarantaine orbitale",
+    "yautjaCounterplay": "Projection de filet de capture Yautja et camouflage optique pour contourner les angles morts des soutes.",
+    "description": "Fusil à pompe lourd chambrant des cartouches de calibre 10 ultra-puissantes conçues pour stopper net les charges de créatures massives dans les travées de conteneurs."
   }
 ]);
 

@@ -3290,6 +3290,24 @@ export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
   wpn_xenogenesis_hyperbaric_harpoon_gun: makeWeaponBallisticProfile('wpn_xenogenesis_hyperbaric_harpoon_gun', {
     damage: 78, cooldown: 1.8, rangeM: 60, soundRadiusM: 40, projectileColor: 0x00e5ff, archetype: 'supercavitating_harpoon', cadence: 'pneumatic_single_launch', damageType: 'piercing',
   }),
+  wpn_dark_ages_damascus_broadsword: makeWeaponBallisticProfile('wpn_dark_ages_damascus_broadsword', {
+    damage: 85, cooldown: 1.4, rangeM: 4.5, soundRadiusM: 15, projectileColor: 0xe0e7ff, archetype: 'heavy_damascus_broadsword', cadence: 'two_handed_cleave', damageType: 'slashing',
+  }),
+  wpn_siberia_ak47_spetsnaz_carbine: makeWeaponBallisticProfile('wpn_siberia_ak47_spetsnaz_carbine', {
+    damage: 34, cooldown: 0.18, rangeM: 70, soundRadiusM: 30, projectileColor: 0xffaa44, archetype: 'suppressed_cold_war_carbine', cadence: 'subsonic_burst', damageType: 'ballistic',
+  }),
+  wpn_earth_war_heavy_plasma_rifle: makeWeaponBallisticProfile('wpn_earth_war_heavy_plasma_rifle', {
+    damage: 82, cooldown: 1.5, rangeM: 90, soundRadiusM: 100, projectileColor: 0x00ffcc, archetype: 'armat_heavy_plasma_rifle', cadence: 'charged_plasma_discharge', damageType: 'energy',
+  }),
+  wpn_thaw_cryo_thermal_lance: makeWeaponBallisticProfile('wpn_thaw_cryo_thermal_lance', {
+    damage: 72, cooldown: 0.9, rangeM: 25, soundRadiusM: 65, projectileColor: 0xff6600, archetype: 'industrial_thermal_breach_lance', cadence: 'continuous_fusion_beam', damageType: 'thermal',
+  }),
+  wpn_lv1201_grenade_launcher_m79: makeWeaponBallisticProfile('wpn_lv1201_grenade_launcher_m79', {
+    damage: 95, cooldown: 2.2, rangeM: 80, soundRadiusM: 120, projectileColor: 0xff3300, archetype: 'break_action_grenade_launcher', cadence: 'high_explosive_single_shot', damageType: 'explosive',
+  }),
+  wpn_chokehold_tactical_riot_shotgun: makeWeaponBallisticProfile('wpn_chokehold_tactical_riot_shotgun', {
+    damage: 58, cooldown: 0.35, rangeM: 35, soundRadiusM: 90, projectileColor: 0xffbb22, archetype: 'gauge_10_containment_shotgun', cadence: 'heavy_buckshot_spread', damageType: 'ballistic',
+  }),
 });
 
 function resolveNpcRoleWeaponId(npcType) {
