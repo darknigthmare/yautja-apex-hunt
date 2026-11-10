@@ -927,3 +927,91 @@ test('AudioSynthesizer procedural Vague 14 SFX methods execute safely in headles
   assert.ok(harpoon.durationSeconds > 0);
   assert.equal(harpoon.played, false);
 });
+
+test('Vague 15 canonical NPC weapons resolve to rich ballistic and acoustic profiles', () => {
+  const vague15Weapons = [
+    {
+      id: 'wpn_fleener_creek_remington_1100',
+      archetype: 'semi_auto_shotgun',
+      damage: 38,
+      rangeM: 35,
+      soundRadiusM: 80,
+      projectileColor: 0xffaa44,
+    },
+    {
+      id: 'wpn_demons_gold_mp40_smg',
+      archetype: 'submachine_gun',
+      damage: 24,
+      rangeM: 55,
+      soundRadiusM: 70,
+      projectileColor: 0xffcc66,
+    },
+    {
+      id: 'wpn_female_war_heavy_incinerator',
+      archetype: 'heavy_napalm_incinerator',
+      damage: 65,
+      rangeM: 30,
+      soundRadiusM: 55,
+      projectileColor: 0xff4500,
+    },
+    {
+      id: 'wpn_nightmare_spears_tactical_carbine',
+      archetype: 'subsonic_tactical_carbine',
+      damage: 32,
+      rangeM: 75,
+      soundRadiusM: 25,
+      projectileColor: 0x66aaff,
+    },
+    {
+      id: 'wpn_requiem_morales_benelli_m4',
+      archetype: 'combat_shotgun_slug',
+      damage: 52,
+      rangeM: 45,
+      soundRadiusM: 85,
+      projectileColor: 0xff8833,
+    },
+    {
+      id: 'wpn_xenogenesis_hyperbaric_harpoon_gun',
+      archetype: 'supercavitating_harpoon',
+      damage: 78,
+      rangeM: 60,
+      soundRadiusM: 40,
+      projectileColor: 0x00e5ff,
+    },
+  ];
+
+  for (const expected of vague15Weapons) {
+    const profile = NPC_WEAPON_BALLISTIC_PROFILES[expected.id];
+    assert.ok(profile, `Le profil balistique de ${expected.id} doit exister dans NPC_WEAPON_BALLISTIC_PROFILES`);
+    assert.equal(profile.id, expected.id);
+    assert.equal(profile.archetype, expected.archetype);
+    assert.equal(profile.damage, expected.damage);
+    assert.equal(profile.rangeM, expected.rangeM);
+    assert.equal(profile.soundRadiusM, expected.soundRadiusM);
+    assert.equal(profile.projectileColor, expected.projectileColor);
+  }
+});
+
+test('AudioSynthesizer procedural Vague 15 SFX methods execute safely in headless Node environment', () => {
+  const remington = audioSynth.playRemingtonAutoShotgunBlast();
+  assert.ok(remington && remington.event === 'remington_auto_shotgun_blast');
+  assert.ok(remington.concussionHz > 0);
+  assert.ok(remington.metallicBoltHz > remington.concussionHz);
+  assert.ok(remington.durationSeconds > 0);
+  assert.equal(remington.played, false);
+
+  const napalm = audioSynth.playNapalmIncineratorRoar();
+  assert.ok(napalm && napalm.event === 'napalm_incinerator_roar');
+  assert.ok(napalm.ignitionBassHz > 0);
+  assert.ok(napalm.hissNoiseHz > napalm.ignitionBassHz);
+  assert.ok(napalm.durationSeconds > 0);
+  assert.equal(napalm.played, false);
+
+  const harpoon = audioSynth.playSupercavitatingHarpoonDischarge();
+  assert.ok(harpoon && harpoon.event === 'supercavitating_harpoon_discharge');
+  assert.ok(harpoon.cavitationPopHz > 0);
+  assert.ok(harpoon.bubbleCollapseHz > harpoon.cavitationPopHz);
+  assert.ok(harpoon.durationSeconds > 0);
+  assert.equal(harpoon.played, false);
+});
+

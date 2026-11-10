@@ -359,16 +359,16 @@ test('getVaultCardMiniatureSvg génère une miniature vectorielle 180x76 avec en
   }
 });
 
-test('src/main.js intègre les icônes d’équipement vectorielles dans renderHuntLoadoutUI et synchronise les compteurs de filtres Vague 14', () => {
+test('src/main.js intègre les icônes d’équipement vectorielles dans renderHuntLoadoutUI et synchronise les compteurs de filtres Vague 15', () => {
   const mainSource = fs.readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
   assert.ok(mainSource.includes("import { getEquipmentIconSvg } from './ui/EquipmentIcons.js';"), 'main.js doit importer getEquipmentIconSvg');
   assert.ok(mainSource.includes('loadout-core-icon') && mainSource.includes('getEquipmentIconSvg(id, 16)'), 'main.js doit intégrer les icônes sur loadout-core-icon');
   assert.ok(mainSource.includes('loadout-item-icon') && mainSource.includes('getEquipmentIconSvg(item.id, 22)'), 'main.js doit intégrer les icônes sur loadout-item-icon');
   assert.ok(mainSource.includes('choice.append(input, icon, copy, cost)'), 'L\'icône doit être insérée avant l\'élément copy dans loadout-choice');
-  assert.ok(mainSource.includes('.squad-filter-pill') && mainSource.includes('120'), 'setupTaxonomyAndMultiverse doit synchroniser squad-filter-pill à 120');
-  assert.ok(mainSource.includes('.maps-filter-pill') && mainSource.includes('108'), 'setupTaxonomyAndMultiverse doit synchroniser maps-filter-pill à 108');
-  assert.ok(mainSource.includes('.weapons-filter-pill') && mainSource.includes('214'), 'setupTaxonomyAndMultiverse doit synchroniser weapons-filter-pill à 214');
-  assert.ok(mainSource.includes('.codex-filter-pill') && mainSource.includes('198'), 'setupTaxonomyAndMultiverse doit synchroniser codex-filter-pill à 198');
+  assert.ok(mainSource.includes('.squad-filter-pill') && mainSource.includes('126'), 'setupTaxonomyAndMultiverse doit synchroniser squad-filter-pill à 126');
+  assert.ok(mainSource.includes('.maps-filter-pill') && mainSource.includes('114'), 'setupTaxonomyAndMultiverse doit synchroniser maps-filter-pill à 114');
+  assert.ok(mainSource.includes('.weapons-filter-pill') && mainSource.includes('226'), 'setupTaxonomyAndMultiverse doit synchroniser weapons-filter-pill à 226');
+  assert.ok(mainSource.includes('.codex-filter-pill') && mainSource.includes('210'), 'setupTaxonomyAndMultiverse doit synchroniser codex-filter-pill à 210');
 });
 
 test('SharedReferenceVault intègre la miniature et l’icône de catégorie sur chaque carte de catalogue', async () => {

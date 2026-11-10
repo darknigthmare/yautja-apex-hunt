@@ -4108,6 +4108,336 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'wakagashira_ren', name: 'Lieutenant Ren Murata', role: 'Duelliste de Passerelle Aérienne', weapon: 'Wakizashi Vibratoire & Pistolet 9mm Téflon', weaponId: 'wpn_tokyo_cyber_yakuza_katana', vitalityRatio: 1.35, hp: 710, armor: 65, trophy: 'Veste de Soie Tatouée d\'un Démon Oni Ensanglanté' },
       { id: 'cyber_enforcer_goro', name: 'Exécuteur Blindé Goro', role: 'Garde du Corps Augmenté', weapon: 'Nodachi Lourd Haute Fréquence & Plaque Sous-Cutanée', weaponId: 'wpn_tokyo_cyber_yakuza_katana', vitalityRatio: 1.4, hp: 760, armor: 75, trophy: 'Plaque Crânienne Cybernétique Chromée' }
     ]
+  },
+  {
+    "id": "squad_pred_fleener_creek_posse",
+    "name": "Posse de Fleener Creek — Shérif Enoch Powell (1996)",
+    "universe": "PREDATOR",
+    "shortName": "Posse Fleener Creek (3 Chasseurs)",
+    "category": "PARAMILITARY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Predator: Kindred (1996)",
+    "biomeId": "jungle",
+    "recommendedBiomeLabel": "Fleener Creek Oregon (1996)",
+    "primaryMapId": "map_pred_fleener_creek_valley",
+    "weaponLoadout": [
+      "wpn_fleener_creek_remington_1100"
+    ],
+    "description": "Milice de montagne et shérif chevronné traquant un fugitif sadique dans les forêts de l'Oregon aux côtés d'un Yautja d'honneur.",
+    "tactics": "Embuscades en lisière de bois, tirs de chevrotine croisés et pièges à loups dissimulés sous les fougères.",
+    "totalHonorReward": 6400,
+    "soloVariantId": "prey_bad_blood_warlord",
+    "members": [
+      {
+        "id": "sheriff_enoch_powell",
+        "name": "Shérif Enoch Powell",
+        "role": "Vétéran Traqueur & Homme de Loi",
+        "weapon": "Remington 1100 Tactical Calibre 12 & Étoile en Argent",
+        "weaponId": "wpn_fleener_creek_remington_1100",
+        "vitalityRatio": 1.45,
+        "hp": 760,
+        "armor": 60,
+        "trophy": "Insigne Étoilé de Shérif Gravé & Cartouchière Cuir"
+      },
+      {
+        "id": "deputy_hank_miller",
+        "name": "Adjoint Hank Miller",
+        "role": "Tireur d'Appui Forestier",
+        "weapon": "Remington 1100 Calibre 12 & Projecteur Portatif",
+        "weaponId": "wpn_fleener_creek_remington_1100",
+        "vitalityRatio": 1.3,
+        "hp": 680,
+        "armor": 50,
+        "trophy": "Ceinturon de Police Renforcé & Menottes Acier"
+      },
+      {
+        "id": "trapper_clint_bowers",
+        "name": "Trappeur Clint Bowers",
+        "role": "Pisteur des Pentes Rocheuses",
+        "weapon": "Carabine de Chasse & Hachette de Bûcheron",
+        "weaponId": "wpn_fleener_creek_remington_1100",
+        "vitalityRatio": 1.35,
+        "hp": 700,
+        "armor": 55,
+        "trophy": "Piège à Ours Antique en Acier Forgé"
+      }
+    ]
+  },
+  {
+    "id": "squad_pred_demons_gold_expedition",
+    "name": "Expédition Trésor Nazi — Marais d'Amérique du Sud (1997)",
+    "universe": "PREDATOR",
+    "shortName": "Pillards Trésor Nazi (3 Mercenaires)",
+    "category": "MILITARY_COMMANDO",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Predator: Demon's Gold (1997)",
+    "biomeId": "jungle",
+    "recommendedBiomeLabel": "Marais Amazonien Trésor Maudit (1997)",
+    "primaryMapId": "map_pred_demons_gold_swamp",
+    "weaponLoadout": [
+      "wpn_demons_gold_mp40_smg"
+    ],
+    "description": "Officiers fuyards et mercenaires alourdis de lingots d'or pillés, traqués dans les marécages fangeux par un prédateur impitoyable.",
+    "tactics": "Tirs de barrage fébriles en éventail, panique dans les bourbiers et regroupement défensif autour des caisses d'or.",
+    "totalHonorReward": 6300,
+    "soloVariantId": "prey_jungle_hunter_1987",
+    "members": [
+      {
+        "id": "oberst_klaus_von_stein",
+        "name": "Oberst Klaus von Stein",
+        "role": "Commandant de l'Escorte du Trésor",
+        "weapon": "MP 40 Parabellum Chromé & Dague d'Officier",
+        "weaponId": "wpn_demons_gold_mp40_smg",
+        "vitalityRatio": 1.4,
+        "hp": 730,
+        "armor": 65,
+        "trophy": "Dague de Parade Gravée & Coffre de Lingots d'Or"
+      },
+      {
+        "id": "unteroffizier_gunther",
+        "name": "Unteroffizier Günther Bahr",
+        "role": "Fusilier de Flanc Fangeux",
+        "weapon": "MP 40 9mm & Grenade à Manche Stielhandgranate",
+        "weaponId": "wpn_demons_gold_mp40_smg",
+        "vitalityRatio": 1.3,
+        "hp": 690,
+        "armor": 60,
+        "trophy": "Casque d'Acier Camouflé Boue & Plaque d'Identité"
+      },
+      {
+        "id": "jungle_guide_esteban",
+        "name": "Pisteur Mercenaire Esteban",
+        "role": "Éclaireur Maraîcher",
+        "weapon": "Machette Lourde & Pistolet Luger P08",
+        "weaponId": "wpn_demons_gold_mp40_smg",
+        "vitalityRatio": 1.25,
+        "hp": 650,
+        "armor": 45,
+        "trophy": "Boussole Militaire Cuirassée en Laiton Émeraude"
+      }
+    ]
+  },
+  {
+    "id": "squad_alien_female_war_strike_team",
+    "name": "Force d'Assaut Terre & Ruche Mère — Wilks & Billie (1990)",
+    "universe": "ALIEN",
+    "shortName": "Assaut Ruche Mère (3 Vétérans)",
+    "category": "PARAMILITARY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens: The Female War (1990)",
+    "biomeId": "hive_lv426",
+    "recommendedBiomeLabel": "Flèche de la Reine Mère (1990)",
+    "primaryMapId": "map_alien_hiveworld_spire",
+    "weaponLoadout": [
+      "wpn_female_war_heavy_incinerator"
+    ],
+    "description": "Escouade de vétérans endurcis menée par Billie et Wilks s'enfonçant dans la mégastructure résineuse pour capturer la souveraine de l'essaim.",
+    "tactics": "Mur de flammes continu pour brûler les ouvrières, tirs de couverture lourds et progression en formation triangle impénétrable.",
+    "totalHonorReward": 7500,
+    "soloVariantId": "prey_xeno_warrior",
+    "members": [
+      {
+        "id": "veteran_wilks",
+        "name": "Caporal Wilks",
+        "role": "Vétéran Défiguré de l'Assaut",
+        "weapon": "Lance-Flammes Lourd M240-B & Fusil à Impulsion",
+        "weaponId": "wpn_female_war_heavy_incinerator",
+        "vitalityRatio": 1.5,
+        "hp": 820,
+        "armor": 80,
+        "trophy": "Masque Chirurgical Défiguré & Balise de Téléguidage"
+      },
+      {
+        "id": "survivor_billie",
+        "name": "Billie la Survivante",
+        "role": "Spécialiste Ruche & Soutien Psychique",
+        "weapon": "Lance-Flammes Portatif & Pistolet Calibre Lourd",
+        "weaponId": "wpn_female_war_heavy_incinerator",
+        "vitalityRatio": 1.35,
+        "hp": 710,
+        "armor": 60,
+        "trophy": "Médaillon Familial Calciné d'Acheron LV-426"
+      },
+      {
+        "id": "sergeant_blake",
+        "name": "Sergent Mitch Blake",
+        "role": "Sapeur de Brèche Incendiaire",
+        "weapon": "Double Cuve Napalm M240-B & Cartouches Phosphore",
+        "weaponId": "wpn_female_war_heavy_incinerator",
+        "vitalityRatio": 1.45,
+        "hp": 780,
+        "armor": 75,
+        "trophy": "Détendeur Haute Pression en Titane Brûlé"
+      }
+    ]
+  },
+  {
+    "id": "squad_alien_nightmare_asylum_battalion",
+    "name": "Bataillon Xéno-Dressé du Général Spears (1989)",
+    "universe": "ALIEN",
+    "shortName": "Bataillon Spears (3 Troupiers)",
+    "category": "MILITARY_COMMANDO",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens: Nightmare Asylum (1989)",
+    "biomeId": "stargazer_blacksite",
+    "recommendedBiomeLabel": "Station Outpost Spears (1989)",
+    "primaryMapId": "map_alien_nightmare_outpost",
+    "weaponLoadout": [
+      "wpn_nightmare_spears_tactical_carbine"
+    ],
+    "description": "Légion d'élite du Général Spears équipée de carabines subsoniques et d'électrodes de contrôle neural pour commander des xénomorphes asservis.",
+    "tactics": "Tirs de précision subsoniques coordonnés, lâchers de créatures conditionnées et verrous de sas électroniques.",
+    "totalHonorReward": 7200,
+    "soloVariantId": "prey_xeno_praetorian_royal",
+    "members": [
+      {
+        "id": "general_spears",
+        "name": "Général Spears",
+        "role": "Commandant Mégalomane de l'Avant-Poste",
+        "weapon": "Carabine Subsonique Spears & Télécommande Neurale",
+        "weaponId": "wpn_nightmare_spears_tactical_carbine",
+        "vitalityRatio": 1.55,
+        "hp": 850,
+        "armor": 85,
+        "trophy": "Bâton de Commandement Électro-Synaptique en Platine"
+      },
+      {
+        "id": "shock_trooper_vance",
+        "name": "Capitaine Vance",
+        "role": "Instructeur de la Meute Xéno",
+        "weapon": "Carabine Subsonique Perforante & Taser Haute Tension",
+        "weaponId": "wpn_nightmare_spears_tactical_carbine",
+        "vitalityRatio": 1.4,
+        "hp": 750,
+        "armor": 70,
+        "trophy": "Émetteur d'Ondes Synaptiques Portatif Weyland"
+      },
+      {
+        "id": "bio_engineer_dr_curtis",
+        "name": "Dr. Curtis",
+        "role": "Chirurgien d'Implants Crâniens",
+        "weapon": "Pistolet Injecteur Pneumatique & Scalpel Vibro",
+        "weaponId": "wpn_nightmare_spears_tactical_carbine",
+        "vitalityRatio": 1.3,
+        "hp": 670,
+        "armor": 55,
+        "trophy": "Électrode Neurale Xénomorphe en Céramique Dorée"
+      }
+    ]
+  },
+  {
+    "id": "squad_avp_requiem_wolf_cleanup",
+    "name": "Équipe de Nettoyage & Survie de Gunnison — Shérif Morales (2007)",
+    "universe": "AVP",
+    "shortName": "Survie Gunnison (3 Résistants)",
+    "category": "PARAMILITARY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens vs. Predator: Requiem (2007)",
+    "biomeId": "gunnison_outbreak",
+    "recommendedBiomeLabel": "Cimetière & Ville de Gunnison (2007)",
+    "primaryMapId": "map_avp_gunnison_cemetery_rain",
+    "weaponLoadout": [
+      "wpn_requiem_morales_benelli_m4"
+    ],
+    "description": "Survivants armés et shérif de Gunnison luttant désespérément pour leur survie au milieu du duel titanesque entre Wolf et le Predalien.",
+    "tactics": "Tirs de barrage au fusil de combat calibre 12, repli stratégique vers l'armurerie et tirs de fusées éclairantes.",
+    "totalHonorReward": 6700,
+    "soloVariantId": "prey_predalien_abomination",
+    "members": [
+      {
+        "id": "sheriff_eddie_morales",
+        "name": "Shérif Eddie Morales",
+        "role": "Commandant des Opérations de Survie",
+        "weapon": "Benelli M4 Super 90 Magnum & Radio Tactique",
+        "weaponId": "wpn_requiem_morales_benelli_m4",
+        "vitalityRatio": 1.45,
+        "hp": 770,
+        "armor": 65,
+        "trophy": "Insigne de Shérif du Comté de Gunnison Maculé d'Acide"
+      },
+      {
+        "id": "dallas_howard",
+        "name": "Dallas Howard",
+        "role": "Protecteur Civil Endurci",
+        "weapon": "Fusil Calibre 12 Tactique & Pistolet 9mm",
+        "weaponId": "wpn_requiem_morales_benelli_m4",
+        "vitalityRatio": 1.35,
+        "hp": 720,
+        "armor": 55,
+        "trophy": "Clés de l'Armurerie Municipale de Gunnison"
+      },
+      {
+        "id": "ricky_howard",
+        "name": "Ricky Howard",
+        "role": "Tireur Éclaireur Mobile",
+        "weapon": "Carabine Sportive & Projecteur Halogène",
+        "weaponId": "wpn_requiem_morales_benelli_m4",
+        "vitalityRatio": 1.25,
+        "hp": 640,
+        "armor": 45,
+        "trophy": "Lunette de Tir Balistique Tout-Temps Antibuée"
+      }
+    ]
+  },
+  {
+    "id": "squad_avp_xenogenesis_strike_cadre",
+    "name": "Cadre Tactique Anti-Ruche Sous-Marine — Xénogenèse (2002)",
+    "universe": "AVP",
+    "shortName": "Cadre Xénogenèse (3 Scaphandriers)",
+    "category": "PARAMILITARY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens vs. Predator: Xenogenesis (2002)",
+    "biomeId": "genna_deathworld",
+    "recommendedBiomeLabel": "Fosse Abyssale Hydrothermale (2002)",
+    "primaryMapId": "map_avp_xenogenesis_suboceanic_trench",
+    "weaponLoadout": [
+      "wpn_xenogenesis_hyperbaric_harpoon_gun"
+    ],
+    "description": "Plongeurs de combat en scaphandre lourd hyperbare affrontant traqueurs Yautja aquatiques et xénomorphes hydrodynamiques dans les fosses.",
+    "tactics": "Tirs de fléchettes supercavitantes perforantes, utilisation de balises sonores étourdissantes et ancrage magnétique aux parois basaltiques.",
+    "totalHonorReward": 7300,
+    "soloVariantId": "prey_xeno_sea_swimmer",
+    "members": [
+      {
+        "id": "deep_diver_captain_tate",
+        "name": "Commandant de Plongée Tate",
+        "role": "Pilote de Scaphandre Titane 1000 Bars",
+        "weapon": "Fusil Harpon Supercavitant Lourd & Électrodes",
+        "weaponId": "wpn_xenogenesis_hyperbaric_harpoon_gun",
+        "vitalityRatio": 1.5,
+        "hp": 810,
+        "armor": 90,
+        "trophy": "Hublot de Casque Hyperbare en Quartz Blindé"
+      },
+      {
+        "id": "spear_diver_milos",
+        "name": "Plongeur Harponneur Milos",
+        "role": "Chasseur de Ruche Sous-Marine",
+        "weapon": "Double Harpon Pneumatique Supercavitant",
+        "weaponId": "wpn_xenogenesis_hyperbaric_harpoon_gun",
+        "vitalityRatio": 1.35,
+        "hp": 730,
+        "armor": 80,
+        "trophy": "Profondimètre Sous-Marin Numérique Étanche"
+      },
+      {
+        "id": "trench_technician_lyra",
+        "name": "Ingénieure de Fosse Lyra",
+        "role": "Opératrice Sonar & Balises de Choc",
+        "weapon": "Propulseur Sous-Marin & Fusil Harpon Court",
+        "weaponId": "wpn_xenogenesis_hyperbaric_harpoon_gun",
+        "vitalityRatio": 1.3,
+        "hp": 690,
+        "armor": 70,
+        "trophy": "Transducteur Sonar Piézoélectrique Abyssal"
+      }
+    ]
   }
 ]);
 

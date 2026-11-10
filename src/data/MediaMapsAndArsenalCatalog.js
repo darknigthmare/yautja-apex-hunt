@@ -2854,6 +2854,367 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     keyPreyIds: ['alien_base_quinn_mckenna_ranger_2018', 'prey_xeno_warrior'],
     heroSquadId: 'squad_avp_tokyo_yakuza_clan',
     villainSquadId: null
+  },
+  {
+    "id": "map_pred_fleener_creek_valley",
+    "name": "Fleener Creek — Vallée Minière & Forêt de Conifères (1996)",
+    "universe": "PREDATOR",
+    "originMedia": "Predator: Kindred (Dark Horse Comics 1996)",
+    "sourceMedia": "Predator: Kindred (1996)",
+    "sourceType": "COMIC",
+    "releaseYear": 1996,
+    "year": 1996,
+    "biomeId": "jungle",
+    "biome": "GEOTHERMAL_FOREST",
+    "recommendedBiomeLabel": "Fleener Creek — Pentes Boisées de l'Oregon (1996)",
+    "weather": "Brume matinale dense, aiguilles de pin humides et crachin glacial",
+    "lighting": "Lueurs crépusculaires filtrées à travers les hautes cimes des sapins Douglas",
+    "verticality": "ÉLEVÉE (Pentes rocheuses abruptes, galeries de mine à flanc de colline et miradors de bûcherons)",
+    "destructibility": "Clôtures en bois, cabanons d'outillage minier et troncs vermoulus",
+    "interactables": [
+      "Treuil hydraulique de wagonnet de mine fonctionnel",
+      "Citerne d'eau rouillée déversant un rideau liquide masquant la signature thermique",
+      "Balise radio du shérif émettant un signal de détresse acoustique"
+    ],
+    "environmentSummary": "Vallée forestière encaissée dominée par une mine désaffectée où le shérif local traque un psychopathe tandis qu'un Yautja d'honneur observe leurs démarches.",
+    "description": "Vallée forestière encaissée dominée par une mine désaffectée où le shérif local traque un psychopathe tandis qu'un Yautja d'honneur observe leurs démarches.",
+    "tacticalNotes": "La couverture forestière dense facilite l'embuscade aérienne sur les branches maîtresses ; attention aux galeries étroites qui interdisent le tir au canon d'épaule.",
+    "dimensionsM": {
+      "width": 550,
+      "length": 550,
+      "height": 120
+    },
+    "elevationRangeM": [
+      0,
+      120
+    ],
+    "tacticalSectors": [
+      "Puits d'Aération & Entrée Principale de la Mine Fleener",
+      "Ligne de Chemin de Fer Forestière & Wagonnets Abandonnés",
+      "Clairière du Poste d'Affût & Cabane du Shérif",
+      "Gorge Rocheuse du Torrent aux Rapides Glacés"
+    ],
+    "keyLandmarks": [
+      "Chevalement de mine en bois centenaire surplombant la canopée",
+      "Camion de patrouille du shérif embourbé dans l'ornière",
+      "Fougeraie épaisse tapissée de pièges à mâchoires"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "MINE_SHAFT_DROP",
+        "description": "Puits de mine non balisés dissimulés sous les branchages"
+      },
+      {
+        "type": "BEAR_TRAP",
+        "description": "Pièges à loups rouillés dissimulés dans les sous-bois"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_bad_blood_warlord"
+    ],
+    "heroSquadId": "squad_pred_fleener_creek_posse",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_pred_demons_gold_swamp",
+    "name": "Amazonie — Marécages de l'Or Maudit (1997)",
+    "universe": "PREDATOR",
+    "originMedia": "Predator: Demon's Gold (Dark Horse Comics 1997)",
+    "sourceMedia": "Predator: Demon's Gold (1997)",
+    "sourceType": "COMIC",
+    "releaseYear": 1997,
+    "year": 1997,
+    "biomeId": "jungle",
+    "biome": "TROPICAL_COAST_JUNGLE",
+    "recommendedBiomeLabel": "Marais Équatorial — Trésor Maudit (1997)",
+    "weather": "Humidité étouffante à 95%, miasmes bouillonnants et pluie tropicale battante",
+    "lighting": "Obscurité moite sous canopée impénétrable percée de reflets dorés d'eaux stagnantes",
+    "verticality": "MOYENNE (Mangroves aux racines géantes aériennes, arbres fétides et barques échouées)",
+    "destructibility": "Végétation aquatique dense, caisses de transport en bois pourri et branchages",
+    "interactables": [
+      "Caisse de lingots d'or abandonnée servant de leurre sonore",
+      "Canot fluvial à moteur hors-bord en panne réutilisable pour diversion",
+      "Nid d'insectes venimeux provoquant une perturbation sensorielle"
+    ],
+    "environmentSummary": "Marais saumâtre fangeux où des officiers en fuite alourdis de lingots d'or sont méthodiquement cernés par un prédateur insaisissable.",
+    "description": "Marais saumâtre fangeux où des officiers en fuite alourdis de lingots d'or sont méthodiquement cernés par un prédateur insaisissable.",
+    "tacticalNotes": "La boue épaisse réduit la vitesse de sprint au sol de 30% mais recouvre la peau pour tromper les visées thermiques rudimentaires.",
+    "dimensionsM": {
+      "width": 480,
+      "length": 480,
+      "height": 60
+    },
+    "elevationRangeM": [
+      0,
+      60
+    ],
+    "tacticalSectors": [
+      "Banc de Vase aux Caisses de Butin Éventrées",
+      "Labyrinthe de Racines Palétuviers & Canaux Étroits",
+      "Épave de l'Hydravion de Fuite Enfoncé dans la Fange",
+      "Promontoire Boueux aux Totems Funéraires Indigènes"
+    ],
+    "keyLandmarks": [
+      "Hydravion de transport à croix de fer brisé en deux dans les eaux saumâtres",
+      "Monticule de lingots d'or maculés de boue et de sang coagulé",
+      "Figuier étrangleur géant servant de perchoir d'observation au chasseur"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "QUICKSAND_MUD",
+        "description": "Bourbiers fangeux provoquant un enlisement progressif"
+      },
+      {
+        "type": "SWAMP_MIASMA",
+        "description": "Poches de méthane explosant au contact du tir plasma"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_jungle_hunter_1987"
+    ],
+    "heroSquadId": "squad_pred_demons_gold_expedition",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_alien_hiveworld_spire",
+    "name": "Planète Mère — Flèche Organique de la Reine Mère (1990)",
+    "universe": "ALIEN",
+    "originMedia": "Aliens: The Female War (Dark Horse Comics / Bantam Spectra 1990)",
+    "sourceMedia": "Aliens: The Female War (1990)",
+    "sourceType": "NOVEL",
+    "releaseYear": 1990,
+    "year": 1990,
+    "biomeId": "hive_lv426",
+    "biome": "XENO_HIVEWORLD_BIOME",
+    "recommendedBiomeLabel": "Planète Mère Xénomorphe — Chambre de la Reine Mère (1990)",
+    "weather": "Atmosphère suffocante chargée de spores biochimiques et de brume acide tiède",
+    "lighting": "Luminescence bioluminescente verdâtre et pulsions organiques des parois chitineuses",
+    "verticality": "EXTRÊME (Spire creuse de 300 mètres, ponts de résine torsadés et puits de couvée)",
+    "destructibility": "Cocons de résine sèche, piliers osseux poreux et conduits d'acide",
+    "interactables": [
+      "Grappe de cocons royaux pouvant être enflammée pour créer un barrage de feu",
+      "Conduit de ventilation sécrétant de la gelée royale nutritive",
+      "Console de largage télécommandée du dropship de Billie"
+    ],
+    "environmentSummary": "Le cœur battant du monde d'origine des xénomorphes, une tour monumentale de sécrétions résineuses abritant le trône de la Reine Mère.",
+    "description": "Le cœur battant du monde d'origine des xénomorphes, une tour monumentale de sécrétions résineuses abritant le trône de la Reine Mère.",
+    "tacticalNotes": "La densité de la ruche permet des embuscades à 360 degrés ; la Reine Mère commande télépathiquement aux guerriers de se sacrifier.",
+    "dimensionsM": {
+      "width": 600,
+      "length": 600,
+      "height": 320
+    },
+    "elevationRangeM": [
+      0,
+      320
+    ],
+    "tacticalSectors": [
+      "Chambre du Trône Suprême de la Reine Mère & Gardes Prétoriens",
+      "Puits Ascendant des Oeufs Royaux & Conduits de Ponte",
+      "Passerelle d'Accostage du Vaisseau de Brèche Humain",
+      "Galeries Concentriques des Ouvrières & Niches Murales"
+    ],
+    "keyLandmarks": [
+      "L'immense ovipositeur pulsant de la Reine Mère fixé au plafond de la spire",
+      "Plateforme mobile de capture cryogénique apportée par Wilks",
+      "Squelette fossilisé d'une reine antérieure intégrée à la structure murale"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "BIO_ACID_GEYSER",
+        "description": "Éruptions spontanées de sang acide sous haute pression"
+      },
+      {
+        "type": "PHEROMONE_FRENZY",
+        "description": "Spores de rage augmentant la férocité et la vitesse des guerriers"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_xeno_warrior",
+      "prey_xeno_queen_mother"
+    ],
+    "heroSquadId": "squad_alien_female_war_strike_team",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_alien_nightmare_outpost",
+    "name": "Station Outpost — Laboratoire Neural de Spears (1989)",
+    "universe": "ALIEN",
+    "originMedia": "Aliens: Nightmare Asylum (Dark Horse Comics 1989)",
+    "sourceMedia": "Aliens: Nightmare Asylum (1989)",
+    "sourceType": "COMIC",
+    "releaseYear": 1989,
+    "year": 1989,
+    "biomeId": "stargazer_blacksite",
+    "biome": "SPACE_STATION_INTERIOR",
+    "recommendedBiomeLabel": "Avant-Poste Militaire — Enclos de Dressage Xéno (1989)",
+    "weather": "Atmosphère recyclée glaciale, odeur persistante d'ozone et de désinfectant chloré",
+    "lighting": "Néons d'alerte stroboscopiques rouges et projecteurs de sécurité chirurgicaux bleus",
+    "verticality": "MOYENNE (Arène d'entraînement à plusieurs niveaux, passerelles grillagées et cellules)",
+    "destructibility": "Parois en plexiglas blindé fêlées, terminaux de surveillance et sas d'isolation",
+    "interactables": [
+      "Générateur de choc neural de masse désorientant les créatures captives",
+      "Sas de dépressurisation d'urgence de l'enclos d'exercice",
+      "Console de commande des tourelles sentinelles automatisées"
+    ],
+    "environmentSummary": "Base militaire clandestine où le Général Spears a parqué une meute de xénomorphes conditionnés par électrodes avant que l'expérience ne vire au carnage.",
+    "description": "Base militaire clandestine où le Général Spears a parqué une meute de xénomorphes conditionnés par électrodes avant que l'expérience ne vire au carnage.",
+    "tacticalNotes": "Les xénomorphes feignent la soumission pour tendre des embuscades coordonnées ; surveillez les grilles d'aération au-dessus des passerelles.",
+    "dimensionsM": {
+      "width": 450,
+      "length": 450,
+      "height": 75
+    },
+    "elevationRangeM": [
+      0,
+      75
+    ],
+    "tacticalSectors": [
+      "Arène de Conditionnement Central & Cage de la Meute Dressée",
+      "Passerelle d'Observation Blindée & Poste de Commandement de Spears",
+      "Laboratoire d'Implants Chirurgicaux & Banques d'Électrodes",
+      "Hangar des Navettes d'Assaut & Sas de Confinement"
+    ],
+    "keyLandmarks": [
+      "Trône de commandement du Général Spears devant les écrans tactiques fracturés",
+      "Table d'opération chirurgicale ensanglantée avec carcasse de drone sanglée",
+      "Vestiaires des troupes d'assaut ravagés par l'acide"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "NEURAL_FEEDBACK",
+        "description": "Arcs électriques erratiques des stimulateurs neuraux endommagés"
+      },
+      {
+        "type": "VACUUM_BREACH",
+        "description": "Brèches de coque créant des flux d'aspiration violents"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_xeno_praetorian_royal"
+    ],
+    "heroSquadId": "squad_alien_nightmare_asylum_battalion",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_avp_gunnison_cemetery_rain",
+    "name": "Gunnison — Cimetière Sous l'Orage & Décharge Acide (2007)",
+    "universe": "AVP",
+    "originMedia": "Aliens vs. Predator: Requiem (20th Century Fox 2007)",
+    "sourceMedia": "Aliens vs. Predator: Requiem (2007)",
+    "sourceType": "MOVIE",
+    "releaseYear": 2007,
+    "year": 2007,
+    "biomeId": "gunnison_outbreak",
+    "biome": "HISTORIC_WARZONE",
+    "recommendedBiomeLabel": "Gunnison Colorado — Cimetière Municipal Sous le Déluge (2007)",
+    "weather": "Orage violent, pluie torrentielle glaciale et éclairs zébrant le ciel noir",
+    "lighting": "Éclairs stroboscopiques périodiques, veilleuses de tombes et réverbères urbains tremblants",
+    "verticality": "MOYENNE (Mausolées de marbre, caveaux ouverts, arbres décharnés et clocher)",
+    "destructibility": "Stèles funéraires en granit, grilles en fer forgé et caveaux de pierre",
+    "interactables": [
+      "Fiole de solution dissolvante bleue de Wolf neutralisant les traces biologiques",
+      "Ligne à haute tension tombée au sol électrifiant les flaques d'eau",
+      "Projecteur halogène portable des secours municipaux"
+    ],
+    "environmentSummary": "Le cimetière communal de Gunnison sous des trombes d'eau où le nettoyeur Wolf élimine méthodiquement les corps contaminés avant d'affronter le Predalien.",
+    "description": "Le cimetière communal de Gunnison sous des trombes d'eau où le nettoyeur Wolf élimine méthodiquement les corps contaminés avant d'affronter le Predalien.",
+    "tacticalNotes": "La pluie diluvienne perturbe la netteté du camouflage optique Yautja ; les éclairs révèlent instantanément les silhouettes en hauteur.",
+    "dimensionsM": {
+      "width": 520,
+      "length": 520,
+      "height": 85
+    },
+    "elevationRangeM": [
+      0,
+      85
+    ],
+    "tacticalSectors": [
+      "Allée Centrale des Mausolées de Famille & Grille Principale",
+      "Zone des Tombes Récentes & Fosse Commune de Décontamination",
+      "Chapelle Funéraire en Ruine & Clocher de Bois",
+      "Sous-Bois Périférique Bordant la Forêt Nationale"
+    ],
+    "keyLandmarks": [
+      "Grand mausolée néogothique aux portes de bronze arrachées",
+      "Cratère de dissolution acide fumant émettant une lueur bleue spectrale",
+      "Fourgonnette d'intervention du shérif avec gyrophare rougeoyant dans la boue"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "LIGHTNING_FLASH",
+        "description": "Éclairs aveuglants réinitialisant la sensibilité des masques optiques"
+      },
+      {
+        "type": "ACIDIC_PUDDLE",
+        "description": "Flaques d'eau saturées de résidus de sang acide et de solvant bleu"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_predalien_abomination"
+    ],
+    "heroSquadId": "squad_avp_requiem_wolf_cleanup",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_avp_xenogenesis_suboceanic_trench",
+    "name": "Fosse Océanique — Abysses & Ruche Sous-Marine (2002)",
+    "universe": "AVP",
+    "originMedia": "Aliens vs. Predator: Xenogenesis (Dark Horse Comics 2002)",
+    "sourceMedia": "Aliens vs. Predator: Xenogenesis (2002)",
+    "sourceType": "COMIC",
+    "releaseYear": 2002,
+    "year": 2002,
+    "biomeId": "genna_deathworld",
+    "biome": "BIOLUMINESCENT_CAVERNS",
+    "recommendedBiomeLabel": "Fosse Abyssale — Cheminées Hydrothermales & Ruche Aquatique (2002)",
+    "weather": "Pression hydrostatique extrême (600 bars), courants marins denses et noir absolu",
+    "lighting": "Cheminées hydrothermales rougeoyantes, bioluminescence des faunes abyssales et phares sous-marins",
+    "verticality": "TRÈS ÉLEVÉE (Parois sous-marines verticales, cheminées volcaniques et failles tectoniques)",
+    "destructibility": "Formations coralliennes calcaires, concrétions de soufre et dômes d'habitat sous-marin",
+    "interactables": [
+      "Cheminée hydrothermale expulsant des jets d'eau surchauffée à 400°C",
+      "Balise sonar sous-marine désorientant les capteurs acoustiques",
+      "Module de survie sous-marin hyperbare pressurisé"
+    ],
+    "environmentSummary": "Faille tectonique sous-marine profonde où des scientifiques militaires ont implanté des ruches xénomorphes résistant aux pressions colossales des abysses.",
+    "description": "Faille tectonique sous-marine profonde où des scientifiques militaires ont implanté des ruches xénomorphes résistant aux pressions colossales des abysses.",
+    "tacticalNotes": "La densité de l'eau ralentit les projectiles classiques ; les harpons supercavitants et armes à plasma hyperfocalisées sont obligatoires.",
+    "dimensionsM": {
+      "width": 580,
+      "length": 580,
+      "height": 260
+    },
+    "elevationRangeM": [
+      0,
+      260
+    ],
+    "tacticalSectors": [
+      "Champ de Fumeurs Noirs & Cheminées Minérales Actives",
+      "Dôme d'Observation Sous-Marin Fracturé & Laboratoire Hyperbare",
+      "Faille de la Ruche Aquatique & Galeries Coralliennes Résineuses",
+      "Plateau Tectonique aux Câbles d'Alimentation Géothermiques"
+    ],
+    "keyLandmarks": [
+      "Cheminée volcanique géante crachant un panache noir d'eau à 400°C",
+      "Épave d'un sous-marin d'exploration Weyland éventré par une créature géante",
+      "Nid de nageurs xénomorphes accroché aux falaises de basalte"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "THERMAL_VENT",
+        "description": "Geysers sous-marins causant des brûlures thermiques immédiates"
+      },
+      {
+        "type": "CRUSH_DEPTH",
+        "description": "Chute dans la fosse abyssale au-delà des limites de résistance de l'armure"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_xeno_sea_swimmer"
+    ],
+    "heroSquadId": "squad_avp_xenogenesis_strike_cadre",
+    "villainSquadId": null
   }
 ]);
 
@@ -4627,6 +4988,90 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     wieldedBy: 'Maîtres de sabre cybernétisés du syndicat Mishima',
     yautjaCounterplay: 'Parade au combi-stick renforcé et contre-attaque brutale par balayage de fouet ou shuriken rotatif.',
     description: 'Katana forgé dans un alliage spatial ultra-dense dont le fil oscillant à ultra-haute fréquence désagrège la matière au niveau moléculaire, tranchant les métaux et blindages extraterrestres.'
+  },
+  {
+    "id": "wpn_fleener_creek_remington_1100",
+    "name": "Fleener Creek Remington 1100 Tactical Shotgun",
+    "universe": "PREDATOR",
+    "faction": "Civilian / Law Enforcement",
+    "originMedia": "Predator: Kindred (1996)",
+    "caliber": "Calibre 12 Magnum (Chevrotine 00 & Balles Slug)",
+    "damageType": "HEAVY_BALLISTIC_SPREAD",
+    "effectiveRangeMeters": 35,
+    "rateOfFire": "Semi-automatique cadencé (240 coups/min)",
+    "wieldedBy": "Shérif Enoch Powell et adjoints de Fleener Creek",
+    "yautjaCounterplay": "Saut d'esquive vertical sur les branches et neutralisation silencieuse par tir plasma ou flèche intelligente.",
+    "description": "Fusil de chasse semi-automatique fiable à canon scié tactique délivrant des gerbes de plomb dévastatrices à courte portée dans les clairières de montagne."
+  },
+  {
+    "id": "wpn_demons_gold_mp40_smg",
+    "name": "Maschinenpistole 40 Parabellum Submachine Gun",
+    "universe": "PREDATOR",
+    "faction": "Mercenary Remnants",
+    "originMedia": "Predator: Demon's Gold (1997)",
+    "caliber": "9x19mm Parabellum",
+    "damageType": "BALLISTIC_RAPID",
+    "effectiveRangeMeters": 55,
+    "rateOfFire": "Automatique modéré (500 coups/min)",
+    "wieldedBy": "Pillards nazis et fuyards du trésor en Amérique du Sud",
+    "yautjaCounterplay": "Armure corporelle en duralumin et tir de riposte au combi-stick traversant les caisses en bois.",
+    "description": "Pistolet-mitrailleur historique à culasse non calée et chargeur de 32 coups, maniable dans les mangroves marécageuses malgré sa vulnérabilité à la boue."
+  },
+  {
+    "id": "wpn_female_war_heavy_incinerator",
+    "name": "Armat M240-B Heavy Napalm Siege Incinerator",
+    "universe": "ALIEN",
+    "faction": "Colonial Veterans",
+    "originMedia": "Aliens: The Female War (1990)",
+    "caliber": "Gel Napalm-B Pressurisé & Oxyde d'Aluminium",
+    "damageType": "THERMAL_INCENDIARY_BURST",
+    "effectiveRangeMeters": 30,
+    "rateOfFire": "Jet continu soutenu haute pression",
+    "wieldedBy": "Billie, Wilks et l'escouade d'assaut de la Ruche Mère",
+    "yautjaCounterplay": "Bouclier d'énergie thermique Yautja et élimination chirurgicale du porteur par visée canon d'épaule avant l'inflammation du réservoir.",
+    "description": "Lance-flammes de siège lourd projetant un jet continu de napalm collant à plus de 1200°C, capable de calciner instantanément les parois de résine et les essaims xénomorphes."
+  },
+  {
+    "id": "wpn_nightmare_spears_tactical_carbine",
+    "name": "Spears Shock Division Subsonic Tactical Carbine",
+    "universe": "ALIEN",
+    "faction": "Spears Shock Division",
+    "originMedia": "Aliens: Nightmare Asylum (1989)",
+    "caliber": "10x24mm Sans Douille Subsonique Perforant",
+    "damageType": "BALLISTIC_ARMOR_PIERCING",
+    "effectiveRangeMeters": 75,
+    "rateOfFire": "Rafale contrôlée de 3 coups (750 coups/min)",
+    "wieldedBy": "Gardes prétoriens et instructeurs du Général Spears",
+    "yautjaCounterplay": "Masque multispectral révélant les désignateurs laser et lancer de smart-disc pour sectionner les lignes de tir.",
+    "description": "Carabine compacte avec silencieux intégral et munitions chemisées au tungstène, conçue pour opérer dans les coursives pressurisées sans perforer la coque de la station."
+  },
+  {
+    "id": "wpn_requiem_morales_benelli_m4",
+    "name": "Benelli M4 Super 90 Tactical Combat Shotgun",
+    "universe": "AVP",
+    "faction": "Gunnison Militia",
+    "originMedia": "Aliens vs. Predator: Requiem (2007)",
+    "caliber": "Calibre 12 Magnum Sabot Slug Acier Trempé",
+    "damageType": "KINETIC_HEAVY_SLUG",
+    "effectiveRangeMeters": 45,
+    "rateOfFire": "Semi-automatique à emprunt de gaz (300 coups/min)",
+    "wieldedBy": "Shérif Eddie Morales et survivants armés de Gunnison",
+    "yautjaCounterplay": "Camouflage optique et projection de filet de capture pour neutraliser la menace cinétique sans exposer le plastron.",
+    "description": "Fusil de combat tactique militaire doté du système à double piston Auto-Regulating Gas-Operated (ARGO), chambrant des cartouches magnum perforantes capables d'ébrécher la chitine xénomorphe."
+  },
+  {
+    "id": "wpn_xenogenesis_hyperbaric_harpoon_gun",
+    "name": "Xenogenesis Abyssal Supercavitating Harpoon Gun",
+    "universe": "AVP",
+    "faction": "Deep Trench Contractors",
+    "originMedia": "Aliens vs. Predator: Xenogenesis (2002)",
+    "caliber": "Fléchette Tungstène-Uranium Supercavitante 14mm",
+    "damageType": "HYDRODYNAMIC_PIERCING",
+    "effectiveRangeMeters": 60,
+    "rateOfFire": "Coup par coup à rechargement pneumatique (25 coups/min)",
+    "wieldedBy": "Plongeurs de combat en scaphandre hyperbare lourd",
+    "yautjaCounterplay": "Esquive tridimensionnelle dans les colonnes d'eau et découpe au trident énergétique.",
+    "description": "Arme de brèche sous-marine propulsant des fléchettes profilées créant une bulle de supercavitation pour maintenir une vélocité hypersonique sous l'eau et transpercer les carapaces abyssales."
   }
 ]);
 

@@ -2161,6 +2161,198 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     canonicalPeriod: '1999',
     tags: Object.freeze(['tokyo_1999', 'yakuza', 'cyberpunk', 'katana', 'shinjuku']),
     locationIds: Object.freeze([])
+  },
+  {
+    id: 'lore_pred_blood_feud_1993',
+    sourceTier: 'EXPANDED_LORE',
+    sources: Object.freeze(['predator1987', 'predator2', 'predatorArchives']),
+
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'Predator: Blood Feud (1993 — Duels séculaires, samouraïs aveugles & sabre d\'honneur)',
+    universe: 'PREDATOR',
+    unlockCondition: "Vaincre le maître d'armes au katana dans le pavillon de thé ancestral",
+    summary: "Traque d'honneur à travers les siècles opposant une lignée de bretteurs samouraïs aveugles à un prédateur Yautja lié par le sang.",
+    body: "Predator: Blood Feud (1993) dépeint la vendetta ancestrale entre un chasseur Yautja et un bretteur aveugle du clan de samouraïs Kenshi. Le guerrier humain développe une perception ouïe et kinesthésique surhumaine capable de détecter les mouvements du prédateur masqué par le camouflage optique, aboutissant à un duel d'honneur au sabre.",
+    content: "Predator: Blood Feud (1993) dépeint la vendetta ancestrale entre un chasseur Yautja et un bretteur aveugle du clan de samouraïs Kenshi. Le guerrier humain développe une perception ouïe et kinesthésique surhumaine capable de détecter les mouvements du prédateur masqué par le camouflage optique, aboutissant à un duel d'honneur au sabre.",
+    tags: Object.freeze(['blood_feud_1993', 'samurai', 'katana', 'honor_duel', 'japan']),
+    locationIds: Object.freeze([])
+  },
+  {
+    id: 'lore_pred_kindred_1996',
+    sourceTier: 'EXPANDED_LORE',
+    sources: Object.freeze(['predator1987', 'predator2', 'predatorArchives']),
+
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'Predator: Kindred (1996 — Ville minière de Fleener Creek, shérif solitaire & alliance de sang)',
+    universe: 'PREDATOR',
+    unlockCondition: "Neutraliser le tueur psychopathe en fuite dans les galeries désaffectées",
+    summary: "Affrontement tragique dans l'Oregon où un shérif et un Yautja découvrent une estime réciproque face à un meurtrier sadique récidiviste.",
+    body: "Predator: Kindred (1996) plonge la chasse dans la bourgade minière reculée de Fleener Creek. Alors qu'un tueur en série s'évade, le shérif local et un chasseur solitaire se croisent dans les forêts de conifères. Le Yautja refuse d'abattre l'homme de loi blessé et concentre sa traque sur la proie indigne qui viole les lois fondamentales de la survie.",
+    content: "Predator: Kindred (1996) plonge la chasse dans la bourgade minière reculée de Fleener Creek. Alors qu'un tueur en série s'évade, le shérif local et un chasseur solitaire se croisent dans les forêts de conifères. Le Yautja refuse d'abattre l'homme de loi blessé et concentre sa traque sur la proie indigne qui viole les lois fondamentales de la survie.",
+    tags: Object.freeze(['kindred_1996', 'fleener_creek', 'sheriff', 'oregon', 'honor']),
+    locationIds: Object.freeze([])
+  },
+  {
+    id: 'lore_pred_demons_gold_1997',
+    sourceTier: 'EXPANDED_LORE',
+    sources: Object.freeze(['predator1987', 'predator2', 'predatorArchives']),
+
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'Predator: Demon\'s Gold (1997 — Pillards nazis, marais sudaméricains & or maudit)',
+    universe: 'PREDATOR',
+    unlockCondition: "Anéantir la colonne motorisée de pillards dans le marécage d'émeraude",
+    summary: "Chasse impitoyable dans les marécages tropicaux où des fuyards nazis transportant un trésor de guerre deviennent le gibier d'un Yautja vengeur.",
+    body: "Predator: Demon's Gold (1997) relate l'interception fatale d'officiers du Troisième Reich en cavale dans les marais moites d'Amérique du Sud. Chargés de lingots d'or pillés, les mercenaires s'enfoncent dans un labyrinthe aquatique avant d'être méthodiquement décimés un à un par un chasseur invisible qui méprise leur couardise.",
+    content: "Predator: Demon's Gold (1997) relate l'interception fatale d'officiers du Troisième Reich en cavale dans les marais moites d'Amérique du Sud. Chargés de lingots d'or pillés, les mercenaires s'enfoncent dans un labyrinthe aquatique avant d'être méthodiquement décimés un à un par un chasseur invisible qui méprise leur couardise.",
+    tags: Object.freeze(['demons_gold_1997', 'nazi_gold', 'swamp', 'ambush', 'ww2']),
+    locationIds: Object.freeze([])
+  },
+  {
+    id: 'lore_pred_primal_prey_2001',
+    sourceTier: 'EXPANDED_LORE',
+    sources: Object.freeze(['predator1987', 'predator2', 'predatorArchives']),
+
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'Predator: Primal Prey (2001 — Faille temporelle mésozoïque & mégafaune reptilienne)',
+    universe: 'PREDATOR',
+    unlockCondition: "Traquer et abattre un théropode apex au cœur de la caldeira jurassique",
+    summary: "Simulation de traque extrême projetant les chasseurs Yautja face aux dinosaures préhistoriques et prédateurs colossaux de l'ère primaire.",
+    body: "Predator: Primal Prey (2001) met en scène la traque sans égale de super-prédateurs préhistoriques. Un chasseur d'élite est projeté à travers une anomalie temporelle sur une Terre peuplée de dinosaures titanesques. Les lances combi-stick et canons plasma sont mis à rude épreuve contre les cuirs blindés des carnivores géants.",
+    content: "Predator: Primal Prey (2001) met en scène la traque sans égale de super-prédateurs préhistoriques. Un chasseur d'élite est projeté à travers une anomalie temporelle sur une Terre peuplée de dinosaures titanesques. Les lances combi-stick et canons plasma sont mis à rude épreuve contre les cuirs blindés des carnivores géants.",
+    tags: Object.freeze(['primal_prey_2001', 'dinosaurs', 'megafauna', 'jurassic', 'apex']),
+    locationIds: Object.freeze([])
+  },
+  {
+    id: 'lore_alien_female_war_1990',
+    sourceTier: 'EXPANDED_LORE',
+    sources: Object.freeze(['alien1979', 'aliens1986', 'alienIsolation2014']),
+
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'Aliens: The Female War (1990 — Planète mère des xénomorphes & capture de la Reine Mère)',
+    universe: 'ALIEN',
+    unlockCondition: "Extraire la Reine Mère des profondeurs de la mégastructure organique",
+    summary: "Opération commando désespérée menée par Billie et Wilks sur le monde d'origine des xénomorphes pour capturer la souveraine suprême de l'essaim.",
+    body: "Aliens: The Female War (1990) conclut la trilogie fondatrice de Mark Verheiden et Steve Perry. Face à l'infestation généralisée de la Terre, une équipe de vétérans désespérés voyage jusqu'au monde originel des xénomorphes pour y capturer vivante la gigantesque Reine Mère, seule entité capable de rallier et neutraliser télépathiquement la nuée mondiale.",
+    content: "Aliens: The Female War (1990) conclut la trilogie fondatrice de Mark Verheiden et Steve Perry. Face à l'infestation généralisée de la Terre, une équipe de vétérans désespérés voyage jusqu'au monde originel des xénomorphes pour y capturer vivante la gigantesque Reine Mère, seule entité capable de rallier et neutraliser télépathiquement la nuée mondiale.",
+    tags: Object.freeze(['female_war_1990', 'queen_mother', 'homeworld', 'billie_wilks', 'hive']),
+    locationIds: Object.freeze([])
+  },
+  {
+    id: 'lore_alien_nightmare_asylum_1989',
+    sourceTier: 'EXPANDED_LORE',
+    sources: Object.freeze(['alien1979', 'aliens1986', 'alienIsolation2014']),
+
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'Aliens: Nightmare Asylum (1989 — Station militaire du Général Spears & armée xéno dressée)',
+    universe: 'ALIEN',
+    unlockCondition: "Repousser la charge de l'escouade d'assaut xénomorphe conditionnée",
+    summary: "Démence militaire sur un avant-poste orbital où un général mégalomane tente de conditionner et commander une légion de xénomorphes comme soldats d'élite.",
+    body: "Aliens: Nightmare Asylum (1989) explore la tentative du Général Spears de soumettre la ruche par le conditionnement opérant et les décharges neurales. Croyant contrôler une meute de guerriers xénomorphes dressés, Spears découvre l'illusion tragique de sa domination lorsque les créatures simulent la docilité avant de se retourner contre leurs geôliers.",
+    content: "Aliens: Nightmare Asylum (1989) explore la tentative du Général Spears de soumettre la ruche par le conditionnement opérant et les décharges neurales. Croyant contrôler une meute de guerriers xénomorphes dressés, Spears découvre l'illusion tragique de sa domination lorsque les créatures simulent la docilité avant de se retourner contre leurs geôliers.",
+    tags: Object.freeze(['nightmare_asylum_1989', 'general_spears', 'trained_xenos', 'orbital_base', 'insanity']),
+    locationIds: Object.freeze([])
+  },
+  {
+    id: 'lore_alien_covenant_origins_2017',
+    sourceTier: 'EXPANDED_LORE',
+    sources: Object.freeze(['alien1979', 'aliens1986', 'alienIsolation2014']),
+
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'Alien: Covenant - Origins (2017 — Terre du XXIIe siècle, conspiration religieuse & lancement de la mission)',
+    universe: 'ALIEN',
+    unlockCondition: "Déjouer le sabotage des cuves cryogéniques de l'arche de colonisation",
+    summary: "Révélations sur les intrigues politiques et fanatiques cherchant à saboter le lancement du vaisseau de colonisation Covenant vers Origae-6.",
+    body: "Alien: Covenant - Origins (2017) d'Alan Dean Foster dévoile les tensions terrestres avant le départ du Covenant. Une secte apocalyptique et des factions anti-colonisation tentent de détruire le vaisseau et ses milliers d'embryons, révélant la fragilité de la civilisation humaine face à l'angoisse de l'expansion interstellaire.",
+    content: "Alien: Covenant - Origins (2017) d'Alan Dean Foster dévoile les tensions terrestres avant le départ du Covenant. Une secte apocalyptique et des factions anti-colonisation tentent de détruire le vaisseau et ses milliers d'embryons, révélant la fragilité de la civilisation humaine face à l'angoisse de l'expansion interstellaire.",
+    tags: Object.freeze(['covenant_origins_2017', 'earth', 'conspiracy', 'covenant_ship', 'prequel']),
+    locationIds: Object.freeze([])
+  },
+  {
+    id: 'lore_alien_bishop_2023',
+    sourceTier: 'EXPANDED_LORE',
+    sources: Object.freeze(['alien1979', 'aliens1986', 'alienIsolation2014']),
+
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'Aliens: Bishop (2023 — Données neurales de Fiorina 161 & secrets de conception Weyland-Yutani)',
+    universe: 'ALIEN',
+    unlockCondition: "Sécuriser le noyau synaptique intact de l'androïde dans l'épave médicale",
+    summary: "Traque technologique autour des banques mémorielles de Bishop récupérées après la tragédie de la colonie pénitentiaire Fiorina 161.",
+    body: "Aliens: Bishop (2023) de T.R. Napper se concentre sur Michael Bishop et la recherche du noyau mémoriel de l'androïde Bishop après Fiorina 161. L'accès aux données neurales révèle des directives secrètes de Weyland-Yutani relatives aux spécimens et à la bio-armure xénomorphe récoltée sur les survivants de Hadley's Hope.",
+    content: "Aliens: Bishop (2023) de T.R. Napper se concentre sur Michael Bishop et la recherche du noyau mémoriel de l'androïde Bishop après Fiorina 161. L'accès aux données neurales révèle des directives secrètes de Weyland-Yutani relatives aux spécimens et à la bio-armure xénomorphe récoltée sur les survivants de Hadley's Hope.",
+    tags: Object.freeze(['bishop_2023', 'synthetic', 'fiorina161', 'neural_core', 'weyland_yutani']),
+    locationIds: Object.freeze([])
+  },
+  {
+    id: 'lore_avp_prey_novel_1994',
+    sourceTier: 'EXPANDED_LORE',
+    sources: Object.freeze(['avp2004', 'predator2', 'aliens1986']),
+
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'Aliens vs. Predator: Prey (1994 — Machiko Noguchi & Dachande Broken Tusk sur Ryushi)',
+    universe: 'AVP',
+    unlockCondition: "Forger le pacte de sang avec Dachande contre l'assaut de la reine xénomorphe",
+    summary: "Roman canonique fondateur contant l'alliance légendaire entre l'administratrice Machiko Noguchi et le chef de clan Yautja Dachande sur le monde frontalier de Ryushi.",
+    body: "Aliens vs. Predator: Prey (1994) par Steve et Stephani Perry adapte le choc initial de Ryushi. L'administratrice de ranch Machiko Noguchi forge un respect indéfectible avec le chef de chasse Dachande (Broken Tusk). Ensemble, ils affrontent une reine xénomorphe déchaînée, scellant l'initiation de Machiko au clan Yautja par la marque rituelle au front.",
+    content: "Aliens vs. Predator: Prey (1994) par Steve et Stephani Perry adapte le choc initial de Ryushi. L'administratrice de ranch Machiko Noguchi forge un respect indéfectible avec le chef de chasse Dachande (Broken Tusk). Ensemble, ils affrontent une reine xénomorphe déchaînée, scellant l'initiation de Machiko au clan Yautja par la marque rituelle au front.",
+    tags: Object.freeze(['avp_prey_1994', 'machiko_noguchi', 'dachande', 'ryushi', 'blood_rite']),
+    locationIds: Object.freeze([])
+  },
+  {
+    id: 'lore_avp_xenogenesis_2002',
+    sourceTier: 'EXPANDED_LORE',
+    sources: Object.freeze(['avp2004', 'predator2', 'aliens1986']),
+
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'AVP: Xenogenesis (2002 — Armes biologiques sous-marines, fosses abyssales & hybrides cybernétiques)',
+    universe: 'AVP',
+    unlockCondition: "Surpasser les commandos en scaphandre lourd dans la fosse hydrothermale",
+    summary: "Opérations militaires secrètes en milieu marin abyssal où des hybrides xénomorphes génétiquement modifiés affrontent des traqueurs Yautja aquatiques.",
+    body: "Aliens vs. Predator: Xenogenesis (2002) explore la guerre biotechnologique dans les tranchées sous-marines d'une lune océanique. Des scientifiques militaires expérimentent sur des souches xénomorphes capables de résister à des pressions colossales, déclenchant l'arrivée de chasseurs Yautja équipés de masques et de tridents sous-marins spécialisés.",
+    content: "Aliens vs. Predator: Xenogenesis (2002) explore la guerre biotechnologique dans les tranchées sous-marines d'une lune océanique. Des scientifiques militaires expérimentent sur des souches xénomorphes capables de résister à des pressions colossales, déclenchant l'arrivée de chasseurs Yautja équipés de masques et de tridents sous-marins spécialisés.",
+    tags: Object.freeze(['xenogenesis_2002', 'abyssal', 'underwater', 'suboceanic', 'genetic_xeno']),
+    locationIds: Object.freeze([])
+  },
+  {
+    id: 'lore_avp_requiem_wolf_2007',
+    sourceTier: 'EXPANDED_LORE',
+    sources: Object.freeze(['avp2004', 'predator2', 'aliens1986']),
+
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'AVP: Requiem (2007 — Nettoyeur d\'élite Wolf, Predalien Chet & massacre de Gunnison)',
+    universe: 'AVP',
+    unlockCondition: "Éliminer le Predalien Chet sur le toit de l'hôpital de Gunnison sous l'orage",
+    summary: "Déploiement du Yautja d'élite Wolf pour éradiquer l'épidémie du Predalien et dissoudre toute trace biologique dans la ville de Gunnison, Colorado.",
+    body: "Aliens vs. Predator: Requiem (2007) relate la mission de confinement du vétéran Yautja Wolf. Alerté par le crash d'un vaisseau de chasse en Amérique du Nord, Wolf utilise des fioles de liquide bleu corrosif pour dissoudre les cadavres infectés, déployant son double canon à plasma combiné et son fouet tranchant pour éliminer l'hybride Predalien Chet.",
+    content: "Aliens vs. Predator: Requiem (2007) relate la mission de confinement du vétéran Yautja Wolf. Alerté par le crash d'un vaisseau de chasse en Amérique du Nord, Wolf utilise des fioles de liquide bleu corrosif pour dissoudre les cadavres infectés, déployant son double canon à plasma combiné et son fouet tranchant pour éliminer l'hybride Predalien Chet.",
+    tags: Object.freeze(['requiem_2007', 'wolf_predator', 'predalien_chet', 'gunnison', 'acid_cleanup']),
+    locationIds: Object.freeze([])
+  },
+  {
+    id: 'lore_avp_annual_leashed_1999',
+    sourceTier: 'EXPANDED_LORE',
+    sources: Object.freeze(['avp2004', 'predator2', 'aliens1986']),
+
+    entryType: 'codex',
+    category: 'chroniques',
+    title: 'AVP: Annual - Leashed (1999 — Chiens de guerre Yautja asservis, arène clandestine & révolte)',
+    universe: 'AVP',
+    unlockCondition: "Libérer les bêtes de traque captives et abattre les négriers d'arène",
+    summary: "Drame d'arène clandestine où des molosses Yautja enchaînés et manipulés par des esclavagistes humains sont libérés par un maître de meute vengeur.",
+    body: "Aliens vs. Predator: Annual - Leashed (1999) explore le lien symbiotique entre les chasseurs Yautja et leurs chiens de traque modifiés. Capturés par un syndicat de contrebandiers d'arène, les molosses sont exploités dans des combats clandestins contre des xénomorphes jusqu'à ce que leur dresseur Yautja infiltre le complexe et massacre les tortionnaires.",
+    content: "Aliens vs. Predator: Annual - Leashed (1999) explore le lien symbiotique entre les chasseurs Yautja et leurs chiens de traque modifiés. Capturés par un syndicat de contrebandiers d'arène, les molosses sont exploités dans des combats clandestins contre des xénomorphes jusqu'à ce que leur dresseur Yautja infiltre le complexe et massacre les tortionnaires.",
+    tags: Object.freeze(['annual_leashed_1999', 'predator_hounds', 'arena_gladiators', 'slaving_ring', 'retribution']),
+    locationIds: Object.freeze([])
   }
 ]);
 // IDs match the values already used by the planet selector.

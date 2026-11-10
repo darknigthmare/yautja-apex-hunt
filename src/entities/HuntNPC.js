@@ -3272,6 +3272,24 @@ export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
   wpn_tokyo_cyber_yakuza_katana: makeWeaponBallisticProfile('wpn_tokyo_cyber_yakuza_katana', {
     damage: 48, cooldown: 0.75, rangeM: 3.0, soundRadiusM: 15, projectileColor: 0xec4899, archetype: 'monomolecular_hf_katana', cadence: 'high_frequency_blade_pass', damageType: 'slashing',
   }),
+  wpn_fleener_creek_remington_1100: makeWeaponBallisticProfile('wpn_fleener_creek_remington_1100', {
+    damage: 38, cooldown: 0.35, rangeM: 35, soundRadiusM: 80, projectileColor: 0xffaa44, archetype: 'semi_auto_shotgun', cadence: 'buckshot_rapid_cycle', damageType: 'ballistic',
+  }),
+  wpn_demons_gold_mp40_smg: makeWeaponBallisticProfile('wpn_demons_gold_mp40_smg', {
+    damage: 24, cooldown: 0.12, rangeM: 55, soundRadiusM: 70, projectileColor: 0xffcc66, archetype: 'submachine_gun', cadence: 'full_auto_burst', damageType: 'ballistic',
+  }),
+  wpn_female_war_heavy_incinerator: makeWeaponBallisticProfile('wpn_female_war_heavy_incinerator', {
+    damage: 65, cooldown: 0.1, rangeM: 30, soundRadiusM: 55, projectileColor: 0xff4500, archetype: 'heavy_napalm_incinerator', cadence: 'continuous_napalm_stream', damageType: 'thermal',
+  }),
+  wpn_nightmare_spears_tactical_carbine: makeWeaponBallisticProfile('wpn_nightmare_spears_tactical_carbine', {
+    damage: 32, cooldown: 0.2, rangeM: 75, soundRadiusM: 25, projectileColor: 0x66aaff, archetype: 'subsonic_tactical_carbine', cadence: 'three_round_burst', damageType: 'ballistic',
+  }),
+  wpn_requiem_morales_benelli_m4: makeWeaponBallisticProfile('wpn_requiem_morales_benelli_m4', {
+    damage: 52, cooldown: 0.3, rangeM: 45, soundRadiusM: 85, projectileColor: 0xff8833, archetype: 'combat_shotgun_slug', cadence: 'magnum_slug_blast', damageType: 'ballistic',
+  }),
+  wpn_xenogenesis_hyperbaric_harpoon_gun: makeWeaponBallisticProfile('wpn_xenogenesis_hyperbaric_harpoon_gun', {
+    damage: 78, cooldown: 1.8, rangeM: 60, soundRadiusM: 40, projectileColor: 0x00e5ff, archetype: 'supercavitating_harpoon', cadence: 'pneumatic_single_launch', damageType: 'piercing',
+  }),
 });
 
 function resolveNpcRoleWeaponId(npcType) {

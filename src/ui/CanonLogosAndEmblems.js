@@ -2869,6 +2869,118 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  if (id.includes('fleener_creek_posse') || id.includes('fleener_creek')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-fleenercreek" role="img" aria-label="Insigne Posse Fleener Creek">
+        <!-- Écusson forestier vert sapin sombre -->
+        <polygon points="40,6 72,20 66,64 40,76 14,64 8,20" fill="#0d2818" stroke="#16a34a" stroke-width="2.5" />
+        <!-- Conifères en arrière-plan -->
+        <polygon points="26,42 34,26 42,42" fill="#14532d" />
+        <polygon points="38,42 46,26 54,42" fill="#14532d" />
+        <!-- Étoile à 6 branches de shérif en argent ciselé -->
+        <polygon points="40,24 43,33 52,33 45,39 48,48 40,42 32,48 35,39 28,33 37,33" fill="#e2e8f0" stroke="#f59e0b" stroke-width="1.2" />
+        <circle cx="40" cy="36" r="3" fill="#fbbf24" />
+        <!-- Fusil calibre 12 en diagonale -->
+        <line x1="20" y1="58" x2="60" y2="58" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round" />
+        <rect x="36" y="56" width="8" height="4" fill="#64748b" rx="1" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#86efac" letter-spacing="1" text-anchor="middle">FLEENER CREEK</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('demons_gold_expedition') || id.includes('demons_gold')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-demonsgold" role="img" aria-label="Insigne Convoi Demon's Gold">
+        <!-- Hexagone kaki tropical -->
+        <polygon points="40,6 72,24 72,56 40,74 8,56 8,24" fill="#1c1917" stroke="#eab308" stroke-width="2.5" />
+        <!-- Feuilles de mangrove marécageuses -->
+        <path d="M18 48 Q28 32 40 46 Q28 60 18 48 Z" fill="#15803d" opacity="0.6" />
+        <path d="M62 48 Q52 32 40 46 Q52 60 62 48 Z" fill="#15803d" opacity="0.6" />
+        <!-- Lingots d'or empilés étincelants -->
+        <polygon points="28,42 44,42 40,36 24,36" fill="#fbbf24" stroke="#d97706" stroke-width="1" />
+        <polygon points="36,42 52,42 48,36 32,36" fill="#fde047" stroke="#d97706" stroke-width="1" />
+        <polygon points="30,34 46,34 42,28 26,28" fill="#f59e0b" stroke="#b45309" stroke-width="1" />
+        <!-- Croix de fer stylisée militaire -->
+        <polygon points="38,14 42,14 44,18 40,19 44,20 42,24 38,24 36,20 40,19 36,18" fill="#e2e8f0" stroke="#475569" stroke-width="0.8" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#fef08a" letter-spacing="1" text-anchor="middle">DEMON\'S GOLD</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('female_war_strike_team') || id.includes('female_war')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-femalewar" role="img" aria-label="Insigne Assaut Ruche Mère Female War">
+        <!-- Écusson en ogive rouge braise et chitine sombre -->
+        <path d="M40 6 Q68 18 68 48 Q68 74 40 76 Q12 74 12 48 Q12 18 40 6 Z" fill="#200609" stroke="#ef4444" stroke-width="2.5" />
+        <!-- Spire de la Reine Mère en arrière-plan -->
+        <path d="M40 14 L46 54 L34 54 Z" fill="#450a0a" stroke="#b91c1c" stroke-width="1.5" />
+        <!-- Flammes de napalm jaillissantes -->
+        <path d="M26 56 Q32 38 40 44 Q48 34 54 56 Q48 50 40 52 Q32 50 26 56 Z" fill="#f97316" stroke="#fbbf24" stroke-width="1.5" />
+        <circle cx="40" cy="48" r="4" fill="#fde047" />
+        <!-- Double buse de lance-flammes de brèche -->
+        <line x1="28" y1="62" x2="38" y2="52" stroke="#cbd5e1" stroke-width="3" stroke-linecap="round" />
+        <line x1="52" y1="62" x2="42" y2="52" stroke="#cbd5e1" stroke-width="3" stroke-linecap="round" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#fca5a5" letter-spacing="1" text-anchor="middle">MOTHER HIVE 1990</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('nightmare_asylum_battalion') || id.includes('nightmare_asylum')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-nightmareasylum" role="img" aria-label="Insigne Bataillon Spears Nightmare Asylum">
+        <!-- Blason militaire impérial bleu nuit et or -->
+        <polygon points="40,6 74,16 66,66 40,76 14,66 6,16" fill="#091428" stroke="#3b82f6" stroke-width="2.5" />
+        <!-- Étoiles de général en chef -->
+        <polygon points="32,20 33,23 36,23 34,25 35,28 32,26 29,28 30,25 28,23 31,23" fill="#fbbf24" />
+        <polygon points="40,16 41,19 44,19 42,21 43,24 40,22 37,24 38,21 36,19 39,19" fill="#fbbf24" />
+        <polygon points="48,20 49,23 52,23 50,25 51,28 48,26 45,28 46,25 44,23 47,23" fill="#fbbf24" />
+        <!-- Crâne xénomorphe stylisé avec électrodes neurales -->
+        <path d="M26 36 Q40 28 54 36 Q56 48 48 52 L40 54 L32 52 Q24 48 26 36 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5" />
+        <!-- Ondes synaptiques bleu cyan pulsantes -->
+        <circle cx="40" cy="40" r="14" fill="none" stroke="#06b6d4" stroke-width="1.2" stroke-dasharray="3,3" />
+        <circle cx="40" cy="40" r="20" fill="none" stroke="#38bdf8" stroke-width="1" stroke-dasharray="2,4" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#93c5fd" letter-spacing="1" text-anchor="middle">SPEARS DIVISION</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('requiem_wolf_cleanup') || id.includes('requiem_wolf') || id.includes('gunnison_survival')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-gunnisonsurvival" role="img" aria-label="Insigne Survie Gunnison Requiem">
+        <!-- Écusson gothique sombre et bleu électrique -->
+        <polygon points="40,6 72,16 68,64 40,76 12,64 8,16" fill="#030712" stroke="#0ea5e9" stroke-width="2.5" />
+        <!-- Éclair brisant le ciel nocturne -->
+        <polyline points="46,12 34,34 44,34 32,58" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+        <!-- Croix funéraire néogothique de cimetière -->
+        <line x1="24" y1="36" x2="24" y2="56" stroke="#64748b" stroke-width="2" />
+        <line x1="20" y1="42" x2="28" y2="42" stroke="#64748b" stroke-width="2" />
+        <!-- Fiole de solvant acide bleu luminescent de Wolf -->
+        <rect x="52" y="38" width="8" height="16" fill="#0284c7" stroke="#38bdf8" stroke-width="1.2" rx="2" />
+        <line x1="56" y1="34" x2="56" y2="38" stroke="#94a3b8" stroke-width="2" />
+        <circle cx="56" cy="46" r="2" fill="#e0f2fe" />
+        <!-- Pluie diluvienne battante -->
+        <line x1="16" y1="24" x2="14" y2="34" stroke="#60a5fa" stroke-width="1" stroke-dasharray="2,2" opacity="0.6" />
+        <line x1="64" y1="24" x2="62" y2="34" stroke="#60a5fa" stroke-width="1" stroke-dasharray="2,2" opacity="0.6" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#7dd3fc" letter-spacing="1" text-anchor="middle">GUNNISON 2007</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('xenogenesis_strike_cadre') || id.includes('xenogenesis_cadre') || id.includes('xenogenesis_strike')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-xenogenesiscadre" role="img" aria-label="Insigne Cadre Xénogenèse Abyssale">
+        <!-- Cercle pressurisé scaphandrier bleu profond et or volcanique -->
+        <circle cx="40" cy="40" r="36" fill="#041226" stroke="#06b6d4" stroke-width="2.5" />
+        <circle cx="40" cy="40" r="30" fill="none" stroke="#0891b2" stroke-width="1.2" stroke-dasharray="4,2" />
+        <!-- Hublot circulaire de scaphandre hyperbare -->
+        <circle cx="40" cy="38" r="16" fill="#082f49" stroke="#e0f2fe" stroke-width="2.5" />
+        <circle cx="40" cy="38" r="12" fill="none" stroke="#22d3ee" stroke-width="1.2" opacity="0.8" />
+        <!-- Deux harpons pneumatiques supercavitants croisés -->
+        <line x1="18" y1="58" x2="62" y2="18" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+        <line x1="62" y1="58" x2="18" y2="18" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+        <!-- Bulles de cavitation hydrothermale -->
+        <circle cx="32" cy="22" r="2.5" fill="#a5f3fc" opacity="0.7" />
+        <circle cx="48" cy="20" r="1.8" fill="#a5f3fc" opacity="0.7" />
+        <circle cx="40" cy="58" r="2" fill="#a5f3fc" opacity="0.7" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#67e8f9" letter-spacing="1" text-anchor="middle">XENOGENESIS 2002</text>
+      </svg>
+    `.trim();
+  }
   if (id.startsWith('squad_') && !id.includes('lv742_kainde_amedha')) {
     const cleanTag = id.replace(/^squad_(pred_|alien_|avp_)?/, '').replace(/_/g, ' ').slice(0, 14).toUpperCase();
     const h = Math.abs(hashCode(id));
