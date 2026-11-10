@@ -4769,6 +4769,336 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
         "trophy": "Sifflet de Décompression d'Urgence en Laiton d'Atelier"
       }
     ]
+  },
+  {
+    "id": "squad_pred_norwegian_deep_divers",
+    "name": "Scaphandriers d'Élite des Grands Fonds — Mer de Norvège (1997)",
+    "universe": "PREDATOR",
+    "shortName": "Scaphandriers Norvège (3 Plongeurs)",
+    "category": "PARAMILITARY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Predator: Hell & Hot Water (1997)",
+    "biomeId": "bouvetoya_pyramid",
+    "recommendedBiomeLabel": "Fosse Abyssale Mer de Norvège (1997)",
+    "primaryMapId": "map_pred_norwegian_abyssal_rig",
+    "weaponLoadout": [
+      "wpn_norwegian_deep_sub_diver_harpoon"
+    ],
+    "description": "Équipe d'intervention sous-marine en scaphandres pressurisés en titane affrontant le prédateur aquatique dans les ténèbres des fosses norvégiennes.",
+    "tactics": "Tirs de harpons lourds sous pression, utilisation de projecteurs à haute intensité et verrouillage des sas de forage contre les infiltrations sous-marines.",
+    "totalHonorReward": 7000,
+    "soloVariantId": "prey_bad_blood_warlord",
+    "members": [
+      {
+        "id": "diver_chief_halvorsen",
+        "name": "Capitaine Erik Halvorsen",
+        "role": "Maître Plongeur Hyperbare de la Station",
+        "weapon": "Fusil Harponneur en Titane 18mm & Couteau de Plongée",
+        "weaponId": "wpn_norwegian_deep_sub_diver_harpoon",
+        "vitalityRatio": 1.5,
+        "hp": 810,
+        "armor": 85,
+        "trophy": "Casque de Scaphandre Lourd en Titane Brossé & Manomètre"
+      },
+      {
+        "id": "sub_engineer_thorvaldsen",
+        "name": "Ingénieur Lars Thorvaldsen",
+        "role": "Opérateur de Sonar Actif",
+        "weapon": "Harpon Pneumatique à Gaz 300 Bar & Balise Sonar",
+        "weaponId": "wpn_norwegian_deep_sub_diver_harpoon",
+        "vitalityRatio": 1.35,
+        "hp": 730,
+        "armor": 70,
+        "trophy": "Émetteur d'Écho-Location Sous-Marin Portatif"
+      },
+      {
+        "id": "driller_diver_brevik",
+        "name": "Scaphandrier Nils Brevik",
+        "role": "Ouvrier de Tête de Forage Abyssal",
+        "weapon": "Harpon à Flèches Barbelées & Torche Magnésium",
+        "weaponId": "wpn_norwegian_deep_sub_diver_harpoon",
+        "vitalityRatio": 1.3,
+        "hp": 680,
+        "armor": 60,
+        "trophy": "Câble d'Ombilical Sous-Marin Blindé en Kevlar"
+      }
+    ]
+  },
+  {
+    "id": "squad_pred_louisiana_bayou_trappers",
+    "name": "Traqueurs de Marécages & Chasseurs de Peaux — Bayou de Louisiane (1998)",
+    "universe": "PREDATOR",
+    "shortName": "Traqueurs du Bayou (3 Cajuns)",
+    "category": "PARAMILITARY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Predator: Strange Roux (1998)",
+    "biomeId": "jungle",
+    "recommendedBiomeLabel": "Marécages du Bayou Cajun (1998)",
+    "primaryMapId": "map_pred_louisiana_bayou_swamp",
+    "weaponLoadout": [
+      "wpn_louisiana_flintlock_double_shotgun"
+    ],
+    "description": "Pisteurs aguerris des bayous louisianais traquant le démon invisible entre racines de cyprès et nappes d'eau croupie infestées d'alligators.",
+    "tactics": "Tirs de barrage rapprochés au fusil de calibre 10, déploiement de pièges à mâchoires dans la vase et embuscades furtives depuis les barques.",
+    "totalHonorReward": 6700,
+    "soloVariantId": "prey_jungle_hunter_1987",
+    "members": [
+      {
+        "id": "trapper_jean_boudreaux",
+        "name": "Jean-Baptiste Boudreaux",
+        "role": "Vieux Braconnier des Eaux Sombres",
+        "weapon": "Fusil Calibre 10 Double Canon & Machette d'Abattage",
+        "weaponId": "wpn_louisiana_flintlock_double_shotgun",
+        "vitalityRatio": 1.45,
+        "hp": 780,
+        "armor": 70,
+        "trophy": "Dent d'Alligator Géant Gravée de Runes Vaudou"
+      },
+      {
+        "id": "guide_etienne_thibodaux",
+        "name": "Étienne Thibodaux",
+        "role": "Éclaireur des Méandres & Piégeur",
+        "weapon": "Double Fusil à Poudre Noire & Collets d'Acier",
+        "weaponId": "wpn_louisiana_flintlock_double_shotgun",
+        "vitalityRatio": 1.35,
+        "hp": 710,
+        "armor": 65,
+        "trophy": "Gibecière en Peau de Serpent d'Eau & Boussole en Cuivre"
+      },
+      {
+        "id": "skiff_pilot_clovys",
+        "name": "Clovis Hebert",
+        "role": "Pilote de Barque à Pieu de Cyprès",
+        "weapon": "Fusil à Mitraille Lourde & Harpon d'Esturgeon",
+        "weaponId": "wpn_louisiana_flintlock_double_shotgun",
+        "vitalityRatio": 1.3,
+        "hp": 660,
+        "armor": 55,
+        "trophy": "Chapeau de Feutre Tressé Émaillé d'Écailles"
+      }
+    ]
+  },
+  {
+    "id": "squad_alien_synsound_security_forces",
+    "name": "Sécurité Corporative & Brigade Bio-Sonique — Synsound Manhattan (1996)",
+    "universe": "ALIEN",
+    "shortName": "Sécurité Synsound (3 Gardes)",
+    "category": "SECURITY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens: Music of the Spears (1996)",
+    "biomeId": "stargazer_blacksite",
+    "recommendedBiomeLabel": "Complexe Acoustique Synsound (1996)",
+    "primaryMapId": "map_alien_synsound_soundstage_ny",
+    "weaponLoadout": [
+      "wpn_synsound_sonic_disruptor_cannon"
+    ],
+    "description": "Unité d'intervention tactique privée protégeant le laboratoire bio-acoustique expérimental de Damian Damon armée de canons à perturbation par ultrasons.",
+    "tactics": "Ondes de choc ultrasoniques concentrées pour repousser les assauts au corps à corps, flashs aveuglants et verrouillage des sas capitonnés.",
+    "totalHonorReward": 7300,
+    "soloVariantId": "prey_xeno_warrior",
+    "members": [
+      {
+        "id": "security_director_vance",
+        "name": "Commandant Vance Sterling",
+        "role": "Chef de Sécurité du Studio Synsound",
+        "weapon": "Canon à Ondes Ultrasoniques & Taser Haute Tension",
+        "weaponId": "wpn_synsound_sonic_disruptor_cannon",
+        "vitalityRatio": 1.5,
+        "hp": 820,
+        "armor": 80,
+        "trophy": "Casque Anti-Bruit Actif Blindé Synsound à Visière Pourpre"
+      },
+      {
+        "id": "acoustic_operator_kroll",
+        "name": "Opérateur Sonique Kroll",
+        "role": "Artilleur de Faisceau à Résonance",
+        "weapon": "Canon Perturbateur à Ultrasons 45kHz & Baffles",
+        "weaponId": "wpn_synsound_sonic_disruptor_cannon",
+        "vitalityRatio": 1.35,
+        "hp": 730,
+        "armor": 70,
+        "trophy": "Oscillateur de Fréquences d'Agonie en Titane"
+      },
+      {
+        "id": "containment_guard_delaqua",
+        "name": "Garde de Confinement Delaqua",
+        "role": "Fusilier Acoustique de Studio",
+        "weapon": "Canon Sonique Compact & Grenades Flashbang",
+        "weaponId": "wpn_synsound_sonic_disruptor_cannon",
+        "vitalityRatio": 1.3,
+        "hp": 670,
+        "armor": 60,
+        "trophy": "Badge d'Accès VIP Studio d'Enregistrement Synsound"
+      }
+    ]
+  },
+  {
+    "id": "squad_alien_fast_track_maintenance_rig",
+    "name": "Équipe de Maintenance de l'Ascenseur Spatial — Station Apex (2011)",
+    "universe": "ALIEN",
+    "shortName": "Maintenance Ascenseur (3 Techniciens)",
+    "category": "PARAMILITARY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens: Fast Track to Heaven (2011)",
+    "biomeId": "stargazer_blacksite",
+    "recommendedBiomeLabel": "Gaine Ascenseur Géostationnaire (2011)",
+    "primaryMapId": "map_alien_space_elevator_shaft",
+    "weaponLoadout": [
+      "wpn_fast_track_pneumatic_riveter"
+    ],
+    "description": "Équipe technique d'élite habituée aux travaux en apesanteur et aux interventions d'urgence sur les câbles orbitaux de 100 000 km.",
+    "tactics": "Tirs de rivets lourds perforant les carapaces, ancrage magnétique au sol et déclenchement de sas d'évacuation atmosphérique.",
+    "totalHonorReward": 7500,
+    "soloVariantId": "prey_xeno_praetorian_royal",
+    "members": [
+      {
+        "id": "cable_master_orourke",
+        "name": "Maître Câblier O'Rourke",
+        "role": "Superviseur de la Tension Orbitale",
+        "weapon": "Pistolet Riveteur Hydraulique 800 Bar & Découpeur",
+        "weaponId": "wpn_fast_track_pneumatic_riveter",
+        "vitalityRatio": 1.5,
+        "hp": 830,
+        "armor": 85,
+        "trophy": "Mousqueton de Sécurité en Nanotubes de Carbone & Harnais"
+      },
+      {
+        "id": "rigger_valeri",
+        "name": "Technicien Valeri Chen",
+        "role": "Soudeur de Coque en Micro-Gravité",
+        "weapon": "Riveteur Pneumatique Lourd & Torche Plasma",
+        "weaponId": "wpn_fast_track_pneumatic_riveter",
+        "vitalityRatio": 1.4,
+        "hp": 750,
+        "armor": 75,
+        "trophy": "Visière Polarisée Anti-Rayons Solaires Orbitaux"
+      },
+      {
+        "id": "winch_tech_amara",
+        "name": "Mécanicienne Amara Patel",
+        "role": "Opératrice de Frein Magnétique",
+        "weapon": "Riveteur d'Acier Rapide & Clé Dynamométrique Géante",
+        "weaponId": "wpn_fast_track_pneumatic_riveter",
+        "vitalityRatio": 1.3,
+        "hp": 680,
+        "armor": 65,
+        "trophy": "Segment de Câble Orbital Tressé en Alliage Diamanté"
+      }
+    ]
+  },
+  {
+    "id": "squad_avp_pantha_stalker_unit",
+    "name": "Pisteurs Félins & Traqueurs de Canopée — Jungle de Pantha (2000)",
+    "universe": "AVP",
+    "shortName": "Pisteurs de Pantha (3 Éclaireurs)",
+    "category": "PARAMILITARY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens vs. Predator: Pantha (2000)",
+    "biomeId": "jungle",
+    "recommendedBiomeLabel": "Haute Canopée de Pantha (2000)",
+    "primaryMapId": "map_avp_pantha_canopy_jungle",
+    "weaponLoadout": [
+      "wpn_pantha_arbor_net_caster"
+    ],
+    "description": "Chasseurs d'arbres agiles équipés de lanceurs de filets lourds et de grappins pour traquer les créatures bondissantes au sommet de la jungle préhistorique.",
+    "tactics": "Projection de filets pour immobiliser les proies sur les branches, tirs d'arbalètes empoisonnées et replis aériens par lianes de suspension.",
+    "totalHonorReward": 7100,
+    "soloVariantId": "prey_young_blood_initiate",
+    "members": [
+      {
+        "id": "pantha_scout_kallan",
+        "name": "Pisteur en Chef Kallan",
+        "role": "Veneur des Branches Maîtresses",
+        "weapon": "Lance-Filet Lourd Arboricole & Dague de Brèche",
+        "weaponId": "wpn_pantha_arbor_net_caster",
+        "vitalityRatio": 1.45,
+        "hp": 790,
+        "armor": 75,
+        "trophy": "Griffe de Panthère Cybernétique de Pantha en Céramique"
+      },
+      {
+        "id": "canopy_archer_sora",
+        "name": "Traqueuse Sora Reed",
+        "role": "Tireuse de Précision des Lianes",
+        "weapon": "Lanceur de Filets Lestés & Fléchettes Corrosives",
+        "weaponId": "wpn_pantha_arbor_net_caster",
+        "vitalityRatio": 1.35,
+        "hp": 720,
+        "armor": 65,
+        "trophy": "Camouflage Foliaire Tressé en Fibres Biologiques"
+      },
+      {
+        "id": "branch_climber_jarek",
+        "name": "Voltigeur Jarek Vance",
+        "role": "Éclaireur des Cimes Vertigineuses",
+        "weapon": "Lance-Filet Compact & Grappin d'Escalade Rapide",
+        "weaponId": "wpn_pantha_arbor_net_caster",
+        "vitalityRatio": 1.3,
+        "hp": 670,
+        "armor": 60,
+        "trophy": "Paire de Crampons d'Écorce en Alliage Yautja"
+      }
+    ]
+  },
+  {
+    "id": "squad_avp_three_world_war_vanguard",
+    "name": "Avant-Garde USCM de la Coalition — Three World War (2010)",
+    "universe": "AVP",
+    "shortName": "Coalition USCM (3 Vétérans)",
+    "category": "MILITARY_COMMANDO",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens vs. Predator: Three World War (2010)",
+    "biomeId": "genna_deathworld",
+    "recommendedBiomeLabel": "Ligne de Tranchées de Caparis VII (2010)",
+    "primaryMapId": "map_avp_three_world_war_frontline",
+    "weaponLoadout": [
+      "wpn_three_world_war_dual_pulse_carbine"
+    ],
+    "description": "Détachement de choc de Marines coloniaux vétérans combattant aux côtés de Machiko Noguchi pour écraser la menace du Killer Clan et de leurs bêtes dressées.",
+    "tactics": "Feu nourri à la double carabine M41A-X2, formation en ligne de tranchée coordonnée et couverture mutuelle avec les guerriers Yautja alliés.",
+    "totalHonorReward": 7800,
+    "soloVariantId": "prey_weyland_combat_android",
+    "members": [
+      {
+        "id": "major_ellis_uscm",
+        "name": "Major Ronald Ellis",
+        "role": "Commandant de la Coalition Marine-Yautja",
+        "weapon": "Double Carabine M41A-X2 & Couteau de Combat M9",
+        "weaponId": "wpn_three_world_war_dual_pulse_carbine",
+        "vitalityRatio": 1.55,
+        "hp": 870,
+        "armor": 85,
+        "trophy": "Plastron USCM Décoré de la Marque du Sang Yautja"
+      },
+      {
+        "id": "gunner_sergeant_cooper",
+        "name": "Sergent Artilleur Cooper",
+        "role": "Fusilier Lourd de Rupture de Tranchée",
+        "weapon": "Double Carabine M41A-X2 & Roquettes 25mm",
+        "weaponId": "wpn_three_world_war_dual_pulse_carbine",
+        "vitalityRatio": 1.4,
+        "hp": 770,
+        "armor": 75,
+        "trophy": "Double Chargeur Circulaire Tambour M41A Chromé"
+      },
+      {
+        "id": "combat_medic_tucker",
+        "name": "Infirmier de Combat Tucker",
+        "role": "Soutien Médical de Frontline",
+        "weapon": "Carabine à Double Impulsion & Injecteur de Stimulants",
+        "weaponId": "wpn_three_world_war_dual_pulse_carbine",
+        "vitalityRatio": 1.35,
+        "hp": 720,
+        "armor": 70,
+        "trophy": "Trousse de Premiers Soins Militaire Maculée d'Acide"
+      }
+    ]
   }
 ]);
 

@@ -3308,6 +3308,24 @@ export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
   wpn_chokehold_tactical_riot_shotgun: makeWeaponBallisticProfile('wpn_chokehold_tactical_riot_shotgun', {
     damage: 58, cooldown: 0.35, rangeM: 35, soundRadiusM: 90, projectileColor: 0xffbb22, archetype: 'gauge_10_containment_shotgun', cadence: 'heavy_buckshot_spread', damageType: 'ballistic',
   }),
+  wpn_norwegian_deep_sub_diver_harpoon: makeWeaponBallisticProfile('wpn_norwegian_deep_sub_diver_harpoon', {
+    damage: 84, cooldown: 1.9, rangeM: 45, soundRadiusM: 35, projectileColor: 0x38bdf8, archetype: 'heavy_hydro_pneumatic_harpoon', cadence: 'pneumatic_heavy_launch', damageType: 'piercing',
+  }),
+  wpn_louisiana_flintlock_double_shotgun: makeWeaponBallisticProfile('wpn_louisiana_flintlock_double_shotgun', {
+    damage: 62, cooldown: 1.6, rangeM: 25, soundRadiusM: 85, projectileColor: 0xff9900, archetype: 'double_barrel_flintlock_shotgun', cadence: 'simultaneous_double_blast', damageType: 'ballistic',
+  }),
+  wpn_synsound_sonic_disruptor_cannon: makeWeaponBallisticProfile('wpn_synsound_sonic_disruptor_cannon', {
+    damage: 68, cooldown: 1.1, rangeM: 50, soundRadiusM: 110, projectileColor: 0xd946ef, archetype: 'ultrasonic_acoustic_disruptor', cadence: 'focused_resonance_beam', damageType: 'acoustic',
+  }),
+  wpn_fast_track_pneumatic_riveter: makeWeaponBallisticProfile('wpn_fast_track_pneumatic_riveter', {
+    damage: 48, cooldown: 0.28, rangeM: 30, soundRadiusM: 70, projectileColor: 0xe2e8f0, archetype: 'hydraulic_heavy_rivet_gun', cadence: 'rapid_percussion_rivet', damageType: 'piercing',
+  }),
+  wpn_pantha_arbor_net_caster: makeWeaponBallisticProfile('wpn_pantha_arbor_net_caster', {
+    damage: 36, cooldown: 2.0, rangeM: 35, soundRadiusM: 40, projectileColor: 0x84cc16, archetype: 'arbor_weighted_net_launcher', cadence: 'pneumatic_entanglement_spread', damageType: 'constriction',
+  }),
+  wpn_three_world_war_dual_pulse_carbine: makeWeaponBallisticProfile('wpn_three_world_war_dual_pulse_carbine', {
+    damage: 56, cooldown: 0.16, rangeM: 75, soundRadiusM: 95, projectileColor: 0x38bdf8, archetype: 'dual_synchronized_pulse_carbine', cadence: 'synchronized_double_burst', damageType: 'ballistic',
+  }),
 });
 
 function resolveNpcRoleWeaponId(npcType) {

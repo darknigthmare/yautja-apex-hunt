@@ -2534,6 +2534,290 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
     tags: Object.freeze(['ultimate_confrontation_2022', 'starship_hulk', 'elders', 'praetorian_guard', 'climax']),
     locationIds: Object.freeze([])
   }
+,
+  {
+    "id": "lore_pred_blood_on_two_earths_2008",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Blood on Two Earths (2008 — Lignes temporelles divergentes & traque multidimensionnelle)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "predator1987",
+      "predator2_1990"
+    ],
+    "unlockCondition": "Pénétrer dans la faille temporelle et éliminer le seigneur de guerre dimensionnel",
+    "summary": "Traque croisée à travers des réalités alternatives où des clans Yautja d'élite confrontent les tyrannies technologiques de Terres parallèles.",
+    "body": "Predator: Blood on Two Earths (2008) explore les paradoxes des mondes parallèles où les prédateurs sélectionnent leurs proies parmi les commandos de régimes totalitaires alternatifs, éprouvant leurs arsenaux face à des technologies humaines uchroniques.",
+    "content": "Predator: Blood on Two Earths (2008) explore les paradoxes des mondes parallèles où les prédateurs sélectionnent leurs proies parmi les commandos de régimes totalitaires alternatifs, éprouvant leurs arsenaux face à des technologies humaines uchroniques.",
+    "tags": [
+      "blood_on_two_earths_2008",
+      "multiverse",
+      "alternate_earth",
+      "temporal_hunt"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_pred_hell_and_hot_water_1997",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Hell & Hot Water (1997 — Abysses de Norvège & prédateur aquatique)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "predator1987",
+      "predators2010"
+    ],
+    "unlockCondition": "Explorer la fosse sous-marine et désactiver la balise hydro-acoustique",
+    "summary": "Affrontement cauchemardesque par cent brasses de fond au large de la Norvège où des plongeurs industriels découvrent un Yautja adapté à la traque sous-marine.",
+    "body": "Predator: Hell & Hot Water (Mark Verheiden, 1997) plonge dans les abysses glaciales de la mer de Norvège. Un chasseur Yautja équipé d'une bio-armure hydrodynamique et d'un masque hyperbare harcèle une mission sous-marine de carottage pétrolier dans l'obscurité totale des fosses océaniques.",
+    "content": "Predator: Hell & Hot Water (Mark Verheiden, 1997) plonge dans les abysses glaciales de la mer de Norvège. Un chasseur Yautja équipé d'une bio-armure hydrodynamique et d'un masque hyperbare harcèle une mission sous-marine de carottage pétrolier dans l'obscurité totale des fosses océaniques.",
+    "tags": [
+      "hell_and_hot_water_1997",
+      "norwegian_sea",
+      "deep_sub",
+      "hydro_hunt",
+      "abyss"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_pred_strangers_and_aliens_1998",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Strange Roux (1998 — Marais de Louisiane & traqueurs de bayou)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "predator1987",
+      "prey2022"
+    ],
+    "unlockCondition": "Traquer le pisteur fantôme dans la brume des cyprès chauves du bayou",
+    "summary": "Au cœur des marécages fétides de Louisiane au XIXe siècle, traqueurs cajuns et créatures des marais affrontent un démon invisible se dissimulant dans les saules pleureurs.",
+    "body": "Predator: Strange Roux (1998) installe l'horreur dans la moiteur étouffante des bayous louisianais. Les Yautja y exploitent les eaux sombres et la canopée marécageuse pour tendre des embuscades impitoyables aux chasseurs de peaux et braconniers des cours d'eau.",
+    "content": "Predator: Strange Roux (1998) installe l'horreur dans la moiteur étouffante des bayous louisianais. Les Yautja y exploitent les eaux sombres et la canopée marécageuse pour tendre des embuscades impitoyables aux chasseurs de peaux et braconniers des cours d'eau.",
+    "tags": [
+      "strange_roux_1998",
+      "louisiana_bayou",
+      "swamp_trappers",
+      "cajun_legends"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_pred_demon_500_ad",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: The Norse Saga (c. 500 AD — Berserkers scandinaves & Démon du Nord)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "predator1987",
+      "prey2022"
+    ],
+    "unlockCondition": "Résister à l'assaut des berserkers scandinaves dans la tempête de glace",
+    "summary": "Confrontation sanglante en Scandinavie primitive où des chefs de guerre vikings vénèrent le prédateur comme un esprit des tempêtes et s'offrent en duel d'honneur.",
+    "body": "Predator: The Norse Saga (c. 500 AD) relate l'arrivée d'une capsule de chasse Yautja dans les fjords givrés de Norvège proto-viking. Les berserkers armés de haches forgées et de lances en fer considèrent le chasseur extraterrestre comme un envoyé des dieux d'Asgard.",
+    "content": "Predator: The Norse Saga (c. 500 AD) relate l'arrivée d'une capsule de chasse Yautja dans les fjords givrés de Norvège proto-viking. Les berserkers armés de haches forgées et de lances en fer considèrent le chasseur extraterrestre comme un envoyé des dieux d'Asgard.",
+    "tags": [
+      "norse_saga_500ad",
+      "scandinavia",
+      "vikings",
+      "berserkers",
+      "ancient_duel"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_music_of_the_spears_1996",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Music of the Spears (1996 — Symphonie de l'agonie & bio-acoustique)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "alien1979",
+      "aliens1986"
+    ],
+    "unlockCondition": "Désactiver le système de captation sonique dans le studio expérimental de la Synsound",
+    "summary": "Dans les entrailles de New York, un compositeur obsédé enferme des xénomorphes dans des chambres capitonnées pour enregistrer leurs hurlements et composer une œuvre culte.",
+    "body": "Aliens: Music of the Spears (Yvonne Navarro, 1996) plonge dans la décadence cyber-dystopique où Damian Damon cherche la quintessence de la musique dans la terreur pure. La bio-acoustique et les fréquences résonantes de la ruche deviennent une arme de manipulation psychologique dévastatrice.",
+    "content": "Aliens: Music of the Spears (Yvonne Navarro, 1996) plonge dans la décadence cyber-dystopique où Damian Damon cherche la quintessence de la musique dans la terreur pure. La bio-acoustique et les fréquences résonantes de la ruche deviennent une arme de manipulation psychologique dévastatrice.",
+    "tags": [
+      "music_of_the_spears_1996",
+      "synsound",
+      "bio_acoustics",
+      "nyc_dystopia",
+      "sonic_weapons"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_berserker_nemesis_1995",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Berserker (1995 — Escouades MAX, exosquelettes de choc & neuro-stimulants)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "aliens1986",
+      "alien3_1992"
+    ],
+    "unlockCondition": "Vaincre l'opérateur d'exosquelette lourd en état de frénésie sous MAX-stim",
+    "summary": "Déploiement d'escouades suicides blindées pilotant des armures d'assaut motorisées lourdes MAX pour broyer les ruches xénomorphes au corps-à-corps.",
+    "body": "Aliens: Berserker (John Arcudi, 1995) documente l'usage extrême d'armures de combat assistées MAX par des condamnés volontaires dopés aux neuro-stimulants. Conçus pour égaler la force brute des guerriers xénomorphes, ces exosquelettes mènent des combats d'attrition dévastateurs.",
+    "content": "Aliens: Berserker (John Arcudi, 1995) documente l'usage extrême d'armures de combat assistées MAX par des condamnés volontaires dopés aux neuro-stimulants. Conçus pour égaler la force brute des guerriers xénomorphes, ces exosquelettes mènent des combats d'attrition dévastateurs.",
+    "tags": [
+      "berserker_1995",
+      "max_exosuit",
+      "heavy_armor",
+      "stimulants",
+      "hive_breach"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_pig_1997",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Pig (1997 — Vecteurs porcins d'infection & guerre bactériologique sale)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "aliens1986",
+      "alienRomulus2024"
+    ],
+    "unlockCondition": "Éradiquer le conteneur de transport biologique avant dispersion de la charge xéno",
+    "summary": "Opération militaire clandestine consistant à utiliser des porcs génétiquement altérés comme hôtes porteurs de facehuggers pour infiltrer une colonie autonome.",
+    "body": "Aliens: Pig (Chuck Dixon, 1997) illustre le cynisme absolu des stratèges militaires déployant des animaux de cheptel infectés pour contourner les scans de sécurité corporatifs, déclenchant des contaminations foudroyantes au cœur des cités coloniales.",
+    "content": "Aliens: Pig (Chuck Dixon, 1997) illustre le cynisme absolu des stratèges militaires déployant des animaux de cheptel infectés pour contourner les scans de sécurité corporatifs, déclenchant des contaminations foudroyantes au cœur des cités coloniales.",
+    "tags": [
+      "pig_1997",
+      "biological_warfare",
+      "clandestine_vector",
+      "facehugger_carrier"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_survival_2004",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Survival (2004 — Paranoïa souterraine, poussière volcanique & siège géologique)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "alien1979",
+      "aliens1986"
+    ],
+    "unlockCondition": "Découvrir la cache scellée du géologue au fond de la caverne de poussière",
+    "summary": "Siège étouffant au fond d'un bunker géologique sur une lune aride où un survivant solitaire sombre dans la paranoïa face aux bruits dans les conduits de climatisation.",
+    "body": "Aliens: Survival (Guy Davis, 2004) explore la détresse psychologique extrême et l'isolement face à la menace tapie dans l'obscurité. Les xénomorphes exploitent les failles de ventilation et la poussière abrasive pour user la santé mentale des occupants avant de donner le coup de grâce.",
+    "content": "Aliens: Survival (Guy Davis, 2004) explore la détresse psychologique extrême et l'isolement face à la menace tapie dans l'obscurité. Les xénomorphes exploitent les failles de ventilation et la poussière abrasive pour user la santé mentale des occupants avant de donner le coup de grâce.",
+    "tags": [
+      "survival_2004",
+      "geological_bunker",
+      "paranoia",
+      "ventilation_stalk",
+      "dust"
+    ],
+    "locationIds": []},
+  {
+    "id": "lore_avp_web_1999",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Web (1999 — Station orbitale de transit & piège en toile d'acier)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "aliens1986",
+      "predator1987"
+    ],
+    "unlockCondition": "Déjouer le réseau de détection laser dans la toile de câbles de la station de transit",
+    "summary": "Un clan de Jeunes Sangs tombe dans un piège mortel au cœur d'une immense station orbitale automatisée infestée de nids xénomorphes suspendus dans une toile de câbles d'amarrage.",
+    "body": "Aliens vs. Predator: Web (Randy Stradley, 1999) plonge les initiés Yautja dans un environnement vertical et mécanique oppressant. La structure réticulaire des câbles et poutrelles forme une toile d'araignée métallique où les xénomorphes se déplacent sans bruit pour encercler les chasseurs.",
+    "content": "Aliens vs. Predator: Web (Randy Stradley, 1999) plonge les initiés Yautja dans un environnement vertical et mécanique oppressant. La structure réticulaire des câbles et poutrelles forme une toile d'araignée métallique où les xénomorphes se déplacent sans bruit pour encercler les chasseurs.",
+    "tags": [
+      "web_1999",
+      "orbital_station",
+      "cable_mesh",
+      "young_bloods_trap",
+      "vertical_ambush"
+    ],
+    "locationIds": []},
+  {
+    "id": "lore_avp_pantha_2000",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Pantha (2000 — Monde canopée toxique & traqueurs cybernétiques)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "predator1987"
+    ],
+    "unlockCondition": "Triompher du duel d'embuscade sur les branches maîtresses de la jungle de Pantha",
+    "summary": "Chasse sauvage au sommet des arbres millénaires du monde de Pantha entre prédateurs d'élite, félin cyber-implanté et coureurs xénomorphes arboricoles.",
+    "body": "Aliens vs. Predator: Pantha (2000) explore la canopée vertigineuse d'une jungle mortelle où chaque niveau d'altitude est disputé par des bio-formes létales. Les Yautja y adaptent leurs griffes et leurs filets pour combattre en suspension au-dessus des gouffres végétaux.",
+    "content": "Aliens vs. Predator: Pantha (2000) explore la canopée vertigineuse d'une jungle mortelle où chaque niveau d'altitude est disputé par des bio-formes létales. Les Yautja y adaptent leurs griffes et leurs filets pour combattre en suspension au-dessus des gouffres végétaux.",
+    "tags": [
+      "pantha_2000",
+      "canopy_jungle",
+      "cyber_feline",
+      "arbor_stalkers"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_deadliest_species_trophy_1995",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Deadliest of the Species (1995 — Mégalopole Skylark & trophée de Big Mama)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "alien1979",
+      "predator2_1990"
+    ],
+    "unlockCondition": "Nettoyer le dôme supérieur de Skylark aux côtés du champion Yautja Big Mama",
+    "summary": "Dans la métropole suspendue de Skylark, la guerrière synthétique Caryn Delacroix et la chasseresse Yautja Big Mama s'allient pour anéantir des vagues de xénomorphes génétiquement reprogrammés.",
+    "body": "Aliens vs. Predator: Deadliest of the Species (Chris Claremont, 1995) met en scène une odyssée visionnaire où la technologie d'IA Weyland et la culture martiale Yautja se croisent pour préserver le destin génétique des deux espèces contre les corruptions transhumaines.",
+    "content": "Aliens vs. Predator: Deadliest of the Species (Chris Claremont, 1995) met en scène une odyssée visionnaire où la technologie d'IA Weyland et la culture martiale Yautja se croisent pour préserver le destin génétique des deux espèces contre les corruptions transhumaines.",
+    "tags": [
+      "deadliest_species_1995",
+      "big_mama",
+      "skylark_megalopolis",
+      "caryn_delacroix"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_clonage_complex_lv742_2003",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Extinction - Genesis Labs (2003 — Laboratoires de clonage & souches pures LV-742)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "alienRomulus2024"
+    ],
+    "unlockCondition": "Détruire les cuves d'incubation xénomorphe du complexe souterrain de LV-742",
+    "summary": "Infiltration d'un complexe de biotechnologie sous-terraine de la Weyland-Yutani dédié au clonage de reines et à la création de spécimens hybrides d'assaut.",
+    "body": "Aliens versus Predator: Extinction - Genesis Labs (2003) détaille les expérimentations génétiques de pointe menées par le Dr Kadinsky sur la planète LV-742. Les Yautja considèrent ces laboratoires comme une profanation suprême du grand cycle de la chasse et engagent une guerre d'éradication sans quartier.",
+    "content": "Aliens versus Predator: Extinction - Genesis Labs (2003) détaille les expérimentations génétiques de pointe menées par le Dr Kadinsky sur la planète LV-742. Les Yautja considèrent ces laboratoires comme une profanation suprême du grand cycle de la chasse et engagent une guerre d'éradication sans quartier.",
+    "tags": [
+      "extinction_genesis_2003",
+      "lv742",
+      "cloning_labs",
+      "kadinsky",
+      "pure_strains"
+    ],
+    "locationIds": []
+  }
 ]);
 // IDs match the values already used by the planet selector.
 export const HUNT_LOCATIONS = freezeEntries([

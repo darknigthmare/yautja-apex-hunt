@@ -37763,6 +37763,135 @@ class AudioSynthesizer {
 
     return descriptor;
   }
+
+  playAcousticSonicDisruptorWave() {
+    const descriptor = {
+      event: 'acoustic_sonic_disruptor_wave',
+      synthesis: 'ultrasonic_heterodyne_carrier_and_sub_bass_concussion',
+      subBassHz: 42,
+      ultrasonicSweepHz: 2800,
+      durationSeconds: 0.72,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const bassOsc = this.ctx.createOscillator();
+    const bassGain = this.ctx.createGain();
+    bassOsc.type = 'sine';
+    bassOsc.frequency.setValueAtTime(descriptor.subBassHz, now);
+    bassOsc.frequency.linearRampToValueAtTime(28, now + 0.45);
+
+    bassGain.gain.setValueAtTime(0.88, now);
+    bassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+    bassOsc.connect(bassGain);
+    bassGain.connect(this.ctx.destination);
+    bassOsc.start(now);
+    bassOsc.stop(now + 0.52);
+
+    const sweepOsc = this.ctx.createOscillator();
+    const sweepGain = this.ctx.createGain();
+    sweepOsc.type = 'sawtooth';
+    sweepOsc.frequency.setValueAtTime(descriptor.ultrasonicSweepHz, now + 0.03);
+    sweepOsc.frequency.exponentialRampToValueAtTime(420, now + 0.68);
+
+    sweepGain.gain.setValueAtTime(0.65, now + 0.03);
+    sweepGain.gain.exponentialRampToValueAtTime(0.001, now + 0.72);
+
+    sweepOsc.connect(sweepGain);
+    sweepGain.connect(this.ctx.destination);
+    sweepOsc.start(now + 0.03);
+    sweepOsc.stop(now + 0.72);
+
+    return descriptor;
+  }
+
+  playPneumaticRiveterImpact() {
+    const descriptor = {
+      event: 'pneumatic_riveter_impact',
+      synthesis: 'high_pressure_hydraulic_strike_and_metallic_percussion',
+      punchHz: 360,
+      ricochetAnvilHz: 2400,
+      durationSeconds: 0.55,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const punchOsc = this.ctx.createOscillator();
+    const punchGain = this.ctx.createGain();
+    punchOsc.type = 'triangle';
+    punchOsc.frequency.setValueAtTime(descriptor.punchHz, now);
+    punchOsc.frequency.exponentialRampToValueAtTime(65, now + 0.14);
+
+    punchGain.gain.setValueAtTime(0.92, now);
+    punchGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+
+    punchOsc.connect(punchGain);
+    punchGain.connect(this.ctx.destination);
+    punchOsc.start(now);
+    punchOsc.stop(now + 0.2);
+
+    const anvilOsc = this.ctx.createOscillator();
+    const anvilGain = this.ctx.createGain();
+    anvilOsc.type = 'sine';
+    anvilOsc.frequency.setValueAtTime(descriptor.ricochetAnvilHz, now + 0.01);
+    anvilOsc.frequency.exponentialRampToValueAtTime(950, now + 0.52);
+
+    anvilGain.gain.setValueAtTime(0.7, now + 0.01);
+    anvilGain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+
+    anvilOsc.connect(anvilGain);
+    anvilGain.connect(this.ctx.destination);
+    anvilOsc.start(now + 0.01);
+    anvilOsc.stop(now + 0.55);
+
+    return descriptor;
+  }
+
+  playPressurizedHydroCavitationBlast() {
+    const descriptor = {
+      event: 'pressurized_hydro_cavitation_blast',
+      synthesis: 'abyssal_fluid_implosion_and_high_speed_water_thrust',
+      depthPulseHz: 110,
+      cavitationHissHz: 3100,
+      durationSeconds: 0.65,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const depthOsc = this.ctx.createOscillator();
+    const depthGain = this.ctx.createGain();
+    depthOsc.type = 'triangle';
+    depthOsc.frequency.setValueAtTime(descriptor.depthPulseHz, now);
+    depthOsc.frequency.exponentialRampToValueAtTime(32, now + 0.38);
+
+    depthGain.gain.setValueAtTime(0.85, now);
+    depthGain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+
+    depthOsc.connect(depthGain);
+    depthGain.connect(this.ctx.destination);
+    depthOsc.start(now);
+    depthOsc.stop(now + 0.45);
+
+    const hissOsc = this.ctx.createOscillator();
+    const hissGain = this.ctx.createGain();
+    hissOsc.type = 'sawtooth';
+    hissOsc.frequency.setValueAtTime(descriptor.cavitationHissHz, now + 0.02);
+    hissOsc.frequency.exponentialRampToValueAtTime(620, now + 0.62);
+
+    hissGain.gain.setValueAtTime(0.58, now + 0.02);
+    hissGain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+
+    hissOsc.connect(hissGain);
+    hissGain.connect(this.ctx.destination);
+    hissOsc.start(now + 0.02);
+    hissOsc.stop(now + 0.65);
+
+    return descriptor;
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();

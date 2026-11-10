@@ -152,6 +152,13 @@ test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague
     'squad_alien_thaw_drilling_crew',
     'squad_avp_lv1201_weyland_iron_guard',
     'squad_avp_chokehold_containment_unit',
+    // Vague 17
+    'squad_pred_norwegian_deep_divers',
+    'squad_pred_louisiana_bayou_trappers',
+    'squad_alien_synsound_security_forces',
+    'squad_alien_fast_track_maintenance_rig',
+    'squad_avp_pantha_stalker_unit',
+    'squad_avp_three_world_war_vanguard',
   ];
 
   for (const squadId of vagueSquadIds) {
@@ -212,6 +219,13 @@ test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague
   assert.ok(getSquadLogo('squad_alien_thaw_drilling_crew', 40).includes('logo-squad-thawdrilling'));
   assert.ok(getSquadLogo('squad_avp_lv1201_weyland_iron_guard', 40).includes('logo-squad-lv1201pod5'));
   assert.ok(getSquadLogo('squad_avp_chokehold_containment_unit', 40).includes('logo-squad-chokehold'));
+  // Vague 17
+  assert.ok(getSquadLogo('squad_pred_norwegian_deep_divers', 40).includes('logo-squad-norwegiandivers'));
+  assert.ok(getSquadLogo('squad_pred_louisiana_bayou_trappers', 40).includes('logo-squad-bayoutrappers'));
+  assert.ok(getSquadLogo('squad_alien_synsound_security_forces', 40).includes('logo-squad-synsound'));
+  assert.ok(getSquadLogo('squad_alien_fast_track_maintenance_rig', 40).includes('logo-squad-fasttrackrig'));
+  assert.ok(getSquadLogo('squad_avp_pantha_stalker_unit', 40).includes('logo-squad-panthastalkers'));
+  assert.ok(getSquadLogo('squad_avp_three_world_war_vanguard', 40).includes('logo-squad-threeworldwar'));
 
   for (const squad of SQUAD_ENCOUNTERS) {
     const svg = getSquadLogo(squad.id, 40);
@@ -387,16 +401,16 @@ test('getVaultCardMiniatureSvg génère une miniature vectorielle 180x76 avec en
   }
 });
 
-test('src/main.js intègre les icônes d’équipement vectorielles dans renderHuntLoadoutUI et synchronise les compteurs de filtres Vague 16', () => {
+test('src/main.js intègre les icônes d’équipement vectorielles dans renderHuntLoadoutUI et synchronise les compteurs de filtres Vague 17', () => {
   const mainSource = fs.readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
   assert.ok(mainSource.includes("import { getEquipmentIconSvg } from './ui/EquipmentIcons.js';"), 'main.js doit importer getEquipmentIconSvg');
   assert.ok(mainSource.includes('loadout-core-icon') && mainSource.includes('getEquipmentIconSvg(id, 16)'), 'main.js doit intégrer les icônes sur loadout-core-icon');
   assert.ok(mainSource.includes('loadout-item-icon') && mainSource.includes('getEquipmentIconSvg(item.id, 22)'), 'main.js doit intégrer les icônes sur loadout-item-icon');
   assert.ok(mainSource.includes('choice.append(input, icon, copy, cost)'), 'L\'icône doit être insérée avant l\'élément copy dans loadout-choice');
-  assert.ok(mainSource.includes('.squad-filter-pill') && mainSource.includes('132'), 'setupTaxonomyAndMultiverse doit synchroniser squad-filter-pill à 132');
-  assert.ok(mainSource.includes('.maps-filter-pill') && mainSource.includes('120'), 'setupTaxonomyAndMultiverse doit synchroniser maps-filter-pill à 120');
-  assert.ok(mainSource.includes('.weapons-filter-pill') && mainSource.includes('238'), 'setupTaxonomyAndMultiverse doit synchroniser weapons-filter-pill à 238');
-  assert.ok(mainSource.includes('.codex-filter-pill') && mainSource.includes('222'), 'setupTaxonomyAndMultiverse doit synchroniser codex-filter-pill à 222');
+  assert.ok(mainSource.includes('.squad-filter-pill') && mainSource.includes('138'), 'setupTaxonomyAndMultiverse doit synchroniser squad-filter-pill à 138');
+  assert.ok(mainSource.includes('.maps-filter-pill') && mainSource.includes('126'), 'setupTaxonomyAndMultiverse doit synchroniser maps-filter-pill à 126');
+  assert.ok(mainSource.includes('.weapons-filter-pill') && mainSource.includes('250'), 'setupTaxonomyAndMultiverse doit synchroniser weapons-filter-pill à 250');
+  assert.ok(mainSource.includes('.codex-filter-pill') && mainSource.includes('234'), 'setupTaxonomyAndMultiverse doit synchroniser codex-filter-pill à 234');
 });
 
 test('SharedReferenceVault intègre la miniature et l’icône de catégorie sur chaque carte de catalogue', async () => {

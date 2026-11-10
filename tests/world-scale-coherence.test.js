@@ -1105,3 +1105,94 @@ test('AudioSynthesizer procedural Vague 16 SFX methods execute safely in headles
   assert.ok(cryo.durationSeconds > 0);
   assert.equal(cryo.played, false);
 });
+
+test('Vague 17 canonical NPC weapons resolve to rich ballistic and acoustic profiles', () => {
+  const vague17Weapons = [
+    {
+      id: 'wpn_norwegian_deep_sub_diver_harpoon',
+      archetype: 'heavy_hydro_pneumatic_harpoon',
+      damage: 84,
+      rangeM: 45,
+      soundRadiusM: 35,
+      projectileColor: 0x38bdf8,
+    },
+    {
+      id: 'wpn_louisiana_flintlock_double_shotgun',
+      archetype: 'double_barrel_flintlock_shotgun',
+      damage: 62,
+      rangeM: 25,
+      soundRadiusM: 85,
+      projectileColor: 0xff9900,
+    },
+    {
+      id: 'wpn_synsound_sonic_disruptor_cannon',
+      archetype: 'ultrasonic_acoustic_disruptor',
+      damage: 68,
+      rangeM: 50,
+      soundRadiusM: 110,
+      projectileColor: 0xd946ef,
+    },
+    {
+      id: 'wpn_fast_track_pneumatic_riveter',
+      archetype: 'hydraulic_heavy_rivet_gun',
+      damage: 48,
+      rangeM: 30,
+      soundRadiusM: 70,
+      projectileColor: 0xe2e8f0,
+    },
+    {
+      id: 'wpn_pantha_arbor_net_caster',
+      archetype: 'arbor_weighted_net_launcher',
+      damage: 36,
+      rangeM: 35,
+      soundRadiusM: 40,
+      projectileColor: 0x84cc16,
+    },
+    {
+      id: 'wpn_three_world_war_dual_pulse_carbine',
+      archetype: 'dual_synchronized_pulse_carbine',
+      damage: 56,
+      rangeM: 75,
+      soundRadiusM: 95,
+      projectileColor: 0x38bdf8,
+    },
+  ];
+
+  for (const expected of vague17Weapons) {
+    const profile = NPC_WEAPON_BALLISTIC_PROFILES[expected.id];
+    assert.ok(profile, `Le profil balistique de ${expected.id} doit exister dans NPC_WEAPON_BALLISTIC_PROFILES`);
+    assert.equal(profile.id, expected.id);
+    assert.equal(profile.archetype, expected.archetype);
+    assert.equal(profile.damage, expected.damage);
+    assert.equal(profile.rangeM, expected.rangeM);
+    assert.equal(profile.soundRadiusM, expected.soundRadiusM);
+    assert.equal(profile.projectileColor, expected.projectileColor);
+
+    const resolved = getNpcWeaponProfile(expected.id);
+    assert.equal(resolved.id, expected.id);
+    assert.equal(resolved.archetype, expected.archetype);
+  }
+});
+
+test('AudioSynthesizer procedural Vague 17 SFX methods execute safely in headless Node environment', () => {
+  const sonic = audioSynth.playAcousticSonicDisruptorWave();
+  assert.ok(sonic && sonic.event === 'acoustic_sonic_disruptor_wave');
+  assert.ok(sonic.subBassHz > 0);
+  assert.ok(sonic.ultrasonicSweepHz > sonic.subBassHz);
+  assert.ok(sonic.durationSeconds > 0);
+  assert.equal(sonic.played, false);
+
+  const rivet = audioSynth.playPneumaticRiveterImpact();
+  assert.ok(rivet && rivet.event === 'pneumatic_riveter_impact');
+  assert.ok(rivet.punchHz > 0);
+  assert.ok(rivet.ricochetAnvilHz > rivet.punchHz);
+  assert.ok(rivet.durationSeconds > 0);
+  assert.equal(rivet.played, false);
+
+  const hydro = audioSynth.playPressurizedHydroCavitationBlast();
+  assert.ok(hydro && hydro.event === 'pressurized_hydro_cavitation_blast');
+  assert.ok(hydro.depthPulseHz > 0);
+  assert.ok(hydro.cavitationHissHz > hydro.depthPulseHz);
+  assert.ok(hydro.durationSeconds > 0);
+  assert.equal(hydro.played, false);
+});

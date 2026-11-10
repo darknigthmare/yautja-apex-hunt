@@ -3079,6 +3079,107 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  if (id.includes('norwegian_deep_divers') || id.includes('norwegian_divers')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-norwegiandivers" role="img" aria-label="Insigne Scaphandriers Mer de Norvège">
+        <!-- Cercle pressurisé bleu nuit abyssal et titane marin -->
+        <circle cx="40" cy="40" r="36" fill="#031b33" stroke="#38bdf8" stroke-width="2.5" />
+        <circle cx="40" cy="40" r="30" fill="none" stroke="#0284c7" stroke-width="1.2" stroke-dasharray="4,2" />
+        <!-- Casque de scaphandre lourd en titane avec hublot ovale -->
+        <ellipse cx="40" cy="38" rx="15" ry="17" fill="#0f172a" stroke="#e2e8f0" stroke-width="2.2" />
+        <ellipse cx="40" cy="38" rx="10" ry="11" fill="#0369a1" stroke="#38bdf8" stroke-width="1.2" />
+        <!-- Faisceaux de projecteurs halogènes plongeants -->
+        <polygon points="30,38 12,64 24,66" fill="#fef08a" opacity="0.3" />
+        <polygon points="50,38 68,64 56,66" fill="#fef08a" opacity="0.3" />
+        <!-- Harpon lourd de profondeur en diagonale -->
+        <line x1="18" y1="58" x2="62" y2="18" stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round" />
+        <polygon points="62,18 54,20 60,26" fill="#38bdf8" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#7dd3fc" letter-spacing="1" text-anchor="middle">NORWAY 1997</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('louisiana_bayou_trappers') || id.includes('bayou_trappers')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-bayoutrappers" role="img" aria-label="Insigne Traqueurs du Bayou">
+        <!-- Écusson en bois de cyprès sombre et mousse marécageuse -->
+        <polygon points="40,6 72,18 68,62 40,76 12,62 8,18" fill="#1c1917" stroke="#84cc16" stroke-width="2.5" />
+        <!-- Mousse espagnole et branches de cyprès -->
+        <path d="M16 26 Q24 44 20 60 M64 26 Q56 44 60 60" stroke="#4d7c0f" stroke-width="1.8" fill="none" opacity="0.6" />
+        <!-- Double canon scié de calibre 10 croisé -->
+        <line x1="26" y1="54" x2="54" y2="24" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" />
+        <line x1="54" y1="54" x2="26" y2="24" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" />
+        <!-- Mâchoire d'alligator stylisée centrale -->
+        <polygon points="34,36 40,30 46,36 44,48 40,44 36,48" fill="#fef08a" stroke="#ca8a04" stroke-width="1.2" />
+        <circle cx="40" cy="38" r="2.5" fill="#ef4444" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#bef264" letter-spacing="1" text-anchor="middle">BAYOU 1998</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('synsound_security_forces') || id.includes('synsound_security') || id.includes('synsound')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-synsound" role="img" aria-label="Insigne Sécurité Synsound">
+        <!-- Hexagone futuriste magenta néon et pourpre sombre -->
+        <polygon points="40,6 74,24 74,56 40,74 6,56 6,24" fill="#2e1065" stroke="#d946ef" stroke-width="2.5" />
+        <!-- Ondes sonores sinusoïdales à haute fréquence -->
+        <path d="M14 40 Q22 24 30 40 T46 40 T62 40 T70 40" fill="none" stroke="#f472b6" stroke-width="2" />
+        <path d="M18 40 Q26 28 34 40 T50 40 T66 40" fill="none" stroke="#c084fc" stroke-width="1.2" opacity="0.7" />
+        <!-- Casque audio blindé à visière néon centrale -->
+        <circle cx="40" cy="38" r="14" fill="#1e1b4b" stroke="#e879f9" stroke-width="1.8" />
+        <rect x="28" y="32" width="6" height="12" rx="2" fill="#d946ef" />
+        <rect x="46" y="32" width="6" height="12" rx="2" fill="#d946ef" />
+        <path d="M31 32 C31 22 49 22 49 32" fill="none" stroke="#a855f7" stroke-width="2.5" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#fbcfe8" letter-spacing="1" text-anchor="middle">SYNSOUND NYC</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('fast_track_maintenance_rig') || id.includes('fast_track_rig') || id.includes('fast_track')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-fasttrackrig" role="img" aria-label="Insigne Maintenance Ascenseur Spatial">
+        <!-- Losange orbital bleu acier et jaune de chantier spatial -->
+        <polygon points="40,6 74,40 40,74 6,40" fill="#0f172a" stroke="#eab308" stroke-width="2.5" />
+        <!-- Deux câbles de tension verticaux traversants -->
+        <line x1="36" y1="12" x2="36" y2="68" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4,2" />
+        <line x1="44" y1="12" x2="44" y2="68" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4,2" />
+        <!-- Nacelle d'ascenseur géante hexagonale en ascension -->
+        <polygon points="40,28 52,35 52,47 40,54 28,47 28,35" fill="#1e293b" stroke="#facc15" stroke-width="1.8" />
+        <!-- Rivet lourd au centre étincelant -->
+        <circle cx="40" cy="41" r="4.5" fill="#e2e8f0" stroke="#f59e0b" stroke-width="1.2" />
+        <text x="40" y="67" font-family="'Orbitron', sans-serif" font-size="3.6" font-weight="900" fill="#fef08a" letter-spacing="0.6" text-anchor="middle">FAST TRACK 2011</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('pantha_stalker_unit') || id.includes('pantha_stalker') || id.includes('pantha')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-panthastalkers" role="img" aria-label="Insigne Pisteurs de Pantha">
+        <!-- Écusson de jungle vert émeraude et or tribal -->
+        <path d="M40 6 Q68 18 68 48 Q68 74 40 76 Q12 74 12 48 Q12 18 40 6 Z" fill="#064e3b" stroke="#10b981" stroke-width="2.5" />
+        <!-- Lianes suspendues et feuillage dense de haute canopée -->
+        <path d="M22 22 Q40 38 32 60 M58 22 Q40 38 48 60" stroke="#059669" stroke-width="1.8" fill="none" opacity="0.6" />
+        <!-- Tête de panthère cybernétique stylisée aux yeux rouges -->
+        <polygon points="40,24 48,34 46,44 40,48 34,44 32,34" fill="#0f172a" stroke="#34d399" stroke-width="1.5" />
+        <circle cx="36" cy="34" r="1.8" fill="#ef4444" />
+        <circle cx="44" cy="34" r="1.8" fill="#ef4444" />
+        <!-- Mailles de filet de capture en losange -->
+        <path d="M30 46 L50 46 M34 50 L46 50 M37 54 L43 54" stroke="#facc15" stroke-width="1.3" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#a7f3d0" letter-spacing="1" text-anchor="middle">PANTHA 2000</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('three_world_war_vanguard') || id.includes('three_world_war')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-threeworldwar" role="img" aria-label="Insigne Avant-Garde Three World War">
+        <!-- Blason militaire impérial bleu USCM et rouge Yautja -->
+        <polygon points="40,6 74,16 66,66 40,76 14,66 6,16" fill="#091428" stroke="#dc2626" stroke-width="2.5" />
+        <!-- Épée plasma Yautja et carabine à impulsions croisées -->
+        <line x1="22" y1="58" x2="58" y2="22" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+        <line x1="58" y1="58" x2="22" y2="22" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" />
+        <!-- Marque d'alliance de sang triangulaire au centre -->
+        <polygon points="40,30 48,46 32,46" fill="#991b1b" stroke="#f87171" stroke-width="1.5" />
+        <circle cx="40" cy="40" r="3" fill="#fbbf24" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#fca5a5" letter-spacing="1" text-anchor="middle">3 WORLD WAR</text>
+      </svg>
+    `.trim();
+  }
   if (id.startsWith('squad_') && !id.includes('lv742_kainde_amedha')) {
     const cleanTag = id.replace(/^squad_(pred_|alien_|avp_)?/, '').replace(/_/g, ' ').slice(0, 14).toUpperCase();
     const h = Math.abs(hashCode(id));

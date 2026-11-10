@@ -3577,6 +3577,360 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     ],
     "heroSquadId": "squad_avp_chokehold_containment_unit",
     "villainSquadId": null
+  },
+  {
+    "id": "map_pred_norwegian_abyssal_rig",
+    "name": "Plate-forme Sous-Marine des Abysses — Mer de Norvège (1997)",
+    "universe": "PREDATOR",
+    "originMedia": "Predator: Hell & Hot Water (1997)",
+    "sourceType": "COMIC",
+    "releaseYear": 1997,
+    "year": 1997,
+    "biomeId": "bouvetoya_pyramid",
+    "biome": "SUB_OCEANIC_CHASM",
+    "recommendedBiomeLabel": "Fosse Abyssale Mer de Norvège (1997)",
+    "weather": "Obscurité océanique abyssale, courants marins glacés et projecteurs submersibles",
+    "lighting": "Projecteurs halogènes sous-marins et bioluminescence marine verdâtre",
+    "verticality": "TRÈS HAUTE (Puits de carottage vertical de 800m, modules hyperbares étagés)",
+    "destructibility": "Sas de décompression, conduites hydrauliques et grilles d'aération sous pression",
+    "interactables": [
+      "Sas hyperbare inondable pour expulsion d'eau à haute vitesse",
+      "Treuil sous-marin lourd pour projeter des têtes de forage sur les cibles",
+      "Balise sonar active aveuglant temporairement les senseurs acoustiques"
+    ],
+    "environmentSummary": "Station de forage sous-marine hyperbare posée sur le fond de la mer de Norvège, où un Yautja aquatique traque les scaphandriers dans le noir total.",
+    "description": "Station de forage sous-marine hyperbare posée sur le fond de la mer de Norvège, où un Yautja aquatique traque les scaphandriers dans le noir total.",
+    "tacticalNotes": "La pression extrême et la visibilité restreinte favorisent les attaques subaquatiques sournoises au harpon et au trident.",
+    "dimensionsM": {
+      "width": 520,
+      "length": 520,
+      "height": 75
+    },
+    "elevationRangeM": [
+      0,
+      75
+    ],
+    "tacticalSectors": [
+      "Puits de Carottage Sous-Marin Principal",
+      "Passerelles Hyperbares des Plongeurs d'Élite",
+      "Sas de Compression & Baie de Submersibles",
+      "Faille Abyssale Éclairée aux Halogènes"
+    ],
+    "keyLandmarks": [
+      "Tête de forage géante suspendue au-dessus du gouffre marin",
+      "Cloche de plongée profonde écrasée par une force surhumaine",
+      "Réseau de tuyauteries hydrauliques fumantes fuyant de l'eau bouillante"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "HIGH_PRESSURE_FLOOD",
+        "description": "Rupture de verrous sous pression inondant les galeries"
+      },
+      {
+        "type": "HYPOTHERMIC_FREEZE",
+        "description": "Courants océaniques polaires à 0°C gelant les membres"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_bad_blood_warlord"
+    ],
+    "heroSquadId": "squad_pred_norwegian_deep_divers",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_pred_louisiana_bayou_swamp",
+    "name": "Marais & Cyprès Chauves — Bayou de Louisiane (1998)",
+    "universe": "PREDATOR",
+    "originMedia": "Predator: Strange Roux (1998)",
+    "sourceType": "COMIC",
+    "releaseYear": 1998,
+    "year": 1998,
+    "biomeId": "jungle",
+    "biome": "SWAMP_MANGROVE",
+    "recommendedBiomeLabel": "Marécages du Bayou Cajun (1998)",
+    "weather": "Brouillard d'eau tiède stagnant, pluie fine tropicale et nuées d'insectes",
+    "lighting": "Rayons de lune filtrant à travers la mousse espagnole et feux follets marécageux",
+    "verticality": "MOYENNE (Cyprès centenaires, cabanes sur pilotis et cours d'eau stagnants)",
+    "destructibility": "Pontons de bois pourri défonçables, barques à fond plat et branchages",
+    "interactables": [
+      "Barque en bois dérivante pour traverser les nappes d'eau sans bruit",
+      "Nid d'alligators géants pouvant être excité par un tir d'énergie",
+      "Ponton vermoulu piégeable pour faire basculer l'ennemi dans la vase"
+    ],
+    "environmentSummary": "Dédale de marécages et d'eaux croupies en Louisiane au XIXe siècle où traqueurs cajuns et prédateur invisible s'affrontent entre racines de cyprès.",
+    "description": "Dédale de marécages et d'eaux croupies en Louisiane au XIXe siècle où traqueurs cajuns et prédateur invisible s'affrontent entre racines de cyprès.",
+    "tacticalNotes": "La vase ralentit la marche au sol ; les branches supérieures des cyprès permettent des déplacements rapides en camouflage.",
+    "dimensionsM": {
+      "width": 580,
+      "length": 580,
+      "height": 45
+    },
+    "elevationRangeM": [
+      0,
+      45
+    ],
+    "tacticalSectors": [
+      "Bras Mort du Bayou aux Cyprès Centenaires",
+      "Campement de Traqueurs de Peaux sur Pilotis",
+      "Étang aux Alligators & Forêt Inondée",
+      "Crête Marécageuse aux Saules Pleureurs"
+    ],
+    "keyLandmarks": [
+      "Cabane en bois de cyprès sur pilotis à moitié engloutie par la vase",
+      "Arbre fétiche garni de crânes de cerfs et de trophées de marais",
+      "Épave de bateau à aube abandonné rouillant dans le chenal"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "SWAMP_MUD_SINK",
+        "description": "Vase mouvante paralysant temporairement les déplacements"
+      },
+      {
+        "type": "ALLIGATOR_SURPRISE",
+        "description": "Prédateurs des marais tapis sous les lentilles d'eau"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_jungle_hunter_1987"
+    ],
+    "heroSquadId": "squad_pred_louisiana_bayou_trappers",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_alien_synsound_soundstage_ny",
+    "name": "Studios d'Enregistrement Bio-Sonique Synsound — Manhattan (1996)",
+    "universe": "ALIEN",
+    "originMedia": "Aliens: Music of the Spears (1996)",
+    "sourceType": "NOVEL",
+    "releaseYear": 1996,
+    "year": 1996,
+    "biomeId": "stargazer_blacksite",
+    "biome": "URBAN_LABORATORY",
+    "recommendedBiomeLabel": "Complexe Acoustique Synsound (1996)",
+    "weather": "Atmosphère climatisée stérile, échos amplifiés et réverbération sonore anormale",
+    "lighting": "Éclairages de scène néon magenta et panneaux acoustiques rétroéclairés ambre",
+    "verticality": "MOYENNE (Régies suspendues, passerelles de mixage et chambres anéchoïques)",
+    "destructibility": "Panneaux insonorisants déchirables, baies vitrées de monitoring et baffles",
+    "interactables": [
+      "Console de mixage géante capable d'émettre un larsen assourdissant à 140dB",
+      "Chambre anéchoïque étanche isolant tout bruit pour embuscade réflexe",
+      "Projecteurs de poursuite stroboscopiques pour aveugler les xénomorphes"
+    ],
+    "environmentSummary": "Centre de production musicale cybernétique ultra-sécurisé où un compositeur dément a enfermé des xénomorphes pour enregistrer leurs râles d'agonie.",
+    "description": "Centre de production musicale cybernétique ultra-sécurisé où un compositeur dément a enfermé des xénomorphes pour enregistrer leurs râles d'agonie.",
+    "tacticalNotes": "La dispersion acoustique perturbe le repérage auditif ; exploitez les consoles et résonateurs pour déstabiliser les créatures.",
+    "dimensionsM": {
+      "width": 480,
+      "length": 480,
+      "height": 40
+    },
+    "elevationRangeM": [
+      0,
+      40
+    ],
+    "tacticalSectors": [
+      "Studio Principal de Captation aux Murs Insonorisés",
+      "Régie Haute de Monitoring & Banques de Synthèse",
+      "Couloir des Cellules Capitonnées de Confinement",
+      "Auditorium de Démonstration Acoustique Synsound"
+    ],
+    "keyLandmarks": [
+      "Orgue synthétiseur colossal trônant au centre du studio principal",
+      "Cage de verre blindée où le premier guerrier xénomorphe a été enregistré",
+      "Mur d'amplificateurs muraux surpuissants fissurés par les ultrasons"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "SONIC_FEEDBACK",
+        "description": "Décharges acoustiques violentes causant désorientation et étourdissement"
+      },
+      {
+        "type": "NEON_SHORT_CIRCUIT",
+        "description": "Fils haute tension dénudés électrifiant les consoles métalliques"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_xeno_warrior"
+    ],
+    "heroSquadId": "squad_alien_synsound_security_forces",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_alien_space_elevator_shaft",
+    "name": "Puits de l'Ascenseur Spatial Géant — Station Apex (2011)",
+    "universe": "ALIEN",
+    "originMedia": "Aliens: Fast Track to Heaven (2011)",
+    "sourceType": "COMIC",
+    "releaseYear": 2011,
+    "year": 2011,
+    "biomeId": "stargazer_blacksite",
+    "biome": "SPACE_ELEVATOR_CORE",
+    "recommendedBiomeLabel": "Gaine Ascenseur Géostationnaire (2011)",
+    "weather": "Dépressurisation progressive, vide spatial partiel et vents verticaux violents",
+    "lighting": "Éclairage d'urgence rouge tournoyant et étoiles perçant les brèches de coque",
+    "verticality": "EXTRÊME (Nacelle suspendue sur 100 000 km de câble orbital vertical)",
+    "destructibility": "Sas de maintenance, câbles de stabilisation et plaques de blindage thermique",
+    "interactables": [
+      "Frein magnétique d'urgence pour freiner brutalement la nacelle en chute",
+      "Sas de décharge atmosphérique pour balayer les intrus hors de la plateforme",
+      "Palan de câble motorisé pour grimper rapidement vers le toit de la nacelle"
+    ],
+    "environmentSummary": "Nacelle pressurisée géante gravissant un câble orbital vers la station Apex, attaquée par des xénomorphes grimpant le long des parois extérieures.",
+    "description": "Nacelle pressurisée géante gravissant un câble orbital vers la station Apex, attaquée par des xénomorphes grimpant le long des parois extérieures.",
+    "tacticalNotes": "Tout faux pas au bord de la nacelle entraîne la chute dans le vide ; l'usage d'armes à recul lourd doit être maîtrisé en micro-gravité.",
+    "dimensionsM": {
+      "width": 380,
+      "length": 380,
+      "height": 120
+    },
+    "elevationRangeM": [
+      0,
+      120
+    ],
+    "tacticalSectors": [
+      "Toit Extérieur de la Nacelle & Ancrage des Câbles",
+      "Compartiment des Passagers aux Sas Défoncés",
+      "Salle des Moteurs Magnétiques & Générateurs Linéaires",
+      "Plateforme d'Évacuation de Queue au-dessus du Vide"
+    ],
+    "keyLandmarks": [
+      "Quatre câbles en nanotubes de carbone géants traversant le centre de la structure",
+      "Capsule de sauvetage écrasée contre le montant de freinage magnétique",
+      "Brèche béante dans la paroi extérieure aspirant les débris vers l'orbite"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "VACUUM_EXPOSURE",
+        "description": "Décompression explosive à proximité des brèches de coque"
+      },
+      {
+        "type": "KINETIC_SHEAR",
+        "description": "Frottement hypersonique le long des câbles de tension orbitaux"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_xeno_praetorian_royal"
+    ],
+    "heroSquadId": "squad_alien_fast_track_maintenance_rig",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_avp_pantha_canopy_jungle",
+    "name": "Canopée Arboricole Stratifiée — Jungle de Pantha (2000)",
+    "universe": "AVP",
+    "originMedia": "Aliens vs. Predator: Pantha (2000)",
+    "sourceType": "COMIC",
+    "releaseYear": 2000,
+    "year": 2000,
+    "biomeId": "jungle",
+    "biome": "DEATHWORLD_CANOPY",
+    "recommendedBiomeLabel": "Haute Canopée de Pantha (2000)",
+    "weather": "Chaleur moite oppressante, orages magnétiques et brume de spores toxiques",
+    "lighting": "Pénombre verte dense, éclairs de foudre zébrant la haute frondaison",
+    "verticality": "TRÈS HAUTE (Branches charpentières géantes de 15m de large, lianes et ponts)",
+    "destructibility": "Lianes suspendues tranchables, nids d'insectes arboricoles et branches mortes",
+    "interactables": [
+      "Liane géante pour se balancer rapidement d'un secteur d'arbre à un autre",
+      "Poche de sève caustique pouvant être percée pour créer un piège corrosif",
+      "Réseau de branches maîtresses pour survoler les patrouilles ennemies"
+    ],
+    "environmentSummary": "Monde jungle préhistorique où la végétation colossale forme un véritable sol suspendu à 80 mètres de haut, théâtre de chasses sauvages et d'embuscades félines.",
+    "description": "Monde jungle préhistorique où la végétation colossale forme un véritable sol suspendu à 80 mètres de haut, théâtre de chasses sauvages et d'embuscades félines.",
+    "tacticalNotes": "Le camouflage optique se fond parfaitement dans les feuilles d'arbres géantes ; attention aux attaques plongeantes des prédateurs félins.",
+    "dimensionsM": {
+      "width": 560,
+      "length": 560,
+      "height": 90
+    },
+    "elevationRangeM": [
+      0,
+      90
+    ],
+    "tacticalSectors": [
+      "Grand Carrefour des Trois Branches Maîtresses",
+      "Gouffre Végétal au-dessus du Sous-Bois Toxique",
+      "Clairière Suspendue aux Épiphytes Géantes",
+      "Promontoire de Guet du Clan Yautja de Pantha"
+    ],
+    "keyLandmarks": [
+      "Arbre mère millénaire dont le tronc mesure plus de 60 mètres de circonférence",
+      "Squelette d'un félin géant desséché suspendu dans des lianes de capture",
+      "Ruche xénomorphe suspendue comme un frelon géant sous la frondaison"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "CANOPY_FALL",
+        "description": "Chute mortelle vers le sous-bois marécageux 80m plus bas"
+      },
+      {
+        "type": "TOXIC_SPORES",
+        "description": "Spores fongiques libérées lors des tirs dans les épiphytes"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_young_blood_initiate"
+    ],
+    "heroSquadId": "squad_avp_pantha_stalker_unit",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_avp_three_world_war_frontline",
+    "name": "Front de Guerre Tripartite de Caparis VII — Three World War (2010)",
+    "universe": "AVP",
+    "originMedia": "Aliens vs. Predator: Three World War (2010)",
+    "sourceType": "COMIC",
+    "releaseYear": 2010,
+    "year": 2010,
+    "biomeId": "genna_deathworld",
+    "biome": "WAR_TORN_WASTELAND",
+    "recommendedBiomeLabel": "Ligne de Tranchées de Caparis VII (2010)",
+    "weather": "Poussière radioactive rougeoyante, fumées de bombardement orbital et tirs de barrage",
+    "lighting": "Ciel obscurci de cendres, incendies de véhicules et fusées éclairantes militaires",
+    "verticality": "MOYENNE (Tranchées fortifiées, bunkers de béton blindé et carcasses de méchas)",
+    "destructibility": "Sacs de sable, barbelés, épaves blindées et tourelles automatiques dévastées",
+    "interactables": [
+      "Tourelle automatique USCM endommagée pouvant être piratée pour tir de couverture",
+      "Caisse de munitions perforantes M41A pour réarmer les armes balistiques",
+      "Barbelés électrifiés pouvant être activés pour bloquer un goulet d'étranglement"
+    ],
+    "environmentSummary": "Champ de bataille ravagé sur Caparis VII où les forces combinées des Marines et des Yautja honnêtes affrontent la marée du Killer Clan et leurs xénomorphes asservis.",
+    "description": "Champ de bataille ravagé sur Caparis VII où les forces combinées des Marines et des Yautja honnêtes affrontent la marée du Killer Clan et leurs xénomorphes asservis.",
+    "tacticalNotes": "Zone de guerre totale sans pitié : tirs croisés d'armes d'assaut, d'artillerie et de canons plasma. Exploitez le réseau de tranchées pour manœuvrer.",
+    "dimensionsM": {
+      "width": 620,
+      "length": 620,
+      "height": 45
+    },
+    "elevationRangeM": [
+      0,
+      45
+    ],
+    "tacticalSectors": [
+      "Ligne de Tranchées Principale de la Coalition USCM-Yautja",
+      "Poste de Commandement Avancé de Machiko Noguchi",
+      "No Man's Land Constellé de Cratères & Barbelés",
+      "Bastion Fortifié du Killer Clan aux Xénos Enchaînés"
+    ],
+    "keyLandmarks": [
+      "Blindé lourd APC écrasé sous la carcasse d'un prétorien géant calciné",
+      "Totem de guerre sanglant érigé par le Killer Clan avec des masques brisés",
+      "Bunker de tir en titane perforé de part en part par une charge plasma lourde"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "ORBITAL_SHRAPNEL",
+        "description": "Éclats d'artillerie orbitale tombant sporadiquement sur le no man's land"
+      },
+      {
+        "type": "ACID_POOL_CRATER",
+        "description": "Cratères remplis de sang acide disséquant les équipements au contact"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_weyland_combat_android"
+    ],
+    "heroSquadId": "squad_avp_three_world_war_vanguard",
+    "villainSquadId": null
   }
 ]);
 
@@ -5519,6 +5873,90 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     "wieldedBy": "Gardiens pénitentiaires de quarantaine orbitale",
     "yautjaCounterplay": "Projection de filet de capture Yautja et camouflage optique pour contourner les angles morts des soutes.",
     "description": "Fusil à pompe lourd chambrant des cartouches de calibre 10 ultra-puissantes conçues pour stopper net les charges de créatures massives dans les travées de conteneurs."
+  },
+  {
+    "id": "wpn_norwegian_deep_sub_diver_harpoon",
+    "name": "Sub-Sea Titanium Deep-Dive Harpoon Rifle",
+    "universe": "PREDATOR",
+    "faction": "Norwegian Deep-Sub Recovery Unit",
+    "originMedia": "Predator: Hell & Hot Water (1997)",
+    "caliber": "Flèche Barbelée en Titane Pur 18mm & Gaz Liquéfié 300 Bar",
+    "damageType": "PIERCING_HYDRO_PNEUMATIC",
+    "effectiveRangeMeters": 45,
+    "rateOfFire": "Monocoup pneumatique lourd réarmement manuel (25 coups/min)",
+    "wieldedBy": "Plongeurs sous-marins et scaphandriers d'élite de la fosse norvégienne",
+    "yautjaCounterplay": "Déviation au bouclier d'énergie Yautja et harponnage en retour au combistick.",
+    "description": "Fusil harponneur lourd en titane conçu pour traverser la résistance de l'eau profonde et perforer les cuirasses étanches et carapaces biologiques marines."
+  },
+  {
+    "id": "wpn_louisiana_flintlock_double_shotgun",
+    "name": "Bayou Heavy 10-Gauge Double Flintlock Shotgun",
+    "universe": "PREDATOR",
+    "faction": "Cajun Bayou Swamp Trappers",
+    "originMedia": "Predator: Strange Roux (1998)",
+    "caliber": "Calibre 10 Double Canon à Poudre Noire & Grenailles de Plomb Lourd",
+    "damageType": "BALLISTIC_HEAVY_SCATTER",
+    "effectiveRangeMeters": 25,
+    "rateOfFire": "Double décharge simultanée ou coup par coup (30 coups/min)",
+    "wieldedBy": "Traqueurs de marécages et chasseurs de peaux louisianais",
+    "yautjaCounterplay": "Saut acrobatique au-dessus de la gerbe de plombs et riposte immédiate au smart disc.",
+    "description": "Fusil artisanal à double canon juxtaposé chambrant des cartouches de gros calibre chargées à ras bord de mitraille pour terrasser les bêtes géantes du bayou."
+  },
+  {
+    "id": "wpn_synsound_sonic_disruptor_cannon",
+    "name": "Synsound Acoustic Ultrasonic Disruptor Cannon",
+    "universe": "ALIEN",
+    "faction": "Synsound Corporate Security",
+    "originMedia": "Aliens: Music of the Spears (1996)",
+    "caliber": "Faisceau d'Ultrasons Concentrés à Fréquence Destructrice 18-45kHz",
+    "damageType": "ACOUSTIC_DISRUPTION_SHOCK",
+    "effectiveRangeMeters": 50,
+    "rateOfFire": "Impulsions de résonance continue (60 coups/min)",
+    "wieldedBy": "Agents de sécurité d'élite et techniciens du studio expérimental",
+    "yautjaCounterplay": "Isolation acoustique du bio-masque et tir plasma ciblé pour détruire l'émetteur sonique.",
+    "description": "Canon lourd expérimental projetant des cônes de pression sonore capables de désorienter les systèmes nerveux xénos et de fissurer les vitrages blindés."
+  },
+  {
+    "id": "wpn_fast_track_pneumatic_riveter",
+    "name": "Fast-Track Heavy Hydraulic Pneumatic Riveter",
+    "universe": "ALIEN",
+    "faction": "Orbital Cable Maintenance Riggers",
+    "originMedia": "Aliens: Fast Track to Heaven (2011)",
+    "caliber": "Rivets d'Acier au Tungstène 25mm Sous Pression Hydraulique 800 Bar",
+    "damageType": "KINETIC_ARMOR_PUNCH",
+    "effectiveRangeMeters": 20,
+    "rateOfFire": "Tir semi-automatique rapide par percussion (180 coups/min)",
+    "wieldedBy": "Techniciens de maintenance des ascenseurs orbitaux",
+    "yautjaCounterplay": "Esquive en glissade latérale et section du flexible hydraulique d'alimentation.",
+    "description": "Outil de chantier spatial surpuissant projetant des rivets d'assemblage avec la force d'un canon perforant capable de clouer un xénomorphe sur la carlingue."
+  },
+  {
+    "id": "wpn_pantha_arbor_net_caster",
+    "name": "Pantha Arbor-Canopy Heavy Net Caster",
+    "universe": "AVP",
+    "faction": "Pantha Wilderness Recon Scouts",
+    "originMedia": "Aliens vs. Predator: Pantha (2000)",
+    "caliber": "Filets en Câble d'Alliage à Micro-Pointes d'Ancrage Barbelées",
+    "damageType": "ENTANGLEMENT_CONSTRICTION",
+    "effectiveRangeMeters": 35,
+    "rateOfFire": "Tir pneumatique monocoup (20 coups/min)",
+    "wieldedBy": "Éclaireurs de la canopée et pisteurs de bêtes sauvages de Pantha",
+    "yautjaCounterplay": "Lames de poignet rétractables pour trancher les mailles avant rétraction complète.",
+    "description": "Lanceur pneumatique d'arbres projetant des filets lestés de titane conçus pour immobiliser les bêtes bondissantes et les faire chuter des branches maîtresses."
+  },
+  {
+    "id": "wpn_three_world_war_dual_pulse_carbine",
+    "name": "Armat M41A-X2 Dual Pulse Carbine",
+    "universe": "AVP",
+    "faction": "USCM Vanguard Task Force",
+    "originMedia": "Aliens vs. Predator: Three World War (2010)",
+    "caliber": "Double Barillet 10x24mm Caseless & Roquettes Perforantes 25mm",
+    "damageType": "BALLISTIC_RAPID_ARMOR_PIERCING",
+    "effectiveRangeMeters": 75,
+    "rateOfFire": "Double rafale synchronisée (1400 coups/min)",
+    "wieldedBy": "Marines coloniaux vétérans de l'alliance de Machiko Noguchi",
+    "yautjaCounterplay": "Charge lourde avec le bouclier d'énergie déployé et désarmement au fouet à distance.",
+    "description": "Évolution tactique du fusil à impulsions couplant deux canons synchronisés pour saturer les lignes ennemies d'un barrage balistique dévastateur."
   }
 ]);
 
