@@ -3683,6 +3683,294 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
       "orbital_assault"
     ],
     "locationIds": []
+  },
+  {
+    "id": "lore_pred_dark_ages_normandy_1330",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Dark Ages (1330 — Les forêts normandes & mercenaires médiévaux)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "predator1_1987"
+    ],
+    "unlockCondition": "Défier un maître d'armes féodal au corps-à-corps sous la canopée normande",
+    "summary": "Au cœur du XIVe siècle, des mercenaires français et anglais engagés dans les guerres féodales découvrent un démon des bois maniant des armes d'acier extraterrestre.",
+    "body": "Predator: Dark Ages (1330) confronte la chevalerie médiévale et les arbalètes en fer forgé aux tactiques furtives du chasseur Yautja, démontrant que l'honneur du combat singulier transcende les siècles.",
+    "content": "Predator: Dark Ages (1330) confronte la chevalerie médiévale et les arbalètes en fer forgé aux tactiques furtives du chasseur Yautja, démontrant que l'honneur du combat singulier transcende les siècles.",
+    "tags": [
+      "dark_ages_1330",
+      "normandy_forest",
+      "medieval_mercenaries",
+      "broadsword_duel",
+      "ancient_hunting"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_pred_jungle_tales_congo_1994",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Jungle Tales (1994 — Expédition fluviale au cœur du Congo)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "predator1_1987"
+    ],
+    "unlockCondition": "Remonter les rapides fluviaux de la jungle africaine sans déclencher d'alerte",
+    "summary": "Une expédition de trafiquants d'ivoire naviguant sur les affluents du fleuve Congo est décimée par un guerrier Yautja perché dans la canopée tropicale.",
+    "body": "Predator: Jungle Tales (1994) explore l'écosystème équatorial africain où la chaleur moite et les marécages fluviaux offrent un terrain de chasse idéal pour le traqueur Yautja et ses disques tranchants.",
+    "content": "Predator: Jungle Tales (1994) explore l'écosystème équatorial africain où la chaleur moite et les marécages fluviaux offrent un terrain de chasse idéal pour le traqueur Yautja et ses disques tranchants.",
+    "tags": [
+      "jungle_tales_1994",
+      "congo_basin",
+      "river_ambush",
+      "tropical_canopy",
+      "ivory_poachers"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_pred_blood_on_the_plains_1876",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Blood on the Plains (1876 — Guerre des Black Hills & cavaliers sioux)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "prey_2022"
+    ],
+    "unlockCondition": "Éliminer une patrouille de cavalerie montée en pleine course dans la prairie",
+    "summary": "Durant la guerre des Black Hills, guerriers Sioux et régiments de cavalerie américaine s'affrontent sous le regard d'un chasseur Yautja honorant la vaillance des archers à cheval.",
+    "body": "Predator: Blood on the Plains (1876) prolonge la tradition de Prey (1719) en opposant la dextérité équestre des peuples des plaines aux technologies de camouflage et de tir plasma.",
+    "content": "Predator: Blood on the Plains (1876) prolonge la tradition de Prey (1719) en opposant la dextérité équestre des peuples des plaines aux technologies de camouflage et de tir plasma.",
+    "tags": [
+      "blood_on_the_plains_1876",
+      "black_hills",
+      "sioux_warriors",
+      "cavalry_clash",
+      "mounted_archery"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_pred_urban_jungle_chicago_1931",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Urban Jungle (1931 — Gangsters de la Prohibition & rues de Chicago)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "predator2_1990"
+    ],
+    "unlockCondition": "Traquer un convoi de contrebande blindé au cœur des entrepôts de la pègre",
+    "summary": "Dans le Chicago des années 1930, les rivalités sanglantes de la mafia de l'alcool sont interrompues par un chasseur invisible attiré par les rafales de mitraillettes Thompson.",
+    "body": "Predator: Urban Jungle (1931) préfigure l'atmosphère caniculaire de Predator 2 en transposant la traque rituelle dans les avenues bétonnées et les brasseries clandestines de la métropole industrielle.",
+    "content": "Predator: Urban Jungle (1931) préfigure l'atmosphère caniculaire de Predator 2 en transposant la traque rituelle dans les avenues bétonnées et les brasseries clandestines de la métropole industrielle.",
+    "tags": [
+      "urban_jungle_1931",
+      "chicago_prohibition",
+      "thompson_smg",
+      "gangster_warfare",
+      "city_canyon"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_taste_1993",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Taste (1993 — Saveurs toxiques & festin xénomorphe)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "aliens_1986"
+    ],
+    "unlockCondition": "Neutraliser une colonie de drones sans endommager les réserves agro-alimentaires",
+    "summary": "Sur un complexe agro-industriel automatisé de bordure, des xénomorphes envahissent les silos de transformation, contaminant la chaîne alimentaire coloniale.",
+    "body": "Aliens: Taste (1993) met en lumière les risques sanitaires de bio-contamination où la présence d'acides extraterrestres dans les réserves nutritives menace des millions de citoyens coloniaux.",
+    "content": "Aliens: Taste (1993) met en lumière les risques sanitaires de bio-contamination où la présence d'acides extraterrestres dans les réserves nutritives menace des millions de citoyens coloniaux.",
+    "tags": [
+      "taste_1993",
+      "agri_complex",
+      "food_chain_contamination",
+      "acid_spoilage",
+      "colonial_supplies"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_border_lines_1997",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Border Lines (1997 — Avant-poste minier des mondes de glace)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "alien_1979"
+    ],
+    "unlockCondition": "Rétablir l'alimentation du sas principal sous une tempête sub-zéro de méthane",
+    "summary": "Un avant-poste minier perdu aux frontières de l'Union des Mondes Progressistes sombre dans la terreur après la découverte d'un cocon fossile dans la glace de méthane.",
+    "body": "Aliens: Border Lines (1997) illustre l'isolement fatal des pionniers de bordure où les secours sont situés à des années-lumière et où la moindre erreur de pressurisation libère l'abomination.",
+    "content": "Aliens: Border Lines (1997) illustre l'isolement fatal des pionniers de bordure où les secours sont situés à des années-lumière et où la moindre erreur de pressurisation libère l'abomination.",
+    "tags": [
+      "border_lines_1997",
+      "methane_glacier",
+      "mining_outpost",
+      "fossil_egg",
+      "isolation_horror"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_lethal_and_loaded_1998",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Lethal and Loaded (1998 — Armurerie lourde & munitions USCM)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "aliens_1986"
+    ],
+    "unlockCondition": "Sécuriser l'armurerie d'un transport d'assaut USCM sous le feu de guerriers xénomorphes",
+    "summary": "Compendium technique détaillé des protocoles d'armement lourd des Marines Coloniaux : munitions explosives sans douille de 10mm, smartguns M56 et lance-flammes M240.",
+    "body": "Aliens: Lethal and Loaded (1998) analyse les doctrines tactiques de puissance de feu de l'USCM, démontrant l'efficacité létale du tir croisé face aux carapaces de chitine durcie.",
+    "content": "Aliens: Lethal and Loaded (1998) analyse les doctrines tactiques de puissance de feu de l'USCM, démontrant l'efficacité létale du tir croisé face aux carapaces de chitine durcie.",
+    "tags": [
+      "lethal_and_loaded_1998",
+      "uscm_armory",
+      "m41a_pulse_rifle",
+      "smartgun_tactics",
+      "incendiary_fire"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_field_report_sulaco_2179",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Rapport de Bord USS Sulaco (2179 — Télémétrie des capsules d'évacuation)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "alien3_1992",
+      "aliens_1986"
+    ],
+    "unlockCondition": "Reconstituer les données de boîte noire du module EEV de l'USS Sulaco",
+    "summary": "Analyse médico-légale des enregistrements de bord de la frégate Conestoga USS Sulaco lors de l'incendie électrique et de l'éjection automatique vers Fiorina 161.",
+    "body": "Ce document stratégique révèle les failles de sécurité et les contaminations d'œufs royaux dissimulés dans les circuits de servitude, prouvant l'implication directe de la division bio-armes.",
+    "content": "Ce document stratégique révèle les failles de sécurité et les contaminations d'œufs royaux dissimulés dans les circuits de servitude, prouvant l'implication directe de la division bio-armes.",
+    "tags": [
+      "sulaco_2179",
+      "conestoga_frigate",
+      "eev_telemetry",
+      "fiorina_ejection",
+      "blackbox_data"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_old_secrets_aztec_1492",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Old Secrets (1492 — Pyramides aztèques & rituels du serpent noir)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "predator1_1987"
+    ],
+    "unlockCondition": "Gravir les degrés de la pyramide cérémonielle sous les assauts de facehuggers",
+    "summary": "Dans les cités précolombiennes du Mexique central, les prêtres aztèques sacrifient des prisonniers pour engendrer les serpents noirs que les dieux du ciel chassent au plasma.",
+    "body": "AVP: Old Secrets (1492) illustre l'antiquité des chasses initiatiques Yautja sur Terre, où les bas-reliefs sacrificiels commémorent l'affrontement rituel entre prédateurs et xénomorphes.",
+    "content": "AVP: Old Secrets (1492) illustre l'antiquité des chasses initiatiques Yautja sur Terre, où les bas-reliefs sacrificiels commémorent l'affrontement rituel entre prédateurs et xénomorphes.",
+    "tags": [
+      "old_secrets_1492",
+      "aztec_pyramids",
+      "sacred_hunt",
+      "black_serpent",
+      "ritual_sacrifice"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_trophy_room_mothership_legends",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "La Chambre des Trophées du Vaisseau-Mère — Légendes Yautja",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "predator2_1990",
+      "avp2004"
+    ],
+    "unlockCondition": "Inspecter les reliques de chasse séculaires conservées dans la crypte du vaisseau-mère",
+    "summary": "Description solennelle de la galerie d'honneur centrale où sont exposés les crânes des plus redoutables proies de l'univers : xénomorphes géants, Space Jockeys et faunes carnassières.",
+    "body": "Chaque trophée poli et monté sur les parois d'obsidienne raconte une victoire légendaire d'un chef de clan, inspirant les Jeunes Sangs avant leur départ pour les épreuves d'initiation.",
+    "content": "Chaque trophée poli et monté sur les parois d'obsidienne raconte une victoire légendaire d'un chef de clan, inspirant les Jeunes Sangs avant leur départ pour les épreuves d'initiation.",
+    "tags": [
+      "trophy_room",
+      "mothership_legends",
+      "space_jockey_skull",
+      "clan_elders",
+      "sacred_relics"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_xenomorph_cloning_protocols",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Protocoles de Clonage Xénomorphe — Bio-Ingénierie & Hybrides",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "alien_resurrection_1997",
+      "avp2004"
+    ],
+    "unlockCondition": "Pénétrer dans le laboratoire de culture génétique et détruire les incubateurs d'hybrides",
+    "summary": "Rapport d'audit secret sur les tentatives corporatistes de cloner et de manipuler l'ADN xénomorphe pour créer des armes biologiques dociles.",
+    "body": "L'instabilité génétique et la mémoire génétique inaltérable de l'espèce conduisent invariablement à l'évasion des spécimens, forçant les protocoles d'assainissement d'urgence.",
+    "content": "L'instabilité génétique et la mémoire génétique inaltérable de l'espèce conduisent invariablement à l'évasion des spécimens, forçant les protocoles d'assainissement d'urgence.",
+    "tags": [
+      "cloning_protocols",
+      "bio_engineering",
+      "genetic_instability",
+      "hybrid_vivarium",
+      "containment_purge"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_kainde_amedha_sacred_hunt",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "La Chasse Sacrée du Kainde Amedha — Code d'Honneur & Rite du Sang",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "predator1_1987"
+    ],
+    "unlockCondition": "Accomplir le rite d'initiation en gravant le glyphe du clan avec du sang caustique",
+    "summary": "Exégèse des préceptes martiaux Yautja régissant la traque de la 'Viande Dure' (Kainde Amedha), considérée comme le test suprême de valeur et de maturité d'un guerrier.",
+    "body": "Seul le sang acide d'un guerrier xénomorphe vaincu au corps-à-corps confère le droit de marquer le front et le biomarqueur d'un chasseur, l'élevant au rang de Bloodée respecté par tout le clan.",
+    "content": "Seul le sang acide d'un guerrier xénomorphe vaincu au corps-à-corps confère le droit de marquer le front et le biomarqueur d'un chasseur, l'élevant au rang de Bloodée respecté par tout le clan.",
+    "tags": [
+      "kainde_amedha",
+      "sacred_hunt",
+      "blooding_ritual",
+      "clan_honor",
+      "hard_meat"
+    ],
+    "locationIds": []
   }
 ]);
 // IDs match the values already used by the planet selector.

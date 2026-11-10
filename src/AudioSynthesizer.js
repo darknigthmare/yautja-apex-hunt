@@ -38279,6 +38279,140 @@ class AudioSynthesizer {
     return descriptor;
   }
 
+  playNormanHeavyCrossbowRelease() {
+    const descriptor = {
+      event: 'norman_heavy_crossbow_release',
+      synthesis: 'forged_steel_trigger_click_and_gut_string_snap',
+      triggerClickHz: 1850,
+      stringSnapHz: 140,
+      durationSeconds: 0.35,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const snapOsc = this.ctx.createOscillator();
+    const snapGain = this.ctx.createGain();
+    snapOsc.type = 'triangle';
+    snapOsc.frequency.setValueAtTime(descriptor.stringSnapHz, now);
+    snapOsc.frequency.exponentialRampToValueAtTime(45, now + 0.28);
+
+    snapGain.gain.setValueAtTime(0.72, now);
+    snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+    snapOsc.connect(snapGain);
+    snapGain.connect(this.ctx.destination);
+    snapOsc.start(now);
+    snapOsc.stop(now + 0.3);
+
+    const clickOsc = this.ctx.createOscillator();
+    const clickGain = this.ctx.createGain();
+    clickOsc.type = 'sine';
+    clickOsc.frequency.setValueAtTime(descriptor.triggerClickHz, now);
+    clickOsc.frequency.exponentialRampToValueAtTime(320, now + 0.08);
+
+    clickGain.gain.setValueAtTime(0.65, now);
+    clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+    clickOsc.connect(clickGain);
+    clickGain.connect(this.ctx.destination);
+    clickOsc.start(now);
+    clickOsc.stop(now + 0.1);
+
+    return descriptor;
+  }
+
+  playAgriCombustionTorchHiss() {
+    const descriptor = {
+      event: 'agri_combustion_torch_hiss',
+      synthesis: 'pressurized_ozone_hiss_and_flame_roaring',
+      flameRoarHz: 95,
+      gasHissHz: 3200,
+      durationSeconds: 0.45,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const roarOsc = this.ctx.createOscillator();
+    const roarGain = this.ctx.createGain();
+    roarOsc.type = 'sawtooth';
+    roarOsc.frequency.setValueAtTime(descriptor.flameRoarHz, now);
+    roarOsc.frequency.linearRampToValueAtTime(80, now + 0.4);
+
+    roarGain.gain.setValueAtTime(0.6, now);
+    roarGain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+
+    roarOsc.connect(roarGain);
+    roarGain.connect(this.ctx.destination);
+    roarOsc.start(now);
+    roarOsc.stop(now + 0.42);
+
+    const hissFilter = this.ctx.createBiquadFilter();
+    hissFilter.type = 'bandpass';
+    hissFilter.frequency.setValueAtTime(descriptor.gasHissHz, now);
+    hissFilter.Q.setValueAtTime(3.5, now);
+
+    const hissOsc = this.ctx.createOscillator();
+    const hissGain = this.ctx.createGain();
+    hissOsc.type = 'triangle';
+    hissOsc.frequency.setValueAtTime(descriptor.gasHissHz * 0.5, now);
+
+    hissGain.gain.setValueAtTime(0.45, now);
+    hissGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+    hissOsc.connect(hissFilter);
+    hissFilter.connect(hissGain);
+    hissGain.connect(this.ctx.destination);
+    hissOsc.start(now);
+    hissOsc.stop(now + 0.45);
+
+    return descriptor;
+  }
+
+  playMothershipPlasmaDaggerHum() {
+    const descriptor = {
+      event: 'mothership_plasma_dagger_hum',
+      synthesis: 'silver_confinement_resonator_and_plasma_hum',
+      plasmaHumHz: 480,
+      silverHarmonicHz: 1680,
+      durationSeconds: 0.38,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const humOsc = this.ctx.createOscillator();
+    const humGain = this.ctx.createGain();
+    humOsc.type = 'sine';
+    humOsc.frequency.setValueAtTime(descriptor.plasmaHumHz, now);
+    humOsc.frequency.linearRampToValueAtTime(520, now + 0.35);
+
+    humGain.gain.setValueAtTime(0.68, now);
+    humGain.gain.exponentialRampToValueAtTime(0.001, now + 0.36);
+
+    humOsc.connect(humGain);
+    humGain.connect(this.ctx.destination);
+    humOsc.start(now);
+    humOsc.stop(now + 0.36);
+
+    const harmonicOsc = this.ctx.createOscillator();
+    const harmonicGain = this.ctx.createGain();
+    harmonicOsc.type = 'sine';
+    harmonicOsc.frequency.setValueAtTime(descriptor.silverHarmonicHz, now + 0.02);
+    harmonicOsc.frequency.exponentialRampToValueAtTime(900, now + 0.35);
+
+    harmonicGain.gain.setValueAtTime(0.4, now + 0.02);
+    harmonicGain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+
+    harmonicOsc.connect(harmonicGain);
+    harmonicGain.connect(this.ctx.destination);
+    harmonicOsc.start(now + 0.02);
+    harmonicOsc.stop(now + 0.38);
+
+    return descriptor;
+  }
+
 }
 
 export const audioSynth = new AudioSynthesizer();

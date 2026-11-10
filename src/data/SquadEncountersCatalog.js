@@ -6092,6 +6092,336 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
         "trophy": "Gantelet Renégat Ébréché Souillé d'Acide Moléculaire"
       }
     ]
+  },
+  {
+      "id": "squad_pred_dark_ages_norman_knights",
+      "name": "Croisés Templiers de Haute-Normandie — Dark Ages (1330)",
+      "universe": "PREDATOR",
+      "shortName": "Templiers Normands (3 Chevaliers)",
+      "category": "PARAMILITARY_INSURGENTS",
+      "scale": "MOYEN",
+      "totalMembers": 3,
+      "originMedia": "Predator: Dark Ages (2015)",
+      "biomeId": "jungle",
+      "recommendedBiomeLabel": "Forêt de Haute-Normandie (1330)",
+      "primaryMapId": "map_pred_normandy_forest_crusade",
+      "weaponLoadout": [
+          "wpn_dark_ages_norman_heavy_crossbow"
+      ],
+      "description": "Compagnie de chevaliers croisés bardés de fer et arbalétriers d'élite traquant le Démon Noir dans les sous-bois brumeux de Normandie.",
+      "tactics": "Volées de carreaux d'acier lourds pour clouer la cible au sol, formation de boucliers en triangle et charge à l'épée bâtarde.",
+      "totalHonorReward": 7500,
+      "soloVariantId": "prey_feral_predator_1719",
+      "members": [
+          {
+              "id": "sire_richard_norman",
+              "name": "Sire Richard de Montmirail",
+              "role": "Capitaine Templier en Cotte de Mailles",
+              "weapon": "Arbalète Lourde & Épée Bâtarde Forgée",
+              "weaponId": "wpn_dark_ages_norman_heavy_crossbow",
+              "vitalityRatio": 1.5,
+              "hp": 880,
+              "armor": 85,
+              "trophy": "Heaume d'Acier Forgé et Croix Pectorale Ébréchée"
+          },
+          {
+              "id": "frere_guy_norman",
+              "name": "Frère Guy le Vétéran",
+              "role": "Arbalétrier d'Élite de Siège",
+              "weapon": "Arbalète Lourde Normande à Treuil",
+              "weaponId": "wpn_dark_ages_norman_heavy_crossbow",
+              "vitalityRatio": 1.4,
+              "hp": 810,
+              "armor": 75,
+              "trophy": "Treuil d'Arbalète en Bronze Gravé de Prières Latines"
+          },
+          {
+              "id": "ecuyer_hugues_norman",
+              "name": "Écuyer Hugues des Flandres",
+              "role": "Piqueur et Guetteur de Brume",
+              "weapon": "Arbalète Lourde & Dague de Miséricorde",
+              "weaponId": "wpn_dark_ages_norman_heavy_crossbow",
+              "vitalityRatio": 1.35,
+              "hp": 760,
+              "armor": 70,
+              "trophy": "Dague Rondel Rompue contre la Cuirasse Yautja"
+          }
+      ]
+  },
+  {
+      "id": "squad_pred_congo_river_ivory_poachers",
+      "name": "Expédition Braconnière du Fleuve Congo — Jungle Tales (1994)",
+      "universe": "PREDATOR",
+      "shortName": "Braconniers du Congo (3 Chasseurs)",
+      "category": "PARAMILITARY_INSURGENTS",
+      "scale": "MOYEN",
+      "totalMembers": 3,
+      "originMedia": "Predator: Jungle Tales (1994)",
+      "biomeId": "jungle",
+      "recommendedBiomeLabel": "Bassin Équatorial du Congo (1928)",
+      "primaryMapId": "map_pred_congo_river_rapids",
+      "weaponLoadout": [
+          "wpn_congo_river_ivory_hunter_rifle"
+      ],
+      "description": "Trafiquants d'ivoire impitoyables armés de carabines .577 Nitro Express, traquant le Démon des Rapides au cœur de la canopée équatoriale.",
+      "tactics": "Tirs croisés synchronisés de gros calibre pour briser les membres, tirs d'aveuglement au phosphore et battue avec chiens de meute.",
+      "totalHonorReward": 7600,
+      "soloVariantId": "prey_young_blood_initiate",
+      "members": [
+          {
+              "id": "kapita_van_houten",
+              "name": "Commandant Van Houten",
+              "role": "Chasseur Professionnel de Gros Gibier",
+              "weapon": "Carabine Double Express .577 Nitro",
+              "weaponId": "wpn_congo_river_ivory_hunter_rifle",
+              "vitalityRatio": 1.5,
+              "hp": 870,
+              "armor": 70,
+              "trophy": "Casque Colonial Renforcé et Bandoulière de .577 Nitro"
+          },
+          {
+              "id": "tracker_kabila",
+              "name": "Pisteur Kabila",
+              "role": "Pisteur Équatorial Vétéran",
+              "weapon": "Carabine Double Express Africaine",
+              "weaponId": "wpn_congo_river_ivory_hunter_rifle",
+              "vitalityRatio": 1.4,
+              "hp": 800,
+              "armor": 65,
+              "trophy": "Amulette d'Ivoire Sculptée d'Écailles Reptiliennes"
+          },
+          {
+              "id": "gunner_marcel",
+              "name": "Artificier Marcel",
+              "role": "Canonnier Fluvial & Braconnier",
+              "weapon": "Carabine Double Express & Cartouches Explosives",
+              "weaponId": "wpn_congo_river_ivory_hunter_rifle",
+              "vitalityRatio": 1.35,
+              "hp": 770,
+              "armor": 60,
+              "trophy": "Boussole de Navigation Fluviale Givrée de Sang"
+          }
+      ]
+  },
+  {
+      "id": "squad_alien_taste_agri_security_sentry",
+      "name": "Détachement de Décontamination Batavia — Aliens: Taste (1993)",
+      "universe": "ALIEN",
+      "shortName": "Sécurité Batavia (3 Sentinelles)",
+      "category": "CORPORATE_SECURITY",
+      "scale": "MOYEN",
+      "totalMembers": 3,
+      "originMedia": "Aliens: Taste (1993)",
+      "biomeId": "stargazer_blacksite",
+      "recommendedBiomeLabel": "Complexe Agro-Industriel Batavia (2167)",
+      "primaryMapId": "map_alien_automated_food_silos",
+      "weaponLoadout": [
+          "wpn_taste_agri_combustion_torch"
+      ],
+      "description": "Équipe de désinfection bio-industrielle déployée avec des torches thermiques haute température pour éradiquer les foyers de contamination parasitaire.",
+      "tactics": "Jets continus de naphtalène et balayage thermique de zone, confinement systématique des portes et aspersions de mousse caustique.",
+      "totalHonorReward": 7700,
+      "soloVariantId": "prey_weyland_combat_android",
+      "members": [
+          {
+              "id": "officer_vance_batavia",
+              "name": "Superviseur Vance",
+              "role": "Officier de Sécurité Biochimique",
+              "weapon": "Torche Thermique Industrielle & Pistolet Caustique",
+              "weaponId": "wpn_taste_agri_combustion_torch",
+              "vitalityRatio": 1.5,
+              "hp": 860,
+              "armor": 80,
+              "trophy": "Visière Respiratoire Pressurisée Teintée d'Ambre"
+          },
+          {
+              "id": "synthetic_unit_sigma",
+              "name": "Unité Synthétique Sigma-4",
+              "role": "Opérateur Androïde Ignifugé",
+              "weapon": "Torche Thermique Industrielle Haute Pression",
+              "weaponId": "wpn_taste_agri_combustion_torch",
+              "vitalityRatio": 1.55,
+              "hp": 900,
+              "armor": 85,
+              "trophy": "Processeur Central Synthétique Résistant à la Flamme"
+          },
+          {
+              "id": "purger_elena_batavia",
+              "name": "Purificatrice Elena",
+              "role": "Purger de Silos Céréaliers",
+              "weapon": "Torche Thermique Industrielle & Réservoir Dorsal",
+              "weaponId": "wpn_taste_agri_combustion_torch",
+              "vitalityRatio": 1.35,
+              "hp": 780,
+              "armor": 70,
+              "trophy": "Manomètre de Réservoir d'Ozone Déchiqueté"
+          }
+      ]
+  },
+  {
+      "id": "squad_alien_border_lines_frontier_miners",
+      "name": "Brigade d'Excavation de K-411 — Aliens: Border Lines (1997)",
+      "universe": "ALIEN",
+      "shortName": "Mineurs de K-411 (3 Foreurs)",
+      "category": "PARAMILITARY_INSURGENTS",
+      "scale": "MOYEN",
+      "totalMembers": 3,
+      "originMedia": "Aliens: Border Lines (1997)",
+      "biomeId": "bouvetoya_pyramid",
+      "recommendedBiomeLabel": "Mine Glaciaire de K-411 (2184)",
+      "primaryMapId": "map_alien_ice_frontier_outpost",
+      "weaponLoadout": [
+          "wpn_border_lines_subzero_pneumatic_pick"
+      ],
+      "description": "Mineurs de permafrost aguerris armés de pics pneumatiques lourds oscillant à 2400 bpm, retranchés contre la ruche dans le blizzard polaire.",
+      "tactics": "Pilonnage cinétique à bout portant pour pulvériser carapaces et armures, emploi de charges de dégivrage et embuscades dans les galeries de glace.",
+      "totalHonorReward": 7800,
+      "soloVariantId": "prey_xeno_warrior",
+      "members": [
+          {
+              "id": "chief_karpov_k411",
+              "name": "Contremaître Karpov",
+              "role": "Chef de Fosse Cryogénique",
+              "weapon": "Pic Pneumatique Lourd & Foreuse Rotative",
+              "weaponId": "wpn_border_lines_subzero_pneumatic_pick",
+              "vitalityRatio": 1.55,
+              "hp": 910,
+              "armor": 80,
+              "trophy": "Harnais de Minage Polaire Bordé de Fourrure et de Givre"
+          },
+          {
+              "id": "driller_petrenko",
+              "name": "Foreur Petrenko",
+              "role": "Piqueur de Stalactites Méthane",
+              "weapon": "Pic Pneumatique Lourd Brise-Glace",
+              "weaponId": "wpn_border_lines_subzero_pneumatic_pick",
+              "vitalityRatio": 1.45,
+              "hp": 840,
+              "armor": 75,
+              "trophy": "Pointe de Tungstène Tordue par l'Impact d'un Exosquelette"
+          },
+          {
+              "id": "blaster_sonia",
+              "name": "Artificière Sonia",
+              "role": "Dynamiteuse de Permafrost",
+              "weapon": "Pic Pneumatique Lourd & Charges Thermiques",
+              "weaponId": "wpn_border_lines_subzero_pneumatic_pick",
+              "vitalityRatio": 1.4,
+              "hp": 810,
+              "armor": 70,
+              "trophy": "Détonateur Cryogénique Manuel Déformé"
+          }
+      ]
+  },
+  {
+      "id": "squad_avp_old_secrets_aztec_priests",
+      "name": "Garde Sacrificielle de Tenochtitlan — Old Secrets (1492)",
+      "universe": "AVP",
+      "shortName": "Garde Sacrificielle Aztèque (3 Guerriers)",
+      "category": "PARAMILITARY_INSURGENTS",
+      "scale": "MOYEN",
+      "totalMembers": 3,
+      "originMedia": "Aliens vs. Predator: Old Secrets (Dark Horse 1999)",
+      "biomeId": "bouvetoya_pyramid",
+      "recommendedBiomeLabel": "Complexe Pyramidal de Tenochtitlan (1492)",
+      "primaryMapId": "map_avp_tenochtitlan_ceremonial_steps",
+      "weaponLoadout": [
+          "wpn_old_secrets_obsidian_macana_blade"
+      ],
+      "description": "Guerriers-Jaguars d'élite et grands prêtres sacrificiels armés de macanas aux lames d'obsidienne tranchante vénérant les Dieux Serpents et Démons Étoilés.",
+      "tactics": "Assauts frénétiques au corps-à-corps avec lacérations hémorragiques, encerclement sur les marches de la pyramide et invocations fanatiques.",
+      "totalHonorReward": 7900,
+      "soloVariantId": "prey_colonial_marine_heavy",
+      "members": [
+          {
+              "id": "high_priest_cuauhtemoc",
+              "name": "Grand Prêtre Cuauhtemoc",
+              "role": "Maître du Culte Sacrificiel Solaire",
+              "weapon": "Macana Cérémonielle d'Obsidienne & Poignard",
+              "weaponId": "wpn_old_secrets_obsidian_macana_blade",
+              "vitalityRatio": 1.5,
+              "hp": 880,
+              "armor": 75,
+              "trophy": "Coiffe de Plumes de Quetzal et Disque Pectoral d'Or Gravé"
+          },
+          {
+              "id": "jaguar_champion_tlaloc",
+              "name": "Champion-Jaguar Tlaloc",
+              "role": "Guerrier Suprême de la Fraternité",
+              "weapon": "Macana Cérémonielle d'Obsidienne Tranchante",
+              "weaponId": "wpn_old_secrets_obsidian_macana_blade",
+              "vitalityRatio": 1.5,
+              "hp": 890,
+              "armor": 80,
+              "trophy": "Masque en Peau de Jaguar aux Crocs Incrustés de Jade"
+          },
+          {
+              "id": "acolyte_huitzilin",
+              "name": "Acolyte Huitzilin",
+              "role": "Gardien du Brasero Sacré",
+              "weapon": "Macana d'Obsidienne & Braises Incandescentes",
+              "weaponId": "wpn_old_secrets_obsidian_macana_blade",
+              "vitalityRatio": 1.35,
+              "hp": 780,
+              "armor": 65,
+              "trophy": "Collier de Doigts Humains et Griffes de Serpent d'Acide"
+          }
+      ]
+  },
+  {
+      "id": "squad_avp_mothership_elder_honor_guard",
+      "name": "Garde Cérémonielle des Anciens — AVP Legends",
+      "universe": "AVP",
+      "shortName": "Garde d'Honneur des Anciens (3 Vétérans)",
+      "category": "PARAMILITARY_INSURGENTS",
+      "scale": "MOYEN",
+      "totalMembers": 3,
+      "originMedia": "Aliens vs. Predator: Trophy Room Lore",
+      "biomeId": "stargazer_blacksite",
+      "recommendedBiomeLabel": "Vaisseau-Mère Yautja — Hall Cérémoniel (2204)",
+      "primaryMapId": "map_avp_mothership_grand_trophy_gallery",
+      "weaponLoadout": [
+          "wpn_mothership_ceremonial_plasma_dagger"
+      ],
+      "description": "Garde d'élite des Maîtres de Clan Yautja, armée de dagues cérémonielles plasma à confinement d'argent et veillant sur les reliques millénaires.",
+      "tactics": "Duels d'honneur au corps-à-corps, frappes chirurgicales d'estoc tranchant les boucliers d'énergie et parades parfaites aux lames sacrées.",
+      "totalHonorReward": 8200,
+      "soloVariantId": "prey_colonial_marine_heavy",
+      "members": [
+          {
+              "id": "elder_sentinel_gorgor",
+              "name": "Sentinelle Ancestrale Gorgor",
+              "role": "Gardien du Sanctuaire des Crânes",
+              "weapon": "Dague Cérémonielle Plasma & Bouclier d'Argent",
+              "weaponId": "wpn_mothership_ceremonial_plasma_dagger",
+              "vitalityRatio": 1.6,
+              "hp": 950,
+              "armor": 90,
+              "trophy": "Bio-Masque Cérémoniel Millénaire aux Runes d'Or Gravées"
+          },
+          {
+              "id": "blade_master_vhol",
+              "name": "Maître d'Armes Vhol",
+              "role": "Champion des Rites d'Initiation",
+              "weapon": "Double Dague Cérémonielle de Plasma",
+              "weaponId": "wpn_mothership_ceremonial_plasma_dagger",
+              "vitalityRatio": 1.5,
+              "hp": 890,
+              "armor": 85,
+              "trophy": "Gantelet d'Honneur Ciselé d'un Insigne de Reine Terrassée"
+          },
+          {
+              "id": "acolyte_shok",
+              "name": "Gardien de Cryo-Stase Shok",
+              "role": "Vigilant des Reliques Interdites",
+              "weapon": "Dague Cérémonielle Plasma & Grenades Électrostatiques",
+              "weaponId": "wpn_mothership_ceremonial_plasma_dagger",
+              "vitalityRatio": 1.45,
+              "hp": 840,
+              "armor": 80,
+              "trophy": "Sceau de Déverrouillage des Coffres de Trophées d'Ingénieur"
+          }
+      ]
   }
 ]);
 

@@ -4996,6 +4996,360 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     ],
     "heroSquadId": "squad_avp_three_world_war_combined_strike",
     "villainSquadId": null
+  },
+  {
+      "id": "map_pred_normandy_forest_crusade",
+      "name": "Forêt Normande des Croisades — Dark Ages (1330)",
+      "universe": "PREDATOR",
+      "originMedia": "Predator: Dark Ages (2015)",
+      "sourceType": "FILM",
+      "releaseYear": 2015,
+      "year": 1330,
+      "biomeId": "jungle",
+      "biome": "MEDIEVAL_OAK_FOREST",
+      "recommendedBiomeLabel": "Forêt de Haute-Normandie (1330)",
+      "weather": "Brume automnale dense, pluies glaciales et feuillage ruisselant",
+      "lighting": "Torches de résine médiévales, clair de lune filtré à travers les frondaisons épaisses",
+      "verticality": "MOYENNE (Chênes centenaires géants, talus féodaux et ruines d'une chapelle)",
+      "destructibility": "Palissades de bois, tentes d'estafettes et branchages calcaires",
+      "interactables": [
+          "Brasero de campement médiéval renversable pour enflammer les buissons",
+          "Piège à loups en fer forgé pouvant être réarmé contre les patrouilleurs",
+          "Carillon d'alarme de la chapelle pouvant servir de leurre sonore"
+      ],
+      "environmentSummary": "Sous-bois normands au XIVe siècle où un détachement de Templiers et mercenaires traque le Démon de la Nuit.",
+      "description": "Sous-bois normands au XIVe siècle où un détachement de Templiers et mercenaires traque le Démon de la Nuit.",
+      "tacticalNotes": "Les chevaliers en armure lourde sont lents mais protégés contre les frappes légères. Utilisez la verticalité des arbres.",
+      "dimensionsM": {
+          "width": 500,
+          "length": 500,
+          "height": 35
+      },
+      "elevationRangeM": [
+          0,
+          35
+      ],
+      "tacticalSectors": [
+          "Campement de Toile des Templiers et Écuries",
+          "Ruines de la Chapelle Saint-Cuthbert",
+          "Bordure de l'Étang Brumeux et Affleurements de Granit",
+          "Clairière des Pendus et Frondaisons Ancestrales"
+      ],
+      "keyLandmarks": [
+          "Flèche écroulée de la chapelle médiévale moussue",
+          "Feu de garde central avec pieux défensifs taillés",
+          "Grand chêne millénaire dominant l'ensemble de la vallée"
+      ],
+      "environmentalHazards": [
+          {
+              "type": "MUD_SLAG",
+              "description": "Bourbier forestier ralentissant les déplacements terrestres"
+          },
+          {
+              "type": "TORCHLIGHT_ILLUMINATION",
+              "description": "Lueur des torches réduisant l'efficacité du camouflage optique"
+          }
+      ],
+      "keyPreyIds": [
+          "prey_feral_predator_1719"
+      ],
+      "heroSquadId": "squad_pred_dark_ages_norman_knights",
+      "villainSquadId": null
+  },
+  {
+      "id": "map_pred_congo_river_rapids",
+      "name": "Rapides du Fleuve Congo — Jungle Tales (1994)",
+      "universe": "PREDATOR",
+      "originMedia": "Predator: Jungle Tales (1994)",
+      "sourceType": "COMIC",
+      "releaseYear": 1994,
+      "year": 1928,
+      "biomeId": "jungle",
+      "biome": "CONGO_BASIN_RIVERBANK",
+      "recommendedBiomeLabel": "Bassin Équatorial du Congo (1928)",
+      "weather": "Humidité saturée à 95%, brume fluviale chaude et averses torrentielles",
+      "lighting": "Canopée oppressante ne laissant percer que des raies solaires verdâtres",
+      "verticality": "ÉLEVÉE (Arbres émergents de 45m, lianes suspendues et berges escarpées)",
+      "destructibility": "Bateaux à vapeur échoués, cabanes en bambou et passerelles suspendues",
+      "interactables": [
+          "Chaudière d'un vapeur colonial prête à surchauffer sous un tir précis",
+          "Essaim de frelons équatoriaux délogeable pour semer le chaos",
+          "Lianes solides permettant des traversées rapides au-dessus des rapides"
+      ],
+      "environmentSummary": "Bordure sauvage du fleuve Congo où une expédition de braconniers d'ivoire fait face au Chasseur Invisible.",
+      "description": "Bordure sauvage du fleuve Congo où une expédition de braconniers d'ivoire fait face au Chasseur Invisible.",
+      "tacticalNotes": "L'eau agitée des rapides désactive le camouflage optique si le Yautja est immergé. Restez dans la canopée.",
+      "dimensionsM": {
+          "width": 550,
+          "length": 600,
+          "height": 45
+      },
+      "elevationRangeM": [
+          0,
+          45
+      ],
+      "tacticalSectors": [
+          "Ponton d'Amarrage du Bateau à Vapeur Impérial",
+          "Dépôt d'Ivoire et Comptoir Colonial Abandonné",
+          "Franchissement des Rapides Rocheux et Îlots Boisés",
+          "Haute Canopée Équatoriale et Promontoires de Falaises"
+      ],
+      "keyLandmarks": [
+          "Épave du vapeur 'King Leopold' échouée au milieu des rapides",
+          "Empilement de défenses d'éléphant près des quais",
+          "Chute d'eau rugissante masquant les bruits de pas"
+      ],
+      "environmentalHazards": [
+          {
+              "type": "RIVER_TURBULENCE",
+              "description": "Courants violents emportant toute proie tombant à l'eau"
+          },
+          {
+              "type": "OPTICAL_CAMO_WATER_STATIC",
+              "description": "Éclaboussures constantes perturbant le champ de camouflage"
+          }
+      ],
+      "keyPreyIds": [
+          "prey_young_blood_initiate"
+      ],
+      "heroSquadId": "squad_pred_congo_river_ivory_poachers",
+      "villainSquadId": null
+  },
+  {
+      "id": "map_alien_automated_food_silos",
+      "name": "Silos Agro-Automatisés de Batavia — Aliens: Taste (1993)",
+      "universe": "ALIEN",
+      "originMedia": "Aliens: Taste (1993)",
+      "sourceType": "COMIC",
+      "releaseYear": 1993,
+      "year": 2167,
+      "biomeId": "stargazer_blacksite",
+      "biome": "HYDROPONIC_AGRI_COMPLEX",
+      "recommendedBiomeLabel": "Complexe Agro-Industriel Batavia (2167)",
+      "weather": "Température contrôlée à 28°C, pulvérisations automatisées de nutriments caustiques",
+      "lighting": "Tubes ultraviolets agricoles violacés, veilleuses de sécurité ambrées",
+      "verticality": "ÉLEVÉE (Tours de fermentation de 50m, ponts roulants et trémies céréalières)",
+      "destructibility": "Conduits de biogaz comprimé, cuves de fertilisants et passerelles métalliques",
+      "interactables": [
+          "Vanne de drainage de bouillie nutritive corrosive pour dissoudre les accès",
+          "Convoyeur à bande céréalier activable pour propulser ou piéger les ennemis",
+          "Système d'aspersion de décontamination thermique stérilisant une travée"
+      ],
+      "environmentSummary": "Complexe agro-alimentaire robotisé colonial où une colonie clandestine d'hybrides s'est développée au sein des cuves nutritives.",
+      "description": "Complexe agro-alimentaire robotisé colonial où une colonie clandestine d'hybrides s'est développée au sein des cuves nutritives.",
+      "tacticalNotes": "Les vapeurs de fertilisants hautement inflammables rendent les tirs de plasma dévastateurs mais dangereux en zone confinée.",
+      "dimensionsM": {
+          "width": 500,
+          "length": 500,
+          "height": 50
+      },
+      "elevationRangeM": [
+          0,
+          50
+      ],
+      "tacticalSectors": [
+          "Travée Principale des Cuves de Synthèse Protéique",
+          "Centre de Tri et Trémies d'Évacuation Agro-Automatiques",
+          "Salle des Conduits de Biogaz et Générateurs d'Ozone",
+          "Quais de Chargement Pressurisés et Sas de Fret"
+      ],
+      "keyLandmarks": [
+          "Silo cylindrique numéro 4 recouvert d'une sécrétion résineuse brillante",
+          "Poste de contrôle vitré en surplomb des broyeurs industriels",
+          "Nécropole de sentinelles synthétiques déchiquetées près des sas"
+      ],
+      "environmentalHazards": [
+          {
+              "type": "METHANE_POCKETS",
+              "description": "Poches de méthane explosant violemment au contact d'armes énergétiques"
+          },
+          {
+              "type": "FERTILIZER_MIST",
+              "description": "Brouillard d'aérosol corrosif diminuant progressivement la durabilité des masques"
+          }
+      ],
+      "keyPreyIds": [
+          "prey_weyland_combat_android"
+      ],
+      "heroSquadId": "squad_alien_taste_agri_security_sentry",
+      "villainSquadId": null
+  },
+  {
+      "id": "map_alien_ice_frontier_outpost",
+      "name": "Avant-Poste Glaciaire de K-411 — Aliens: Border Lines (1997)",
+      "universe": "ALIEN",
+      "originMedia": "Aliens: Border Lines (1997)",
+      "sourceType": "COMIC",
+      "releaseYear": 1997,
+      "year": 2184,
+      "biomeId": "bouvetoya_pyramid",
+      "biome": "SUBZERO_PERMAFROST_MINING",
+      "recommendedBiomeLabel": "Mine Glaciaire de K-411 (2184)",
+      "weather": "Blizzard continu à -45°C, vents hurlants de 120 km/h, cristaux de glace abrasifs",
+      "lighting": "Projecteurs halogènes montés sur pylônes tremblants, reflets bleu glacier acérés",
+      "verticality": "MOYENNE (Tranchées d'excavation creusées dans la glace vive, échafaudages miniers)",
+      "destructibility": "Parois de glace bleue fracturables, réservoirs de méthane cryogénique",
+      "interactables": [
+          "Foreuse pneumatique de tunnel pouvant être lancée pour broyer un groupe ennemi",
+          "Générateur thermique de survie provoquant une fonte brutale et un éboulement",
+          "Sas de décompression extérieur créant une tempête de succion glaciaire"
+      ],
+      "environmentSummary": "Station d'extraction polaire abandonnée sur une lune frontalière où les mineurs ont excavé un nid fossilisé désormais réactivé.",
+      "description": "Station d'extraction polaire abandonnée sur une lune frontalière où les mineurs ont excavé un nid fossilisé désormais réactivé.",
+      "tacticalNotes": "Le froid polaire masque partiellement la signature thermique des xénomorphes qui adoptent la température ambiante de la glace.",
+      "dimensionsM": {
+          "width": 450,
+          "length": 550,
+          "height": 40
+      },
+      "elevationRangeM": [
+          0,
+          40
+      ],
+      "tacticalSectors": [
+          "Puits Principal d'Excavation de Glace Pure",
+          "Hangar des Chenillettes Cryogéniques et Raffinerie",
+          "Quartiers d'Habitation Confinés et Infirmerie de Quarantaine",
+          "Plateforme d'Atterrissage Couverte de Givre et Balises"
+      ],
+      "keyLandmarks": [
+          "Excavatrice rotative géante gelée au fond de la fosse centrale",
+          "Dépôt de carottes de glace révélant des embryons xénomorphes pétrifiés",
+          "Tour radio pliée sous le poids des congères et câbles givrés"
+      ],
+      "environmentalHazards": [
+          {
+              "type": "CRYO_EXPOSURE",
+              "description": "Engelures réduisant la vitesse de rechargement des armes balistiques"
+          },
+          {
+              "type": "ICE_SHELF_COLLAPSE",
+              "description": "Plafonds de stalactites de glace s'effondrant lors de détonations bruyantes"
+          }
+      ],
+      "keyPreyIds": [
+          "prey_xeno_warrior"
+      ],
+      "heroSquadId": "squad_alien_border_lines_frontier_miners",
+      "villainSquadId": null
+  },
+  {
+      "id": "map_avp_tenochtitlan_ceremonial_steps",
+      "name": "Marches Sacrées de Tenochtitlan — Old Secrets (1492)",
+      "universe": "AVP",
+      "originMedia": "Aliens vs. Predator: Old Secrets (Dark Horse 1999)",
+      "sourceType": "COMIC",
+      "releaseYear": 1999,
+      "year": 1492,
+      "biomeId": "bouvetoya_pyramid",
+      "biome": "MESOAMERICAN_SACRIFICIAL_PYRAMID",
+      "recommendedBiomeLabel": "Complexe Pyramidal de Tenochtitlan (1492)",
+      "weather": "Nuit d'éclipse de lune, air lourd chargé de fumée de copal et d'encens rituel",
+      "lighting": "Flammes de braseros cérémoniels, stèles sculptées baignées d'ombres mouvantes",
+      "verticality": "TRÈS ÉLEVÉE (Gradins vertigineux de la Grande Pyramide, terrasses étagées de 60m)",
+      "destructibility": "Autels de pierre volcanique, draperies sacrificielles et torches votives",
+      "interactables": [
+          "Dalle de sacrifice basculante ouvrant une fosse vers le nid souterrain",
+          "Brasero cérémoniel d'obsidienne pouvant être projeté dans les escaliers",
+          "Tambour rituel géant pouvant désorienter les proies par résonance acoustique"
+      ],
+      "environmentSummary": "Sommet de la pyramide aztèque où les prêtres vénèrent les Dieux ailés et offrent des victimes aux Serpents d'Acide.",
+      "description": "Sommet de la pyramide aztèque où les prêtres vénèrent les Dieux ailés et offrent des victimes aux Serpents d'Acide.",
+      "tacticalNotes": "La pente raide des escaliers offre un avantage critique pour les tirs plongeants de disque ou de lanceur à plasma.",
+      "dimensionsM": {
+          "width": 480,
+          "length": 480,
+          "height": 60
+      },
+      "elevationRangeM": [
+          0,
+          60
+      ],
+      "tacticalSectors": [
+          "Plateforme Supérieure du Sanctuaire d'Huitzilopochtli",
+          "Gradins Cérémoniels et Escaliers Vertigineux",
+          "Fosse des Sacrifiés et Galeries d'Accès Souterraines",
+          "Esplanade Inférieure Entourée de Serpentins de Basalte"
+      ],
+      "keyLandmarks": [
+          "Pierre sacrificielle centrale tachée de sang chaud et de marques de griffes",
+          "Statues colossales à double face représentant le Serpent et le Chasseur Masqué",
+          "Cuve sacrée d'obsidienne contenant des reliques extraterrestres léguées"
+      ],
+      "environmentalHazards": [
+          {
+              "type": "STEEP_DROP",
+              "description": "Chutes mortelles depuis les gradins pyramidaux en cas de projection"
+          },
+          {
+              "type": "INCENSE_SMOKE",
+              "description": "Volutes d'encens réduisant la visibilité optique standard"
+          }
+      ],
+      "keyPreyIds": [
+          "prey_colonial_marine_heavy"
+      ],
+      "heroSquadId": "squad_avp_old_secrets_aztec_priests",
+      "villainSquadId": null
+  },
+  {
+      "id": "map_avp_mothership_grand_trophy_gallery",
+      "name": "Galerie des Trophées du Vaisseau-Mère — AVP Legends",
+      "universe": "AVP",
+      "originMedia": "Aliens vs. Predator: Trophy Room Lore",
+      "sourceType": "EXPANDED_LORE",
+      "releaseYear": 2004,
+      "year": 2204,
+      "biomeId": "stargazer_blacksite",
+      "biome": "YAUTJA_MOTHERSHIP_HONOR_HALL",
+      "recommendedBiomeLabel": "Vaisseau-Mère Yautja — Hall Cérémoniel (2204)",
+      "weather": "Atmosphère pressurisée riche en oxygène et argon, brume d'antiseptique plasma",
+      "lighting": "Dalles luminescentes Yautja vertes et ambrées, néons holographiques d'honneur",
+      "verticality": "ÉLEVÉE (Piliers sculptés de runes ancestrales de 45m, passerelles d'observation)",
+      "destructibility": "Vitrines de stase en verre blindé xénomorphe, pupitres de navigation",
+      "interactables": [
+          "Console de stase libérant un crâne électrifié d'Ingénieur comme arme d'appoint",
+          "Projecteur de glyphs holographiques Yautja aveuglant temporairement les intrus",
+          "Bouclier de quarantaine activable pour diviser les vagues d'ennemis"
+      ],
+      "environmentSummary": "Nef sanctuaire où les Anciens Clan Leaders conservent les reliques des chasses les plus glorieuses à travers la galaxie.",
+      "description": "Nef sanctuaire où les Anciens Clan Leaders conservent les reliques des chasses les plus glorieuses à travers la galaxie.",
+      "tacticalNotes": "La garde d'élite des Anciens patrouille avec des armes cérémonielles au plasma. Le combat en corps-à-corps est inévitable.",
+      "dimensionsM": {
+          "width": 600,
+          "length": 600,
+          "height": 45
+      },
+      "elevationRangeM": [
+          0,
+          45
+      ],
+      "tacticalSectors": [
+          "Allée Centrale des Crânes de Reine et d'Ingénieurs",
+          "Estrade des Anciens et Trône du Grand Maître de Clan",
+          "Armurerie Sacrée des Reliques d'Initié et Dagues d'Or",
+          "Sas de Purification et Sas d'Accostage des Navettes de Chasse"
+      ],
+      "keyLandmarks": [
+          "Crâne colossal d'Ingénieur et de Reine prétorienne montés sur le trône principal",
+          "Autel de gravure des symboles d'honneur au sang caustique",
+          "Vaisseau de largage monoplace suspendu au-dessus du dôme d'observation"
+      ],
+      "environmentalHazards": [
+          {
+              "type": "ELECTROSTATIC_DISCHARGE",
+              "description": "Piliers d'énergie Yautja créant des arcs de foudre lors de tirs manqués"
+          },
+          {
+              "type": "CEREMONIAL_FLAME",
+              "description": "Brûleurs au plasma cérémoniels infligeant des dégâts thermiques continus"
+          }
+      ],
+      "keyPreyIds": [
+          "prey_colonial_marine_heavy"
+      ],
+      "heroSquadId": "squad_avp_mothership_elder_honor_guard",
+      "villainSquadId": null
   }
 ]);
 
@@ -7277,6 +7631,90 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     "wieldedBy": "Guerriers renégats des Killer Clans et maîtres de meute xénomorphe",
     "yautjaCounterplay": "Dissolution thermique au canon à plasma et contre-attaque brutale.",
     "description": "Arme cruelle forgée par les clans renégats tirant des épines barbelées suintant d'acide et de poison paralysant les fonctions motrices de la proie."
+  },
+  {
+      "id": "wpn_dark_ages_norman_heavy_crossbow",
+      "name": "Arbalète Lourde Normande à Carreaux Forgés",
+      "universe": "PREDATOR",
+      "faction": "Norman Crusader Garrison",
+      "originMedia": "Predator: Dark Ages (2015)",
+      "caliber": "Carreaux en acier trempé avec pointes barbelées de 350 grains",
+      "damageType": "PIERCING_HEAVY_KINETIC",
+      "effectiveRangeMeters": 65,
+      "rateOfFire": "Tir coup par coup à réarmement par treuil (8 coups/min)",
+      "wieldedBy": "Arbalétriers d'élite et écuyers des chevaliers templiers normands",
+      "yautjaCounterplay": "Dévier les carreaux au bouclier de gantelet et engager au corps-à-corps.",
+      "description": "Arbalète de guerre redoutable capable de perforer les mailles d'acier et de ralentir un Yautja au prix d'un réarmement laborieux."
+  },
+  {
+      "id": "wpn_congo_river_ivory_hunter_rifle",
+      "name": "Carabine Double Express Africaine .577 Nitro",
+      "universe": "PREDATOR",
+      "faction": "Congo Basin Ivory Expedition",
+      "originMedia": "Predator: Jungle Tales (1994)",
+      "caliber": "Balles chemisées .577 Nitro Express (750 grains)",
+      "damageType": "KINETIC_STOPPING_POWER",
+      "effectiveRangeMeters": 75,
+      "rateOfFire": "Double canon basculant à percussion instantanée (2 tirs rapides puis rechargement)",
+      "wieldedBy": "Guides de chasse équatoriaux et braconniers d'ivoire vétérans",
+      "yautjaCounterplay": "Anticiper les deux détonations consécutives pour riposter pendant l'ouverture de culasse.",
+      "description": "Carabine de gros calibre conçue pour stopper la charge des pachydermes, dotée d'une force d'arrêt cinétique exceptionnelle."
+  },
+  {
+      "id": "wpn_taste_agri_combustion_torch",
+      "name": "Torche Thermique Industrielle de Stérilisation Agricole",
+      "universe": "ALIEN",
+      "faction": "Batavia Agro-Chemical Directorate",
+      "originMedia": "Aliens: Taste (1993)",
+      "caliber": "Jet de naphtalène et d'ozone comprimé à 1400°C",
+      "damageType": "INCENDIARY_CONTINUOUS_STREAM",
+      "effectiveRangeMeters": 25,
+      "rateOfFire": "Flux thermique continu alimenté par cartouche pressurisée de 10 secondes",
+      "wieldedBy": "Agents de sécurité biologique et équipes de décontamination agro-industrielle",
+      "yautjaCounterplay": "Tir de canon à plasma pour faire exploser le réservoir dorsal à distance.",
+      "description": "Outil industriel lourd reconverti pour brûler les nids parasitaires, projetant une nappe incandescente persistante."
+  },
+  {
+      "id": "wpn_border_lines_subzero_pneumatic_pick",
+      "name": "Pic Pneumatique Lourd Brise-Glace K-411",
+      "universe": "ALIEN",
+      "faction": "Frontier Permafrost Mining Guild",
+      "originMedia": "Aliens: Border Lines (1997)",
+      "caliber": "Pointe de tungstène oscillante à percussion pneumatique (2400 bpm)",
+      "damageType": "PNEUMATIC_KINETIC_CONCUSSION",
+      "effectiveRangeMeters": 4,
+      "rateOfFire": "Frappes cinétiques ultra-rapides en mêlée continue",
+      "wieldedBy": "Foreurs de permafrost et ouvriers de sauvetage en milieu glaciaire",
+      "yautjaCounterplay": "Parade latérale aux lames de poignet et empalement au combistick.",
+      "description": "Appareil d'excavation hydraulique destiné à briser la glace compacte de méthane, broyant armures et membres à courte portée."
+  },
+  {
+      "id": "wpn_old_secrets_obsidian_macana_blade",
+      "name": "Macana Cérémonielle d'Obsidienne Tranchante",
+      "universe": "AVP",
+      "faction": "Aztec Solar Brotherhood",
+      "originMedia": "Aliens vs. Predator: Old Secrets (Dark Horse 1999)",
+      "caliber": "Prismes d'obsidienne volcanique rasoirs insérés sur corps de chêne dur",
+      "damageType": "LACERATION_HEMORRHAGIC_OBSIDIAN",
+      "effectiveRangeMeters": 3,
+      "rateOfFire": "Moulinets et fentes d'art martial sacrificiel aztèque",
+      "wieldedBy": "Guerriers-Jaguars, prêtres solaires d'Huitzilopochtli et champions de Tenochtitlan",
+      "yautjaCounterplay": "Briser les lames de verre volcanique d'un coup de combistick trempé.",
+      "description": "Arme rituelle aztèque aux éclats d'obsidienne aiguisés au niveau moléculaire, capable d'entailler la chair extraterrestre."
+  },
+  {
+      "id": "wpn_mothership_ceremonial_plasma_dagger",
+      "name": "Dague Cérémonielle de Plasma Yautja des Anciens",
+      "universe": "AVP",
+      "faction": "Yautja Grand Council Elders",
+      "originMedia": "Aliens vs. Predator: Trophy Room Lore",
+      "caliber": "Lame à confinement plasmique d'argent supraconducteur",
+      "damageType": "PLASMA_THERMAL_SEVERING",
+      "effectiveRangeMeters": 4,
+      "rateOfFire": "Frappes chirurgicales d'estoc et de taille à haute énergie",
+      "wieldedBy": "Garde d'honneur personnelle des Maîtres de Clan et Anciens",
+      "yautjaCounterplay": "Esquive en roulade et désarmement au fouet à barbelures.",
+      "description": "Dague honorifique forgée dans les ateliers ancestraux de Yautja Prime, dont le fil est enveloppé d'un champ d'énergie brûlant."
   }
 ]);
 

@@ -1454,3 +1454,86 @@ test('AudioSynthesizer procedural Vague 20 SFX methods execute safely in headles
   assert.ok(harpoon.durationSeconds > 0);
   assert.equal(harpoon.played, false);
 });
+
+test('Vague 21 canonical NPC weapons resolve to rich ballistic and acoustic profiles', () => {
+  const vague21Weapons = [
+    {
+      id: 'wpn_dark_ages_norman_heavy_crossbow',
+      archetype: 'norman_templar_heavy_crossbow',
+      damage: 55,
+      rangeM: 65,
+      soundRadiusM: 25,
+      projectileColor: 0x94a3b8,
+    },
+    {
+      id: 'wpn_congo_river_ivory_hunter_rifle',
+      archetype: 'congo_express_nitro_rifle',
+      damage: 85,
+      rangeM: 75,
+      soundRadiusM: 110,
+      projectileColor: 0xf59e0b,
+    },
+    {
+      id: 'wpn_taste_agri_combustion_torch',
+      archetype: 'agri_combustion_sterilization_torch',
+      damage: 32,
+      rangeM: 25,
+      soundRadiusM: 35,
+      projectileColor: 0xf97316,
+    },
+    {
+      id: 'wpn_border_lines_subzero_pneumatic_pick',
+      archetype: 'subzero_pneumatic_rock_pick',
+      damage: 48,
+      rangeM: 4,
+      soundRadiusM: 45,
+      projectileColor: 0x38bdf8,
+    },
+    {
+      id: 'wpn_old_secrets_obsidian_macana_blade',
+      archetype: 'aztec_obsidian_macana',
+      damage: 50,
+      rangeM: 3,
+      soundRadiusM: 15,
+      projectileColor: 0x10b981,
+    },
+    {
+      id: 'wpn_mothership_ceremonial_plasma_dagger',
+      archetype: 'elder_ceremonial_plasma_dagger',
+      damage: 62,
+      rangeM: 4,
+      soundRadiusM: 30,
+      projectileColor: 0x67e8f9,
+    },
+  ];
+
+  for (const expected of vague21Weapons) {
+    const profile = getNpcWeaponProfile(expected.id);
+    assert.ok(profile, `Le profil balistique pour ${expected.id} doit exister`);
+    assert.equal(profile.archetype, expected.archetype);
+    assert.equal(profile.damage, expected.damage);
+    assert.equal(profile.rangeM, expected.rangeM);
+    assert.equal(profile.soundRadiusM, expected.soundRadiusM);
+    assert.equal(profile.projectileColor, expected.projectileColor);
+  }
+});
+
+test('AudioSynthesizer procedural Vague 21 SFX methods execute safely in headless Node environment', () => {
+  const crossbow = audioSynth.playNormanHeavyCrossbowRelease();
+  assert.ok(crossbow && crossbow.event === 'norman_heavy_crossbow_release');
+  assert.ok(crossbow.triggerClickHz > crossbow.stringSnapHz);
+  assert.ok(crossbow.durationSeconds > 0);
+  assert.equal(crossbow.played, false);
+
+  const torch = audioSynth.playAgriCombustionTorchHiss();
+  assert.ok(torch && torch.event === 'agri_combustion_torch_hiss');
+  assert.ok(torch.gasHissHz > torch.flameRoarHz);
+  assert.ok(torch.durationSeconds > 0);
+  assert.equal(torch.played, false);
+
+  const dagger = audioSynth.playMothershipPlasmaDaggerHum();
+  assert.ok(dagger && dagger.event === 'mothership_plasma_dagger_hum');
+  assert.ok(dagger.silverHarmonicHz > dagger.plasmaHumHz);
+  assert.ok(dagger.durationSeconds > 0);
+  assert.equal(dagger.played, false);
+});

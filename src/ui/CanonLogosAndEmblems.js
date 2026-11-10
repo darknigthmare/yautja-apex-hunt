@@ -3376,6 +3376,69 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  if (id.includes('dark_ages_norman_knights') || id.includes('norman_knights')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-normanknights" role="img" aria-label="Insigne Templiers Normands 1330">
+        <path d="M16 12 L64 12 C64 44 40 72 40 72 C40 72 16 44 16 12 Z" fill="#1e293b" stroke="#991b1b" stroke-width="2.5" />
+        <path d="M36 20 L44 20 L44 34 L58 34 L58 42 L44 42 L44 60 L36 60 L36 42 L22 42 L22 34 L36 34 Z" fill="#b91c1c" stroke="#fca5a5" stroke-width="1.2" />
+        <circle cx="40" cy="38" r="4" fill="#f8fafc" />
+        <text x="40" y="68" font-family="'Cinzel', serif" font-size="3.6" font-weight="900" fill="#cbd5e1" letter-spacing="1" text-anchor="middle">TEMPLIERS</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('congo_river_ivory_poachers') || id.includes('ivory_poachers')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-congotrappers" role="img" aria-label="Insigne Expédition Fluviale Congo 1928">
+        <circle cx="40" cy="40" r="34" fill="#14532d" stroke="#ca8a04" stroke-width="2.5" />
+        <path d="M26 58 C26 38 34 22 48 18 C42 30 38 46 40 58 Z" fill="#fef08a" stroke="#ca8a04" stroke-width="1.2" />
+        <path d="M54 58 C54 38 46 22 32 18 C38 30 42 46 40 58 Z" fill="#fef08a" stroke="#ca8a04" stroke-width="1.2" />
+        <circle cx="40" cy="40" r="5" fill="#eab308" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="3.6" font-weight="900" fill="#fef9c3" letter-spacing="1" text-anchor="middle">CONGO 1928</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('taste_agri_security_sentry') || id.includes('batavia')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-agrisentry" role="img" aria-label="Insigne Sécurité Agro-Industrielle Batavia">
+        <polygon points="40,8 72,40 40,72 8,40" fill="#3b0764" stroke="#f59e0b" stroke-width="2.5" />
+        <path d="M40 18 L40 62 M24 40 L56 40" stroke="#f59e0b" stroke-width="2" />
+        <circle cx="40" cy="40" r="10" fill="#581c87" stroke="#fbbf24" stroke-width="1.5" />
+        <circle cx="40" cy="40" r="4" fill="#fb923c" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="3.4" font-weight="900" fill="#fed7aa" letter-spacing="1" text-anchor="middle">BATAVIA BIO</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('border_lines_frontier_miners') || id.includes('frontier_miners')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-frontierminers" role="img" aria-label="Insigne Brigade Minière K-411">
+        <polygon points="40,10 66,25 66,55 40,70 14,55 14,25" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2.5" />
+        <line x1="24" y1="26" x2="56" y2="54" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round" />
+        <line x1="56" y1="26" x2="24" y2="54" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round" />
+        <circle cx="40" cy="40" r="5" fill="#0284c7" stroke="#e0f2fe" stroke-width="1.5" />
+        <text x="40" y="66" font-family="'Orbitron', sans-serif" font-size="3.6" font-weight="900" fill="#bae6fd" letter-spacing="1" text-anchor="middle">MINE K-411</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('old_secrets_aztec_priests') || id.includes('aztec_priests')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-aztecpriests" role="img" aria-label="Insigne Garde Sacrificielle de Tenochtitlan">
+        <circle cx="40" cy="40" r="34" fill="#78350f" stroke="#059669" stroke-width="2.5" />
+        <polygon points="40,16 48,32 64,40 48,48 40,64 32,48 16,40 32,32" fill="#047857" stroke="#34d399" stroke-width="1.5" />
+        <circle cx="40" cy="40" r="6" fill="#f59e0b" stroke="#fde68a" stroke-width="1.5" />
+        <text x="40" y="70" font-family="'Cinzel', serif" font-size="3.4" font-weight="900" fill="#fef08a" letter-spacing="1" text-anchor="middle">TENOCHTITLAN</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('mothership_elder_honor_guard') || id.includes('elder_honor_guard')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-mothershipguard" role="img" aria-label="Insigne Garde d'Honneur des Anciens">
+        <polygon points="40,8 68,22 62,64 40,74 18,64 12,22" fill="#451a03" stroke="#f59e0b" stroke-width="2.5" />
+        <path d="M40 16 L40 62 M26 30 L40 44 L54 30" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" />
+        <circle cx="40" cy="44" r="5" fill="#f59e0b" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="3.4" font-weight="900" fill="#fef08a" letter-spacing="1" text-anchor="middle">ELDER GUARD</text>
+      </svg>
+    `.trim();
+  }
   if (id.startsWith('squad_') && !id.includes('lv742_kainde_amedha')) {
     const cleanTag = id.replace(/^squad_(pred_|alien_|avp_)?/, '').replace(/_/g, ' ').slice(0, 14).toUpperCase();
     const h = Math.abs(hashCode(id));

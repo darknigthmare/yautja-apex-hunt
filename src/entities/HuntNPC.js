@@ -3380,6 +3380,24 @@ export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
   wpn_bad_blood_killer_spikethrower: makeWeaponBallisticProfile('wpn_bad_blood_killer_spikethrower', {
     damage: 45, cooldown: 0.25, rangeM: 55, soundRadiusM: 70, projectileColor: 0xec4899, archetype: 'bad_blood_neurotoxic_spikethrower', cadence: 'corrosive_spike_salvo', damageType: 'acid',
   }),
+  wpn_dark_ages_norman_heavy_crossbow: makeWeaponBallisticProfile('wpn_dark_ages_norman_heavy_crossbow', {
+    damage: 55, cooldown: 1.8, rangeM: 65, soundRadiusM: 25, projectileColor: 0x94a3b8, archetype: 'norman_templar_heavy_crossbow', cadence: 'winch_cocked_bolt', damageType: 'ballistic',
+  }),
+  wpn_congo_river_ivory_hunter_rifle: makeWeaponBallisticProfile('wpn_congo_river_ivory_hunter_rifle', {
+    damage: 85, cooldown: 1.2, rangeM: 75, soundRadiusM: 110, projectileColor: 0xf59e0b, archetype: 'congo_express_nitro_rifle', cadence: 'double_express_stagger', damageType: 'ballistic',
+  }),
+  wpn_taste_agri_combustion_torch: makeWeaponBallisticProfile('wpn_taste_agri_combustion_torch', {
+    damage: 32, cooldown: 0.1, rangeM: 25, soundRadiusM: 35, projectileColor: 0xf97316, archetype: 'agri_combustion_sterilization_torch', cadence: 'continuous_flame_stream', damageType: 'fire',
+  }),
+  wpn_border_lines_subzero_pneumatic_pick: makeWeaponBallisticProfile('wpn_border_lines_subzero_pneumatic_pick', {
+    damage: 48, cooldown: 0.22, rangeM: 4, soundRadiusM: 45, projectileColor: 0x38bdf8, archetype: 'subzero_pneumatic_rock_pick', cadence: 'percussive_jackhammer_slam', damageType: 'kinetic',
+  }),
+  wpn_old_secrets_obsidian_macana_blade: makeWeaponBallisticProfile('wpn_old_secrets_obsidian_macana_blade', {
+    damage: 50, cooldown: 0.35, rangeM: 3, soundRadiusM: 15, projectileColor: 0x10b981, archetype: 'aztec_obsidian_macana', cadence: 'sacrificial_cleaving_slash', damageType: 'bleed',
+  }),
+  wpn_mothership_ceremonial_plasma_dagger: makeWeaponBallisticProfile('wpn_mothership_ceremonial_plasma_dagger', {
+    damage: 62, cooldown: 0.3, rangeM: 4, soundRadiusM: 30, projectileColor: 0x67e8f9, archetype: 'elder_ceremonial_plasma_dagger', cadence: 'contained_plasma_lunge', damageType: 'plasma',
+  }),
 });
 
 function resolveNpcRoleWeaponId(npcType) {

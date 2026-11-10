@@ -16,12 +16,12 @@ const FILE_SHA = Object.freeze({
   "src/data/YautjaExpandedContent.js": "9263751af1c0e93649ef828a96a5c274720a20e2",
   "src/data/YautjaContentCatalog.js": "550a72c3026e38d9ef8d79606654629efb80f7ec",
   "src/data/YautjaLoreDatabase.js": "c17d5f31944762e6eb20b2c50ece1b3fc3f665d9",
-  "src/data/LoreCodex.js": "5c58ee567369358f58d57750b688e95ce52d1c54",
+  "src/data/LoreCodex.js": "d5c7e3d52a28eeb9cd97115859b9ad68418a71c0",
   "src/data/MediaCoverageCatalog.js": "cdd82fd3c6a994e9590d32ba552c56ed139c2bf9",
   "src/data/CanonPreyExpansionV251.js": "548ab703da410a1067238a087ce02727b6aa3afc",
   "src/data/PreyTaxonomyAndCrossoverCatalog.js": "6725a4c3343cfbdb7356dcf9a00946b42139088a",
   "src/data/PreyReferenceMetadata.js": "0b3abdda06e395ad570df54e0dcea20abae713d5",
-  "src/data/RuntimeEquipment.js": "bcf424e34605940f47cc268124425f515cd0c048"
+  "src/data/RuntimeEquipment.js": "fd08fc45ba953c4e2e75030ec81bea83414eb13e"
 });
 // Source snapshots remain immutable; validate all file blobs before proposing an intake PR.
 export function assertAlienBaseCandidateSourcesCurrent(){
