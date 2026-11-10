@@ -3059,6 +3059,115 @@ const directiveDefinitions = [
       wave(80, 'human_fireteam'),
     ],
   }
+,
+  {
+    id: 'squad_pred_inca_warrior_guard',
+    title: "Andes 1532 — Garde d'Élite Impériale Inca",
+    summary: "Pénétrer la citadelle inca de haute altitude et triompher des maîtres du macuahuitl d'obsidienne.",
+    category: 'squad_encounter',
+    recommendedBiomeId: 'bouvetoya_pyramid',
+    rewardMultiplier: 2.85,
+    objectives: [
+      objective('era_feudal_duelist', "Neutraliser l'Éclaireur Condor Rumi et ses javelots"),
+      objective('era_viking_raider', "Désactiver le Guerrier Puma Huascar et sa massue"),
+      objective('era_feudal_duelist', "Terrasser le Général Atoc et son macuahuitl lourd"),
+    ],
+    schedule: [
+      wave(15, 'era_feudal_duelist'),
+      wave(45, 'era_viking_raider'),
+      wave(80, 'era_feudal_duelist'),
+    ],
+  },
+  {
+    id: 'squad_pred_yautja_prime_initiates',
+    title: "Yautja Prime — Initiés des Arènes Volcaniques",
+    summary: "Affronter le trio de jeunes guerriers en ordalie dans la fosse magmatique de Yautja Prime.",
+    category: 'squad_encounter',
+    recommendedBiomeId: 'jungle',
+    rewardMultiplier: 3.1,
+    objectives: [
+      objective('jungle_scout', "Éliminer la Sentinelle d'Ordalie Gurokh"),
+      objective('jungle_gunner', "Neutraliser le Faucheur Tarkesh et sa faux d'initiation"),
+      objective('thermal_trapper', "Vaincre le Duelliste Vokhan dans le cercle central"),
+    ],
+    schedule: [
+      wave(15, 'jungle_scout'),
+      wave(45, 'jungle_gunner'),
+      wave(80, 'thermal_trapper'),
+    ],
+  },
+  {
+    id: 'squad_alien_pala_security_detail',
+    title: "Pala Station — Détachement de Sécurité Weyland (2202)",
+    summary: "Neutraliser le dispositif de sécurité et les synthétiques de confinement armés de fusils magnéto-pulsés.",
+    category: 'squad_encounter',
+    recommendedBiomeId: 'stargazer_blacksite',
+    rewardMultiplier: 2.9,
+    objectives: [
+      objective('stargazer_rifleman', "Éliminer le Caporal Lisa Chen et ses tirs magnétiques"),
+      objective('combat_synthetic', "Détruire le Synthétique Unité 7 en première ligne"),
+      objective('weyland_field_synthetic', "Neutraliser le Lieutenant James Marx au poste de commandement"),
+    ],
+    schedule: [
+      wave(15, 'stargazer_rifleman'),
+      wave(45, 'combat_synthetic'),
+      wave(80, 'weyland_field_synthetic'),
+    ],
+  },
+  {
+    id: 'squad_alien_sacrifice_zealots',
+    title: "Monastère du Culte — Zélotes Sacrificiels (1993)",
+    summary: "Purger les coursives et les catacombes du monastère tenues par les fanatiques du culte xénomorphe.",
+    category: 'squad_encounter',
+    recommendedBiomeId: 'hive_lv426',
+    rewardMultiplier: 2.8,
+    objectives: [
+      objective('human_fireteam', "Neutraliser Sœur Judith et ses embuscades de couloir"),
+      objective('jungle_trapper', "Éliminer Frère Gideon et ses tromblons lourds"),
+      objective('human_fireteam', "Exécuter le Père Malachi devant l'autel de la bête"),
+    ],
+    schedule: [
+      wave(15, 'human_fireteam'),
+      wave(45, 'jungle_trapper'),
+      wave(80, 'human_fireteam'),
+    ],
+  },
+  {
+    id: 'squad_avp_endeavor_strike_platoon',
+    title: "USS Endeavor — Peloton de Frappe USCM (2202)",
+    summary: "Affronter la force d'intervention rapide de l'Endeavor armée de faisceaux particulaires à micro-fusion.",
+    category: 'squad_encounter',
+    recommendedBiomeId: 'stargazer_blacksite',
+    rewardMultiplier: 3.15,
+    objectives: [
+      objective('colonial_marine_smartgunner', "Neutraliser le Caporal-Chef Rios sur les passerelles"),
+      objective('weyland_expedition_guard', "Désactiver le Sergent Artilleur Vance et son fusil lourd"),
+      objective('colonial_marine_smartgunner', "Terrasser le Capitaine Gabriel Herrera sur le pont d'envol"),
+    ],
+    schedule: [
+      wave(15, 'colonial_marine_smartgunner'),
+      wave(45, 'weyland_expedition_guard'),
+      wave(80, 'colonial_marine_smartgunner'),
+    ],
+  },
+  {
+    id: 'squad_avp_gunnison_swat_survivors',
+    title: "Hôpital de Gunnison — Survivants Tactiques SWAT (2007)",
+    summary: "Nettoyer les étages barricadés tenus par les officiers d'élite du SWAT retranchés.",
+    category: 'squad_encounter',
+    recommendedBiomeId: 'gunnison_outbreak',
+    rewardMultiplier: 2.95,
+    objectives: [
+      objective('gunnison_national_guard', "Neutraliser l'Officier Dawson derrière son bouclier"),
+      objective('subway_armed_hunter', "Éliminer l'Officier Ray Stevens et ses tirs de précision"),
+      objective('gunnison_national_guard', "Désarmer le Sergent Chef Morales au centre des urgences"),
+    ],
+    schedule: [
+      wave(15, 'gunnison_national_guard'),
+      wave(45, 'subway_armed_hunter'),
+      wave(80, 'gunnison_national_guard'),
+    ],
+  }
 ];
 
 export const HUNT_DIRECTIVES = Object.freeze(Object.fromEntries(

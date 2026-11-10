@@ -3326,6 +3326,24 @@ export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
   wpn_three_world_war_dual_pulse_carbine: makeWeaponBallisticProfile('wpn_three_world_war_dual_pulse_carbine', {
     damage: 56, cooldown: 0.16, rangeM: 75, soundRadiusM: 95, projectileColor: 0x38bdf8, archetype: 'dual_synchronized_pulse_carbine', cadence: 'synchronized_double_burst', damageType: 'ballistic',
   }),
+  wpn_inca_obsidian_macuahuitl_blade: makeWeaponBallisticProfile('wpn_inca_obsidian_macuahuitl_blade', {
+    damage: 48, cooldown: 0.9, rangeM: 3.5, soundRadiusM: 14, projectileColor: 0x1c1917, archetype: 'obsidian_serrated_macuahuitl', cadence: 'cleaving_heavy_slash', damageType: 'laceration',
+  }),
+  wpn_yautja_prime_ceremonial_scythe: makeWeaponBallisticProfile('wpn_yautja_prime_ceremonial_scythe', {
+    damage: 62, cooldown: 1.1, rangeM: 4.2, soundRadiusM: 18, projectileColor: 0xf59e0b, archetype: 'yautja_proving_ceremonial_scythe', cadence: 'rotary_kinetic_cleave', damageType: 'kinetic',
+  }),
+  wpn_pala_station_magpulse_carbine: makeWeaponBallisticProfile('wpn_pala_station_magpulse_carbine', {
+    damage: 42, cooldown: 0.18, rangeM: 65, soundRadiusM: 70, projectileColor: 0x06b6d4, archetype: 'magpulse_ferromagnetic_carbine', cadence: 'accelerated_burst', damageType: 'ballistic',
+  }),
+  wpn_sacrifice_heavy_slugthrower: makeWeaponBallisticProfile('wpn_sacrifice_heavy_slugthrower', {
+    damage: 68, cooldown: 1.35, rangeM: 25, soundRadiusM: 85, projectileColor: 0xd97706, archetype: 'salvaged_heavy_slugthrower', cadence: 'conical_scatter_blast', damageType: 'ballistic',
+  }),
+  wpn_endeavor_heavy_particle_rifle: makeWeaponBallisticProfile('wpn_endeavor_heavy_particle_rifle', {
+    damage: 58, cooldown: 0.22, rangeM: 80, soundRadiusM: 90, projectileColor: 0xa855f7, archetype: 'endeavor_ionizing_particle_beamer', cadence: 'pulsed_stream_beam', damageType: 'energy',
+  }),
+  wpn_gunnison_swat_tactical_m4a1: makeWeaponBallisticProfile('wpn_gunnison_swat_tactical_m4a1', {
+    damage: 38, cooldown: 0.15, rangeM: 55, soundRadiusM: 75, projectileColor: 0xfacc15, archetype: 'swat_tactical_m4a1_carbine', cadence: 'rapid_tactical_burst', damageType: 'ballistic',
+  }),
 });
 
 function resolveNpcRoleWeaponId(npcType) {

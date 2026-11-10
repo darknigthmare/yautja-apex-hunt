@@ -1981,6 +1981,71 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  if (id.includes('inca_warrior_guard') || id.includes('incaguard')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-incaguard" role="img" aria-label="Insigne Garde d'Élite Impériale Inca 1532">
+        <polygon points="40,6 74,40 40,74 6,40" fill="#1c1917" stroke="#f59e0b" stroke-width="2.5" />
+        <circle cx="40" cy="40" r="18" fill="#78350f" stroke="#fbbf24" stroke-width="2" />
+        <path d="M 40 18 L 40 62 M 18 40 L 62 40 M 24 24 L 56 56 M 24 56 L 56 24" stroke="#f59e0b" stroke-width="2" />
+        <rect x="34" y="34" width="12" height="12" fill="#fbbf24" stroke="#78350f" stroke-width="1.5" />
+        <text x="40" y="72" font-family="'Cinzel', serif" font-size="4" font-weight="900" fill="#fbbf24" letter-spacing="1" text-anchor="middle">INCA GUARD 1532</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('yautja_prime_initiates') || id.includes('primeinitiates')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-primeinitiates" role="img" aria-label="Insigne Initiés des Arènes Yautja Prime">
+        <circle cx="40" cy="40" r="34" fill="#0f172a" stroke="#ef4444" stroke-width="2.5" />
+        <path d="M 40 10 L 68 58 L 12 58 Z" fill="#450a0a" stroke="#f87171" stroke-width="2" />
+        <circle cx="40" cy="42" r="10" fill="#991b1b" stroke="#fca5a5" stroke-width="1.8" />
+        <path d="M 40 22 L 40 54 M 28 48 L 52 48" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
+        <text x="40" y="73" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="900" fill="#fca5a5" letter-spacing="1" text-anchor="middle">YAUTJA PRIME</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('pala_security_detail') || id.includes('palasecurity')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-palasecurity" role="img" aria-label="Insigne Sécurité Weyland Station Pala">
+        <polygon points="40,8 70,24 70,56 40,72 10,56 10,24" fill="#082f49" stroke="#06b6d4" stroke-width="2.5" />
+        <polygon points="40,16 62,28 62,52 40,64 18,52 18,28" fill="#0e7490" stroke="#22d3ee" stroke-width="1.5" />
+        <path d="M 40 24 L 54 36 L 40 48 L 26 36 Z" fill="#67e8f9" />
+        <circle cx="40" cy="40" r="5" fill="#082f49" />
+        <text x="40" y="69" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#22d3ee" letter-spacing="1" text-anchor="middle">PALA LABS 2202</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('sacrifice_zealots') || id.includes('sacrificezealots')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-sacrificezealots" role="img" aria-label="Insigne Zélotes du Culte Sacrificiel">
+        <path d="M 40 8 C 60 8, 72 24, 72 52 C 72 68, 56 72, 40 72 C 24 72, 8 68, 8 52 C 8 24, 20 8, 40 8 Z" fill="#27180e" stroke="#d97706" stroke-width="2.5" />
+        <circle cx="40" cy="38" r="16" fill="#451a03" stroke="#f59e0b" stroke-width="1.8" />
+        <path d="M 40 20 L 40 56 M 26 32 L 54 32" stroke="#d97706" stroke-width="2.5" stroke-linecap="round" />
+        <polygon points="40,30 46,42 34,42" fill="#fbbf24" />
+        <text x="40" y="68" font-family="'Cinzel', serif" font-size="4.2" font-weight="900" fill="#f59e0b" letter-spacing="1" text-anchor="middle">SACRIFICE 1993</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('endeavor_strike_platoon') || id.includes('endeavorplatoon')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-endeavorplatoon" role="img" aria-label="Insigne Force de Frappe USS Endeavor">
+        <polygon points="40,8 72,28 60,68 20,68 8,28" fill="#1e1b4b" stroke="#3b82f6" stroke-width="2.5" />
+        <circle cx="40" cy="40" r="16" fill="#1d4ed8" stroke="#a855f7" stroke-width="2" />
+        <polygon points="40,26 44,36 54,36 46,42 49,52 40,46 31,52 34,42 26,36 36,36" fill="#c084fc" />
+        <text x="40" y="74" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="900" fill="#93c5fd" letter-spacing="1" text-anchor="middle">USS ENDEAVOR</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('gunnison_swat_survivors') || id.includes('gunnisonswat')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-gunnisonswat" role="img" aria-label="Insigne Équipe Tactique SWAT Gunnison">
+        <polygon points="40,6 70,22 70,58 40,74 10,58 10,22" fill="#0f172a" stroke="#2563eb" stroke-width="2.5" />
+        <polygon points="40,16 62,30 54,58 26,58 18,30" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.8" />
+        <polygon points="40,26 43,34 52,34 45,39 48,47 40,42 32,47 35,39 28,34 37,34" fill="#fbbf24" stroke="#d97706" stroke-width="1" />
+        <circle cx="40" cy="40" r="14" fill="none" stroke="#e0e7ff" stroke-width="1.2" stroke-dasharray="3,3" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#60a5fa" letter-spacing="1" text-anchor="middle">GUNNISON SWAT</text>
+      </svg>
+    `.trim();
+  }
   if (id.includes('xenogenesis_spearhead') || (id.includes('spearhead') && !id.includes('xenogenesis_strike_cadre'))) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-spearhead" role="img" aria-label="Insigne Spearhead Xenogenesis 1999">

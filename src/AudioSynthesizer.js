@@ -37892,6 +37892,135 @@ class AudioSynthesizer {
 
     return descriptor;
   }
+  playObsidianMacuahuitlImpact() {
+    const descriptor = {
+      event: 'obsidian_macuahuitl_impact',
+      synthesis: 'volcanic_glass_shatter_and_heavy_wood_cleave',
+      cleaveThudHz: 125,
+      glassShardFreqHz: 4200,
+      durationSeconds: 0.48,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const thudOsc = this.ctx.createOscillator();
+    const thudGain = this.ctx.createGain();
+    thudOsc.type = 'triangle';
+    thudOsc.frequency.setValueAtTime(descriptor.cleaveThudHz, now);
+    thudOsc.frequency.exponentialRampToValueAtTime(36, now + 0.32);
+
+    thudGain.gain.setValueAtTime(0.82, now);
+    thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+    thudOsc.connect(thudGain);
+    thudGain.connect(this.ctx.destination);
+    thudOsc.start(now);
+    thudOsc.stop(now + 0.36);
+
+    const glassOsc = this.ctx.createOscillator();
+    const glassGain = this.ctx.createGain();
+    glassOsc.type = 'sawtooth';
+    glassOsc.frequency.setValueAtTime(descriptor.glassShardFreqHz, now + 0.01);
+    glassOsc.frequency.exponentialRampToValueAtTime(840, now + 0.45);
+
+    glassGain.gain.setValueAtTime(0.52, now + 0.01);
+    glassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+
+    glassOsc.connect(glassGain);
+    glassGain.connect(this.ctx.destination);
+    glassOsc.start(now + 0.01);
+    glassOsc.stop(now + 0.48);
+
+    return descriptor;
+  }
+
+  playMagpulseDischargeShot() {
+    const descriptor = {
+      event: 'magpulse_discharge_shot',
+      synthesis: 'electromagnetic_coil_acceleration_and_hypervelocity_crack',
+      coilHumHz: 280,
+      hyperCrackHz: 3600,
+      durationSeconds: 0.42,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const coilOsc = this.ctx.createOscillator();
+    const coilGain = this.ctx.createGain();
+    coilOsc.type = 'sine';
+    coilOsc.frequency.setValueAtTime(descriptor.coilHumHz, now);
+    coilOsc.frequency.exponentialRampToValueAtTime(55, now + 0.28);
+
+    coilGain.gain.setValueAtTime(0.75, now);
+    coilGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+    coilOsc.connect(coilGain);
+    coilGain.connect(this.ctx.destination);
+    coilOsc.start(now);
+    coilOsc.stop(now + 0.32);
+
+    const crackOsc = this.ctx.createOscillator();
+    const crackGain = this.ctx.createGain();
+    crackOsc.type = 'square';
+    crackOsc.frequency.setValueAtTime(descriptor.hyperCrackHz, now);
+    crackOsc.frequency.exponentialRampToValueAtTime(420, now + 0.38);
+
+    crackGain.gain.setValueAtTime(0.48, now);
+    crackGain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+
+    crackOsc.connect(crackGain);
+    crackGain.connect(this.ctx.destination);
+    crackOsc.start(now);
+    crackOsc.stop(now + 0.42);
+
+    return descriptor;
+  }
+
+  playParticleBeamerDissipation() {
+    const descriptor = {
+      event: 'particle_beamer_dissipation',
+      synthesis: 'subatomic_ionization_whine_and_thermal_vaporization',
+      beamWhineHz: 2400,
+      dissipationRumbleHz: 95,
+      durationSeconds: 0.58,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const whineOsc = this.ctx.createOscillator();
+    const whineGain = this.ctx.createGain();
+    whineOsc.type = 'sawtooth';
+    whineOsc.frequency.setValueAtTime(descriptor.beamWhineHz, now);
+    whineOsc.frequency.exponentialRampToValueAtTime(320, now + 0.45);
+
+    whineGain.gain.setValueAtTime(0.65, now);
+    whineGain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+
+    whineOsc.connect(whineGain);
+    whineGain.connect(this.ctx.destination);
+    whineOsc.start(now);
+    whineOsc.stop(now + 0.5);
+
+    const rumbleOsc = this.ctx.createOscillator();
+    const rumbleGain = this.ctx.createGain();
+    rumbleOsc.type = 'triangle';
+    rumbleOsc.frequency.setValueAtTime(descriptor.dissipationRumbleHz, now + 0.05);
+    rumbleOsc.frequency.exponentialRampToValueAtTime(28, now + 0.55);
+
+    rumbleGain.gain.setValueAtTime(0.72, now + 0.05);
+    rumbleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.58);
+
+    rumbleOsc.connect(rumbleGain);
+    rumbleGain.connect(this.ctx.destination);
+    rumbleOsc.start(now + 0.05);
+    rumbleOsc.stop(now + 0.58);
+
+    return descriptor;
+  }
+
 }
 
 export const audioSynth = new AudioSynthesizer();

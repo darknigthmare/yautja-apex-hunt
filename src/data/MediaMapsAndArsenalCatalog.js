@@ -3932,6 +3932,361 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     "heroSquadId": "squad_avp_three_world_war_vanguard",
     "villainSquadId": null
   }
+,
+  {
+    "id": "map_pred_andes_inca_ruins",
+    "name": "Ruines Incas des Andes — Démon des Andes 1532",
+    "universe": "PREDATOR",
+    "originMedia": "Predator: Démon des Andes (1532)",
+    "sourceType": "COMIC",
+    "releaseYear": 1999,
+    "year": 1532,
+    "biomeId": "bouvetoya_pyramid",
+    "biome": "ALPINE_MOUNTAIN_RUINS",
+    "recommendedBiomeLabel": "Citadelle de Pierre des Andes (1532)",
+    "weather": "Vent glacial de haute altitude, brume épaisse et neige éparse sur les pics escarpés",
+    "lighting": "Torches de résine incas, rayons rasants de lune sur la pierre taillée et ombres profondes",
+    "verticality": "TRÈS ÉLEVÉE (Escaliers mégalithiques, terrasses de culture suspendues et gouffres vertigineux)",
+    "destructibility": "Palissades de bois d'épicéa, cordes de chanvre et idoles de basalte fissurées",
+    "interactables": [
+      "Braseros rituels d'huile pouvant être renversés pour déclencher un rideau de flammes",
+      "Pont de lianes suspendu pouvant être tranché au shuriken pour piéger les poursuivants",
+      "Monolithe d'offrandes d'obsidienne fournissant des éclats tranchants pour réarmer les armes de jet"
+    ],
+    "environmentSummary": "Complexe de temples et de forteresses taillés à flanc de cordillère où s'affrontent guerriers impériaux incas, conquistadors en armure et chasseur Yautja.",
+    "description": "Complexe de temples et de forteresses taillés à flanc de cordillère où s'affrontent guerriers impériaux incas, conquistadors en armure et chasseur Yautja.",
+    "tacticalNotes": "Exploitez la verticalité des falaises et l'obscurité des brumes d'altitude. Les lames d'obsidienne au corps-à-corps infligent des saignements continus.",
+    "dimensionsM": {
+      "width": 580,
+      "length": 580,
+      "height": 75
+    },
+    "elevationRangeM": [
+      0,
+      75
+    ],
+    "tacticalSectors": [
+      "Place du Temple du Soleil & Autel des Sacrifices",
+      "Terrasses Agricoles Suspendues à Flanc d'Abîme",
+      "Campement de Fortune des Conquistadors Espagnols",
+      "Crête Rocheuse des Guetteurs Incas"
+    ],
+    "keyLandmarks": [
+      "Porte du Soleil colossale ornée de glyphes astronomiques incas",
+      "Étendard espagnol en lambeaux planté dans une cuirasse de conquistador percée",
+      "Crâne d'ours à lunettes doré sculpté en bas-relief au-dessus de la crypte"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "ALTITUDE_CHILL",
+        "description": "Froid polaire réduisant légèrement l'endurance de sprint sans abri"
+      },
+      {
+        "type": "RAVINE_FALL",
+        "description": "Précipices vertigineux punissant les sauts d'esquive mal calculés"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_feral_predator_1719"
+    ],
+    "heroSquadId": "squad_pred_inca_warrior_guard",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_pred_yautja_prime_proving_arena",
+    "name": "Arène des Épreuves de Yautja Prime — Berceau des Chasseurs",
+    "universe": "PREDATOR",
+    "originMedia": "Predator: Homeworld & Yautja Lore Legends",
+    "sourceType": "CANON_LORE",
+    "releaseYear": 2010,
+    "year": 2010,
+    "biomeId": "jungle",
+    "biome": "VOLCANIC_BASALT_ARENA",
+    "recommendedBiomeLabel": "Fosse d'Initiation de Yautja Prime",
+    "weather": "Atmosphère sulfurique ardente, retombées de cendres basaltiques et vagues de chaleur",
+    "lighting": "Luminescence rougeoyante des coulées magmatiques et projecteurs cérémoniels Yautja",
+    "verticality": "ÉLEVÉE (Piliers de roche volcanique, gradins métalliques cyclopéens et ponts d'obsidienne)",
+    "destructibility": "Colonnes de lave solidifiée, créneaux en alliage Yautja et cages de contention",
+    "interactables": [
+      "Vanne de dérivation géothermique libérant des jets de gaz brûlant pour zonage tactique",
+      "Râtelier d'armes d'initiation permettant de ramasser une vouge cérémonielle d'appoint",
+      "Console de déclenchement d'arène déployant des cibles automatiques holographiques"
+    ],
+    "environmentSummary": "Arène colossale au cœur d'une cité mégalithique de Yautja Prime, conçue pour l'ordalie des Young Bloods et les duels de leadership entre chefs de clan.",
+    "description": "Arène colossale au cœur d'une cité mégalithique de Yautja Prime, conçue pour l'ordalie des Young Bloods et les duels de leadership entre chefs de clan.",
+    "tacticalNotes": "L'environnement volcanique brouille légèrement les capteurs thermiques. Dominez les hauteurs des piliers pour repérer les apprentis guerriers.",
+    "dimensionsM": {
+      "width": 650,
+      "length": 650,
+      "height": 60
+    },
+    "elevationRangeM": [
+      0,
+      60
+    ],
+    "tacticalSectors": [
+      "Cercle Central d'Ordalie & Fosse de Lave Active",
+      "Tribunes d'Observation des Anciens & Arbitres",
+      "Portes de Fer des Cages de Monstres Captifs",
+      "Plateforme des Trophées & Autel d'Honneur"
+    ],
+    "keyLandmarks": [
+      "Statue monumentale d'un Ancien brandissant un Combi-Stick légendaire",
+      "Fosse de lave en ébullition protégée par un champ de force thermique pulsating",
+      "Siège en basalte sculpté réservé au Grand Arbitre de Clan"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "MOLTEN_LAVA_SURGE",
+        "description": "Éruptions sporadiques de magma sur les bordures de l'arène centrale"
+      },
+      {
+        "type": "THERMAL_BLINDING",
+        "description": "Vapeurs de soufre réduisant temporairement la netteté de la vision thermique"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_kalisk_apex"
+    ],
+    "heroSquadId": "squad_pred_yautja_prime_initiates",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_alien_pala_station_security_wing",
+    "name": "Complexe de Recherche Pala Station — Aliens: Infiltrator (2020)",
+    "universe": "ALIEN",
+    "originMedia": "Aliens: Infiltrator (2020)",
+    "sourceType": "EXPANDED_LORE",
+    "releaseYear": 2020,
+    "year": 2202,
+    "biomeId": "stargazer_blacksite",
+    "biome": "BIO_CONTAINMENT_LABORATORY",
+    "recommendedBiomeLabel": "Aile Médicale de Pala Station (2202)",
+    "weather": "Atmosphère climatisée stérile saturée d'alarmes d'urgence et de brume d'azote liquide",
+    "lighting": "Stroboscopes rouges d'évacuation d'urgence, reflets chirurgicaux et zones d'ombre totale",
+    "verticality": "MOYENNE (Passerelles de laboratoire, couloirs techniques et salles de décontamination)",
+    "destructibility": "Baies vitrées blindées fissurées, cloisons pressurisées et cuves de confinement",
+    "interactables": [
+      "Sas de décontamination sous vide pouvant être verrouillé pour isoler une meute",
+      "Console de diagnostic médical dispensant un stimulant de vitesse neural",
+      "Réservoir d'azote liquide brisé pouvant être percuté pour congeler les ennemis proches"
+    ],
+    "environmentSummary": "Laboratoire de biotechnologie de pointe Weyland-Yutani sur la planète LV-895, ravagé par la fuite de spécimens soumis aux mutagènes noirs.",
+    "description": "Laboratoire de biotechnologie de pointe Weyland-Yutani sur la planète LV-895, ravagé par la fuite de spécimens soumis aux mutagènes noirs.",
+    "tacticalNotes": "Couloirs étroits propices aux embuscades de plafond. Les gardes de sécurité synthétiques utilisent des armes magnéto-pulsées à haute cadence.",
+    "dimensionsM": {
+      "width": 560,
+      "length": 560,
+      "height": 35
+    },
+    "elevationRangeM": [
+      0,
+      35
+    ],
+    "tacticalSectors": [
+      "Quartier de Haute Sécurité & Sas de Confinement",
+      "Laboratoire de Génétique Moléculaire Weyland-Yutani",
+      "Centre de Vivarium & Cuves Cryogéniques Brisées",
+      "Salle des Générateurs de Secours & Conduit de Drainage"
+    ],
+    "keyLandmarks": [
+      "Cuve d'incubation centrale brisée d'où s'échappent des filaments pathogènes noirs",
+      "Poste de sécurité blindé aux écrans clignotant un message d'alerte biologique niveau 5",
+      "Brancard chirurgical renversé couvert de résidus organiques corrosifs"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "LIQUID_NITROGEN_LEAK",
+        "description": "Fuites cryogéniques causant des dégâts de gel et un ralentissement moteur"
+      },
+      {
+        "type": "PATHOGEN_AEROSOL",
+        "description": "Zones d'air contaminé drainant progressivement l'énergie de bio-masque"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_weyland_combat_android"
+    ],
+    "heroSquadId": "squad_alien_pala_security_detail",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_alien_sacrifice_monastery",
+    "name": "Monastère Isolé du Culte — Aliens: Sacrifice (1993)",
+    "universe": "ALIEN",
+    "originMedia": "Aliens: Sacrifice (1993)",
+    "sourceType": "COMIC",
+    "releaseYear": 1993,
+    "year": 2185,
+    "biomeId": "hive_lv426",
+    "biome": "SUBTERRANEAN_CULT_MONASTERY",
+    "recommendedBiomeLabel": "Cloître Sacrificiel Isolé (1993)",
+    "weather": "Poussière sèche désertique, air lourd chargé d'encens rituel et silence oppressant",
+    "lighting": "Chandelles de graisse animale, lucarnes zénithales tamisées et recoins ténébreux",
+    "verticality": "ÉLEVÉE (Voûtes ogivales gothiques, balcons monastiques et catacombes de sacrifice)",
+    "destructibility": "Colonnes de grès poreux, bancs de prière sculptés et tentures rituelles",
+    "interactables": [
+      "Cloche de cloître pouvant être sonnée pour provoquer une ruée des zélotes",
+      "Puits de sacrifice xénomorphe permettant de larguer un leurre thermique sonore",
+      "Chandelier d'airain suspendu pouvant être décroché pour écraser un groupe ennemi"
+    ],
+    "environmentSummary": "Colonie recluse construite comme un monastère médiéval par des fanatiques abandonnés qui offrent des proies humaines vivantes au xénomorphe vénéré.",
+    "description": "Colonie recluse construite comme un monastère médiéval par des fanatiques abandonnés qui offrent des proies humaines vivantes au xénomorphe vénéré.",
+    "tacticalNotes": "Les zélotes tirent avec des tromblons lourds à dispersion létale à courte portée. Éliminez les meneurs depuis les hauteurs des voûtes.",
+    "dimensionsM": {
+      "width": 540,
+      "length": 540,
+      "height": 42
+    },
+    "elevationRangeM": [
+      0,
+      42
+    ],
+    "tacticalSectors": [
+      "Nef Centrale & Autel d'Apaisement de la Bête",
+      "Cloître Extérieur Bordé de Piliers de Grès",
+      "Catacombes Funéraires & Crypte des Sacrifiés",
+      "Dortoir des Pénitents & Réfectoire Abandonné"
+    ],
+    "keyLandmarks": [
+      "Bas-relief monumental représentant un drone xénomorphe couronné d'épines",
+      "Fosse de sacrifice circulaire pavée d'ossements humains polis",
+      "Croix d'acier Weyland-Yutani tordue en forme d'emblème biomécanique"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "INCENSE_SMOKE",
+        "description": "Fumées d'encens réduisant le champ de vision conventionnel"
+      },
+      {
+        "type": "FALSE_IDOL_TRAPS",
+        "description": "Pièges à corde et pointes métalliques tendus sur les dalles sacrificielles"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_colonial_marine_heavy"
+    ],
+    "heroSquadId": "squad_alien_sacrifice_zealots",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_avp_endeavor_docking_bay",
+    "name": "Hangar de Débarquement USS Endeavor — AVP: Fireteam Frontier",
+    "universe": "AVP",
+    "originMedia": "Aliens: Fireteam Elite (2021-2022)",
+    "sourceType": "EXPANDED_LORE",
+    "releaseYear": 2021,
+    "year": 2202,
+    "biomeId": "stargazer_blacksite",
+    "biome": "MILITARY_STARSHIP_HANGAR",
+    "recommendedBiomeLabel": "Pont d'Envol de l'USS Endeavor (2202)",
+    "weather": "Dépression atmosphérique contrôlée, sirènes d'alerte de brèche et vapeur pressurisée",
+    "lighting": "Bandeaux LED militaires vert olive, balises stroboscopiques de piste et étincelles de câbles",
+    "verticality": "ÉLEVÉE (Ponts roulants de chargement, passerelles d'observation et soutes de dropships)",
+    "destructibility": "Caisses d'armement USCM, conteneurs de fret sécurisés et rambardes métalliques",
+    "interactables": [
+      "Console de pont roulant permettant de déplacer un conteneur lourd pour créer une couverture",
+      "Point de ravitaillement USCM rechargeant instantanément l'énergie d'armure",
+      "Système d'extinction d'incendie au halon créant un écran de fumée aveuglant"
+    ],
+    "environmentSummary": "Le pont d'amarrage principal du croiseur USS Endeavor pris d'assaut lors d'une brèche combinée de patrouilles Yautja et de bio-mutants Katanga.",
+    "description": "Le pont d'amarrage principal du croiseur USS Endeavor pris d'assaut lors d'une brèche combinée de patrouilles Yautja et de bio-mutants Katanga.",
+    "tacticalNotes": "Les marines déploient un feu de barrage continu avec des fusils à particules et smartguns. Contournez par les rails de levage supérieurs.",
+    "dimensionsM": {
+      "width": 680,
+      "length": 680,
+      "height": 48
+    },
+    "elevationRangeM": [
+      0,
+      48
+    ],
+    "tacticalSectors": [
+      "Pont d'Envol des Dropships Cheyenne UD-4L",
+      "Poste de Commandement de Pont & Sas de Sas Principal",
+      "Zone de Stockage des Munitions Lourdes M56",
+      "Atelier de Maintenance des Exosquelettes Power Loader"
+    ],
+    "keyLandmarks": [
+      "Dropship Cheyenne UD-4L amarré avec ses nacelles de missiles déployées",
+      "Grue de chargement magnétique colossale suspendue au-dessus du pont principal",
+      "Emblème de l'USS Endeavor gravé sur le blindage de proue avec devise régimentaire"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "JET_EXHAUST_BLAST",
+        "description": "Tuyères de réacteurs s'activant sporadiquement sur les aires de lancement"
+      },
+      {
+        "type": "HIGH_VOLTAGE_CONDUIT",
+        "description": "Câbles électriques sectionnés balayant le sol d'arcs d'énergie"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_colonial_marine_heavy"
+    ],
+    "heroSquadId": "squad_avp_endeavor_strike_platoon",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_avp_gunnison_hospital_hive",
+    "name": "Hôpital Mémorial de Gunnison — Maternité & Ruche Predalien (2007)",
+    "universe": "AVP",
+    "originMedia": "Aliens vs. Predator: Requiem (2007)",
+    "sourceType": "MOVIE",
+    "releaseYear": 2007,
+    "year": 2004,
+    "biomeId": "gunnison_outbreak",
+    "biome": "URBAN_HOSPITAL_OUTBREAK",
+    "recommendedBiomeLabel": "Maternité de Gunnison (2004)",
+    "weather": "Pluie torrentielle battant les baies vitrées brisées, orage et coupures de courant",
+    "lighting": "Éclairage d'urgence vert fluorescent, néons vacillants et obscurité glauque",
+    "verticality": "MOYENNE (Escaliers d'évacuation incendie, gaines d'ascenseur béantes et faux-plafonds défoncés)",
+    "destructibility": "Lits médicalisés, vitres de nurseries, distributeurs automatiques et portes coupe-feu",
+    "interactables": [
+      "Bouteille d'oxygène médical pouvant exploser lorsqu'elle est ciblée par un tir plasma",
+      "Défibrillateur mural délivrant une décharge incapacitante à quiconque s'en approche",
+      "Générateur de secours à relancer pour activer un réseau de caméras thermiques"
+    ],
+    "environmentSummary": "L'hôpital de Gunnison transformé en couveuse vivante par le Predalien Chet, où l'équipe SWAT de secours tente une évacuation désespérée.",
+    "description": "L'hôpital de Gunnison transformé en couveuse vivante par le Predalien Chet, où l'équipe SWAT de secours tente une évacuation désespérée.",
+    "tacticalNotes": "Les survivants SWAT opèrent en formation serrée avec vision nocturne. Attention aux embuscades de facehuggers dissimulés dans les couveuses.",
+    "dimensionsM": {
+      "width": 550,
+      "length": 550,
+      "height": 38
+    },
+    "elevationRangeM": [
+      0,
+      38
+    ],
+    "tacticalSectors": [
+      "Aile de Maternité Infestée & Nurseries Tapissées de Résine",
+      "Hall d'Accueil des Urgences & Barricades SWAT de Fortune",
+      "Bloc Opératoire Central & Réserves Pharmaceutiques",
+      "Toit d'Héliport sous la Tempête & Passerelle Extérieure"
+    ],
+    "keyLandmarks": [
+      "Nid d'incubation principal du Predalien érigé au centre du service néonatal",
+      "Fourgon blindé du SWAT écrasé contre les portes automatiques des urgences",
+      "Hélisurface inondée balayée par le vent où attend une carcasse d'hélicoptère détruit"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "BIO_HAZARD_POOL",
+        "description": "Flaques de fluide amniotique contaminé causant une désorientation sensorielle"
+      },
+      {
+        "type": "SURGICAL_GAS_LEAK",
+        "description": "Fuites d'anesthésique gazeux ralentissant les réflexes de réaction"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_weyland_combat_android"
+    ],
+    "heroSquadId": "squad_avp_gunnison_swat_survivors",
+    "villainSquadId": null
+  }
 ]);
 
 // =========================================================================
@@ -5957,6 +6312,91 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     "wieldedBy": "Marines coloniaux vétérans de l'alliance de Machiko Noguchi",
     "yautjaCounterplay": "Charge lourde avec le bouclier d'énergie déployé et désarmement au fouet à distance.",
     "description": "Évolution tactique du fusil à impulsions couplant deux canons synchronisés pour saturer les lignes ennemies d'un barrage balistique dévastateur."
+  }
+,
+  {
+    "id": "wpn_inca_obsidian_macuahuitl_blade",
+    "name": "Lame Macuahuitl d'Obsidienne Renforcée",
+    "universe": "PREDATOR",
+    "faction": "Tribal / Pre-Modern Warriors",
+    "originMedia": "Predator: Démon des Andes (1532)",
+    "caliber": "Lames prismatiques d'obsidienne volcanique serties dans du bois de quebracho",
+    "damageType": "MELEE_OBSIDIAN_LACERATION",
+    "effectiveRangeMeters": 3.5,
+    "rateOfFire": "Frappes lourdes cadencées (55 coups/min)",
+    "wieldedBy": "Guerriers incas d'élite protégeant les sanctuaires d'altitude",
+    "yautjaCounterplay": "Parade au gantelet blindé suivie d'un fauchage au combi-stick.",
+    "description": "Arme de corps-à-corps redoutable dont les arêtes de verre volcanique déchirent la chair et infligent des hémorragies sévères au contact."
+  },
+  {
+    "id": "wpn_yautja_prime_ceremonial_scythe",
+    "name": "Faux Cérémonielle d'Initiation Yautja",
+    "universe": "PREDATOR",
+    "faction": "Yautja Enclave",
+    "originMedia": "Predator: Homeworld & Yautja Lore Legends",
+    "caliber": "Tranchant en alliage duralumin-titane Yautja à fil moléculaire",
+    "damageType": "MELEE_KINETIC_CLEAVE",
+    "effectiveRangeMeters": 4.2,
+    "rateOfFire": "Grands arcs circulaires fauchants (45 coups/min)",
+    "wieldedBy": "Champions initiés de l'arène de Yautja Prime lors des rites de passage",
+    "yautjaCounterplay": "Esquive basse et contre-attaque au smart disc en ricochet.",
+    "description": "Arme d'hégémonie rituelle utilisée dans les fosses de combat pour sectionner d'un seul geste les carapaces blindées des proies colossales."
+  },
+  {
+    "id": "wpn_pala_station_magpulse_carbine",
+    "name": "Carabine Magnéto-Pulsée Pala Station MP-90",
+    "universe": "ALIEN",
+    "faction": "Weyland-Yutani Security Detachment",
+    "originMedia": "Aliens: Infiltrator (2020)",
+    "caliber": "Fléchettes ferromagnétiques accélérées à impulsion électromagnétique (4.5mm)",
+    "damageType": "BALLISTIC_MAGPULSE_PIERCING",
+    "effectiveRangeMeters": 65,
+    "rateOfFire": "Rafales courtes contrôlées (850 coups/min)",
+    "wieldedBy": "Agents d'intervention et synthétiques de sécurité de Pala Station",
+    "yautjaCounterplay": "Déploiement du bouclier thermique et tir plasma déviant la visée magnétique.",
+    "description": "Arme de confinement avancée combinant propulsion magnétique et munitions perforantes capables de traverser les carapaces denses des xénomorphes."
+  },
+  {
+    "id": "wpn_sacrifice_heavy_slugthrower",
+    "name": "Tromblon Lourd Artisanal du Monastère",
+    "universe": "ALIEN",
+    "faction": "Colonial Religious Outcasts",
+    "originMedia": "Aliens: Sacrifice (1993)",
+    "caliber": "Grenaille de plomb, scories de fer et poudre noire comprimée (Calibre 8 Gauge)",
+    "damageType": "BALLISTIC_HEAVY_KINETIC_SCATTER",
+    "effectiveRangeMeters": 25,
+    "rateOfFire": "Coup par coup à rechargement manuel (25 coups/min)",
+    "wieldedBy": "Zélotes fanatiques de la colonie sacrificielle",
+    "yautjaCounterplay": "Tir longue distance au canon d'épaule ou immobilisation au filet.",
+    "description": "Arme de fabrication coloniale rustique projetant une décharge conique de fragments d'acier capable d'abattre net n'importe quel assaillant à courte distance."
+  },
+  {
+    "id": "wpn_endeavor_heavy_particle_rifle",
+    "name": "Fusil à Faisceau de Particules USS Endeavor Type-77",
+    "universe": "AVP",
+    "faction": "United States Colonial Marines (USCM)",
+    "originMedia": "Aliens: Fireteam Elite (2021-2022)",
+    "caliber": "Faisceau continu de particules ionisées à haute densité d'énergie",
+    "damageType": "ENERGY_IONIZING_PARTICLE_BEAM",
+    "effectiveRangeMeters": 80,
+    "rateOfFire": "Rayon continu pulsé (chargeur à micro-fusion, 600 pulses/min)",
+    "wieldedBy": "Opérateurs d'élite de l'escouade de frappe USS Endeavor",
+    "yautjaCounterplay": "Manœuvre de camouflage optique furtive et neutralisation immédiate par derrière.",
+    "description": "Fusil à énergie de dotation expérimentale désintégrant les liaisons moléculaires de la chitine alien et des blindages légers à longue portée."
+  },
+  {
+    "id": "wpn_gunnison_swat_tactical_m4a1",
+    "name": "Carabine M4A1 Tactique SWAT Gunnison",
+    "universe": "AVP",
+    "faction": "Gunnison First Responders & Survivors",
+    "originMedia": "Aliens vs. Predator: Requiem (2007)",
+    "caliber": "5.56x45mm OTAN avec pointe perforante M855 & lampe tactique X300",
+    "damageType": "BALLISTIC_RAPID_FIRE",
+    "effectiveRangeMeters": 55,
+    "rateOfFire": "Sélecteur rafale / automatique (750 coups/min)",
+    "wieldedBy": "Officiers du SWAT du comté de Gunnison retranchés dans l'hôpital",
+    "yautjaCounterplay": "Attaque plongeante depuis les hauteurs et dispersion au rugissement intimidant.",
+    "description": "Carabine d'assaut standard de la police d'intervention équipée d'un désignateur tactique pour le combat en milieu hospitalier confiné."
   }
 ]);
 

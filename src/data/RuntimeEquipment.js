@@ -908,6 +908,61 @@ export const ARMOR_PRESET_WEAPON_VARIANTS = Object.freeze([
     behavior: 'dual_point_plasma_thrust',
     modifiers: Object.freeze({ damageMultiplier: 1.6, armorPiercingPercent: 65, vanguardImpactRadiusM: 6 }),
   })
+,
+  Object.freeze({
+    id: 'yautja_wpn_inca_obsidian_glaive',
+    armorPresetId: 'hunter',
+    baseWeaponId: 'wrist_blades',
+    name: "Glaive d'Obsidienne des Andes 1532",
+    loreSourceIds: Object.freeze(['lore_pred_demon_of_the_andes_1532']),
+    behavior: 'obsidian_fracture_slash',
+    modifiers: Object.freeze({ damageMultiplier: 1.45, bleedDurationSeconds: 6, fractureCriticalPercent: 30 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_prime_proving_combistick',
+    armorPresetId: 'brawler',
+    baseWeaponId: 'combistick',
+    name: "Combi-Stick des Arènes de Yautja Prime",
+    loreSourceIds: Object.freeze(['lore_pred_homeworld_yautja_prime_legends']),
+    behavior: 'basalt_heavy_thrust',
+    modifiers: Object.freeze({ damageMultiplier: 1.55, staggerThresholdBonus: 40, magmaThermalDamage: 25 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_pala_magpulse_caster',
+    armorPresetId: 'tracker',
+    baseWeaponId: 'plasma_caster',
+    name: "Canon à Plasma Magnéto-Pulsé de Pala Station",
+    loreSourceIds: Object.freeze(['lore_alien_infiltrator_2020']),
+    behavior: 'magpulse_accelerated_blast',
+    modifiers: Object.freeze({ damageMultiplier: 1.4, projectileSpeedBonusPercent: 35, shieldOverloadDrain: 20 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_sacrifice_cleaver_axe',
+    armorPresetId: 'hunter',
+    baseWeaponId: 'wrist_blades',
+    name: "Couperet d'Ordalie du Monastère du Sacrifice",
+    loreSourceIds: Object.freeze(['lore_alien_sacrifice_1993']),
+    behavior: 'sacrificial_heavy_cleave',
+    modifiers: Object.freeze({ damageMultiplier: 1.5, executionThresholdPercent: 35, heavyKnockbackDistanceM: 5.5 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_endeavor_particle_whip',
+    armorPresetId: 'scout',
+    baseWeaponId: 'whip',
+    name: "Fouet à Faisceau Particulaire USS Endeavor",
+    loreSourceIds: Object.freeze(['lore_avp_fireteam_elite_pathogen_war_2022']),
+    behavior: 'particle_ionization_sweep',
+    modifiers: Object.freeze({ damageMultiplier: 1.5, sweepReachM: 9.5, ionizationArmorReductionPercent: 45 }),
+  }),
+  Object.freeze({
+    id: 'yautja_wpn_gunnison_bio_acid_flail',
+    armorPresetId: 'brawler',
+    baseWeaponId: 'whip',
+    name: "Fléau Bio-Acide du Predalien de Gunnison",
+    loreSourceIds: Object.freeze(['lore_avp_predalien_chet_outbreak_2007']),
+    behavior: 'acidic_hybrid_lashing',
+    modifiers: Object.freeze({ damageMultiplier: 1.6, acidPoolRadiusM: 4.5, corrosiveDecaySeconds: 5.5 }),
+  })
 ]);
 const EMPTY_WEAPON_VARIANTS = Object.freeze([]);
 

@@ -5100,6 +5100,337 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       }
     ]
   }
+,
+  {
+    "id": "squad_pred_inca_warrior_guard",
+    "name": "Garde d'Élite Impériale Inca — Démon des Andes 1532",
+    "universe": "PREDATOR",
+    "shortName": "Garde Impériale Inca (3 Guerriers)",
+    "category": "WARRIOR_BROTHERHOOD",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Predator: Démon des Andes (1532)",
+    "biomeId": "bouvetoya_pyramid",
+    "recommendedBiomeLabel": "Citadelle de Pierre des Andes (1532)",
+    "primaryMapId": "map_pred_andes_inca_ruins",
+    "weaponLoadout": [
+      "wpn_inca_obsidian_macuahuitl_blade"
+    ],
+    "description": "Guerriers incas vétérans dévoués à la garde du Temple du Soleil, armés de lourdes massues serties de lames prismatiques d'obsidienne.",
+    "tactics": "Attaque synchronisée en éventail, feintes de désengagement sur les marches escarpées et fauchages d'obsidienne hémorragiques.",
+    "totalHonorReward": 7100,
+    "soloVariantId": "prey_feral_predator_1719",
+    "members": [
+      {
+        "id": "chaski_warleader_inca",
+        "name": "Général Atoc des Andes",
+        "role": "Champion des Gardes du Soleil",
+        "weapon": "Macuahuitl Lourd d'Obsidienne & Bouclier de Bois",
+        "weaponId": "wpn_inca_obsidian_macuahuitl_blade",
+        "vitalityRatio": 1.5,
+        "hp": 830,
+        "armor": 75,
+        "trophy": "Pectoral d'Or Massif aux Rayons Solaires Gravés"
+      },
+      {
+        "id": "puma_guardian_huascar",
+        "name": "Guerrier Puma Huascar",
+        "role": "Traqueur de Haute Montagne",
+        "weapon": "Hache d'Obsidienne & Fronde de Chanvre",
+        "weaponId": "wpn_inca_obsidian_macuahuitl_blade",
+        "vitalityRatio": 1.35,
+        "hp": 740,
+        "armor": 65,
+        "trophy": "Collier de Griffes de Puma Andin & Perles de Jade"
+      },
+      {
+        "id": "condor_scout_rumi",
+        "name": "Éclaireur Condor Rumi",
+        "role": "Vigie des Falaises et Guetteur",
+        "weapon": "Glaive Macuahuitl Court & Javelot",
+        "weaponId": "wpn_inca_obsidian_macuahuitl_blade",
+        "vitalityRatio": 1.3,
+        "hp": 700,
+        "armor": 60,
+        "trophy": "Plume de Condor Royal & Anneau de Cuivre Inca"
+      }
+    ]
+  },
+  {
+    "id": "squad_pred_yautja_prime_initiates",
+    "name": "Initiés des Arènes de Yautja Prime — Ordalie du Sang",
+    "universe": "PREDATOR",
+    "shortName": "Initiés de Clan Yautja (3 Combattants)",
+    "category": "YAUTJA_CLAN",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Predator: Homeworld & Yautja Lore Legends",
+    "biomeId": "jungle",
+    "recommendedBiomeLabel": "Fosse d'Initiation de Yautja Prime",
+    "primaryMapId": "map_pred_yautja_prime_proving_arena",
+    "weaponLoadout": [
+      "wpn_yautja_prime_ceremonial_scythe"
+    ],
+    "description": "Trio de jeunes guerriers Yautja affrontant l'épreuve ultime des fosses volcaniques pour obtenir leur masque d'adulte et leur droit de chasse galactique.",
+    "tactics": "Pression circulaire constante avec leurs faux d'initiation, esquives acrobatiques et relais d'assaut pour submerger les défenses adverses.",
+    "totalHonorReward": 7900,
+    "soloVariantId": "prey_young_blood_initiate",
+    "members": [
+      {
+        "id": "yautja_initiate_vokhan",
+        "name": "Initié Vokhan",
+        "role": "Duelliste d'Arène Premier Sang",
+        "weapon": "Faux Cérémonielle Yautja & Gantelet Nu",
+        "weaponId": "wpn_yautja_prime_ceremonial_scythe",
+        "vitalityRatio": 1.55,
+        "hp": 880,
+        "armor": 80,
+        "trophy": "Bio-Masque Brut d'Initié Non Gravé de Symbole"
+      },
+      {
+        "id": "yautja_initiate_tarkesh",
+        "name": "Initié Tarkesh",
+        "role": "Faucheur Volcanique Agressif",
+        "weapon": "Faux d'Initiation à Tranchant Moléculaire",
+        "weaponId": "wpn_yautja_prime_ceremonial_scythe",
+        "vitalityRatio": 1.4,
+        "hp": 790,
+        "armor": 70,
+        "trophy": "Dague de Cuirassage Forgée dans le Basalte"
+      },
+      {
+        "id": "yautja_initiate_gurokh",
+        "name": "Initié Gurokh",
+        "role": "Sentinelle d'Ordalie de Clan",
+        "weapon": "Faux Lourde Yautja & Lames de Poignet Brutes",
+        "weaponId": "wpn_yautja_prime_ceremonial_scythe",
+        "vitalityRatio": 1.35,
+        "hp": 740,
+        "armor": 65,
+        "trophy": "Plaque d'Épaule d'Initié Maculée de Sang Vert"
+      }
+    ]
+  },
+  {
+    "id": "squad_alien_pala_security_detail",
+    "name": "Détachement de Sécurité Weyland de Pala Station — Aliens: Infiltrator (2020)",
+    "universe": "ALIEN",
+    "shortName": "Sécurité Pala Station (3 Gardes)",
+    "category": "CORPORATE_SECURITY",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens: Infiltrator (2020)",
+    "biomeId": "stargazer_blacksite",
+    "recommendedBiomeLabel": "Aile Médicale de Pala Station (2202)",
+    "primaryMapId": "map_alien_pala_station_security_wing",
+    "weaponLoadout": [
+      "wpn_pala_station_magpulse_carbine"
+    ],
+    "description": "Équipe d'intervention Weyland-Yutani de la station Pala luttant contre la rupture de confinement des spécimens contaminés par le pathogène.",
+    "tactics": "Tirs de saturation magnéto-pulsés, progression méthodique en formation triangulaire et utilisation de balises sonores de diversion.",
+    "totalHonorReward": 7400,
+    "soloVariantId": "prey_weyland_combat_android",
+    "members": [
+      {
+        "id": "lieutenant_marx_pala",
+        "name": "Lieutenant James Marx",
+        "role": "Chef de la Sécurité du Vivarium",
+        "weapon": "Carabine Magnéto-Pulsée MP-90 & Pistolet VP-70",
+        "weaponId": "wpn_pala_station_magpulse_carbine",
+        "vitalityRatio": 1.5,
+        "hp": 840,
+        "armor": 80,
+        "trophy": "Badge d'Accès Sécurisé Weyland Niveau 5 Biologique"
+      },
+      {
+        "id": "security_android_unit_7",
+        "name": "Synthétique de Confinement Unité 7",
+        "role": "Intervention Lourde en Milieu Hostile",
+        "weapon": "Carabine MP-90 & Électro-Matraque",
+        "weaponId": "wpn_pala_station_magpulse_carbine",
+        "vitalityRatio": 1.45,
+        "hp": 810,
+        "armor": 75,
+        "trophy": "Module Mnémonique Androïde Endommagé par le Pathogène"
+      },
+      {
+        "id": "corporal_chen_pala",
+        "name": "Caporal Lisa Chen",
+        "role": "Opératrice de Confinement Biologique",
+        "weapon": "Carabine MP-90 & Grenades Cryogéniques",
+        "weaponId": "wpn_pala_station_magpulse_carbine",
+        "vitalityRatio": 1.35,
+        "hp": 730,
+        "armor": 65,
+        "trophy": "Casque Pressurisé Weyland aux Filtres Saturés"
+      }
+    ]
+  },
+  {
+    "id": "squad_alien_sacrifice_zealots",
+    "name": "Zélotes du Culte Sacrificiel — Aliens: Sacrifice (1993)",
+    "universe": "ALIEN",
+    "shortName": "Zélotes du Sacrifice (3 Fanatiques)",
+    "category": "COLONIAL_MILITIA",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens: Sacrifice (1993)",
+    "biomeId": "hive_lv426",
+    "recommendedBiomeLabel": "Cloître Sacrificiel Isolé (1993)",
+    "primaryMapId": "map_alien_sacrifice_monastery",
+    "weaponLoadout": [
+      "wpn_sacrifice_heavy_slugthrower"
+    ],
+    "description": "Fanatiques colons ayant érigé une théocratie morbide autour du culte du Xénomorphe, massacrant tout intrus osant troubler leur divinité dévorante.",
+    "tactics": "Embuscades téméraires au corps-à-corps, décharges de tromblon lourd à courte distance et refus de la retraite jusqu'au dernier souffle.",
+    "totalHonorReward": 7200,
+    "soloVariantId": "prey_colonial_marine_heavy",
+    "members": [
+      {
+        "id": "father_malachi_zealot",
+        "name": "Père Malachi",
+        "role": "Grand Prêtre du Nid Sacré",
+        "weapon": "Tromblon Lourd du Monastère & Dague d'Airain",
+        "weaponId": "wpn_sacrifice_heavy_slugthrower",
+        "vitalityRatio": 1.5,
+        "hp": 850,
+        "armor": 70,
+        "trophy": "Sceptre d'Airain Orné d'une Mandibule Xénomorphe"
+      },
+      {
+        "id": "brother_gideon_zealot",
+        "name": "Frère Gideon",
+        "role": "Gardien de la Fosse Sacrificielle",
+        "weapon": "Tromblon de Calibre 8 & Chaînes Barbelées",
+        "weaponId": "wpn_sacrifice_heavy_slugthrower",
+        "vitalityRatio": 1.4,
+        "hp": 770,
+        "armor": 65,
+        "trophy": "Chapelet en Vertèbres de Victimes Sacrifiées"
+      },
+      {
+        "id": "sister_judith_zealot",
+        "name": "Sœur Judith",
+        "role": "Pourvoyeuse d'Offrandes Vivantes",
+        "weapon": "Tromblon Artisanal & Torche Poissée",
+        "weaponId": "wpn_sacrifice_heavy_slugthrower",
+        "vitalityRatio": 1.35,
+        "hp": 720,
+        "armor": 60,
+        "trophy": "Bure Monastique Renforcée de Bandes d'Acier"
+      }
+    ]
+  },
+  {
+    "id": "squad_avp_endeavor_strike_platoon",
+    "name": "Peloton de Frappe USS Endeavor — AVP: Fireteam Frontier",
+    "universe": "AVP",
+    "shortName": "Peloton Endeavor (3 Marines)",
+    "category": "MILITARY_COMMANDO",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens: Fireteam Elite (2021-2022)",
+    "biomeId": "stargazer_blacksite",
+    "recommendedBiomeLabel": "Pont d'Envol de l'USS Endeavor (2202)",
+    "primaryMapId": "map_avp_endeavor_docking_bay",
+    "weaponLoadout": [
+      "wpn_endeavor_heavy_particle_rifle"
+    ],
+    "description": "Équipe de choc de l'USCM déployée pour repousser les assauts xénomorphes et neutraliser les interférences Yautja à bord de l'Endeavor.",
+    "tactics": "Feu nourri à faisceau de particules ionisées, contrôle de corridor impénétrable et déploiement de micro-drones de soutien.",
+    "totalHonorReward": 8000,
+    "soloVariantId": "prey_colonial_marine_heavy",
+    "members": [
+      {
+        "id": "captain_herrera_endeavor",
+        "name": "Capitaine Gabriel Herrera",
+        "role": "Commandant de la Force de Réaction Rapide",
+        "weapon": "Fusil à Particules Type-77 & Pistolet Smart",
+        "weaponId": "wpn_endeavor_heavy_particle_rifle",
+        "vitalityRatio": 1.6,
+        "hp": 900,
+        "armor": 85,
+        "trophy": "Insigne de Poitrine du Croiseur USS Endeavor"
+      },
+      {
+        "id": "gunner_sergeant_vance",
+        "name": "Sergent Artilleur Vance",
+        "role": "Spécialiste Armes Lourdes à Particules",
+        "weapon": "Fusil Type-77 & Chargeur Micro-Fusion",
+        "weaponId": "wpn_endeavor_heavy_particle_rifle",
+        "vitalityRatio": 1.45,
+        "hp": 820,
+        "armor": 80,
+        "trophy": "Optique de Visée Thermique Haute Définition USCM"
+      },
+      {
+        "id": "lance_corporal_rios",
+        "name": "Caporal-Chef Rios",
+        "role": "Fusilier Électronique & Démolition",
+        "weapon": "Fusil Type-77 & Détonateurs Thermiques",
+        "weaponId": "wpn_endeavor_heavy_particle_rifle",
+        "vitalityRatio": 1.35,
+        "hp": 750,
+        "armor": 70,
+        "trophy": "Plaque d'Identification Militaire USCM Gravée"
+      }
+    ]
+  },
+  {
+    "id": "squad_avp_gunnison_swat_survivors",
+    "name": "Survivants SWAT de l'Hôpital de Gunnison — Requiem (2007)",
+    "universe": "AVP",
+    "shortName": "SWAT de Gunnison (3 Policiers)",
+    "category": "MILITARY_COMMANDO",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens vs. Predator: Requiem (2007)",
+    "biomeId": "gunnison_outbreak",
+    "recommendedBiomeLabel": "Maternité de Gunnison (2004)",
+    "primaryMapId": "map_avp_gunnison_hospital_hive",
+    "weaponLoadout": [
+      "wpn_gunnison_swat_tactical_m4a1"
+    ],
+    "description": "Policiers d'élite du comté de Gunnison retranchés dans les étages de l'hôpital face aux assauts conjugués du Predalien et des facehuggers.",
+    "tactics": "Feu tactique croisé à la M4A1, lampe torche stroboscopique pour désorienter les cibles et défense obstinée des goulots d'étranglement.",
+    "totalHonorReward": 7500,
+    "soloVariantId": "prey_weyland_combat_android",
+    "members": [
+      {
+        "id": "sergeant_morales_swat",
+        "name": "Sergent Chef Morales",
+        "role": "Commandant Tactique SWAT de Gunnison",
+        "weapon": "Carabine M4A1 Lampe X300 & Glock 17",
+        "weaponId": "wpn_gunnison_swat_tactical_m4a1",
+        "vitalityRatio": 1.5,
+        "hp": 840,
+        "armor": 75,
+        "trophy": "Écusson SWAT du Comté de Gunnison Maculé de Pluie"
+      },
+      {
+        "id": "officer_ray_swat",
+        "name": "Officier Ray Stevens",
+        "role": "Tireur d'Assaut Tactique",
+        "weapon": "Carabine M4A1 Munitions Perforantes & Taser",
+        "weaponId": "wpn_gunnison_swat_tactical_m4a1",
+        "vitalityRatio": 1.4,
+        "hp": 780,
+        "armor": 70,
+        "trophy": "Gilet Pare-Balles Tactique Niveau III Perforé d'Acide"
+      },
+      {
+        "id": "officer_dawson_swat",
+        "name": "Officier Dawson",
+        "role": "Opérateur Bouclier Anti-Émeute",
+        "weapon": "Carabine M4A1 & Bouclier Balistique Kevlar",
+        "weaponId": "wpn_gunnison_swat_tactical_m4a1",
+        "vitalityRatio": 1.35,
+        "hp": 730,
+        "armor": 65,
+        "trophy": "Casque Anti-Émeute SWAT aux Visières Fissurées"
+      }
+    ]
+  }
 ]);
 
 export function getSquadById(squadId) {

@@ -2817,6 +2817,296 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
       "pure_strains"
     ],
     "locationIds": []
+  },
+  {
+    "id": "lore_pred_blood_feud_kenshi_clan_1993",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Blood Feud (1993 — Maître sabreur aveugle Kenshi & duels d'honneur)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "predator1987",
+      "predator2_1990"
+    ],
+    "unlockCondition": "Remporter le duel rituel au corps-à-corps sans activer le camouflage optique",
+    "summary": "Duel rituel entre un champion Yautja adepte du combat au corps-à-corps et un maître épéiste aveugle guidé par l'acuité sensorielle pure.",
+    "body": "Predator: Blood Feud (Neal Barrett Jr., 1993) met en scène la confrontation d'un guerrier Predator honorant la tradition du duel sans camouflage face à un kendoka aveugle dont l'ouïe surpasse le système de ciblage optique.",
+    "content": "Predator: Blood Feud (Neal Barrett Jr., 1993) met en scène la confrontation d'un guerrier Predator honorant la tradition du duel sans camouflage face à un kendoka aveugle dont l'ouïe surpasse le système de ciblage optique.",
+    "tags": [
+      "blood_feud_1993",
+      "kenshi_master",
+      "blind_swordsman",
+      "honor_duel",
+      "uncloaked_clash"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_pred_invaders_from_the_fourth_dimension_1994",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: 4th Dimension (1994 — Failles temporelles & traqueurs multidimensionnels)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "predator1987",
+      "predator2_1990"
+    ],
+    "unlockCondition": "Intercepter la faille chronotopique dans les décors de cinéma abandonnés",
+    "summary": "Chasse temporelle à travers les distorsions d'un tournage de science-fiction des années 1950 envahi par des prédateurs interdimensionnels.",
+    "body": "Predator: Invaders from the Fourth Dimension (1994) explore l'incursion de Yautja traquant des proies à travers des failles quantiques où les décors rétro-futuristes deviennent un terrain de chasse mortellement réel.",
+    "content": "Predator: Invaders from the Fourth Dimension (1994) explore l'incursion de Yautja traquant des proies à travers des failles quantiques où les décors rétro-futuristes deviennent un terrain de chasse mortellement réel.",
+    "tags": [
+      "fourth_dimension_1994",
+      "temporal_rift",
+      "retro_scifi",
+      "quantum_stalk",
+      "multiverse_prey"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_pred_homeworld_yautja_prime_legends",
+    "entryType": "codex",
+    "category": "technologie",
+    "title": "Yautja Prime: Traditions & Arènes (Cités mégalithiques & épreuves initiatiques)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "predator1987",
+      "predators2010"
+    ],
+    "unlockCondition": "Survivre au rite d'ordalie dans les fosses de basalte et de lave",
+    "summary": "Architecture colossale des cités de Yautja Prime, où les jeunes guerriers affrontent des créatures captives dans des fosses de lave et de roche volcanique.",
+    "body": "Les légendes du monde natal Yautja décrivent des arènes cyclopéennes où la hiérarchie des clans se forge dans le sang. Les Young Bloods doivent prouver leur bravoure face aux fauves les plus redoutables de la galaxie.",
+    "content": "Les légendes du monde natal Yautja décrivent des arènes cyclopéennes où la hiérarchie des clans se forge dans le sang. Les Young Bloods doivent prouver leur bravoure face aux fauves les plus redoutables de la galaxie.",
+    "tags": [
+      "yautja_prime_legends",
+      "basalt_arena",
+      "initiation_pits",
+      "clan_hierarchy",
+      "molten_rock"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_pred_demon_of_the_andes_1532",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Démon des Andes (1532 — Conquistadors & chasseur des citadelles incas)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "predator1987",
+      "prey2022"
+    ],
+    "unlockCondition": "Neutraliser l'avant-garde des conquistadors sur les sentiers escarpés de la cordillère",
+    "summary": "Traque dans les hauteurs vertigineuses des Andes où un clan de conquistadors espagnols et des guerriers incas se heurtent à un prédateur brandissant des lames d'obsidienne.",
+    "body": "Dans les forteresses de pierre des Andes en 1532, un champion Yautja adapte sa panoplie aux lames tranchantes d'obsidienne et aux embuscades de haute altitude, devenant le Démon Protecteur des temples secrets.",
+    "content": "Dans les forteresses de pierre des Andes en 1532, un champion Yautja adapte sa panoplie aux lames tranchantes d'obsidienne et aux embuscades de haute altitude, devenant le Démon Protecteur des temples secrets.",
+    "tags": [
+      "andes_1532",
+      "inca_citadel",
+      "conquistadors",
+      "obsidian_blades",
+      "mountain_stalker"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_sacrifice_1993",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Sacrifice (1993 — Colonie isolée & culte d'apaisement du monstre)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "alien1979",
+      "aliens1986"
+    ],
+    "unlockCondition": "Purger l'autel de sacrifice dans la cour intérieure du monastère colonial",
+    "summary": "Sur une colonie recluse et désertique, des colons terrifiés vénèrent un xénomorphe comme une divinité vengeresse en lui offrant des sacrifices périodiques.",
+    "body": "Aliens: Sacrifice (Peter Milligan, Paul Johnson, 1993) dépeint la dérive fanatique de colons abandonnés par l'Union des Mondes qui transforment la menace xénomorphe en culte sacrificiel avant qu'une survivante brise l'illusion.",
+    "content": "Aliens: Sacrifice (Peter Milligan, Paul Johnson, 1993) dépeint la dérive fanatique de colons abandonnés par l'Union des Mondes qui transforment la menace xénomorphe en culte sacrificiel avant qu'une survivante brise l'illusion.",
+    "tags": [
+      "sacrifice_1993",
+      "monastery_colony",
+      "xeno_cult",
+      "religious_zealots",
+      "peter_milligan"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_stalker_1998",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Stalker (1998 — Ère viking & fléau de la bête des glaces)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "alien1979",
+      "aliens1986"
+    ],
+    "unlockCondition": "Vaincre le traqueur des glaces dans la galerie souterraine du fjord minier",
+    "summary": "Au IXe siècle, des guerriers vikings assiégés dans un fjord gelé affrontent une créature des ténèbres réveillée dans une mine de fer.",
+    "body": "Aliens: Stalker (David Michelinie, 1998) transpose la menace du xénomorphe à l'époque médiévale scandinave. Les épées d'acier damassé et les torches de poix fondent sous l'acide du fléau des profondeurs.",
+    "content": "Aliens: Stalker (David Michelinie, 1998) transpose la menace du xénomorphe à l'époque médiévale scandinave. Les épées d'acier damassé et les torches de poix fondent sous l'acide du fléau des profondeurs.",
+    "tags": [
+      "stalker_1998",
+      "viking_era",
+      "iron_mine",
+      "ice_fiend",
+      "david_michelinie"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_crusade_2001",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Crusade (2001 — Flotte de reconquête & assauts orbitaux massifs)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "aliens1986",
+      "alien3_1992"
+    ],
+    "unlockCondition": "Établir la tête de pont orbitale au-dessus des complexes infestés de bordure",
+    "summary": "Offensive militaire majeure lancée par les forces coalisées pour purger un système industriel lourdement infesté par une mégasouche xénomorphe.",
+    "body": "Aliens: Crusade (James Vance, 2001) met en scène la logistique colossale de l'USCM et des brigades de combat d'assaut orbital confrontées à des complexes entiers transformés en gigantesques nids bio-mécaniques.",
+    "content": "Aliens: Crusade (James Vance, 2001) met en scène la logistique colossale de l'USCM et des brigades de combat d'assaut orbital confrontées à des complexes entiers transformés en gigantesques nids bio-mécaniques.",
+    "tags": [
+      "crusade_2001",
+      "orbital_strike",
+      "uscm_coalition",
+      "industrial_mega_hive",
+      "james_vance"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_infiltrator_2020",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Infiltrator (2020 — Station Pala & protocoles mutagènes Weyland)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "alien1979",
+      "aliens1986"
+    ],
+    "unlockCondition": "Sécuriser les journaux de recherche mutagène du laboratoire souterrain de Pala Station",
+    "summary": "Chute dramatique de la station de recherche Pala où des scientifiques Weyland-Yutani ont inoculé le pathogène noir à des spécimens vivants avant la catastrophe.",
+    "body": "Aliens: Infiltrator (Weston Ochse, 2020, préquelle officielle à Aliens: Fireteam Elite) documente les expériences sur le pathogène mutagène et les modifications comportementales des gardes de sécurité de Pala Station.",
+    "content": "Aliens: Infiltrator (Weston Ochse, 2020, préquelle officielle à Aliens: Fireteam Elite) documente les expériences sur le pathogène mutagène et les modifications comportementales des gardes de sécurité de Pala Station.",
+    "tags": [
+      "infiltrator_2020",
+      "pala_station",
+      "black_pathogen",
+      "weyland_security",
+      "weston_ochse"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_allies_and_enemies_2005",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Allies and Enemies (2005 — Trêve de bordure & coalition de survie)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "aliens1986",
+      "predator1987"
+    ],
+    "unlockCondition": "Coordonner les tirs défensifs avec les marines retranchés sur la ligne de crête",
+    "summary": "Tensions mortelles et alliance de fortune entre un contingent de l'USCM et un clan Yautja assiégés par un raz-de-marée de guerriers xénomorphes.",
+    "body": "Aliens vs. Predator: Allies and Enemies (2005) montre comment l'impératif de survie face à une marée noire de xénomorphes force marines coloniaux et guerriers Yautja à coordonner leurs tirs et leurs pièges.",
+    "content": "Aliens vs. Predator: Allies and Enemies (2005) montre comment l'impératif de survie face à une marée noire de xénomorphes force marines coloniaux et guerriers Yautja à coordonner leurs tirs et leurs pièges.",
+    "tags": [
+      "allies_and_enemies_2005",
+      "border_truce",
+      "uscm_yautja_alliance",
+      "swarm_defense",
+      "ridge_stand"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_blood_pact_2012",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Blood Pact (2012 — Pacte de sang mercenaire & initiation conjointe)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "predator2_1990"
+    ],
+    "unlockCondition": "Graver le glyphe d'alliance sur le plastron après l'élimination de la génitrice",
+    "summary": "Récit d'un pacte d'honneur scellé au plasma entre mercenaires d'élite de la bordure extérieure et Young Bloods Yautja pour détruire une reine mutante.",
+    "body": "Dans Aliens vs. Predator: Blood Pact (2012), le respect martial mutuel entre chasseurs d'élite dépasse les barrières d'espèces. Chaque combattant grave le symbole du clan sur son armure avant l'assaut final.",
+    "content": "Dans Aliens vs. Predator: Blood Pact (2012), le respect martial mutuel entre chasseurs d'élite dépasse les barrières d'espèces. Chaque combattant grave le symbole du clan sur son armure avant l'assaut final.",
+    "tags": [
+      "blood_pact_2012",
+      "mercenary_pact",
+      "young_bloods",
+      "clan_glyph",
+      "joint_initiation"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_predalien_chet_outbreak_2007",
+    "entryType": "codex",
+    "category": "xenomorphes",
+    "title": "AVP: Requiem - Predalien Chet (2007 — Gestation fœtale directe & hybride suprême)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "avpRequiem2007"
+    ],
+    "unlockCondition": "Examiner le site d'infection obstétrique dans la maternité de Gunnison",
+    "summary": "Analyse anatomique et reproductive du Predalien surnommé Chet à Gunnison : implantation directe par gorge et fécondation multiple accélérée.",
+    "body": "Aliens vs. Predator: Requiem (2007) introduit le Predalien 'Chet', hybride monstrueux né d'un facehugger ayant fécondé un Elder Yautja. Doté de mandibules, de dreadlocks cutanés et d'une force titanesque, il bypass le cycle traditionnel en implantant des embryons multiples directement dans les hôtes.",
+    "content": "Aliens vs. Predator: Requiem (2007) introduit le Predalien 'Chet', hybride monstrueux né d'un facehugger ayant fécondé un Elder Yautja. Doté de mandibules, de dreadlocks cutanés et d'une force titanesque, il bypass le cycle traditionnel en implantant des embryons multiples directement dans les hôtes.",
+    "tags": [
+      "predalien_chet_2007",
+      "gunnison_hospital",
+      "direct_implantation",
+      "mandibles_dreadlocks",
+      "yautja_hybrid"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_fireteam_elite_pathogen_war_2022",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Endeavor & Guerre Pathogène (2022 — Raffinerie Katanga & ruches mutantes)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "avp2004",
+      "aliens1986",
+      "predator1987"
+    ],
+    "unlockCondition": "Évacuer le secteur de maintenance de la raffinerie Katanga sous assaut continu",
+    "summary": "Opérations conjointes de frappe de l'USS Endeavor sur la raffinerie Katanga pour stopper la prolifération de xénomorphes contaminés par le mutagen noir.",
+    "body": "Aliens: Fireteam Elite (Cold Iron Studios, 2021-2022) déploie les escouades de choc de l'USS Endeavor dans la raffinerie en orbite de LV-895. Les forces coloniales et les sentinelles Yautja de passage s'y affrontent au milieu de couveuses pathogènes ultra-agressives.",
+    "content": "Aliens: Fireteam Elite (Cold Iron Studios, 2021-2022) déploie les escouades de choc de l'USS Endeavor dans la raffinerie en orbite de LV-895. Les forces coloniales et les sentinelles Yautja de passage s'y affrontent au milieu de couveuses pathogènes ultra-agressives.",
+    "tags": [
+      "fireteam_elite_2022",
+      "uss_endeavor",
+      "katanga_refinery",
+      "lv895_pathogen",
+      "pathogen_war"
+    ],
+    "locationIds": []
   }
 ]);
 // IDs match the values already used by the planet selector.

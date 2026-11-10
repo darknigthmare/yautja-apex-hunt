@@ -1196,3 +1196,89 @@ test('AudioSynthesizer procedural Vague 17 SFX methods execute safely in headles
   assert.ok(hydro.durationSeconds > 0);
   assert.equal(hydro.played, false);
 });
+
+test('Vague 18 canonical NPC weapons resolve to rich ballistic and acoustic profiles', () => {
+  const vague18Weapons = [
+    {
+      id: 'wpn_inca_obsidian_macuahuitl_blade',
+      archetype: 'obsidian_serrated_macuahuitl',
+      damage: 48,
+      rangeM: 3.5,
+      soundRadiusM: 14,
+      projectileColor: 0x1c1917,
+    },
+    {
+      id: 'wpn_yautja_prime_ceremonial_scythe',
+      archetype: 'yautja_proving_ceremonial_scythe',
+      damage: 62,
+      rangeM: 4.2,
+      soundRadiusM: 18,
+      projectileColor: 0xf59e0b,
+    },
+    {
+      id: 'wpn_pala_station_magpulse_carbine',
+      archetype: 'magpulse_ferromagnetic_carbine',
+      damage: 42,
+      rangeM: 65,
+      soundRadiusM: 70,
+      projectileColor: 0x06b6d4,
+    },
+    {
+      id: 'wpn_sacrifice_heavy_slugthrower',
+      archetype: 'salvaged_heavy_slugthrower',
+      damage: 68,
+      rangeM: 25,
+      soundRadiusM: 85,
+      projectileColor: 0xd97706,
+    },
+    {
+      id: 'wpn_endeavor_heavy_particle_rifle',
+      archetype: 'endeavor_ionizing_particle_beamer',
+      damage: 58,
+      rangeM: 80,
+      soundRadiusM: 90,
+      projectileColor: 0xa855f7,
+    },
+    {
+      id: 'wpn_gunnison_swat_tactical_m4a1',
+      archetype: 'swat_tactical_m4a1_carbine',
+      damage: 38,
+      rangeM: 55,
+      soundRadiusM: 75,
+      projectileColor: 0xfacc15,
+    },
+  ];
+
+  for (const expected of vague18Weapons) {
+    const profile = getNpcWeaponProfile(expected.id);
+    assert.ok(profile, `Le profil balistique pour ${expected.id} doit exister`);
+    assert.equal(profile.archetype, expected.archetype);
+    assert.equal(profile.damage, expected.damage);
+    assert.equal(profile.rangeM, expected.rangeM);
+    assert.equal(profile.soundRadiusM, expected.soundRadiusM);
+    assert.equal(profile.projectileColor, expected.projectileColor);
+  }
+});
+
+test('AudioSynthesizer procedural Vague 18 SFX methods execute safely in headless Node environment', () => {
+  const obsidian = audioSynth.playObsidianMacuahuitlImpact();
+  assert.ok(obsidian && obsidian.event === 'obsidian_macuahuitl_impact');
+  assert.ok(obsidian.cleaveThudHz > 0);
+  assert.ok(obsidian.glassShardFreqHz > obsidian.cleaveThudHz);
+  assert.ok(obsidian.durationSeconds > 0);
+  assert.equal(obsidian.played, false);
+
+  const magpulse = audioSynth.playMagpulseDischargeShot();
+  assert.ok(magpulse && magpulse.event === 'magpulse_discharge_shot');
+  assert.ok(magpulse.coilHumHz > 0);
+  assert.ok(magpulse.hyperCrackHz > magpulse.coilHumHz);
+  assert.ok(magpulse.durationSeconds > 0);
+  assert.equal(magpulse.played, false);
+
+  const particle = audioSynth.playParticleBeamerDissipation();
+  assert.ok(particle && particle.event === 'particle_beamer_dissipation');
+  assert.ok(particle.dissipationRumbleHz > 0);
+  assert.ok(particle.beamWhineHz > particle.dissipationRumbleHz);
+  assert.ok(particle.durationSeconds > 0);
+  assert.equal(particle.played, false);
+});
