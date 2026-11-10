@@ -2404,6 +2404,186 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     keyPreyIds: ['prey_xeno_warrior', 'prey_hell_hound_tracker'],
     heroSquadId: 'squad_avp_three_world_killer_clan',
     villainSquadId: null
+  },
+  {
+    id: 'map_pred_rockies_firewatch_ridge',
+    name: 'Rocheuses — Ligne de Crête & Tour de Guet Incendie (2008)',
+    universe: 'PREDATOR',
+    originMedia: 'Predator: Turnabout',
+    sourceMedia: 'Predator: Turnabout (2008)',
+    sourceType: 'NOVEL',
+    releaseYear: 2008,
+    year: 2008,
+    biomeId: 'jungle',
+    biome: 'jungle',
+    recommendedBiomeLabel: 'Forêt Boréale des Rocheuses & Falaises Granitiques',
+    weather: 'Vent d\'altitude glacial sifflant entre les pins centenaires, brume dense au fond des ravins et neige précoce',
+    lighting: 'Lueur rasante du crépuscule perçant la canopée boréale, ombres étirées et reflets aveuglants sur les aiguilles de pin gelées',
+    verticality: 'TRÈS ÉLEVÉE (Éperons rocheux vertigineux, passerelles d\'escalade en bois, tour de guet métallique culminante et pierriers glissants)',
+    destructibility: 'Murs de rondins et toitures de cabanes de rangers pulvérisables, réservoirs de propane et branchages inflammables',
+    environmentSummary: 'Crête escarpée des Rocheuses dominée par une tour de guet isolée, truffée de pièges acoustiques et de lignes de résonance tendues par Ray Vance.',
+    tacticalSectors: [
+      { id: 'sector_turnabout_firewatch_tower', name: 'Tour de Guet Incendie & Plateforme 360°', description: 'Structure métallique panoramique surplombant la vallée avec faisceau de longue portée et télémétrie' },
+      { id: 'sector_turnabout_granite_pass', name: 'Passage des Aiguilles de Granit', description: 'Gorge étroite battue par les rafales où les échos sonores masquent les signatures thermiques' },
+      { id: 'sector_turnabout_rangers_cabin', name: 'Cabane des Rangers & Atelier de Piégeage', description: 'Refuge forestier blindé contenant munitions lourdes, câbles d\'acier et carillons d\'alerte' }
+    ],
+    environmentalHazards: [
+      { type: 'ACOUSTIC_CONFUSION', description: 'Les rafales de vent dans les failles de granit provoquent des illusions acoustiques déroutant les bio-masques' },
+      { type: 'COLLAPSIBLE_SCREE', description: 'Pierriers instables susceptibles de déclencher des éboulements mortels lors de sauts précipités' }
+    ],
+    keyPreyIds: ['alien_base_quinn_mckenna_ranger_2018', 'prey_colonial_marine_heavy'],
+    heroSquadId: 'squad_pred_turnabout_rangers',
+    villainSquadId: null
+  },
+  {
+    id: 'map_pred_western_front_1916',
+    name: 'Front Ouest 1916 — Tranchées de la Somme & No Man\'s Land (2001)',
+    universe: 'PREDATOR',
+    originMedia: 'Predator: Blood on Two Earths',
+    sourceMedia: 'Predator: Blood on Two Earths (2001)',
+    sourceType: 'COMIC',
+    releaseYear: 2001,
+    year: 2001,
+    biomeId: 'los_angeles_1997',
+    biome: 'los_angeles_1997',
+    recommendedBiomeLabel: 'Zone de Conflit Dévastée & Tranchées Boueuses',
+    weather: 'Pluie battante continue transformant le sol en bourbier gluant, fumées d\'ypérite stagnantes et nuages noirs de cordite',
+    lighting: 'Fusées éclairantes au magnésium pendantes oscillant sous les nuages bas, flashes d\'artillerie lointaine et feux de cratères',
+    verticality: 'BASSE À MOYENNE (Réseau de boyaux creusés à 2m sous terre, parapets renforcés de sacs de sable et monticules de terre retournée)',
+    destructibility: 'Blindages de casemates en rondins, chevaux de frise en fil de fer barbelé et passerelles de caillebotis détruites par le plasma',
+    environmentSummary: 'Champ de bataille dévasté de la Somme où les tranchées de première ligne et le No Man\'s Land deviennent l\'arène d\'une chasse sanglante au milieu de l\'artillerie.',
+    tacticalSectors: [
+      { id: 'sector_ww1_first_line_trench', name: 'Tranchée de Première Ligne & Postes de Tir', description: 'Labyrinthe boueux jalonné de créneaux blindés, d\'abris de fortune et de periscopes de tranchée' },
+      { id: 'sector_ww1_no_mans_land_crater', name: 'Cratère de Mine de la Somme', description: 'Immense cuvette boueuse encombrée de barbelés et de squelettes métalliques de chars primitifs' },
+      { id: 'sector_ww1_underground_dugout', name: 'Sape Souterraine & QG de Régiment', description: 'Galerie fortifiée sous 8 mètres de craie avec lampes à acétylène et liaisons téléphoniques coupées' }
+    ],
+    environmentalHazards: [
+      { type: 'MUSTARD_GAS_POCKETS', description: 'Poches de gaz moutarde persistant dans les creux de tranchées corrosives pour les membranes respiratoires' },
+      { type: 'RAZOR_WIRE_MAZE', description: 'Barbelés barbelés concertina ralentissant drastiquement les mouvements et infligeant des lacérations' }
+    ],
+    keyPreyIds: ['alien_base_major_dutch_schaefer_1987', 'prey_colonial_marine_heavy'],
+    heroSquadId: 'squad_pred_western_front_infantry',
+    villainSquadId: null
+  },
+  {
+    id: 'map_alien_mendel_station_ducting',
+    name: 'Station Mendel — Conduits Techniques & Salle de Contrôle (2019)',
+    universe: 'ALIEN',
+    originMedia: 'Alien: Blackout',
+    sourceMedia: 'Alien: Blackout (2019)',
+    sourceType: 'GAME',
+    releaseYear: 2019,
+    year: 2019,
+    biomeId: 'stargazer_blacksite',
+    biome: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Station Spatiale Isolée & Réseau de Conduits',
+    weather: 'Atmosphère pressurisée conditionnée avec micro-fuites d\'argon liquide, givre sur les conduits de survie et grésillement de relais',
+    lighting: 'Mode panne générale : stroboscopes d\'urgence rouges et cônes de faisceaux monochromes des caméras d\'observation',
+    verticality: 'TRÈS ÉLEVÉE (Trois niveaux superposés reliés par des puits d\'aération carrés, faux-plafonds techniques et passerelles suspendues)',
+    destructibility: 'Grilles de ventilation défonçables, portes coupe-feu motorisées reconfigurables et consoles informatiques piratables',
+    environmentSummary: 'Station orbitale Weyland-Yutani privée d\'alimentation principale où Amanda Ripley coordonne les mouvements des survivants à travers les sas contre un Xénomorphe traqueur.',
+    tacticalSectors: [
+      { id: 'sector_blackout_ops_bridge', name: 'Pont d\'Opérations & Baie de Surveillance', description: 'Poste central avec banques de moniteurs CRT, déclencheurs de portes blindées et cartes holographiques' },
+      { id: 'sector_blackout_vent_matrix', name: 'Matrice de Conduits Techniques Supraconducteurs', description: 'Labyrinthe exigu de gaines d\'aération permettant d\'échapper aux couloirs principaux' },
+      { id: 'sector_blackout_hydroponic_lab', name: 'Laboratoire Hydroponique & Silos Pressurisés', description: 'Serres hydroponiques en semi-obscurité avec pulvérisateurs de nutriments et couvert végétal dense' }
+    ],
+    environmentalHazards: [
+      { type: 'PNEUMATIC_AIRLOCK_SEALS', description: 'Portes étanches à fermeture automatique capables d\'écraser net tout prédateur ou proie' },
+      { type: 'OXYGEN_DEPLETION_ZONES', description: 'Secteurs en dépressurisation lente limitant le temps de séjour sans équipement respiratoire hermétique' }
+    ],
+    keyPreyIds: ['prey_xeno_drone_1979', 'alien_base_amanda_ripley_sevastopol_engineer'],
+    heroSquadId: 'squad_alien_mendel_tech_sec',
+    villainSquadId: null
+  },
+  {
+    id: 'map_alien_leto_pioneer_station',
+    name: 'Planète Leto — Station Pioneer & Ruche Principale (2023)',
+    universe: 'ALIEN',
+    originMedia: 'Aliens: Dark Descent',
+    sourceMedia: 'Aliens: Dark Descent (2023)',
+    sourceType: 'GAME',
+    releaseYear: 2023,
+    year: 2023,
+    biomeId: 'hive_lv426',
+    biome: 'hive_lv426',
+    recommendedBiomeLabel: 'Complexe Industriel Leto Sous Protocole Cerberus',
+    weather: 'Tempêtes d\'ammoniac toxique extérieures, condensats acides ruisselant le long des parois de résine biomécanique',
+    lighting: 'Projecteurs de chantier USCM balayant les corridors, lumière bleuâtre des modules d\'analyse et bioluminescence d\'œufs xénomorphes',
+    verticality: 'ÉLEVÉE (Atrium central à coursives multiples, puits d\'excavation minière de 50m et nids suspendus dans les poutrelles métalliques)',
+    destructibility: 'Portes industrielles soudables au chalumeau, barils de carburant inflammable et cloisons de résine calcinables',
+    environmentSummary: 'Base de recherche Pioneer sur la lune Leto plongée dans le chaos par le culte de l\'Infestation darwinienne, verrouillée depuis l\'orbite par le protocole Cerberus.',
+    tacticalSectors: [
+      { id: 'sector_leto_pioneer_atrium', name: 'Atrium Central & Périmètre Défensif USCM', description: 'Vaste esplanade industrielle fortifiée avec barbelés, sacs de sable et tourelles de flanc' },
+      { id: 'sector_leto_darwin_shrine', name: 'Sanctuaire du Culte Darwiniste', description: 'Chambre de filtration transformée en temple d\'adoration des Facehuggers avec runes peintes au sang' },
+      { id: 'sector_leto_queen_chamber', name: 'Chambre de Ponte de la Reine de Leto', description: 'Grotte géothermique incrustée de matière organique noire où la progéniture est continuellement couvée' }
+    ],
+    environmentalHazards: [
+      { type: 'CERBERUS_ORBITAL_STRIKES', description: 'Frappes de missiles antiblindage automatisées dès qu\'une cible est détectée à ciel ouvert' },
+      { type: 'CORROSIVE_ACID_FLOODING', description: 'Flaques d\'acide de Xénomorphes morts rongeant le métal des passerelles et perçant les planchers' }
+    ],
+    keyPreyIds: ['prey_xeno_praetorian_royal', 'prey_xeno_warrior'],
+    heroSquadId: 'squad_alien_leto_darwin_cultists',
+    villainSquadId: null
+  },
+  {
+    id: 'map_avp_lv742_subterranean_core',
+    name: 'LV-742 — Noyau Souterrain & Ruines Weyland (2003)',
+    universe: 'AVP',
+    originMedia: 'Aliens versus Predator: Extinction',
+    sourceMedia: 'Aliens versus Predator: Extinction (2003)',
+    sourceType: 'GAME',
+    releaseYear: 2003,
+    year: 2003,
+    biomeId: 'bouvetoya_pyramid',
+    biome: 'bouvetoya_pyramid',
+    recommendedBiomeLabel: 'Souterrains Géothermiques de LV-742',
+    weather: 'Chaleur volcanique étouffante, vapeurs de soufre s\'échappant des failles basaltiques et grondements sismiques réguliers',
+    lighting: 'Magma incandescent coulant dans les crevasses, torches chimiques jaunes USCM et décharges d\'arcs électriques résiduels',
+    verticality: 'TRÈS ÉLEVÉE (Plateformes de forage étagées sur cinq paliers, ponts naturels de basalte surplombant des gouffres de lave et corniches)',
+    destructibility: 'Structures métalliques Weyland corrodées, ponts de câbles sectionnables et colonnes de basalte fissurables',
+    environmentSummary: 'Cœur géothermique de LV-742 où les forces de Weyland-Yutani, les hordes mutantes de Ravagers et les Chasseurs d\'Élite Yautja s\'affrontent pour le contrôle de la planète.',
+    tacticalSectors: [
+      { id: 'sector_lv742_drill_rig_delta', name: 'Tour de Forage Géothermique Delta', description: 'Structure colossale exploitant les cheminées hydrothermales avec élévateurs industriels fonctionnels' },
+      { id: 'sector_lv742_ravager_breeding_trench', name: 'Fosse de Mutation des Ravagers', description: 'Chambre naturelle baignée de boues riches en mutagène où incubent les guerriers à lames géantes' },
+      { id: 'sector_lv742_yautja_sanctuary_outpost', name: 'Avant-Poste Rituel des Anciens', description: 'Ruines ancestrales taillées dans la roche volcanique gravées de trophées légendaires de chasses passées' }
+    ],
+    environmentalHazards: [
+      { type: 'MAGMA_GEYSERS', description: 'Geysers de lave pulvérisant des jets de scories brûlantes à intervalles réguliers' },
+      { type: 'SEISMIC_TREMORS', description: 'Secousses tectoniques brutales provoquant la chute de stalactites de basalte' }
+    ],
+    keyPreyIds: ['prey_xeno_queen_mother', 'alien_base_xeno_ravager_elite_guard'],
+    heroSquadId: 'squad_avp_lv742_ravager_hive',
+    villainSquadId: null
+  },
+  {
+    id: 'map_avp_bunda_machiko_plains',
+    name: 'Planète Bunda — Plaines Arides & Enclos Colonial (1995)',
+    universe: 'AVP',
+    originMedia: 'Aliens vs. Predator: War',
+    sourceMedia: 'Aliens vs. Predator: War (1995)',
+    sourceType: 'COMIC',
+    releaseYear: 1995,
+    year: 1995,
+    biomeId: 'ryushi_desert',
+    biome: 'ryushi_desert',
+    recommendedBiomeLabel: 'Plaines Savanières & Périmètre Électrifié',
+    weather: 'Chaleur sèche de savane extraterrestre, poussière rouge soulevée par les troupeaux et mirages thermiques sous soleil triple',
+    lighting: 'Lumière dorée aveuglante des trois soleils de Bunda, contrastant avec l\'ombre noire des monticules rocheux',
+    verticality: 'MOYENNE (Plaines herbeuses vallonnées, affleurements de grès sculptés par les vents et clôtures électrifiées périmétriques)',
+    destructibility: 'Pylônes de clôtures à bétail destructibles, réservoirs d\'eau sous pression et véhicules tout-terrain civils',
+    environmentSummary: 'Savane aride de Bunda où les colons humains se retrouvent piégés entre une infestation xénomorphe déchaînée et la grande chasse sans pitié du Clan Top-Knot.',
+    tacticalSectors: [
+      { id: 'sector_bunda_homestead_perimeter', name: 'Enclos Colonial & Barrière Haute Tension', description: 'Périmètre fortifié par des grilles électrifiées pour protéger les colons et les bêtes contre la faune' },
+      { id: 'sector_bunda_termite_mounds', name: 'Collines de Monticules d\'Ocres', description: 'Affleurements labyrinthiques de termitières géantes idéales pour le contournement discret et l\'embuscade' },
+      { id: 'sector_bunda_yautja_hunting_circle', name: 'Cercle de Chasse du Top-Knot Clan', description: 'Zone de ralliement des guerriers Yautja avec balises de téléportation et totems de mise à mort' }
+    ],
+    environmentalHazards: [
+      { type: 'HIGH_VOLTAGE_FENCES', description: 'Clôtures électriques haute tension infligeant des chocs étourdissants et révélant les camouflages' },
+      { type: 'DUST_DEVILS', description: 'Tourbillons de poussière abrasive aveuglant les viseurs optiques et perturbant le verrouillage tri-laser' }
+    ],
+    keyPreyIds: ['prey_xeno_warrior', 'prey_colonial_marine_heavy'],
+    heroSquadId: 'squad_avp_bunda_top_knot_clan',
+    villainSquadId: null
   }
 ]);
 
@@ -4009,6 +4189,90 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     yautjaCounterplay: 'Exploiter l\'instabilité de l\'arme pour la surcharger à distance avec un projectile électromagnétique du filet de combat.',
     counterplay: 'Exploiter l\'instabilité de l\'arme pour la surcharger à distance avec un projectile électromagnétique du filet de combat.',
     description: 'Carabine blaster forgée à partir de pièces d\'armement Yautja pillées et modifiées de manière sacrilège par les renégats du Killer Clan.'
+  },
+  {
+    id: 'wpn_turnabout_winchester_magnum_338',
+    name: 'Winchester Model 70 .338 Winchester Magnum',
+    universe: 'PREDATOR',
+    faction: 'Canadian Rangers / Ray Vance',
+    originMedia: 'Predator: Turnabout (2008)',
+    caliber: '.338 Win Mag (8.6x64mm)',
+    damageType: 'KINETIC_BALLISTIC',
+    effectiveRangeMeters: 130,
+    rateOfFire: 'Coup par coup (Verrou manuel)',
+    wieldedBy: 'Ray Vance & Rangers des Rocheuses',
+    yautjaCounterplay: 'Saut d\'esquive latéral sur l\'écho de détonation et approche rapide par le couvert forestier.',
+    description: 'Carabine de chasse au gros gibier à verrou de haute précision, équipée de mires métalliques customisées pour le tir à l\'oreille.'
+  },
+  {
+    id: 'wpn_ww1_lee_enfield_trench_carbine',
+    name: 'Short Magazine Lee-Enfield No.1 Mk III* Tranchée',
+    universe: 'PREDATOR',
+    faction: 'British Expeditionary Force / Somme 1916',
+    originMedia: 'Predator: Blood on Two Earths (2001)',
+    caliber: '.303 British (7.7x56mmR)',
+    damageType: 'KINETIC_BALLISTIC',
+    effectiveRangeMeters: 85,
+    rateOfFire: 'Mad Minute (Jusqu\'à 25-30 coups/min au verrou)',
+    wieldedBy: 'Fantassins de première ligne & vétérans des tranchées',
+    yautjaCounterplay: 'Manteau thermique et camouflage actif dans les nappes de gaz pour éviter la concentration de feux de barrage.',
+    description: 'Fusil réglementaire britannique robuste et rapide, muni d\'une baïonnette épée 1907 et adapté aux tirs réflexes dans la boue.'
+  },
+  {
+    id: 'wpn_mendel_security_shock_taser',
+    name: 'Seegson P-99 High-Voltage Crowd Stun Taser',
+    universe: 'ALIEN',
+    faction: 'Weyland-Yutani Station Mendel Security',
+    originMedia: 'Alien: Blackout (2019)',
+    caliber: 'Cartouches à Dard Électrifié 60kV',
+    damageType: 'ENERGY_IONIC',
+    effectiveRangeMeters: 18,
+    rateOfFire: 'Semi-auto à rechargement rapide',
+    wieldedBy: 'Agents de sécurité et techniciens de la station Mendel',
+    yautjaCounterplay: 'Blindage d\'armure isolant dissipant la décharge statique et contre-attaque immédiate aux wristblades.',
+    description: 'Arme de neutralisation non létale projetant deux dards reliés par fil conducteur délivrant une impulsion tétanisante incapacitante.'
+  },
+  {
+    id: 'wpn_dark_descent_sentry_slugger',
+    name: 'UA 571-C Automated Perimeter Sentry Gun Cal. 10x28mm',
+    universe: 'ALIEN',
+    faction: 'USCM 2nd Battalion Bravo / Otago',
+    originMedia: 'Aliens: Dark Descent (2023)',
+    caliber: '10x28mm Caseless Explosif & Perforant',
+    damageType: 'KINETIC_BALLISTIC',
+    effectiveRangeMeters: 90,
+    rateOfFire: '1100 tirs/min (Mitrailleuse multitube automatisée)',
+    wieldedBy: 'Opérateurs tactiques USCM et sergent Jonas Harper',
+    yautjaCounterplay: 'Tir plasma à distance sur le capteur optronique frontal ou désactivation électromagnétique par shuriken IEM.',
+    description: 'Tourelle sentinelle automatique trépied avec radar Doppler omnidirectionnel et balayage thermique de verrouillage à 360°.'
+  },
+  {
+    id: 'wpn_lv742_sniper_railgun_lance',
+    name: 'USCM Magnetic Rail-Lance Sniper System',
+    universe: 'AVP',
+    faction: 'USCM Special Snipers LV-742',
+    originMedia: 'Aliens versus Predator: Extinction (2003)',
+    caliber: 'Flechette Tungstène 4mm Hypersonique Mach 7',
+    damageType: 'PIERCING_BALLISTIC',
+    effectiveRangeMeters: 160,
+    rateOfFire: '1 tir toutes les 2.8s (Condensateur haute charge)',
+    wieldedBy: 'Tireurs d\'élite lourds du corps expéditionnaire de LV-742',
+    yautjaCounterplay: 'Détection du sifflement de charge magnétique avant le tir et projection d\'un leurre holographique.',
+    description: 'Fusil de précision hypersonique à rails magnétiques accélérant un projectile perforant capable de traverser les carapaces les plus épaisses.'
+  },
+  {
+    id: 'wpn_bunda_top_knot_heavy_caster',
+    name: 'Top-Knot Clan Dual-Resonator Shoulder Plasma Caster',
+    universe: 'AVP',
+    faction: 'Top-Knot Yautja Clan',
+    originMedia: 'Aliens vs. Predator: War (1995)',
+    caliber: 'Plasma Torique Surchauffé 120MW',
+    damageType: 'ENERGY_PLASMA',
+    effectiveRangeMeters: 100,
+    rateOfFire: 'Double salve plasma cadencée',
+    wieldedBy: 'Chefs de meute et maîtres de chasse du clan Top-Knot',
+    yautjaCounterplay: 'Bouclier bouclant le flux énergétique et assaut frontal rapide lors du cycle de refroidissement.',
+    description: 'Canon d\'épaule massif à double bobine d\'induction délivrant deux sphères de plasma synchronisées pour pulvériser les lignes xénomorphes.'
   }
 ]);
 

@@ -2034,7 +2034,7 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
-  if (id.includes('extinction_council') || id.includes('lv742')) {
+  if (id.includes('extinction_council') || (id.includes('lv742') && !id.includes('ravager') && !id.includes('kainde_amedha'))) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-extinctioncouncil" role="img" aria-label="Insigne Conseil Extinction LV-742">
         <circle cx="40" cy="40" r="36" fill="#140a24" stroke="#b5179e" stroke-width="2.5" />
@@ -2616,6 +2616,142 @@ export function getSquadLogo(squadId, size = 64) {
         <circle cx="35" cy="32" r="3" fill="#000000" /><circle cx="45" cy="32" r="3" fill="#000000" />
         <circle cx="35" cy="32" r="1.2" fill="#f87171" /><circle cx="45" cy="32" r="1.2" fill="#f87171" />
         <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4.1" font-weight="900" fill="#fca5a5" letter-spacing="0.8" text-anchor="middle">KILLER CLAN 3WW</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('turnabout') || id.includes('ray_vance')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-turnabout" role="img" aria-label="Insigne Rangers des Rocheuses Turnabout">
+        <!-- Écusson de ranger canadien bronze et vert forêt -->
+        <polygon points="40,5 72,18 72,52 40,75 8,52 8,18" fill="#061c0d" stroke="#ca8a04" stroke-width="2.5" />
+        <!-- Crête de montagne granitique et sapins boréaux -->
+        <polygon points="40,16 60,46 20,46" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5" />
+        <polygon points="28,26 44,46 12,46" fill="#0f172a" />
+        <path d="M16,46 L19,38 L22,46 L26,36 L30,46 L50,46 L54,36 L58,46 L61,38 L64,46 Z" fill="#14532d" />
+        <!-- Onde acoustique et diapason de résonance de Ray Vance -->
+        <circle cx="40" cy="36" r="8" fill="none" stroke="#facc15" stroke-width="1.2" stroke-dasharray="2,2" />
+        <circle cx="40" cy="36" r="14" fill="none" stroke="#facc15" stroke-width="1" stroke-dasharray="3,3" opacity="0.6" />
+        <!-- Réticule sniper écouté -->
+        <line x1="40" y1="22" x2="40" y2="50" stroke="#fef08a" stroke-width="1" />
+        <line x1="26" y1="36" x2="54" y2="36" stroke="#fef08a" stroke-width="1" />
+        <circle cx="40" cy="36" r="2.2" fill="#ca8a04" />
+        <!-- Étoile fédérale des rangers -->
+        <polygon points="40,55 42,60 48,60 43,63 45,69 40,65 35,69 37,63 32,60 38,60" fill="#facc15" stroke="#a16207" stroke-width="0.8" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="900" fill="#fef08a" letter-spacing="0.7" text-anchor="middle">TURNABOUT</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('western_front') || id.includes('somme')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-westernfront" role="img" aria-label="Insigne Infanterie Tranchées Somme 1916">
+        <!-- Rondache de tranchée acier et boue -->
+        <circle cx="40" cy="40" r="35" fill="#1c1917" stroke="#78716c" stroke-width="2.5" />
+        <!-- Parapet de tranchée et sacs de sable empilés -->
+        <path d="M10,50 Q25,46 40,50 Q55,46 70,50 L70,68 L10,68 Z" fill="#44403c" stroke="#292524" stroke-width="1.5" />
+        <ellipse cx="25" cy="53" rx="8" ry="3.5" fill="#57534e" stroke="#292524" stroke-width="1" />
+        <ellipse cx="40" cy="51" rx="8" ry="3.5" fill="#57534e" stroke="#292524" stroke-width="1" />
+        <ellipse cx="55" cy="53" rx="8" ry="3.5" fill="#57534e" stroke="#292524" stroke-width="1" />
+        <!-- Fusils Lee-Enfield croisés avec baïonnettes 1907 -->
+        <line x1="16" y1="62" x2="64" y2="18" stroke="#a8a29e" stroke-width="2.2" stroke-linecap="round" />
+        <line x1="64" y1="62" x2="16" y2="18" stroke="#a8a29e" stroke-width="2.2" stroke-linecap="round" />
+        <polygon points="64,18 69,14 62,17" fill="#e7e5e4" />
+        <polygon points="16,18 11,14 18,17" fill="#e7e5e4" />
+        <!-- Casque Brodie britannique central -->
+        <ellipse cx="40" cy="33" rx="14" ry="4" fill="#a8a29e" stroke="#57534e" stroke-width="1" />
+        <path d="M28,33 Q40,19 52,33 Z" fill="#78716c" stroke="#44403c" stroke-width="1.2" />
+        <!-- Spirales de fil de fer barbelé concertina -->
+        <path d="M12,42 Q20,38 28,42 Q36,46 44,42 Q52,38 60,42 Q68,46 72,42" fill="none" stroke="#d6d3d1" stroke-width="1.2" />
+        <line x1="28" y1="39" x2="30" y2="45" stroke="#d6d3d1" stroke-width="1.2" />
+        <line x1="52" y1="39" x2="54" y2="45" stroke="#d6d3d1" stroke-width="1.2" />
+        <text x="40" y="65" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="900" fill="#e7e5e4" letter-spacing="0.7" text-anchor="middle">SOMME 1916</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('mendel') || (id.includes('blackout') && !id.includes('blacksite'))) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-mendel" role="img" aria-label="Insigne Sécurité Station Mendel Blackout">
+        <!-- Sas hexagonal de confinement Weyland-Yutani -->
+        <polygon points="40,6 71,23 71,57 40,74 9,57 9,23" fill="#041f2a" stroke="#0ea5e9" stroke-width="2.5" />
+        <!-- Bandes de danger industrielles d'urgence jaune/noir -->
+        <polygon points="18,24 23,24 13,34 13,29" fill="#eab308" />
+        <polygon points="62,24 67,24 57,34 57,29" fill="#eab308" />
+        <!-- Réseau de gaines de ventilation techniques -->
+        <rect x="22" y="22" width="36" height="36" rx="4" fill="#082f49" stroke="#38bdf8" stroke-width="1.5" />
+        <line x1="22" y1="34" x2="58" y2="34" stroke="#0284c7" stroke-width="1" />
+        <line x1="22" y1="46" x2="58" y2="46" stroke="#0284c7" stroke-width="1" />
+        <line x1="34" y1="22" x2="34" y2="58" stroke="#0284c7" stroke-width="1" />
+        <line x1="46" y1="22" x2="46" y2="58" stroke="#0284c7" stroke-width="1" />
+        <!-- Écran radar Amanda Ripley et faisceau de détection cyan -->
+        <circle cx="40" cy="40" r="11" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.2" />
+        <path d="M40,40 L49,31 A11,11 0 0,0 31,31 Z" fill="#38bdf8" opacity="0.45" />
+        <circle cx="45" cy="35" r="1.8" fill="#f43f5e" />
+        <!-- Caméra de surveillance d'angle rouge -->
+        <polygon points="26,16 34,19 32,24 24,21" fill="#ef4444" />
+        <circle cx="33" cy="21" r="1.2" fill="#fecaca" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="4.2" font-weight="900" fill="#7dd3fc" letter-spacing="0.7" text-anchor="middle">MENDEL OPS</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('darwin') || (id.includes('leto') && !id.includes('skeleton'))) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-letocult" role="img" aria-label="Insigne Culte Darwiniste Leto Dark Descent">
+        <!-- Blason losange inversé culte darwiniste violet profond -->
+        <polygon points="40,5 73,38 40,75 7,38" fill="#1e1035" stroke="#a855f7" stroke-width="2.5" />
+        <!-- Volutes toxiques de mutagène noir/pourpre -->
+        <path d="M22,50 Q30,42 28,34 Q26,26 36,22 Q44,26 42,34 Q40,42 58,50" fill="none" stroke="#c084fc" stroke-width="1.5" opacity="0.6" />
+        <!-- Œuf xénomorphe sacré à quatre lèvres ouvertes -->
+        <path d="M40,24 Q50,34 47,48 Q40,54 33,48 Q30,34 40,24 Z" fill="#3b0764" stroke="#d8b4fe" stroke-width="1.6" />
+        <path d="M40,24 L36,32 M40,24 L44,32 M40,24 L40,34" stroke="#f0abfc" stroke-width="1.2" />
+        <!-- Tourelle sentinelle UA 571-C en silhouette de base -->
+        <polygon points="34,58 46,58 43,53 37,53" fill="#64748b" stroke="#94a3b8" stroke-width="1" />
+        <line x1="35" y1="58" x2="28" y2="67" stroke="#94a3b8" stroke-width="1.8" />
+        <line x1="45" y1="58" x2="52" y2="67" stroke="#94a3b8" stroke-width="1.8" />
+        <line x1="40" y1="58" x2="40" y2="68" stroke="#94a3b8" stroke-width="1.8" />
+        <rect x="38" y="47" width="4" height="6" fill="#f59e0b" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#e9d5ff" letter-spacing="0.8" text-anchor="middle">LETO DARWIN</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('ravager') || (id.includes('lv742') && !id.includes('kainde') && !id.includes('extinction_council'))) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-lv742ravager" role="img" aria-label="Insigne Essaim Ravager LV-742">
+        <!-- Bouclier géothermique basaltique triangulaire -->
+        <polygon points="40,6 74,68 6,68" fill="#1a0a0a" stroke="#ef4444" stroke-width="2.5" />
+        <!-- Fissure de magma en fusion LV-742 -->
+        <path d="M40,10 L37,28 L43,38 L38,52 L42,66" fill="none" stroke="#f97316" stroke-width="2" />
+        <!-- Doubles lames chitineuses géantes de Ravager (scythe blades) -->
+        <path d="M22,64 Q20,38 36,24 Q32,38 30,58 Z" fill="#450a0a" stroke="#fca5a5" stroke-width="1.5" />
+        <path d="M58,64 Q60,38 44,24 Q48,38 50,58 Z" fill="#450a0a" stroke="#fca5a5" stroke-width="1.5" />
+        <circle cx="36" cy="24" r="2" fill="#fee2e2" />
+        <circle cx="44" cy="24" r="2" fill="#fee2e2" />
+        <!-- Crâne à crête épineuse tranchante de la caste de choc -->
+        <polygon points="40,26 43,36 40,42 37,36" fill="#7f1d1d" stroke="#ef4444" stroke-width="1" />
+        <text x="40" y="65" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#fecaca" letter-spacing="0.7" text-anchor="middle">LV-742 RAVAGER</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('top_knot') || (id.includes('bunda') && !id.includes('bunda_war'))) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-bundatopknot" role="img" aria-label="Insigne Top-Knot Clan Bunda">
+        <!-- Octogone tribal Yautja or et bronze du Top-Knot Clan -->
+        <polygon points="26,6 54,6 74,26 74,54 54,74 26,74 6,54 6,26" fill="#1c1304" stroke="#f59e0b" stroke-width="2.5" />
+        <!-- Tresse nouée patriarcale au sommet (Top-Knot braided quills) -->
+        <path d="M40,6 Q34,14 37,22 Q40,16 43,22 Q46,14 40,6 Z" fill="#78350f" stroke="#fbbf24" stroke-width="1.2" />
+        <ellipse cx="40" cy="12" rx="4" ry="2" fill="#fbbf24" />
+        <!-- Double canon plasma d'épaule en arcs convergents -->
+        <path d="M16,30 Q28,26 34,36" fill="none" stroke="#ec4899" stroke-width="2.2" stroke-linecap="round" />
+        <path d="M64,30 Q52,26 46,36" fill="none" stroke="#ec4899" stroke-width="2.2" stroke-linecap="round" />
+        <circle cx="16" cy="30" r="2.5" fill="#f472b6" />
+        <circle cx="64" cy="30" r="2.5" fill="#f472b6" />
+        <!-- Biomasque patriarcal orné aux orbites tri-laser -->
+        <polygon points="32,28 40,24 48,28 46,46 40,54 34,46" fill="#92400e" stroke="#fde047" stroke-width="1.5" />
+        <circle cx="37" cy="36" r="1.5" fill="#ef4444" />
+        <circle cx="43" cy="36" r="1.5" fill="#ef4444" />
+        <!-- Triple soleil de la planète Bunda -->
+        <circle cx="40" cy="62" r="3" fill="#fbbf24" stroke="#d97706" stroke-width="0.8" />
+        <circle cx="32" cy="63" r="2" fill="#f59e0b" />
+        <circle cx="48" cy="63" r="2" fill="#f59e0b" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#fef08a" letter-spacing="0.7" text-anchor="middle">TOP-KNOT BUNDA</text>
       </svg>
     `.trim();
   }

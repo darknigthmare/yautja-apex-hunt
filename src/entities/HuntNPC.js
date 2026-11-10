@@ -3236,6 +3236,24 @@ export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
   wpn_killer_clan_blaster_carbine: makeWeaponBallisticProfile('wpn_killer_clan_blaster_carbine', {
     damage: 44, cooldown: 1.25, rangeM: 60, soundRadiusM: 85, projectileColor: 0xff2244, archetype: 'salvaged_blaster_carbine', cadence: 'erratic_energy_burst', damageType: 'energy',
   }),
+  wpn_turnabout_winchester_magnum_338: makeWeaponBallisticProfile('wpn_turnabout_winchester_magnum_338', {
+    damage: 50, cooldown: 2.1, rangeM: 130, soundRadiusM: 110, projectileColor: 0xffddaa, archetype: 'heavy_hunting_rifle', cadence: 'bolt_action_heavy', damageType: 'ballistic',
+  }),
+  wpn_ww1_lee_enfield_trench_carbine: makeWeaponBallisticProfile('wpn_ww1_lee_enfield_trench_carbine', {
+    damage: 38, cooldown: 1.4, rangeM: 85, soundRadiusM: 90, projectileColor: 0xffc482, archetype: 'service_bolt_carbine', cadence: 'rapid_bolt_fire', damageType: 'ballistic',
+  }),
+  wpn_mendel_security_shock_taser: makeWeaponBallisticProfile('wpn_mendel_security_shock_taser', {
+    damage: 22, cooldown: 0.8, rangeM: 18, soundRadiusM: 20, projectileColor: 0x38bdf8, archetype: 'high_voltage_dart_taser', cadence: 'rapid_dart_discharge', damageType: 'ionic',
+  }),
+  wpn_dark_descent_sentry_slugger: makeWeaponBallisticProfile('wpn_dark_descent_sentry_slugger', {
+    damage: 32, cooldown: 0.12, rangeM: 90, soundRadiusM: 100, projectileColor: 0xf59e0b, archetype: 'automated_sentry_multitube', cadence: 'high_rate_caseless_barrage', damageType: 'ballistic',
+  }),
+  wpn_lv742_sniper_railgun_lance: makeWeaponBallisticProfile('wpn_lv742_sniper_railgun_lance', {
+    damage: 62, cooldown: 2.8, rangeM: 160, soundRadiusM: 125, projectileColor: 0x818cf8, archetype: 'magnetic_hypersonic_rail_lance', cadence: 'hypersonic_single_slug', damageType: 'ballistic',
+  }),
+  wpn_bunda_top_knot_heavy_caster: makeWeaponBallisticProfile('wpn_bunda_top_knot_heavy_caster', {
+    damage: 52, cooldown: 1.6, rangeM: 100, soundRadiusM: 95, projectileColor: 0xec4899, archetype: 'dual_resonator_plasma_caster', cadence: 'synchronized_double_plasma', damageType: 'energy',
+  }),
 });
 
 function resolveNpcRoleWeaponId(npcType) {
@@ -3401,6 +3419,36 @@ export function getNpcWeaponProfile(npcTypeOrWeaponId, options = {}) {
   if (raw.includes('blaster_carbine')) {
     return makeWeaponBallisticProfile(raw || 'wpn_killer_clan_blaster_carbine', {
       damage: 44, cooldown: 1.25, rangeM: 60, soundRadiusM: 85, projectileColor: 0xff2244, archetype: 'salvaged_blaster_carbine', cadence: 'erratic_energy_burst', damageType: 'energy',
+    });
+  }
+  if (raw.includes('winchester') || raw.includes('turnabout')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_turnabout_winchester_magnum_338', {
+      damage: 50, cooldown: 2.1, rangeM: 130, soundRadiusM: 110, projectileColor: 0xffddaa, archetype: 'heavy_hunting_rifle', cadence: 'bolt_action_heavy', damageType: 'ballistic',
+    });
+  }
+  if (raw.includes('lee_enfield') || raw.includes('ww1')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_ww1_lee_enfield_trench_carbine', {
+      damage: 38, cooldown: 1.4, rangeM: 85, soundRadiusM: 90, projectileColor: 0xffc482, archetype: 'service_bolt_carbine', cadence: 'rapid_bolt_fire', damageType: 'ballistic',
+    });
+  }
+  if (raw.includes('mendel') || raw.includes('shock_taser')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_mendel_security_shock_taser', {
+      damage: 22, cooldown: 0.8, rangeM: 18, soundRadiusM: 20, projectileColor: 0x38bdf8, archetype: 'high_voltage_dart_taser', cadence: 'rapid_dart_discharge', damageType: 'ionic',
+    });
+  }
+  if (raw.includes('sentry_slugger') || raw.includes('dark_descent')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_dark_descent_sentry_slugger', {
+      damage: 32, cooldown: 0.12, rangeM: 90, soundRadiusM: 100, projectileColor: 0xf59e0b, archetype: 'automated_sentry_multitube', cadence: 'high_rate_caseless_barrage', damageType: 'ballistic',
+    });
+  }
+  if (raw.includes('railgun_lance') || raw.includes('lv742')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_lv742_sniper_railgun_lance', {
+      damage: 62, cooldown: 2.8, rangeM: 160, soundRadiusM: 125, projectileColor: 0x818cf8, archetype: 'magnetic_hypersonic_rail_lance', cadence: 'hypersonic_single_slug', damageType: 'ballistic',
+    });
+  }
+  if (raw.includes('top_knot') || raw.includes('bunda')) {
+    return makeWeaponBallisticProfile(raw || 'wpn_bunda_top_knot_heavy_caster', {
+      damage: 52, cooldown: 1.6, rangeM: 100, soundRadiusM: 95, projectileColor: 0xec4899, archetype: 'dual_resonator_plasma_caster', cadence: 'synchronized_double_plasma', damageType: 'energy',
     });
   }
   return makeWeaponBallisticProfile(raw || 'npc_wep_m41a_pulse_rifle', {

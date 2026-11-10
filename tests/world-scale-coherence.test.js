@@ -747,3 +747,94 @@ test('AudioSynthesizer procedural Vague 12 SFX methods execute safely in headles
   assert.ok(flechette.durationSeconds > 0);
   assert.equal(flechette.played, false);
 });
+
+test('Vague 13 canonical NPC weapons resolve to rich ballistic and acoustic profiles', () => {
+  const vague13Weapons = [
+    {
+      id: 'wpn_turnabout_winchester_magnum_338',
+      archetype: 'heavy_hunting_rifle',
+      damage: 50,
+      rangeM: 130,
+      soundRadiusM: 110,
+      projectileColor: 0xffddaa,
+    },
+    {
+      id: 'wpn_ww1_lee_enfield_trench_carbine',
+      archetype: 'service_bolt_carbine',
+      damage: 38,
+      rangeM: 85,
+      soundRadiusM: 90,
+      projectileColor: 0xffc482,
+    },
+    {
+      id: 'wpn_mendel_security_shock_taser',
+      archetype: 'high_voltage_dart_taser',
+      damage: 22,
+      rangeM: 18,
+      soundRadiusM: 20,
+      projectileColor: 0x38bdf8,
+    },
+    {
+      id: 'wpn_dark_descent_sentry_slugger',
+      archetype: 'automated_sentry_multitube',
+      damage: 32,
+      rangeM: 90,
+      soundRadiusM: 100,
+      projectileColor: 0xf59e0b,
+    },
+    {
+      id: 'wpn_lv742_sniper_railgun_lance',
+      archetype: 'magnetic_hypersonic_rail_lance',
+      damage: 62,
+      rangeM: 160,
+      soundRadiusM: 125,
+      projectileColor: 0x818cf8,
+    },
+    {
+      id: 'wpn_bunda_top_knot_heavy_caster',
+      archetype: 'dual_resonator_plasma_caster',
+      damage: 52,
+      rangeM: 100,
+      soundRadiusM: 95,
+      projectileColor: 0xec4899,
+    },
+  ];
+
+  for (const expected of vague13Weapons) {
+    const profile = getNpcWeaponProfile(expected.id);
+    assert.ok(profile && typeof profile === 'object', `${expected.id} must resolve to a profile object`);
+    assert.equal(profile.id, expected.id);
+    assert.equal(profile.archetype, expected.archetype);
+    assert.equal(profile.damage, expected.damage);
+    assert.equal(profile.rangeM, expected.rangeM);
+    assert.equal(profile.soundRadiusM, expected.soundRadiusM);
+    assert.equal(profile.projectileColor, expected.projectileColor);
+    assert.ok(profile.cooldown > 0, `${expected.id} must have non-zero cooldown`);
+    assert.ok(typeof profile.cadence === 'string' && profile.cadence.length > 0);
+  }
+});
+
+test('AudioSynthesizer procedural Vague 13 SFX methods execute safely in headless Node environment', () => {
+  const winchester = audioSynth.playWinchesterMagnumShotEcho();
+  assert.ok(winchester && winchester.event === 'winchester_magnum_shot_echo');
+  assert.ok(winchester.rifleCrackHz > 0);
+  assert.ok(winchester.supersonicWhistleHz > winchester.rifleCrackHz);
+  assert.ok(winchester.timberResonanceHz > 0);
+  assert.ok(winchester.durationSeconds > 0);
+  assert.equal(winchester.played, false);
+
+  const sentry = audioSynth.playSentrySluggerBurst();
+  assert.ok(sentry && sentry.event === 'sentry_slugger_burst');
+  assert.ok(sentry.motorSpinHz > 0);
+  assert.ok(sentry.sluggerCrackHz > sentry.motorSpinHz);
+  assert.ok(sentry.subRumbleHz > 0);
+  assert.ok(sentry.durationSeconds > 0);
+  assert.equal(sentry.played, false);
+
+  const rail = audioSynth.playRailgunLanceChargeHum();
+  assert.ok(rail && rail.event === 'railgun_lance_charge_hum');
+  assert.ok(rail.capacitorWhineEndHz > rail.capacitorWhineStartHz);
+  assert.ok(rail.hypersonicSnapHz > rail.capacitorWhineEndHz);
+  assert.ok(rail.durationSeconds > 0);
+  assert.equal(rail.played, false);
+});

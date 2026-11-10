@@ -3832,6 +3832,144 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'killer_clan_skirmisher_vrokk', name: 'Tirailleur Vrokk', role: 'Embusqué des Parois Rocheuses', weapon: 'Carbine Blaster Légère & Dagues d’Os Xéno', weaponId: 'wpn_killer_clan_blaster_carbine', vitalityRatio: 1.1, hp: 610, armor: 55, trophy: 'Lame Courbe Forgée dans une Queue de Xéno' },
       { id: 'killer_clan_trapper_drakkh', name: 'Trappeur Drakkh', role: 'Poseur de Pièges Électro-Barbelés', weapon: 'Tromblon Plasma de Rebut & Filet Épineux', weaponId: 'wpn_killer_clan_blaster_carbine', vitalityRatio: 1.0, hp: 560, armor: 50, trophy: 'Maillon de Chaîne en Acier Trempé Caparis' }
     ]
+  },
+  {
+    id: 'squad_pred_turnabout_rangers',
+    name: 'Rangers des Rocheuses & Traqueurs de Ray Vance (2008)',
+    universe: 'PREDATOR',
+    shortName: 'Rangers Rocheuses (3 Traqueurs)',
+    category: 'SPECIAL_FORCES',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Predator: Turnabout (2008)',
+    biomeId: 'jungle',
+    recommendedBiomeLabel: 'Crête Forestière des Rocheuses',
+    primaryMapId: 'map_pred_rockies_firewatch_ridge',
+    weaponLoadout: ['wpn_turnabout_winchester_magnum_338'],
+    description: 'Rangers forestiers d’élite guidés par l’ancien tireur d’élite aveugle Ray Vance, utilisant des pièges acoustiques et des carabines .338 Winchester Magnum.',
+    tactics: 'Tirs de barrage à longue portée synchronisés sur les échos acoustiques pendant que des trappeurs rabattent la cible vers des fils de déclenchement.',
+    totalHonorReward: 5400,
+    soloVariantId: 'alien_base_quinn_mckenna_ranger_2018',
+    members: [
+      { id: 'turnabout_ray_vance', name: 'Ray Vance', role: 'Sniper Aveugle & Maître de l’Écho', weapon: 'Winchester Model 70 .338 Magnum Custom', weaponId: 'wpn_turnabout_winchester_magnum_338', vitalityRatio: 1.3, hp: 680, armor: 45, trophy: 'Corde de Résonance Acoustique en Corde à Piano' },
+      { id: 'turnabout_spotter_cole', name: 'Ranger Cole', role: 'Observateur & Baliseur de Faille', weapon: 'Carabine de Chasse .338 & Jumelles Télémétriques', weaponId: 'wpn_turnabout_winchester_magnum_338', vitalityRatio: 1.1, hp: 560, armor: 35, trophy: 'Boussole de Survie des Rocheuses en Cuivre' },
+      { id: 'turnabout_trapper_macleod', name: 'Trappeur MacLeod', role: 'Poseur de Pièges en Sous-Bois', weapon: 'Fusil Calibre 12 & Câbles d’Acier Tressés', weaponId: 'wpn_turnabout_winchester_magnum_338', vitalityRatio: 1.15, hp: 600, armor: 40, trophy: 'Insigne de Garde Forestier Fédéral Ébréché' }
+    ]
+  },
+  {
+    id: 'squad_pred_western_front_infantry',
+    name: 'Section des Tranchées de la Somme — Front Ouest (1916)',
+    universe: 'PREDATOR',
+    shortName: 'Infanterie Somme 1916 (3 Soldats)',
+    category: 'MILITARY_SOLDIERS',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Predator: Blood on Two Earths (2001)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiomeLabel: 'Tranchées Boueuses de la Somme (1916)',
+    primaryMapId: 'map_pred_western_front_1916',
+    weaponLoadout: ['wpn_ww1_lee_enfield_trench_carbine'],
+    description: 'Fantassins britanniques aguerris par des mois de guerre de position, armés de Lee-Enfield No.1 Mk III* et protégés par des masques à gaz face aux tirs rasants.',
+    tactics: 'Feu de salve en « Mad Minute » avec baïonnettes fixées, repli sous abri de casemate et tirs de fusées éclairantes pour démasquer le camouflage.',
+    totalHonorReward: 5600,
+    soloVariantId: 'alien_base_major_dutch_schaefer_1987',
+    members: [
+      { id: 'ww1_captain_hastings', name: 'Capitaine Arthur Hastings', role: 'Officier de Tranchée', weapon: 'Lee-Enfield Mk III* & Pistolet Webley .455', weaponId: 'wpn_ww1_lee_enfield_trench_carbine', vitalityRatio: 1.25, hp: 650, armor: 40, trophy: 'Montre à Gousset Régimentaire Stoppée par Balle' },
+      { id: 'ww1_sniper_sinclair', name: 'Caporal Tireur Sinclair', role: 'Sniper de Parapet', weapon: 'Lee-Enfield avec Lunette Aldis 1916', weaponId: 'wpn_ww1_lee_enfield_trench_carbine', vitalityRatio: 1.05, hp: 540, armor: 30, trophy: 'Périscope de Tranchée en Laiton Battu' },
+      { id: 'ww1_bomber_evans', name: 'Grenadier Evans', role: 'Nettoyeur de Boyau', weapon: 'Carabine Courte & Grenades Mills No.5', weaponId: 'wpn_ww1_lee_enfield_trench_carbine', vitalityRatio: 1.2, hp: 620, armor: 50, trophy: 'Casque Brodie en Acier Ciselé par Shrapnel' }
+    ]
+  },
+  {
+    id: 'squad_alien_mendel_tech_sec',
+    name: 'Équipe de Survie & Sécurité de la Station Mendel (2019)',
+    universe: 'ALIEN',
+    shortName: 'Sécurité Mendel (3 Survivants)',
+    category: 'SECURITY_GUARDS',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Alien: Blackout (2019)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Station Spatiale Mendel — Conduits Techniques',
+    primaryMapId: 'map_alien_mendel_station_ducting',
+    weaponLoadout: ['wpn_mendel_security_shock_taser'],
+    description: 'Survivants de la station spatiale Mendel menés par Amanda Ripley, opérant dans les conduits et manipulant les sas blindés pour piéger les prédateurs.',
+    tactics: 'Verrouillage de portes pneumatiques motorisées, dérivation de circuits haute tension et frappes de taser incapacitantes pour créer des zones de repli étanches.',
+    totalHonorReward: 5800,
+    soloVariantId: 'alien_base_amanda_ripley_sevastopol_engineer',
+    members: [
+      { id: 'mendel_amanda_ripley', name: 'Amanda Ripley', role: 'Ingénieur en Chef & Coordinatrice', weapon: 'Seegson P-99 Stun Taser & Détecteur Portatif', weaponId: 'wpn_mendel_security_shock_taser', vitalityRatio: 1.35, hp: 700, armor: 45, trophy: 'Détecteur de Mouvements Portable Hacké de Mendel' },
+      { id: 'mendel_guard_vance', name: 'Garde de Sas Thorn', role: 'Sécurité de Confinement', weapon: 'Taser Haute Tension & Matraque Électrique', weaponId: 'wpn_mendel_security_shock_taser', vitalityRatio: 1.15, hp: 580, armor: 50, trophy: 'Clé de Dérivation Magnétique Haute Sécurité' },
+      { id: 'mendel_tech_yano', name: 'Technicien Systèmes Yano', role: 'Opérateur Dérivation sas', weapon: 'Outil de Soudure à l’Arc & Taser P-99', weaponId: 'wpn_mendel_security_shock_taser', vitalityRatio: 1.1, hp: 550, armor: 35, trophy: 'Moniteur CRT Portatif de Surveillance Sas' }
+    ]
+  },
+  {
+    id: 'squad_alien_leto_darwin_cultists',
+    name: 'Zélotes du Culte Darwiniste & Gardes de Leto (2023)',
+    universe: 'ALIEN',
+    shortName: 'Culte Darwiniste Leto (3 Fanatiques)',
+    category: 'CORPORATE_MERCENARIES',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Aliens: Dark Descent (2023)',
+    biomeId: 'hive_lv426',
+    recommendedBiomeLabel: 'Base Pioneer de Leto Sous Protocole Cerberus',
+    primaryMapId: 'map_alien_leto_pioneer_station',
+    weaponLoadout: ['wpn_dark_descent_sentry_slugger'],
+    description: 'Adorateurs fanatiques de l’évolution xénomorphe sur la lune Leto, retranchés derrière des tourelles sentinelles UA 571-C détournées de l’arsenal USCM.',
+    tactics: 'Déploiement de tourelles automatiques multitubes en feux croisés, charge fanatique sous neuro-stimulants et déclenchement de protocoles de confinement Cerberus.',
+    totalHonorReward: 6200,
+    soloVariantId: 'prey_colonial_marine_heavy',
+    members: [
+      { id: 'leto_hierophant_malor', name: 'Hiérophante Malor', role: 'Apôtre de l’Infestation Darwinienne', weapon: 'Fusil Automatique Lourd & Fiole de Mutagène', weaponId: 'wpn_dark_descent_sentry_slugger', vitalityRatio: 1.4, hp: 740, armor: 60, trophy: 'Crâne de Praetorian Laqué d’Emblèmes Sectaires' },
+      { id: 'leto_enforcer_krag', name: 'Zélote de Choc Krag', role: 'Garde du Sanctuaire Bio-Mécanique', weapon: 'Mitrailleuse 10x28mm Caseless & Bouclier Riot', weaponId: 'wpn_dark_descent_sentry_slugger', vitalityRatio: 1.25, hp: 660, armor: 55, trophy: 'Fiole d’Acide Xénomorphe Cristallisé Béni' },
+      { id: 'leto_sentry_core_01', name: 'Noyau Sentinelle UA 571-C', role: 'Tourelle Automatique Périmétrique', weapon: 'Double Canon Rotatif Cal. 10x28mm Automatisé', weaponId: 'wpn_dark_descent_sentry_slugger', vitalityRatio: 1.2, hp: 630, armor: 70, trophy: 'Module de Ciblage UA 571-C Surchauffé' }
+    ]
+  },
+  {
+    id: 'squad_avp_lv742_ravager_hive',
+    name: 'Essaim Muté de LV-742 & Garde Ravager (2003)',
+    universe: 'AVP',
+    shortName: 'Ravagers LV-742 (3 Monstres)',
+    category: 'COLONIAL_MARINES',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Aliens versus Predator: Extinction (2003)',
+    biomeId: 'bouvetoya_pyramid',
+    recommendedBiomeLabel: 'Failles Géothermiques de LV-742',
+    primaryMapId: 'map_avp_lv742_subterranean_core',
+    weaponLoadout: ['wpn_lv742_sniper_railgun_lance'],
+    description: 'Castes de combat colossales génétiquement mutées sur LV-742, dotées de faux chitineuses géantes aux avant-bras tranchant les métaux d’armures.',
+    tactics: 'Charge destructrice en tenaille brisant les formations défensives, projection de bave corrosive et couverture lourde par tir perforant à longue portée.',
+    totalHonorReward: 6800,
+    soloVariantId: 'alien_base_xeno_ravager_elite_guard',
+    members: [
+      { id: 'lv742_apex_ravager', name: 'Alpha Ravager Colossal', role: 'Béhémoth à Faux Chitineuses', weapon: 'Doubles Lames d’Avant-Bras Géantes Perforantes', weaponId: 'wpn_lv742_sniper_railgun_lance', vitalityRatio: 1.55, hp: 860, armor: 80, trophy: 'Lame d’Avant-Bras Chitineuse de Ravager Géant' },
+      { id: 'lv742_flank_scythe', name: 'Ravager Tirailleur', role: 'Éventreur de Blindages Légers', weapon: 'Lames Scythes Tranchantes & Crête Dents de Scie', weaponId: 'wpn_lv742_sniper_railgun_lance', vitalityRatio: 1.3, hp: 700, armor: 65, trophy: 'Plaque Dorsale Mutée en Épines de Silicium' },
+      { id: 'lv742_carrier_drone', name: 'Xéno Transporteur Carrier', role: 'Vecteur de Dissémination Facehugger', weapon: 'Tentacules Préhensiles & Poche d’Incubation', weaponId: 'wpn_lv742_sniper_railgun_lance', vitalityRatio: 1.25, hp: 660, armor: 55, trophy: 'Poche d’Incubation Externe de Facehugger' }
+    ]
+  },
+  {
+    id: 'squad_avp_bunda_top_knot_clan',
+    name: 'Chasseurs d’Élite du Top-Knot Clan — Bunda (1995)',
+    universe: 'AVP',
+    shortName: 'Top-Knot Clan Bunda (3 Maîtres)',
+    category: 'ANCIENT_YAUTJA',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Aliens vs. Predator: War (1995)',
+    biomeId: 'ryushi_desert',
+    recommendedBiomeLabel: 'Plaines Savanières de Bunda (1995)',
+    primaryMapId: 'map_avp_bunda_machiko_plains',
+    weaponLoadout: ['wpn_bunda_top_knot_heavy_caster'],
+    description: 'Chasseurs vétérans du clan Top-Knot déployés sur Bunda aux côtés de Machiko Noguchi avant la scission et la traque fratricide.',
+    tactics: 'Tirs de canons d’épaule à double résonateur en cadence alternée, déploiement de smart discs incendiaires et encerclement à la combistick.',
+    totalHonorReward: 7000,
+    soloVariantId: 'prey_bad_blood_warlord',
+    members: [
+      { id: 'top_knot_leader_bunda', name: 'Chef de Clan Top-Knot', role: 'Patriarche de la Grande Traque', weapon: 'Canon Plasma Double Bobine & Glaive d’Honneur', weaponId: 'wpn_bunda_top_knot_heavy_caster', vitalityRatio: 1.5, hp: 820, armor: 85, trophy: 'Nœud de Tresse Patriarcale Orné de Griffes de Reine' },
+      { id: 'top_knot_enforcer_gann', name: 'Guerrier d’Assaut Gann', role: 'Maître d’Armes Rituelles', weapon: 'Combistick Télescopique & Caster d’Épaule', weaponId: 'wpn_bunda_top_knot_heavy_caster', vitalityRatio: 1.3, hp: 720, armor: 70, trophy: 'Masque à Visière Gravée de Runes Bunda' },
+      { id: 'top_knot_stalker_vokh', name: 'Pisteur des Plaines Vokh', role: 'Avant-Garde Rapide de Savane', weapon: 'Disque Intelligent Incendiaire & Lames de Poignet', weaponId: 'wpn_bunda_top_knot_heavy_caster', vitalityRatio: 1.25, hp: 680, armor: 65, trophy: 'Dard de Queue de Vy’drach en Argent Yautja' }
+    ]
   }
 ]);
 

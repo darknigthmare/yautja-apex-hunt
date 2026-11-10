@@ -37238,6 +37238,154 @@ class AudioSynthesizer {
 
     return descriptor;
   }
+
+  playWinchesterMagnumShotEcho() {
+    const descriptor = {
+      event: 'winchester_magnum_shot_echo',
+      synthesis: 'high_bore_rifle_crack_supersonic_whistle_timber_echo',
+      rifleCrackHz: 2600,
+      supersonicWhistleHz: 5200,
+      timberResonanceHz: 140,
+      durationSeconds: 0.62,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const crackOsc = this.ctx.createOscillator();
+    const crackGain = this.ctx.createGain();
+    crackOsc.type = 'sawtooth';
+    crackOsc.frequency.setValueAtTime(descriptor.rifleCrackHz, now);
+    crackOsc.frequency.exponentialRampToValueAtTime(180, now + 0.08);
+
+    crackGain.gain.setValueAtTime(0.7, now);
+    crackGain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+    crackOsc.connect(crackGain);
+    crackGain.connect(this.ctx.destination);
+    crackOsc.start(now);
+    crackOsc.stop(now + 0.11);
+
+    const whistleOsc = this.ctx.createOscillator();
+    const whistleGain = this.ctx.createGain();
+    whistleOsc.type = 'sine';
+    whistleOsc.frequency.setValueAtTime(descriptor.supersonicWhistleHz, now + 0.02);
+    whistleOsc.frequency.exponentialRampToValueAtTime(1400, now + 0.25);
+
+    whistleGain.gain.setValueAtTime(0.2, now + 0.02);
+    whistleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+
+    whistleOsc.connect(whistleGain);
+    whistleGain.connect(this.ctx.destination);
+    whistleOsc.start(now + 0.02);
+    whistleOsc.stop(now + 0.3);
+
+    const echoOsc = this.ctx.createOscillator();
+    const echoGain = this.ctx.createGain();
+    echoOsc.type = 'triangle';
+    echoOsc.frequency.setValueAtTime(descriptor.timberResonanceHz, now + 0.1);
+    echoOsc.frequency.exponentialRampToValueAtTime(45, now + 0.58);
+
+    echoGain.gain.setValueAtTime(0.35, now + 0.1);
+    echoGain.gain.exponentialRampToValueAtTime(0.001, now + 0.62);
+
+    echoOsc.connect(echoGain);
+    echoGain.connect(this.ctx.destination);
+    echoOsc.start(now + 0.1);
+    echoOsc.stop(now + 0.62);
+
+    return descriptor;
+  }
+
+  playSentrySluggerBurst() {
+    const descriptor = {
+      event: 'sentry_slugger_burst',
+      synthesis: 'automated_tri_barrel_cycling_caseless_percussion',
+      motorSpinHz: 440,
+      sluggerCrackHz: 3100,
+      subRumbleHz: 85,
+      durationSeconds: 0.38,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const motorOsc = this.ctx.createOscillator();
+    const motorGain = this.ctx.createGain();
+    motorOsc.type = 'sawtooth';
+    motorOsc.frequency.setValueAtTime(descriptor.motorSpinHz, now);
+    motorOsc.frequency.linearRampToValueAtTime(descriptor.motorSpinHz * 1.8, now + 0.35);
+
+    motorGain.gain.setValueAtTime(0.22, now);
+    motorGain.gain.linearRampToValueAtTime(0.001, now + 0.38);
+
+    motorOsc.connect(motorGain);
+    motorGain.connect(this.ctx.destination);
+    motorOsc.start(now);
+    motorOsc.stop(now + 0.38);
+
+    const crackOsc = this.ctx.createOscillator();
+    const crackGain = this.ctx.createGain();
+    crackOsc.type = 'square';
+    crackOsc.frequency.setValueAtTime(descriptor.sluggerCrackHz, now + 0.04);
+    crackOsc.frequency.exponentialRampToValueAtTime(420, now + 0.22);
+
+    crackGain.gain.setValueAtTime(0.55, now + 0.04);
+    crackGain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+    crackOsc.connect(crackGain);
+    crackGain.connect(this.ctx.destination);
+    crackOsc.start(now + 0.04);
+    crackOsc.stop(now + 0.26);
+
+    return descriptor;
+  }
+
+  playRailgunLanceChargeHum() {
+    const descriptor = {
+      event: 'railgun_lance_charge_hum',
+      synthesis: 'magnetic_flux_induction_capacitor_whine_hypersonic_snap',
+      capacitorWhineStartHz: 120,
+      capacitorWhineEndHz: 2400,
+      hypersonicSnapHz: 6800,
+      durationSeconds: 0.75,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const whineOsc = this.ctx.createOscillator();
+    const whineGain = this.ctx.createGain();
+    whineOsc.type = 'sine';
+    whineOsc.frequency.setValueAtTime(descriptor.capacitorWhineStartHz, now);
+    whineOsc.frequency.exponentialRampToValueAtTime(descriptor.capacitorWhineEndHz, now + 0.52);
+
+    whineGain.gain.setValueAtTime(0.05, now);
+    whineGain.gain.linearRampToValueAtTime(0.48, now + 0.5);
+    whineGain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+
+    whineOsc.connect(whineGain);
+    whineGain.connect(this.ctx.destination);
+    whineOsc.start(now);
+    whineOsc.stop(now + 0.56);
+
+    const snapTime = now + 0.52;
+    const snapOsc = this.ctx.createOscillator();
+    const snapGain = this.ctx.createGain();
+    snapOsc.type = 'sawtooth';
+    snapOsc.frequency.setValueAtTime(descriptor.hypersonicSnapHz, snapTime);
+    snapOsc.frequency.exponentialRampToValueAtTime(60, snapTime + 0.18);
+
+    snapGain.gain.setValueAtTime(0.85, snapTime);
+    snapGain.gain.exponentialRampToValueAtTime(0.001, snapTime + 0.22);
+
+    snapOsc.connect(snapGain);
+    snapGain.connect(this.ctx.destination);
+    snapOsc.start(snapTime);
+    snapOsc.stop(snapTime + 0.23);
+
+    return descriptor;
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();

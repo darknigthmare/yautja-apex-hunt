@@ -124,6 +124,13 @@ test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague
     'squad_alien_shan_shen_guards',
     'squad_avp_delacroix_samara',
     'squad_avp_three_world_killer_clan',
+    // Vague 13
+    'squad_pred_turnabout_rangers',
+    'squad_pred_western_front_infantry',
+    'squad_alien_mendel_tech_sec',
+    'squad_alien_leto_darwin_cultists',
+    'squad_avp_lv742_ravager_hive',
+    'squad_avp_bunda_top_knot_clan',
   ];
 
   for (const squadId of vagueSquadIds) {
@@ -156,6 +163,13 @@ test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague
   assert.ok(getSquadLogo('squad_alien_shan_shen_guards', 40).includes('logo-squad-shanshen'));
   assert.ok(getSquadLogo('squad_avp_delacroix_samara', 40).includes('logo-squad-delacroixsamara'));
   assert.ok(getSquadLogo('squad_avp_three_world_killer_clan', 40).includes('logo-squad-threeworldkiller'));
+  // Vague 13
+  assert.ok(getSquadLogo('squad_pred_turnabout_rangers', 40).includes('logo-squad-turnabout'));
+  assert.ok(getSquadLogo('squad_pred_western_front_infantry', 40).includes('logo-squad-westernfront'));
+  assert.ok(getSquadLogo('squad_alien_mendel_tech_sec', 40).includes('logo-squad-mendel'));
+  assert.ok(getSquadLogo('squad_alien_leto_darwin_cultists', 40).includes('logo-squad-letocult'));
+  assert.ok(getSquadLogo('squad_avp_lv742_ravager_hive', 40).includes('logo-squad-lv742ravager'));
+  assert.ok(getSquadLogo('squad_avp_bunda_top_knot_clan', 40).includes('logo-squad-bundatopknot'));
 
   for (const squad of SQUAD_ENCOUNTERS) {
     const svg = getSquadLogo(squad.id, 40);
@@ -337,10 +351,10 @@ test('src/main.js intègre les icônes d’équipement vectorielles dans renderH
   assert.ok(mainSource.includes('loadout-core-icon') && mainSource.includes('getEquipmentIconSvg(id, 16)'), 'main.js doit intégrer les icônes sur loadout-core-icon');
   assert.ok(mainSource.includes('loadout-item-icon') && mainSource.includes('getEquipmentIconSvg(item.id, 22)'), 'main.js doit intégrer les icônes sur loadout-item-icon');
   assert.ok(mainSource.includes('choice.append(input, icon, copy, cost)'), 'L\'icône doit être insérée avant l\'élément copy dans loadout-choice');
-  assert.ok(mainSource.includes('.squad-filter-pill') && mainSource.includes('108'), 'setupTaxonomyAndMultiverse doit synchroniser squad-filter-pill à 108');
-  assert.ok(mainSource.includes('.maps-filter-pill') && mainSource.includes('96'), 'setupTaxonomyAndMultiverse doit synchroniser maps-filter-pill à 96');
-  assert.ok(mainSource.includes('.weapons-filter-pill') && mainSource.includes('184'), 'setupTaxonomyAndMultiverse doit synchroniser weapons-filter-pill à 184');
-  assert.ok(mainSource.includes('.codex-filter-pill') && mainSource.includes('174'), 'setupTaxonomyAndMultiverse doit synchroniser codex-filter-pill à 174');
+  assert.ok(mainSource.includes('.squad-filter-pill') && mainSource.includes('114'), 'setupTaxonomyAndMultiverse doit synchroniser squad-filter-pill à 114');
+  assert.ok(mainSource.includes('.maps-filter-pill') && mainSource.includes('102'), 'setupTaxonomyAndMultiverse doit synchroniser maps-filter-pill à 102');
+  assert.ok(mainSource.includes('.weapons-filter-pill') && mainSource.includes('202'), 'setupTaxonomyAndMultiverse doit synchroniser weapons-filter-pill à 202');
+  assert.ok(mainSource.includes('.codex-filter-pill') && mainSource.includes('186'), 'setupTaxonomyAndMultiverse doit synchroniser codex-filter-pill à 186');
 });
 
 test('SharedReferenceVault intègre la miniature et l’icône de catégorie sur chaque carte de catalogue', async () => {
