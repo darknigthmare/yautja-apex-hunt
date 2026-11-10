@@ -2658,13 +2658,13 @@ export class Game {
 
     // 2. 5-Tier Prey Taxonomy Filtering on Contracts
     const squadFilterPill = document.querySelector?.('.squad-filter-pill');
-    if (squadFilterPill) squadFilterPill.textContent = `⚔️ ESCOUADES & FACTIONS (${Math.max(114, SQUAD_ENCOUNTERS.length)})`;
+    if (squadFilterPill) squadFilterPill.textContent = `⚔️ ESCOUADES & FACTIONS (${Math.max(120, SQUAD_ENCOUNTERS.length)})`;
     const mapsFilterPill = document.querySelector?.('.maps-filter-pill');
-    if (mapsFilterPill) mapsFilterPill.textContent = `🗺️ CARTES & BIOMES (${Math.max(102, MEDIA_MAPS_CATALOG.length)})`;
+    if (mapsFilterPill) mapsFilterPill.textContent = `🗺️ CARTES & BIOMES (${Math.max(108, MEDIA_MAPS_CATALOG.length)})`;
     const weaponsFilterPill = document.querySelector?.('.weapons-filter-pill');
-    if (weaponsFilterPill) weaponsFilterPill.textContent = `🔫 ARSENAL COMPLET (${Math.max(202, NPC_ARSENAL_CATALOG.length + ARMOR_PRESET_WEAPON_VARIANTS.length)})`;
+    if (weaponsFilterPill) weaponsFilterPill.textContent = `🔫 ARSENAL COMPLET (${Math.max(214, NPC_ARSENAL_CATALOG.length + ARMOR_PRESET_WEAPON_VARIANTS.length)})`;
     const codexFilterPill = document.querySelector?.('.codex-filter-pill');
-    if (codexFilterPill) codexFilterPill.textContent = `📜 DOSSIERS LORE (${Math.max(186, LORE_CODEX_ENTRIES.length)})`;
+    if (codexFilterPill) codexFilterPill.textContent = `📜 DOSSIERS LORE (${Math.max(198, LORE_CODEX_ENTRIES.length)})`;
     const filterPills = document.querySelectorAll('.scale-filter-pill[data-scale-filter]');
     filterPills.forEach((pill) => {
       pill.addEventListener('click', () => {

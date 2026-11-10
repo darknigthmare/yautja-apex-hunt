@@ -35,16 +35,16 @@ test('le catalogue des univers contient exactement PREDATOR, ALIEN et AVP', () =
 });
 
 test('le catalogue des cartes contient les 30 cartes canoniques réparties sur les 3 univers', () => {
-  assert.equal(MEDIA_MAPS_CATALOG.length, 102);
+  assert.equal(MEDIA_MAPS_CATALOG.length, 108);
   assert.ok(Object.isFrozen(MEDIA_MAPS_CATALOG));
 
   const predatorMaps = getMediaMapsByUniverse('PREDATOR');
   const alienMaps = getMediaMapsByUniverse('ALIEN');
   const avpMaps = getMediaMapsByUniverse('AVP');
 
-  assert.equal(predatorMaps.length, 34, '34 cartes pour l\'univers Predator');
-  assert.equal(alienMaps.length, 36, '36 cartes pour l\'univers Alien');
-  assert.equal(avpMaps.length, 32, '32 cartes pour l\'univers AVP');
+  assert.equal(predatorMaps.length, 36, '36 cartes pour l\'univers Predator');
+  assert.equal(alienMaps.length, 38, '38 cartes pour l\'univers Alien');
+  assert.equal(avpMaps.length, 34, '34 cartes pour l\'univers AVP');
 
   const mapIds = new Set();
   for (const map of MEDIA_MAPS_CATALOG) {
@@ -83,16 +83,16 @@ test('le catalogue des cartes contient les 30 cartes canoniques réparties sur l
 });
 
 test('le catalogue d\'arsenal PNJ contient les 34 armes emblématiques de chaque média', () => {
-  assert.equal(NPC_ARSENAL_CATALOG.length, 106);
+  assert.equal(NPC_ARSENAL_CATALOG.length, 112);
   assert.ok(Object.isFrozen(NPC_ARSENAL_CATALOG));
 
   const predatorWeps = getNpcWeaponsByUniverse('PREDATOR');
   const alienWeps = getNpcWeaponsByUniverse('ALIEN');
   const avpWeps = getNpcWeaponsByUniverse('AVP');
 
-  assert.equal(predatorWeps.length, 36, '36 armes pour l\'univers Predator');
-  assert.equal(alienWeps.length, 39, '39 armes pour l\'univers Alien');
-  assert.equal(avpWeps.length, 31, '31 armes pour l\'univers AVP');
+  assert.equal(predatorWeps.length, 38, '38 armes pour l\'univers Predator');
+  assert.equal(alienWeps.length, 41, '41 armes pour l\'univers Alien');
+  assert.equal(avpWeps.length, 33, '33 armes pour l\'univers AVP');
 
   const wepIds = new Set();
   for (const wep of NPC_ARSENAL_CATALOG) {
@@ -126,7 +126,7 @@ test('le catalogue d\'arsenal PNJ contient les 34 armes emblématiques de chaque
 });
 
 test('les 30 variantes d\'armes Yautja liées aux presets sont actives et immuables', () => {
-  assert.equal(ARMOR_PRESET_WEAPON_VARIANTS.length, 96);
+  assert.equal(ARMOR_PRESET_WEAPON_VARIANTS.length, 102);
   assert.ok(Object.isFrozen(ARMOR_PRESET_WEAPON_VARIANTS));
 
   const variantIds = new Set();
@@ -176,10 +176,16 @@ test('les 30 variantes d\'armes Yautja liées aux presets sont actives et immuab
   assert.ok(ARMOR_PRESET_WEAPON_VARIANTS.some((v) => v.id === 'yautja_wpn_leto_cerberus_heavy_maul'));
   assert.ok(ARMOR_PRESET_WEAPON_VARIANTS.some((v) => v.id === 'yautja_wpn_lv742_ravager_hook_claws'));
   assert.ok(ARMOR_PRESET_WEAPON_VARIANTS.some((v) => v.id === 'yautja_wpn_bunda_honor_glaive'));
+  assert.ok(ARMOR_PRESET_WEAPON_VARIANTS.some((v) => v.id === 'yautja_wpn_south_china_sea_corrosive_blades'));
+  assert.ok(ARMOR_PRESET_WEAPON_VARIANTS.some((v) => v.id === 'yautja_wpn_civil_war_trophy_saber_glaive'));
+  assert.ok(ARMOR_PRESET_WEAPON_VARIANTS.some((v) => v.id === 'yautja_wpn_sevastopol_emp_plasma_caster'));
+  assert.ok(ARMOR_PRESET_WEAPON_VARIANTS.some((v) => v.id === 'yautja_wpn_defiance_rampart_scatter_caster'));
+  assert.ok(ARMOR_PRESET_WEAPON_VARIANTS.some((v) => v.id === 'yautja_wpn_booty_zero_g_harpoon_anchor'));
+  assert.ok(ARMOR_PRESET_WEAPON_VARIANTS.some((v) => v.id === 'yautja_wpn_tokyo_holographic_smart_disc'));
 });
 
 test('le catalogue du Lore Codex contient les 42 dossiers répartis sur les 3 univers', () => {
-  assert.equal(LORE_CODEX_ENTRIES.length, 186);
+  assert.equal(LORE_CODEX_ENTRIES.length, 198);
   assert.ok(Object.isFrozen(LORE_CODEX_ENTRIES));
 
   const byU = { PREDATOR: 0, ALIEN: 0, AVP: 0 };
@@ -200,7 +206,7 @@ test('le catalogue du Lore Codex contient les 42 dossiers répartis sur les 3 un
     byU[universe]++;
   }
 
-  assert.equal(byU.PREDATOR, 72);
-  assert.equal(byU.ALIEN, 61);
-  assert.equal(byU.AVP, 53);
+  assert.equal(byU.PREDATOR, 76);
+  assert.equal(byU.ALIEN, 65);
+  assert.equal(byU.AVP, 57);
 });

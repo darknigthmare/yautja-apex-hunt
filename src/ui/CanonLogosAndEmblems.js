@@ -1271,7 +1271,7 @@ export function getSquadLogo(squadId, size = 64) {
   }
 
   // 5. Working Joes Seegson 2137
-  if (id.includes('seegson') || id.includes('working_joe')) {
+  if (id.includes('seegson') || (id.includes('working_joe') && !id.includes('sevastopol_working_joes'))) {
     return getSeegsonLogo(size);
   }
 
@@ -1866,7 +1866,7 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
-  if (id.includes('south_china_sea_pirates')) {
+  if (id.includes('south_china_sea_pirates_1998')) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-spratley" role="img" aria-label="Insigne Mercenaires Spratleys 1998">
         <circle cx="40" cy="40" r="36" fill="#052e16" stroke="#22c55e" stroke-width="2.5" />
@@ -1938,7 +1938,7 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
-  if (id.includes('defiance') || id.includes('zula_hendricks')) {
+  if ((id.includes('defiance') && !id.includes('defiance_strike_team')) || id.includes('zula_hendricks_fireteam')) {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-defiance" role="img" aria-label="Insigne Defiance USCSS Europa 2137">
         <rect x="12" y="12" width="56" height="56" rx="6" fill="#0a192f" stroke="#00e5ff" stroke-width="2.2" />
@@ -2752,6 +2752,120 @@ export function getSquadLogo(squadId, size = 64) {
         <circle cx="32" cy="63" r="2" fill="#f59e0b" />
         <circle cx="48" cy="63" r="2" fill="#f59e0b" />
         <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#fef08a" letter-spacing="0.7" text-anchor="middle">TOP-KNOT BUNDA</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('south_china_sea_pirates')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-southchinasea" role="img" aria-label="Insigne Pirates Mer de Chine">
+        <!-- Écu hexagonal vert tropical et or -->
+        <polygon points="40,6 72,22 72,58 40,74 8,58 8,22" fill="#042f2e" stroke="#10b981" stroke-width="2.2" />
+        <!-- Vagues de mousson et mer agitée -->
+        <path d="M12,54 Q26,48 40,54 T68,54" fill="none" stroke="#06b6d4" stroke-width="2" />
+        <path d="M16,60 Q28,56 40,60 T64,60" fill="none" stroke="#06b6d4" stroke-width="1.5" />
+        <!-- Jonque pirate khmère stylisée -->
+        <path d="M22,46 L58,46 L52,52 L28,52 Z" fill="#92400e" stroke="#fbbf24" stroke-width="1.2" />
+        <line x1="40" y1="20" x2="40" y2="46" stroke="#fbbf24" stroke-width="1.8" />
+        <polygon points="40,22 56,32 40,42" fill="#b45309" stroke="#fde047" stroke-width="1" />
+        <!-- Réticule de visée sniper de Nikolai -->
+        <circle cx="40" cy="30" r="14" fill="none" stroke="#ef4444" stroke-width="1.2" stroke-dasharray="3,2" />
+        <line x1="22" y1="30" x2="58" y2="30" stroke="#ef4444" stroke-width="1" />
+        <line x1="40" y1="12" x2="40" y2="48" stroke="#ef4444" stroke-width="1" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#a7f3d0" letter-spacing="0.5" text-anchor="middle">SPRATLY 2008</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('civil_war')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-civilwar" role="img" aria-label="Insigne Peloton des Ozarks 1863">
+        <!-- Écu militaire XIXe siècle bleu fédéral et gris confédéré -->
+        <path d="M12,10 L68,10 L68,48 Q68,68 40,76 Q12,68 12,48 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="2.5" />
+        <!-- Deux fusils Springfield croisés avec baïonnettes triangulaires -->
+        <line x1="18" y1="62" x2="62" y2="18" stroke="#d4a373" stroke-width="2.5" stroke-linecap="round" />
+        <line x1="62" y1="62" x2="18" y2="18" stroke="#d4a373" stroke-width="2.5" stroke-linecap="round" />
+        <polygon points="62,18 68,12 64,22" fill="#e2e8f0" stroke="#94a3b8" stroke-width="0.8" />
+        <polygon points="18,18 12,12 16,22" fill="#e2e8f0" stroke="#94a3b8" stroke-width="0.8" />
+        <!-- Volutes de fumée de poudre noire et canon Napoléon -->
+        <ellipse cx="40" cy="40" rx="14" ry="10" fill="#334155" stroke="#64748b" stroke-width="1.2" opacity="0.85" />
+        <circle cx="40" cy="40" r="5" fill="#f59e0b" stroke="#b45309" stroke-width="1.5" />
+        <!-- Année de la guerre de Sécession -->
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="4.5" font-weight="900" fill="#f8fafc" letter-spacing="1" text-anchor="middle">OZARKS 1863</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('sevastopol_working_joes')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-sevastopoljoes" role="img" aria-label="Insigne Working Joes Apollo">
+        <!-- Octogone Seegson jaune industriel et noir -->
+        <polygon points="26,8 54,8 72,26 72,54 54,72 26,72 8,54 8,26" fill="#18181b" stroke="#f59e0b" stroke-width="2.5" />
+        <!-- Visage synthétique emblématique du Working Joe Seegson -->
+        <ellipse cx="40" cy="38" rx="18" ry="22" fill="#e4e4e7" stroke="#71717a" stroke-width="1.5" />
+        <!-- Yeux luminescents orange Apollo -->
+        <ellipse cx="32" cy="34" rx="3.5" ry="2" fill="#f97316" />
+        <circle cx="32" cy="34" r="1.5" fill="#fef08a" />
+        <ellipse cx="48" cy="34" rx="3.5" ry="2" fill="#f97316" />
+        <circle cx="48" cy="34" r="1.5" fill="#fef08a" />
+        <!-- Bouche inexpressive en fente caoutchoutée -->
+        <line x1="34" y1="48" x2="46" y2="48" stroke="#52525b" stroke-width="1.8" stroke-linecap="round" />
+        <!-- Logo Seegson 'S' et directive Apollo -->
+        <text x="40" y="20" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#f59e0b" letter-spacing="1" text-anchor="middle">SEEGSON</text>
+        <text x="40" y="67" font-family="'Orbitron', sans-serif" font-size="3.5" font-weight="900" fill="#f97316" letter-spacing="0.8" text-anchor="middle">APOLLO ZERO</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('defiance_strike_team')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-defianceeuropa" role="img" aria-label="Insigne Mutins USS Europa">
+        <!-- Bouclier de combat colonial bleu nuit et cyan -->
+        <polygon points="40,8 70,20 62,68 40,76 18,68 10,20" fill="#0f172a" stroke="#0ea5e9" stroke-width="2.5" />
+        <!-- Silhouette du destroyer spatial USS Europa -->
+        <polygon points="40,16 54,34 46,38 46,50 34,50 34,38 26,34" fill="#334155" stroke="#38bdf8" stroke-width="1.2" />
+        <!-- Stabilisateur exosquelette rachidien de Zula -->
+        <line x1="40" y1="26" x2="40" y2="58" stroke="#f43f5e" stroke-width="2.2" stroke-linecap="round" />
+        <circle cx="40" cy="32" r="2" fill="#fb7185" />
+        <circle cx="40" cy="42" r="2" fill="#fb7185" />
+        <circle cx="40" cy="52" r="2" fill="#fb7185" />
+        <!-- Symbole de mutinerie USCM brisé -->
+        <path d="M24,42 L34,42 M46,42 L56,42" stroke="#e11d48" stroke-width="1.8" />
+        <text x="40" y="71" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#7dd3fc" letter-spacing="0.8" text-anchor="middle">USS EUROPA</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('pirate_booty_raiders')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-piratebooty" role="img" aria-label="Insigne Pillards Frégate Pirate">
+        <!-- Rondache de ferrailleur spatial bronze et rouge -->
+        <circle cx="40" cy="40" r="32" fill="#1c1917" stroke="#ea580c" stroke-width="2.5" stroke-dasharray="8,2" />
+        <!-- Tête de mort pirate cyborg avec implant optique -->
+        <circle cx="40" cy="34" r="12" fill="#e2e8f0" stroke="#78716c" stroke-width="1.2" />
+        <polygon points="34,44 46,44 44,52 36,52" fill="#cbd5e1" stroke="#78716c" stroke-width="1" />
+        <circle cx="36" cy="34" r="2.5" fill="#0f172a" />
+        <circle cx="44" cy="34" r="3" fill="#dc2626" />
+        <circle cx="44" cy="34" r="1.2" fill="#fef08a" />
+        <!-- Clous et harpons pneumatiques croisés -->
+        <line x1="20" y1="56" x2="60" y2="20" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+        <line x1="60" y1="56" x2="20" y2="20" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#fdba74" letter-spacing="0.5" text-anchor="middle">BOOTY 1996</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('tokyo_yakuza_clan')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-tokyoyakuza" role="img" aria-label="Insigne Cyber-Yakuza Mishima">
+        <!-- Diamant cyberpunk pourpre et néon cyan -->
+        <polygon points="40,6 74,40 40,74 6,40" fill="#180424" stroke="#c026d3" stroke-width="2.5" />
+        <!-- Torii néo-tokyoïte stylisé -->
+        <line x1="22" y1="22" x2="58" y2="22" stroke="#e879f9" stroke-width="3" stroke-linecap="round" />
+        <line x1="26" y1="28" x2="54" y2="28" stroke="#e879f9" stroke-width="2" />
+        <line x1="30" y1="22" x2="30" y2="54" stroke="#a21caf" stroke-width="2.5" />
+        <line x1="50" y1="22" x2="50" y2="54" stroke="#a21caf" stroke-width="2.5" />
+        <!-- Katana haute fréquence en diagonale avec étincelles plasma -->
+        <line x1="16" y1="64" x2="64" y2="16" stroke="#06b6d4" stroke-width="2.2" stroke-linecap="round" />
+        <circle cx="40" cy="40" r="3" fill="#22d3ee" />
+        <!-- Pluie acide néo-tokyoïte en arrière-plan -->
+        <line x1="20" y1="34" x2="18" y2="44" stroke="#38bdf8" stroke-width="1" stroke-dasharray="2,2" opacity="0.6" />
+        <line x1="60" y1="34" x2="58" y2="44" stroke="#38bdf8" stroke-width="1" stroke-dasharray="2,2" opacity="0.6" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#f0abfc" letter-spacing="1" text-anchor="middle">MISHIMA NEO-TOKYO</text>
       </svg>
     `.trim();
   }

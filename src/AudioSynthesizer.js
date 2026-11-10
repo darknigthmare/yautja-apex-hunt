@@ -37386,6 +37386,123 @@ class AudioSynthesizer {
 
     return descriptor;
   }
+
+  playPirateJunkScattergunBlast() {
+    const descriptor = {
+      event: 'pirate_junk_scattergun_blast',
+      synthesis: 'lead_buckshot_heavy_powder_concussion_metallic_recoil',
+      concussionHz: 55,
+      pelletHissHz: 2800,
+      durationSeconds: 0.65,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const boomOsc = this.ctx.createOscillator();
+    const boomGain = this.ctx.createGain();
+    boomOsc.type = 'triangle';
+    boomOsc.frequency.setValueAtTime(descriptor.concussionHz, now);
+    boomOsc.frequency.exponentialRampToValueAtTime(24, now + 0.38);
+
+    boomGain.gain.setValueAtTime(0.9, now);
+    boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+
+    boomOsc.connect(boomGain);
+    boomGain.connect(this.ctx.destination);
+    boomOsc.start(now);
+    boomOsc.stop(now + 0.45);
+
+    const pelletOsc = this.ctx.createOscillator();
+    const pelletGain = this.ctx.createGain();
+    pelletOsc.type = 'sawtooth';
+    pelletOsc.frequency.setValueAtTime(descriptor.pelletHissHz, now);
+    pelletOsc.frequency.exponentialRampToValueAtTime(320, now + 0.28);
+
+    pelletGain.gain.setValueAtTime(0.4, now);
+    pelletGain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+
+    pelletOsc.connect(pelletGain);
+    pelletGain.connect(this.ctx.destination);
+    pelletOsc.start(now);
+    pelletOsc.stop(now + 0.35);
+
+    return descriptor;
+  }
+
+  playSevastopolStunBatonDischarge() {
+    const descriptor = {
+      event: 'sevastopol_stun_baton_discharge',
+      synthesis: 'continuous_electrostatic_arc_50kv_buzz_ionic_crackle',
+      carrierHz: 420,
+      arcModulationHz: 85,
+      durationSeconds: 0.48,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const arcOsc = this.ctx.createOscillator();
+    const arcGain = this.ctx.createGain();
+    arcOsc.type = 'square';
+    arcOsc.frequency.setValueAtTime(descriptor.carrierHz, now);
+    arcOsc.frequency.linearRampToValueAtTime(descriptor.carrierHz * 1.5, now + 0.2);
+    arcOsc.frequency.linearRampToValueAtTime(descriptor.carrierHz, now + 0.45);
+
+    arcGain.gain.setValueAtTime(0.42, now);
+    arcGain.gain.exponentialRampToValueAtTime(0.001, now + 0.46);
+
+    arcOsc.connect(arcGain);
+    arcGain.connect(this.ctx.destination);
+    arcOsc.start(now);
+    arcOsc.stop(now + 0.48);
+
+    return descriptor;
+  }
+
+  playZeroGHarpoonPneumaticLaunch() {
+    const descriptor = {
+      event: 'zerog_harpoon_pneumatic_launch',
+      synthesis: 'high_pressure_nitrogen_whoosh_magnetic_grapple_recoil',
+      whooshStartHz: 1800,
+      whooshEndHz: 180,
+      metallicClickHz: 4400,
+      durationSeconds: 0.52,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const whooshOsc = this.ctx.createOscillator();
+    const whooshGain = this.ctx.createGain();
+    whooshOsc.type = 'sawtooth';
+    whooshOsc.frequency.setValueAtTime(descriptor.whooshStartHz, now);
+    whooshOsc.frequency.exponentialRampToValueAtTime(descriptor.whooshEndHz, now + 0.28);
+
+    whooshGain.gain.setValueAtTime(0.65, now);
+    whooshGain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+
+    whooshOsc.connect(whooshGain);
+    whooshGain.connect(this.ctx.destination);
+    whooshOsc.start(now);
+    whooshOsc.stop(now + 0.34);
+
+    const clickOsc = this.ctx.createOscillator();
+    const clickGain = this.ctx.createGain();
+    clickOsc.type = 'triangle';
+    clickOsc.frequency.setValueAtTime(descriptor.metallicClickHz, now + 0.05);
+    clickOsc.frequency.exponentialRampToValueAtTime(450, now + 0.2);
+
+    clickGain.gain.setValueAtTime(0.55, now + 0.05);
+    clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+    clickOsc.connect(clickGain);
+    clickGain.connect(this.ctx.destination);
+    clickOsc.start(now + 0.05);
+    clickOsc.stop(now + 0.24);
+
+    return descriptor;
+  }
 }
 
 export const audioSynth = new AudioSynthesizer();

@@ -3254,6 +3254,24 @@ export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
   wpn_bunda_top_knot_heavy_caster: makeWeaponBallisticProfile('wpn_bunda_top_knot_heavy_caster', {
     damage: 52, cooldown: 1.6, rangeM: 100, soundRadiusM: 95, projectileColor: 0xec4899, archetype: 'dual_resonator_plasma_caster', cadence: 'synchronized_double_plasma', damageType: 'energy',
   }),
+  wpn_south_china_sea_pirate_scattergun: makeWeaponBallisticProfile('wpn_south_china_sea_pirate_scattergun', {
+    damage: 46, cooldown: 1.4, rangeM: 25, soundRadiusM: 80, projectileColor: 0xffaa00, archetype: 'heavy_10gauge_scattergun', cadence: 'buckshot_double_blast', damageType: 'ballistic',
+  }),
+  wpn_civil_war_springfield_1861_musket: makeWeaponBallisticProfile('wpn_civil_war_springfield_1861_musket', {
+    damage: 44, cooldown: 2.2, rangeM: 140, soundRadiusM: 90, projectileColor: 0xd4a373, archetype: 'rifled_minie_musket', cadence: 'single_shot_black_powder', damageType: 'ballistic',
+  }),
+  wpn_sevastopol_working_joe_stun_prod: makeWeaponBallisticProfile('wpn_sevastopol_working_joe_stun_prod', {
+    damage: 32, cooldown: 0.8, rangeM: 3.5, soundRadiusM: 20, projectileColor: 0x00f0ff, archetype: 'high_voltage_stun_prod', cadence: 'continuous_electro_arc', damageType: 'electric',
+  }),
+  wpn_defiance_zula_carbine_rig: makeWeaponBallisticProfile('wpn_defiance_zula_carbine_rig', {
+    damage: 34, cooldown: 0.45, rangeM: 85, soundRadiusM: 70, projectileColor: 0x38bdf8, archetype: 'exoskeleton_compact_carbine', cadence: 'burst_3_explosive', damageType: 'ballistic',
+  }),
+  wpn_booty_pirate_pneumatic_nailer: makeWeaponBallisticProfile('wpn_booty_pirate_pneumatic_nailer', {
+    damage: 36, cooldown: 0.6, rangeM: 35, soundRadiusM: 30, projectileColor: 0x94a3b8, archetype: 'pneumatic_spike_riveter', cadence: 'semi_auto_compressed_air', damageType: 'pneumatic',
+  }),
+  wpn_tokyo_cyber_yakuza_katana: makeWeaponBallisticProfile('wpn_tokyo_cyber_yakuza_katana', {
+    damage: 48, cooldown: 0.75, rangeM: 3.0, soundRadiusM: 15, projectileColor: 0xec4899, archetype: 'monomolecular_hf_katana', cadence: 'high_frequency_blade_pass', damageType: 'slashing',
+  }),
 });
 
 function resolveNpcRoleWeaponId(npcType) {

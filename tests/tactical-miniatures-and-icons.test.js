@@ -131,6 +131,13 @@ test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague
     'squad_alien_leto_darwin_cultists',
     'squad_avp_lv742_ravager_hive',
     'squad_avp_bunda_top_knot_clan',
+    // Vague 14
+    'squad_pred_south_china_sea_pirates',
+    'squad_pred_civil_war_platoon',
+    'squad_alien_sevastopol_working_joes',
+    'squad_alien_defiance_strike_team',
+    'squad_avp_pirate_booty_raiders',
+    'squad_avp_tokyo_yakuza_clan',
   ];
 
   for (const squadId of vagueSquadIds) {
@@ -170,6 +177,13 @@ test('getSquadLogo fournit des emblèmes personnalisés pour les escouades Vague
   assert.ok(getSquadLogo('squad_alien_leto_darwin_cultists', 40).includes('logo-squad-letocult'));
   assert.ok(getSquadLogo('squad_avp_lv742_ravager_hive', 40).includes('logo-squad-lv742ravager'));
   assert.ok(getSquadLogo('squad_avp_bunda_top_knot_clan', 40).includes('logo-squad-bundatopknot'));
+  // Vague 14
+  assert.ok(getSquadLogo('squad_pred_south_china_sea_pirates', 40).includes('logo-squad-southchinasea'));
+  assert.ok(getSquadLogo('squad_pred_civil_war_platoon', 40).includes('logo-squad-civilwar'));
+  assert.ok(getSquadLogo('squad_alien_sevastopol_working_joes', 40).includes('logo-squad-sevastopoljoes'));
+  assert.ok(getSquadLogo('squad_alien_defiance_strike_team', 40).includes('logo-squad-defianceeuropa'));
+  assert.ok(getSquadLogo('squad_avp_pirate_booty_raiders', 40).includes('logo-squad-piratebooty'));
+  assert.ok(getSquadLogo('squad_avp_tokyo_yakuza_clan', 40).includes('logo-squad-tokyoyakuza'));
 
   for (const squad of SQUAD_ENCOUNTERS) {
     const svg = getSquadLogo(squad.id, 40);
@@ -345,16 +359,16 @@ test('getVaultCardMiniatureSvg génère une miniature vectorielle 180x76 avec en
   }
 });
 
-test('src/main.js intègre les icônes d’équipement vectorielles dans renderHuntLoadoutUI et synchronise les compteurs de filtres Vague 12', () => {
+test('src/main.js intègre les icônes d’équipement vectorielles dans renderHuntLoadoutUI et synchronise les compteurs de filtres Vague 14', () => {
   const mainSource = fs.readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
   assert.ok(mainSource.includes("import { getEquipmentIconSvg } from './ui/EquipmentIcons.js';"), 'main.js doit importer getEquipmentIconSvg');
   assert.ok(mainSource.includes('loadout-core-icon') && mainSource.includes('getEquipmentIconSvg(id, 16)'), 'main.js doit intégrer les icônes sur loadout-core-icon');
   assert.ok(mainSource.includes('loadout-item-icon') && mainSource.includes('getEquipmentIconSvg(item.id, 22)'), 'main.js doit intégrer les icônes sur loadout-item-icon');
   assert.ok(mainSource.includes('choice.append(input, icon, copy, cost)'), 'L\'icône doit être insérée avant l\'élément copy dans loadout-choice');
-  assert.ok(mainSource.includes('.squad-filter-pill') && mainSource.includes('114'), 'setupTaxonomyAndMultiverse doit synchroniser squad-filter-pill à 114');
-  assert.ok(mainSource.includes('.maps-filter-pill') && mainSource.includes('102'), 'setupTaxonomyAndMultiverse doit synchroniser maps-filter-pill à 102');
-  assert.ok(mainSource.includes('.weapons-filter-pill') && mainSource.includes('202'), 'setupTaxonomyAndMultiverse doit synchroniser weapons-filter-pill à 202');
-  assert.ok(mainSource.includes('.codex-filter-pill') && mainSource.includes('186'), 'setupTaxonomyAndMultiverse doit synchroniser codex-filter-pill à 186');
+  assert.ok(mainSource.includes('.squad-filter-pill') && mainSource.includes('120'), 'setupTaxonomyAndMultiverse doit synchroniser squad-filter-pill à 120');
+  assert.ok(mainSource.includes('.maps-filter-pill') && mainSource.includes('108'), 'setupTaxonomyAndMultiverse doit synchroniser maps-filter-pill à 108');
+  assert.ok(mainSource.includes('.weapons-filter-pill') && mainSource.includes('214'), 'setupTaxonomyAndMultiverse doit synchroniser weapons-filter-pill à 214');
+  assert.ok(mainSource.includes('.codex-filter-pill') && mainSource.includes('198'), 'setupTaxonomyAndMultiverse doit synchroniser codex-filter-pill à 198');
 });
 
 test('SharedReferenceVault intègre la miniature et l’icône de catégorie sur chaque carte de catalogue', async () => {

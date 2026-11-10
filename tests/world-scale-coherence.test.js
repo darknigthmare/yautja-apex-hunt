@@ -838,3 +838,92 @@ test('AudioSynthesizer procedural Vague 13 SFX methods execute safely in headles
   assert.ok(rail.durationSeconds > 0);
   assert.equal(rail.played, false);
 });
+
+test('Vague 14 canonical NPC weapons resolve to rich ballistic and acoustic profiles', () => {
+  const vague14Weapons = [
+    {
+      id: 'wpn_south_china_sea_pirate_scattergun',
+      archetype: 'heavy_10gauge_scattergun',
+      damage: 46,
+      rangeM: 25,
+      soundRadiusM: 80,
+      projectileColor: 0xffaa00,
+    },
+    {
+      id: 'wpn_civil_war_springfield_1861_musket',
+      archetype: 'rifled_minie_musket',
+      damage: 44,
+      rangeM: 140,
+      soundRadiusM: 90,
+      projectileColor: 0xd4a373,
+    },
+    {
+      id: 'wpn_sevastopol_working_joe_stun_prod',
+      archetype: 'high_voltage_stun_prod',
+      damage: 32,
+      rangeM: 3.5,
+      soundRadiusM: 20,
+      projectileColor: 0x00f0ff,
+    },
+    {
+      id: 'wpn_defiance_zula_carbine_rig',
+      archetype: 'exoskeleton_compact_carbine',
+      damage: 34,
+      rangeM: 85,
+      soundRadiusM: 70,
+      projectileColor: 0x38bdf8,
+    },
+    {
+      id: 'wpn_booty_pirate_pneumatic_nailer',
+      archetype: 'pneumatic_spike_riveter',
+      damage: 36,
+      rangeM: 35,
+      soundRadiusM: 30,
+      projectileColor: 0x94a3b8,
+    },
+    {
+      id: 'wpn_tokyo_cyber_yakuza_katana',
+      archetype: 'monomolecular_hf_katana',
+      damage: 48,
+      rangeM: 3.0,
+      soundRadiusM: 15,
+      projectileColor: 0xec4899,
+    },
+  ];
+
+  for (const expected of vague14Weapons) {
+    const profile = getNpcWeaponProfile(expected.id);
+    assert.ok(profile && typeof profile === 'object', `${expected.id} must resolve to a profile object`);
+    assert.equal(profile.id, expected.id);
+    assert.equal(profile.archetype, expected.archetype);
+    assert.equal(profile.damage, expected.damage);
+    assert.equal(profile.rangeM, expected.rangeM);
+    assert.equal(profile.soundRadiusM, expected.soundRadiusM);
+    assert.equal(profile.projectileColor, expected.projectileColor);
+    assert.ok(profile.cooldown > 0, `${expected.id} must have non-zero cooldown`);
+    assert.ok(typeof profile.cadence === 'string' && profile.cadence.length > 0);
+  }
+});
+
+test('AudioSynthesizer procedural Vague 14 SFX methods execute safely in headless Node environment', () => {
+  const scatter = audioSynth.playPirateJunkScattergunBlast();
+  assert.ok(scatter && scatter.event === 'pirate_junk_scattergun_blast');
+  assert.ok(scatter.concussionHz > 0);
+  assert.ok(scatter.pelletHissHz > scatter.concussionHz);
+  assert.ok(scatter.durationSeconds > 0);
+  assert.equal(scatter.played, false);
+
+  const prod = audioSynth.playSevastopolStunBatonDischarge();
+  assert.ok(prod && prod.event === 'sevastopol_stun_baton_discharge');
+  assert.ok(prod.carrierHz > 0);
+  assert.ok(prod.arcModulationHz > 0);
+  assert.ok(prod.durationSeconds > 0);
+  assert.equal(prod.played, false);
+
+  const harpoon = audioSynth.playZeroGHarpoonPneumaticLaunch();
+  assert.ok(harpoon && harpoon.event === 'zerog_harpoon_pneumatic_launch');
+  assert.ok(harpoon.whooshStartHz > harpoon.whooshEndHz);
+  assert.ok(harpoon.metallicClickHz > 0);
+  assert.ok(harpoon.durationSeconds > 0);
+  assert.equal(harpoon.played, false);
+});

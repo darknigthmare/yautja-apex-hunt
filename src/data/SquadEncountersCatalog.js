@@ -3970,6 +3970,144 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
       { id: 'top_knot_enforcer_gann', name: 'Guerrier d’Assaut Gann', role: 'Maître d’Armes Rituelles', weapon: 'Combistick Télescopique & Caster d’Épaule', weaponId: 'wpn_bunda_top_knot_heavy_caster', vitalityRatio: 1.3, hp: 720, armor: 70, trophy: 'Masque à Visière Gravée de Runes Bunda' },
       { id: 'top_knot_stalker_vokh', name: 'Pisteur des Plaines Vokh', role: 'Avant-Garde Rapide de Savane', weapon: 'Disque Intelligent Incendiaire & Lames de Poignet', weaponId: 'wpn_bunda_top_knot_heavy_caster', vitalityRatio: 1.25, hp: 680, armor: 65, trophy: 'Dard de Queue de Vy’drach en Argent Yautja' }
     ]
+  },
+  {
+    id: 'squad_pred_south_china_sea_pirates',
+    name: 'Pirates Khmers & Sniper Russe — Mer de Chine (2008)',
+    universe: 'PREDATOR',
+    shortName: 'Pirates Mer de Chine (3 Membres)',
+    category: 'PARAMILITARY',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Predator: South China Sea (2008)',
+    biomeId: 'jungle',
+    recommendedBiomeLabel: 'Forteresse Volcanique & Mangroves (2008)',
+    primaryMapId: 'map_pred_south_china_sea_fortress',
+    weaponLoadout: ['wpn_south_china_sea_pirate_scattergun'],
+    description: 'Contrebandiers khmers lourdement armés de fusils calibre 10 sciés et sniper russe retranché dans le fort volcanique sous la mousson.',
+    tactics: 'Embuscades à bout portant dans les mangroves boueuses, tirs de suppression au calibre 10 et couverture à longue distance depuis la tour.',
+    totalHonorReward: 6400,
+    soloVariantId: 'alien_base_quinn_mckenna_ranger_2018',
+    members: [
+      { id: 'pirate_captain_sovann', name: 'Capitaine Corsaire Sovann', role: 'Commandant de la Forteresse', weapon: 'Fusil Calibre 10 Double Canon Scié', weaponId: 'wpn_south_china_sea_pirate_scattergun', vitalityRatio: 1.4, hp: 750, armor: 60, trophy: 'Sarbacane d\'Ivoire & Dents de Requin Gravées' },
+      { id: 'russian_sniper_nikolai', name: 'Tireur d\'Élite Nikolai', role: 'Tireur d\'Observation de Caldeira', weapon: 'Fusil de Précision à Silencieux & Couteau Spetsnaz', weaponId: 'wpn_south_china_sea_pirate_scattergun', vitalityRatio: 1.3, hp: 690, armor: 55, trophy: 'Insigne des Troupes Aéroportées Russes Ensanglanté' },
+      { id: 'khmer_boarder_dara', name: 'Sapeur de Mangrove Dara', role: 'Grenadier d\'Abordage', weapon: 'Grenades Phosphore & Machette de Jungle', weaponId: 'wpn_south_china_sea_pirate_scattergun', vitalityRatio: 1.2, hp: 630, armor: 50, trophy: 'Collier d\'Ambre de la Mer de Chine' }
+    ]
+  },
+  {
+    id: 'squad_pred_civil_war_platoon',
+    name: 'Section de Tireurs des Ozarks — Guerre de Sécession (1863)',
+    universe: 'PREDATOR',
+    shortName: 'Peloton des Ozarks (3 Soldats)',
+    category: 'HISTORIC_WARRIORS',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Predator: Hell Come A-Walkin\' (1998)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiomeLabel: 'Ravin Encaissé des Ozarks (1863)',
+    primaryMapId: 'map_pred_civil_war_ozark_gorge',
+    weaponLoadout: ['wpn_civil_war_springfield_1861_musket'],
+    description: 'Soldats vétérans confédérés et de l\'Union contraints à une alliance précaire dans un défilé rocheux face au démon invisible.',
+    tactics: 'Volées coordonnées de balles Minié, tirs de barrage sous écran de fumée de poudre noire et charges désespérées à la baïonnette.',
+    totalHonorReward: 6200,
+    soloVariantId: 'alien_base_major_dutch_schaefer_1987',
+    members: [
+      { id: 'captain_caleb_holmes', name: 'Capitaine Caleb Holmes', role: 'Officier d\'Infanterie de l\'Union', weapon: 'Springfield 1861 & Sabre d\'Officier', weaponId: 'wpn_civil_war_springfield_1861_musket', vitalityRatio: 1.35, hp: 720, armor: 50, trophy: 'Épaulette d\'Officier à Aigle Doré & Sabre de Cavalerie' },
+      { id: 'sergeant_jeb_tucker', name: 'Sergent Jeb Tucker', role: 'Tireur d\'Élite Confédéré', weapon: 'Mousquet Rayé à Lunette Longue', weaponId: 'wpn_civil_war_springfield_1861_musket', vitalityRatio: 1.25, hp: 660, armor: 45, trophy: 'Boucle de Ceinturon CS Criblée de Plomb' },
+      { id: 'skirmisher_ezra_clark', name: 'Voltigeur Ezra Clark', role: 'Éclaireur de Crête', weapon: 'Fusil Springfield & Baïonnette Triangulaire', weaponId: 'wpn_civil_war_springfield_1861_musket', vitalityRatio: 1.2, hp: 610, armor: 40, trophy: 'Gourde en Cuivre & Corne à Poudre Gravée' }
+    ]
+  },
+  {
+    id: 'squad_alien_sevastopol_working_joes',
+    name: 'Escouade de Sécurité Synthétique Working Joes — Sevastopol (2014)',
+    universe: 'ALIEN',
+    shortName: 'Working Joes Apollo (3 Androïdes)',
+    category: 'SYNTHETICS',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Alien: Isolation (2014)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Station Sevastopol — Cœur Apollo (2014)',
+    primaryMapId: 'map_alien_sevastopol_apollo_core',
+    weaponLoadout: ['wpn_sevastopol_working_joe_stun_prod'],
+    description: 'Androïdes industriels Seegson aux yeux ambrés reprogrammés par Apollo pour purger tous les survivants humains et organismes non autorisés.',
+    tactics: 'Avance inexorable sans esquive, absorption massive des dégâts physiques et tétanisation continue aux matraques à choc 50kV.',
+    totalHonorReward: 6600,
+    soloVariantId: 'alien_base_amanda_ripley_sevastopol_engineer',
+    members: [
+      { id: 'working_joe_chief_apollo', name: 'Unité Directive Apollo 0-Alpha', role: 'Superviseur de Quarantaine', weapon: 'Matraque à Choc Haute Tension & Poigne Hydraulique', weaponId: 'wpn_sevastopol_working_joe_stun_prod', vitalityRatio: 1.5, hp: 800, armor: 75, trophy: 'Puce Mémoire Maîtresse Apollo & Visage Caoutchouc Seegson' },
+      { id: 'working_joe_san_cristobal', name: 'Synthétique Médical Réassigné', role: 'Agent de Confinement San Cristobal', weapon: 'Bâton d\'Électrocution & Pince d\'Atelier', weaponId: 'wpn_sevastopol_working_joe_stun_prod', vitalityRatio: 1.35, hp: 710, armor: 70, trophy: 'Module de Vision Synthétique Ambre Seegson' },
+      { id: 'working_joe_reactor_guard', name: 'Androïde de Refroidissement Réacteur', role: 'Garde Haute Température', weapon: 'Bâton à Décharge & Isolateurs Céramiques', weaponId: 'wpn_sevastopol_working_joe_stun_prod', vitalityRatio: 1.3, hp: 680, armor: 65, trophy: 'Batterie au Lithium Haute Densité Seegson' }
+    ]
+  },
+  {
+    id: 'squad_alien_defiance_strike_team',
+    name: 'Équipe d’Intervention USS Europa — Zula Hendricks (2016)',
+    universe: 'ALIEN',
+    shortName: 'Mutins USS Europa (3 Combattants)',
+    category: 'COLONIAL_MARINES',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Aliens: Defiance (2016)',
+    biomeId: 'hive_lv426',
+    recommendedBiomeLabel: 'Destroyer USS Europa — Baie Cargo (2016)',
+    primaryMapId: 'map_alien_uss_europa_cargo_bay',
+    weaponLoadout: ['wpn_defiance_zula_carbine_rig'],
+    description: 'Groupe d\'assaut dissident composé de la marine Zula Hendricks sur harnais médical, de l\'androïde Davis 01 et d\'un artificier lourd.',
+    tactics: 'Déploiement en triangle tactique, tirs explosifs chirurgicaux 10x24mm et verrouillage des issues pour piéger la cible.',
+    totalHonorReward: 6800,
+    soloVariantId: 'prey_colonial_marine_heavy',
+    members: [
+      { id: 'zula_hendricks_europa', name: 'Caporal Zula Hendricks', role: 'Commandante de Mutinerie', weapon: 'Carabine M57A2 Asservie à l\'Exosquelette Rachidien', weaponId: 'wpn_defiance_zula_carbine_rig', vitalityRatio: 1.45, hp: 770, armor: 70, trophy: 'Plaque d\'Identité Militaire USCM & Stabilisateur Rachidien' },
+      { id: 'synthetic_davis_01', name: 'Androïde Tactique Davis 01', role: 'Spécialiste de Combat Autonome', weapon: 'Fusil à Impulsion & Processeur d\'Analyse Balistique', weaponId: 'wpn_defiance_zula_carbine_rig', vitalityRatio: 1.4, hp: 740, armor: 75, trophy: 'Unité Centrale Neural Net Débridée Weyland-Yutani' },
+      { id: 'marine_breacher_hollis', name: 'Artificier de Brèche Hollis', role: 'Démolisseur Lourd', weapon: 'Fusil Lourd M57 & Charges Creuses', weaponId: 'wpn_defiance_zula_carbine_rig', vitalityRatio: 1.3, hp: 690, armor: 65, trophy: 'Casque M10 avec Optique Tactique Fendue' }
+    ]
+  },
+  {
+    id: 'squad_avp_pirate_booty_raiders',
+    name: 'Pillards de la Frégate Pirate — Baie de la Reine (1996)',
+    universe: 'AVP',
+    shortName: 'Pillards Frégate Pirate (3 Pirates)',
+    category: 'PARAMILITARY',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Aliens vs. Predator: Booty (1996)',
+    biomeId: 'stargazer_blacksite',
+    recommendedBiomeLabel: 'Frégate Pirate de l\'Espace (1996)',
+    primaryMapId: 'map_avp_pirate_booty_cargo_dock',
+    weaponLoadout: ['wpn_booty_pirate_pneumatic_nailer'],
+    description: 'Équipage de contrebandiers et ferrailleurs de l\'espace armés de riveteuses pneumatiques lourdes défendant leur butin xénomorphe.',
+    tactics: 'Pilonnage à cadence élevée de pieux pneumatiques perforants, dispersion dans les conteneurs et tirs croisés depuis les ponts supérieurs.',
+    totalHonorReward: 6500,
+    soloVariantId: 'prey_xeno_praetorian_royal',
+    members: [
+      { id: 'smuggler_captain_rexx', name: 'Capitaine Contrebandier Rexx', role: 'Maître du Cargo Pirate', weapon: 'Pistolet à Clous Pneumatique 200 Bars & Trancheur', weaponId: 'wpn_booty_pirate_pneumatic_nailer', vitalityRatio: 1.4, hp: 740, armor: 60, trophy: 'Boussole Stellaire Bricolée & Clé de Sas Gravée' },
+      { id: 'dock_engineer_brutus', name: 'Chef Mécanicien Brutus', role: 'Opérateur de Grue & Piqueur', weapon: 'Riveteuse Industrielle Lourde & Marteau Magnétique', weaponId: 'wpn_booty_pirate_pneumatic_nailer', vitalityRatio: 1.35, hp: 720, armor: 65, trophy: 'Manomètre Hydraulique Haute Pression en Laiton' },
+      { id: 'scavenger_scout_kiki', name: 'Pilleuse de Sas Kiki', role: 'Tireuse Rapide de Conteneurs', weapon: 'Pistolet Pneumatique Léger & Harpon Court', weaponId: 'wpn_booty_pirate_pneumatic_nailer', vitalityRatio: 1.25, hp: 640, armor: 50, trophy: 'Visière d\'Atelier Spatiale Teintée d\'Or' }
+    ]
+  },
+  {
+    id: 'squad_avp_tokyo_yakuza_clan',
+    name: 'Syndicat Cyber-Yakuza Mishima — Néo-Tokyo (1999)',
+    universe: 'AVP',
+    shortName: 'Cyber-Yakuza Néo-Tokyo (3 Sabereurs)',
+    category: 'PARAMILITARY',
+    scale: 'MOYEN',
+    totalMembers: 3,
+    originMedia: 'Aliens vs. Predator: Tokyo (1999)',
+    biomeId: 'los_angeles_1997',
+    recommendedBiomeLabel: 'Néo-Tokyo Shinjuku (1999)',
+    primaryMapId: 'map_avp_tokyo_shinjuku_skyrise',
+    weaponLoadout: ['wpn_tokyo_cyber_yakuza_katana'],
+    description: 'Maîtres d\'escrime cybernétisés du syndicat Mishima affrontant prédateurs et xénomorphes au sabre haute fréquence sur les toits pluvieux.',
+    tactics: 'Esquives ultra-rapides sur passerelles de verre, enchaînements d\'estocs moléculaires et déflexion réflexe des projectiles.',
+    totalHonorReward: 7100,
+    soloVariantId: 'prey_bad_blood_warlord',
+    members: [
+      { id: 'yakuza_oyabun_mishima', name: 'Oyabun Kazuo Mishima', role: 'Grand Maître du Sabre Moléculaire', weapon: 'Katana Haute Fréquence 35kHz & Bras Cybernétique', weaponId: 'wpn_tokyo_cyber_yakuza_katana', vitalityRatio: 1.55, hp: 830, armor: 80, trophy: 'Tsuba Gravée du Dragon d\'Or & Prothèse de Poignet Titane' },
+      { id: 'wakagashira_ren', name: 'Lieutenant Ren Murata', role: 'Duelliste de Passerelle Aérienne', weapon: 'Wakizashi Vibratoire & Pistolet 9mm Téflon', weaponId: 'wpn_tokyo_cyber_yakuza_katana', vitalityRatio: 1.35, hp: 710, armor: 65, trophy: 'Veste de Soie Tatouée d\'un Démon Oni Ensanglanté' },
+      { id: 'cyber_enforcer_goro', name: 'Exécuteur Blindé Goro', role: 'Garde du Corps Augmenté', weapon: 'Nodachi Lourd Haute Fréquence & Plaque Sous-Cutanée', weaponId: 'wpn_tokyo_cyber_yakuza_katana', vitalityRatio: 1.4, hp: 760, armor: 75, trophy: 'Plaque Crânienne Cybernétique Chromée' }
+    ]
   }
 ]);
 

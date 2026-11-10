@@ -151,6 +151,12 @@ test('les douze directives et leurs collections imbriquées sont immuables', () 
     'squad_alien_leto_darwin_cultists',
     'squad_avp_lv742_ravager_hive',
     'squad_avp_bunda_top_knot_clan',
+    'squad_pred_south_china_sea_pirates',
+    'squad_pred_civil_war_platoon',
+    'squad_alien_sevastopol_working_joes',
+    'squad_alien_defiance_strike_team',
+    'squad_avp_pirate_booty_raiders',
+    'squad_avp_tokyo_yakuza_clan',
   ]);
   assert.ok(Object.isFrozen(HUNT_DIRECTIVES));
 

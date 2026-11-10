@@ -72,9 +72,9 @@ test('production audio chunks preserve every public method and actual Web Audio 
     const source = await readFile(audioFile, 'utf8');
     const plan = splitAudioMethods(source);
     assert.ok(plan.parts.length >= 2, 'the sound library must actually be split');
-    assert.equal(plan.declarationCount, 2027);
+    assert.equal(plan.declarationCount, 2030);
     const before = Object.getOwnPropertyDescriptors(Object.getPrototypeOf(sourceAudio));
-    assert.equal(Object.keys(before).length, 2022, 'five existing declarations override earlier definitions');
+    assert.equal(Object.keys(before).length, 2025, 'five existing declarations override earlier definitions');
     bundle = await rolldown({ input: audioFile, preserveEntrySignatures: 'allow-extension', plugins: [audioMethodChunksPlugin()] });
     const result = await bundle.write({
       dir: directory, format: 'es', entryFileNames: 'audio.js', chunkFileNames: '[name]-[hash].js',

@@ -2584,6 +2584,276 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     keyPreyIds: ['prey_xeno_warrior', 'prey_colonial_marine_heavy'],
     heroSquadId: 'squad_avp_bunda_top_knot_clan',
     villainSquadId: null
+  },
+  {
+    id: 'map_pred_south_china_sea_fortress',
+    name: 'Mer de Chine Méridionale — Forteresse Volcanique & Mangroves (2008)',
+    universe: 'PREDATOR',
+    originMedia: 'Predator: South China Sea (Dark Horse Books 2008)',
+    sourceMedia: 'Predator: South China Sea (2008)',
+    sourceType: 'NOVEL',
+    releaseYear: 2008,
+    year: 2008,
+    biomeId: 'jungle',
+    biome: 'TROPICAL_VOLCANIC_JUNGLE',
+    recommendedBiomeLabel: 'Mer de Chine Méridionale — Forteresse Insulaire (2008)',
+    weather: 'Mousson tropicale torrentielle, orages électriques violents et mer déchaînée',
+    lighting: 'Pénombre de tempête tropicale, éclairs bleutés et torches vacillantes dans les fortins',
+    verticality: 'ÉLEVÉE (Pentes de caldeira volcanique, bastions de pierre et canopée de mangrove)',
+    destructibility: 'Palissades de bois de teck, dépôts de munitions pirates et pontons d\'amarrage',
+    interactables: [
+      'Générateur diesel rouillé alimentant les projecteurs de la cour',
+      'Caches d\'armes de contrebande sous bâche étanche',
+      'Sentier de crête volcanique surplombant la baie'
+    ],
+    environmentSummary: 'Une forteresse de pierre coloniale abandonnée sur une île volcanique isolée, occupée par des pirates khmers et un sniper russe, assiégée par un Yautja ancestral.',
+    description: 'Une forteresse de pierre coloniale abandonnée sur une île volcanique isolée, occupée par des pirates khmers et un sniper russe, assiégée par un Yautja ancestral.',
+    tacticalNotes: 'La pluie de mousson délave les traces thermiques et atténue le camouflage optique ; exploiter les toits des casemates pour dominer les coursives.',
+    dimensionsM: { width: 440, length: 480, height: 75 },
+    elevationRangeM: [0, 75],
+    tacticalSectors: [
+      'Cour Centrale du Fort & Bastion Est',
+      'Labyrinthe de Mangroves & Chenal des Jonques',
+      'Arête Volcanique Supérieure & Nid de Pie de Nikolai',
+      'Soutes à Poudre & Citerne Souterraine'
+    ],
+    keyLandmarks: [
+      'Jonque pirate échouée dans la mangrove',
+      'Bastion de pierre noire avec mitrailleuse DShK',
+      'Caldeira fumante aux parois basaltiques glissantes'
+    ],
+    environmentalHazards: [
+      { type: 'MONSOON_FLOOD', description: 'Crue subite de boue volcanique balayant les ravines inférieures' },
+      { type: 'LIGHTNING_STRIKE', description: 'Impacts de foudre sur les structures métalliques et arbres surplombants' }
+    ],
+    keyPreyIds: ['alien_base_major_dutch_schaefer_1987', 'alien_base_quinn_mckenna_ranger_2018'],
+    heroSquadId: 'squad_pred_south_china_sea_pirates',
+    villainSquadId: null
+  },
+  {
+    id: 'map_pred_civil_war_ozark_gorge',
+    name: 'Monts Ozarks 1863 — Ravin Encaissé & Tranchées de Poudre (1998)',
+    universe: 'PREDATOR',
+    originMedia: 'Predator: Hell Come A-Walkin\' (Dark Horse Comics 1998)',
+    sourceMedia: 'Predator: Hell Come A-Walkin\' (1998)',
+    sourceType: 'COMIC',
+    releaseYear: 1998,
+    year: 1998,
+    biomeId: 'los_angeles_1997',
+    biome: 'HISTORIC_WARZONE',
+    recommendedBiomeLabel: 'Monts Ozarks — Gorges Sanglantes de 1863 (Hell Come A-Walkin\')',
+    weather: 'Chaleur moite estivale, brume de poudre noire étouffante et soleil rougeoyant',
+    lighting: 'Lueur rasante de fin d\'après-midi filtrée par les fumées de canons et feux de camp',
+    verticality: 'MOYENNE (Falaises de calcaire abruptes, talus de tranchées et promontoires rocheux)',
+    destructibility: 'Barricades de troncs d\'arbres, chariots de ravitaillement et caissons de munitions',
+    interactables: [
+      'Canon de campagne Napoléon 12-pounder orientable',
+      'Abri de rondins renforcé de sacs de terre',
+      'Source d\'eau douce encaissée sous les fougères'
+    ],
+    environmentSummary: 'Un défilé rocheux du Missouri où deux compagnies ennemies de la guerre civile se retrouvent piégées et chassées par un démon invisible.',
+    description: 'Un défilé rocheux du Missouri où deux compagnies ennemies de la guerre civile se retrouvent piégées et chassées par un démon invisible.',
+    tacticalNotes: 'La fumée dense des tirs de mousquet offre une couverture visuelle naturelle ; écouter les cliquetis de rechargement pour bondir sur les tireurs isolés.',
+    dimensionsM: { width: 380, length: 540, height: 55 },
+    elevationRangeM: [0, 55],
+    tacticalSectors: [
+      'Défilé du Ravin du Diable & Lit de Rivière Asséché',
+      'Ligne de Tranchées de l\'Union sur le Talus Nord',
+      'Campement de Cavalerie Confédérée sous la Futaie',
+      'Crête Calcaire & Promontoire des Trophées'
+    ],
+    keyLandmarks: [
+      'Chariot d\'artillerie pulvérisé par une explosion de poudre',
+      'Chêne centenaire aux branches garnies de cadavres suspendus',
+      'Caverne calcaire servant d\'hôpital de campagne de fortune'
+    ],
+    environmentalHazards: [
+      { type: 'BLACK_POWDER_SMOKE', description: 'Volutes de fumée sulfurée réduisant la vision normale et masquant les mouvements' },
+      { type: 'ROCKFALL', description: 'Éboulements de calcaire déclenchés par les détonations d\'artillerie' }
+    ],
+    keyPreyIds: ['alien_base_major_dutch_schaefer_1987', 'prey_colonial_marine_heavy'],
+    heroSquadId: 'squad_pred_civil_war_platoon',
+    villainSquadId: null
+  },
+  {
+    id: 'map_alien_sevastopol_apollo_core',
+    name: 'Station Sevastopol — Cœur IA Apollo & Quartier San Cristobal (2014)',
+    universe: 'ALIEN',
+    originMedia: 'Alien: Isolation (Creative Assembly / SEGA 2014)',
+    sourceMedia: 'Alien: Isolation (2014)',
+    sourceType: 'GAME',
+    releaseYear: 2014,
+    year: 2014,
+    biomeId: 'stargazer_blacksite',
+    biome: 'SPACE_STATION_INTERIOR',
+    recommendedBiomeLabel: 'Station Sevastopol — San Cristobal & Apollo (Isolation 2014)',
+    weather: 'Pressurisation vacillante, froid glacial de fuite de fluide thermique et air raréfié',
+    lighting: 'Stroboscopes d\'urgence orange Seegson, voyants cathodiques verts et pénombre des couloirs',
+    verticality: 'TRÈS ÉLEVÉE (Réseau de gaines de ventilation sur 4 étages, gaines d\'ascenseur et passerelles)',
+    destructibility: 'Panneaux muraux en composite Seegson, vitrages de sas médicaux et consoles informatiques',
+    interactables: [
+      'Boîtiers de reprogrammation de portes de confinement',
+      'Terminaux d\'accès système Apollo délivrant des journaux audio',
+      'Vannes de purge de gaz d\'extinction incendie'
+    ],
+    environmentSummary: 'Les quartiers médicaux en déroute et la chambre centrale de l\'IA Apollo sur Sevastopol, patrouillés par des Working Joes implacables sous directive de purge.',
+    description: 'Les quartiers médicaux en déroute et la chambre centrale de l\'IA Apollo sur Sevastopol, patrouillés par des Working Joes implacables sous directive de purge.',
+    tacticalNotes: 'Les conduits de ventilation permettent des approches furtives parfaites ; attention aux androïdes qui ne ressentent ni la douleur ni les toxines gazeuses.',
+    dimensionsM: { width: 360, length: 420, height: 60 },
+    elevationRangeM: [-20, 40],
+    tacticalSectors: [
+      'Division Médicale San Cristobal & Salles d\'Opération',
+      'Noyau Central de Refroidissement d\'Apollo',
+      'Coursive Principale du Transit Seegson',
+      'Laboratoire de Synthèse Pharmaceutique de Quarantaine'
+    ],
+    keyLandmarks: [
+      'Dôme sphérique du processeur central Apollo aux lumières ambrées',
+      'Sas de décontamination ensanglanté de San Cristobal',
+      'Poste de sécurité barricadé avec moniteurs de surveillance'
+    ],
+    environmentalHazards: [
+      { type: 'ELECTROSTATIC_SURGE', description: 'Arcs électriques intermittents s\'échappant des câblages sectionnés d\'Apollo' },
+      { type: 'SECURITY_LOCKDOWN', description: 'Portes blindées de secteur se fermant automatiquement lors des alarmes sonores' }
+    ],
+    keyPreyIds: ['alien_base_amanda_ripley_sevastopol_engineer', 'prey_xeno_drone_1979'],
+    heroSquadId: 'squad_alien_sevastopol_working_joes',
+    villainSquadId: null
+  },
+  {
+    id: 'map_alien_uss_europa_cargo_bay',
+    name: 'USS Europa — Baie de Fret & Sas de Décontamination (2016)',
+    universe: 'ALIEN',
+    originMedia: 'Aliens: Defiance (Dark Horse Comics 2016)',
+    sourceMedia: 'Aliens: Defiance (2016)',
+    sourceType: 'COMIC',
+    releaseYear: 2016,
+    year: 2016,
+    biomeId: 'hive_lv426',
+    biome: 'WARSHIP_INTERIOR',
+    recommendedBiomeLabel: 'Destroyer USS Europa — Baie de Fret & Confinement (Defiance 2016)',
+    weather: 'Atmosphère conditionnée militaire froide, brouillard de cryo-dégivrage et alertes d\'avarie',
+    lighting: 'Éclairage tactique rouge marine, projecteurs mobiles de manutention et ombres longues',
+    verticality: 'ÉLEVÉE (Ponts de chargement à trois niveaux, grues de transbordement et coursives)',
+    destructibility: 'Conteneurs de fret standardisés Weyland, casiers d\'armurerie et cloisons pare-feu',
+    interactables: [
+      'Commandes de grue de pont magnétique mobile',
+      'Sas d\'éjection vers le vide spatial avec levier manuel',
+      'Armoire d\'armes de bord et munitions de fusils à impulsion'
+    ],
+    environmentSummary: 'Le destroyer de classe Europa détourné par Zula Hendricks et Davis 01, transformé en champ de bataille lors de la destruction des spécimens bio-armés.',
+    description: 'Le destroyer de classe Europa détourné par Zula Hendricks et Davis 01, transformé en champ de bataille lors de la destruction des spécimens bio-armés.',
+    tacticalNotes: 'La hauteur sous plafond permet des tirs plongeants depuis les rails de grue ; le déclenchement du sas d\'éjection aspire violemment tout corps non ancré.',
+    dimensionsM: { width: 420, length: 500, height: 45 },
+    elevationRangeM: [0, 45],
+    tacticalSectors: [
+      'Pont Principal de Déchargement Cargo & Conteneurs',
+      'Sas de Décontamination Spécimens & Cuves Cryo',
+      'Passerelles Techniques Supérieures de Conduite de Tir',
+      'Atelier de Réparation des Synthétiques de Combat'
+    ],
+    keyLandmarks: [
+      'Cuve de transport blindée portant le logo Weyland-Yutani barré de tags de rébellion',
+      'Console de pilotage de Davis 01 avec schéma holographique du navire',
+      'Double sas de largage orbital donnant directement sur le vide'
+    ],
+    environmentalHazards: [
+      { type: 'RAPID_DECOMPRESSION', description: 'Dépressurisation soudaine créant des vents violents attirant vers l\'espace' },
+      { type: 'CRYO_LEAK', description: 'Flaques de réfrigérant liquide gelant instantanément les surfaces au contact' }
+    ],
+    keyPreyIds: ['prey_colonial_marine_heavy', 'prey_xeno_warrior'],
+    heroSquadId: 'squad_alien_defiance_strike_team',
+    villainSquadId: null
+  },
+  {
+    id: 'map_avp_pirate_booty_cargo_dock',
+    name: 'Station Frégate Pirate — Baie d\'Arraisonnement de la Reine (1996)',
+    universe: 'AVP',
+    originMedia: 'AVP: Booty (Dark Horse Comics 1996)',
+    sourceMedia: 'AVP: Booty (1996)',
+    sourceType: 'COMIC',
+    releaseYear: 1996,
+    year: 1996,
+    biomeId: 'stargazer_blacksite',
+    biome: 'SPACE_HULK_DOCK',
+    recommendedBiomeLabel: 'Frégate Pirate de l\'Espace — Baie de Fret de la Reine (Booty 1996)',
+    weather: 'Pression atmosphérique instable, vapeurs d\'hydrocarbures de moteurs et bruit de tôles froissées',
+    lighting: 'Lumières de chantier jaunes clignotantes, arcs de soudure et pénombre des recoins de cales',
+    verticality: 'ÉLEVÉE (Empilements anarchiques de conteneurs de contrebande, passerelles suspendues et coursives)',
+    destructibility: 'Caisses de butin en bois synthétique, conduits de carburant et passerelles métalliques rouillées',
+    interactables: [
+      'Treuil de levage industriel pour conteneurs lourds',
+      'Découpeur thermique industriel à plasma d\'atelier',
+      'Console de pressurisation manuelle du sas d\'abordage'
+    ],
+    environmentSummary: 'Une immense baie de fret bricolée à bord d\'une frégate de contrebandiers où une reine xénomorphe s\'est réveillée en pleine phase de découpe Yautja.',
+    description: 'Une immense baie de fret bricolée à bord d\'une frégate de contrebandiers où une reine xénomorphe s\'est réveillée en pleine phase de découpe Yautja.',
+    tacticalNotes: 'La disposition chaotique du butin brise les lignes de tir direct ; les angles morts sont propices aux embuscades de facehuggers et aux bonds de prédateurs.',
+    dimensionsM: { width: 390, length: 460, height: 50 },
+    elevationRangeM: [0, 50],
+    tacticalSectors: [
+      'Zone de Découpe Principale & Caisson de la Reine',
+      'Dédale de Conteneurs de Contrebande & Butin Volé',
+      'Sas d\'Infiltration des Chasseurs Yautja Découpé au Plasma',
+      'Passerelle de Contrôle Pirate & Quartier du Capitaine'
+    ],
+    keyLandmarks: [
+      'Caisson cryogénique géant brisé de l\'intérieur par la reine',
+      'Brèche circulaire béante dans la coque scellée par un champ de force',
+      'Autel de trophées de fortune érigé par les pillards'
+    ],
+    environmentalHazards: [
+      { type: 'FUEL_FIRE', description: 'Flammes d\'hydrocarbures sous pression jaillissant des conduites endommagées' },
+      { type: 'LOOSE_CARGO', description: 'Conteneurs instables susceptibles de s\'effondrer sous les impacts lourds' }
+    ],
+    keyPreyIds: ['prey_xeno_praetorian_royal', 'prey_colonial_marine_heavy'],
+    heroSquadId: 'squad_avp_pirate_booty_raiders',
+    villainSquadId: null
+  },
+  {
+    id: 'map_avp_tokyo_shinjuku_skyrise',
+    name: 'Néo-Tokyo Shinjuku — Ponts de Verre & Toits Sous la Pluie (1999)',
+    universe: 'AVP',
+    originMedia: 'AVP: Tokyo (Dark Horse Comics 1999)',
+    sourceMedia: 'AVP: Tokyo (1999)',
+    sourceType: 'COMIC',
+    releaseYear: 1999,
+    year: 1999,
+    biomeId: 'los_angeles_1997',
+    biome: 'CYBERPUNK_MEGAPOLIS',
+    recommendedBiomeLabel: 'Néo-Tokyo Shinjuku — Gratte-ciels & Néons Acides (AVP: Tokyo 1999)',
+    weather: 'Pluie battante acide continue, brume urbaine luminescente et reflets scintillants',
+    lighting: 'Écrans publicitaires holographiques géants, enseignes au néon pourpres et bleu nuit urbain',
+    verticality: 'EXTRÊME (Toits d\'immeubles de 60 étages, passerelles de verre suspendues et antennes de télécom)',
+    destructibility: 'Panneaux de verre trempé, enseignes néon projetant des étincelles et balustrades métalliques',
+    interactables: [
+      'Générateur de panneau publicitaire holographique provoquant un flash aveuglant',
+      'Gondole de nettoyage de vitres suspendue motorisée',
+      'Panneau de commande d\'héliport privé avec projecteurs d\'atterrissage'
+    ],
+    environmentSummary: 'Les toits vertigineux et passerelles suspendues de Shinjuku la nuit, où yakuzas cybernétisés, chasseurs Yautja et xénomorphes s\'affrontent au-dessus du vide.',
+    description: 'Les toits vertigineux et passerelles suspendues de Shinjuku la nuit, où yakuzas cybernétisés, chasseurs Yautja et xénomorphes s\'affrontent au-dessus du vide.',
+    tacticalNotes: 'La chute est mortelle en dehors des toitures ; les surfaces vitrées mouillées réduisent l\'adhérence des foulées tout en réverbérant les tirs de plasma.',
+    dimensionsM: { width: 500, length: 500, height: 180 },
+    elevationRangeM: [0, 180],
+    tacticalSectors: [
+      'Héliport Central de la Tour Mishima & Salon Panoramique',
+      'Passerelle Aérienne de Verre Reliant les Tours Jumelles',
+      'Enchevêtrement de Climatiseurs Industriels & Labyrinthe de Néons',
+      'Nid d\'Antennes Satellites du Sommet de Tour'
+    ],
+    keyLandmarks: [
+      'Écran holographique géant d\'une geisha diffusant des glitchs vidéo',
+      'Hélicoptère d\'évacuation yakuza écrasé en bordure de toit',
+      'Jardin zen suspendu au 50ème étage aux cerisiers de plastique'
+    ],
+    environmentalHazards: [
+      { type: 'VERTIGO_FALL', description: 'Vents violents d\'altitude déstabilisant les appuis en bordure de toit' },
+      { type: 'NEON_SHORT_CIRCUIT', description: 'Décharges électriques aveuglantes des enseignes brisées par les tirs' }
+    ],
+    keyPreyIds: ['alien_base_quinn_mckenna_ranger_2018', 'prey_xeno_warrior'],
+    heroSquadId: 'squad_avp_tokyo_yakuza_clan',
+    villainSquadId: null
   }
 ]);
 
@@ -4273,6 +4543,90 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     wieldedBy: 'Chefs de meute et maîtres de chasse du clan Top-Knot',
     yautjaCounterplay: 'Bouclier bouclant le flux énergétique et assaut frontal rapide lors du cycle de refroidissement.',
     description: 'Canon d\'épaule massif à double bobine d\'induction délivrant deux sphères de plasma synchronisées pour pulvériser les lignes xénomorphes.'
+  },
+  {
+    id: 'wpn_south_china_sea_pirate_scattergun',
+    name: 'Khmer Pirate Cut-Off 10-Gauge Heavy Scattergun',
+    universe: 'PREDATOR',
+    faction: 'South China Sea Khmer Pirates',
+    originMedia: 'Predator: South China Sea (2008)',
+    caliber: '10-Gauge Magnum Lead Buckshot',
+    damageType: 'BALLISTIC_PELLET',
+    effectiveRangeMeters: 25,
+    rateOfFire: 'Coup par coup double canon',
+    wieldedBy: 'Pirates et contrebandiers insulaires de la mer de Chine',
+    yautjaCounterplay: 'Maintien de distance d\'engagement et parade réflexe au bouclier d\'avant-bras.',
+    description: 'Fusil de calibre 10 aux canons sciés à l\'extrême, projetant une gerbe dévastatrice de chevrotine de plomb capable de déchiqueter chair et armure légère à bout portant.'
+  },
+  {
+    id: 'wpn_civil_war_springfield_1861_musket',
+    name: 'Springfield Model 1861 Rifled Musket with Triangular Bayonet',
+    universe: 'PREDATOR',
+    faction: 'Civil War Ozark Battalions',
+    originMedia: 'Predator: Hell Come A-Walkin\' (1998)',
+    caliber: '.58 Caliber Minié Ball & Black Powder',
+    damageType: 'BALLISTIC_PIERCING',
+    effectiveRangeMeters: 180,
+    rateOfFire: 'Rechargement manuel par la bouche (3 tirs/min)',
+    wieldedBy: 'Fantassins de ligne confédérés et fédéraux des Ozarks',
+    yautjaCounterplay: 'Fermer la distance lors du rechargement lent de 20 secondes ou bondir sous le couvert de fumée.',
+    description: 'Fusil rayé emblématique de la guerre de Sécession tirant une balle Minié en plomb expansif à haute pénétration, surmonté d\'une redoutable baïonnette triangulaire de 45cm.'
+  },
+  {
+    id: 'wpn_sevastopol_working_joe_stun_prod',
+    name: 'Seegson Synthetic Security Industrial Stun Prod',
+    universe: 'ALIEN',
+    faction: 'Seegson Working Joes / Apollo',
+    originMedia: 'Alien: Isolation (2014)',
+    caliber: 'Arc Électrostatique 50kV Continu',
+    damageType: 'ELECTRO_STUN',
+    effectiveRangeMeters: 3,
+    rateOfFire: 'Décharge continue au contact',
+    wieldedBy: 'Androïdes de sécurité industrielle Working Joes sous protocole Apollo',
+    yautjaCounterplay: 'Désarticulation mécanique à distance par combi-stick ou tranchement des avant-bras synthétiques.',
+    description: 'Bâton d\'intervention industrielle à électrodes de tungstène délivrant une décharge tétanisante continue conçue pour neutraliser les émeutiers humains et court-circuiter les relais de bord.'
+  },
+  {
+    id: 'wpn_defiance_zula_carbine_rig',
+    name: 'M57A2 Exoskeleton-Linked Compact Carbine',
+    universe: 'ALIEN',
+    faction: 'Europa Mutineers / Colonial Marines',
+    originMedia: 'Aliens: Defiance (2016)',
+    caliber: '10x24mm High-Explosive Caseless',
+    damageType: 'BALLISTIC_EXPLOSIVE',
+    effectiveRangeMeters: 85,
+    rateOfFire: 'Rafales courtes 3 coups asservies au harnais',
+    wieldedBy: 'Zula Hendricks et les mutins de l\'USS Europa',
+    yautjaCounterplay: 'Camouflage actif pour briser le ciblage gyroscopique et contournement rapide par les angles hauts.',
+    description: 'Carabine militaire compactée connectée directement au harnais biomécanique rachidien de Zula Hendricks, compensant le recul pour délivrer des groupements chirurgicaux de balles explosives.'
+  },
+  {
+    id: 'wpn_booty_pirate_pneumatic_nailer',
+    name: 'Heavy Industrial Pneumatic Hull-Riveting Spike Launcher',
+    universe: 'AVP',
+    faction: 'Deep-Space Smuggler Scavengers',
+    originMedia: 'Aliens vs. Predator: Booty (1996)',
+    caliber: 'Pointes d\'Acier Trempé 80mm sous 200 Bars',
+    damageType: 'BALLISTIC_PNEUMATIC',
+    effectiveRangeMeters: 35,
+    rateOfFire: 'Semi-automatique pneumatique 240 CPM',
+    wieldedBy: 'Ferrailleurs et pirates de l\'espace de la frégate marchande',
+    yautjaCounterplay: 'Neutralisation de la bonbonne de gaz sous pression dorsale par un tir précis de plasmacaster.',
+    description: 'Pistolet de rivetage de coque spatiale détourné en arme de fortune redoutable, propulsant des pieux métalliques lourds capables de perforer les cloisons sous pression et les carapaces xénomorphes.'
+  },
+  {
+    id: 'wpn_tokyo_cyber_yakuza_katana',
+    name: 'Néo-Tokyo High-Frequency Monomolecular Katana',
+    universe: 'AVP',
+    faction: 'Shinjuku Cyber-Yakuza Syndicate',
+    originMedia: 'Aliens vs. Predator: Tokyo (1999)',
+    caliber: 'Lame Alliage Titane-Carbone Vibrante HF (35 kHz)',
+    damageType: 'HIGH_FREQUENCY_SLASH',
+    effectiveRangeMeters: 2.2,
+    rateOfFire: 'Enchaînement de passes martiales d\'escrime',
+    wieldedBy: 'Maîtres de sabre cybernétisés du syndicat Mishima',
+    yautjaCounterplay: 'Parade au combi-stick renforcé et contre-attaque brutale par balayage de fouet ou shuriken rotatif.',
+    description: 'Katana forgé dans un alliage spatial ultra-dense dont le fil oscillant à ultra-haute fréquence désagrège la matière au niveau moléculaire, tranchant les métaux et blindages extraterrestres.'
   }
 ]);
 
