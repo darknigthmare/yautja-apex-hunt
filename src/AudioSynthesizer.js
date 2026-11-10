@@ -38150,6 +38150,135 @@ class AudioSynthesizer {
     return descriptor;
   }
 
+  playSafariNitroElephantGunBlast() {
+    const descriptor = {
+      event: 'safari_nitro_elephant_gun_blast',
+      synthesis: 'nitro_express_acoustic_concussion_and_savanna_echo',
+      concussionBoomHz: 75,
+      shotEchoHz: 420,
+      durationSeconds: 0.52,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const boomOsc = this.ctx.createOscillator();
+    const boomGain = this.ctx.createGain();
+    boomOsc.type = 'triangle';
+    boomOsc.frequency.setValueAtTime(descriptor.concussionBoomHz, now);
+    boomOsc.frequency.exponentialRampToValueAtTime(26, now + 0.48);
+
+    boomGain.gain.setValueAtTime(0.85, now);
+    boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+    boomOsc.connect(boomGain);
+    boomGain.connect(this.ctx.destination);
+    boomOsc.start(now);
+    boomOsc.stop(now + 0.5);
+
+    const echoOsc = this.ctx.createOscillator();
+    const echoGain = this.ctx.createGain();
+    echoOsc.type = 'sawtooth';
+    echoOsc.frequency.setValueAtTime(descriptor.shotEchoHz, now + 0.05);
+    echoOsc.frequency.exponentialRampToValueAtTime(90, now + 0.5);
+
+    echoGain.gain.setValueAtTime(0.55, now + 0.05);
+    echoGain.gain.exponentialRampToValueAtTime(0.001, now + 0.52);
+
+    echoOsc.connect(echoGain);
+    echoGain.connect(this.ctx.destination);
+    echoOsc.start(now + 0.05);
+    echoOsc.stop(now + 0.52);
+
+    return descriptor;
+  }
+
+  playMiningPlasmaCutterBeam() {
+    const descriptor = {
+      event: 'mining_plasma_cutter_beam',
+      synthesis: 'pressurized_subterranean_plasma_arc_hiss_and_hum',
+      cutterArcHz: 1650,
+      magneticHumHz: 110,
+      durationSeconds: 0.62,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const arcOsc = this.ctx.createOscillator();
+    const arcGain = this.ctx.createGain();
+    arcOsc.type = 'sawtooth';
+    arcOsc.frequency.setValueAtTime(descriptor.cutterArcHz, now);
+    arcOsc.frequency.exponentialRampToValueAtTime(380, now + 0.55);
+
+    arcGain.gain.setValueAtTime(0.72, now);
+    arcGain.gain.exponentialRampToValueAtTime(0.001, now + 0.58);
+
+    arcOsc.connect(arcGain);
+    arcGain.connect(this.ctx.destination);
+    arcOsc.start(now);
+    arcOsc.stop(now + 0.58);
+
+    const humOsc = this.ctx.createOscillator();
+    const humGain = this.ctx.createGain();
+    humOsc.type = 'sine';
+    humOsc.frequency.setValueAtTime(descriptor.magneticHumHz, now + 0.02);
+    humOsc.frequency.exponentialRampToValueAtTime(45, now + 0.6);
+
+    humGain.gain.setValueAtTime(0.65, now + 0.02);
+    humGain.gain.exponentialRampToValueAtTime(0.001, now + 0.62);
+
+    humOsc.connect(humGain);
+    humGain.connect(this.ctx.destination);
+    humOsc.start(now + 0.02);
+    humOsc.stop(now + 0.62);
+
+    return descriptor;
+  }
+
+  playHarpoonPneumaticLaunch() {
+    const descriptor = {
+      event: 'harpoon_pneumatic_launch',
+      synthesis: 'high_pressure_compressed_gas_puff_and_steel_cable_whistle',
+      pneumaticPuffHz: 280,
+      cableWhistleHz: 2400,
+      durationSeconds: 0.38,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const puffOsc = this.ctx.createOscillator();
+    const puffGain = this.ctx.createGain();
+    puffOsc.type = 'triangle';
+    puffOsc.frequency.setValueAtTime(descriptor.pneumaticPuffHz, now);
+    puffOsc.frequency.exponentialRampToValueAtTime(55, now + 0.3);
+
+    puffGain.gain.setValueAtTime(0.78, now);
+    puffGain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+
+    puffOsc.connect(puffGain);
+    puffGain.connect(this.ctx.destination);
+    puffOsc.start(now);
+    puffOsc.stop(now + 0.32);
+
+    const whistleOsc = this.ctx.createOscillator();
+    const whistleGain = this.ctx.createGain();
+    whistleOsc.type = 'sine';
+    whistleOsc.frequency.setValueAtTime(descriptor.cableWhistleHz, now + 0.02);
+    whistleOsc.frequency.exponentialRampToValueAtTime(650, now + 0.36);
+
+    whistleGain.gain.setValueAtTime(0.5, now + 0.02);
+    whistleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+
+    whistleOsc.connect(whistleGain);
+    whistleGain.connect(this.ctx.destination);
+    whistleOsc.start(now + 0.02);
+    whistleOsc.stop(now + 0.38);
+
+    return descriptor;
+  }
+
 }
 
 export const audioSynth = new AudioSynthesizer();

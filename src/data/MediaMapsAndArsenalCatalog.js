@@ -3638,7 +3638,7 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
     "villainSquadId": null
   },
   {
-    "id": "map_pred_louisiana_bayou_swamp",
+    "id": "map_pred_african_savanna_safari_reserve",
     "name": "Marais & Cyprès Chauves — Bayou de Louisiane (1998)",
     "universe": "PREDATOR",
     "originMedia": "Predator: Strange Roux (1998)",
@@ -4640,6 +4640,361 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
       "prey_weyland_combat_android"
     ],
     "heroSquadId": "squad_avp_chokehold_containment_hazmat",
+    "villainSquadId": null
+  }
+,
+  {
+    "id": "map_pred_louisiana_bayou_swamp",
+    "name": "Réserve Sauvage de la Savane Africaine — No Safari (1998)",
+    "universe": "PREDATOR",
+    "originMedia": "Predator: No Safari (1998)",
+    "sourceType": "COMIC",
+    "releaseYear": 1996,
+    "year": 1996,
+    "biomeId": "jungle",
+    "biome": "ARID_SAVANNA_SAFARI",
+    "recommendedBiomeLabel": "Savane Africaine & Baobabs (1998)",
+    "weather": "Chaleur moite étouffante, brume rampante à ras d'eau et moustiques agressifs",
+    "lighting": "Lueur verdâtre tamisée à travers la mousse espagnole et reflets de lune trouble",
+    "verticality": "MOYENNE (Cyprès centenaires, toits de cabanes de pêcheurs et pontons de bois)",
+    "destructibility": "Huttes de trappeurs sur pilotis, barques vermoulues et branches de cyprès",
+    "interactables": [
+      "Barque à fond plat pouvant être décrochée pour traverser silencieusement un canal",
+      "Mousse espagnole inflammable pouvant être embrasée pour aveugler une patrouille",
+      "Nid d'alligators territoriaux pouvant être agité pour attaquer les intrus"
+    ],
+    "environmentSummary": "Marécages sauvages du delta de Louisiane où un Yautja solitaire traque des braconniers cajuns au milieu des cyprès chauves.",
+    "description": "Marécages sauvages du delta de Louisiane où un Yautja solitaire traque des braconniers cajuns au milieu des cyprès chauves.",
+    "tacticalNotes": "La vase ralentit les déplacements à pied. Utilisez les branches moussues horizontales pour fondre sur les embarcations légères.",
+    "dimensionsM": {
+      "width": 590,
+      "length": 590,
+      "height": 38
+    },
+    "elevationRangeM": [
+      0,
+      38
+    ],
+    "tacticalSectors": [
+      "Méandre du Grand Marais & Enchevêtrement de Cyprès",
+      "Campement de Cabane sur Pilotis des Trappeurs",
+      "Crique aux Alligators & Débarcadère Abandonné",
+      "Lisière de Clairière aux Chênes Centenaires Moussus"
+    ],
+    "keyLandmarks": [
+      "Cabane en bois de cyprès sur pilotis truffée de pièges de braconniers",
+      "Épave de bateau à aubes échoué couverte de végétation aquatique",
+      "Grand cyprès millénaire aux racines aériennes formant une forteresse naturelle"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "DEEP_MUCK",
+        "description": "Vase épaisse réduisant la vitesse de sprint et la hauteur des bonds"
+      },
+      {
+        "type": "SWAMP_MIST",
+        "description": "Brouillard lourd diminuant la portée de visée thermique"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_feral_predator_1719"
+    ],
+    "heroSquadId": "squad_pred_no_safari_poacher_posse",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_pred_alaska_taiga_blizzard",
+    "name": "Gorge Glacée de la Taïga Arctique — Primal (1997)",
+    "universe": "PREDATOR",
+    "originMedia": "Predator: Primal (1997)",
+    "sourceType": "COMIC",
+    "releaseYear": 1997,
+    "year": 1997,
+    "biomeId": "bouvetoya_pyramid",
+    "biome": "SUBZERO_BOREAL_TAIGA",
+    "recommendedBiomeLabel": "Taïga Arctique d'Alaska (1997)",
+    "weather": "Tempête de neige sub-zéro aveuglante, rafales de vent glacial et givre persistant",
+    "lighting": "Aurore boréale émeraude dans le ciel nocturne et blancheur crue du manteau neigeux",
+    "verticality": "ÉLEVÉE (Parois rocheuses escarpées, sapins géants ployés sous la neige et corniches)",
+    "destructibility": "Falaises de glace friables, conifères enneigés et abris de bûcherons en rondins",
+    "interactables": [
+      "Glaçons colossaux suspendus pouvant être décrochés pour empaler une cible",
+      "Carcase de caribou congelée servant d'appât pour attirer les prédateurs locaux",
+      "Corniche de neige fraîche pouvant être effondrée pour créer une avalanche locale"
+    ],
+    "environmentSummary": "Étendues sauvages et hostiles du grand nord où un Yautja sans arme à distance livre un duel d'honneur contre un grizzly géant.",
+    "description": "Étendues sauvages et hostiles du grand nord où un Yautja sans arme à distance livre un duel d'honneur contre un grizzly géant.",
+    "tacticalNotes": "Le froid polaire masque rapidement la signature thermique des proies immobiles. Exploitez les surplombs rocheux pour vos attaques en piqué.",
+    "dimensionsM": {
+      "width": 630,
+      "length": 630,
+      "height": 75
+    },
+    "elevationRangeM": [
+      0,
+      75
+    ],
+    "tacticalSectors": [
+      "Crête du Blizzard & Corniche des Vents Arctiques",
+      "Gorge de la Tanière de l'Ours Grizzly Colossal",
+      "Sous-bois Dense d'Épicéas Ployés sous la Neige",
+      "Rivière Gelée aux Crevasses de Glace Vive"
+    ],
+    "keyLandmarks": [
+      "Tanière monumentale creusée sous une paroi rocheuse par un ours géant",
+      "Pin centenaire pétrifié par le gel dominant toute la vallée",
+      "Passerelle naturelle de glace suspendue au-dessus d'un ravin vertigineux"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "WHITE_OUT_BLIZZARD",
+        "description": "Visibilité réduite à courte portée et dispersion des capteurs audio"
+      },
+      {
+        "type": "SUBZERO_EXPOSURE",
+        "description": "Refroidissement passif continu limitant la recharge d'endurance"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_young_blood_initiate"
+    ],
+    "heroSquadId": "squad_pred_primal_alaska_outfitters",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_alien_deep_crust_mining_bunker",
+    "name": "Bunker Géologique des Failles — Aliens: Survival (1998)",
+    "universe": "ALIEN",
+    "originMedia": "Aliens: Survival (1998)",
+    "sourceType": "COMIC",
+    "releaseYear": 1998,
+    "year": 2189,
+    "biomeId": "stargazer_blacksite",
+    "biome": "SUBTERRANEAN_MINING_VAULT",
+    "recommendedBiomeLabel": "Bunker Minier de Grande Profondeur (2189)",
+    "weather": "Chaleur géothermique étouffante, sifflement des extracteurs et poussière de roche",
+    "lighting": "Éclairage d'urgence rouge incandescent, voyants de pressurisation et pénombre",
+    "verticality": "MOYENNE (Puits de forage verticaux, échelles de secours et ponts roulants)",
+    "destructibility": "Grilles de ventilation industrielle, cloisons anti-souffle et parois rocheuses",
+    "interactables": [
+      "Sas de décompression géologique pouvant être scellé pour écraser un poursuivant",
+      "Conduite de vapeur sous pression pouvant être rompue pour créer un écran brûlant",
+      "Treuil d'extraction minière pouvant être activé pour soulever ou projeter des roches"
+    ],
+    "environmentSummary": "Complexe minier souterrain hermétiquement isolé dans la croûte planétaire où la paranoïa d'un survivant affronte la furtivité d'un alien.",
+    "description": "Complexe minier souterrain hermétiquement isolé dans la croûte planétaire où la paranoïa d'un survivant affronte la furtivité d'un alien.",
+    "tacticalNotes": "Les galeries étroites favorisent les embuscades à la lance combistick. Surveillez en permanence les grilles de ventilation au plafond.",
+    "dimensionsM": {
+      "width": 550,
+      "length": 550,
+      "height": 35
+    },
+    "elevationRangeM": [
+      0,
+      35
+    ],
+    "tacticalSectors": [
+      "Puits de Forage Central & Trémie de Concassage",
+      "Bunker de Confinement Hermétique du Géologue",
+      "Galerie de Maintenance des Conduits de Vapeur",
+      "Dépôt d'Explosifs Miniers & Sas de Sécurité"
+    ],
+    "keyLandmarks": [
+      "Tête de forage rotative géante arrêtée au fond du puits principal",
+      "Porte blindée de bunker de survie barricadée de poutrelles soudées",
+      "Station de sismographie enregistrant des pulsations biologiques souterraines"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "GEOTHERMAL_STEAM",
+        "description": "Jets de vapeur brûlante infligeant des dégâts thermiques continus"
+      },
+      {
+        "type": "SEISMIC_TREMOR",
+        "description": "Secousses périodiques déséquilibrant les combattants au sol"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_xeno_warrior"
+    ],
+    "heroSquadId": "squad_alien_survival_geology_crew",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_alien_orbital_freighter_concourse",
+    "name": "Coursive de Verre du Cargo Stellaire — Glass Corridor (1998)",
+    "universe": "ALIEN",
+    "originMedia": "Aliens: Glass Corridor (1998)",
+    "sourceType": "COMIC",
+    "releaseYear": 1998,
+    "year": 2193,
+    "biomeId": "stargazer_blacksite",
+    "biome": "ORBITAL_CARGO_GLASS_PROMENADE",
+    "recommendedBiomeLabel": "Coursive Pressurisée du Cargo Spatial (2193)",
+    "weather": "Silence oppressant du vide spatial extérieur, alarme de dépressurisation stridente",
+    "lighting": "Éclairage bleuté stroboscopique, étoiles lointaines à travers les verrières blindées",
+    "verticality": "MOYENNE (Niveaux de passerelles suspendues, baies vitrées géantes et conduits)",
+    "destructibility": "Panneaux de plexiglas renforcé, consoles de navigation et conteneurs de fret",
+    "interactables": [
+      "Cloison pare-décompression pouvant être abaissée pour isoler une section de coursive",
+      "Verrière blindée pouvant être fissurée pour projeter une menace vers l'aspiration du vide",
+      "Chariot de fret magnétique pouvant être catapulté le long des rails de transit"
+    ],
+    "environmentSummary": "Promenade panoramique vitrée d'un cargo de transport civil transformée en zone d'extermination sous la menace d'une brèche atmosphérique.",
+    "description": "Promenade panoramique vitrée d'un cargo de transport civil transformée en zone d'extermination sous la menace d'une brèche atmosphérique.",
+    "tacticalNotes": "Évitez les tirs d'armes lourdes contre les verrières. Utilisez les poutrelles supérieures pour tendre des embuscades verticales sans risque.",
+    "dimensionsM": {
+      "width": 570,
+      "length": 570,
+      "height": 42
+    },
+    "elevationRangeM": [
+      0,
+      42
+    ],
+    "tacticalSectors": [
+      "Galerie Principale Panoramique en Verre Blindé",
+      "Quai de Déchargement des Conteneurs de Réfugiés",
+      "Sas de Jonction vers la Salle des Machines",
+      "Poste de Commande de Pressurisation d'Urgence"
+    ],
+    "keyLandmarks": [
+      "Immense baie vitrée incurvée de 40 mètres ouvrant sur le vide spatial étoilé",
+      "Pile de conteneurs de fret fracturés marquée de griffures acides profondes",
+      "Sas d'évacuation hermétique au panneau de commande calciné"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "VACUUM_DECOMPRESSION",
+        "description": "Brèches de coque créant une aspiration violente vers le vide"
+      },
+      {
+        "type": "ACID_ETCHED_FLOOR",
+        "description": "Surfaces rongées par l'acide devenant cassantes et coupantes"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_weyland_combat_android"
+    ],
+    "heroSquadId": "squad_alien_glass_corridor_freighter_security",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_avp_bunda_colony_ranch_perimeter",
+    "name": "Périmètre Fortifié de Bunda — AVP: War (1995)",
+    "universe": "AVP",
+    "originMedia": "Aliens vs. Predator: War (1995)",
+    "sourceType": "COMIC",
+    "releaseYear": 1995,
+    "year": 2195,
+    "biomeId": "hive_lv426",
+    "biome": "AGRI_SETTLEMENT_DEFENSE_ZONE",
+    "recommendedBiomeLabel": "Périmètre Fortifié de la Colonie Bunda (2195)",
+    "weather": "Tempêtes de poussière ocre, soleil de plomb aride et fumées d'incendie de brousse",
+    "lighting": "Lumière rasante du couchant illuminant la poussière et projecteurs d'enceinte",
+    "verticality": "MOYENNE (Tours de guet en acier, clôtures électrifiées et toitures d'enclos)",
+    "destructibility": "Clôtures barbelées, abreuvoirs de bétail colonial et hangars agricoles en tôle",
+    "interactables": [
+      "Générateur de clôture électrique pouvant être survolté pour foudroyer les xénomorphes",
+      "Silo à grains automatisé pouvant être déversé pour ensevelir une escouade ennemie",
+      "Projecteur de surveillance pouvant être orienté pour aveugler une position de tir"
+    ],
+    "environmentSummary": "Colonie agricole frontière de Bunda où Machiko Noguchi et les Marines défendent les enclos de bétail contre des vagues de xénomorphes.",
+    "description": "Colonie agricole frontière de Bunda où Machiko Noguchi et les Marines défendent les enclos de bétail contre des vagues de xénomorphes.",
+    "tacticalNotes": "La clôture périphérique canalise les assauts. Utilisez le smart disc pour faucher les cibles alignées le long des barrières de contention.",
+    "dimensionsM": {
+      "width": 610,
+      "length": 610,
+      "height": 45
+    },
+    "elevationRangeM": [
+      0,
+      45
+    ],
+    "tacticalSectors": [
+      "Enclos Central de Contention du Bétail Rhynth",
+      "Ligne de Clôture Électrifiée & Tours de Tir Nord",
+      "Complexe d'Habitation des Colons Barricadé",
+      "Piste d'Atterrissage des Transports Coloniaux"
+    ],
+    "keyLandmarks": [
+      "Tour de guet métallique centrale armée d'un projecteur halogène puissant",
+      "Portail blindé d'enceinte forcé par des xénomorphes et maculé d'acide",
+      "Carcasse de tracteur agricole blindé servant de bastion de fortune"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "DUST_STORM",
+        "description": "Bourrasques de poussière réduisant la portée des capteurs visuels"
+      },
+      {
+        "type": "ELECTRIFIED_WIRE",
+        "description": "Clôtures sous haute tension infligeant des décharges paralysantes"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_colonial_marine_heavy"
+    ],
+    "heroSquadId": "squad_avp_bunda_militia_defenders",
+    "villainSquadId": null
+  },
+  {
+    "id": "map_avp_bad_blood_orbital_citadel",
+    "name": "Bastion Spatial des Bad Bloods — Three World War (2010)",
+    "universe": "AVP",
+    "originMedia": "Aliens vs. Predator: Three World War (2010)",
+    "sourceType": "COMIC",
+    "releaseYear": 2010,
+    "year": 2210,
+    "biomeId": "stargazer_blacksite",
+    "biome": "KILLER_CLAN_ORBITAL_FORTRESS",
+    "recommendedBiomeLabel": "Citadelle Spatiale des Bad Bloods (2210)",
+    "weather": "Atmosphère polluée par des gaz de combustion, gravité artificielle oscillante",
+    "lighting": "Lueurs rouges sanglantes, étincelles de câbles rompus et écrans holographiques brisés",
+    "verticality": "TRÈS ÉLEVÉE (Passerelles suspendues à plusieurs étages, fosses d'arène et cages)",
+    "destructibility": "Cages de contention de xénomorphes, consoles de commande et piliers d'énergie",
+    "interactables": [
+      "Console de contrôle neural pouvant être piratée pour libérer des xénomorphes enragés",
+      "Conduit de plasma d'alimentation pouvant être percuté pour déclencher une explosion",
+      "Grille de désactivation de gravité pouvant être activée pour désorienter l'ennemi"
+    ],
+    "environmentSummary": "Forteresse orbitale du clan renégat des Bad Bloods où sont dressés des xénomorphes asservis avant l'assaut combiné des forces d'élite.",
+    "description": "Forteresse orbitale du clan renégat des Bad Bloods où sont dressés des xénomorphes asservis avant l'assaut combiné des forces d'élite.",
+    "tacticalNotes": "Attention aux xénomorphes asservis contrôlés par les maîtres de meute. Neutralisez en priorité les officiers Bad Blood pour semer la panique.",
+    "dimensionsM": {
+      "width": 650,
+      "length": 650,
+      "height": 60
+    },
+    "elevationRangeM": [
+      0,
+      60
+    ],
+    "tacticalSectors": [
+      "Arène Centrale de Dressage des Xénomorphes en Laisse",
+      "Passerelle de Commandement du Seigneur de Guerre Bad Blood",
+      "Batteries de Cages Biologiques & Laboratoire Neural",
+      "Noyau de Propulsion Orbitale & Sas d'Amarrage Blindé"
+    ],
+    "keyLandmarks": [
+      "Trône de crânes métalliques du chef renégat dominant l'arène centrale",
+      "Portique de contention d'une Reine xénomorphe sous entraves cybernétiques",
+      "Générateur de champ gravitationnel crépitant au centre du bastion"
+    ],
+    "environmentalHazards": [
+      {
+        "type": "GRAVITY_SURGE",
+        "description": "Fluctuations de gravité modifiant brusquement la hauteur des sauts"
+      },
+      {
+        "type": "NEURAL_STATIC_FIELD",
+        "description": "Ondes de brouillage perturbant temporairement le HUD Yautja"
+      }
+    ],
+    "keyPreyIds": [
+      "prey_colonial_marine_heavy"
+    ],
+    "heroSquadId": "squad_avp_three_world_war_combined_strike",
     "villainSquadId": null
   }
 ]);
@@ -6837,6 +7192,91 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
     "wieldedBy": "Opérateurs de confinement biologique en combinaison Hazmat",
     "yautjaCounterplay": "Dissolution thermique au canon à plasma et tranchant moléculaire des lames.",
     "description": "Arme de neutralisation non-létale projetant une mousse chimique expansive durcissant en quelques fractions de seconde pour paralyser net les bio-menaces."
+  }
+,
+  {
+    "id": "wpn_no_safari_heavy_elephant_gun",
+    "name": "Carabine Express Double Nitro .700 Safari Africain",
+    "universe": "PREDATOR",
+    "faction": "African Savanna Armed Poachers",
+    "originMedia": "Predator: Strange Roux (1996)",
+    "caliber": ".700 Nitro Express Munitions Blindées 1000 Grains",
+    "damageType": "BALLISTIC_HEAVY_KINETIC",
+    "effectiveRangeMeters": 24,
+    "rateOfFire": "Tir double canon juxtaposé (60 coups/min)",
+    "wieldedBy": "Braconniers lourdement armés de la réserve africaine",
+    "yautjaCounterplay": "Esquive agile dans les cyprès et tir de canon à plasma par le dessus.",
+    "description": "Fusil de chasse lourd à canons sciés projetant une volée dévastatrice capable de repousser les plus redoutables prédateurs des marais au contact."
+  },
+  {
+    "id": "wpn_primal_alaska_heavy_bear_rifle",
+    "name": "Carabine de Chasse au Gros Gibier .458 Win Mag Alaska",
+    "universe": "PREDATOR",
+    "faction": "Alaskan Big Game Hunters",
+    "originMedia": "Predator: Primal (1997)",
+    "caliber": ".458 Winchester Magnum Balles Blindées 500 Grains",
+    "damageType": "BALLISTIC_HEAVY_PIERCING",
+    "effectiveRangeMeters": 65,
+    "rateOfFire": "Tir au verrou lourd de haute précision (30 coups/min)",
+    "wieldedBy": "Guides de chasse arctiques et trappeurs d'Alaska",
+    "yautjaCounterplay": "Déploiement du bouclier thermique ou interception au smart disc à mi-distance.",
+    "description": "Carabine de calibre extrême conçue pour terrasser net les grizzlys colossaux et transpercer les cuirs les plus épais d'un seul projectile massif."
+  },
+  {
+    "id": "wpn_survival_deep_crust_plasma_cutter",
+    "name": "Découpeur Plasma Industriel de Forage Minier M-88",
+    "universe": "ALIEN",
+    "faction": "Subterranean Mining Engineers",
+    "originMedia": "Aliens: Survival (1998)",
+    "caliber": "Arc plasma géologique sous pression 500 bar & torche thermique",
+    "damageType": "THERMAL_PLASMA_INCENDIARY",
+    "effectiveRangeMeters": 18,
+    "rateOfFire": "Faisceau continu de découpe thermique (autonomie 25 secondes)",
+    "wieldedBy": "Ingénieurs géologues et mineurs des grandes profondeurs",
+    "yautjaCounterplay": "Attaque chirurgicale à longue portée et refroidissement actif d'armure.",
+    "description": "Outil d'excavation géologique reconverti en arme défensive projetant un arc de plasma surchauffé capable de trancher net la roche vive et la chitine."
+  },
+  {
+    "id": "wpn_glass_corridor_flechette_subgun",
+    "name": "Pistolet-Mitrailleur de Bord à Fléchettes Mag-Pulse P-12",
+    "universe": "ALIEN",
+    "faction": "Commercial Freight Vessel Security",
+    "originMedia": "Aliens: Glass Corridor (1998)",
+    "caliber": "Micro-fléchettes tungstène polymère 4.5mm sans pénétration de coque",
+    "damageType": "BALLISTIC_RAPID_FLECHETTE",
+    "effectiveRangeMeters": 40,
+    "rateOfFire": "Rafales automatiques ultra-rapides (950 coups/min)",
+    "wieldedBy": "Agents de sécurité des vaisseaux de transport civil",
+    "yautjaCounterplay": "Armure renforcée en métal Yautja et camouflage optique actif.",
+    "description": "Arme de défense pressurisée projetant des essaims de fléchettes létales contre les tissus vivants sans risquer de perforer les baies vitrées orbitales."
+  },
+  {
+    "id": "wpn_bunda_ranch_heavy_harpoon_rifle",
+    "name": "Lance-Harpon Pneumatique Lourd de Contention Bunda",
+    "universe": "AVP",
+    "faction": "Bunda Settlement Defense Militia",
+    "originMedia": "Aliens vs. Predator: War (1995)",
+    "caliber": "Harpons barbelés titane sous propulsion pneumatique 300 bar",
+    "damageType": "BALLISTIC_PNEUMATIC_IMPALING",
+    "effectiveRangeMeters": 35,
+    "rateOfFire": "Tir coup par coup réarmement pneumatique (35 coups/min)",
+    "wieldedBy": "Colons éleveurs et miliciens armés de la planète Bunda",
+    "yautjaCounterplay": "Parade au combi-stick ou découpe du câble au disque tranchant.",
+    "description": "Arme de capture de mégafaune projetant de lourds harpons barbelés capables d'empaler et d'immobiliser net une cible au sol à courte distance."
+  },
+  {
+    "id": "wpn_bad_blood_killer_spikethrower",
+    "name": "Lanceur d'Épines Toxiques des Killer Clans Bad Blood",
+    "universe": "AVP",
+    "faction": "Bad Blood Renegade Pack",
+    "originMedia": "Aliens vs. Predator: Three World War (2010)",
+    "caliber": "Épines de chitine enduites de neurotoxine caustique & détonateur",
+    "damageType": "DISRUPTION_CORROSIVE_SPIKE",
+    "effectiveRangeMeters": 55,
+    "rateOfFire": "Salves d'épines propulsées par gaz comprimé (180 coups/min)",
+    "wieldedBy": "Guerriers renégats des Killer Clans et maîtres de meute xénomorphe",
+    "yautjaCounterplay": "Dissolution thermique au canon à plasma et contre-attaque brutale.",
+    "description": "Arme cruelle forgée par les clans renégats tirant des épines barbelées suintant d'acide et de poison paralysant les fonctions motrices de la proie."
   }
 ]);
 

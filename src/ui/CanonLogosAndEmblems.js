@@ -3310,6 +3310,72 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  if (id.includes('no_safari') || id.includes('poacher_posse')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-nosafariposse" role="img" aria-label="Insigne Braconniers Safari">
+        <polygon points="40,6 72,20 64,68 40,76 16,68 8,20" fill="#042f2e" stroke="#10b981" stroke-width="2.5" />
+        <path d="M22 42 Q40 22 58 42 Q40 62 22 42 Z" fill="#065f46" stroke="#34d399" stroke-width="1.8" />
+        <polygon points="40,26 44,38 56,40 46,48 48,60 40,54 32,60 34,48 24,40 36,38" fill="#ca8a04" stroke="#facc15" stroke-width="1.4" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#a7f3d0" letter-spacing="1" text-anchor="middle">NO SAFARI</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('primal_alaska') || id.includes('alaska_outfitters')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-alaskaoutfitters" role="img" aria-label="Insigne Guides d'Alaska">
+        <polygon points="40,6 74,22 66,66 40,76 14,66 6,22" fill="#0f172a" stroke="#38bdf8" stroke-width="2.5" />
+        <polygon points="40,16 62,56 18,56" fill="#1e293b" stroke="#7dd3fc" stroke-width="2" />
+        <circle cx="40" cy="38" r="8" fill="#0284c7" stroke="#e0f2fe" stroke-width="1.5" />
+        <line x1="26" y1="58" x2="54" y2="58" stroke="#f8fafc" stroke-width="2" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="3.8" font-weight="900" fill="#bae6fd" letter-spacing="1" text-anchor="middle">ALASKA PRIMAL</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('survival_geology') || id.includes('geology_crew')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-geologycrew" role="img" aria-label="Insigne Mineurs des Failles">
+        <polygon points="40,8 72,24 72,56 40,74 8,56 8,24" fill="#292524" stroke="#f97316" stroke-width="2.5" />
+        <circle cx="40" cy="40" r="15" fill="#44403c" stroke="#fb923c" stroke-width="2" />
+        <line x1="40" y1="20" x2="40" y2="60" stroke="#06b6d4" stroke-width="2.5" stroke-linecap="round" />
+        <line x1="20" y1="40" x2="60" y2="40" stroke="#06b6d4" stroke-width="2.5" stroke-linecap="round" />
+        <circle cx="40" cy="40" r="4" fill="#fef08a" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="3.8" font-weight="900" fill="#fed7aa" letter-spacing="1" text-anchor="middle">DEEP CRUST</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('glass_corridor') || id.includes('freighter_security')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-glasscorridor" role="img" aria-label="Insigne Sécurité du Cargo">
+        <polygon points="40,6 74,22 66,66 40,76 14,66 6,22" fill="#020617" stroke="#818cf8" stroke-width="2.5" />
+        <rect x="24" y="24" width="32" height="32" fill="#1e1b4b" stroke="#a5b4fc" stroke-width="2" transform="rotate(45 40 40)" />
+        <line x1="28" y1="28" x2="52" y2="52" stroke="#c7d2fe" stroke-width="1.8" />
+        <circle cx="40" cy="40" r="4" fill="#ffffff" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="3.6" font-weight="900" fill="#e0e7ff" letter-spacing="1" text-anchor="middle">GLASS CONCOURSE</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('bunda_militia') || id.includes('bunda_defenders')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-bundamilitia" role="img" aria-label="Insigne Milice de Bunda">
+        <polygon points="40,8 70,24 70,56 40,74 10,56 10,24" fill="#451a03" stroke="#d97706" stroke-width="2.5" />
+        <polygon points="40,22 56,52 24,52" fill="#78350f" stroke="#fbbf24" stroke-width="2" />
+        <line x1="40" y1="18" x2="40" y2="58" stroke="#fef08a" stroke-width="2.2" stroke-linecap="round" />
+        <circle cx="40" cy="38" r="4" fill="#ffffff" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="4" font-weight="900" fill="#fde68a" letter-spacing="1" text-anchor="middle">BUNDA RANCH</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('three_world_war_combined_strike') || id.includes('killer_clan')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-killerclanassault" role="img" aria-label="Insigne Assaut Killer Clan">
+        <polygon points="40,6 74,20 66,66 40,76 14,66 6,20" fill="#310a12" stroke="#e11d48" stroke-width="2.5" />
+        <polygon points="40,20 52,38 48,56 32,56 28,38" fill="#881337" stroke="#fb7185" stroke-width="2" />
+        <line x1="22" y1="54" x2="58" y2="22" stroke="#fda4af" stroke-width="2.5" stroke-linecap="round" />
+        <circle cx="40" cy="40" r="5" fill="#f43f5e" />
+        <text x="40" y="72" font-family="'Orbitron', sans-serif" font-size="3.6" font-weight="900" fill="#fecdd3" letter-spacing="1" text-anchor="middle">KILLER CLAN</text>
+      </svg>
+    `.trim();
+  }
   if (id.startsWith('squad_') && !id.includes('lv742_kainde_amedha')) {
     const cleanTag = id.replace(/^squad_(pred_|alien_|avp_)?/, '').replace(/_/g, ' ').slice(0, 14).toUpperCase();
     const h = Math.abs(hashCode(id));

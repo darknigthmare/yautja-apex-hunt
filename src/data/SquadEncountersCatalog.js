@@ -4836,7 +4836,7 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
     "originMedia": "Predator: Strange Roux (1998)",
     "biomeId": "jungle",
     "recommendedBiomeLabel": "Marécages du Bayou Cajun (1998)",
-    "primaryMapId": "map_pred_louisiana_bayou_swamp",
+    "primaryMapId": "map_pred_african_savanna_safari_reserve",
     "weaponLoadout": [
       "wpn_louisiana_flintlock_double_shotgun"
     ],
@@ -5759,6 +5759,337 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
         "hp": 740,
         "armor": 65,
         "trophy": "Gant Hazmat Renforcé en Caoutchouc Synthétique Plombé"
+      }
+    ]
+  }
+,
+  {
+    "id": "squad_pred_no_safari_poacher_posse",
+    "name": "Braconniers Armés de la Savane — No Safari (1998)",
+    "universe": "PREDATOR",
+    "shortName": "Braconniers Safari (3 Tireurs)",
+    "category": "LAW_ENFORCEMENT",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Predator: No Safari (1998)",
+    "biomeId": "jungle",
+    "recommendedBiomeLabel": "Savane Africaine & Baobabs (1998)",
+    "primaryMapId": "map_pred_louisiana_bayou_swamp",
+    "weaponLoadout": [
+      "wpn_no_safari_heavy_elephant_gun"
+    ],
+    "description": "Pisteurs et braconniers cajuns nés dans les marécages de Louisiane usant de pièges à mâchoires et de fusils lourds pour traquer le monstre des marais.",
+    "tactics": "Navigation silencieuse en barque à fond plat, dispersion dans la mangrove moussue et tirs de barrage simultanés au calibre 10 lourd.",
+    "totalHonorReward": 7500,
+    "soloVariantId": "prey_feral_predator_1719",
+    "members": [
+      {
+        "id": "trapper_jean_roux",
+        "name": "Jean-Luc \"Gator\" Boudreaux",
+        "role": "Maître Trappeur de la Rivière Rouge",
+        "weapon": "Fusil Double Calibre 10 des Marais & Dague de Poing",
+        "weaponId": "wpn_no_safari_heavy_elephant_gun",
+        "vitalityRatio": 1.5,
+        "hp": 840,
+        "armor": 65,
+        "trophy": "Mâchoire d'Alligator Fossile Sculptée aux Runes Cajuns"
+      },
+      {
+        "id": "tracker_remy_roux",
+        "name": "Remy Thibodeaux",
+        "role": "Guetteur d'Échasses & Pêcheur de Fosse",
+        "weapon": "Fusil Double Calibre 10 des Marais & Câbles Métalliques",
+        "weaponId": "wpn_no_safari_heavy_elephant_gun",
+        "vitalityRatio": 1.4,
+        "hp": 780,
+        "armor": 60,
+        "trophy": "Giberne en Cuir d'Alligator Maculée de Limon Épais"
+      },
+      {
+        "id": "scout_marcel_roux",
+        "name": "Marcel Babineaux",
+        "role": "Tireur d'Embuscade Fluvial",
+        "weapon": "Fusil Double Calibre 10 des Marais & Pièges Mâchoires",
+        "weaponId": "wpn_strange_roux_bayou_shotgun",
+        "vitalityRatio": 1.35,
+        "hp": 740,
+        "armor": 55,
+        "trophy": "Chapeau de Feutre Tressé Étoilé de Plumes de Héron Sanglantes"
+      }
+    ]
+  },
+  {
+    "id": "squad_pred_primal_alaska_outfitters",
+    "name": "Guides Polaires de l'Arctique — Primal (1997)",
+    "universe": "PREDATOR",
+    "shortName": "Guides d'Alaska (3 Chasseurs)",
+    "category": "PARAMILITARY_INSURGENTS",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Predator: Primal (1997)",
+    "biomeId": "bouvetoya_pyramid",
+    "recommendedBiomeLabel": "Taïga Arctique d'Alaska (1997)",
+    "primaryMapId": "map_pred_alaska_taiga_blizzard",
+    "weaponLoadout": [
+      "wpn_primal_alaska_heavy_bear_rifle"
+    ],
+    "description": "Chasseurs d'élite du grand nord américain équipés pour survivre aux hivers polaires et abattre la faune prédatrice la plus colossale.",
+    "tactics": "Poste de tir étagé sur les falaises de glace, tirs de précision au .458 Win Mag et balisage de détection thermique sous le blizzard.",
+    "totalHonorReward": 7600,
+    "soloVariantId": "prey_young_blood_initiate",
+    "members": [
+      {
+        "id": "guide_kodiak_dan",
+        "name": "Capitaine Daniel \"Kodiak\" Ross",
+        "role": "Maître Guide de Grande Chasse Arctique",
+        "weapon": "Carabine .458 Win Mag Alaska & Lunette Sub-Zéro",
+        "weaponId": "wpn_primal_alaska_heavy_bear_rifle",
+        "vitalityRatio": 1.5,
+        "hp": 860,
+        "armor": 70,
+        "trophy": "Griffe d'Ours Grizzly Géant Cerclée d'Or Arctique"
+      },
+      {
+        "id": "tracker_svend_alaska",
+        "name": "Svend Lindqvist",
+        "role": "Pisteur de Blizzard & Télémétreur",
+        "weapon": "Carabine .458 Win Mag Alaska & Fumigènes Thermiques",
+        "weaponId": "wpn_primal_alaska_heavy_bear_rifle",
+        "vitalityRatio": 1.4,
+        "hp": 800,
+        "armor": 65,
+        "trophy": "Anorak Polaire Camouflage Neige Déchiré de Griffures Profondes"
+      },
+      {
+        "id": "spotter_eli_alaska",
+        "name": "Elija Vance",
+        "role": "Tireur d'Arrêt de Corniche Glacée",
+        "weapon": "Carabine .458 Win Mag Alaska & Couteau Bowie Lourd",
+        "weaponId": "wpn_primal_alaska_heavy_bear_rifle",
+        "vitalityRatio": 1.35,
+        "hp": 750,
+        "armor": 60,
+        "trophy": "Paire de Raquettes Tactiques Renforcées en Titane Allégé"
+      }
+    ]
+  },
+  {
+    "id": "squad_alien_survival_geology_crew",
+    "name": "Équipe de Forage Profond — Survival (1998)",
+    "universe": "ALIEN",
+    "shortName": "Mineurs des Failles (3 Techniciens)",
+    "category": "SYNTHETIC_INFILTRATORS",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens: Survival (1998)",
+    "biomeId": "stargazer_blacksite",
+    "recommendedBiomeLabel": "Bunker Minier de Grande Profondeur (2189)",
+    "primaryMapId": "map_alien_deep_crust_mining_bunker",
+    "weaponLoadout": [
+      "wpn_survival_deep_crust_plasma_cutter"
+    ],
+    "description": "Foreurs et techniciens géothermiques retranchés au fond d'un puits scellé maniant des torches de plasma capables de couper l'acier.",
+    "tactics": "Barricade des couloirs étroits au fer forgé, arcs de plasma thermique continus et verrouillage automatique des portes de sécurité.",
+    "totalHonorReward": 7700,
+    "soloVariantId": "prey_xeno_warrior",
+    "members": [
+      {
+        "id": "dr_quarry_survival",
+        "name": "Dr Paul Quarry",
+        "role": "Chef de Mission Géologique Paranoïaque",
+        "weapon": "Découpeur Plasma M-88 & Sismographe Portable",
+        "weaponId": "wpn_survival_deep_crust_plasma_cutter",
+        "vitalityRatio": 1.5,
+        "hp": 850,
+        "armor": 75,
+        "trophy": "Disque Dur Crypté d'Enregistrements Biologiques Souterrains"
+      },
+      {
+        "id": "synth_otto_survival",
+        "name": "Synthétique de Maintenance Otto-4",
+        "role": "Opérateur d'Excavation Haute Pression",
+        "weapon": "Découpeur Plasma M-88 & Électrodes de Forage",
+        "weaponId": "wpn_survival_deep_crust_plasma_cutter",
+        "vitalityRatio": 1.45,
+        "hp": 890,
+        "armor": 80,
+        "trophy": "Buse de Découpeur Plasma Déformée par l'Acide Fongique"
+      },
+      {
+        "id": "miner_graves_survival",
+        "name": "Contremaître Graves",
+        "role": "Artificier de Dynamitage Géologique",
+        "weapon": "Découpeur Plasma M-88 & Charges Thermiques",
+        "weaponId": "wpn_survival_deep_crust_plasma_cutter",
+        "vitalityRatio": 1.35,
+        "hp": 780,
+        "armor": 70,
+        "trophy": "Casque de Mineur Renforcé Doté d'un Projecteur Xénon Brisé"
+      }
+    ]
+  },
+  {
+    "id": "squad_alien_glass_corridor_freighter_security",
+    "name": "Sécurité du Cargo Stellaire — Glass Corridor (1998)",
+    "universe": "ALIEN",
+    "shortName": "Sécurité de Bord (3 Gardes)",
+    "category": "MILITARY_COMMANDO",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens: Glass Corridor (1998)",
+    "biomeId": "stargazer_blacksite",
+    "recommendedBiomeLabel": "Coursive Pressurisée du Cargo Spatial (2193)",
+    "primaryMapId": "map_alien_orbital_freighter_concourse",
+    "weaponLoadout": [
+      "wpn_glass_corridor_flechette_subgun"
+    ],
+    "description": "Agents de sécurité armés de pistolets-mitrailleurs à fléchettes polymères protégeant les convois civils contre les brèches atmosphériques.",
+    "tactics": "Tirs de saturation à cadence extrême, repli progressif vers les sas pressurisés et utilisation des boucliers anti-souffle.",
+    "totalHonorReward": 7600,
+    "soloVariantId": "prey_weyland_combat_android",
+    "members": [
+      {
+        "id": "captain_holmes_glass",
+        "name": "Commandant de Bord Holmes",
+        "role": "Officier Supérieur de Sécurité Pressurisée",
+        "weapon": "PM à Fléchettes P-12 & Taser Automatique",
+        "weaponId": "wpn_glass_corridor_flechette_subgun",
+        "vitalityRatio": 1.5,
+        "hp": 840,
+        "armor": 70,
+        "trophy": "Badge de Capitaine de Navigation Fret Stellaire Rayé d'Acide"
+      },
+      {
+        "id": "officer_vogel_glass",
+        "name": "Officier d'Assaut Vogel",
+        "role": "Intercepteur de Brèche Civile",
+        "weapon": "PM à Fléchettes P-12 & Grenades Flash",
+        "weaponId": "wpn_glass_corridor_flechette_subgun",
+        "vitalityRatio": 1.4,
+        "hp": 790,
+        "armor": 65,
+        "trophy": "Visière Pare-Éclats Polarisée Fissurée sous Vide Sidéral"
+      },
+      {
+        "id": "guard_kane_glass",
+        "name": "Garde de Convoi Kane",
+        "role": "Sentinelle de Sas Hermétique",
+        "weapon": "PM à Fléchettes P-12 & Menottes Magnétiques",
+        "weaponId": "wpn_glass_corridor_flechette_subgun",
+        "vitalityRatio": 1.35,
+        "hp": 740,
+        "armor": 60,
+        "trophy": "Chargeur Haute Capacité de Micro-Fléchettes Polymères"
+      }
+    ]
+  },
+  {
+    "id": "squad_avp_bunda_militia_defenders",
+    "name": "Milice des Éleveurs de Bunda — AVP: War (1995)",
+    "universe": "AVP",
+    "shortName": "Milice de Bunda (3 Colons)",
+    "category": "COLONIAL_EXPEDITION",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens vs. Predator: War (1995)",
+    "biomeId": "hive_lv426",
+    "recommendedBiomeLabel": "Périmètre Fortifié de la Colonie Bunda (2195)",
+    "primaryMapId": "map_avp_bunda_colony_ranch_perimeter",
+    "weaponLoadout": [
+      "wpn_bunda_ranch_heavy_harpoon_rifle"
+    ],
+    "description": "Éleveurs et vétérans coloniaux retranchés autour de leurs enclos de bétail équipés de lance-harpons lourds pour repousser les bêtes.",
+    "tactics": "Tirs d'empalement pneumatiques coordonnés le long des clôtures, éclairage au projecteur xénon et verrouillage des portails d'enclos.",
+    "totalHonorReward": 7500,
+    "soloVariantId": "prey_colonial_marine_heavy",
+    "members": [
+      {
+        "id": "rancher_clay_bunda",
+        "name": "Contremaître Clayton \"Bulls\" McCrea",
+        "role": "Commandant de la Ligne de Ranch",
+        "weapon": "Lance-Harpon Lourd Pneumatique & Dague de Dépeçage",
+        "weaponId": "wpn_bunda_ranch_heavy_harpoon_rifle",
+        "vitalityRatio": 1.5,
+        "hp": 850,
+        "armor": 65,
+        "trophy": "Pointe de Harpon Pneumatique Déformée et Maculée d'Ichore"
+      },
+      {
+        "id": "herder_josh_bunda",
+        "name": "Dresseur Josh Sterling",
+        "role": "Pisteur de Bétail Rhynth & Tireur",
+        "weapon": "Lance-Harpon Lourd Pneumatique & Câbles d'Acier",
+        "weaponId": "wpn_bunda_ranch_heavy_harpoon_rifle",
+        "vitalityRatio": 1.4,
+        "hp": 790,
+        "armor": 60,
+        "trophy": "Gilet en Cuir d'Éleveur Frontière Marqué au Fer Rouge"
+      },
+      {
+        "id": "militia_dara_bunda",
+        "name": "Sentinelle Dara Vance",
+        "role": "Guetteuse de Clôture Électrifiée",
+        "weapon": "Lance-Harpon Lourd Pneumatique & Fusées Éclairantes",
+        "weaponId": "wpn_bunda_ranch_heavy_harpoon_rifle",
+        "vitalityRatio": 1.35,
+        "hp": 750,
+        "armor": 55,
+        "trophy": "Isolateur Haute Tension de Clôture Agricole Éclaté"
+      }
+    ]
+  },
+  {
+    "id": "squad_avp_three_world_war_combined_strike",
+    "name": "Commandos de Choc des Killer Clans — Three World War (2010)",
+    "universe": "AVP",
+    "shortName": "Assaut Killer Clan (3 Renégats)",
+    "category": "PARAMILITARY_INSURGENTS",
+    "scale": "MOYEN",
+    "totalMembers": 3,
+    "originMedia": "Aliens vs. Predator: Three World War (2010)",
+    "biomeId": "stargazer_blacksite",
+    "recommendedBiomeLabel": "Citadelle Spatiale des Bad Bloods (2210)",
+    "primaryMapId": "map_avp_bad_blood_orbital_citadel",
+    "weaponLoadout": [
+      "wpn_bad_blood_killer_spikethrower"
+    ],
+    "description": "Chasseurs renégats des Killer Clans corrompus par la cruauté usant de lanceurs d'épines neurotoxiques et menant des bêtes enchaînées.",
+    "tactics": "Pluie d'épines barbelées corrosives pour paralyser la motricité des cibles, charge brutale au corps-à-corps et cruauté sans honneur.",
+    "totalHonorReward": 8000,
+    "soloVariantId": "prey_colonial_marine_heavy",
+    "members": [
+      {
+        "id": "warlord_kragh_killer",
+        "name": "Seigneur de Meute Kragh",
+        "role": "Maître de Meute des Killer Clans",
+        "weapon": "Lanceur d'Épines Toxiques & Fendoir Barbelé",
+        "weaponId": "wpn_bad_blood_killer_spikethrower",
+        "vitalityRatio": 1.6,
+        "hp": 920,
+        "armor": 85,
+        "trophy": "Masque Rituel Bad Blood aux Marques de Sang Humain Séché"
+      },
+      {
+        "id": "slasher_vorok_killer",
+        "name": "Bourreau Vorok",
+        "role": "Traqueur d'Épines Neurotoxiques",
+        "weapon": "Lanceur d'Épines Toxiques & Dague Dentelée",
+        "weaponId": "wpn_bad_blood_killer_spikethrower",
+        "vitalityRatio": 1.45,
+        "hp": 840,
+        "armor": 75,
+        "trophy": "Collier d'Entrave Neurale de Xénomorphe Déconnecté"
+      },
+      {
+        "id": "raider_drak_killer",
+        "name": "Pillard Drak",
+        "role": "Artificier d'Épines Corrosives",
+        "weapon": "Lanceur d'Épines Toxiques & Bombes à Fragmentation",
+        "weaponId": "wpn_bad_blood_killer_spikethrower",
+        "vitalityRatio": 1.4,
+        "hp": 790,
+        "armor": 70,
+        "trophy": "Gantelet Renégat Ébréché Souillé d'Acide Moléculaire"
       }
     ]
   }

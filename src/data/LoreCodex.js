@@ -3395,6 +3395,294 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
       "honor_redemption"
     ],
     "locationIds": []
+  },
+    {
+    "id": "lore_pred_no_safari_gilroy_1998",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: No Safari (1998 — Savane africaine & braconniers de réserve)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "predator1_1987"
+    ],
+    "unlockCondition": "Traquer et neutraliser les braconniers armés dans les herbes hautes de la savane",
+    "summary": "Dans les réserves arides d'Afrique de l'Est, un chasseur Yautja observe des braconniers massacrant des rhinocéros et décide d'en faire ses proies rituelles.",
+    "body": "Predator: No Safari (Henry Gilroy, 1998) dépeint la justice impitoyable du code d'honneur Yautja où des braconniers équipés d'armes de chasse d'éléphants deviennent le gibier d'un prédateur se fondant dans les acacias.",
+    "content": "Predator: No Safari (Henry Gilroy, 1998) dépeint la justice impitoyable du code d'honneur Yautja où des braconniers équipés d'armes de chasse d'éléphants deviennent le gibier d'un prédateur se fondant dans les acacias.",
+    "tags": [
+      "no_safari_1998",
+      "african_savanna",
+      "poachers",
+      "rhino_reserve",
+      "savanna_hunt"
+    ],
+    "locationIds": []
+  },
+    {
+    "id": "lore_pred_blood_on_two_suns_1998",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Blood on Two Suns (1998 — Les déserts jumeaux & chasse solaire)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "predator1_1987"
+    ],
+    "unlockCondition": "Traquer des cibles mobiles sous la diffraction thermique d'un double soleil",
+    "summary": "Sur une planète désertique éclairée par deux soleils ardents, un Yautja chasse des mercenaires retranchés sous des températures extrêmes.",
+    "body": "Predator: Blood on Two Suns (Jim Vance, 1998) explore la résistance physiologique des Yautja sous un rayonnement UV double et les tactiques d'approche thermique dans le sable chauffé à blanc.",
+    "content": "Predator: Blood on Two Suns (Jim Vance, 1998) explore la résistance physiologique des Yautja sous un rayonnement UV double et les tactiques d'approche thermique dans le sable chauffé à blanc.",
+    "tags": [
+      "blood_on_two_suns_1998",
+      "twin_suns",
+      "desert_hunt",
+      "uv_radiation",
+      "solar_stealth"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_pred_nemesis_1997",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Nemesis (1997 — Le chasseur de Whitechapel & brumes de Londres)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "predator2_1990"
+    ],
+    "unlockCondition": "Percer les brumes de smog et localiser l'émissaire Yautja des docks londoniens",
+    "summary": "En 1896, le détective victorien Edward Soames traque un écorcheur extraterrestre qui utilise le smog londonien pour dissimuler ses trophées.",
+    "body": "Predator: Nemesis (Mark Sumner, 1997) transporte la traque rituelle dans les ruelles pavées de l'ère victorienne où l'acier froid et la vapeur masquent les reflets du camouflage optique.",
+    "content": "Predator: Nemesis (Mark Sumner, 1997) transporte la traque rituelle dans les ruelles pavées de l'ère victorienne où l'acier froid et la vapeur masquent les reflets du camouflage optique.",
+    "tags": [
+      "nemesis_1997",
+      "victorian_london",
+      "whitechapel",
+      "edward_soames",
+      "steampunk_atmosphere"
+    ],
+    "locationIds": []
+  },
+    {
+    "id": "lore_pred_bump_in_the_night_1998",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Predator: Bump in the Night (1998 — Embuscade nocturne en forêt suburbaine)",
+    "universe": "PREDATOR",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "predator2_1990"
+    ],
+    "unlockCondition": "Infiltrer un campement forestier dans l'obscurité totale sans émettre de son",
+    "summary": "Une patrouille de jeunes éclaireurs et leurs instructeurs confrontés à une silhouette prédatrice traquant sans bruit dans les frondaisons.",
+    "body": "Predator: Bump in the Night (Steve Seagle, 1998) transpose la terreur de la première rencontre avec un Yautja dans l'obscurité d'un campement isolé en forêt où chaque craquement de branche annonce la mort.",
+    "content": "Predator: Bump in the Night (Steve Seagle, 1998) transpose la terreur de la première rencontre avec un Yautja dans l'obscurité d'un campement isolé en forêt où chaque craquement de branche annonce la mort.",
+    "tags": [
+      "bump_in_the_night_1998",
+      "suburban_forest",
+      "night_ambush",
+      "silent_stalking",
+      "acoustic_terror"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_survival_1998",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Survival (1998 — Paranoïa géologique dans les couches profondes)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "alien_1979"
+    ],
+    "unlockCondition": "Survivre à la fermeture progressive des sas de sécurité géologique",
+    "summary": "Dans un abri géologique hermétique, un géologue perd la raison face aux bruits étouffés d'un organisme xénomorphe infiltré dans la roche.",
+    "body": "Aliens: Survival (James Vance, 1998) illustre l'horreur psychologique et la claustrophobie absolue où l'enfermement souterrain et la terreur du parasite transforment chaque ombre en condamnation à mort.",
+    "content": "Aliens: Survival (James Vance, 1998) illustre l'horreur psychologique et la claustrophobie absolue où l'enfermement souterrain et la terreur du parasite transforment chaque ombre en condamnation à mort.",
+    "tags": [
+      "survival_1998",
+      "deep_crust_mining",
+      "geological_bunker",
+      "paranoia_horror",
+      "ventilation_stalking"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_glass_corridor_1998",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Glass Corridor (1998 — Panique orbitale & sas de verre sous vide)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "alien_resurrection_1997"
+    ],
+    "unlockCondition": "Intercepter une projection de xénomorphe avant la perforation des parois de verre",
+    "summary": "À bord d'un transporteur spatial civil, l'irruption d'un xénomorphe transforme une coursive panoramique suspendue dans le vide en un couloir d'abattage.",
+    "body": "Aliens: Glass Corridor (David Wenzel, 1998) met en scène la vulnérabilité extrême de l'homme face au prédateur parfait dans un environnement sous vide où la moindre décharge acide entraîne une brèche atmosphérique cataclysmique.",
+    "content": "Aliens: Glass Corridor (David Wenzel, 1998) met en scène la vulnérabilité extrême de l'homme face au prédateur parfait dans un environnement sous vide où la moindre décharge acide entraîne une brèche atmosphérique cataclysmique.",
+    "tags": [
+      "glass_corridor_1998",
+      "orbital_freighter",
+      "vacuum_breach",
+      "refugee_panic",
+      "corrosive_decompression"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_alien_apocalypse_destroying_angels_1999",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Apocalypse - The Destroying Angels (1999 — La nécropole des Ingénieurs)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "prometheus_2012"
+    ],
+    "unlockCondition": "Découvrir l'autel primordial des œufs monumentaux au cœur de la nef déchue",
+    "summary": "Une expédition archéologique découvre une arche cyclopéenne d'Ingénieurs renfermant des souches mères de xénomorphes gigantesques.",
+    "body": "Aliens: Apocalypse (Mark Schultz, 1999) explore les origines cosmiques et démiurgiques des créatures, dévoilant des architectures biomécaniques titanesques antérieures à la mémoire humaine.",
+    "content": "Aliens: Apocalypse (Mark Schultz, 1999) explore les origines cosmiques et démiurgiques des créatures, dévoilant des architectures biomécaniques titanesques antérieures à la mémoire humaine.",
+    "tags": [
+      "apocalypse_1999",
+      "destroying_angels",
+      "engineers_crypt",
+      "primordial_pathogen",
+      "cosmic_monuments"
+    ],
+    "locationIds": []
+  },
+    {
+    "id": "lore_alien_backsplash_1993",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "Aliens: Backsplash (1993 — Déflagrations acides & ponts de maintenance)",
+    "universe": "ALIEN",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "aliens_1986"
+    ],
+    "unlockCondition": "Neutraliser un xénomorphe blessé sans subir de projection d'hémolymphe caustique",
+    "summary": "Une équipe d'entretien de station orbitale fait face aux éclaboussures caustiques dévastatrices d'un xénomorphe blessé par balles.",
+    "body": "Aliens: Backsplash (1993) détaille les dangers extrêmes du sang acide sous micro-gravité où chaque goutte pulvérisée transperce cloisons et combinaisons pressurisées en quelques secondes.",
+    "content": "Aliens: Backsplash (1993) détaille les dangers extrêmes du sang acide sous micro-gravité où chaque goutte pulvérisée transperce cloisons et combinaisons pressurisées en quelques secondes.",
+    "tags": [
+      "backsplash_1993",
+      "acid_spray",
+      "orbital_station",
+      "microgravity_hazards",
+      "corrosive_ichor"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_deadliest_of_the_species_cary_1993",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Deadliest of the Species (1993 — Elena Garza & la Reine Blanche)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "avp2004"
+    ],
+    "unlockCondition": "Triompher de la matriarche albinos aux côtés de l'armure hybride Yautja",
+    "summary": "L'enquêtrice Elena Garza pilote un exosquelette de combat inspiré de la technologie Yautja pour défier la Reine Blanche xénomorphe.",
+    "body": "Aliens vs. Predator: Deadliest of the Species (Chris Claremont, 1993) présente la collaboration légendaire entre Big Mama et Elena Garza face à une matriarche albinos colossale au cœur d'une mégalopole dévastée.",
+    "content": "Aliens vs. Predator: Deadliest of the Species (Chris Claremont, 1993) présente la collaboration légendaire entre Big Mama et Elena Garza face à une matriarche albinos colossale au cœur d'une mégalopole dévastée.",
+    "tags": [
+      "deadliest_species_1993",
+      "elena_garza",
+      "big_mama",
+      "white_queen",
+      "exoskeleton_combat"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_war_machiko_blooding_1995",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: War (1995 — Le serment du sang de Machiko Noguchi sur Bunda)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "predator1_1987"
+    ],
+    "unlockCondition": "Prendre position entre deux factions martiales pour sauver les civils sans défense",
+    "summary": "Initié au clan de Dachande, Machiko Noguchi manie les armes Yautja avec virtuosité mais choisit de braver son clan pour épargner des colons humains.",
+    "body": "Aliens vs. Predator: War (Randy Stradley, 1995) scelle la tragédie et la grandeur de Machiko Noguchi, première humaine admise parmi les chasseurs d'élite dont l'honneur transcende les barrières biologiques.",
+    "content": "Aliens vs. Predator: War (Randy Stradley, 1995) scelle la tragédie et la grandeur de Machiko Noguchi, première humaine admise parmi les chasseurs d'élite dont l'honneur transcende les barrières biologiques.",
+    "tags": [
+      "war_1995",
+      "machiko_noguchi",
+      "bunda_ranch",
+      "blooding_mark",
+      "broken_allegiance"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_sand_trap_dust_warriors_2007",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Sand Trap (2007 — Embuscades des sables & diffraction thermique)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "predator2_1990"
+    ],
+    "unlockCondition": "Traquer une menace enfouie sous les dunes de sable en compensant la réfraction thermique",
+    "summary": "Dans un désert balayé par les vents de sable brûlant, les Yautja affrontent des xénomorphes adaptés aux embuscades souterraines.",
+    "body": "Aliens vs. Predator: Sand Trap (2007) détaille les contre-mesures technologiques face aux vagues de chaleur : calibrage infrarouge polarisé et détonateurs de surface pour débusquer les prédateurs enfouis.",
+    "content": "Aliens vs. Predator: Sand Trap (2007) détaille les contre-mesures technologiques face aux vagues de chaleur : calibrage infrarouge polarisé et détonateurs de surface pour débusquer les prédateurs enfouis.",
+    "tags": [
+      "sand_trap_2007",
+      "desert_dunes",
+      "burrowing_xenomorphs",
+      "thermal_distortion",
+      "plasma_mines"
+    ],
+    "locationIds": []
+  },
+  {
+    "id": "lore_avp_three_world_war_culmination_2010",
+    "entryType": "codex",
+    "category": "chroniques",
+    "title": "AVP: Three World War (2010 — L'offensive spatiale contre les Bad Bloods)",
+    "universe": "AVP",
+    "sourceTier": "EXPANDED_LORE",
+    "sources": [
+      "dark_horse_comics",
+      "aliens_1986"
+    ],
+    "unlockCondition": "Assaillir la forteresse orbitale des Killer Clans et briser les laisses de xénomorphes",
+    "summary": "Une coalition désespérée de Marines Coloniaux et de guerriers Yautja prend d'assaut la forteresse orbitale du clan renégat des Bad Bloods.",
+    "body": "Aliens vs. Predator: Three World War (Randy Stradley, 2010) clôt le conflit galactique majeur où les Killer Clans sont écrasés dans un déluge de feu coordonné entre smartguns USCM et disques à plasma Yautja.",
+    "content": "Aliens vs. Predator: Three World War (Randy Stradley, 2010) clôt le conflit galactique majeur où les Killer Clans sont écrasés dans un déluge de feu coordonné entre smartguns USCM et disques à plasma Yautja.",
+    "tags": [
+      "three_world_war_2010",
+      "bad_blood_citadel",
+      "killer_clan_purge",
+      "uscm_yautja_alliance",
+      "orbital_assault"
+    ],
+    "locationIds": []
   }
 ]);
 // IDs match the values already used by the planet selector.

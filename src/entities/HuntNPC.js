@@ -3362,6 +3362,24 @@ export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
   wpn_chokehold_riot_foam_launcher: makeWeaponBallisticProfile('wpn_chokehold_riot_foam_launcher', {
     damage: 35, cooldown: 0.5, rangeM: 38, soundRadiusM: 45, projectileColor: 0xfbbf24, archetype: 'chokehold_chemical_foam_launcher', cadence: 'expansive_gel_burst', damageType: 'suppressive',
   }),
+  wpn_no_safari_heavy_elephant_gun: makeWeaponBallisticProfile('wpn_no_safari_heavy_elephant_gun', {
+    damage: 68, cooldown: 1.1, rangeM: 24, soundRadiusM: 85, projectileColor: 0xca8a04, archetype: 'safari_express_nitro_elephant_gun', cadence: 'double_barrel_spread', damageType: 'ballistic',
+  }),
+  wpn_primal_alaska_heavy_bear_rifle: makeWeaponBallisticProfile('wpn_primal_alaska_heavy_bear_rifle', {
+    damage: 78, cooldown: 1.9, rangeM: 65, soundRadiusM: 95, projectileColor: 0x94a3b8, archetype: 'alaskan_heavy_bear_rifle', cadence: 'bolt_action_magnum_shot', damageType: 'ballistic',
+  }),
+  wpn_survival_deep_crust_plasma_cutter: makeWeaponBallisticProfile('wpn_survival_deep_crust_plasma_cutter', {
+    damage: 55, cooldown: 0.1, rangeM: 18, soundRadiusM: 50, projectileColor: 0x06b6d4, archetype: 'deep_crust_mining_plasma_cutter', cadence: 'continuous_cutting_arc', damageType: 'fire',
+  }),
+  wpn_glass_corridor_flechette_subgun: makeWeaponBallisticProfile('wpn_glass_corridor_flechette_subgun', {
+    damage: 32, cooldown: 0.08, rangeM: 40, soundRadiusM: 40, projectileColor: 0xa78bfa, archetype: 'glass_corridor_flechette_subgun', cadence: 'hyper_burst_flechette_stream', damageType: 'ballistic',
+  }),
+  wpn_bunda_ranch_heavy_harpoon_rifle: makeWeaponBallisticProfile('wpn_bunda_ranch_heavy_harpoon_rifle', {
+    damage: 70, cooldown: 1.6, rangeM: 35, soundRadiusM: 60, projectileColor: 0xd97706, archetype: 'bunda_pneumatic_harpoon_rifle', cadence: 'pneumatic_impaling_shot', damageType: 'ballistic',
+  }),
+  wpn_bad_blood_killer_spikethrower: makeWeaponBallisticProfile('wpn_bad_blood_killer_spikethrower', {
+    damage: 45, cooldown: 0.25, rangeM: 55, soundRadiusM: 70, projectileColor: 0xec4899, archetype: 'bad_blood_neurotoxic_spikethrower', cadence: 'corrosive_spike_salvo', damageType: 'acid',
+  }),
 });
 
 function resolveNpcRoleWeaponId(npcType) {
