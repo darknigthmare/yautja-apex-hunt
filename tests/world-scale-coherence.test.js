@@ -1537,3 +1537,86 @@ test('AudioSynthesizer procedural Vague 21 SFX methods execute safely in headles
   assert.ok(dagger.durationSeconds > 0);
   assert.equal(dagger.played, false);
 });
+
+test('Vague 22 canonical NPC weapons resolve to rich ballistic and acoustic profiles', () => {
+  const vague22Weapons = [
+    {
+      id: 'wpn_demons_gold_spanish_matchlock_arquebus',
+      archetype: 'spanish_conquistador_matchlock_arquebus',
+      damage: 80,
+      rangeM: 50,
+      soundRadiusM: 100,
+      projectileColor: 0xf59e0b,
+    },
+    {
+      id: 'wpn_borneo_colonial_repeating_carbine',
+      archetype: 'borneo_colonial_lever_action_carbine',
+      damage: 52,
+      rangeM: 70,
+      soundRadiusM: 80,
+      projectileColor: 0xca8a04,
+    },
+    {
+      id: 'wpn_sacrifice_lv178_heavy_pneumatic_chisel',
+      archetype: 'lv178_basalt_pneumatic_chisel',
+      damage: 60,
+      rangeM: 3,
+      soundRadiusM: 40,
+      projectileColor: 0x94a3b8,
+    },
+    {
+      id: 'wpn_defiance_concussion_subcarbine_cr54',
+      archetype: 'armat_cr54_subsonic_subcarbine',
+      damage: 28,
+      rangeM: 45,
+      soundRadiusM: 35,
+      projectileColor: 0x38bdf8,
+    },
+    {
+      id: 'wpn_tethys_abyssal_harpoon_lance',
+      archetype: 'tethys_supercavitation_harpoon_lance',
+      damage: 72,
+      rangeM: 35,
+      soundRadiusM: 50,
+      projectileColor: 0x06b6d4,
+    },
+    {
+      id: 'wpn_elder_council_ceremonial_halberd',
+      archetype: 'supreme_council_golden_plasma_halberd',
+      damage: 75,
+      rangeM: 5,
+      soundRadiusM: 25,
+      projectileColor: 0xeab308,
+    },
+  ];
+
+  for (const expected of vague22Weapons) {
+    const profile = getNpcWeaponProfile(expected.id);
+    assert.ok(profile, `Le profil balistique pour ${expected.id} doit exister`);
+    assert.equal(profile.archetype, expected.archetype);
+    assert.equal(profile.damage, expected.damage);
+    assert.equal(profile.rangeM, expected.rangeM);
+    assert.equal(profile.soundRadiusM, expected.soundRadiusM);
+    assert.equal(profile.projectileColor, expected.projectileColor);
+  }
+});
+
+test('AudioSynthesizer procedural Vague 22 SFX methods execute safely in headless Node environment', () => {
+  const arquebus = audioSynth.playConquistadorMatchlockArquebusBoom();
+  assert.ok(arquebus && arquebus.event === 'conquistador_matchlock_arquebus_boom');
+  assert.ok(arquebus.matchlockSparkHz > arquebus.blackPowderBoomHz);
+  assert.ok(arquebus.durationSeconds > 0);
+  assert.equal(arquebus.played, false);
+
+  const subcarbine = audioSynth.playEuropaSubcarbineBurst();
+  assert.ok(subcarbine && subcarbine.event === 'europa_subcarbine_burst');
+  assert.ok(subcarbine.casingPingHz > subcarbine.subcarbineClackHz);
+  assert.ok(subcarbine.durationSeconds > 0);
+  assert.equal(subcarbine.played, false);
+
+  const cavitation = audioSynth.playTethysAbyssalCavitationLance();
+  assert.ok(cavitation && cavitation.event === 'tethys_abyssal_cavitation_lance');
+  assert.ok(cavitation.cavitationWhistleHz > cavitation.hydrodynamicSwishHz);
+  assert.ok(cavitation.durationSeconds > 0);
+  assert.equal(cavitation.played, false);
+});

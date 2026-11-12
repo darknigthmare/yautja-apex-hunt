@@ -6422,6 +6422,336 @@ export const SQUAD_ENCOUNTERS = Object.freeze([
               "trophy": "Sceau de Déverrouillage des Coffres de Trophées d'Ingénieur"
           }
       ]
+  },
+  {
+      "id": "squad_pred_demons_gold_conquistadors",
+      "name": "Avant-Garde des Conquistadors du Yucatán — Demon's Gold (1519)",
+      "universe": "PREDATOR",
+      "shortName": "Conquistadors du Yucatán (3 Soldats)",
+      "category": "PARAMILITARY_INSURGENTS",
+      "scale": "MOYEN",
+      "totalMembers": 3,
+      "originMedia": "Predator: Demon's Gold (Dark Horse 1999)",
+      "biomeId": "jungle",
+      "recommendedBiomeLabel": "Cénote Sacré du Yucatán (1519)",
+      "primaryMapId": "map_pred_yucatan_cenote_conquistador",
+      "weaponLoadout": [
+          "wpn_demons_gold_spanish_matchlock_arquebus"
+      ],
+      "description": "Détachement de conquistadors espagnols bardés de fer et arquebusiers de Tolède retranchés autour d'un trésor d'or sacré au fond d'un cénote.",
+      "tactics": "Tirs d'arquebuse en volée coordonnée pour couvrir les rechargements à la mèche, barrage de piques d'acier et charges d'estoc désespérées.",
+      "totalHonorReward": 7700,
+      "soloVariantId": "prey_feral_predator_1719",
+      "members": [
+          {
+              "id": "capitan_don_diego",
+              "name": "Capitán Don Diego de Almagro",
+              "role": "Capitaine de Tercio Espagnol",
+              "weapon": "Arquebuse à Mèche .75 & Rapière de Tolède",
+              "weaponId": "wpn_demons_gold_spanish_matchlock_arquebus",
+              "vitalityRatio": 1.5,
+              "hp": 890,
+              "armor": 85,
+              "trophy": "Morion d'Acier Forgé et Plastron aux Armoiries de Castille"
+          },
+          {
+              "id": "arcabucero_rodrigo",
+              "name": "Arquebusier Rodrigo",
+              "role": "Tireur de Précision à Poudre Noire",
+              "weapon": "Arquebuse Lourde de Tolède Calibre .75",
+              "weaponId": "wpn_demons_gold_spanish_matchlock_arquebus",
+              "vitalityRatio": 1.4,
+              "hp": 820,
+              "armor": 75,
+              "trophy": "Poire à Poudre Ciselée d'Argent et Mèche Lente Incandescente"
+          },
+          {
+              "id": "piquero_mateo",
+              "name": "Piquier Mateo",
+              "role": "Garde de Corps et Sentinelle",
+              "weapon": "Arquebuse à Mèche & Dague Main-Gauche",
+              "weaponId": "wpn_demons_gold_spanish_matchlock_arquebus",
+              "vitalityRatio": 1.35,
+              "hp": 770,
+              "armor": 70,
+              "trophy": "Dague Main-Gauche Espagnole Brisée contre l'Armure Yautja"
+          }
+      ]
+  },
+  {
+      "id": "squad_pred_borneo_rubber_expedition",
+      "name": "Expédition Forestière de Bornéo — Heart of Darkness (1912)",
+      "universe": "PREDATOR",
+      "shortName": "Garde Forestière de Bornéo (3 Pisteurs)",
+      "category": "PARAMILITARY_INSURGENTS",
+      "scale": "MOYEN",
+      "totalMembers": 3,
+      "originMedia": "Predator: Heart of Darkness (Dark Horse 1999)",
+      "biomeId": "jungle",
+      "recommendedBiomeLabel": "Haute Canopée de Bornéo (1912)",
+      "primaryMapId": "map_pred_borneo_primary_rainforest",
+      "weaponLoadout": [
+          "wpn_borneo_colonial_repeating_carbine"
+      ],
+      "description": "Explorateurs coloniaux et maîtres-pisteurs équipés de carabines à répétition .44-40 traquant l'Esprit des Arbres dans la jungle équatoriale.",
+      "tactics": "Tirs cadencés de sous-garde depuis les passerelles aériennes, utilisation de torches au magnésium pour percer la pluie et embuscades de canopée.",
+      "totalHonorReward": 7800,
+      "soloVariantId": "prey_young_blood_initiate",
+      "members": [
+          {
+              "id": "superintendent_wallace",
+              "name": "Superintendant Wallace",
+              "role": "Chef d'Expédition de la Compagnie",
+              "weapon": "Carabine à Répétition .44-40 & Machette",
+              "weaponId": "wpn_borneo_colonial_repeating_carbine",
+              "vitalityRatio": 1.5,
+              "hp": 880,
+              "armor": 70,
+              "trophy": "Montre à Gousset Coloniale en Or Éclaboussée de Sang"
+          },
+          {
+              "id": "tracker_tengku",
+              "name": "Pisteur Tengku",
+              "role": "Guetteur de Canopée Équatoriale",
+              "weapon": "Carabine à Répétition Coloniale de Bornéo",
+              "weaponId": "wpn_borneo_colonial_repeating_carbine",
+              "vitalityRatio": 1.45,
+              "hp": 830,
+              "armor": 65,
+              "trophy": "Trompe d'Alarme en Bois de Teck Sculptée d'Écailles"
+          },
+          {
+              "id": "scout_kassim",
+              "name": "Éclaireur Kassim",
+              "role": "Tireur d'Élite Fluvial",
+              "weapon": "Carabine .44-40 & Cartouches Renforcées",
+              "weaponId": "wpn_borneo_colonial_repeating_carbine",
+              "vitalityRatio": 1.35,
+              "hp": 790,
+              "armor": 65,
+              "trophy": "Cartouchière en Cuir Tropical Moussu et Trempé de Pluie"
+          }
+      ]
+  },
+  {
+      "id": "squad_alien_sacrifice_lv178_cultists",
+      "name": "Cénobites Fanatiques de LV-178 — Aliens: Sacrifice (1993)",
+      "universe": "ALIEN",
+      "shortName": "Cénobites de LV-178 (3 Zélotes)",
+      "category": "PARAMILITARY_INSURGENTS",
+      "scale": "MOYEN",
+      "totalMembers": 3,
+      "originMedia": "Aliens: Sacrifice (1993)",
+      "biomeId": "bouvetoya_pyramid",
+      "recommendedBiomeLabel": "Carrière Cénobite de LV-178 (2174)",
+      "primaryMapId": "map_alien_lv178_monastic_quarry",
+      "weaponLoadout": [
+          "wpn_sacrifice_lv178_heavy_pneumatic_chisel"
+      ],
+      "description": "Carriers et prêtres fanatiques armés de ciseaux pneumatiques lourds de taille de basalte offrant leur vie et celles des intrus aux Anges Noirs.",
+      "tactics": "Assauts kamikazes au contact de mêlée avec percussions pneumatiques ultra-violentes, projections d'acide de fumerolles et ferveur sacrificielle.",
+      "totalHonorReward": 7900,
+      "soloVariantId": "prey_xeno_warrior",
+      "members": [
+          {
+              "id": "prior_malachi_lv178",
+              "name": "Prieur Malachi",
+              "role": "Hiérophante du Culte de l'Ange Noir",
+              "weapon": "Ciseau Pneumatique de Basalte & Faux Sacrée",
+              "weaponId": "wpn_sacrifice_lv178_heavy_pneumatic_chisel",
+              "vitalityRatio": 1.55,
+              "hp": 920,
+              "armor": 80,
+              "trophy": "Robe Cénobite en Tissu de Verre Imbibée de Résine Xénomorphe"
+          },
+          {
+              "id": "quarryman_gideon",
+              "name": "Carrier Gideon",
+              "role": "Foreur de Basalte Fanatique",
+              "weapon": "Ciseau Pneumatique Lourd à Percussion 3000 bpm",
+              "weaponId": "wpn_sacrifice_lv178_heavy_pneumatic_chisel",
+              "vitalityRatio": 1.45,
+              "hp": 850,
+              "armor": 75,
+              "trophy": "Burin de Diamant Industriel Usé par les Carapaces Noires"
+          },
+          {
+              "id": "acolyte_judas",
+              "name": "Acolyte Judas",
+              "role": "Pénitent Porte-Flamme",
+              "weapon": "Ciseau Pneumatique & Bombe Minérale de Soufre",
+              "weaponId": "wpn_sacrifice_lv178_heavy_pneumatic_chisel",
+              "vitalityRatio": 1.4,
+              "hp": 800,
+              "armor": 70,
+              "trophy": "Masque Respiratoire Souillé de Poussière de Basalte et Sang"
+          }
+      ]
+  },
+  {
+      "id": "squad_alien_defiance_weyland_security_detail",
+      "name": "Détachement de Sécurité de l'Europa — Aliens: Defiance (2016)",
+      "universe": "ALIEN",
+      "shortName": "Sécurité Europa (3 Agents)",
+      "category": "CORPORATE_SECURITY",
+      "scale": "MOYEN",
+      "totalMembers": 3,
+      "originMedia": "Aliens: Defiance (2016)",
+      "biomeId": "stargazer_blacksite",
+      "recommendedBiomeLabel": "Cargo Stellaire Europa (2137)",
+      "primaryMapId": "map_alien_europa_transport_corridors",
+      "weaponLoadout": [
+          "wpn_defiance_concussion_subcarbine_cr54"
+      ],
+      "description": "Garde corporative Weyland-Yutani lourdement entraînée au combat pressurisé en coursive et androïdes tactiques de classe Davis.",
+      "tactics": "Tirs de saturation subsoniques au PM Armat CR-54, pose de barrières étanches automatisées et coordination cybernétique millimétrée.",
+      "totalHonorReward": 8000,
+      "soloVariantId": "prey_weyland_combat_android",
+      "members": [
+          {
+              "id": "commander_tate_europa",
+              "name": "Commandant Tate",
+              "role": "Chef de la Sécurité Interne Weyland",
+              "weapon": "Pistolet-Mitrailleur Armat CR-54 & Taser de Bord",
+              "weaponId": "wpn_defiance_concussion_subcarbine_cr54",
+              "vitalityRatio": 1.5,
+              "hp": 870,
+              "armor": 85,
+              "trophy": "Insigne de Sécurité Weyland-Yutani Gravé 'Classified Bio-Asset'"
+          },
+          {
+              "id": "synthetic_davis_unit_9",
+              "name": "Unité Davis-09",
+              "role": "Opérateur Tactique Synthétique Autonome",
+              "weapon": "Pistolet-Mitrailleur Armat CR-54 à Cadence Régulée",
+              "weaponId": "wpn_defiance_concussion_subcarbine_cr54",
+              "vitalityRatio": 1.55,
+              "hp": 910,
+              "armor": 90,
+              "trophy": "Noyau Cybernétique Davis-09 avec Protocoles Weyland Neutralisés"
+          },
+          {
+              "id": "enforcer_reyes",
+              "name": "Exécuteur Reyes",
+              "role": "Spécialiste de Confinement Pressurisé",
+              "weapon": "Pistolet-Mitrailleur Armat CR-54 & Grenades Choc",
+              "weaponId": "wpn_defiance_concussion_subcarbine_cr54",
+              "vitalityRatio": 1.4,
+              "hp": 810,
+              "armor": 75,
+              "trophy": "Visière Tactique Weyland Enregistrant le Dernier Rapport d'Action"
+          }
+      ]
+  },
+  {
+      "id": "squad_avp_tethys_deep_dive_harpooners",
+      "name": "Plongeurs Abyssaux de Téthys — AVP: Blood Tide (2202)",
+      "universe": "AVP",
+      "shortName": "Plongeurs de Téthys (3 Harponneurs)",
+      "category": "PARAMILITARY_INSURGENTS",
+      "scale": "MOYEN",
+      "totalMembers": 3,
+      "originMedia": "Aliens vs. Predator: Blood Tide (2002)",
+      "biomeId": "stargazer_blacksite",
+      "recommendedBiomeLabel": "Station Abyssale de Téthys (2202)",
+      "primaryMapId": "map_avp_tethys_abyssal_research_trench",
+      "weaponLoadout": [
+          "wpn_tethys_abyssal_harpoon_lance"
+      ],
+      "description": "Tirailleurs sous-marins d'élite en scaphandres pressurisés pour grands fonds armés de fusils-harpons à super-cavitation.",
+      "tactics": "Tirs de harpons perforants à cavitation sous-marine créant des ondes de choc hydrauliques, mobilité tridimensionnelle et grenades acoustiques.",
+      "totalHonorReward": 8100,
+      "soloVariantId": "prey_colonial_marine_heavy",
+      "members": [
+          {
+              "id": "captain_finch_tethys",
+              "name": "Capitaine Finch",
+              "role": "Vétéran de Plongée Abyssale Profonde",
+              "weapon": "Lance-Harpon Abyssal à Cavitation & Dague Titane",
+              "weaponId": "wpn_tethys_abyssal_harpoon_lance",
+              "vitalityRatio": 1.55,
+              "hp": 920,
+              "armor": 85,
+              "trophy": "Casque de Plongée Abyssale Fissuré Résistant à 800 Bars"
+          },
+          {
+              "id": "diver_kruger",
+              "name": "Harponneur Kruger",
+              "role": "Tireur d'Élite Sous-Marin",
+              "weapon": "Lance-Harpon Abyssal à Cavitation de Téthys",
+              "weaponId": "wpn_tethys_abyssal_harpoon_lance",
+              "vitalityRatio": 1.45,
+              "hp": 860,
+              "armor": 80,
+              "trophy": "Pointe de Harpon d'Uranium Appauvri Emoussée par l'Acide"
+          },
+          {
+              "id": "diver_yoko",
+              "name": "Nageuse de Combat Yoko",
+              "role": "Opératrice de Balise Bathymétrique",
+              "weapon": "Lance-Harpon à Cavitation & Grenades Sonar",
+              "weaponId": "wpn_tethys_abyssal_harpoon_lance",
+              "vitalityRatio": 1.4,
+              "hp": 820,
+              "armor": 75,
+              "trophy": "Propulseur Dorsal de Scaphandre Lacéré par des Griffes Yautja"
+          }
+      ]
+  },
+  {
+      "id": "squad_avp_elder_council_honor_arbiters",
+      "name": "Arbitres de Justice du Haut Conseil — Yautja Prime Legends",
+      "universe": "AVP",
+      "shortName": "Arbitres du Conseil (3 Juges)",
+      "category": "PARAMILITARY_INSURGENTS",
+      "scale": "MOYEN",
+      "totalMembers": 3,
+      "originMedia": "Aliens vs. Predator: High Elder Council Protocols",
+      "biomeId": "bouvetoya_pyramid",
+      "recommendedBiomeLabel": "Yautja Prime — Haute Citadelle (2215)",
+      "primaryMapId": "map_avp_yautja_prime_grand_council_citadel",
+      "weaponLoadout": [
+          "wpn_elder_council_ceremonial_halberd"
+      ],
+      "description": "Juges et exécuteurs suprêmes des lois martiales de Yautja Prime, armés de hallebardes cérémonielles à champ de plasma doré confiné.",
+      "tactics": "Exécution de sentences d'honneur avec frappes tranchantes circulaires dévastatrices, parades impénétrables et téléportation rituelle.",
+      "totalHonorReward": 8500,
+      "soloVariantId": "prey_colonial_marine_heavy",
+      "members": [
+          {
+              "id": "supreme_arbiter_drakh",
+              "name": "Grand Arbitre Drakh",
+              "role": "Juge Suprême des Lois de la Chasse",
+              "weapon": "Hallebarde Cérémonielle & Lame de Poignet en Or",
+              "weaponId": "wpn_elder_council_ceremonial_halberd",
+              "vitalityRatio": 1.65,
+              "hp": 980,
+              "armor": 95,
+              "trophy": "Bio-Masque Cérémoniel du Grand Conseil Incrusté d'Opales"
+          },
+          {
+              "id": "justiciar_thwei",
+              "name": "Justicier Thwei",
+              "role": "Bourreau des Clans Renégats",
+              "weapon": "Hallebarde de Justice Cérémonielle du Haut Conseil",
+              "weaponId": "wpn_elder_council_ceremonial_halberd",
+              "vitalityRatio": 1.55,
+              "hp": 920,
+              "armor": 90,
+              "trophy": "Sceau de Condamnation Bad Blood Gravé dans la Pierre Stellaire"
+          },
+          {
+              "id": "herald_kaail",
+              "name": "Héraut Kaail",
+              "role": "Gardien des Annales de Jugement",
+              "weapon": "Hallebarde Cérémonielle & Émetteur de Glyphes",
+              "weaponId": "wpn_elder_council_ceremonial_halberd",
+              "vitalityRatio": 1.5,
+              "hp": 870,
+              "armor": 85,
+              "trophy": "Gantelet Cérémoniel Ancestral Porteur des Décrets Royaux"
+          }
+      ]
   }
 ]);
 

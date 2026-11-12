@@ -38413,6 +38413,135 @@ class AudioSynthesizer {
     return descriptor;
   }
 
+  playConquistadorMatchlockArquebusBoom() {
+    const descriptor = {
+      event: 'conquistador_matchlock_arquebus_boom',
+      synthesis: 'black_powder_combustion_concussion_and_cavern_echo',
+      blackPowderBoomHz: 65,
+      matchlockSparkHz: 2200,
+      durationSeconds: 0.55,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const boomOsc = this.ctx.createOscillator();
+    const boomGain = this.ctx.createGain();
+    boomOsc.type = 'triangle';
+    boomOsc.frequency.setValueAtTime(descriptor.blackPowderBoomHz, now);
+    boomOsc.frequency.exponentialRampToValueAtTime(35, now + 0.45);
+
+    boomGain.gain.setValueAtTime(0.85, now);
+    boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+    boomOsc.connect(boomGain);
+    boomGain.connect(this.ctx.destination);
+    boomOsc.start(now);
+    boomOsc.stop(now + 0.5);
+
+    const sparkOsc = this.ctx.createOscillator();
+    const sparkGain = this.ctx.createGain();
+    sparkOsc.type = 'sawtooth';
+    sparkOsc.frequency.setValueAtTime(descriptor.matchlockSparkHz, now);
+    sparkOsc.frequency.exponentialRampToValueAtTime(450, now + 0.12);
+
+    sparkGain.gain.setValueAtTime(0.4, now);
+    sparkGain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+    sparkOsc.connect(sparkGain);
+    sparkGain.connect(this.ctx.destination);
+    sparkOsc.start(now);
+    sparkOsc.stop(now + 0.15);
+
+    return descriptor;
+  }
+
+  playEuropaSubcarbineBurst() {
+    const descriptor = {
+      event: 'europa_subcarbine_burst',
+      synthesis: 'rapid_subsonic_bolt_cycling_and_metallic_suppression',
+      subcarbineClackHz: 1250,
+      casingPingHz: 3400,
+      durationSeconds: 0.28,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const clackOsc = this.ctx.createOscillator();
+    const clackGain = this.ctx.createGain();
+    clackOsc.type = 'square';
+    clackOsc.frequency.setValueAtTime(descriptor.subcarbineClackHz, now);
+    clackOsc.frequency.exponentialRampToValueAtTime(280, now + 0.2);
+
+    clackGain.gain.setValueAtTime(0.65, now);
+    clackGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+    clackOsc.connect(clackGain);
+    clackGain.connect(this.ctx.destination);
+    clackOsc.start(now);
+    clackOsc.stop(now + 0.22);
+
+    const pingOsc = this.ctx.createOscillator();
+    const pingGain = this.ctx.createGain();
+    pingOsc.type = 'sine';
+    pingOsc.frequency.setValueAtTime(descriptor.casingPingHz, now + 0.05);
+    pingOsc.frequency.exponentialRampToValueAtTime(1800, now + 0.25);
+
+    pingGain.gain.setValueAtTime(0.35, now + 0.05);
+    pingGain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+
+    pingOsc.connect(pingGain);
+    pingGain.connect(this.ctx.destination);
+    pingOsc.start(now + 0.05);
+    pingOsc.stop(now + 0.28);
+
+    return descriptor;
+  }
+
+  playTethysAbyssalCavitationLance() {
+    const descriptor = {
+      event: 'tethys_abyssal_cavitation_lance',
+      synthesis: 'hydrodynamic_cavitation_whistle_and_high_pressure_impale',
+      cavitationWhistleHz: 820,
+      hydrodynamicSwishHz: 160,
+      durationSeconds: 0.42,
+      played: Boolean(this.ctx && !this.muted),
+    };
+    if (!this.ctx || this.muted) return descriptor;
+
+    const now = this.ctx.currentTime;
+    const whistleOsc = this.ctx.createOscillator();
+    const whistleGain = this.ctx.createGain();
+    whistleOsc.type = 'sine';
+    whistleOsc.frequency.setValueAtTime(descriptor.cavitationWhistleHz, now);
+    whistleOsc.frequency.exponentialRampToValueAtTime(220, now + 0.38);
+
+    whistleGain.gain.setValueAtTime(0.7, now);
+    whistleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+    whistleOsc.connect(whistleGain);
+    whistleGain.connect(this.ctx.destination);
+    whistleOsc.start(now);
+    whistleOsc.stop(now + 0.4);
+
+    const swishOsc = this.ctx.createOscillator();
+    const swishGain = this.ctx.createGain();
+    swishOsc.type = 'triangle';
+    swishOsc.frequency.setValueAtTime(descriptor.hydrodynamicSwishHz, now + 0.04);
+    swishOsc.frequency.linearRampToValueAtTime(70, now + 0.35);
+
+    swishGain.gain.setValueAtTime(0.55, now + 0.04);
+    swishGain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+
+    swishOsc.connect(swishGain);
+    swishGain.connect(this.ctx.destination);
+    swishOsc.start(now + 0.04);
+    swishOsc.stop(now + 0.42);
+
+    return descriptor;
+  }
+
 }
 
 export const audioSynth = new AudioSynthesizer();

@@ -3439,6 +3439,73 @@ export function getSquadLogo(squadId, size = 64) {
       </svg>
     `.trim();
   }
+  if (id.includes('demons_gold_conquistadors') || id.includes('conquistadors')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-conquistadors" role="img" aria-label="Insigne Conquistadors du Yucatán 1519">
+        <path d="M20 16 C30 10 50 10 60 16 L64 36 C64 56 40 72 40 72 C40 72 16 56 16 36 Z" fill="#450a0a" stroke="#d97706" stroke-width="2.5" />
+        <polygon points="40,20 48,32 40,44 32,32" fill="#fbbf24" stroke="#fef08a" stroke-width="1.5" />
+        <line x1="22" y1="52" x2="58" y2="24" stroke="#e2e8f0" stroke-width="2.2" stroke-linecap="round" />
+        <line x1="22" y1="24" x2="58" y2="52" stroke="#e2e8f0" stroke-width="2.2" stroke-linecap="round" />
+        <text x="40" y="68" font-family="'Cinzel', serif" font-size="3.4" font-weight="900" fill="#fef08a" letter-spacing="1" text-anchor="middle">YUCATAN 1519</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('borneo_rubber_expedition') || id.includes('borneo_expedition')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-borneoexpedition" role="img" aria-label="Insigne Expédition Forestière de Bornéo 1912">
+        <circle cx="40" cy="40" r="34" fill="#064e3b" stroke="#10b981" stroke-width="2.5" />
+        <path d="M40 14 C48 26 56 36 56 50 C56 60 48 66 40 66 C32 66 24 60 24 50 C24 36 32 26 40 14 Z" fill="#047857" stroke="#6ee7b7" stroke-width="1.8" />
+        <line x1="26" y1="40" x2="54" y2="40" stroke="#fef08a" stroke-width="2.2" stroke-linecap="round" />
+        <circle cx="40" cy="40" r="4.5" fill="#eab308" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="3.4" font-weight="900" fill="#d1fae5" letter-spacing="1" text-anchor="middle">BORNEO 1912</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('sacrifice_lv178_cultists') || id.includes('lv178_cultists')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-lv178cultists" role="img" aria-label="Insigne Cénobites de LV-178">
+        <polygon points="40,8 72,66 8,66" fill="#18181b" stroke="#eab308" stroke-width="2.5" />
+        <path d="M40 24 L40 56 M28 42 L52 42" stroke="#facc15" stroke-width="2.5" />
+        <circle cx="40" cy="42" r="7" fill="#27272a" stroke="#ca8a04" stroke-width="1.5" />
+        <circle cx="40" cy="42" r="3" fill="#fde047" />
+        <text x="40" y="64" font-family="'Cinzel', serif" font-size="3.2" font-weight="900" fill="#fef08a" letter-spacing="1" text-anchor="middle">LV-178 CULT</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('defiance_weyland_security_detail') || id.includes('defiance_security')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-defiancesecurity" role="img" aria-label="Insigne Sécurité du Cargo Europa">
+        <polygon points="40,10 68,24 64,62 40,72 16,62 12,24" fill="#0f172a" stroke="#0ea5e9" stroke-width="2.5" />
+        <rect x="26" y="28" width="28" height="24" rx="3" fill="#1e293b" stroke="#38bdf8" stroke-width="1.8" />
+        <line x1="40" y1="28" x2="40" y2="52" stroke="#bae6fd" stroke-width="2" />
+        <circle cx="40" cy="40" r="4.5" fill="#0284c7" />
+        <text x="40" y="68" font-family="'Orbitron', sans-serif" font-size="3.2" font-weight="900" fill="#e0f2fe" letter-spacing="1" text-anchor="middle">EUROPA SEC</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('tethys_deep_dive_harpooners') || id.includes('tethys_harpooners')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-tethysdivers" role="img" aria-label="Insigne Plongeurs Abyssaux de Téthys">
+        <circle cx="40" cy="40" r="34" fill="#082f49" stroke="#06b6d4" stroke-width="2.5" />
+        <circle cx="40" cy="40" r="22" fill="#0c4a6e" stroke="#22d3ee" stroke-width="2" />
+        <polygon points="40,24 46,38 34,38" fill="#67e8f9" />
+        <line x1="40" y1="38" x2="40" y2="56" stroke="#67e8f9" stroke-width="2.5" stroke-linecap="round" />
+        <line x1="30" y1="46" x2="50" y2="46" stroke="#67e8f9" stroke-width="2" />
+        <text x="40" y="70" font-family="'Orbitron', sans-serif" font-size="3.4" font-weight="900" fill="#cffafe" letter-spacing="1" text-anchor="middle">TETHYS DEEP</text>
+      </svg>
+    `.trim();
+  }
+  if (id.includes('elder_council_honor_arbiters') || id.includes('elder_arbiters')) {
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="${size}" height="${size}" class="canon-logo logo-squad-elderarbiters" role="img" aria-label="Insigne Arbitres du Haut Conseil Yautja">
+        <polygon points="40,6 74,20 66,66 40,76 14,66 6,20" fill="#422006" stroke="#eab308" stroke-width="2.5" />
+        <polygon points="40,18 56,36 40,54 24,36" fill="#713f12" stroke="#fde047" stroke-width="2" />
+        <line x1="40" y1="14" x2="40" y2="62" stroke="#fef08a" stroke-width="2.5" stroke-linecap="round" />
+        <circle cx="40" cy="36" r="5" fill="#facc15" />
+        <text x="40" y="72" font-family="'Cinzel', serif" font-size="3.4" font-weight="900" fill="#fef9c3" letter-spacing="1" text-anchor="middle">ARBITERS</text>
+      </svg>
+    `.trim();
+  }
   if (id.startsWith('squad_') && !id.includes('lv742_kainde_amedha')) {
     const cleanTag = id.replace(/^squad_(pred_|alien_|avp_)?/, '').replace(/_/g, ' ').slice(0, 14).toUpperCase();
     const h = Math.abs(hashCode(id));
@@ -4273,6 +4340,14 @@ export function getMapMiniatureSvg(map) {
       accent: '#ffd700',
       label: 'YAUTJA PRIME CITADELLE'
     };
+  } else if (biomeId.includes('tethys') || biomeId.includes('abyssal') || biomeId.includes('ocean')) {
+    theme = {
+      primary: '#00f5d4',
+      secondary: '#005f73',
+      dark: '#011627',
+      accent: '#70e000',
+      label: 'FOSSE ABYSSALE 800 BAR'
+    };
   }
 
   // Topographie / courbes de niveau spécifiques
@@ -4308,6 +4383,13 @@ export function getMapMiniatureSvg(map) {
       <circle cx="60" cy="30" r="3.5" fill="${theme.accent}" opacity="0.75" />
       <circle cx="45" cy="54" r="2" fill="${theme.primary}" />
       <circle cx="75" cy="54" r="2" fill="${theme.primary}" />
+    `;
+  } else if (biomeId.includes('tethys') || biomeId.includes('abyssal') || biomeId.includes('ocean')) {
+    topographyPath = `
+      <path d="M0,45 Q 35,32 70,48 T 120,38" fill="none" stroke="${theme.primary}" stroke-width="1.4" opacity="0.75" />
+      <path d="M0,60 Q 45,48 90,62 T 120,52" fill="none" stroke="${theme.primary}" stroke-width="0.9" opacity="0.5" />
+      <path d="M15,28 Q 50,20 85,30 T 120,24" fill="none" stroke="${theme.accent}" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.6" />
+      <circle cx="60" cy="42" r="4" fill="${theme.accent}" opacity="0.7" />
     `;
   } else {
     topographyPath = `

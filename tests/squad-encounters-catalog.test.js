@@ -13,7 +13,7 @@ import { getSquadLogo } from '../src/ui/CanonLogosAndEmblems.js';
 import { resolveSimulationSelection } from '../src/gameplay/SimulationHuntRuntime.js';
 
 test('le catalogue des escouades contient les 40 groupes légendaires canoniques (héros & antagonistes)', () => {
-  assert.equal(SQUAD_ENCOUNTERS.length, 162);
+  assert.equal(SQUAD_ENCOUNTERS.length, 168);
   assert.ok(Object.isFrozen(SQUAD_ENCOUNTERS));
 
   const expectedSquadIds = [
@@ -178,7 +178,13 @@ test('le catalogue des escouades contient les 40 groupes légendaires canoniques
     'squad_alien_taste_agri_security_sentry',
     'squad_alien_border_lines_frontier_miners',
     'squad_avp_old_secrets_aztec_priests',
-    'squad_avp_mothership_elder_honor_guard',
+        'squad_avp_mothership_elder_honor_guard',
+    'squad_pred_demons_gold_conquistadors',
+    'squad_pred_borneo_rubber_expedition',
+    'squad_alien_sacrifice_lv178_cultists',
+    'squad_alien_defiance_weyland_security_detail',
+    'squad_avp_tethys_deep_dive_harpooners',
+    'squad_avp_elder_council_honor_arbiters',
   ];
 
   assert.deepEqual(SQUAD_ENCOUNTERS.map((s) => s.id), expectedSquadIds);
@@ -261,7 +267,7 @@ test('les fonctions d’interrogation et de filtrage d’escouade sont fonctionn
   assert.equal(commandos[0].id, 'squad_dutch_val_verde_1987');
 
   const allSquads = filterSquadsByCategory('all');
-  assert.equal(allSquads.length, 162);
+  assert.equal(allSquads.length, 168);
 });
 
 test('chaque escouade génère un insigne vectoriel SVG valide', () => {

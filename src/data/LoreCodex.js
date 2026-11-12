@@ -3971,6 +3971,306 @@ export const LORE_CODEX_ENTRIES = freezeEntries([
       "hard_meat"
     ],
     "locationIds": []
+  },
+  {
+      "id": "lore_pred_demon_gold_conquistador_1519",
+      "entryType": "codex",
+      "category": "chroniques",
+      "title": "L'Or du Démon — Conquistadors au Yucatán (1519)",
+      "universe": "PREDATOR",
+      "sourceTier": "EXPANDED_LORE",
+      "sources": [
+          "predator1_1987",
+          "prey2022"
+      ],
+      "unlockCondition": "Découvrir la colonne de conquistadors espagnols massacrés dans le cénote sacré",
+      "summary": "Rapport confidentiel d'un chapelain espagnol décrivant l'anéantissement méthodique d'un détachement d'arquebusiers et cavaliers cherchant une cité d'or, massacrés depuis les cimes par le Démon aux Yeux Rouges.",
+      "body": "Trente soldats de Cortés s'enfoncèrent dans les forêts du Yucatán à la recherche d'or sacré. Les corps furent retrouvés un à un décapités, colonne vertébrale ôtée avec une précision extraterrestre, sous le feu d'un chasseur thermique invisible.",
+      "content": "Trente soldats de Cortés s'enfoncèrent dans les forêts du Yucatán à la recherche d'or sacré. Les corps furent retrouvés un à un décapités, colonne vertébrale ôtée avec une précision extraterrestre, sous le feu d'un chasseur thermique invisible.",
+      "tags": [
+          "yucatan",
+          "conquistadors",
+          "1519",
+          "arquebuse",
+          "or_sacre",
+          "cenote"
+      ],
+      "locationIds": []
+  },
+  {
+      "id": "lore_pred_heart_of_darkness_borneo_1912",
+      "entryType": "codex",
+      "category": "chroniques",
+      "title": "Cœur des Ténèbres — Canopée de Bornéo (1912)",
+      "universe": "PREDATOR",
+      "sourceTier": "EXPANDED_LORE",
+      "sources": [
+          "predator1_1987",
+          "predators2010"
+      ],
+      "unlockCondition": "Traverser les passerelles suspendues de la haute canopée de Bornéo",
+      "summary": "Enquête coloniale sur la disparition mystérieuse d'explorateurs au sud de Bornéo, où la mousson incessante et les arbres de 60 mètres servirent d'arène à un chasseur Yautja respectant les rites des coupeurs de têtes aborigènes.",
+      "body": "Les pisteurs Dayaks savaient qu'un démon venu des étoiles chassait dans les plus hauts dipterocarpacées. Les colons armés de carabines .44-40 furent cueillis un à un depuis la cime, sans effraction au sol, leurs crânes récoltés selon la tradition martiale.",
+      "content": "Les pisteurs Dayaks savaient qu'un démon venu des étoiles chassait dans les plus hauts dipterocarpacées. Les colons armés de carabines .44-40 furent cueillis un à un depuis la cime, sans effraction au sol, leurs crânes récoltés selon la tradition martiale.",
+      "tags": [
+          "borneo",
+          "1912",
+          "canopee",
+          "dayaks",
+          "mousson",
+          "headhunters"
+      ],
+      "locationIds": []
+  },
+  {
+      "id": "lore_pred_blood_on_the_tracks_siberia_1943",
+      "entryType": "codex",
+      "category": "chroniques",
+      "title": "Sang sur les Voies — Blizzard Sibérien (1943)",
+      "universe": "PREDATOR",
+      "sourceTier": "EXPANDED_LORE",
+      "sources": [
+          "predator1_1987",
+          "predator2_1990"
+      ],
+      "unlockCondition": "Inspecter la locomotive blindée déraillée dans les taïgas sibériennes",
+      "summary": "Dossier militaire déclassifié consignant l'interception d'un prédateur extraterrestre chassant les convois militaires en pleine tempête sibérienne à -40°C, utilisant le camouflage thermique pour dissimuler sa signature corporelle dans la neige.",
+      "body": "Un convoi du Transsibérien transportant des blindés fut stoppé par des tirs de plasma pur ayant liquéfié la chaudière en fonte. Un bipède géant bondissant sur les toits des wagons foudroya les tireurs d'élite avant de se fondre dans le blizzard blanc.",
+      "content": "Un convoi du Transsibérien transportant des blindés fut stoppé par des tirs de plasma pur ayant liquéfié la chaudière en fonte. Un bipède géant bondissant sur les toits des wagons foudroya les tireurs d'élite avant de se fondre dans le blizzard blanc.",
+      "tags": [
+          "siberie",
+          "1943",
+          "transsiberien",
+          "blizzard",
+          "taiga",
+          "plasma"
+      ],
+      "locationIds": []
+  },
+  {
+      "id": "lore_pred_gods_truth_florence_1495",
+      "entryType": "codex",
+      "category": "chroniques",
+      "title": "Vérité Divine — Les Ombres de Florence (1495)",
+      "universe": "PREDATOR",
+      "sourceTier": "EXPANDED_LORE",
+      "sources": [
+          "predator1_1987",
+          "predator2_1990"
+      ],
+      "unlockCondition": "Gravir les corniches du Duomo de Florence au clair de lune",
+      "summary": "Chronique d'un moine florentin témoin des chasses nocturnes d'un démon biomécanique perché sur les contreforts du Duomo de Santa Maria del Fiore, traquant les condottières de la noblesse italienne.",
+      "content": "Au temps de Savonarole, les maîtres d'armes réputés invaincus furent fauchés sur les toits de tuiles de Florence. Armé d'une lance rétractable et d'un bio-masque de bronze reflétant les autodafés, le chasseur extraterrestre défia les meilleurs duellistes de la cité.",
+      "body": "Au temps de Savonarole, les maîtres d'armes réputés invaincus furent fauchés sur les toits de tuiles de Florence. Armé d'une lance rétractable et d'un bio-masque de bronze reflétant les autodafés, le chasseur extraterrestre défia les meilleurs duellistes de la cité.",
+      "tags": [
+          "florence",
+          "1495",
+          "renaissance",
+          "duomo",
+          "condottiere",
+          "duel"
+      ],
+      "locationIds": []
+  },
+  {
+      "id": "lore_alien_sacrifice_lv178_1993",
+      "entryType": "codex",
+      "category": "chroniques",
+      "title": "Aliens: Sacrifice — La Colonie de LV-178 (1993)",
+      "universe": "ALIEN",
+      "sourceTier": "EXPANDED_LORE",
+      "sources": [
+          "aliens1986",
+          "alien3_1992"
+      ],
+      "unlockCondition": "Pénétrer dans la nef de basalte de la colonie minière de LV-178",
+      "summary": "Récit tragique de la colonie minière de LV-178 où une congrégation recluse développa une théologie sacrificielle, offrant les ouvriers contestataires à une Reine endormie dans les veines de minerai de basalte.",
+      "body": "Coupés de tout ravitaillement, les cénobites de LV-178 divinisèrent les monstres acides sous le nom d'Anges Noirs, célébrant des messes de communion corporelle où les adeptes s'offraient aux œufs oviformes au cœur d'une cathédrale de résine.",
+      "content": "Coupés de tout ravitaillement, les cénobites de LV-178 divinisèrent les monstres acides sous le nom d'Anges Noirs, célébrant des messes de communion corporelle où les adeptes s'offraient aux œufs oviformes au cœur d'une cathédrale de résine.",
+      "tags": [
+          "lv178",
+          "sacrifice",
+          "cenobites",
+          "basalte",
+          "culte",
+          "reine_noire"
+      ],
+      "locationIds": []
+  },
+  {
+      "id": "lore_alien_horror_show_holo_broadcast_1994",
+      "entryType": "codex",
+      "category": "chroniques",
+      "title": "Aliens: Horror Show — Arènes Holographiques Clandestines (1994)",
+      "universe": "ALIEN",
+      "sourceTier": "EXPANDED_LORE",
+      "sources": [
+          "aliens1986",
+          "alien_resurrection_1997"
+      ],
+      "unlockCondition": "Déchiffrer le flux pirate de diffusion des combats holographiques",
+      "summary": "Dossier d'investigation sur un réseau de flux vidéo cryptés dans la Bordure Extérieure mettant en scène des combats à mort dans des simulations holographiques recréant des environnements urbains face à des créatures acides réelles.",
+      "body": "Des criminels condamnés étaient jetés dans des arènes de projection holographique face à de véritables guerriers xénomorphes captifs. Le spectacle tourna au désastre quand le sang acide dissolut les projecteurs haute tension, plongeant la station dans le carnage.",
+      "content": "Des criminels condamnés étaient jetés dans des arènes de projection holographique face à de véritables guerriers xénomorphes captifs. Le spectacle tourna au désastre quand le sang acide dissolut les projecteurs haute tension, plongeant la station dans le carnage.",
+      "tags": [
+          "horror_show",
+          "hologramme",
+          "gladiateurs",
+          "phobos_live",
+          "arène",
+          "acide"
+      ],
+      "locationIds": []
+  },
+  {
+      "id": "lore_alien_dust_to_dust_trona_2214",
+      "entryType": "codex",
+      "category": "chroniques",
+      "title": "Aliens: Dust to Dust — L'Évacuation de Trona (2018)",
+      "universe": "ALIEN",
+      "sourceTier": "EXPANDED_LORE",
+      "sources": [
+          "aliens1986",
+          "alien_isolation_2014"
+      ],
+      "unlockCondition": "Rejoindre le module d'évacuation d'urgence de la colonie de Trona",
+      "summary": "Chronique d'une fuite désespérée à travers les couloirs résidentiels pressurisés de la colonie de Trona, où les xénomorphes exploitèrent les conduits de climatisation pour faucher la population civile en panique.",
+      "body": "La colonie minière de Trona s'effondra en quelques heures après la brèche d'un laboratoire Weyland. Les créatures évitèrent les fusils d'assaut USCM au sol en rampant le long des plafonds et canalisations pour décimer l'arrière-garde des réfugiés.",
+      "content": "La colonie minière de Trona s'effondra en quelques heures après la brèche d'un laboratoire Weyland. Les créatures évitèrent les fusils d'assaut USCM au sol en rampant le long des plafonds et canalisations pour décimer l'arrière-garde des réfugiés.",
+      "tags": [
+          "trona",
+          "dust_to_dust",
+          "evacuation",
+          "uscm",
+          "conduits",
+          "survie"
+      ],
+      "locationIds": []
+  },
+  {
+      "id": "lore_alien_defiance_zula_hendricks_2137",
+      "entryType": "codex",
+      "category": "chroniques",
+      "title": "Aliens: Defiance — La Mutinerie de l'Europa (2016)",
+      "universe": "ALIEN",
+      "sourceTier": "EXPANDED_LORE",
+      "sources": [
+          "alien1979",
+          "alien_isolation_2014"
+      ],
+      "unlockCondition": "Neutraliser la sécurité corporative à bord du transporteur Europa",
+      "summary": "Historique de l'opération clandestine menée par la vétérane blessée Zula Hendricks et le synthétique autonome Davis-01 pour intercepter et faire exploser les transports de spécimens xénomorphes avant leur arrivée sur Terre.",
+      "body": "Refusant le sacrifice planifié d'équipages humains par la compagnie pour obtenir des armes biologiques, la soldate Hendricks et l'androïde Davis-01 détournèrent le navire Europa pour arraisonner les stations relais et exterminer les ruches corporatives dans l'œuf.",
+      "content": "Refusant le sacrifice planifié d'équipages humains par la compagnie pour obtenir des armes biologiques, la soldate Hendricks et l'androïde Davis-01 détournèrent le navire Europa pour arraisonner les stations relais et exterminer les ruches corporatives dans l'œuf.",
+      "tags": [
+          "defiance",
+          "zula_hendricks",
+          "davis01",
+          "europa",
+          "mutinerie",
+          "sabotage"
+      ],
+      "locationIds": []
+  },
+  {
+      "id": "lore_avp_pursuit_nebraska_1880",
+      "entryType": "codex",
+      "category": "chroniques",
+      "title": "AVP: Pursuit — Poursuite Ferroviaire au Nebraska (1880)",
+      "universe": "AVP",
+      "sourceTier": "EXPANDED_LORE",
+      "sources": [
+          "avp2004",
+          "predator1_1987"
+      ],
+      "unlockCondition": "Intercepter le convoi de wagons scellés de la Union Pacific",
+      "summary": "Rapport exceptionnel consignant l'attaque d'un train blindé de la Union Pacific transportant un container secret de météorites caustiques, pris d'assaut simultanément par une meute de traqueurs extraterrestres et des parasites acides.",
+      "body": "Un convoi ferroviaire transportant des capsules de stase extraterrestre fut pris en étau entre trois chasseurs Yautja bondissant sur les toits et des xénomorphes libérés à l'intérieur. Les guerriers utilisèrent leurs disques pour sectionner les attelages et précipiter la couvée dans un ravin.",
+      "content": "Un convoi ferroviaire transportant des capsules de stase extraterrestre fut pris en étau entre trois chasseurs Yautja bondissant sur les toits et des xénomorphes libérés à l'intérieur. Les guerriers utilisèrent leurs disques pour sectionner les attelages et précipiter la couvée dans un ravin.",
+      "tags": [
+          "pursuit",
+          "nebraska",
+          "1880",
+          "train_a_vapeur",
+          "union_pacific",
+          "stase"
+      ],
+      "locationIds": []
+  },
+  {
+      "id": "lore_avp_blood_tide_tethys_waterworld",
+      "entryType": "codex",
+      "category": "chroniques",
+      "title": "AVP: Blood Tide — La Fosse Abyssale de Téthys (2202)",
+      "universe": "AVP",
+      "sourceTier": "EXPANDED_LORE",
+      "sources": [
+          "avp2004",
+          "aliens1986"
+      ],
+      "unlockCondition": "Plonger à six mille mètres de profondeur sous les verrières de quartz de Téthys",
+      "summary": "Étude hydro-dynamique et balistique des combats sous-marins menés dans les fosses de Téthys, où l'acide des xénomorphes se dissout dans l'eau sous forme de nuages toxiques asphyxiants pour les combinaisons de plongée.",
+      "body": "Sous 800 bars de pression d'eau salée, des xénomorphes palmés affrontèrent des chasseurs Yautja équipés de scaphandres blindés et de propulseurs à super-cavitation. Le sang acide dilué créait des tourbillons corrosifs dévorant les dômes de la station.",
+      "content": "Sous 800 bars de pression d'eau salée, des xénomorphes palmés affrontèrent des chasseurs Yautja équipés de scaphandres blindés et de propulseurs à super-cavitation. Le sang acide dilué créait des tourbillons corrosifs dévorant les dômes de la station.",
+      "tags": [
+          "blood_tide",
+          "tethys",
+          "abyssal",
+          "aquatique",
+          "cavitation",
+          "haute_pression"
+      ],
+      "locationIds": []
+  },
+  {
+      "id": "lore_avp_xenomorph_prime_matriarch_hive",
+      "entryType": "codex",
+      "category": "chroniques",
+      "title": "AVP: Xenomorph Prime — Le Sanctuaire de la Matriarche",
+      "universe": "AVP",
+      "sourceTier": "EXPANDED_LORE",
+      "sources": [
+          "avp2004",
+          "aliens1986",
+          "predator1_1987"
+      ],
+      "unlockCondition": "Atteindre le cœur minéralisé du sanctuaire de la Ruche Suprême",
+      "summary": "Dossier légendaire décrivant les expéditions d'initiation les plus périlleuses de l'histoire Yautja, menées sur la planète originelle de la race parasitaire, où des Reines mères colossales commandent des essaims infinis.",
+      "body": "Fouler la ruche-mère de Xenomorph Prime constitue l'épreuve ultime pour accéder au titre d'Ancien Suprême. Des Reines Matriarches titanesques gouvernent des millions de prétoriens à travers un monde transformé en résine osseuse noire et fossiles caustiques.",
+      "content": "Fouler la ruche-mère de Xenomorph Prime constitue l'épreuve ultime pour accéder au titre d'Ancien Suprême. Des Reines Matriarches titanesques gouvernent des millions de prétoriens à travers un monde transformé en résine osseuse noire et fossiles caustiques.",
+      "tags": [
+          "xenomorph_prime",
+          "matriarche",
+          "ruche_reine",
+          "kainde_amedha",
+          "epreuve_supreme"
+      ],
+      "locationIds": []
+  },
+  {
+      "id": "lore_avp_elder_council_yautja_prime",
+      "entryType": "codex",
+      "category": "chroniques",
+      "title": "AVP: Haut Conseil des Anciens — Jugement et Lois de la Chasse",
+      "universe": "AVP",
+      "sourceTier": "EXPANDED_LORE",
+      "sources": [
+          "avp2004",
+          "predator2_1990",
+          "predator1_1987"
+      ],
+      "unlockCondition": "Recevoir l'approbation rituelle devant le trône d'honneur de Yautja Prime",
+      "summary": "Codification des lois fondamentales régissant les clans Yautja à travers la galaxie, les critères de proclamation des chasses interdites et les sentences d'exil ou de mise à mort réservées aux guerriers sans honneur.",
+      "body": "Dans la pyramide maîtresse de Yautja Prime, les Douze Anciens jugent les enregistrements des bio-masques. Tout chasseur attaquant une proie faible ou enceinte est déclaré Bad Blood et condamné au massacre immédiat par les arbitres à hallebarde de plasma doré.",
+      "content": "Dans la pyramide maîtresse de Yautja Prime, les Douze Anciens jugent les enregistrements des bio-masques. Tout chasseur attaquant une proie faible ou enceinte est déclaré Bad Blood et condamné au massacre immédiat par les arbitres à hallebarde de plasma doré.",
+      "tags": [
+          "yautja_prime",
+          "conseil_anciens",
+          "lois_honneur",
+          "bad_bloods",
+          "verdict"
+      ],
+      "locationIds": []
   }
 ]);
 // IDs match the values already used by the planet selector.

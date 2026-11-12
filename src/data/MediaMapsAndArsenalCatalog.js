@@ -5350,6 +5350,360 @@ export const MEDIA_MAPS_CATALOG = Object.freeze([
       ],
       "heroSquadId": "squad_avp_mothership_elder_honor_guard",
       "villainSquadId": null
+  },
+  {
+      "id": "map_pred_yucatan_cenote_conquistador",
+      "name": "Cénote Sacré du Yucatán — Demon's Gold (1519)",
+      "universe": "PREDATOR",
+      "originMedia": "Predator: Demon's Gold (Dark Horse 1999)",
+      "sourceType": "COMIC",
+      "releaseYear": 1999,
+      "year": 1519,
+      "biomeId": "jungle",
+      "biome": "YUCATAN_KARST_CENOTE",
+      "recommendedBiomeLabel": "Cénote Sacré du Yucatán (1519)",
+      "weather": "Chaleur tropicale moite à 36°C, brume stagnante au-dessus des eaux émeraude",
+      "lighting": "Puits de lumière zénithal perçant la voûte calcaire, torches de poix espagnoles",
+      "verticality": "TRÈS ÉLEVÉE (Puits karstique de 40m, lianes aériennes et falaises calcaires glissantes)",
+      "destructibility": "Échafaudages de bois conquistadors, pontons de rondins et fougères géantes",
+      "interactables": [
+          "Câble de treuil de levage espagnol sectionnable pour faire s'effondrer un palan lourd",
+          "Niche calcaire d'idole maya pouvant servir d'affût de camouflage optique parfait",
+          "Foyer de campement de conquistadors prêt à propager un incendie de sous-bois"
+      ],
+      "environmentSummary": "Puits naturel karstique effondré dans la jungle du Yucatán où une colonne de conquistadors s'est retranchée avec son butin d'or sacré.",
+      "description": "Puits naturel karstique effondré dans la jungle du Yucatán où une colonne de conquistadors s'est retranchée avec son butin d'or sacré.",
+      "tacticalNotes": "La résonance acoustique des tirs d'arquebuse dans le gouffre désoriente les proies. Utilisez les lianes pour des attaques plongeantes.",
+      "dimensionsM": {
+          "width": 520,
+          "length": 520,
+          "height": 40
+      },
+      "elevationRangeM": [
+          0,
+          40
+      ],
+      "tacticalSectors": [
+          "Bordure Supérieure du Gouffre et Frondaisons de Fromagers",
+          "Plateforme des Arquebusiers et Dépôt de Barils de Poudre",
+          "Rive Émeraude du Cénote et Autel Sacrificiel Maya",
+          "Galerie Karstique Souterraine et Cascades de Ruissellement"
+      ],
+      "keyLandmarks": [
+          "Autel maya aux serpents à plumes dominant le miroir d'eau central",
+          "Épave de charrette d'expédition espagnole calée au fond de la fosse",
+          "Racines géantes de fromager descendant de 35 mètres dans le vide"
+      ],
+      "environmentalHazards": [
+          {
+              "type": "SLIPPERY_LIMESTONE",
+              "description": "Parois calcaires suintantes augmentant les risques de dérapage"
+          },
+          {
+              "type": "BLACK_POWDER_SMOKE",
+              "description": "Nuages de fumée d'arquebuse aveuglant la vision thermique humaine"
+          }
+      ],
+      "keyPreyIds": [
+          "prey_feral_predator_1719"
+      ],
+      "heroSquadId": "squad_pred_demons_gold_conquistadors",
+      "villainSquadId": null
+  },
+  {
+      "id": "map_pred_borneo_primary_rainforest",
+      "name": "Canopée Primaire de Bornéo — Heart of Darkness (1912)",
+      "universe": "PREDATOR",
+      "originMedia": "Predator: Heart of Darkness (Dark Horse 1999)",
+      "sourceType": "COMIC",
+      "releaseYear": 1999,
+      "year": 1912,
+      "biomeId": "jungle",
+      "biome": "BORNEO_DIPTEROCARP_CANOPY",
+      "recommendedBiomeLabel": "Haute Canopée de Bornéo (1912)",
+      "weather": "Déluge de mousson équatoriale, rideau de pluie tiède et grondements de tonnerre",
+      "lighting": "Pénombre perpétuelle sous les houppiers continus, éclairs bleutés périodiques",
+      "verticality": "TRÈS ÉLEVÉE (Dipterocarpacées géantes culminant à 55m, ponts suspendus)",
+      "destructibility": "Cahutes de récolte de caoutchouc, passerelles de bambou et troncs morts",
+      "interactables": [
+          "Cuve de latex brut inflammable pouvant être percée pour créer un piège collant",
+          "Tronc creux géant servant de conduit de téléportation tactique verticale",
+          "Ruche de guêpes géantes de Bornéo délogeable au smart-disc"
+      ],
+      "environmentSummary": "Sous-bois marécageux et canopée colossale de Bornéo où une compagnie de récolte de caoutchouc affronte le Chasseur d'Ombres.",
+      "description": "Sous-bois marécageux et canopée colossale de Bornéo où une compagnie de récolte de caoutchouc affronte le Chasseur d'Ombres.",
+      "tacticalNotes": "La pluie de mousson sature les bio-capteurs optiques mais les pistes de phéromones restent nettes sur l'écorce.",
+      "dimensionsM": {
+          "width": 540,
+          "length": 540,
+          "height": 48
+      },
+      "elevationRangeM": [
+          0,
+          48
+      ],
+      "tacticalSectors": [
+          "Campement Colonial de Collecte de Caoutchouc",
+          "Haute Passerelle Suspendue entre Arbres Centenaires",
+          "Marécage de Tourbe et Raies de Sangliers Sauvages",
+          "Plateforme Cérémonielle des Chasseurs Dayaks"
+      ],
+      "keyLandmarks": [
+          "Grand arbre sacré Koompassia dominant la forêt de ses 55 mètres",
+          "Presse hydraulique coloniale rouillée au cœur du campement",
+          "Totem de crânes sculptés par les Dayaks honorant les Esprits des Arbres"
+      ],
+      "environmentalHazards": [
+          {
+              "type": "MONSOON_FLOOD",
+              "description": "Inondation soudaine de boue limitant les déplacements au sol"
+          },
+          {
+              "type": "CANOPY_LIGHTNING",
+              "description": "Impacts de foudre fréquents sur les plus hautes branches métallisées"
+          }
+      ],
+      "keyPreyIds": [
+          "prey_young_blood_initiate"
+      ],
+      "heroSquadId": "squad_pred_borneo_rubber_expedition",
+      "villainSquadId": null
+  },
+  {
+      "id": "map_alien_lv178_monastic_quarry",
+      "name": "Carrière Monastique de Basalte — Aliens: Sacrifice (1993)",
+      "universe": "ALIEN",
+      "originMedia": "Aliens: Sacrifice (1993)",
+      "sourceType": "COMIC",
+      "releaseYear": 1993,
+      "year": 2174,
+      "biomeId": "bouvetoya_pyramid",
+      "biome": "BASALT_MINING_CATHEDRAL",
+      "recommendedBiomeLabel": "Carrière Cénobite de LV-178 (2174)",
+      "weather": "Atmosphère viciée à forte teneur en soufre, poussière de silice abrasive",
+      "lighting": "Lumières de sodium jaune industriel vacillantes, ombres découpées sur le basalte noir",
+      "verticality": "ÉLEVÉE (Gradins d'extraction taillés à pic de 55m, treuils pneumatiques suspendus)",
+      "destructibility": "Blocs de basalte prêts à basculer, concasseurs de minerai et échafaudages",
+      "interactables": [
+          "Concasseur géant de roche pouvant être activé pour broyer un groupe ennemi",
+          "Réservoir d'acide minéral industriel vidable pour inonder une travée inférieure",
+          "Cloche d'assemblée des cénobites pouvant être frappée pour attirer les rôdeurs"
+      ],
+      "environmentSummary": "Fosse d'excavation cyclopéenne où une secte religieuse fanatique a érigé une cathédrale de pierre noire dédiée aux Anges Noirs.",
+      "description": "Fosse d'excavation cyclopéenne où une secte religieuse fanatique a érigé une cathédrale de pierre noire dédiée aux Anges Noirs.",
+      "tacticalNotes": "La roche volcanique dense absorbe les ondes radar. Les échos de pas résonnent profondément dans la carrière.",
+      "dimensionsM": {
+          "width": 500,
+          "length": 500,
+          "height": 55
+      },
+      "elevationRangeM": [
+          0,
+          55
+      ],
+      "tacticalSectors": [
+          "Fosse Principale de Taille du Basalte",
+          "Nef Centrale de la Cathédrale des Pénitents",
+          "Galeries Inférieures et Réserves d'Ovocytes",
+          "Bordure des Concasseurs et Trémie de Broyage"
+      ],
+      "keyLandmarks": [
+          "Statue colossale sculptée dans le basalte brut figurant un xénomorphe ailé",
+          "Pont roulant suspendu à 40 mètres au-dessus du vide central",
+          "Fosse aux sacrifices ornée d'exuvies luisantes et d'ossements humains"
+      ],
+      "environmentalHazards": [
+          {
+              "type": "SILICA_DUST_STORM",
+              "description": "Bourrasques de poussière abrasive réduisant la visibilité des capteurs"
+          },
+          {
+              "type": "SULFUR_VENTS",
+              "description": "Fumerolles de soufre brûlantes provoquant des dégâts caustiques continus"
+          }
+      ],
+      "keyPreyIds": [
+          "prey_xeno_warrior"
+      ],
+      "heroSquadId": "squad_alien_sacrifice_lv178_cultists",
+      "villainSquadId": null
+  },
+  {
+      "id": "map_alien_europa_transport_corridors",
+      "name": "Coursives Pressurisées de l'Europa — Aliens: Defiance (2016)",
+      "universe": "ALIEN",
+      "originMedia": "Aliens: Defiance (2016)",
+      "sourceType": "COMIC",
+      "releaseYear": 2016,
+      "year": 2137,
+      "biomeId": "stargazer_blacksite",
+      "biome": "INTERSTELLAR_CARGO_TRANSPORT",
+      "recommendedBiomeLabel": "Cargo Stellaire Europa (2137)",
+      "weather": "Atmosphère artificielle recyclée sèche, odeur de liquide hydraulique et de plastique brûlé",
+      "lighting": "Alarmes stroboscopiques rouges de dépressurisation, consoles d'urgence ambrées",
+      "verticality": "MOYENNE (Ponts superposés de 30m, gaines techniques et monte-charges de fret)",
+      "destructibility": "Cloisons étanches sectionnables, tuyauteries de liquide de refroidissement cryo",
+      "interactables": [
+          "Sas de dépressurisation sectionnelle activable pour aspirer les proies vers le vide",
+          "Tourelle de défense automatisée Weyland réorientable contre les poursuivants",
+          "Conduit de vapeur pressurisée percutable pour créer un écran thermique aveuglant"
+      ],
+      "environmentSummary": "Labyrinthe métallique d'un transporteur de bio-armement où la mutinerie d'Hendricks et Davis-01 a déclenché le chaos.",
+      "description": "Labyrinthe métallique d'un transporteur de bio-armement où la mutinerie d'Hendricks et Davis-01 a déclenché le chaos.",
+      "tacticalNotes": "Espaces confinés favorisant les attaques de flanc via les conduits de maintenance. Gare aux tirs perforant les coques.",
+      "dimensionsM": {
+          "width": 560,
+          "length": 560,
+          "height": 30
+      },
+      "elevationRangeM": [
+          0,
+          30
+      ],
+      "tacticalSectors": [
+          "Pont des Hangars de Fret et Conteneurs de Stase",
+          "Coursives Principales de Sécurité et Sas Blindés",
+          "Réseau des Gaines de Ventilation et Échangeurs Thermiques",
+          "Passerelle Secondaire et Noyau des Synthétiques Davis"
+      ],
+      "keyLandmarks": [
+          "Conteneur de confinement biologique fracturé suintant d'acide fluorhydrique",
+          "Station de recharge des synthétiques Davis bordée de châssis inertes",
+          "Baie d'éjection des capsules de sauvetage béante"
+      ],
+      "environmentalHazards": [
+          {
+              "type": "HULL_MICRO_BREACH",
+              "description": "Fuites de vide spatial réduisant l'endurance en zone non scellée"
+          },
+          {
+              "type": "CRYO_COOLANT_JET",
+              "description": "Jets de fluide cryogénique givrant instantanément les articulations"
+          }
+      ],
+      "keyPreyIds": [
+          "prey_weyland_combat_android"
+      ],
+      "heroSquadId": "squad_alien_defiance_weyland_security_detail",
+      "villainSquadId": null
+  },
+  {
+      "id": "map_avp_tethys_abyssal_research_trench",
+      "name": "Fosse Abyssale de Téthys — AVP: Blood Tide (2202)",
+      "universe": "AVP",
+      "originMedia": "Aliens vs. Predator: Blood Tide (2002)",
+      "sourceType": "EXPANDED_LORE",
+      "releaseYear": 2002,
+      "year": 2202,
+      "biomeId": "stargazer_blacksite",
+      "biome": "ABYSSAL_OCEAN_TRENCH",
+      "recommendedBiomeLabel": "Station Abyssale de Téthys (2202)",
+      "weather": "Eau sous 800 bars de pression hydrostatique, courants abyssaux glacials à 1.5°C",
+      "lighting": "Dômes de quartz éclairés par des balises bioluminescentes bleu profond et projecteurs bathyscaphes",
+      "verticality": "TRÈS ÉLEVÉE (Pente tectonique abyssale de 65m, ponts tubulaires suspendus et cheminées hydrothermales)",
+      "destructibility": "Verrières de quartz trempé sous tension, vannes d'équilibrage de ballast",
+      "interactables": [
+          "Vanne de surpression bathymétrique projetant un torrent d'eau salée à haute vitesse",
+          "Balise bathyscaphe aveuglante désorientant les créatures habituées aux ténèbres",
+          "Cheminée hydrothermale émettrice de soufre surchauffé pouvant être percutée"
+      ],
+      "environmentSummary": "Complexe de recherche sous-marin immergé à six mille mètres sous la surface d'un monde entièrement liquide.",
+      "description": "Complexe de recherche sous-marin immergé à six mille mètres sous la surface d'un monde entièrement liquide.",
+      "tacticalNotes": "La résistance hydrodynamique modifie la trajectoire des disques et fléchettes. L'acide xénomorphe se dilue en nuage caustique.",
+      "dimensionsM": {
+          "width": 500,
+          "length": 500,
+          "height": 65
+      },
+      "elevationRangeM": [
+          0,
+          65
+      ],
+      "tacticalSectors": [
+          "Dôme Central d'Observation Bathymétrique",
+          "Fosse de Forage Géothermique des Fumerolles Noires",
+          "Tubes de Transit Pressurisés et Écluses de Plongée",
+          "Hangar des Sous-Marins de Reconnaissance et Sas Étanche"
+      ],
+      "keyLandmarks": [
+          "Cheminée hydrothermale colossale crachant des volutes de minéraux noirs",
+          "Épave d'un bathyscaphe d'exploration broyé par la pression abyssale",
+          "Grille d'électrification sous-marine délimitant le périmètre de recherche"
+      ],
+      "environmentalHazards": [
+          {
+              "type": "CRUSHING_DEPTH_PRESSURE",
+              "description": "Pression écrasante imposant le port d'armure renforcée intégrale"
+          },
+          {
+              "type": "ACID_AQUATIC_CLOUD",
+              "description": "Suspension caustique sous-marine corrosive persistant après chaque blessure"
+          }
+      ],
+      "keyPreyIds": [
+          "prey_colonial_marine_heavy"
+      ],
+      "heroSquadId": "squad_avp_tethys_deep_dive_harpooners",
+      "villainSquadId": null
+  },
+  {
+      "id": "map_avp_yautja_prime_grand_council_citadel",
+      "name": "Citadelle du Haut Conseil — Yautja Prime Legends",
+      "universe": "AVP",
+      "originMedia": "Aliens vs. Predator: High Elder Council Protocols",
+      "sourceType": "EXPANDED_LORE",
+      "releaseYear": 2004,
+      "year": 2215,
+      "biomeId": "bouvetoya_pyramid",
+      "biome": "YAUTJA_SUPREME_COUNCIL_PYRAMID",
+      "recommendedBiomeLabel": "Yautja Prime — Haute Citadelle (2215)",
+      "weather": "Ciel ocre rougeoyant, air sec chauffé par les coulées de lave lointaines et tempêtes de sable",
+      "lighting": "Braseros de plasma cérémoniels, stèles d'or sculptées illuminées par des runes luminescentes",
+      "verticality": "TRÈS ÉLEVÉE (Colonnades sacrificielles de 50m, marches de jugement et trônes étagés)",
+      "destructibility": "Colonnes de basalte ciselé, trophées de Reines pétrifiés et dalles d'honneur",
+      "interactables": [
+          "Gong de défi rituel activable pour convoquer les arbitres d'élite du Conseil",
+          "Dalle de verdict énergétique projetant un rayon de plasma paralysant",
+          "Console holographique d'honneur diffusant les annales des grandes chasses"
+      ],
+      "environmentSummary": "Sommet monumental de la pyramide souveraine où les Hauts Anciens rendent justice et proclament les sentences de sang.",
+      "description": "Sommet monumental de la pyramide souveraine où les Hauts Anciens rendent justice et proclament les sentences de sang.",
+      "tacticalNotes": "Combat rituel strict : les attaques sans honneur sont sévèrement sanctionnées par les arbitres du sanctuaire.",
+      "dimensionsM": {
+          "width": 620,
+          "length": 620,
+          "height": 50
+      },
+      "elevationRangeM": [
+          0,
+          50
+      ],
+      "tacticalSectors": [
+          "Parvis de Jugement et Estrade des Douze Anciens",
+          "Péristyle des Crânes Souverains et Reliques Cosmiques",
+          "Arène des Sentences et Fosse des Condamnés Bad Blood",
+          "Portique d'Ascension et Allée des Guerriers Vénérables"
+      ],
+      "keyLandmarks": [
+          "Trône de basalte colossal du Grand Arbitre Suprême orné d'un crâne d'Ingénieur royal",
+          "Brasero éternel de plasma doré brûlant au centre de l'hémicycle",
+          "Portail de saut stellaire scellé par des glyphes millénaires"
+      ],
+      "environmentalHazards": [
+          {
+              "type": "HONOR_PENALTY_FIELD",
+              "description": "Champ d'énergie pénalisant lourdement tout comportement lâche ou déloyal"
+          },
+          {
+              "type": "SUPERHEATED_PLASMA_GEYSER",
+              "description": "Geysers de plasma pur éruptifs le long des contreforts du temple"
+          }
+      ],
+      "keyPreyIds": [
+          "prey_colonial_marine_heavy"
+      ],
+      "heroSquadId": "squad_avp_elder_council_honor_arbiters",
+      "villainSquadId": null
   }
 ]);
 
@@ -7715,6 +8069,90 @@ export const NPC_ARSENAL_CATALOG = Object.freeze([
       "wieldedBy": "Garde d'honneur personnelle des Maîtres de Clan et Anciens",
       "yautjaCounterplay": "Esquive en roulade et désarmement au fouet à barbelures.",
       "description": "Dague honorifique forgée dans les ateliers ancestraux de Yautja Prime, dont le fil est enveloppé d'un champ d'énergie brûlant."
+  },
+  {
+      "id": "wpn_demons_gold_spanish_matchlock_arquebus",
+      "name": "Arquebuse à Mèche Espagnole de Tolède Calibre .75",
+      "universe": "PREDATOR",
+      "faction": "Spanish Conquistador Vanguard",
+      "originMedia": "Predator: Demon's Gold (1999)",
+      "caliber": "Balle sphérique de plomb coulé cal. .75 (480 grains)",
+      "damageType": "BLACK_POWDER_HEAVY_KINETIC",
+      "effectiveRangeMeters": 50,
+      "rateOfFire": "Tir coup par coup avec allumage par mèche lente (3 coups/min)",
+      "wieldedBy": "Arquebusiers vétérans des tercios espagnols au Yucatán",
+      "yautjaCounterplay": "Exploiter le temps de rechargement prolongé pour fondre sur la position.",
+      "description": "Arquebuse lourde de la Renaissance espagnole projetant des balles de plomb capables de déformer les armures légères à courte portée."
+  },
+  {
+      "id": "wpn_borneo_colonial_repeating_carbine",
+      "name": "Carabine à Répétition Coloniale de Bornéo .44-40",
+      "universe": "PREDATOR",
+      "faction": "Borneo Rubber Expeditionary Guard",
+      "originMedia": "Predator: Heart of Darkness (1999)",
+      "caliber": "Munitions .44-40 Winchester à percussion centrale",
+      "damageType": "KINETIC_LEVER_ACTION",
+      "effectiveRangeMeters": 70,
+      "rateOfFire": "Réarmement par levier de sous-garde (28 coups/min)",
+      "wieldedBy": "Pisteurs coloniaux, contremaîtres et gardes forestiers de Bornéo",
+      "yautjaCounterplay": "Dévier les salves cinétiques au smart-disc et saturer au canon plasma.",
+      "description": "Carabine fiable et robuste conçue pour résister à la corrosion de la mousson équatoriale et stopper les charges rapides."
+  },
+  {
+      "id": "wpn_sacrifice_lv178_heavy_pneumatic_chisel",
+      "name": "Ciseau Pneumatique de Taille de Basalte LV-178",
+      "universe": "ALIEN",
+      "faction": "LV-178 Cenobite Mining Guild",
+      "originMedia": "Aliens: Sacrifice (1993)",
+      "caliber": "Burin octogonal de diamant industriel oscillant à 3000 bpm",
+      "damageType": "PNEUMATIC_DIAMOND_PERCUSSION",
+      "effectiveRangeMeters": 3,
+      "rateOfFire": "Frappes répétées ultra-violentes en contact de mêlée",
+      "wieldedBy": "Mineurs cénobites et carriers fanatiques de la Fosse LV-178",
+      "yautjaCounterplay": "Garder la distance au combistick et frapper d'estoc avant le contact.",
+      "description": "Outil industriel lourd conçu pour fendre les filons de roche volcanique dure, capable d'éclater carapaces et cuirasses métalliques."
+  },
+  {
+      "id": "wpn_defiance_concussion_subcarbine_cr54",
+      "name": "Pistolet-Mitrailleur de Bord Armat CR-54 Concussion",
+      "universe": "ALIEN",
+      "faction": "Weyland-Yutani Internal Security Directorate",
+      "originMedia": "Aliens: Defiance (2016)",
+      "caliber": "Cartouches subsoniques 9x23mm frangibles anti-dépressurisation",
+      "damageType": "SUBSONIC_FRANGIBLE_KINETIC",
+      "effectiveRangeMeters": 45,
+      "rateOfFire": "Automatique régulé à 750 coups/min avec compensateur de recul",
+      "wieldedBy": "Gardiens de sécurité Weyland et synthétiques de combat classe Davis",
+      "yautjaCounterplay": "Parade active au bouclier de poignet et contre-attaque brutale au corps-à-corps.",
+      "description": "Arme compacte d'intervention spatiale conçue pour neutraliser les cibles organiques sans risquer de perforer la coque pressurisée."
+  },
+  {
+      "id": "wpn_tethys_abyssal_harpoon_lance",
+      "name": "Lance-Harpon Abyssal à Cavitation de Téthys",
+      "universe": "AVP",
+      "faction": "Tethys Abyssal Research Corps",
+      "originMedia": "Aliens vs. Predator: Blood Tide (2002)",
+      "caliber": "Dard d'uranium appauvri à propulsion super-cavitationnelle",
+      "damageType": "HYDRODYNAMIC_CAVITATION_IMPALE",
+      "effectiveRangeMeters": 35,
+      "rateOfFire": "Tir semi-automatique pressurisé (20 coups/min)",
+      "wieldedBy": "Plongeurs de combat en scaphandre lourd et traqueurs bathymétriques",
+      "yautjaCounterplay": "Esquive latérale vive et section du câble de rappel au shuriken.",
+      "description": "Fusil sous-marin de pointe créant une bulle de vapeur gazeuse autour du harpon pour franchir l'eau dense à plus de 400 m/s."
+  },
+  {
+      "id": "wpn_elder_council_ceremonial_halberd",
+      "name": "Hallebarde de Justice Cérémonielle du Haut Conseil",
+      "universe": "AVP",
+      "faction": "Yautja High Elder Council",
+      "originMedia": "Aliens vs. Predator: High Elder Council Protocols",
+      "caliber": "Lame de vouge bipolaire à champ plasmique doré confiné",
+      "damageType": "GOLDEN_PLASMA_DISMEMBERMENT",
+      "effectiveRangeMeters": 5,
+      "rateOfFire": "Moulinets martiaux d'honneur et fentes de décapitation de haute volée",
+      "wieldedBy": "Arbitres suprêmes et gardes du corps des Douze Anciens de Yautja Prime",
+      "yautjaCounterplay": "Parade parfaite au combistick trempé et désengagement d'esquive acrobatique.",
+      "description": "Arme d'hégémonie sculptée dans les alliages les plus rares de la galaxie, réservée aux jugements et à l'exécution des sentences martiales."
   }
 ]);
 

@@ -3398,6 +3398,24 @@ export const NPC_WEAPON_BALLISTIC_PROFILES = Object.freeze({
   wpn_mothership_ceremonial_plasma_dagger: makeWeaponBallisticProfile('wpn_mothership_ceremonial_plasma_dagger', {
     damage: 62, cooldown: 0.3, rangeM: 4, soundRadiusM: 30, projectileColor: 0x67e8f9, archetype: 'elder_ceremonial_plasma_dagger', cadence: 'contained_plasma_lunge', damageType: 'plasma',
   }),
+  wpn_demons_gold_spanish_matchlock_arquebus: makeWeaponBallisticProfile('wpn_demons_gold_spanish_matchlock_arquebus', {
+    damage: 80, cooldown: 1.6, rangeM: 50, soundRadiusM: 100, projectileColor: 0xf59e0b, archetype: 'spanish_conquistador_matchlock_arquebus', cadence: 'black_powder_smoke_shot', damageType: 'ballistic',
+  }),
+  wpn_borneo_colonial_repeating_carbine: makeWeaponBallisticProfile('wpn_borneo_colonial_repeating_carbine', {
+    damage: 52, cooldown: 0.45, rangeM: 70, soundRadiusM: 80, projectileColor: 0xca8a04, archetype: 'borneo_colonial_lever_action_carbine', cadence: 'rapid_lever_fire', damageType: 'ballistic',
+  }),
+  wpn_sacrifice_lv178_heavy_pneumatic_chisel: makeWeaponBallisticProfile('wpn_sacrifice_lv178_heavy_pneumatic_chisel', {
+    damage: 60, cooldown: 0.2, rangeM: 3, soundRadiusM: 40, projectileColor: 0x94a3b8, archetype: 'lv178_basalt_pneumatic_chisel', cadence: 'diamond_jackhammer_percussion', damageType: 'kinetic',
+  }),
+  wpn_defiance_concussion_subcarbine_cr54: makeWeaponBallisticProfile('wpn_defiance_concussion_subcarbine_cr54', {
+    damage: 28, cooldown: 0.08, rangeM: 45, soundRadiusM: 35, projectileColor: 0x38bdf8, archetype: 'armat_cr54_subsonic_subcarbine', cadence: 'concussion_frangible_burst', damageType: 'ballistic',
+  }),
+  wpn_tethys_abyssal_harpoon_lance: makeWeaponBallisticProfile('wpn_tethys_abyssal_harpoon_lance', {
+    damage: 72, cooldown: 0.8, rangeM: 35, soundRadiusM: 50, projectileColor: 0x06b6d4, archetype: 'tethys_supercavitation_harpoon_lance', cadence: 'hydrodynamic_bubble_impale', damageType: 'kinetic',
+  }),
+  wpn_elder_council_ceremonial_halberd: makeWeaponBallisticProfile('wpn_elder_council_ceremonial_halberd', {
+    damage: 75, cooldown: 0.35, rangeM: 5, soundRadiusM: 25, projectileColor: 0xeab308, archetype: 'supreme_council_golden_plasma_halberd', cadence: 'golden_plasma_verdict_slash', damageType: 'plasma',
+  }),
 });
 
 function resolveNpcRoleWeaponId(npcType) {
